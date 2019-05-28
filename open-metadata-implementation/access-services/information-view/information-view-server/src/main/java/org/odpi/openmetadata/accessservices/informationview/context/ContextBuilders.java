@@ -19,6 +19,10 @@ public class ContextBuilders {
         dataViewContextBuilder = new DataViewContextBuilder(enterpriseConnector, entityDao, auditLog);
     }
 
+    /**
+     *
+     * @return builder of report metadata representation
+     */
     public ReportContextBuilder getReportContextBuilder() {
         return reportContextBuilder;
     }
@@ -27,6 +31,10 @@ public class ContextBuilders {
         this.reportContextBuilder = reportContextBuilder;
     }
 
+    /**
+     *
+     * @return  builder of database metadata representation
+     */
     public DatabaseContextHandler getDatabaseContextHandler() {
         return databaseContextHandler;
     }
@@ -35,6 +43,10 @@ public class ContextBuilders {
         this.databaseContextHandler = databaseContextHandler;
     }
 
+    /**
+     *
+     * @return builder of data view metadata representation
+     */
     public DataViewContextBuilder getDataViewContextBuilder() {
         return dataViewContextBuilder;
     }

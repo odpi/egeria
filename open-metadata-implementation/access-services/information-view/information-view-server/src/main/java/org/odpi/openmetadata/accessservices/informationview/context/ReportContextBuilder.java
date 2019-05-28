@@ -40,7 +40,12 @@ public class ReportContextBuilder extends ContextBuilder{
         this.reportLookup = new ReportLookup(enterpriseConnector, entityDao,null, auditLog);
     }
 
-    public DeployedReport retrieveReport(String userId, String registrationGuid, String reportId) {
+    /**
+     *
+     * @param reportId id of the report to retrieve
+     * @return the bean representing the report
+     */
+    public DeployedReport retrieveReport(String reportId) {
 
         ReportSource source = new ReportSource();
         source.setReportId(reportId);
@@ -58,6 +63,11 @@ public class ReportContextBuilder extends ContextBuilder{
         return buildReport( reportEntity);
     }
 
+    /**
+     *
+     * @param reportEntity - entity describing the top level properties of the report
+     * @return the bean representing the report
+     */
     private DeployedReport buildReport( EntityDetail reportEntity) {
         DeployedReport report = new DeployedReport();
         report.setGuid(reportEntity.getGUID());
@@ -79,17 +89,27 @@ public class ReportContextBuilder extends ContextBuilder{
         return report;
     }
 
+    /**
+     *
+     *
+     * @param report - bean describing the report
+     * @param reportEntity - entity describing the top level properties of the report
+     */
     private void addReportStructure(DeployedReport report, EntityDetail reportEntity) {
         List<Relationship> relationships = getAssetSchemaTypeRelationships(reportEntity.getGUID());
 
         if(relationships == null || relationships.isEmpty())
            return;
         EntityProxy assetSchemaType = relationships.get(0).getEntityTwoProxy();
-        report.setReportElements(getInnerElements(assetSchemaType.getGUID()));
-
+        report.setReportElements(getChildrenElements(assetSchemaType.getGUID()));
     }
 
 
+    /**
+     *
+     * @param entityDetail entity describing a report element
+     * @return
+     */
     protected ReportElement buildElement(EntityDetail entityDetail) {
         ReportElement reportElement;
         if(entityDetail.getType().getTypeDefName().equals(Constants.DOCUMENT_SCHEMA_ATTRIBUTE)){
@@ -99,7 +119,7 @@ public class ReportContextBuilder extends ContextBuilder{
                 List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,
                         entityDetail.getGUID());
                 if(schemaType != null && !schemaType.isEmpty()) {
-                    ((ReportSection) reportElement).setElements(getInnerElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
+                    ((ReportSection) reportElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
                 InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;

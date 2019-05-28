@@ -46,7 +46,7 @@ public class InformationViewRestServices {
      *
      * @param serverName
      * @param userId
-     * @param requestBody  - structure of the report
+     * @param requestBody  - metadata representation of the report
      * @return
      */
     public InformationViewOMASAPIResponse submitReport(String serverName,
@@ -201,6 +201,13 @@ public class InformationViewRestServices {
     }
 
 
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param requestBody payload containing the properties describing the external tool
+     * @return
+     */
      public InformationViewOMASAPIResponse lookupRegistration(String serverName,
                                                                 String userId,
                                                                 RegistrationRequestBody requestBody) {
@@ -217,15 +224,21 @@ public class InformationViewRestServices {
     }
 
 
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param reportId unique identifier in the owner tool of the report
+     * @return
+     */
     public InformationViewOMASAPIResponse retrieveReport(String serverName,
                                                          String userId,
-                                                         String registrationGuid,
                                                          String reportId) {
 
 
         try {
             ReportContextBuilder reportContextBuilder = instanceHandler.getReportContextBuilder(serverName);
-            DeployedReport report = reportContextBuilder.retrieveReport(userId, registrationGuid, reportId);
+            DeployedReport report = reportContextBuilder.retrieveReport(reportId);
             ReportResponse reportResponse = new ReportResponse();
             reportResponse.setReport(report);
             return reportResponse;
@@ -237,13 +250,20 @@ public class InformationViewRestServices {
         }
 
     }
+
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param dataViewId external unique identifier of the data view
+     * @return
+     */
     public InformationViewOMASAPIResponse retrieveDataView(String serverName,
-                                                         String userId,
-                                                         String registrationGuid,
-                                                         String dataViewId) {
+                                                           String userId,
+                                                           String dataViewId) {
         try {
             DataViewContextBuilder dataViewContextHandler = instanceHandler.getDataViewContextBuilder(serverName);
-            DataView report = dataViewContextHandler.retrieveDataView(userId, registrationGuid, dataViewId);
+            DataView report = dataViewContextHandler.retrieveDataView(dataViewId);
             DataViewResponse reportResponse = new DataViewResponse();
             reportResponse.setDataView(report);
             return reportResponse;

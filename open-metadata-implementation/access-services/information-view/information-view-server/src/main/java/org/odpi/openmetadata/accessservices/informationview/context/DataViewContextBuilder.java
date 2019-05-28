@@ -42,7 +42,12 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
     }
 
 
-    public DataView retrieveDataView(String userId, String registrationGuid, String dataViewId) {
+    /**
+     *
+     * @param dataViewId - id of the data view to retrieve
+     * @return
+     */
+    public DataView retrieveDataView(String dataViewId) {
         DataViewSource source = new DataViewSource();
         source.setId(dataViewId);
         EntityDetail dataViewEntity;
@@ -59,6 +64,11 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
         return buildDataView(dataViewEntity);
     }
 
+    /**
+     *
+     * @param dataViewEntity - entity describing the top level properties of the view
+     * @return
+     */
     private DataView buildDataView(EntityDetail dataViewEntity) {
         DataView dataView = new DataView();
         dataView.setGuid(dataViewEntity.getGUID());
@@ -82,17 +92,27 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
         return dataView;
     }
 
+    /**
+     *
+     * @param dataView bean representing the data view
+     * @param dataViewEntity entity describing the top level entity
+     */
     private void addDataViewStructure(DataView dataView, EntityDetail dataViewEntity) {
         String dataViewGuid = dataViewEntity.getGUID();
         List<Relationship> relationships = getAssetSchemaTypeRelationships(dataViewGuid);
         if(relationships == null || relationships.isEmpty())
             return;
         EntityProxy assetSchemaType = relationships.get(0).getEntityTwoProxy();
-        dataView.setElements(getInnerElements(assetSchemaType.getGUID()));
+        dataView.setElements(getChildrenElements(assetSchemaType.getGUID()));
 
     }
 
 
+    /**
+     *
+     * @param entityDetail entity describing the data view element
+     * @return
+     */
     DataViewElement buildElement(EntityDetail entityDetail) {
         DataViewElement dataViewElement;
         if(entityDetail.getType().getTypeDefName().equals(Constants.SCHEMA_ATTRIBUTE)){
@@ -101,7 +121,7 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
             try {
                 List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,  entityDetail.getGUID());
                 if(schemaType != null && !schemaType.isEmpty()) {
-                    ((DataViewTable) dataViewElement).setElements(getInnerElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
+                    ((DataViewTable) dataViewElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
                 InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
