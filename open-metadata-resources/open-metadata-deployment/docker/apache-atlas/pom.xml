@@ -70,7 +70,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.registry}/${docker.repo}/apache-atlas-2.0</repository>
+                    <repository>${docker.registry}/${docker.repo}/apache-atlas</repository>
                     <buildArgs>
                     </buildArgs>
                 </configuration>

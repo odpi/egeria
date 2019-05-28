@@ -34,7 +34,7 @@ LABEL org.label-schema.vendor = "ODPi"
 LABEL org.label-schema.name = "apache-atlas"
 LABEL org.label-schema.description = "Apache Atlas image to support ODPi Egeria demonstrations."
 LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
-LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
+LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/apache-atlas"
 LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas"
 LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 
