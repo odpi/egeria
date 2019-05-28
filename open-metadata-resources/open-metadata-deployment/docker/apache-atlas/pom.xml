@@ -14,12 +14,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker image - Atlas</name>
+    <name>Docker image - Apache Atlas</name>
     <description>
         Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
     </description>
 
-    <artifactId>open-metadata-docker-atlas-2.0</artifactId>
+    <artifactId>open-metadata-docker-apache-atlas</artifactId>
 
     <packaging>pom</packaging>
     <build>
