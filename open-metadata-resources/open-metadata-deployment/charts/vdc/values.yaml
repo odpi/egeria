@@ -121,7 +121,7 @@ image:
     name: omrsmonitor-egeriavdc
 
   atlas:
-    name: apache-atlas
+    name: apache-atlas-fork
 
   gaian:
     name: gaian-egeriavdc
