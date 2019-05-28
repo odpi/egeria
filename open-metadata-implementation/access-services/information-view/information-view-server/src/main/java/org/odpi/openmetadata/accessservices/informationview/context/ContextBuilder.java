@@ -39,11 +39,16 @@ public abstract class ContextBuilder<T> {
     public ContextBuilder(OMRSRepositoryConnector enterpriseConnector, OMEntityDao entityDao, OMRSAuditLog omrsAuditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.entityDao = entityDao;
-        this.omrsRepositoryHelper = enterpriseConnector.getRepositoryHelper()
-        ;
+        this.omrsRepositoryHelper = enterpriseConnector.getRepositoryHelper();
     }
 
-    protected List<T> getInnerElements(String guid) {
+    /**
+     * Return the children elements linked with relationship ATTRIBUTE_FOR_SCHEMA to the entity with unique identifier guid
+     *
+     * @param guid - unique identifier for which we want to retrieve the children elements
+     * @return the list of children elements
+     */
+    protected List<T> getChildrenElements(String guid) {
         List<Relationship> elementsRelationship;
         try {
             elementsRelationship = entityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, guid);
@@ -79,6 +84,11 @@ public abstract class ContextBuilder<T> {
     abstract T buildElement(EntityDetail entity);
 
 
+    /**
+     * Return the business term associated to the entoty
+     * @param entityGuid unique identifier of the entity for which we want to retrieve the business term
+     * @return bean describing the business term associated
+     */
     protected BusinessTerm getAssignedBusinessTerm(String entityGuid) {
         BusinessTerm businessTerm = null;
         List<Relationship> semanticAssignments ;
@@ -122,6 +132,11 @@ public abstract class ContextBuilder<T> {
     }
 
 
+    /**
+     * Return the list of asset schema type
+     * @param guid - unique identifier of the entity representing an asset
+     * @return the list of asset schema type relationships linked to the entity
+     */
     protected List<Relationship> getAssetSchemaTypeRelationships(String guid) {
         List<Relationship> relationships;
         try {
