@@ -3,12 +3,15 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.handlers.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -170,18 +173,18 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetListResponse getAssetsByName(String   serverName,
-                                             String   userId,
-                                             String   name,
-                                             int      startFrom,
-                                             int      pageSize)
+    public AssetsResponse getAssetsByName(String   serverName,
+                                          String   userId,
+                                          String   name,
+                                          int      startFrom,
+                                          int      pageSize)
     {
         final String methodName    = "getAssetsByName";
 
         log.debug("Calling method: " + methodName);
 
-        AssetListResponse response = new AssetListResponse();
-        OMRSAuditLog      auditLog = null;
+        AssetsResponse response = new AssetsResponse();
+        OMRSAuditLog   auditLog = null;
 
         try
         {
@@ -855,16 +858,16 @@ public class AssetConsumerRESTServices
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public MeaningResponse getMeaning(String   serverName,
-                                      String   userId,
-                                      String   guid)
+    public GlossaryTermResponse getMeaning(String   serverName,
+                                           String   userId,
+                                           String   guid)
     {
         final String        methodName = "getMeaning";
 
         log.debug("Calling method: " + methodName);
 
-        MeaningResponse  response = new MeaningResponse();
-        OMRSAuditLog     auditLog = null;
+        GlossaryTermResponse response = new GlossaryTermResponse();
+        OMRSAuditLog         auditLog = null;
 
         try
         {
@@ -910,18 +913,18 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public MeaningListResponse getMeaningByName(String  serverName,
-                                                String  userId,
-                                                String  term,
-                                                int     startFrom,
-                                                int     pageSize)
+    public GlossaryTermListResponse getMeaningByName(String  serverName,
+                                                     String  userId,
+                                                     String  term,
+                                                     int     startFrom,
+                                                     int     pageSize)
     {
         final String        methodName = "getMeaningByName";
 
         log.debug("Calling method: " + methodName);
 
-        MeaningListResponse  response = new MeaningListResponse();
-        OMRSAuditLog         auditLog = null;
+        GlossaryTermListResponse response = new GlossaryTermListResponse();
+        OMRSAuditLog             auditLog = null;
 
         try
         {
@@ -981,7 +984,7 @@ public class AssetConsumerRESTServices
     public VoidResponse addLogMessageToAsset(String                serverName,
                                              String                userId,
                                              String                guid,
-                                             LogRecordRequestBody  requestBody)
+                                             LogRecordRequestBody requestBody)
     {
         final String        methodName = "addLogMessageToAsset";
 
@@ -1341,18 +1344,18 @@ public class AssetConsumerRESTServices
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public TagListResponse getTagsByName(String serverName,
-                                         String userId,
-                                         String tagName,
-                                         int    startFrom,
-                                         int    pageSize)
+    public TagsResponse getTagsByName(String serverName,
+                                      String userId,
+                                      String tagName,
+                                      int    startFrom,
+                                      int    pageSize)
     {
         final String   methodName = "getTagsByName";
 
         log.debug("Calling method: " + methodName);
 
-        TagListResponse  response = new TagListResponse();
-        OMRSAuditLog     auditLog = null;
+        TagsResponse response = new TagsResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {

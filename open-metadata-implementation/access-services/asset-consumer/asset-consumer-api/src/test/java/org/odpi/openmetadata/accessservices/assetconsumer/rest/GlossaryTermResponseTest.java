@@ -13,9 +13,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the MeaningResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the GlossaryTermResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class MeaningResponseTest
+public class GlossaryTermResponseTest
 {
     private GlossaryTerm        glossaryTerm = new GlossaryTerm();
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -24,7 +24,7 @@ public class MeaningResponseTest
     /**
      * Default constructor
      */
-    public MeaningResponseTest()
+    public GlossaryTermResponseTest()
     {
         this.glossaryTerm.setDisplayName("TestGlossaryTerm");
     }
@@ -35,9 +35,9 @@ public class MeaningResponseTest
      *
      * @return filled in object
      */
-    private MeaningResponse getTestObject()
+    private GlossaryTermResponse getTestObject()
     {
-        MeaningResponse testObject = new MeaningResponse();
+        GlossaryTermResponse testObject = new GlossaryTermResponse();
 
         testObject.setExceptionClassName(NullPointerException.class.getName());
         testObject.setExceptionErrorMessage("TestErrorMessage");
@@ -58,7 +58,7 @@ public class MeaningResponseTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(MeaningResponse  resultObject)
+    private void validateResultObject(GlossaryTermResponse resultObject)
     {
         assertTrue(resultObject.getExceptionClassName().equals(NullPointerException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
@@ -77,7 +77,7 @@ public class MeaningResponseTest
      */
     @Test public void testNullObject()
     {
-        MeaningResponse    nullObject = new MeaningResponse();
+        GlossaryTermResponse nullObject = new GlossaryTermResponse();
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -87,7 +87,7 @@ public class MeaningResponseTest
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getGlossaryTerm() == null);
 
-        nullObject = new MeaningResponse(null);
+        nullObject = new GlossaryTermResponse(null);
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -104,25 +104,25 @@ public class MeaningResponseTest
      */
     @Test public void testExceptionProperties()
     {
-        Map<String, Object>   propertyMap;
-        MeaningResponse    testObject = new MeaningResponse();
+        Map<String, Object>  propertyMap;
+        GlossaryTermResponse testObject = new GlossaryTermResponse();
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = null;
-        testObject = new MeaningResponse();
+        testObject = new GlossaryTermResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = new HashMap<>();
-        testObject = new MeaningResponse();
+        testObject = new GlossaryTermResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
-        testObject = new MeaningResponse();
+        testObject = new GlossaryTermResponse();
         testObject.setExceptionProperties(propertyMap);
 
         Map<String, Object>   retrievedPropertyMap = testObject.getExceptionProperties();
@@ -143,10 +143,10 @@ public class MeaningResponseTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        MeaningResponse  sameObject = getTestObject();
+        GlossaryTermResponse sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        MeaningResponse  differentObject = getTestObject();
+        GlossaryTermResponse differentObject = getTestObject();
         differentObject.setExceptionErrorMessage("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -159,7 +159,7 @@ public class MeaningResponseTest
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
 
-        MeaningResponse  testObject = getTestObject();
+        GlossaryTermResponse testObject = getTestObject();
 
         testObject.setGlossaryTerm(null);
 
@@ -172,7 +172,7 @@ public class MeaningResponseTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new MeaningResponse(getTestObject()));
+        validateResultObject(new GlossaryTermResponse(getTestObject()));
     }
 
 
@@ -199,7 +199,7 @@ public class MeaningResponseTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, MeaningResponse.class));
+            validateResultObject(objectMapper.readValue(jsonString, GlossaryTermResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -222,7 +222,7 @@ public class MeaningResponseTest
 
         try
         {
-            validateResultObject((MeaningResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
+            validateResultObject((GlossaryTermResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -236,6 +236,6 @@ public class MeaningResponseTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("MeaningResponse"));
+        assertTrue(getTestObject().toString().contains("GlossaryTermResponse"));
     }
 }
