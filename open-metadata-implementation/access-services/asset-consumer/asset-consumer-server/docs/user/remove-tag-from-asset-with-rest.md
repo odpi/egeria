@@ -8,7 +8,7 @@ final String   methodName  = "addTagToAsset";
 
         final String   serverURLRoot = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/tags/{3}/delete
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMASServerURL(serverPlatformRootURL, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
@@ -16,7 +16,7 @@ final String   methodName  = "addTagToAsset";
         NullRequestBody  requestBody = new NullRequestBody();
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
