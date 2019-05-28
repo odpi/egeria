@@ -1,42 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM ubuntu:18.10 AS build
+FROM maven:3.6.0-jdk-8 AS build
 
-# Install Git, which is missing from the Ubuntu base images.
-RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget inetutils-ping dnsutils gzip tar gpg
-
-# Install Java.
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-
-# Install Maven.
-ENV MAVEN_HOME /usr/share/maven
-
-# Add Java and Maven to the path.
-ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-# Working directory
 WORKDIR /root
 
-# Pull down Atlas and build it into /root/atlas-bin.
-RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/1.1.0/apache-atlas-1.1.0-sources.tar.gz
+# Pull down Apache Atlas and build it into /root/atlas-bin.
+RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/2.0.0/apache-atlas-2.0.0-sources.tar.gz
 RUN wget https://www.apache.org/dist/atlas/KEYS
-RUN wget https://www.apache.org/dist/atlas/1.1.0/apache-atlas-1.1.0-sources.tar.gz.asc
+RUN wget https://www.apache.org/dist/atlas/2.0.0/apache-atlas-2.0.0-sources.tar.gz.asc
 
 RUN gpg --import KEYS
-RUN gpg --verify apache-atlas-1.1.0-sources.tar.gz.asc apache-atlas-1.1.0-sources.tar.gz
+RUN gpg --verify apache-atlas-2.0.0-sources.tar.gz.asc apache-atlas-2.0.0-sources.tar.gz
 
-RUN tar zxf apache-atlas-1.1.0-sources.tar.gz
+RUN tar zxf apache-atlas-2.0.0-sources.tar.gz
 
-WORKDIR /root/apache-atlas-sources-1.1.0
+WORKDIR /root/apache-atlas-sources-2.0.0
 
 # need more java heap
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
 # Remove -DskipTests if unit tests are to be included
-RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -DskipEnunciate -f ./pom.xml
+RUN mvn clean -DskipTests install
+RUN mvn clean -DskipTests package -Pdist,embedded-hbase-solr
+
 RUN mkdir -p /root/atlas-bin
-RUN tar xzf /root/apache-atlas-sources-1.1.0/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
+RUN tar xzf /root/apache-atlas-sources-2.0.0/distro/target/*server.tar.gz --strip-components 1 -C /root/atlas-bin
 
 FROM openjdk:8-jdk-alpine
 
@@ -63,9 +52,7 @@ RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.pr
 
 # Set env variables, add it to the path, and start Atlas.
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
-ENV MANAGE_LOCAL_SOLR true
-ENV MANAGE_LOCAL_HBASE true
-ENV PATH /opt/apache/atlas/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV HBASE_CONF_DIR=/opt/apache/atlas/hbase/conf
 
 EXPOSE 21000
 ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/application.log"]
