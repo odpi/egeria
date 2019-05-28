@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataViewRequestBody extends InformationViewHeader{
 
     private String registrationGuid;
-
     private DataView dataView;
 
     public DataView getDataView() {

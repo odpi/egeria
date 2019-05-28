@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.context.DataViewContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
@@ -76,7 +77,7 @@ class InformationViewInstanceHandler
         InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getContextBuilder().getDatabaseContextHandler();
+            return instance.getContextBuilders().getDatabaseContextHandler();
         } else {
             final String methodName = "getDatabaseContextHandler";
             throwError(serverName, methodName);
@@ -107,7 +108,20 @@ class InformationViewInstanceHandler
         InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getContextBuilder().getReportContextBuilder();
+            return instance.getContextBuilders().getReportContextBuilder();
+        } else {
+            final String methodName = "getReportContextBuilder";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+
+
+        DataViewContextBuilder getDataViewContextBuilder(String serverName){
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getContextBuilders().getDataViewContextBuilder();
         } else {
             final String methodName = "getReportContextBuilder";
             throwError(serverName, methodName);

@@ -105,4 +105,12 @@ public class InformationViewOMASResource {
         return restAPI.retrieveReport(serverName, userId, registrationGuid, reportId);
     }
 
+    @GetMapping(path = "/dataview")
+    public InformationViewOMASAPIResponse retrieveDataView(@PathVariable("serverName") String serverName,
+                                                         @PathVariable("userId") String userId,
+                                                         @RequestParam String registrationGuid,
+                                                         @RequestParam String dataViewId) {
+        return restAPI.retrieveDataView(serverName, userId, registrationGuid, dataViewId);
+    }
+
 }

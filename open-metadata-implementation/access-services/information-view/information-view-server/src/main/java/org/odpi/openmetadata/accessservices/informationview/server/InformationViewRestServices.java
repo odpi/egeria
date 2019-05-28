@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.context.DataViewContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.events.DataView;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.events.DeployedReport;
@@ -16,6 +18,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.responses.DataViewResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.DatabaseListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.RegistrationResponse;
@@ -225,6 +228,24 @@ public class InformationViewRestServices {
             DeployedReport report = reportContextBuilder.retrieveReport(userId, registrationGuid, reportId);
             ReportResponse reportResponse = new ReportResponse();
             reportResponse.setReport(report);
+            return reportResponse;
+
+        }
+        catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
+            return handleErrorResponse(e);
+        }
+
+    }
+    public InformationViewOMASAPIResponse retrieveDataView(String serverName,
+                                                         String userId,
+                                                         String registrationGuid,
+                                                         String dataViewId) {
+        try {
+            DataViewContextBuilder dataViewContextHandler = instanceHandler.getDataViewContextBuilder(serverName);
+            DataView report = dataViewContextHandler.retrieveDataView(userId, registrationGuid, dataViewId);
+            DataViewResponse reportResponse = new DataViewResponse();
+            reportResponse.setDataView(report);
             return reportResponse;
 
         }

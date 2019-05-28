@@ -71,7 +71,7 @@ public class DataViewHandler {
 
 
             OMEntityWrapper dataViewWrapper = omEntityDao.saveEntityReferenceCopy(requestBody.getRegistrationGuid(),
-                                                                                Constants.DEPLOYED_REPORT,
+                                                                                Constants.INFORMATION_VIEW,
                                                                                 qualifiedNameForDataView,
                                                                                 dataViewProperties,
                                                                                 true,
