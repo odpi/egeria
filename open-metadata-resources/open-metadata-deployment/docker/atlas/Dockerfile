@@ -28,12 +28,14 @@ COPY dist/0001-EGERIA-github-922-upgrade-kafka-version.patch /root/0001-EGERIA-g
 COPY dist/0002-EGERIA-github-922-upgrade-findbugs.patch /root/0002-EGERIA-github-922-upgrade-findbugs.patch
 COPY dist/0003-Fixup-Admin-services-responses-void-and-success.patch /root/0003-Fixup-Admin-services-responses-void-and-success.patch
 COPY dist/0004-ignore-map-string-object-and-allow-creation-of-conne.patch /root/0004-ignore-map-string-object-and-allow-creation-of-conne.patch
+COPY dist/0005-Correction-to-type-object.patch /root/0005-Correction-to-type-object.patch
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
 RUN git am < /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
 RUN git am < /root/0002-EGERIA-github-922-upgrade-findbugs.patch
 RUN git am < /root/0003-Fixup-Admin-services-responses-void-and-success.patch
 RUN git am < /root/0004-ignore-map-string-object-and-allow-creation-of-conne.patch
+RUN git am < /root/0005-Correction-to-type-object.patch
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
