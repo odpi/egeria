@@ -97,10 +97,4 @@ public class ReportHandler {
 
     }
 
-
-    public void getReport(String userId, String registrationGuid, String reportId){
-
-    }
-
-
 }
