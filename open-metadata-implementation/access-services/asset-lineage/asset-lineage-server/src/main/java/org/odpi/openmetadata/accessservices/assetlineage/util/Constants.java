@@ -6,7 +6,9 @@ public final class Constants {
     private Constants() {
     }
 
-    //Asset Types
+    public static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";
+    public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
+    public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
@@ -28,7 +30,7 @@ public final class Constants {
     public static final String CONNECTION_ENDPOINT = "ConnectionEndpoint";
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
-    public static final String TERM_CATEGORIZATION= "TermCategorization";
+    public static final String TERM_CATEGORIZATION = "TermCategorization";
 
     //Instance Properties fields
     public static final String DISPLAY_NAME = "displayName";
