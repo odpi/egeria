@@ -1,13 +1,12 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,22 +16,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  MeaningListResponse returns a list of assets from the server.   The list may be too long to
+ *  TagListResponse returns a list of tags from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetListResponse extends AssetConsumerOMASAPIResponse
+public class TagListResponse extends OCFOMASAPIResponse
 {
-    private List<Asset> assets              = null;
-    private int         startingFromElement = 0;
+    private List<InformalTag> tags                = null;
+    private int               startingFromElement = 0;
 
 
     /**
      * Default constructor
      */
-    public AssetListResponse()
+    public TagListResponse()
     {
         super();
     }
@@ -43,14 +42,14 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public AssetListResponse(AssetListResponse template)
+    public TagListResponse(TagListResponse template)
     {
         super(template);
 
         if (template != null)
         {
             this.startingFromElement = template.getStartingFromElement();
-            this.assets = template.getAssets();
+            this.tags = template.getTags();
         }
     }
 
@@ -60,23 +59,23 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
      *
      * @return list of glossary terms
      */
-    public List<Asset> getAssets()
+    public List<InformalTag> getTags()
     {
-        if (assets == null)
+        if (tags == null)
         {
             return null;
         }
-        else if (assets.isEmpty())
+        else if (tags.isEmpty())
         {
             return null;
         }
         else
         {
-            List<Asset>  clonedList = new ArrayList<>();
+            List<InformalTag>  clonedList = new ArrayList<>();
 
-            for (Asset  existingElement : assets)
+            for (InformalTag  existingElement : tags)
             {
-                clonedList.add(new Asset(existingElement));
+                clonedList.add(new InformalTag(existingElement));
             }
 
             return clonedList;
@@ -87,11 +86,11 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
     /**
      * Set up the list of glossary terms for the response.
      *
-     * @param assets list
+     * @param tags list
      */
-    public void setAssets(List<Asset> assets)
+    public void setTags(List<InformalTag> tags)
     {
-        this.assets = assets;
+        this.tags = tags;
     }
 
 
@@ -125,8 +124,8 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "AssetListResponse{" +
-                "assets=" + assets +
+        return "TagListResponse{" +
+                "tags=" + tags +
                 ", startingFromElement=" + startingFromElement +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
@@ -159,9 +158,9 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
         {
             return false;
         }
-        AssetListResponse that = (AssetListResponse) objectToCompare;
+        TagListResponse that = (TagListResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getAssets(), that.getAssets());
+                Objects.equals(getTags(), that.getTags());
     }
 
 
@@ -173,6 +172,6 @@ public class AssetListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAssets(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getTags(), getStartingFromElement());
     }
 }

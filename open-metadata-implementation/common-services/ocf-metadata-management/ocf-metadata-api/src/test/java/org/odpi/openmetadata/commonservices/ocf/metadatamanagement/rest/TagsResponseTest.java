@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -16,25 +15,24 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the NoteLogResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the TagListResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class NoteLogResponseTest
+public class TagListResponseTest
 {
-    private NoteLog             noteLog              = new NoteLog();
-    private List<Note>          notes                = new ArrayList<>();
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private InformalTag         tag                 = new InformalTag();
+    private List<InformalTag>   tagList             = new ArrayList<>();
+    private Map<String, Object> exceptionProperties = new HashMap<>();
 
 
     /**
      * Default constructor
      */
-    public NoteLogResponseTest()
+    public TagListResponseTest()
     {
-        this.noteLog.setDisplayName("TestNoteLog");
+        tag.setName("TestTag");
 
-        Note note = new Note();
-        note.setText("Note Text");
-        this.notes.add(note);
+        tagList.add(tag);
+        exceptionProperties.put("TestAdditionalPropertyName", "TestAdditionalPropertyValue");
     }
 
 
@@ -43,9 +41,9 @@ public class NoteLogResponseTest
      *
      * @return filled in object
      */
-    private NoteLogResponse getTestObject()
+    private TagListResponse getTestObject()
     {
-        NoteLogResponse testObject = new NoteLogResponse();
+        TagListResponse testObject = new TagListResponse();
 
         testObject.setExceptionClassName(NullPointerException.class.getName());
         testObject.setExceptionErrorMessage("TestErrorMessage");
@@ -53,11 +51,10 @@ public class NoteLogResponseTest
         testObject.setExceptionUserAction("TestUserAction");
 
         testObject.setRelatedHTTPCode(400);
-        testObject.setExceptionProperties(additionalProperties);
+        testObject.setExceptionProperties(exceptionProperties);
 
         testObject.setStartingFromElement(10);
-        testObject.setNoteLog(noteLog);
-        testObject.setNotes(notes);
+        testObject.setTags(tagList);
 
         return testObject;
     }
@@ -68,7 +65,7 @@ public class NoteLogResponseTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(NoteLogResponse  resultObject)
+    private void validateResultObject(TagListResponse  resultObject)
     {
         assertTrue(resultObject.getExceptionClassName().equals(NullPointerException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
@@ -76,11 +73,10 @@ public class NoteLogResponseTest
         assertTrue(resultObject.getExceptionUserAction().equals("TestUserAction"));
 
         assertTrue(resultObject.getRelatedHTTPCode() == 400);
-        assertTrue(resultObject.getExceptionProperties() == null);
+        assertTrue(resultObject.getExceptionProperties().equals(exceptionProperties));
 
         assertTrue(resultObject.getStartingFromElement() == 10);
-        assertTrue(resultObject.getNoteLog().equals(noteLog));
-        assertTrue(resultObject.getNotes().equals(notes));
+        assertTrue(resultObject.getTags().equals(tagList));
     }
 
 
@@ -89,7 +85,7 @@ public class NoteLogResponseTest
      */
     @Test public void testNullObject()
     {
-        NoteLogResponse    nullObject = new NoteLogResponse();
+        TagListResponse    nullObject = new TagListResponse();
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -97,22 +93,9 @@ public class NoteLogResponseTest
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
-        assertTrue(nullObject.getNoteLog() == null);
-        assertTrue(nullObject.getNotes() == null);
+        assertTrue(nullObject.getTags() == null);
 
-        nullObject = new NoteLogResponse(null);
-
-        assertTrue(nullObject.getRelatedHTTPCode() == 200);
-        assertTrue(nullObject.getExceptionClassName() == null);
-        assertTrue(nullObject.getExceptionErrorMessage() == null);
-        assertTrue(nullObject.getExceptionSystemAction() == null);
-        assertTrue(nullObject.getExceptionUserAction() == null);
-        assertTrue(nullObject.getExceptionProperties() == null);
-        assertTrue(nullObject.getNoteLog() == null);
-        assertTrue(nullObject.getNotes() == null);
-
-        nullObject = new NoteLogResponse();
-        nullObject.setNotes(new ArrayList<>());
+        nullObject = new TagListResponse(null);
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -120,8 +103,17 @@ public class NoteLogResponseTest
         assertTrue(nullObject.getExceptionSystemAction() == null);
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
-        assertTrue(nullObject.getNoteLog() == null);
-        assertTrue(nullObject.getNotes() == null);
+        assertTrue(nullObject.getTags() == null);
+
+        nullObject = new TagListResponse();
+        nullObject.setTags(new ArrayList<>());
+
+        assertTrue(nullObject.getTags() == null);
+
+        nullObject = new TagListResponse();
+        nullObject.setExceptionProperties(new HashMap<>());
+
+        assertTrue(nullObject.getExceptionProperties() == null);
     }
 
 
@@ -131,24 +123,24 @@ public class NoteLogResponseTest
     @Test public void testExceptionProperties()
     {
         Map<String, Object>   propertyMap;
-        NoteLogResponse    testObject = new NoteLogResponse();
+        TagListResponse    testObject = new TagListResponse();
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = null;
-        testObject = new NoteLogResponse();
+        testObject = new TagListResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = new HashMap<>();
-        testObject = new NoteLogResponse();
+        testObject = new TagListResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
-        testObject = new NoteLogResponse();
+        testObject = new TagListResponse();
         testObject.setExceptionProperties(propertyMap);
 
         Map<String, Object>   retrievedPropertyMap = testObject.getExceptionProperties();
@@ -169,10 +161,10 @@ public class NoteLogResponseTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        NoteLogResponse  sameObject = getTestObject();
+        TagListResponse  sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        NoteLogResponse  differentObject = getTestObject();
+        TagListResponse  differentObject = getTestObject();
         differentObject.setExceptionErrorMessage("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -185,9 +177,7 @@ public class NoteLogResponseTest
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
 
-        NoteLogResponse  testObject = getTestObject();
-
-        testObject.setNotes(null);
+        TagListResponse  testObject = getTestObject();
 
         assertTrue(testObject.hashCode() != 0);
     }
@@ -198,7 +188,7 @@ public class NoteLogResponseTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new NoteLogResponse(getTestObject()));
+        validateResultObject(new TagListResponse(getTestObject()));
     }
 
 
@@ -225,7 +215,7 @@ public class NoteLogResponseTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, NoteLogResponse.class));
+            validateResultObject(objectMapper.readValue(jsonString, TagListResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -248,7 +238,7 @@ public class NoteLogResponseTest
 
         try
         {
-            validateResultObject((NoteLogResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
+            validateResultObject((TagListResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -262,6 +252,6 @@ public class NoteLogResponseTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("NoteLogResponse"));
+        assertTrue(getTestObject().toString().contains("TagListResponse"));
     }
 }

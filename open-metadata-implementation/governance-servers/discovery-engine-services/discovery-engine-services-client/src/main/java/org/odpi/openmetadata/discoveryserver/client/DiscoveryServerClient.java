@@ -2,15 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.discoveryserver.client;
 
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryReport;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * DiscoveryEngineClient is a client-side library for calling a specific discovery engine.
@@ -20,6 +24,10 @@ public class DiscoveryEngineClient extends DiscoveryEngine
     private String serverPlatformRootURL;
     private String serverName;
     private String discoveryEngineGUID;
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
+    private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -59,8 +67,63 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                             UserNotAuthorizedException,
                                                             DiscoveryEngineException
     {
+        return this.discoverAsset(userId, assetGUID, assetType, null, null);
+    }
+
+
+
+
+    /**
+     * Request the execution of a discovery service to explore a specific asset.
+     *
+     * @param userId identifier of calling user
+     * @param assetGUID identifier of the asset to analyze.
+     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param analysisParameters name value properties to control the analysis
+     *
+     * @return unique id for the discovery request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public  String discoverAsset(String              userId,
+                                 String              assetGUID,
+                                 String              assetType,
+                                 Map<String, String> analysisParameters) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                DiscoveryEngineException
+    {
+        return this.discoverAsset(userId, assetGUID, assetType, analysisParameters, null);
+    }
+
+
+    /**
+     * Request the execution of a discovery service to explore a specific asset.
+     *
+     * @param userId identifier of calling user
+     * @param assetGUID identifier of the asset to analyze.
+     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
+     * @param analysisParameters name value properties to control the analysis
+     * @param annotationTypes list of the types of annotations to produce (and no others)
+     *
+     * @return unique id for the discovery request.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
+     */
+    public  String discoverAsset(String              userId,
+                                 String              assetGUID,
+                                 String              assetType,
+                                 Map<String, String> analysisParameters,
+                                 List<String>        annotationTypes) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             DiscoveryEngineException
+    {
         return null;
     }
+
 
 
     /**
@@ -96,8 +159,8 @@ public class DiscoveryEngineClient extends DiscoveryEngine
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  DiscoveryReport getDiscoveryReport(String   userId,
-                                               String   discoveryRequestGUID) throws InvalidParameterException,
+    public DiscoveryAnalysisReport getDiscoveryReport(String   userId,
+                                                      String   discoveryRequestGUID) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
                                                                                      DiscoveryEngineException
     {

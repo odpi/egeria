@@ -3,21 +3,21 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the TagRequestBody bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the CommentRequestBody bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class TagRequestBodyTest
+public class CommentRequestBodyTest
 {
     /**
      * Default constructor
      */
-    public TagRequestBodyTest()
+    public CommentRequestBodyTest()
     {
 
     }
@@ -28,12 +28,12 @@ public class TagRequestBodyTest
      *
      * @return filled in object
      */
-    private TagRequestBody getTestObject()
+    private CommentRequestBody getTestObject()
     {
-        TagRequestBody testObject = new TagRequestBody();
+        CommentRequestBody testObject = new CommentRequestBody();
 
-        testObject.setTagName("TestTagName");
-        testObject.setTagDescription("TestTagDescription");
+        testObject.setCommentText("TestCommentText");
+        testObject.setCommentType(CommentType.STANDARD_COMMENT);
 
         return testObject;
     }
@@ -44,10 +44,10 @@ public class TagRequestBodyTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(TagRequestBody  resultObject)
+    private void validateResultObject(CommentRequestBody  resultObject)
     {
-        assertTrue(resultObject.getTagName().equals("TestTagName"));
-        assertTrue(resultObject.getTagDescription().equals("TestTagDescription"));
+        assertTrue(resultObject.getCommentText().equals("TestCommentText"));
+        assertTrue(resultObject.getCommentType() == CommentType.STANDARD_COMMENT);
     }
 
 
@@ -56,15 +56,15 @@ public class TagRequestBodyTest
      */
     @Test public void testNullObject()
     {
-        TagRequestBody    nullObject = new TagRequestBody();
+        CommentRequestBody    nullObject = new CommentRequestBody();
 
-        assertTrue(nullObject.getTagName() == null);
-        assertTrue(nullObject.getTagDescription() == null);
+        assertTrue(nullObject.getCommentType() == null);
+        assertTrue(nullObject.getCommentText() == null);
 
-        nullObject = new TagRequestBody(null);
+        nullObject = new CommentRequestBody(null);
 
-        assertTrue(nullObject.getTagName() == null);
-        assertTrue(nullObject.getTagDescription() == null);
+        assertTrue(nullObject.getCommentType() == null);
+        assertTrue(nullObject.getCommentText() == null);
     }
 
 
@@ -77,11 +77,11 @@ public class TagRequestBodyTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        TagRequestBody  sameObject = getTestObject();
+        CommentRequestBody  sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        TagRequestBody  differentObject = getTestObject();
-        differentObject.setTagName("DifferentTag");
+        CommentRequestBody  differentObject = getTestObject();
+        differentObject.setCommentType(CommentType.ANSWER);
         assertFalse(getTestObject().equals(differentObject));
     }
 
@@ -100,7 +100,7 @@ public class TagRequestBodyTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new TagRequestBody(getTestObject()));
+        validateResultObject(new CommentRequestBody(getTestObject()));
     }
 
 
@@ -127,7 +127,7 @@ public class TagRequestBodyTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, TagRequestBody.class));
+            validateResultObject(objectMapper.readValue(jsonString, CommentRequestBody.class));
         }
         catch (Throwable  exc)
         {
@@ -150,7 +150,7 @@ public class TagRequestBodyTest
 
         try
         {
-            validateResultObject((TagRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
+            validateResultObject((CommentRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
         }
         catch (Throwable  exc)
         {
@@ -164,6 +164,6 @@ public class TagRequestBodyTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("TagRequestBody"));
+        assertTrue(getTestObject().toString().contains("CommentRequestBody"));
     }
 }

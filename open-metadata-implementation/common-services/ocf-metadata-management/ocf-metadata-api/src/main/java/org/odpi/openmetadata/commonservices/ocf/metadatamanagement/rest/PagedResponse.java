@@ -1,37 +1,25 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement;
 
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-/**
- *  MeaningListResponse returns a list of meanings from the server.   The list may be too long to
- *  retrieve in a single call so there is support for paging of replies.
- */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class MeaningListResponse extends AssetConsumerOMASAPIResponse
+public class NoteLogResponse extends AssetConsumerOMASAPIResponse
 {
-    private List<GlossaryTerm> meanings            = null;
-    private int                startingFromElement = 0;
+    private NoteLog    noteLog             = null;
+    private List<Note> notes               = null;
+    private int        startingFromElement = 0;
 
 
     /**
      * Default constructor
      */
-    public MeaningListResponse()
+    public NoteLogResponse()
     {
         super();
     }
@@ -42,55 +30,79 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public MeaningListResponse(MeaningListResponse template)
+    public NoteLogResponse(NoteLogResponse  template)
     {
         super(template);
 
         if (template != null)
         {
+            this.noteLog = template.getNoteLog();
+            this.notes = template.getNotes();
             this.startingFromElement = template.getStartingFromElement();
-            this.meanings = template.getMeanings();
         }
     }
 
 
     /**
-     * Return the list of glossary terms in the response.
+     * Return the note log header.
      *
-     * @return list of glossary terms
+     * @return note log header
      */
-    public List<GlossaryTerm> getMeanings()
+    public NoteLog getNoteLog()
     {
-        if (meanings == null)
-        {
-            return null;
-        }
-        else if (meanings.isEmpty())
+        if (noteLog == null)
         {
             return null;
         }
         else
         {
-            List<GlossaryTerm>  clonedList = new ArrayList<>();
-
-            for (GlossaryTerm  existingElement : meanings)
-            {
-                clonedList.add(new GlossaryTerm(existingElement));
-            }
-
-            return clonedList;
+            return new NoteLog(noteLog);
         }
     }
 
 
     /**
-     * Set up the list of glossary terms for the response.
+     * Set up the note log header
      *
-     * @param meanings list
+     * @param noteLog note log header
      */
-    public void setMeanings(List<GlossaryTerm> meanings)
+    public void setNoteLog(NoteLog noteLog)
     {
-        this.meanings = meanings;
+        this.noteLog = noteLog;
+    }
+
+
+    /**
+     * Return the notes in the note log.
+     *
+     * @return list of notes
+     */
+    public List<Note> getNotes()
+    {
+        if (notes == null)
+        {
+            return null;
+        }
+        else if (notes.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(notes);
+        }
+    }
+
+
+    /**
+     * Set up the list of notes from the note log.  If there are too many notes to return on a single call,
+     * the starting element number for the notes returned in this response are
+     *
+     * @param notes list of notes
+     */
+    public void setNotes(List<Note> notes)
+    {
+        this.notes = notes;
     }
 
 
@@ -124,8 +136,9 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "MeaningListResponse{" +
-                "meanings=" + meanings +
+        return "NoteLogResponse{" +
+                "noteLog=" + noteLog +
+                ", notes=" + notes +
                 ", startingFromElement=" + startingFromElement +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
@@ -158,9 +171,10 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         {
             return false;
         }
-        MeaningListResponse that = (MeaningListResponse) objectToCompare;
+        NoteLogResponse that = (NoteLogResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getMeanings(), that.getMeanings());
+                Objects.equals(getNoteLog(), that.getNoteLog()) &&
+                Objects.equals(getNotes(), that.getNotes());
     }
 
 
@@ -172,6 +186,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getStartingFromElement());
     }
 }

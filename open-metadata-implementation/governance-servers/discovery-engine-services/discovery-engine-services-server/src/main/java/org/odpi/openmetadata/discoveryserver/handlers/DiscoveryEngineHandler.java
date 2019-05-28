@@ -12,8 +12,16 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestSta
 
 import java.util.List;
 
+/**
+ * The DiscoveryEngineInstance is responsible for running discovery services on demand.  It is initialized
+ * with the configuration for the discovery services it supports along with the clients to the
+ * asset properties store and annotations store.
+ */
 public class DiscoveryEngineInstance extends DiscoveryEngine
 {
+
+
+
 
     /**
      * Create a client-side object for calling a discovery engine.
@@ -25,6 +33,7 @@ public class DiscoveryEngineInstance extends DiscoveryEngine
      */
     public DiscoveryEngineInstance(String serverPlatformRootURL,
                                    String serverName,
+
                                    String discoveryEngineGUID) throws InvalidParameterException
     {
 
