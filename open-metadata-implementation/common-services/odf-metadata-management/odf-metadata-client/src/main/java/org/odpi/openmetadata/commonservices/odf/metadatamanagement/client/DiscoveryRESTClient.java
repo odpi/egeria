@@ -3,15 +3,15 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 
 /**
- * RESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * DiscoveryRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class RESTClient extends FFDCRESTClient
+public class DiscoveryRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication.
@@ -21,8 +21,8 @@ class RESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot) throws InvalidParameterException
+    public DiscoveryRESTClient(String serverName,
+                               String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -38,10 +38,10 @@ class RESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot,
-               String userId,
-               String password) throws InvalidParameterException
+    public DiscoveryRESTClient(String serverName,
+                               String serverPlatformURLRoot,
+                               String userId,
+                               String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }

@@ -1,25 +1,37 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class NoteLogResponse extends AssetConsumerOMASAPIResponse
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+
+/**
+ *  AssetListResponse returns a list of assets from the server.   The list may be too long to
+ *  retrieve in a single call so there is support for paging of replies.
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+public class AssetListResponse extends OCFOMASAPIResponse
 {
-    private NoteLog    noteLog             = null;
-    private List<Note> notes               = null;
-    private int        startingFromElement = 0;
+    private List<Asset> assets              = null;
+    private int         startingFromElement = 0;
 
 
     /**
      * Default constructor
      */
-    public NoteLogResponse()
+    public AssetListResponse()
     {
         super();
     }
@@ -30,79 +42,55 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public NoteLogResponse(NoteLogResponse  template)
+    public AssetListResponse(AssetListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.noteLog = template.getNoteLog();
-            this.notes = template.getNotes();
             this.startingFromElement = template.getStartingFromElement();
+            this.assets = template.getAssets();
         }
     }
 
 
     /**
-     * Return the note log header.
+     * Return the list of glossary terms in the response.
      *
-     * @return note log header
+     * @return list of glossary terms
      */
-    public NoteLog getNoteLog()
+    public List<Asset> getAssets()
     {
-        if (noteLog == null)
+        if (assets == null)
+        {
+            return null;
+        }
+        else if (assets.isEmpty())
         {
             return null;
         }
         else
         {
-            return new NoteLog(noteLog);
+            List<Asset>  clonedList = new ArrayList<>();
+
+            for (Asset  existingElement : assets)
+            {
+                clonedList.add(new Asset(existingElement));
+            }
+
+            return clonedList;
         }
     }
 
 
     /**
-     * Set up the note log header
+     * Set up the list of glossary terms for the response.
      *
-     * @param noteLog note log header
+     * @param assets list
      */
-    public void setNoteLog(NoteLog noteLog)
+    public void setAssets(List<Asset> assets)
     {
-        this.noteLog = noteLog;
-    }
-
-
-    /**
-     * Return the notes in the note log.
-     *
-     * @return list of notes
-     */
-    public List<Note> getNotes()
-    {
-        if (notes == null)
-        {
-            return null;
-        }
-        else if (notes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(notes);
-        }
-    }
-
-
-    /**
-     * Set up the list of notes from the note log.  If there are too many notes to return on a single call,
-     * the starting element number for the notes returned in this response are
-     *
-     * @param notes list of notes
-     */
-    public void setNotes(List<Note> notes)
-    {
-        this.notes = notes;
+        this.assets = assets;
     }
 
 
@@ -136,9 +124,8 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "NoteLogResponse{" +
-                "noteLog=" + noteLog +
-                ", notes=" + notes +
+        return "AssetListResponse{" +
+                "assets=" + assets +
                 ", startingFromElement=" + startingFromElement +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
@@ -171,10 +158,9 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
         {
             return false;
         }
-        NoteLogResponse that = (NoteLogResponse) objectToCompare;
+        AssetListResponse that = (AssetListResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getNoteLog(), that.getNoteLog()) &&
-                Objects.equals(getNotes(), that.getNotes());
+                Objects.equals(getAssets(), that.getAssets());
     }
 
 
@@ -186,6 +172,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getAssets(), getStartingFromElement());
     }
 }
