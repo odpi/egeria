@@ -371,7 +371,7 @@ public class Converter {
     }
 
     private InstanceProperties getMapInstanceProperties(String propertyName, InstanceProperties properties, OMRSRepositoryHelper helper) {
-        return helper.getMapProperty(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceName(),
+        return helper.getMapProperty(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceName(),
                 propertyName,
                 properties,
                 "getMapInstanceProperties");
@@ -398,8 +398,19 @@ public class Converter {
                     if (property.getValue() != null) {
                         String propertyValue = getStringForPropertyValue(property.getValue());
                         if (!propertyValue.equals("")) {
-                            attributes.put(property.getKey(), propertyValue);
+
+                            if(property.getKey().equals("name") || property.getKey().equals("displayName"))
+                            {
+                                attributes.put("displayName", propertyValue);
+
+                            }
+                            else{
+                                attributes.put(property.getKey(), propertyValue);
+                            }
                         }
+
+
+
                     }
                 }
             }

@@ -24,7 +24,16 @@ public enum OpenLineageErrorCode {
     SERVICE_NOT_INITIALIZED("OPEN-LINEAGE-SERVICES-003 ",
             "The Open Lineage Services have not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-004",
+            "Graph cannot be opened with that configuration",
+            "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
+            "The system was unable to open the graph repository graph database " +
+                    "Please check that the graph database exists and is not in use by another process."),
+    ENTITY_ALREADY_EXISTS( "OMRS-GRAPH-REPOSITORY-400-002 ",
+            "There is an already an entity with GUID {0} so cannot honour request to create entity in {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because there is already an entity with the same GUID.",
+            "Correct the caller's code and retry the request.");
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageErrorCode.class);
     private String errorMessageId;
