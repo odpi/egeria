@@ -13173,7 +13173,9 @@ public class OpenMetadataTypesArchive
         this.add0415GovernanceResponses();
         this.add0417GovernanceProject();
         this.add0420GovernanceControls();
+        this.add0421GovernanceConfidentialityLevels();
         this.add0422GovernanceActionClassifications();
+        this.add0423SecurityTags();
         this.add0424GovernanceZones();
         this.add0430TechnicalControls();
         this.add0435GovernanceRules();
@@ -14152,10 +14154,71 @@ public class OpenMetadataTypesArchive
     /**
      * 0422 Governance Action Classifications provide the key classification that drive information governance.
      */
+    private void add0421GovernanceConfidentialityLevels()
+    {
+        this.archiveBuilder.addEntityDef(getGovernanceConfidentialityLevelEntity());
+    }
+
+
+    private EntityDef getGovernanceConfidentialityLevelEntity()
+    {
+        final String guid            = "49dd320b-4850-4838-9b78-f1285f0e6d2f";
+        final String name            = "GovernanceConfidentialityLevel";
+        final String description     = "A definition of a confidentiality level.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "Referenceable";
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "level";
+        final String attribute1Description     = "Numeric value for the confidentiality - the higher the number, the more confidential";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "displayName";
+        final String attribute2Description     = "Short descriptive name";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "description";
+        final String attribute3Description     = "Explanation of the meaning of this level of confidentiality";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0422 Governance Action Classifications provide the key classification that drive information governance.
+     */
     private void add0422GovernanceActionClassifications()
     {
         this.archiveBuilder.addEnumDef(getGovernanceClassificationStatusEnum());
-        this.archiveBuilder.addEnumDef(getConfidentialityLevelEnum());
         this.archiveBuilder.addEnumDef(getConfidenceLevelEnum());
         this.archiveBuilder.addEnumDef(getRetentionBasisEnum());
         this.archiveBuilder.addEnumDef(getCriticalityLevelEnum());
@@ -14248,91 +14311,6 @@ public class OpenMetadataTypesArchive
         final int    element99Ordinal         = 99;
         final String element99Value           = "Other";
         final String element99Description     = "Another classification assignment status.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
-
-    private EnumDef getConfidentialityLevelEnum()
-    {
-        final String guid            = "ecb48ca2-4d29-4de9-99a1-bc4db9816d68";
-        final String name            = "ConfidentialityLevel";
-        final String description     = "Defines how confidential a data item is.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
-
-        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef            elementDef;
-
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "The data is public information.";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-        enumDef.setDefaultValue(elementDef);
-
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "Internal";
-        final String element2Description     = "The data should not be exposed outside of this organization.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element3Ordinal         = 2;
-        final String element3Value           = "Confidential";
-        final String element3Description     = "The data should be protected and only shared with people with a need to see it.";
-        final String element3DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
-                                                     element3Value,
-                                                     element3Description,
-                                                     element3DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element4Ordinal         = 3;
-        final String element4Value           = "Sensitive";
-        final String element4Description     = "The data is sensitive and inappropriate use may adversely impact the data subject.";
-        final String element4DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
-                                                     element4Value,
-                                                     element4Description,
-                                                     element4DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element5Ordinal         = 4;
-        final String element5Value           = "Restricted";
-        final String element5Description     = "The data is very valuable and must be restricted to a very small number of people.";
-        final String element5DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
-                                                     element5Value,
-                                                     element5Description,
-                                                     element5DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another confidentially level.";
         final String element99DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
@@ -14698,10 +14676,9 @@ public class OpenMetadataTypesArchive
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getEnumTypeDefAttribute("ConfidentialityLevel",
-                                                         attribute6Name,
-                                                         attribute6Description,
-                                                         attribute6DescriptionGUID);
+        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
+                                                        attribute6Description,
+                                                        attribute6DescriptionGUID);
         properties.add(property);
 
         classificationDef.setPropertiesDefinition(properties);
@@ -14953,6 +14930,65 @@ public class OpenMetadataTypesArchive
                                                          attribute6Name,
                                                          attribute6Description,
                                                          attribute6DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
+
+    /*
+     * -------------------------------------------------------------------------------------------------------
+     */
+
+    /**
+     * 0423 Security Tags define the labels and properties used by rules in a security engine.
+     */
+    private void add0423SecurityTags()
+    {
+        this.archiveBuilder.addClassificationDef(getSecurityTagsClassification());
+    }
+
+    private ClassificationDef getSecurityTagsClassification()
+    {
+        final String guid            = "a0b07a86-9fd3-40ca-bb9b-fe83c6981deb";
+        final String name            = "SecurityTags";
+        final String description     = "Defines labels and properties used by a security engine.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Referenceable";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "securityLabels";
+        final String attribute1Description     = "Labels that apply to the referenceable.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "securityProperties";
+        final String attribute2Description     = "Properties that apply to the referenceable.";
+        final String attribute2DescriptionGUID = null;
+
+
+
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                                attribute1Description,
+                                                                attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute2Name,
+                                                                    attribute2Description,
+                                                                    attribute2DescriptionGUID);
         properties.add(property);
 
         classificationDef.setPropertiesDefinition(properties);
@@ -15435,6 +15471,8 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getGovernanceResponsibilityEntity());
         this.archiveBuilder.addEntityDef(getGovernanceProcedureEntity());
 
+        this.archiveBuilder.addClassificationDef(getAssetOriginClassification());
+
         this.archiveBuilder.addRelationshipDef(getOrganizationCapabilityRelationship());
         this.archiveBuilder.addRelationshipDef(getResponsibilityStaffContactRelationship());
         this.archiveBuilder.addRelationshipDef(getBusinessCapabilityControlsRelationship());
@@ -15569,8 +15607,7 @@ public class OpenMetadataTypesArchive
     {
         final String guid            = "89a76b24-deb8-45bf-9304-a578a610326f";
         final String name            = "GovernanceResponsibility";
-        final String description     =
-                "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.";
+        final String description     = "Describes a responsibility of a person, team or organization that supports the implementation of a governance driver.";
         final String descriptionGUID = null;
 
         final String superTypeName = "OrganizationalControl";
@@ -15597,6 +15634,59 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+    }
+
+
+    private ClassificationDef getAssetOriginClassification()
+    {
+        final String guid = "e530c566-03d2-470a-be69-6f52bfbd5fb7";
+        final String name            = "AssetOrigin";
+        final String description     = "Describes the origin of an asset.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Asset";
+
+        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
+                                                  name,
+                                                  null,
+                                                  description,
+                                                  descriptionGUID,
+                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                  false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "organization";
+        final String attribute1Description     = "Unique identifier (GUID) of the organization where this asset originated from.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "businessCapability";
+        final String attribute2Description     = "Unique identifier (GUID) of the business capability where this asset originated from.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "otherOriginValues";
+        final String attribute3Description     = "Descriptive labels describing origin of the asset";
+        final String attribute3DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
+                                                                attribute3Description,
+                                                                attribute3DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 
@@ -20847,11 +20937,87 @@ public class OpenMetadataTypesArchive
      */
     private void add0605OpenDiscoveryAnalysisReports()
     {
+        this.archiveBuilder.addEnumDef(getDiscoveryRequestStatusEnum());
+
         this.archiveBuilder.addEntityDef(getOpenDiscoveryAnalysisReportEntity());
 
         this.archiveBuilder.addRelationshipDef(getDiscoveryEngineReportRelationship());
         this.archiveBuilder.addRelationshipDef(getDiscoveryInvocationReportRelationship());
         this.archiveBuilder.addRelationshipDef(getAssetDiscoveryReportRelationship());
+    }
+
+
+    private EnumDef getDiscoveryRequestStatusEnum()
+    {
+        final String guid            = "ecb48ca2-4d29-4de9-99a1-bc4db9816d68";
+        final String name            = "DiscoveryRequestStatus";
+        final String description     = "Defines the progress or completion of a discovery request.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "Waiting";
+        final String element1Description     = "Discovery request is waiting to execute.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+        enumDef.setDefaultValue(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "In Progress";
+        final String element2Description     = "Discovery request is executing.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "Failed";
+        final String element3Description     = "Discovery request has failed.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                     element3Value,
+                                                     element3Description,
+                                                     element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 3;
+        final String element4Value           = "Completed";
+        final String element4Description     = "Discovery request has completed successfully.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                     element4Value,
+                                                     element4Description,
+                                                     element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element99Ordinal         = 99;
+        final String element99Value           = "Unknown";
+        final String element99Description     = "Discovery request status is unknown.";
+        final String element99DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
+                                                     element99Value,
+                                                     element99Description,
+                                                     element99DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
     }
 
 
@@ -20889,6 +21055,9 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "analysisParameters";
         final String attribute4Description     = "Additional parameters used to drive the analysis.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "discoveryRequestStatus";
+        final String attribute5Description     = "Status of the discovery analysis show in the report.";
+        final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -20905,6 +21074,11 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
                                                                     attribute4Description,
                                                                     attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("DiscoveryRequestStatus",
+                                                         attribute5Name,
+                                                         attribute5Description,
+                                                         attribute5DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
