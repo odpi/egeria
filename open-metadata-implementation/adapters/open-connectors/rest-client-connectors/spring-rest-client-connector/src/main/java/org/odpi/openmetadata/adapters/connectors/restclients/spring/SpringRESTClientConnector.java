@@ -69,6 +69,7 @@ public class SpringRESTClientConnector extends RESTClientConnector
         String     userId = connectionProperties.getUserId();
         String     password = connectionProperties.getClearPassword();
 
+
         if ((userId != null) && (password != null))
         {
             log.debug("Using basic authentication to call server " + this.serverName + " on platform " + this.serverPlatformURLRoot + ".");

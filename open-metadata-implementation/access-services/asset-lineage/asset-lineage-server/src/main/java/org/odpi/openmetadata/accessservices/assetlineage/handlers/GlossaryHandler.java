@@ -79,6 +79,7 @@ public class GlossaryHandler {
 
         glossaryTerm.setType(entityProxy.getType().getTypeDefName());
         glossaryTerm.setDisplayName(displayName);
+
         glossaryTerm.setClassifications(classifications);
         return glossaryTerm;
     }

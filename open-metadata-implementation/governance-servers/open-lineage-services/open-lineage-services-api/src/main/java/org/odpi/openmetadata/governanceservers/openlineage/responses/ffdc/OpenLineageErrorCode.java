@@ -30,10 +30,14 @@ public enum OpenLineageErrorCode {
             "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
             "The system was unable to open the graph repository graph database " +
                     "Please check that the graph database exists and is not in use by another process."),
-    ENTITY_ALREADY_EXISTS( "OMRS-GRAPH-REPOSITORY-400-002 ",
+    ENTITY_ALREADY_EXISTS( "OPEN-LINEAGE-SERVICES-005 ",
             "There is an already an entity with GUID {0} so cannot honour request to create entity in {1} method of class {2} to open metadata repository {3}",
             "The system is unable to perform the request because there is already an entity with the same GUID.",
-            "Correct the caller's code and retry the request.");
+            "Correct the caller's code and retry the request."),
+    GRAPH_INITIALIZATION_ERROR( "OPEN-LINEAGE-SERVICES-006 ",
+            "The graph database could not be initialized for open metadata repository {0}",
+            "The system was unable to initialize.",
+            "Please raise a github issue.");
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageErrorCode.class);
     private String errorMessageId;

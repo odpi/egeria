@@ -5,11 +5,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.NewAssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
@@ -28,11 +25,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
@@ -209,7 +202,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         try {
             ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName);
-            NewAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
+            ConvertedAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
 
             GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
             GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
