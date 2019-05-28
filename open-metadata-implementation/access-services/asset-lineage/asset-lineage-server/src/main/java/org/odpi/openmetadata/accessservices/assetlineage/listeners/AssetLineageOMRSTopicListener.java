@@ -5,15 +5,18 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.NewAssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
@@ -25,7 +28,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
@@ -148,7 +155,25 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
         else {
             log.info("Processing semantic assignment relationship event");
-            processSemanticAssignment(relationship);
+            try {
+                processSemanticAssignment(relationship);
+            } catch (InvalidParameterException e) {
+                e.printStackTrace();
+            } catch (PropertyServerException e) {
+                e.printStackTrace();
+            } catch (UserNotAuthorizedException e) {
+                e.printStackTrace();
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+                e.printStackTrace();
+            } catch (RepositoryErrorException e) {
+                e.printStackTrace();
+            } catch (EntityProxyOnlyException e) {
+                e.printStackTrace();
+            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+                e.printStackTrace();
+            } catch (EntityNotKnownException e) {
+                e.printStackTrace();
+            }
         }
 
     }
@@ -178,14 +203,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         return false;
     }
 
-    private void processSemanticAssignment(Relationship relationship) {
+    private void processSemanticAssignment(Relationship relationship) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
         RelationshipEvent relationshipEvent = new RelationshipEvent();
-
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
 
         try {
             ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName);
-            AssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
+            NewAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
 
             GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
             GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);

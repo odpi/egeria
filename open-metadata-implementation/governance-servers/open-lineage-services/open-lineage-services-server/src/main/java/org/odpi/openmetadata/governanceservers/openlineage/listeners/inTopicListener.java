@@ -69,7 +69,7 @@ public class inTopicListener implements OpenMetadataTopicListener {
                     break;
                 case NEW_RELATIONSHIP_EVENT:
                         RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
-                        graphBuilder.addAsset(relationshipEvent.getAssetContext());
+                        graphBuilder.addAsset(relationshipEvent);
                     break;
                 case UPDATED_RELATIONSHIP_EVENT:
                     //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;

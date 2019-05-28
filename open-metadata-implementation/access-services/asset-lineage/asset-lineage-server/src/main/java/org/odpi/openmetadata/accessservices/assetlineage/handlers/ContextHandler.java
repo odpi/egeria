@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Conn
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.NewAssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Constants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -59,9 +60,9 @@ public class ContextHandler {
         this.repositoryHandler = repositoryHandler;
     }
 
-    public AssetContext getAssetContext(String serverName, String userId, String GUID) throws InvalidParameterException, FunctionNotSupportedException, PropertyServerException, PropertyErrorException, EntityProxyOnlyException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, RepositoryErrorException {
+    public NewAssetContext getAssetContext(String serverName, String userId, String GUID) throws InvalidParameterException, FunctionNotSupportedException, PropertyServerException, PropertyErrorException, EntityProxyOnlyException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, RepositoryErrorException {
         AssetContext assetContext = new AssetContext();
-
+        NewAssetContext newAssetContext = new NewAssetContext();
         this.allTypes = repositoryHandler.getMetadataCollection().getAllTypes(userId);
 
         EntityDetail entityDetail = getEntityDetails(serverName, userId, GUID);
@@ -81,11 +82,38 @@ public class ContextHandler {
                 buildContextForAsset(userId, assetElement, knownAssetConnection, entityDetail);
             }
 
+
             term.setElements(Collections.singletonList(assetElement));
             assetContext.setAssets(Collections.singletonList(term));
+
+//            newAssetContext.se(term.getElements().get(0));
+
+            Element technicalElement = new Element();
+
+            technicalElement.setGuid(term.getGuid());
+            technicalElement.setType(term.getType());
+            technicalElement.setQualifiedName(term.getQualifiedName());
+            technicalElement.setProperties(term.getProperties());
+            newAssetContext.setBaseAsset(technicalElement);
+
+            List<Element> listOfElements = new ArrayList<>();
+
+            Element topLevelElement = new Element();
+            topLevelElement.setGuid(term.getElements().get(0).getGuid());
+            topLevelElement.setType(term.getElements().get(0).getType());
+            topLevelElement.setQualifiedName(term.getElements().get(0).getQualifiedName());
+            topLevelElement.setProperties(term.getElements().get(0).getProperties());
+
+            listOfElements.add(topLevelElement);
+            listOfElements.addAll(term.getElements().get(0).getContext());
+
+            newAssetContext.setContext(listOfElements.stream().collect(
+                    Collectors.toMap(Element::getType,element -> element)
+            ));
+            newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
         }
 
-        return assetContext;
+        return newAssetContext;
     }
 
     private Optional<TypeDef> isAsset(String typeDefName) {
