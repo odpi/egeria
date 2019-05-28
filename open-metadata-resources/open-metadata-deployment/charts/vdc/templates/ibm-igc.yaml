@@ -24,6 +24,7 @@ spec:
     - name: proxy
       port: 8080
       targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.igcproxy }}
 {{ if .Values.ibmigc.internal.enabled }}
 # Only expose web port if we are using a cluster-internal IGC
     - name: web
