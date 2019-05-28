@@ -89,6 +89,10 @@ debug:
 logging:
   level: NONE
 
+# Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
+cts:
+  enabled: false
+
 imageDefaults:
   registry: docker.io
   namespace: odpi
