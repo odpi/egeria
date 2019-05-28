@@ -34,6 +34,7 @@ service:
     egeria: 30080
     atlas: 31000
     ibmigc: 32446
+    igcproxy: 30081
     gaian: 30414
     postgresql: 30432
     ui: 30443
