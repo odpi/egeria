@@ -61,11 +61,12 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-{{ if .Values.cts.enabled }}
+{{- if .Values.cts.enabled }}
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
                 &&
                 curl -f --verbose --basic admin:admin -X POST
+                --header "Content-Type: application/json"
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/event-bus
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
@@ -85,7 +86,7 @@ spec:
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
                 &&
-{{ end }}
+{{- end }}
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
