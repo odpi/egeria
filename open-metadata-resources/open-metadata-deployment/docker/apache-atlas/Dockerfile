@@ -4,7 +4,7 @@
 FROM ubuntu:18.10 AS build
 
 # Install Git, which is missing from the Ubuntu base images.
-RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget inetutils-ping dnsutils gzip tar
+RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget inetutils-ping dnsutils gzip tar gpg
 
 # Install Java.
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
@@ -19,10 +19,16 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Atlas and build it into /root/atlas-bin.
-RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/2.0.0/apache-atlas-2.0.0-sources.tar.gz
-RUN tar zxf apache-atlas-2.0.0-sources.tar.gz
+RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/1.1.0/apache-atlas-1.1.0-sources.tar.gz
+RUN wget https://www.apache.org/dist/atlas/KEYS
+RUN wget https://www.apache.org/dist/atlas/1.1.0/apache-atlas-1.1.0-sources.tar.gz.asc
 
-WORKDIR /root/apache-atlas-sources-2.0.0
+RUN gpg --import KEYS
+RUN gpg --verify apache-atlas-1.1.0-sources.tar.gz.asc apache-atlas-1.1.0-sources.tar.gz
+
+RUN tar zxf apache-atlas-1.1.0-sources.tar.gz
+
+WORKDIR /root/apache-atlas-sources-1.1.0
 
 # need more java heap
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
@@ -30,7 +36,7 @@ ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -DskipEnunciate -f ./pom.xml
 RUN mkdir -p /root/atlas-bin
-RUN tar xzf /root/apache-atlas-sources-2.0.0/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
+RUN tar xzf /root/apache-atlas-sources-1.1.0/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
 
 FROM openjdk:8-jdk-alpine
 
@@ -44,8 +50,14 @@ LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-at
 LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 
 RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade
-COPY --from=build /root/atlas-bin/ /root/atlas-bin/
-WORKDIR /root/atlas-bin/conf
+
+RUN groupadd -r atlas -g 1000 && useradd --no-log-init -r -g atlas -u 1000 -d /opt/apache/atlas atlas
+
+COPY --from=build --chown=atlas:atlas /root/atlas-bin/ /opt/apache/atlas/
+
+USER atlas:atlas
+
+WORKDIR /opt/apache/atlas/conf
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
 
@@ -53,7 +65,7 @@ RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.pr
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 ENV MANAGE_LOCAL_SOLR true
 ENV MANAGE_LOCAL_HBASE true
-ENV PATH /root/atlas-bin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PATH /opt/apache/atlas/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 EXPOSE 21000
-ENTRYPOINT ["/bin/bash", "-c", "/root/atlas-bin/bin/atlas_start.py; tail -fF /root/atlas-bin/logs/application.log"]
+ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/application.log"]
