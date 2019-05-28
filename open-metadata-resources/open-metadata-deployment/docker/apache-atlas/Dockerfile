@@ -38,7 +38,7 @@ LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/ope
 LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas"
 LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 
-RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade
+RUN apk --no-cache add python bash shadow && apk --no-cache update && apk --no-cache upgrade
 
 RUN groupadd -r atlas -g 1000 && useradd --no-log-init -r -g atlas -u 1000 -d /opt/apache/atlas atlas
 
