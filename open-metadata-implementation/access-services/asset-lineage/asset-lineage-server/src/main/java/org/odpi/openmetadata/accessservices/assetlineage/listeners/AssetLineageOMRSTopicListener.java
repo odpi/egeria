@@ -162,17 +162,18 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     private boolean isValidRelationshipEvent(Relationship relationship) {
         String entityProxyOneType = relationship.getEntityOneProxy().getType().getTypeDefName();
-        if (relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
-                &&
-                (
-                        entityProxyOneType.equals(RELATIONAL_COLUMN)
-                                ||
-                                entityProxyOneType.equals(RELATIONAL_TABLE)
-                                ||
-                                entityProxyOneType.equals(DERIVED_RELATIONAL_COLUMN)
-                                ||
-                                entityProxyOneType.equals(DERIVED_SCHEMA_ATTRIBUTE)
-                )
+        if (
+                relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
+                        &&
+                        (
+                                entityProxyOneType.equals(RELATIONAL_COLUMN)
+                                        ||
+                                        entityProxyOneType.equals(RELATIONAL_TABLE)
+                                        ||
+                                        entityProxyOneType.equals(DERIVED_RELATIONAL_COLUMN)
+                                        ||
+                                        entityProxyOneType.equals(DERIVED_SCHEMA_ATTRIBUTE)
+                        )
         )
             return true;
         return false;
