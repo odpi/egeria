@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 
-import org.odpi.openmetadata.accessservices.informationview.context.ContextBuilder;
-import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ContextBuilders;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
@@ -18,7 +17,7 @@ public class InformationViewServicesInstance
 {
     private ReportHandler reportHandler;
     private DataViewHandler dataViewHandler;
-    private ContextBuilder contextBuilder;
+    private ContextBuilders contextBuilders;
     private RegistrationHandler registrationHandler;
     private String                 serverName;
 
@@ -28,11 +27,11 @@ public class InformationViewServicesInstance
      *
      * @param reportHandler link to the repository responsible for servicing the REST calls.
      */
-    public InformationViewServicesInstance(ReportHandler reportHandler, DataViewHandler dataViewHandler, RegistrationHandler registrationHandler, ContextBuilder contextBuilder, String serverName) {
+    public InformationViewServicesInstance(ReportHandler reportHandler, DataViewHandler dataViewHandler, RegistrationHandler registrationHandler, ContextBuilders contextBuilders, String serverName) {
         this.reportHandler = reportHandler;
         this.dataViewHandler = dataViewHandler;
         this.registrationHandler = registrationHandler;
-        this.contextBuilder = contextBuilder;
+        this.contextBuilders = contextBuilders;
         this.serverName    = serverName;
 
         InformationViewServicesInstanceMap.setNewInstanceForJVM(serverName, this);
@@ -56,8 +55,8 @@ public class InformationViewServicesInstance
 
     public RegistrationHandler getRegistrationHandler(){return registrationHandler;}
 
-    public ContextBuilder getContextBuilder() {
-        return contextBuilder;
+    public ContextBuilders getContextBuilders() {
+        return contextBuilders;
     }
 
     /**

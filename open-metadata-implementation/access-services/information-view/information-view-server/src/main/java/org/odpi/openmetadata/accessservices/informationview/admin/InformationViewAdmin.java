@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.context.ContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ContextBuilders;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -117,8 +117,8 @@ public class InformationViewAdmin extends AccessServiceAdmin {
         DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
         ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
         RegistrationHandler registrationHandler = new RegistrationHandler(omEntityDao, enterpriseConnector, auditLog);
-        ContextBuilder contextBuilder = new ContextBuilder(enterpriseConnector, omEntityDao, auditLog);
-        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, registrationHandler, contextBuilder, serverName);
+        ContextBuilders contextBuilders = new ContextBuilders(enterpriseConnector, omEntityDao, auditLog);
+        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, registrationHandler, contextBuilders, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,

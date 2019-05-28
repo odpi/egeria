@@ -30,7 +30,7 @@ public class DeployedReport {
     private Long lastModifiedTime;
     private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
-    private String registrationGuid;
+
 
     /**
      *
@@ -202,22 +202,6 @@ public class DeployedReport {
         this.reportElements = reportElements;
     }
 
-    /**
-     *
-     * @return guid associated to the external tool at registration step
-     */
-    public String getRegistrationGuid() {
-        return registrationGuid;
-    }
-
-    /**
-     *
-     * @param registrationGuid - guid of the external tool
-     */
-    public void setRegistrationGuid(String registrationGuid) {
-        this.registrationGuid = registrationGuid;
-    }
-
     public String getGuid() {
         return guid;
     }
@@ -240,7 +224,6 @@ public class DeployedReport {
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", reportElements=" + reportElements +
                 ", additionalProperties=" + additionalProperties +
-                ", registrationGuid='" + registrationGuid + '\'' +
                 '}';
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public class DataView {
 
+    private String guid;
     private List<DataViewElement> elements;
     private List<Source> sources;
     private String nativeClass;
@@ -17,6 +18,14 @@ public class DataView {
     private String lastModifier;
     private Long lastModifiedTime;
 
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     public List<DataViewElement> getElements() {
         return elements;
