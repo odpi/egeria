@@ -46,9 +46,9 @@ COPY --from=build --chown=atlas:atlas /root/atlas-bin/ /opt/apache/atlas/
 
 USER atlas:atlas
 
-WORKDIR /opt/apache/atlas/conf
-RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
-RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
+WORKDIR /opt/apache/atlas
+RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" conf/atlas-application.properties
+RUN echo "atlas.notification.relationships.enabled=true" >> conf/atlas-application.properties
 
 # Set env variables, add it to the path, and start Atlas.
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
