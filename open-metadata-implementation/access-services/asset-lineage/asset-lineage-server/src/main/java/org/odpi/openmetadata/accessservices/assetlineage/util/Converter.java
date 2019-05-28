@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.util;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -450,5 +451,35 @@ public class Converter {
                 return "";
             }
         }
+    }
+
+    public ConvertedAssetContext convertAssetContext(Term term) {
+        ConvertedAssetContext newAssetContext = new ConvertedAssetContext();
+
+        Element technicalElement = new Element();
+
+        technicalElement.setGuid(term.getGuid());
+        technicalElement.setType(term.getType());
+        technicalElement.setQualifiedName(term.getQualifiedName());
+        technicalElement.setProperties(term.getProperties());
+        newAssetContext.setBaseAsset(technicalElement);
+
+        List<Element> listOfElements = new ArrayList<>();
+
+        Element topLevelElement = new Element();
+        topLevelElement.setGuid(term.getElements().get(0).getGuid());
+        topLevelElement.setType(term.getElements().get(0).getType());
+        topLevelElement.setQualifiedName(term.getElements().get(0).getQualifiedName());
+        topLevelElement.setProperties(term.getElements().get(0).getProperties());
+
+        listOfElements.add(topLevelElement);
+        listOfElements.addAll(term.getElements().get(0).getContext());
+
+        newAssetContext.setContext(listOfElements.stream().collect(
+                Collectors.toMap(Element::getType, element -> element)
+        ));
+        newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
+
+        return newAssetContext;
     }
 }

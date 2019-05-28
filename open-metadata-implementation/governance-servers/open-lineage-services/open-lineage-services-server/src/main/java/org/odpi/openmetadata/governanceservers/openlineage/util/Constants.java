@@ -13,7 +13,7 @@ public final class Constants {
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
     public static final String RELATIONAL_TABLE = "RelationalTable";
-    public static final String RELATIONAL_DB_SCHEMA_TYPE = "RelationalDbSchemaType";
+    public static final String RELATIONAL_DB_SCHEMA_TYPE = "RelationalDBSchemaType";
     public static final String DEPLOYED_DB_SCHEMA_TYPE = "DeployedDatabaseSchema";
     public static final String DATABASE = "Database";
     public static final String DATA_STORE = "DataStore";
