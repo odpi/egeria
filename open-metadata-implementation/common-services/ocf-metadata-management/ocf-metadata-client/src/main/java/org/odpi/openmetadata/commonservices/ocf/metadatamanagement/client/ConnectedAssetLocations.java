@@ -28,7 +28,7 @@ public class ConnectedAssetLocations extends AssetLocations
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
 
     /**
@@ -51,7 +51,7 @@ public class ConnectedAssetLocations extends AssetLocations
                             ConnectedAssetUniverse parentAsset,
                             int                    totalElementCount,
                             int                    maxCacheSize,
-                            RESTClient             restClient)
+                            OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -130,12 +130,12 @@ public class ConnectedAssetLocations extends AssetLocations
 
         try
         {
-            LocationsResponse restResult = restClient.callLocationGetRESTCall(methodName,
-                                                                              omasServerURL + urlTemplate,
-                                                                              userId,
-                                                                              assetGUID,
-                                                                              cacheStartPointer,
-                                                                              maximumSize);
+            LocationsResponse restResult = restClient.callLocationsGetRESTCall(methodName,
+                                                                               omasServerURL + urlTemplate,
+                                                                               userId,
+                                                                               assetGUID,
+                                                                               cacheStartPointer,
+                                                                               maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
