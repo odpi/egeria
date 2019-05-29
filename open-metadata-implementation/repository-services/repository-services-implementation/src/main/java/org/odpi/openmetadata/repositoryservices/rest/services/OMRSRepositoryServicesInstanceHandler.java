@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -31,19 +32,21 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
      *
      * @param userId calling user
      * @param serverName name of this server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return specific service instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws RepositoryErrorException the service name is not know - indicating a logic error
      */
     public OMRSRepositoryServicesInstance getInstance(String   userId,
-                                                      String   serverName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  RepositoryErrorException
+                                                      String   serverName,
+                                                      String   serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            RepositoryErrorException
     {
         try
         {
-            return (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName);
+            return (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException  error)
         {
@@ -73,6 +76,35 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
                                                                                                        error.getReportedSystemAction(),
                                                                                                        error.getReportedUserAction());
         }
+    }
+
+
+    /**
+     * Return the audit log or null (if the instance is not available.
+     *
+     * @param userId calling user
+     * @param serverName requested server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return audit log or null
+     */
+    public OMRSAuditLog  getAuditLog(String userId,
+                                     String serverName,
+                                     String serviceOperationName)
+    {
+        try
+        {
+            OMRSRepositoryServicesInstance instance = (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+            if (instance != null)
+            {
+                return instance.getAuditLog();
+            }
+        }
+        catch (Throwable  error)
+        {
+        }
+
+        return null;
     }
 
 

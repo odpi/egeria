@@ -29,7 +29,7 @@ public class ConnectedAssetInformalTags extends AssetInformalTags
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
 
 
@@ -53,7 +53,7 @@ public class ConnectedAssetInformalTags extends AssetInformalTags
                                ConnectedAssetUniverse parentAsset,
                                int                    totalElementCount,
                                int                    maxCacheSize,
-                               RESTClient             restClient)
+                               OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -132,13 +132,13 @@ public class ConnectedAssetInformalTags extends AssetInformalTags
 
         try
         {
-            InformalTagsResponse restResult = restClient.callInformalTagGetRESTCall(methodName,
-                                                                                    omasServerURL + urlTemplate,
-                                                                                    serverName,
-                                                                                    userId,
-                                                                                    assetGUID,
-                                                                                    cacheStartPointer,
-                                                                                    maximumSize);
+            InformalTagsResponse restResult = restClient.callInformalTagsGetRESTCall(methodName,
+                                                                                     omasServerURL + urlTemplate,
+                                                                                     serverName,
+                                                                                     userId,
+                                                                                     assetGUID,
+                                                                                     cacheStartPointer,
+                                                                                     maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

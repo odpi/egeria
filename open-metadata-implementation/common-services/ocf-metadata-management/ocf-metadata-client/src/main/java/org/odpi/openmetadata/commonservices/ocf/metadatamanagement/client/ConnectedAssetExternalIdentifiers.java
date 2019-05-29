@@ -28,7 +28,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
 
 
@@ -52,7 +52,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                                       ConnectedAssetUniverse parentAsset,
                                       int                    totalElementCount,
                                       int                    maxCacheSize,
-                                      RESTClient             restClient)
+                                      OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -131,13 +131,13 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 
         try
         {
-            ExternalIdentifiersResponse restResult = restClient.callExternalIdentifierGetRESTCall(methodName,
-                                                                                                  omasServerURL + urlTemplate,
-                                                                                                  serverName,
-                                                                                                  userId,
-                                                                                                  assetGUID,
-                                                                                                  cacheStartPointer,
-                                                                                                  maximumSize);
+            ExternalIdentifiersResponse restResult = restClient.callExternalIdentifiersGetRESTCall(methodName,
+                                                                                                   omasServerURL + urlTemplate,
+                                                                                                   serverName,
+                                                                                                   userId,
+                                                                                                   assetGUID,
+                                                                                                   cacheStartPointer,
+                                                                                                   maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

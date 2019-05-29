@@ -1642,4 +1642,8 @@ public class RepositoryHandler
             return null;
         }
     }
+
+    public OMRSMetadataCollection getMetadataCollection() {
+        return metadataCollection;
+    }
 }
