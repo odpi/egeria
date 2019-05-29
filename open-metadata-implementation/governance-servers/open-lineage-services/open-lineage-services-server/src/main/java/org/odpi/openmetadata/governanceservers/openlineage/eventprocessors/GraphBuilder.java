@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.eventprocessors;
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -17,7 +20,9 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.*;
 
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inV;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_RELATIONSHIP_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
@@ -28,13 +33,12 @@ public class GraphBuilder {
     private JanusGraph janusGraph;
     private OMRSAuditLog auditLog;
 
-    public GraphBuilder() throws RepositoryErrorException {
+    public GraphBuilder() {
 
         try {
            janusGraph = open();
         }         catch (RepositoryErrorException e) {
             log.error("{} Could not open graph database", "GraphBuilder constructor");
-            throw e;
         }
     }
 
@@ -62,6 +66,27 @@ public class GraphBuilder {
         createElementVertex(context);
         createEdges(context,glossaryTerm,edgesLabels);
 
+    }
+
+    public void removeSemanticRelationship(DeletePurgedRelationshipEvent event){
+        GraphTraversalSource g = janusGraph.traversal();
+
+        try {
+            boolean edgeExists = g.V().has(event.getGlossaryTerm().getType(), "veguid", event.getGlossaryTerm().getGuid())
+                    .bothE()
+                    .where(g.V().has(event.getEntityTypeDef(), "veguid", event.getEntityGuid())).hasNext();
+
+            if(edgeExists){
+
+              g.V().has(event.getGlossaryTerm().getType(), "veguid", event.getGlossaryTerm().getGuid())
+                        .outE(SEMANTIC_ASSIGNMENT)
+                        .where(g.V().has(event.getEntityTypeDef(), "veguid", event.getEntityGuid())).next().remove();
+            }
+            g.tx().commit();
+        }catch (Exception e){
+            log.error("Error occurred during deletion of the semantic assignment");
+            g.tx().rollback();
+        }
     }
 
     public void exportGraph(){
@@ -128,12 +153,9 @@ public class GraphBuilder {
         Collections.sort(elementsByRelationship,Comparator.comparing(
                 (Element e)-> order.indexOf(e.getType())).thenComparing(Element::getType));
 
+        for (int i = 0;i < elementsByRelationship.size()-1; i++) {
 
-        for (int i = 0;i < elementsByRelationship.size(); i++) {
-
-            final String relationship = edgeLabels.get(i);
-            if(elementsByRelationship.get(i).getType().equals(order.get(i))){
-
+            String relationship = edgeLabels.get(i);
                 boolean edge = g.V().has(elementsByRelationship.get(i).getType(), "veguid", elementsByRelationship.get(i).getGuid()).bothE(relationship)
                         .where(g.V().has(elementsByRelationship.get(i + 1).getType(), "veguid", elementsByRelationship.get(i + 1).getGuid())).hasNext();
 
@@ -145,13 +167,12 @@ public class GraphBuilder {
                  from.addEdge(relationship,to);
                 }
 
-
-            }
-
         }
         g.tx().commit();
 
     }
+
+
 
 
 }
