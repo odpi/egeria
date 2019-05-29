@@ -35,7 +35,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                         List<String> supportedZones,
                                         OMRSAuditLog auditLog) throws NewInstanceException {
-        super(myDescription.getAccessServiceName(),
+        super(myDescription.getAccessServiceName() + " OMAS",
                 repositoryConnector,
                 auditLog);
 
