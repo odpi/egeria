@@ -1,0 +1,47 @@
+From c2e1fe672ce62480a7db04928abb0c6af4d65295 Mon Sep 17 00:00:00 2001
+From: Nigel Jones <nigel.l.jones+git@gmail.com>
+Date: Fri, 24 May 2019 12:27:08 +0100
+Subject: [PATCH 4/4] ignore map<string, object> and allow creation of
+ connection type
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+---
+ addons/models/0000-Area0/0010-base_model.json                 | 3 +++
+ .../adapters/repositoryconnector/AtlasAttributeDefMapper.java | 4 ++--
+ 2 files changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/addons/models/0000-Area0/0010-base_model.json b/addons/models/0000-Area0/0010-base_model.json
+index 8b41ee89f..23873d59a 100644
+--- a/addons/models/0000-Area0/0010-base_model.json
++++ b/addons/models/0000-Area0/0010-base_model.json
+@@ -322,6 +322,9 @@
+               "isIndexable": false,
+               "isOptional": true,
+               "isUnique": false
++            },
++            {"name":"object",
++              "typeName": "string"
+             }
+           ]
+         }
+diff --git a/open-metadata/src/main/java/org/apache/atlas/openmetadata/adapters/repositoryconnector/AtlasAttributeDefMapper.java b/open-metadata/src/main/java/org/apache/atlas/openmetadata/adapters/repositoryconnector/AtlasAttributeDefMapper.java
+index 70c4bd5d7..8aee672bb 100644
+--- a/open-metadata/src/main/java/org/apache/atlas/openmetadata/adapters/repositoryconnector/AtlasAttributeDefMapper.java
++++ b/open-metadata/src/main/java/org/apache/atlas/openmetadata/adapters/repositoryconnector/AtlasAttributeDefMapper.java
+@@ -673,11 +673,11 @@ public class AtlasAttributeDefMapper {
+                     }
+                     // If valueTypeName is for anything other than a primitive then OM will not support it because OM only supports collections of primitives
+                     om_primitive_category = TypeNameUtils.convertAtlasTypeNameToPrimitiveDefCategory(valueTypeName);
+-                    if (om_primitive_category == OM_PRIMITIVE_TYPE_UNKNOWN) {
++                    if (om_primitive_category == OM_PRIMITIVE_TYPE_UNKNOWN && !"object".equals(om_primitive_category.getName())) {
+                         // The value type is not a primitive - so skip this collection type....
+                         LOG.debug("{}: map has non-primitive value type {} so it will be skipped", methodName, valueTypeName);
+                         // Skip processing this attribute type definition
+-                        return null;
++                        return null;//TODO
+                     }
+ 
+                     // Need to find out if we ave seen this OMRS attribute type def before - look in local cache and ask RCM
+-- 
+2.21.0
+

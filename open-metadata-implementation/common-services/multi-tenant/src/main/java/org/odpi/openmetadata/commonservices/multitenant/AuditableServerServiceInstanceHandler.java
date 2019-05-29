@@ -14,7 +14,7 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
      *
      * @param serviceName unique identifier for this service with a human meaningful value
      */
-    public AuditableServerServiceInstanceHandler(String       serviceName)
+    AuditableServerServiceInstanceHandler(String       serviceName)
     {
         super(serviceName);
     }
@@ -25,6 +25,7 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return audit log
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -32,11 +33,14 @@ public abstract class AuditableServerServiceInstanceHandler extends OMAGServerSe
      *                                 not available - indicating a logic error
      */
     public OMRSAuditLog getAuditLog(String userId,
-                                    String serverName) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException
+                                    String serverName,
+                                    String serviceOperationName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        AuditableServerServiceInstance instance = (AuditableServerServiceInstance) super.getServerServiceInstance(userId, serverName);
+        AuditableServerServiceInstance instance = (AuditableServerServiceInstance) super.getServerServiceInstance(userId,
+                                                                                                                  serverName,
+                                                                                                                  serviceOperationName);
 
         return instance.getAuditLog();
     }

@@ -123,6 +123,22 @@ public class UserNotAuthorizedException extends OCFCheckedExceptionBase
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public UserNotAuthorizedException(UserNotAuthorizedException template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.userId = template.getUserId();
+        }
+    }
+
+
+    /**
      * Return the userId passed on the request.
      *
      * @return string user id
