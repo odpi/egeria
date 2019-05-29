@@ -128,7 +128,7 @@ public class PropertyServerException extends OCFCheckedExceptionBase
      *
      * @param template   object to copy
      */
-    public PropertyServerException(PropertyServerException template)
+    public PropertyServerException(OCFCheckedExceptionBase template)
     {
         super(template);
     }
