@@ -24,7 +24,7 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      */
     GovernanceProgramInstanceHandler()
     {
-        super(AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS);
+        super(AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceName() + " OMAS");
 
         GovernanceProgramRegistration.registerAccessService();
     }

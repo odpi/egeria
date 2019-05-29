@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
@@ -13,17 +12,6 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
  */
 public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceHandler
 {
-    /**
-     * Constructor
-     *
-     * @param accessServiceDescription a collection of descriptive strings for the OMAS
-     */
-    public OCFOMASServiceInstanceHandler(AccessServiceDescription accessServiceDescription)
-    {
-        super(accessServiceDescription);
-    }
-
-
     /**
      * Constructor
      *

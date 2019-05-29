@@ -22,7 +22,7 @@ class DiscoveryEngineServiceInstanceHandler extends ODFOMASServiceInstanceHandle
      */
     DiscoveryEngineServiceInstanceHandler()
     {
-        super(AccessServiceDescription.DISCOVERY_ENGINE_OMAS);
+        super(AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName() + " OMAS");
 
         DiscoveryEngineRegistration.registerAccessService();
     }

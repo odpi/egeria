@@ -19,13 +19,12 @@ public class ODFOMASServiceInstanceHandler extends OCFOMASServiceInstanceHandler
     /**
      * Constructor
      *
-     * @param accessServiceDescription a collection of descriptive strings for the OMAS
+     * @param serviceName name of the service
      */
-    public ODFOMASServiceInstanceHandler(AccessServiceDescription accessServiceDescription)
+    public ODFOMASServiceInstanceHandler(String serviceName)
     {
-        super(accessServiceDescription);
+        super(serviceName);
     }
-
 
 
     /**

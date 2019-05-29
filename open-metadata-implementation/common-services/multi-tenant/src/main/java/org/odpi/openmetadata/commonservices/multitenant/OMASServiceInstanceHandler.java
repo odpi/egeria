@@ -24,16 +24,6 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
 {
     private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
-    /**
-     * Constructor
-     *
-     * @param accessServiceDescription a collection of descriptive strings for the OMAS
-     */
-    public OMASServiceInstanceHandler(AccessServiceDescription accessServiceDescription)
-    {
-        super(accessServiceDescription.getAccessServiceName() + " OMAS");
-    }
-
 
     /**
      * Constructor

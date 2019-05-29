@@ -21,7 +21,7 @@ class CommunityProfileInstanceHandler extends OCFOMASServiceInstanceHandler
      */
     CommunityProfileInstanceHandler()
     {
-        super(AccessServiceDescription.COMMUNITY_PROFILE_OMAS);
+        super(AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceName() + " OMAS");
 
         CommunityProfileRegistration.registerAccessService();
     }

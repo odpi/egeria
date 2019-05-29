@@ -315,6 +315,11 @@ public class OMAGServerPlatformInstanceMap
 
         OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
+        if (serverInstance == null)
+        {
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+        }
+
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
@@ -347,6 +352,11 @@ public class OMAGServerPlatformInstanceMap
 
         OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
+        if (serverInstance == null)
+        {
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+        }
+
         if (serverInstance != null)
         {
             validateUserAsServerInvestigator(userId, serverInstance);
@@ -378,6 +388,11 @@ public class OMAGServerPlatformInstanceMap
         final String  methodName = "getServerHistoryFromPlatform";
 
         OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance == null)
+        {
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+        }
 
         if (serverInstance != null)
         {
