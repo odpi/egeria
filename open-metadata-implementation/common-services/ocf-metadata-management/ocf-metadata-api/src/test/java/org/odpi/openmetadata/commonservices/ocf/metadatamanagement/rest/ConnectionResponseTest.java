@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -211,7 +211,7 @@ public class ConnectionResponseTest
         /*
          * Through superclass
          */
-        AssetConsumerOMASAPIResponse superObject = getTestObject();
+        OCFOMASAPIResponse superObject = getTestObject();
 
         try
         {
@@ -224,7 +224,7 @@ public class ConnectionResponseTest
 
         try
         {
-            validateResultObject((ConnectionResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
+            validateResultObject((ConnectionResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {

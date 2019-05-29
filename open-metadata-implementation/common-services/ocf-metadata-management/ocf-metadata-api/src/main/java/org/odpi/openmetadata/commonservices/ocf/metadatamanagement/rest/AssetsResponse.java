@@ -16,22 +16,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  AssetListResponse returns a list of assets from the server.   The list may be too long to
+ *  AssetsResponse returns a list of assets from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AssetListResponse extends OCFOMASAPIResponse
+public class AssetsResponse extends PagedResponse
 {
-    private List<Asset> assets              = null;
-    private int         startingFromElement = 0;
+    private List<Asset> assets   = null;
 
 
     /**
      * Default constructor
      */
-    public AssetListResponse()
+    public AssetsResponse()
     {
         super();
     }
@@ -42,13 +41,12 @@ public class AssetListResponse extends OCFOMASAPIResponse
      *
      * @param template object to copy
      */
-    public AssetListResponse(AssetListResponse template)
+    public AssetsResponse(AssetsResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.startingFromElement = template.getStartingFromElement();
             this.assets = template.getAssets();
         }
     }
@@ -94,26 +92,7 @@ public class AssetListResponse extends OCFOMASAPIResponse
     }
 
 
-    /**
-     * Return the starting element number from the server side list that this response contains.
-     *
-     * @return int
-     */
-    public int getStartingFromElement()
-    {
-        return startingFromElement;
-    }
 
-
-    /**
-     * Set up the starting element number from the server side list that this response contains.
-     *
-     * @param startingFromElement int
-     */
-    public void setStartingFromElement(int startingFromElement)
-    {
-        this.startingFromElement = startingFromElement;
-    }
 
 
     /**
@@ -124,9 +103,9 @@ public class AssetListResponse extends OCFOMASAPIResponse
     @Override
     public String toString()
     {
-        return "AssetListResponse{" +
+        return "AssetsResponse{" +
                 "assets=" + assets +
-                ", startingFromElement=" + startingFromElement +
+                ", startingFromElement=" + getStartingFromElement() +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -146,6 +125,7 @@ public class AssetListResponse extends OCFOMASAPIResponse
     @Override
     public boolean equals(Object objectToCompare)
     {
+
         if (this == objectToCompare)
         {
             return true;
@@ -158,9 +138,8 @@ public class AssetListResponse extends OCFOMASAPIResponse
         {
             return false;
         }
-        AssetListResponse that = (AssetListResponse) objectToCompare;
-        return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getAssets(), that.getAssets());
+        AssetsResponse that = (AssetsResponse) objectToCompare;
+        return Objects.equals(getAssets(), that.getAssets());
     }
 
 
@@ -172,6 +151,6 @@ public class AssetListResponse extends OCFOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAssets(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getAssets());
     }
 }

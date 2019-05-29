@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
@@ -137,7 +137,7 @@ public class RatingRequestBodyTest
         /*
          * Through superclass
          */
-        AssetConsumerOMASAPIRequestBody superObject = getTestObject();
+        OCFOMASAPIRequestBody superObject = getTestObject();
 
         try
         {
@@ -150,7 +150,7 @@ public class RatingRequestBodyTest
 
         try
         {
-            validateResultObject((RatingRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
+            validateResultObject((RatingRequestBody) objectMapper.readValue(jsonString, OCFOMASAPIRequestBody.class));
         }
         catch (Throwable  exc)
         {

@@ -15,9 +15,9 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the TagListResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
+ * Validate that the TagsResponse bean can be cloned, compared, serialized, deserialized and printed as a String.
  */
-public class TagListResponseTest
+public class TagsResponseTest
 {
     private InformalTag         tag                 = new InformalTag();
     private List<InformalTag>   tagList             = new ArrayList<>();
@@ -27,7 +27,7 @@ public class TagListResponseTest
     /**
      * Default constructor
      */
-    public TagListResponseTest()
+    public TagsResponseTest()
     {
         tag.setName("TestTag");
 
@@ -41,9 +41,9 @@ public class TagListResponseTest
      *
      * @return filled in object
      */
-    private TagListResponse getTestObject()
+    private TagsResponse getTestObject()
     {
-        TagListResponse testObject = new TagListResponse();
+        TagsResponse testObject = new TagsResponse();
 
         testObject.setExceptionClassName(NullPointerException.class.getName());
         testObject.setExceptionErrorMessage("TestErrorMessage");
@@ -65,7 +65,7 @@ public class TagListResponseTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(TagListResponse  resultObject)
+    private void validateResultObject(TagsResponse resultObject)
     {
         assertTrue(resultObject.getExceptionClassName().equals(NullPointerException.class.getName()));
         assertTrue(resultObject.getExceptionErrorMessage().equals("TestErrorMessage"));
@@ -85,7 +85,7 @@ public class TagListResponseTest
      */
     @Test public void testNullObject()
     {
-        TagListResponse    nullObject = new TagListResponse();
+        TagsResponse nullObject = new TagsResponse();
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -95,7 +95,7 @@ public class TagListResponseTest
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getTags() == null);
 
-        nullObject = new TagListResponse(null);
+        nullObject = new TagsResponse(null);
 
         assertTrue(nullObject.getRelatedHTTPCode() == 200);
         assertTrue(nullObject.getExceptionClassName() == null);
@@ -105,12 +105,12 @@ public class TagListResponseTest
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getTags() == null);
 
-        nullObject = new TagListResponse();
+        nullObject = new TagsResponse();
         nullObject.setTags(new ArrayList<>());
 
         assertTrue(nullObject.getTags() == null);
 
-        nullObject = new TagListResponse();
+        nullObject = new TagsResponse();
         nullObject.setExceptionProperties(new HashMap<>());
 
         assertTrue(nullObject.getExceptionProperties() == null);
@@ -122,25 +122,25 @@ public class TagListResponseTest
      */
     @Test public void testExceptionProperties()
     {
-        Map<String, Object>   propertyMap;
-        TagListResponse    testObject = new TagListResponse();
+        Map<String, Object> propertyMap;
+        TagsResponse        testObject = new TagsResponse();
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = null;
-        testObject = new TagListResponse();
+        testObject = new TagsResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap = new HashMap<>();
-        testObject = new TagListResponse();
+        testObject = new TagsResponse();
         testObject.setExceptionProperties(propertyMap);
 
         assertTrue(testObject.getExceptionProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
-        testObject = new TagListResponse();
+        testObject = new TagsResponse();
         testObject.setExceptionProperties(propertyMap);
 
         Map<String, Object>   retrievedPropertyMap = testObject.getExceptionProperties();
@@ -161,10 +161,10 @@ public class TagListResponseTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        TagListResponse  sameObject = getTestObject();
+        TagsResponse sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        TagListResponse  differentObject = getTestObject();
+        TagsResponse differentObject = getTestObject();
         differentObject.setExceptionErrorMessage("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -177,7 +177,7 @@ public class TagListResponseTest
     {
         assertTrue(getTestObject().hashCode() == getTestObject().hashCode());
 
-        TagListResponse  testObject = getTestObject();
+        TagsResponse testObject = getTestObject();
 
         assertTrue(testObject.hashCode() != 0);
     }
@@ -188,7 +188,7 @@ public class TagListResponseTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new TagListResponse(getTestObject()));
+        validateResultObject(new TagsResponse(getTestObject()));
     }
 
 
@@ -215,7 +215,7 @@ public class TagListResponseTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, TagListResponse.class));
+            validateResultObject(objectMapper.readValue(jsonString, TagsResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -225,7 +225,7 @@ public class TagListResponseTest
         /*
          * Through superclass
          */
-        AssetConsumerOMASAPIResponse superObject = getTestObject();
+        OCFOMASAPIResponse superObject = getTestObject();
 
         try
         {
@@ -238,7 +238,7 @@ public class TagListResponseTest
 
         try
         {
-            validateResultObject((TagListResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
+            validateResultObject((TagsResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {
@@ -252,6 +252,6 @@ public class TagListResponseTest
      */
     @Test public void testToString()
     {
-        assertTrue(getTestObject().toString().contains("TagListResponse"));
+        assertTrue(getTestObject().toString().contains("TagsResponse"));
     }
 }

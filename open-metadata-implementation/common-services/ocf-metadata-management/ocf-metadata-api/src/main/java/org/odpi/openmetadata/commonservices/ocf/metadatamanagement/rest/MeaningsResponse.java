@@ -16,13 +16,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  MeaningListResponse returns a list of meanings from the server.   The list may be too long to
+ *  MeaningsResponse returns a list of meanings from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MeaningListResponse extends OCFOMASAPIResponse
+public class MeaningsResponse extends PagedResponse
 {
     private List<Meaning> meanings            = null;
     private int           startingFromElement = 0;
@@ -31,7 +31,7 @@ public class MeaningListResponse extends OCFOMASAPIResponse
     /**
      * Default constructor
      */
-    public MeaningListResponse()
+    public MeaningsResponse()
     {
         super();
     }
@@ -42,13 +42,12 @@ public class MeaningListResponse extends OCFOMASAPIResponse
      *
      * @param template object to copy
      */
-    public MeaningListResponse(MeaningListResponse template)
+    public MeaningsResponse(MeaningsResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.startingFromElement = template.getStartingFromElement();
             this.meanings = template.getMeanings();
         }
     }
@@ -93,29 +92,6 @@ public class MeaningListResponse extends OCFOMASAPIResponse
         this.meanings = meanings;
     }
 
-
-    /**
-     * Return the starting element number from the server side list that this response contains.
-     *
-     * @return int
-     */
-    public int getStartingFromElement()
-    {
-        return startingFromElement;
-    }
-
-
-    /**
-     * Set up the starting element number from the server side list that this response contains.
-     *
-     * @param startingFromElement int
-     */
-    public void setStartingFromElement(int startingFromElement)
-    {
-        this.startingFromElement = startingFromElement;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -124,7 +100,7 @@ public class MeaningListResponse extends OCFOMASAPIResponse
     @Override
     public String toString()
     {
-        return "MeaningListResponse{" +
+        return "MeaningsResponse{" +
                 "meanings=" + meanings +
                 ", startingFromElement=" + startingFromElement +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
@@ -158,10 +134,11 @@ public class MeaningListResponse extends OCFOMASAPIResponse
         {
             return false;
         }
-        MeaningListResponse that = (MeaningListResponse) objectToCompare;
+        MeaningsResponse that = (MeaningsResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
                 Objects.equals(getMeanings(), that.getMeanings());
     }
+
 
 
     /**
@@ -175,3 +152,5 @@ public class MeaningListResponse extends OCFOMASAPIResponse
         return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement());
     }
 }
+
+

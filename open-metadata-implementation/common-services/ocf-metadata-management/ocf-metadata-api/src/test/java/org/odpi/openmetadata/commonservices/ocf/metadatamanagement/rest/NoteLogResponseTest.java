@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
@@ -55,7 +55,6 @@ public class NoteLogResponseTest
         testObject.setRelatedHTTPCode(400);
         testObject.setExceptionProperties(additionalProperties);
 
-        testObject.setStartingFromElement(10);
         testObject.setNoteLog(noteLog);
         testObject.setNotes(notes);
 
@@ -78,7 +77,6 @@ public class NoteLogResponseTest
         assertTrue(resultObject.getRelatedHTTPCode() == 400);
         assertTrue(resultObject.getExceptionProperties() == null);
 
-        assertTrue(resultObject.getStartingFromElement() == 10);
         assertTrue(resultObject.getNoteLog().equals(noteLog));
         assertTrue(resultObject.getNotes().equals(notes));
     }
@@ -235,7 +233,7 @@ public class NoteLogResponseTest
         /*
          * Through superclass
          */
-        AssetConsumerOMASAPIResponse superObject = getTestObject();
+        OCFOMASAPIResponse superObject = getTestObject();
 
         try
         {
@@ -248,7 +246,7 @@ public class NoteLogResponseTest
 
         try
         {
-            validateResultObject((NoteLogResponse) objectMapper.readValue(jsonString, AssetConsumerOMASAPIResponse.class));
+            validateResultObject((NoteLogResponse) objectMapper.readValue(jsonString, OCFOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {
