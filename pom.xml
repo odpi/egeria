@@ -401,6 +401,7 @@
                     <excludeSubProjects>true</excludeSubProjects>
                     <excludes>
                         <exclude>/CNAME</exclude>
+                        <exclude>/dco-signoffs/*.txt</exclude>
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/*.txt</exclude>
                         <exclude>**/*.json</exclude>
