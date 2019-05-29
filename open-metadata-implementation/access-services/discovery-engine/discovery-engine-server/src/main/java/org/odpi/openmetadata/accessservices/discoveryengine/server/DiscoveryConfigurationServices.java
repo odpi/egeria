@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
-import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -379,7 +379,7 @@ public class DiscoveryConfigurationServices
     public  VoidResponse    deleteDiscoveryEngine(String             serverName,
                                                   String             userId,
                                                   String             guid,
-                                                  DeleteRequestBody  requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         final String        methodName = "deleteDiscoveryEngine";
 

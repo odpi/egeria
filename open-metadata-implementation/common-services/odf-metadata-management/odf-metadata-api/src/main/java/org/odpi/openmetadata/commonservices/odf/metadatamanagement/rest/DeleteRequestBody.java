@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.discoveryengine.rest;
+package org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DeleteRequestBody extends DiscoveryEngineOMASAPIRequestBody
+public class DeleteRequestBody extends ODFOMASAPIRequestBody
 {
     private String  qualifiedName = null;
 
