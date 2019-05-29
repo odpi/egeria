@@ -44,6 +44,10 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
     public PersonalProfileManagement(String     serverName,
                                      String     omasServerURL) throws InvalidParameterException
     {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL);
@@ -66,6 +70,10 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                      String     userId,
                                      String     password) throws InvalidParameterException
     {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
