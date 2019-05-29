@@ -596,7 +596,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOperationalDiscoveryServer() != null)
         {
-            instance.getOperationalDiscoveryServer().terminate(permanentDeactivation);
+            instance.getOperationalDiscoveryServer().terminate();
         }
 
         /*
