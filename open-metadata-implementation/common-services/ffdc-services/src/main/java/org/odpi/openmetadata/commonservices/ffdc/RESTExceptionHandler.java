@@ -28,6 +28,35 @@ public class RESTExceptionHandler
     {
     }
 
+
+    /**
+     * Manage an unexpected exception
+     *
+     * @param userId calling user
+     * @param methodName method that caught the exception
+     * @param serverName name of the server being called
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleNoRequestBody(String      userId,
+                                    String      methodName,
+                                    String      serverName) throws InvalidParameterException
+    {
+        OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.NO_REQUEST_BODY;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId,
+                                                                                                 methodName,
+                                                                                                 serverName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          "requestBody");
+    }
+
+
+
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
@@ -160,8 +189,6 @@ public class RESTExceptionHandler
                                           errorCode.getUserAction(),
                                           error);
     }
-
-
 
 
     /**
