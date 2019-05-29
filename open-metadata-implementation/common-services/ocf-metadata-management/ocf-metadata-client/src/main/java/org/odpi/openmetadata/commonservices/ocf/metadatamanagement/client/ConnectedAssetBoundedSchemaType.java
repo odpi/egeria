@@ -23,7 +23,7 @@ class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
                                     String                 userId,
                                     ConnectedAssetUniverse parentAsset,
                                     BoundedSchemaType      schemaBean,
-                                    RESTClient             restClient)
+                                    OCFRESTClient restClient)
     {
         super(parentAsset);
         super.setBean(schemaBean);

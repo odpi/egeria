@@ -106,7 +106,10 @@ public class OpenLineageOperationalServices {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
+        //TODO Error handling and logging
     }
+
+
 
 
     private String getTopicName(Connection connection) {

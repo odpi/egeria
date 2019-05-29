@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -127,7 +130,7 @@ public class AssetConsumerResource
     public VoidResponse addLogMessageToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
                                              @PathVariable String                guid,
-                                             @RequestBody  LogRecordRequestBody  requestBody)
+                                             @RequestBody  LogRecordRequestBody requestBody)
     {
         return restAPI.addLogMessageToAsset(serverName, userId, guid, requestBody);
     }
@@ -151,7 +154,7 @@ public class AssetConsumerResource
     public VoidResponse addRatingToAsset(@PathVariable String             serverName,
                                          @PathVariable String             userId,
                                          @PathVariable String             guid,
-                                         @RequestBody RatingRequestBody requestBody)
+                                         @RequestBody  RatingRequestBody requestBody)
     {
         return restAPI.addRatingToAsset(serverName, userId, guid, requestBody);
     }
@@ -317,11 +320,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/by-name/{name}")
 
-    public AssetListResponse getAssetsByName(@PathVariable String   serverName,
-                                             @PathVariable String   userId,
-                                             @PathVariable String   name,
-                                             @RequestParam int      startFrom,
-                                             @RequestParam int      pageSize)
+    public AssetsResponse getAssetsByName(@PathVariable String   serverName,
+                                          @PathVariable String   userId,
+                                          @PathVariable String   name,
+                                          @RequestParam int      startFrom,
+                                          @RequestParam int      pageSize)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
     }
@@ -412,11 +415,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{term}")
 
-    public MeaningListResponse getMeaningByName(@PathVariable String  serverName,
-                                                @PathVariable String  userId,
-                                                @PathVariable String  term,
-                                                @RequestParam int     startFrom,
-                                                @RequestParam int     pageSize)
+    public GlossaryTermListResponse getMeaningByName(@PathVariable String  serverName,
+                                                     @PathVariable String  userId,
+                                                     @PathVariable String  term,
+                                                     @RequestParam int     startFrom,
+                                                     @RequestParam int     pageSize)
     {
         return restAPI.getMeaningByName(serverName, userId, term, startFrom, pageSize);
     }
@@ -436,9 +439,9 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/meanings/{guid}")
 
-    public MeaningResponse getMeaning(@PathVariable String   serverName,
-                                      @PathVariable String   userId,
-                                      @PathVariable String   guid)
+    public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
+                                           @PathVariable String   userId,
+                                           @PathVariable String   guid)
     {
         return restAPI.getMeaning(serverName, userId, guid);
     }
@@ -481,11 +484,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/tags/by-name/{tagName}")
 
-    public TagListResponse getTagsByName(@PathVariable String  serverName,
-                                         @PathVariable String  userId,
-                                         @PathVariable String  tagName,
-                                         @RequestParam int     startFrom,
-                                         @RequestParam int     pageSize)
+    public TagsResponse getTagsByName(@PathVariable String  serverName,
+                                      @PathVariable String  userId,
+                                      @PathVariable String  tagName,
+                                      @RequestParam int     startFrom,
+                                      @RequestParam int     pageSize)
     {
         return restAPI.getTagsByName(serverName, userId, tagName, startFrom, pageSize);
     }
