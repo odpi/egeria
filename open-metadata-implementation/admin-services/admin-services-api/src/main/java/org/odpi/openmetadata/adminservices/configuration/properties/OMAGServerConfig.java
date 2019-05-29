@@ -103,6 +103,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
+    private SecurityOfficerConfig     securityOfficerConfig     = null;
     private List<String>              auditTrail                = null;
     private VirtualizationConfig      virtualizationConfig      = null;
 
@@ -142,6 +143,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
+            securityOfficerConfig = template.getSecurityOfficerConfig();
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
         }
@@ -525,6 +527,25 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.securitySyncConfig = securitySyncConfig;
     }
 
+    /**
+     * Return the configuration for the security officer services.
+     *
+     * @return SecurityOfficerConfig properties
+     */
+    public SecurityOfficerConfig getSecurityOfficerConfig()
+    {
+        return securityOfficerConfig;
+    }
+
+    /**
+     * Set up the configuration for the security officer services.
+     *
+     * @param securityOfficerConfig SecurityOfficerConfig properties
+     */
+    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
+    {
+        this.securityOfficerConfig = securityOfficerConfig;
+    }
 
     /**
      * Return the configuration for the virtualization services.
@@ -594,6 +615,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", openLineageConfig=" + openLineageConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
+                ", securityOfficerConfig=" + securityOfficerConfig +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -631,6 +653,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
@@ -647,6 +670,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
+                            getAuditTrail(), getVirtualizationConfig());
     }
 }

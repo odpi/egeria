@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_TAG;
+
 public class Builder {
 
     private static String getStringForPropertyValue(InstancePropertyValue ipv) {
@@ -70,24 +72,23 @@ public class Builder {
         schemaElementEntity.setUpdatedTime(entityDetail.getUpdateTime());
         schemaElementEntity.setProperties(getProperties(entityDetail.getProperties()));
 
-        Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
-        securityTag.ifPresent(classification -> schemaElementEntity.setSecurityClassification(buildSecurityTag(classification)));
-        return schemaElementEntity;
+        return getSecurityClassification(entityDetail, schemaElementEntity);
     }
 
-    public SchemaElementEntity buildSchemaElementContext(EntityDetail schemaElement, EntityDetail glossaryTerm) {
-        SchemaElementEntity schemaElementEntity = new SchemaElementEntity();
-
-        buildSchemaElement(schemaElement);
-        schemaElementEntity.setBusinessTerm(buildBusinessTerm(glossaryTerm));
-
-        if (glossaryTerm.getClassifications() != null && !glossaryTerm.getClassifications().isEmpty()) {
-            Optional<Classification> securityTag = getSecurityTag(glossaryTerm.getClassifications());
-
+    private SchemaElementEntity getSecurityClassification(EntityDetail entityDetail, SchemaElementEntity schemaElementEntity) {
+        if(entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()){
+            Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
             securityTag.ifPresent(classification -> schemaElementEntity.setSecurityClassification(buildSecurityTag(classification)));
         }
 
         return schemaElementEntity;
+    }
+
+    public SchemaElementEntity buildSchemaElementContext(EntityDetail schemaElement, EntityDetail glossaryTerm) {
+        SchemaElementEntity schemaElementEntity = buildSchemaElement(schemaElement);
+        schemaElementEntity.setBusinessTerm(buildBusinessTerm(glossaryTerm));
+
+        return getSecurityClassification(glossaryTerm, schemaElementEntity);
     }
 
     public SecurityClassification buildSecurityTag(Classification classification) {
@@ -97,7 +98,7 @@ public class Builder {
     }
 
     private Optional<Classification> getSecurityTag(List<Classification> classifications) {
-        return classifications.stream().filter(classification -> classification.getName().equals("SecurityTag")).findAny();
+        return classifications.stream().filter(classification -> classification.getName().equals(SECURITY_TAG)).findAny();
     }
 
     private BusinessTerm buildBusinessTerm(EntityDetail entityDetail) {

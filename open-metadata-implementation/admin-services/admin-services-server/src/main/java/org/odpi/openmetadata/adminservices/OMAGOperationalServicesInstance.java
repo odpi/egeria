@@ -11,6 +11,7 @@ import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalSe
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
@@ -32,6 +33,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private OpenLineageOperationalServices      openLineageOperationalServices      = null;
     private StewardshipOperationalServices      operationalStewardshipServices      = null;
     private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
+    private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
     private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
 
 
@@ -241,6 +243,25 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         this.operationalSecuritySyncServices = operationalSecuritySyncServices;
     }
 
+    /**
+     * Return the running instance of the Security Officer Server
+     *
+     * @return SecurityOfficerOperationalServices object
+     */
+    public SecurityOfficerOperationalServices getOperationalSecurityOfficerService()
+    {
+        return operationalSecurityOfficerService;
+    }
+
+    /**
+     * Set up the running instance of the Security Officer Server
+     *
+     * @param operationalSecurityOfficerService SecurityOfficerOperationalServices object
+     */
+    public void setOperationalSecurityOfficerService(SecurityOfficerOperationalServices operationalSecurityOfficerService)
+    {
+        this.operationalSecurityOfficerService = operationalSecurityOfficerService;
+    }
 
     /**
      * Return the running instance of Virtualizer
