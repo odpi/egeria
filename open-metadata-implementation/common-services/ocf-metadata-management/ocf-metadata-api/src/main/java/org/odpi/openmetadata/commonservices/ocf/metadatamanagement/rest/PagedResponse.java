@@ -1,25 +1,51 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.commonservices.ocf.metadatamanagement;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-public class NoteLogResponse extends AssetConsumerOMASAPIResponse
-{
-    private NoteLog    noteLog             = null;
-    private List<Note> notes               = null;
-    private int        startingFromElement = 0;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * PagedResponse is used for responses that can contain paged responses
+ */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = AssetsResponse.class, name = "AssetsResponse"),
+                @JsonSubTypes.Type(value = CertificationsResponse.class, name = "CertificationsResponse"),
+                @JsonSubTypes.Type(value = CommentsResponse.class, name = "CommentsResponse"),
+                @JsonSubTypes.Type(value = ConnectionsResponse.class, name = "ConnectionsResponse"),
+                @JsonSubTypes.Type(value = ExternalIdentifiersResponse.class, name = "ExternalIdentifiersResponse"),
+                @JsonSubTypes.Type(value = ExternalReferencesResponse.class, name = "ExternalReferencesResponse"),
+                @JsonSubTypes.Type(value = InformalTagsResponse.class, name = "InformalTagsResponse"),
+                @JsonSubTypes.Type(value = LicensesResponse.class, name = "LicensesResponse"),
+                @JsonSubTypes.Type(value = LikesResponse.class, name = "LikesResponse"),
+                @JsonSubTypes.Type(value = LocationsResponse.class, name = "LocationsResponse"),
+                @JsonSubTypes.Type(value = NoteLogsResponse.class, name = "NoteLogsResponse"),
+                @JsonSubTypes.Type(value = NotesResponse.class, name = "NotesResponse"),
+                @JsonSubTypes.Type(value = RatingsResponse.class, name = "RatingsResponse"),
+                @JsonSubTypes.Type(value = RelatedAssetsResponse.class, name = "RelatedAssetsResponse"),
+                @JsonSubTypes.Type(value = RelatedMediaReferencesResponse.class, name = "RelatedMediaReferencesResponse"),
+                @JsonSubTypes.Type(value = SchemaAttributesResponse.class, name = "SchemaAttributesResponse"),
+                @JsonSubTypes.Type(value = TagsResponse.class, name = "TagsResponse")
+        })
+public class PagedResponse extends OCFOMASAPIResponse
+{
+    private int        startingFromElement = 0;
 
     /**
      * Default constructor
      */
-    public NoteLogResponse()
+    public PagedResponse()
     {
         super();
     }
@@ -30,79 +56,14 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public NoteLogResponse(NoteLogResponse  template)
+    public PagedResponse(PagedResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.noteLog = template.getNoteLog();
-            this.notes = template.getNotes();
             this.startingFromElement = template.getStartingFromElement();
         }
-    }
-
-
-    /**
-     * Return the note log header.
-     *
-     * @return note log header
-     */
-    public NoteLog getNoteLog()
-    {
-        if (noteLog == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new NoteLog(noteLog);
-        }
-    }
-
-
-    /**
-     * Set up the note log header
-     *
-     * @param noteLog note log header
-     */
-    public void setNoteLog(NoteLog noteLog)
-    {
-        this.noteLog = noteLog;
-    }
-
-
-    /**
-     * Return the notes in the note log.
-     *
-     * @return list of notes
-     */
-    public List<Note> getNotes()
-    {
-        if (notes == null)
-        {
-            return null;
-        }
-        else if (notes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new ArrayList<>(notes);
-        }
-    }
-
-
-    /**
-     * Set up the list of notes from the note log.  If there are too many notes to return on a single call,
-     * the starting element number for the notes returned in this response are
-     *
-     * @param notes list of notes
-     */
-    public void setNotes(List<Note> notes)
-    {
-        this.notes = notes;
     }
 
 
@@ -136,10 +97,8 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "NoteLogResponse{" +
-                "noteLog=" + noteLog +
-                ", notes=" + notes +
-                ", startingFromElement=" + startingFromElement +
+        return "PagedResponse{" +
+                "startingFromElement=" + startingFromElement +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -171,10 +130,8 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
         {
             return false;
         }
-        NoteLogResponse that = (NoteLogResponse) objectToCompare;
-        return getStartingFromElement() == that.getStartingFromElement() &&
-                Objects.equals(getNoteLog(), that.getNoteLog()) &&
-                Objects.equals(getNotes(), that.getNotes());
+        PagedResponse that = (PagedResponse) objectToCompare;
+        return getStartingFromElement() == that.getStartingFromElement();
     }
 
 
@@ -186,6 +143,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getStartingFromElement());
+        return Objects.hash(super.hashCode(), getStartingFromElement());
     }
 }

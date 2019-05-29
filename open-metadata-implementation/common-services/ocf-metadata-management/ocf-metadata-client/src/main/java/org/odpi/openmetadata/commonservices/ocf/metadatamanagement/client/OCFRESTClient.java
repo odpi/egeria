@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 
 /**
- * RESTClient is responsible for issuing calls to the Community Profile OMAS REST APIs.
+ * OCFRESTClient is responsible for issuing calls to the OCF Management REST APIs.
  */
-class RESTClient extends FFDCRESTClient
+public class OCFRESTClient extends FFDCRESTClient
 {
     /**
      * Constructor for no authentication.
@@ -21,8 +21,8 @@ class RESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot) throws InvalidParameterException
+    public OCFRESTClient(String serverName,
+                         String serverPlatformURLRoot) throws InvalidParameterException
     {
         super (serverName, serverPlatformURLRoot);
     }
@@ -38,10 +38,10 @@ class RESTClient extends FFDCRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    RESTClient(String serverName,
-               String serverPlatformURLRoot,
-               String userId,
-               String password) throws InvalidParameterException
+    public OCFRESTClient(String serverName,
+                         String serverPlatformURLRoot,
+                         String userId,
+                         String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -57,11 +57,29 @@ class RESTClient extends FFDCRESTClient
      * @return AssetResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    AssetResponse callAssetGetRESTCall(String    methodName,
-                                       String    urlTemplate,
-                                       Object... params) throws PropertyServerException
+    public AssetResponse callAssetGetRESTCall(String    methodName,
+                                              String    urlTemplate,
+                                              Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, AssetResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a AssetsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AssetsResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AssetsResponse callAssetsGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, AssetsResponse.class, urlTemplate, params);
     }
 
 
@@ -75,9 +93,9 @@ class RESTClient extends FFDCRESTClient
      * @return CertificationsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    CertificationsResponse callCertificationGetRESTCall(String    methodName,
-                                                        String    urlTemplate,
-                                                        Object... params) throws PropertyServerException
+    CertificationsResponse callCertificationsGetRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, CertificationsResponse.class, urlTemplate, params);
     }
@@ -93,29 +111,29 @@ class RESTClient extends FFDCRESTClient
      * @return CommentsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    CommentsResponse callCommentGetRESTCall(String    methodName,
-                                            String    urlTemplate,
-                                            Object... params) throws PropertyServerException
+    CommentsResponse callCommentsGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, CommentsResponse.class, urlTemplate, params);
     }
 
 
     /**
-     * Issue a GET REST call that returns an SchemaTypeResponse object.
+     * Issue a GET REST call that returns a Connection object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return SchemaTypeResponse
+     * @return ConnectionResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    SchemaTypeResponse callSchemaTypeGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws PropertyServerException
+    public ConnectionResponse callConnectionGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws PropertyServerException
     {
-        return this.callGetRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, params);
+        return this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
     }
 
 
@@ -129,9 +147,9 @@ class RESTClient extends FFDCRESTClient
      * @return ConnectionsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ConnectionsResponse callConnectionGetRESTCall(String    methodName,
-                                                  String    urlTemplate,
-                                                  Object... params) throws PropertyServerException
+    ConnectionsResponse callConnectionsGetRESTCall(String    methodName,
+                                                   String    urlTemplate,
+                                                   Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, ConnectionsResponse.class, urlTemplate, params);
     }
@@ -147,9 +165,9 @@ class RESTClient extends FFDCRESTClient
      * @return ExternalIdentifiersResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ExternalIdentifiersResponse callExternalIdentifierGetRESTCall(String    methodName,
-                                                                  String    urlTemplate,
-                                                                  Object... params) throws PropertyServerException
+    ExternalIdentifiersResponse callExternalIdentifiersGetRESTCall(String    methodName,
+                                                                   String    urlTemplate,
+                                                                   Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, ExternalIdentifiersResponse.class, urlTemplate, params);
     }
@@ -165,9 +183,9 @@ class RESTClient extends FFDCRESTClient
      * @return ExternalReferencesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ExternalReferencesResponse callExternalReferenceGetRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object... params) throws PropertyServerException
+    ExternalReferencesResponse callExternalReferencesGetRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, ExternalReferencesResponse.class, urlTemplate, params);
     }
@@ -183,9 +201,9 @@ class RESTClient extends FFDCRESTClient
      * @return InformalTagsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    InformalTagsResponse callInformalTagGetRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object... params) throws PropertyServerException
+    InformalTagsResponse callInformalTagsGetRESTCall(String    methodName,
+                                                     String    urlTemplate,
+                                                     Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, InformalTagsResponse.class, urlTemplate, params);
     }
@@ -201,9 +219,9 @@ class RESTClient extends FFDCRESTClient
      * @return LicensesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LicensesResponse callLicenseGetRESTCall(String    methodName,
-                                            String    urlTemplate,
-                                            Object... params) throws PropertyServerException
+    LicensesResponse callLicensesGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, LicensesResponse.class, urlTemplate, params);
     }
@@ -219,9 +237,9 @@ class RESTClient extends FFDCRESTClient
      * @return LikesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LikesResponse callLikeGetRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object... params) throws PropertyServerException
+    LikesResponse callLikesGetRESTCall(String    methodName,
+                                       String    urlTemplate,
+                                       Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, LikesResponse.class, urlTemplate, params);
     }
@@ -237,11 +255,47 @@ class RESTClient extends FFDCRESTClient
      * @return LocationsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    LocationsResponse callLocationGetRESTCall(String    methodName,
-                                              String    urlTemplate,
-                                              Object... params) throws PropertyServerException
+    LocationsResponse callLocationsGetRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, LocationsResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a GlossaryTermResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return GlossaryTermResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    MeaningResponse callMeaningGetRESTCall(String    methodName,
+                                           String    urlTemplate,
+                                           Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, MeaningResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a GlossaryTermListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return GlossaryTermListResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    MeaningsResponse callMeaningListGetRESTCall(String    methodName,
+                                                String    urlTemplate,
+                                                Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, MeaningsResponse.class, urlTemplate, params);
     }
 
 
@@ -255,9 +309,9 @@ class RESTClient extends FFDCRESTClient
      * @return NoteLogsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    NoteLogsResponse callNoteLogGetRESTCall(String    methodName,
-                                            String    urlTemplate,
-                                            Object... params) throws PropertyServerException
+    NoteLogsResponse callNoteLogsGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, NoteLogsResponse.class, urlTemplate, params);
     }
@@ -273,9 +327,9 @@ class RESTClient extends FFDCRESTClient
      * @return NotesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    NotesResponse callNoteGetRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object... params) throws PropertyServerException
+    NotesResponse callNotesGetRESTCall(String    methodName,
+                                       String    urlTemplate,
+                                       Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, NotesResponse.class, urlTemplate, params);
     }
@@ -291,9 +345,9 @@ class RESTClient extends FFDCRESTClient
      * @return RatingsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RatingsResponse callRatingGetRESTCall(String    methodName,
-                                          String    urlTemplate,
-                                          Object... params) throws PropertyServerException
+    RatingsResponse callRatingsGetRESTCall(String    methodName,
+                                           String    urlTemplate,
+                                           Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, RatingsResponse.class, urlTemplate, params);
     }
@@ -309,9 +363,9 @@ class RESTClient extends FFDCRESTClient
      * @return RelatedAssetsResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RelatedAssetsResponse callRelatedAssetGetRESTCall(String    methodName,
-                                                      String    urlTemplate,
-                                                      Object... params) throws PropertyServerException
+    RelatedAssetsResponse callRelatedAssetsGetRESTCall(String    methodName,
+                                                       String    urlTemplate,
+                                                       Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, RelatedAssetsResponse.class, urlTemplate, params);
     }
@@ -327,11 +381,29 @@ class RESTClient extends FFDCRESTClient
      * @return RelatedMediaReferencesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RelatedMediaReferencesResponse callRelatedMediaReferenceGetRESTCall(String    methodName,
-                                                                        String    urlTemplate,
-                                                                        Object... params) throws PropertyServerException
+    RelatedMediaReferencesResponse callRelatedMediaReferencesGetRESTCall(String    methodName,
+                                                                         String    urlTemplate,
+                                                                         Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, RelatedMediaReferencesResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an SchemaTypeResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return SchemaTypeResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public SchemaTypeResponse callSchemaTypeGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, SchemaTypeResponse.class, urlTemplate, params);
     }
 
 
@@ -345,10 +417,45 @@ class RESTClient extends FFDCRESTClient
      * @return SchemaAttributesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    SchemaAttributesResponse callSchemaAttributeGetRESTCall(String    methodName,
-                                                            String    urlTemplate,
-                                                            Object... params) throws PropertyServerException
+    SchemaAttributesResponse callSchemaAttributesGetRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, SchemaAttributesResponse.class, urlTemplate, params);
+    }
+
+    /**
+     * Issue a GET REST call that returns a TagResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return TagResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public TagResponse callTagGetRESTCall(String    methodName,
+                                          String    urlTemplate,
+                                          Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, TagResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TagsResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return TagsResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public TagsResponse callTagListGetRESTCall(String    methodName,
+                                               String    urlTemplate,
+                                               Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, TagsResponse.class, urlTemplate, params);
     }
 }

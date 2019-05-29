@@ -16,22 +16,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  TagListResponse returns a list of tags from the server.   The list may be too long to
+ *  TagsResponse returns a list of tags from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TagListResponse extends OCFOMASAPIResponse
+public class TagsResponse extends PagedResponse
 {
     private List<InformalTag> tags                = null;
-    private int               startingFromElement = 0;
 
 
     /**
      * Default constructor
      */
-    public TagListResponse()
+    public TagsResponse()
     {
         super();
     }
@@ -42,13 +41,12 @@ public class TagListResponse extends OCFOMASAPIResponse
      *
      * @param template object to copy
      */
-    public TagListResponse(TagListResponse template)
+    public TagsResponse(TagsResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.startingFromElement = template.getStartingFromElement();
             this.tags = template.getTags();
         }
     }
@@ -93,29 +91,6 @@ public class TagListResponse extends OCFOMASAPIResponse
         this.tags = tags;
     }
 
-
-    /**
-     * Return the starting element number from the server side list that this response contains.
-     *
-     * @return int
-     */
-    public int getStartingFromElement()
-    {
-        return startingFromElement;
-    }
-
-
-    /**
-     * Set up the starting element number from the server side list that this response contains.
-     *
-     * @param startingFromElement int
-     */
-    public void setStartingFromElement(int startingFromElement)
-    {
-        this.startingFromElement = startingFromElement;
-    }
-
-
     /**
      * JSON-style toString
      *
@@ -124,9 +99,9 @@ public class TagListResponse extends OCFOMASAPIResponse
     @Override
     public String toString()
     {
-        return "TagListResponse{" +
+        return "TagsResponse{" +
                 "tags=" + tags +
-                ", startingFromElement=" + startingFromElement +
+                ", startingFromElement=" + super.getStartingFromElement() +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -158,7 +133,7 @@ public class TagListResponse extends OCFOMASAPIResponse
         {
             return false;
         }
-        TagListResponse that = (TagListResponse) objectToCompare;
+        TagsResponse that = (TagsResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
                 Objects.equals(getTags(), that.getTags());
     }

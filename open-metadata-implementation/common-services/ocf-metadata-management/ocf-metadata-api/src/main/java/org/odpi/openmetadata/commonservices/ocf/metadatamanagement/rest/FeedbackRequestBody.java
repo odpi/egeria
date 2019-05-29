@@ -1,9 +1,8 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 
 import java.util.Objects;
 
@@ -11,7 +10,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * FeedbackRequestBody provides a structure for passing star rating as a request body over a REST API.
+ * FeedbackRequestBody provides a base class for passing feedback objects as a request body over a REST API.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -25,7 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = RatingRequestBody.class,   name = "RatingRequestBody"),
                 @JsonSubTypes.Type(value = TagRequestBody.class,   name = "TagRequestBody"),
         })
-public class FeedbackRequestBody extends AssetConsumerOMASAPIRequestBody
+public class FeedbackRequestBody extends OCFOMASAPIRequestBody
 {
     private boolean    isPublic  = false;
 

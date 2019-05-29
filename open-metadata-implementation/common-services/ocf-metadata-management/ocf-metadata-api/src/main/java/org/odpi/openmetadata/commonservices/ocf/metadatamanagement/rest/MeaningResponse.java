@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Meaning;
 
 import java.util.Objects;
 
@@ -15,15 +15,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * MeaningResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
- * Glossary Term object as a response.
+ * MeaningResponse is the response structure used on the OCF Metadata Management REST API calls that returns a
+ * Meaning object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class MeaningResponse extends AssetConsumerOMASAPIResponse
+public class MeaningResponse extends OCFOMASAPIResponse
 {
-    private GlossaryTerm glossaryTerm = null;
+    private Meaning meaning = null;
 
     /**
      * Default constructor
@@ -45,7 +45,7 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
 
         if (template != null)
         {
-            this.glossaryTerm = template.getGlossaryTerm();
+            this.meaning = template.getMeaning();
         }
     }
 
@@ -55,15 +55,15 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
      *
      * @return glossary term object
      */
-    public GlossaryTerm getGlossaryTerm()
+    public Meaning getMeaning()
     {
-        if (glossaryTerm == null)
+        if (meaning == null)
         {
             return null;
         }
         else
         {
-            return glossaryTerm;
+            return meaning;
         }
     }
 
@@ -71,11 +71,11 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
     /**
      * Set up the glossary term object.
      *
-     * @param glossaryTerm - glossary term object
+     * @param meaning - glossary term object
      */
-    public void setGlossaryTerm(GlossaryTerm glossaryTerm)
+    public void setMeaning(Meaning meaning)
     {
-        this.glossaryTerm = glossaryTerm;
+        this.meaning = meaning;
     }
 
 
@@ -88,7 +88,7 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
     public String toString()
     {
         return "MeaningResponse{" +
-                "glossaryTerm=" + glossaryTerm +
+                "meaning=" + meaning +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -121,7 +121,7 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
             return false;
         }
         MeaningResponse that = (MeaningResponse) objectToCompare;
-        return Objects.equals(getGlossaryTerm(), that.getGlossaryTerm());
+        return Objects.equals(getMeaning(), that.getMeaning());
     }
 
 
@@ -133,13 +133,13 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        if (glossaryTerm == null)
+        if (meaning == null)
         {
             return super.hashCode();
         }
         else
         {
-            return glossaryTerm.hashCode();
+            return meaning.hashCode();
         }
     }
 

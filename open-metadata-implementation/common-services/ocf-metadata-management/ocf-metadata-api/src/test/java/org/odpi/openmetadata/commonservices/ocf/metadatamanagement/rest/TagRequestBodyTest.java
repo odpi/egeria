@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.rest;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -136,7 +136,7 @@ public class TagRequestBodyTest
         /*
          * Through superclass
          */
-        AssetConsumerOMASAPIRequestBody superObject = getTestObject();
+        OCFOMASAPIRequestBody superObject = getTestObject();
 
         try
         {
@@ -149,7 +149,7 @@ public class TagRequestBodyTest
 
         try
         {
-            validateResultObject((TagRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
+            validateResultObject((TagRequestBody) objectMapper.readValue(jsonString, OCFOMASAPIRequestBody.class));
         }
         catch (Throwable  exc)
         {
