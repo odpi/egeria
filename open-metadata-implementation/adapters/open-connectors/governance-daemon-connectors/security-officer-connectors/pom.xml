@@ -6,29 +6,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>governance-daemon-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Governance Daemon Connectors</name>
-    <description>
-        The governance daemon connectors contains connectors for the governance
-        daemon servers that monitor activity or synchronize metadata and configuration
-        asynchronously between different tools.
-    </description>
-
-    <artifactId>governance-daemon-connectors</artifactId>
+    <artifactId>security-officer-connectors</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>view-generator-connectors</module>
-        <module>security-sync-connectors</module>
-        <module>security-officer-connectors</module>
-    </modules>
 
+    <modules>
+        <module>security-officer-tag-connector</module>
+    </modules>
 
 </project>

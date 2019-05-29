@@ -94,4 +94,19 @@ public class SchemaElementEntity extends Entity implements Serializable {
     public void setAssetGuid(String assetGuid) {
         this.assetGuid = assetGuid;
     }
+
+
+    @Override
+    public String toString() {
+        return "SchemaElementEntity{" +
+                "createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", type='" + type + '\'' +
+                ", assetGuid='" + assetGuid + '\'' +
+                ", securityClassification=" + securityClassification +
+                ", businessTerm=" + businessTerm +
+                '}';
+    }
 }

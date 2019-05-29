@@ -1,31 +1,39 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
+/*
+ *  SPDX-License-Identifier: Apache-2.0
+ *  Copyright Contributors to the ODPi Egeria project.
+ */
+
 package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
-public class OMAGServerSecuritySyncService
+public class OMAGServerSecurityOfficerService
 {
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
     private static final String defaultOutTopicName = "OutTopic";
-    private static final String defaultInTopicName = "open-metadata.access-services.GovernanceEngine.outTopic";
+    private static final String defaultInTopicName = "open-metadata.access-services.SecurityOfficer.outTopic";
 
-    private static final String outputTopic = "open-metadata.security-sync.";
+    private static final String outputTopic = "open-metadata.security-officer-server.";
     private static final String defaultOutTopic = ".outTopic";
 
-    public VoidResponse setSecuritySyncConfig(String userId, String serverName, SecuritySyncConfig securitySyncConfig)
+    public VoidResponse setSecurityOfficerConfig(String userId, String serverName, SecurityOfficerConfig securityOfficerConfig)
     {
-        String methodName = "setSecuritySyncConfig";
+        String methodName = "setSecurityOfficerConfig";
         VoidResponse response = new VoidResponse();
 
         try
@@ -41,49 +49,51 @@ public class OMAGServerSecuritySyncService
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (securitySyncConfig == null) {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for security sync services.");
+            if (securityOfficerConfig == null) {
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for security Officer services.");
             } else {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for security Officer services.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            if(securitySyncConfig != null && securitySyncConfig.getSecuritySyncInTopicName() != null) {
-                securitySyncConfig.setSecuritySyncInTopic(
+            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerInTopicName() != null) {
+                securityOfficerConfig.setSecurityOfficerServerInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
                                 defaultInTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                securitySyncConfig.getSecuritySyncInTopicName(),
+                                securityOfficerConfig.getSecurityOfficerServerInTopicName(),
                                 UUID.randomUUID().toString(),
                                 eventBusConfig.getConfigurationProperties()));
             }
 
-            if(securitySyncConfig != null && securitySyncConfig.getSecurityServerType() != null) {
-                securitySyncConfig.setSecuritySyncOutTopic(
+            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerOutTopicName() != null) {
+                securityOfficerConfig.setSecurityOfficerServerOutTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                getOutputTopicName(securitySyncConfig.getSecuritySyncOutTopicName()),
+                                getOutputTopicName(securityOfficerConfig.getSecurityOfficerServerOutTopicName()),
                                 serverConfig.getLocalServerId(),
                                 eventBusConfig.getConfigurationProperties()));
             }
 
-            if(securitySyncConfig != null && securitySyncConfig.getSecurityServerURL() != null && securitySyncConfig.getSecurityServerAuthorization() != null){
+            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerOMASURL() != null
+                    && securityOfficerConfig.getSecurityOfficerOMASUsername() != null
+                    && securityOfficerConfig.getSecurityOfficerOMASServerName() != null){
                 Map<String, Object> additionalProperties = new HashMap<>();
-                additionalProperties.put("securityServerAuthorization", securitySyncConfig.getSecurityServerAuthorization());
-                additionalProperties.put("tagServiceName", securitySyncConfig.getTagServiceName());
+                additionalProperties.put("username", securityOfficerConfig.getSecurityOfficerOMASUsername());
+                additionalProperties.put("serverName", securityOfficerConfig.getSecurityOfficerOMASServerName());
 
-                securitySyncConfig.setSecurityServerConnection(
-                        connectorConfigurationFactory.getSecuritySyncServerConnection(serverName,
-                                securitySyncConfig.getSecurityServerURL(),
+                securityOfficerConfig.setSecurityOfficerConnection(
+                        connectorConfigurationFactory.getSecurityOfficerServerConnection(serverName,
+                                securityOfficerConfig.getSecurityOfficerOMASURL(),
                                 additionalProperties));
             }
 
-            serverConfig.setSecuritySyncConfig(securitySyncConfig);
+            serverConfig.setSecurityOfficerConfig(securityOfficerConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
@@ -103,17 +113,17 @@ public class OMAGServerSecuritySyncService
         return outputTopic + securityServerType + defaultOutTopic;
     }
 
-    public VoidResponse enableSecuritySyncService(String userId, String serverName)
+    public VoidResponse enableSecurityOfficerService(String userId, String serverName)
     {
 
-        final String methodName = "enableSecuritySyncService";
+        final String methodName = "enableSecurityOfficerService";
         VoidResponse response = new VoidResponse();
 
         try
         {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
-            SecuritySyncConfig securitySyncConfig = serverConfig.getSecuritySyncConfig();
-            this.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
+            SecurityOfficerConfig securityOfficerConfig = serverConfig.getSecurityOfficerConfig();
+            this.setSecurityOfficerConfig(userId, serverName, securityOfficerConfig);
         }
         catch (OMAGInvalidParameterException error)
         {

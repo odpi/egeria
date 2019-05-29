@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.DiscoverySer
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
@@ -34,6 +35,7 @@ import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.Steward
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.securityofficerservices.registration.SecurityOfficerOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 
 import java.util.ArrayList;
@@ -151,6 +153,7 @@ public class OMAGServerOperationalServices
             DiscoveryServerConfig     discoveryServerConfig     = configuration.getDiscoveryServerConfig();
             OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
+            SecurityOfficerConfig     securityOfficerConfig     = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
 
@@ -160,6 +163,7 @@ public class OMAGServerOperationalServices
                     (discoveryServerConfig == null) &&
                     (openLineageConfig == null) &&
                     (securitySyncConfig == null) &&
+                    (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
                     (virtualizationConfig == null))
             {
@@ -461,8 +465,27 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceName());
             }
 
+            /*
+             * Initialize the Security Officer Services.  This is a governance server for maintaining the configuration
+             * in security officer engines.
+             */
+            if (securityOfficerConfig != null)
+            {
+                SecurityOfficerOperationalServices operationalSecurityOfficer = new SecurityOfficerOperationalServices(configuration.getLocalServerName(),
+                                                                                                              configuration.getLocalServerType(),
+                                                                                                              configuration.getOrganizationName(),
+                                                                                                              configuration.getLocalServerUserId(),
+                                                                                                              configuration.getLocalServerURL(),
+                                                                                                              configuration.getMaxPageSize());
+                instance.setOperationalSecurityOfficerService(operationalSecurityOfficer);
+                operationalSecurityOfficer.initialize(securityOfficerConfig,
+                                                      operationalRepositoryServices.getAuditLog(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
+                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
+                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
+                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
 
-
+                activatedServiceList.add(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName());
+            }
 
             /*
              * Initialize the Virtualization Services.
@@ -590,6 +613,13 @@ public class OMAGServerOperationalServices
             instance.getOperationalSecuritySyncServices().disconnect();
         }
 
+        /*
+         * Shutdown the security officer
+         */
+        if (instance.getOperationalSecurityOfficerService() != null)
+        {
+            instance.getOperationalSecurityOfficerService().disconnect();
+        }
 
         /*
          * Shutdown the virtualizer

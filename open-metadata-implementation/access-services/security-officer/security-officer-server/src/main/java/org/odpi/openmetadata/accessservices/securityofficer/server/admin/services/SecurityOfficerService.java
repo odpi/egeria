@@ -45,7 +45,7 @@ public class SecurityOfficerService {
 
         try {
             response.setSchemaElementEntity(instanceHandler.updateSecurityTagBySchemaElementId(serverName, userId, schemaElementId, securityTag));
-        } catch (UserNotAuthorizedException | RepositoryErrorException | ClassificationErrorException
+        } catch (UserNotAuthorizedException | RepositoryErrorException | ClassificationErrorException | EntityProxyOnlyException
                 | PropertyErrorException | InvalidParameterException | FunctionNotSupportedException | EntityNotKnownException e) {
             exceptionHandler.captureOMRSException(response, e);
         } catch (PropertyServerException e) {
