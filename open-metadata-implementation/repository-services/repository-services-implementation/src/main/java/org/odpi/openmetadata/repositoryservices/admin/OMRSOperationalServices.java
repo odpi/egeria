@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
+import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -737,6 +738,7 @@ public class OMRSOperationalServices
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
+        OMRSRepositoryRESTServices.stopInboundRESTCalls(localServerName);
 
         if (metadataHighwayManager != null)
         {
@@ -767,7 +769,8 @@ public class OMRSOperationalServices
          */
         if (enterpriseConnectorManager != null)
         {
-            try {
+            try
+            {
                 enterpriseConnectorManager.disconnect();
             }
             catch (Throwable  error)

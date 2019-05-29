@@ -114,6 +114,16 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Prevent new incoming requests for a server.
+     *
+     * @param localServerName name of the server to stop
+     */
+    public static void stopInboundRESTCalls(String   localServerName)
+    {
+        new OMRSRepositoryServicesInstanceHandler(serviceName).removeInstance(localServerName);
+    }
+
+    /**
      * Return the URL for the requested instance.
      *
      * @param localServerName  name of the local server that the requesting OMRS instance belongs to

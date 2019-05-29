@@ -23,7 +23,6 @@ class OMAGServerInstance
     private List<OMAGServerInstanceHistory>        serverHistory      = new ArrayList<>();
     private Map<String, OMAGServerServiceInstance> serviceInstanceMap = new HashMap<>();
     private Date                                   serverStartTime    = new Date();
-    private Date                                   serverEndTime      = null;
     private OpenMetadataServerSecurityConnector    securityValidator  = null;
 
 
@@ -54,7 +53,6 @@ class OMAGServerInstance
     {
         serviceInstanceMap = new HashMap<>();
         serverStartTime    = new Date();
-        serverEndTime      = null;
         securityValidator  = null;
     }
 
@@ -97,7 +95,12 @@ class OMAGServerInstance
      */
     synchronized Date getServerEndTime()
     {
-        return serverEndTime;
+        if (serverStartTime == null)
+        {
+            serverHistory.get(serverHistory.size() - 1);
+        }
+
+        return null;
     }
 
 
@@ -231,8 +234,8 @@ class OMAGServerInstance
     {
         if (serviceInstanceMap.isEmpty())
         {
-            this.serverEndTime = new Date();
-            this.serverHistory.add(new OMAGServerInstanceHistory(this.serverStartTime, this.serverEndTime));
+            this.serverHistory.add(new OMAGServerInstanceHistory(this.serverStartTime, new Date()));
+            this.serverStartTime = null;
         }
         else
         {
