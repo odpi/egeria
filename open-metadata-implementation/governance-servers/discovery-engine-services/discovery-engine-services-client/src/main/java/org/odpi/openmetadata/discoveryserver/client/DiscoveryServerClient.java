@@ -4,7 +4,13 @@ package org.odpi.openmetadata.discoveryserver.client;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestRequestBody;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
@@ -17,17 +23,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * DiscoveryEngineClient is a client-side library for calling a specific discovery engine.
+ * DiscoveryServerClient is a client-side library for calling a specific discovery engine.
  */
-public class DiscoveryEngineClient extends DiscoveryEngine
+public class DiscoveryServerClient extends DiscoveryEngine
 {
-    private String serverPlatformRootURL;
-    private String serverName;
-    private String discoveryEngineGUID;
+    private String              serverName;               /* Initialized in constructor */
+    private String              serverPlatformRootURL;    /* Initialized in constructor */
+    private String              discoveryEngineGUID;      /* Initialized in constructor */
+    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -38,13 +44,39 @@ public class DiscoveryEngineClient extends DiscoveryEngine
      * @param discoveryEngineGUID the unique identifier of the discovery engine.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public DiscoveryEngineClient(String serverPlatformRootURL,
+    public DiscoveryServerClient(String serverPlatformRootURL,
                                  String serverName,
                                  String discoveryEngineGUID) throws InvalidParameterException
     {
         this.serverPlatformRootURL = serverPlatformRootURL;
         this.serverName = serverName;
         this.discoveryEngineGUID = discoveryEngineGUID;
+
+        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL);
+    }
+
+
+    /**
+     * Create a client-side object for calling a discovery engine.
+     *
+     * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
+     * @param serverName the name of the discovery server where the discovery engine is running
+     * @param discoveryEngineGUID the unique identifier of the discovery engine.
+     * @param userId user id for the HTTP request
+     * @param password password for the HTTP request
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     */
+    public DiscoveryServerClient(String serverPlatformRootURL,
+                                 String serverName,
+                                 String discoveryEngineGUID,
+                                 String userId,
+                                 String password) throws InvalidParameterException
+    {
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.serverName = serverName;
+        this.discoveryEngineGUID = discoveryEngineGUID;
+
+        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -121,9 +153,42 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                              UserNotAuthorizedException,
                                                                              DiscoveryEngineException
     {
-        return null;
-    }
+        final String   methodName = "discoverAsset";
+        final String   assetGUIDParameterName = "assetGUID";
+        final String   assetTypeParameterName = "assetType";
+        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/asset-types/{3}/assets/{4}";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+        invalidParameterHandler.validateName(assetType, assetTypeParameterName, methodName);
+
+        DiscoveryRequestRequestBody requestBody = new DiscoveryRequestRequestBody();
+
+        requestBody.setAnalysisParameters(analysisParameters);
+        requestBody.setAnnotationTypes(annotationTypes);
+
+        try
+        {
+            GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                      serverPlatformRootURL + urlTemplate,
+                                                                      requestBody,
+                                                                      serverName,
+                                                                      userId,
+                                                                      discoveryEngineGUID,
+                                                                      assetType,
+                                                                      assetGUID);
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+            return restResult.getGUID();
+        }
+        catch (PropertyServerException  exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
+    }
 
 
     /**
@@ -143,6 +208,13 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                             UserNotAuthorizedException,
                                                                                             DiscoveryEngineException
     {
+        DiscoveryAnalysisReport report = this.getDiscoveryReport(userId, discoveryRequestGUID);
+
+        if (report != null)
+        {
+            return report.getDiscoveryRequestStatus();
+        }
+
         return null;
     }
 
@@ -164,7 +236,33 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                      UserNotAuthorizedException,
                                                                                      DiscoveryEngineException
     {
-        return null;
+        final String   methodName = "getDiscoveryReport";
+        final String   reportGUIDParameterName = "discoveryRequestGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryRequestGUID, reportGUIDParameterName, methodName);
+
+        try
+        {
+            DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportGetRESTCall(methodName,
+                                                                                                           serverPlatformRootURL + urlTemplate,
+                                                                                                           serverName,
+                                                                                                           userId,
+                                                                                                           discoveryEngineGUID,
+                                                                                                           discoveryRequestGUID);
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+            return restResult.getAnalysisReport();
+
+        }
+        catch (PropertyServerException  exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
     }
 
 
@@ -189,7 +287,35 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                            UserNotAuthorizedException,
                                                                                            DiscoveryEngineException
     {
-        return null;
+        final String   methodName = "getDiscoveryReportAnnotations";
+        final String   reportGUIDParameterName = "discoveryReportGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}/annotations?startingFrom={4}&maximumResults={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryRequestGUID, reportGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        try
+        {
+            AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         discoveryEngineGUID,
+                                                                                         discoveryRequestGUID,
+                                                                                         Integer.toString(startingFrom),
+                                                                                         Integer.toString(maximumResults));
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+            return restResult.getAnnotations();
+        }
+        catch (PropertyServerException  exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
     }
 
 
@@ -214,8 +340,37 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                                      UserNotAuthorizedException,
                                                                                      DiscoveryEngineException
     {
-        return null;
+        final String methodName                  = "getExtendedAnnotations";
+        final String annotationGUIDParameterName = "annotationGUID";
+        final String urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/annotations/{3}/extended-annotations?startingFrom={4}&maximumResults={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        try
+        {
+            AnnotationListResponse restResult = restClient.callAnnotationListGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         discoveryEngineGUID,
+                                                                                         annotationGUID,
+                                                                                         Integer.toString(startingFrom),
+                                                                                         Integer.toString(maximumResults));
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+            return restResult.getAnnotations();
+        }
+        catch (PropertyServerException exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
     }
+
 
 
     /**
@@ -236,6 +391,31 @@ public class DiscoveryEngineClient extends DiscoveryEngine
                                                                             UserNotAuthorizedException,
                                                                             DiscoveryEngineException
     {
-        return null;
+        final String   methodName = "getAnnotation";
+        final String   annotationGUIDParameterName = "annotationGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/annotations/{3}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
+
+        try
+        {
+            AnnotationResponse restResult = restClient.callAnnotationGetRESTCall(methodName,
+                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 discoveryEngineGUID,
+                                                                                 annotationGUID);
+
+            exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+            return restResult.getAnnotation();
+        }
+        catch (PropertyServerException exception)
+        {
+            throw new DiscoveryEngineException(exception);
+        }
     }
 }

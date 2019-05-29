@@ -4,62 +4,30 @@ package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryRequestStatusResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Map;
 
 /**
- * DiscoveryRESTServices provides the external service implementation for a discovery engine.
+ * DiscoveryServerRESTServices provides the external service implementation for a discovery engine.
  * Each method contains the discovery server name and the discovery engine identifier (guid).
- * The DiscoveryRESTServices locates the correct discovery engine instance within the correct
+ * The DiscoveryServerRESTServices locates the correct discovery engine instance within the correct
  * discovery server instance and delegates the request.
  */
-public class DiscoveryRESTServices
+public class DiscoveryServerRESTServices
 {
     private static DiscoveryServerInstanceHandler instanceHandler = new DiscoveryServerInstanceHandler();
 
-    private static final Logger log = LoggerFactory.getLogger(DiscoveryRESTServices.class);
+    private static final Logger log = LoggerFactory.getLogger(DiscoveryServerRESTServices.class);
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
-    /**
-     * Request the execution of a discovery service to explore a specific asset.
-     *
-     * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
-     * @param userId identifier of calling user
-     * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
-     *
-     * @return unique id for the discovery request or
-     *
-     *  InvalidParameterException the discovery engine is not recognized.
-     *  DiscoveryEngineException there was a problem detected by the discovery engine.
-     */
-    public  GUIDResponse discoverAsset(String   serverName,
-                                       String   discoveryEngineGUID,
-                                       String   userId,
-                                       String   assetGUID,
-                                       String   assetType)
-    {
-        return this.discoverAsset(serverName, discoveryEngineGUID, userId, assetGUID, assetType, null, null);
-    }
-
 
     /**
      * Request the execution of a discovery service to explore a specific asset.
@@ -69,7 +37,7 @@ public class DiscoveryRESTServices
      * @param userId identifier of calling user
      * @param assetGUID identifier of the asset to analyze.
      * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
-     * @param analysisParameters name value properties to control the analysis
+     * @param requestBody containing analysisParameters and annotationTypes
      *
      * @return unique id for the discovery request or
      *
@@ -77,41 +45,12 @@ public class DiscoveryRESTServices
      *  UserNotAuthorizedException user not authorized to issue this request or
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  GUIDResponse discoverAsset(String              serverName,
-                                       String              discoveryEngineGUID,
-                                       String              userId,
-                                       String              assetGUID,
-                                       String              assetType,
-                                       Map<String, String> analysisParameters)
-    {
-        return this.discoverAsset(serverName, discoveryEngineGUID, userId, assetGUID, assetType, analysisParameters, null);
-    }
-
-
-    /**
-     * Request the execution of a discovery service to explore a specific asset.
-     *
-     * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
-     * @param userId identifier of calling user
-     * @param assetGUID identifier of the asset to analyze.
-     * @param assetType identifier of the type of asset to analyze - this determines which discovery service to run.
-     * @param analysisParameters name value properties to control the analysis
-     * @param annotationTypes list of the types of annotations to produce (and no others)
-     *
-     * @return unique id for the discovery request or
-     *
-     *  InvalidParameterException one of the parameters is null or invalid or
-     *  UserNotAuthorizedException user not authorized to issue this request or
-     *  DiscoveryEngineException there was a problem detected by the discovery engine.
-     */
-    public  GUIDResponse discoverAsset(String              serverName,
-                                       String              discoveryEngineGUID,
-                                       String              userId,
-                                       String              assetGUID,
-                                       String              assetType,
-                                       Map<String, String> analysisParameters,
-                                       List<String>        annotationTypes)
+    public  GUIDResponse discoverAsset(String                      serverName,
+                                       String                      discoveryEngineGUID,
+                                       String                      userId,
+                                       String                      assetGUID,
+                                       String                      assetType,
+                                       DiscoveryRequestRequestBody requestBody)
     {
         final String        methodName = "discoverAsset";
 
@@ -127,8 +66,18 @@ public class DiscoveryRESTServices
                                                                                        discoveryEngineGUID,
                                                                                        methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.discoverAsset(assetGUID, assetType, analysisParameters, annotationTypes));
+            if (requestBody == null)
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+            else
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.discoverAsset(assetGUID,
+                                                       assetType,
+                                                       requestBody.getAnalysisParameters(),
+                                                       requestBody.getAnnotationTypes()));
+            }
         }
         catch (InvalidParameterException error)
         {
@@ -154,28 +103,6 @@ public class DiscoveryRESTServices
 
 
     /**
-     * Request the status of an executing discovery request.
-     *
-     * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
-     * @param serverName name of the discovery server.
-     * @param discoveryEngineGUID unique identifier of the discovery engine.
-     * @param discoveryRequestGUID identifier of the discovery request.
-     *
-     * @return status enum or
-     *
-     *  DiscoveryEngineException there was a problem detected by the discovery engine.
-     */
-    public DiscoveryRequestStatusResponse getDiscoveryStatus(String   serverName,
-                                                             String   discoveryEngineGUID,
-                                                             String   userId,
-                                                             String   discoveryRequestGUID)
-    {
-        return null;
-    }
-
-
-    /**
      * Request the discovery report for a discovery request that has completed.
      *
      * @param serverName name of the discovery server.
@@ -191,7 +118,43 @@ public class DiscoveryRESTServices
                                                               String   userId,
                                                               String   discoveryRequestGUID)
     {
-        return null;
+        final String        methodName = "getDiscoveryReport";
+
+        log.debug("Calling method: " + methodName);
+
+        DiscoveryAnalysisReportResponse response = new DiscoveryAnalysisReportResponse();
+        OMRSAuditLog                    auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineGUID,
+                                                                                       methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAnalysisReport(handler.getDiscoveryReport(discoveryRequestGUID));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -215,7 +178,43 @@ public class DiscoveryRESTServices
                                                                 int      startingFrom,
                                                                 int      maximumResults)
     {
-        return null;
+        final String        methodName = "getDiscoveryReportAnnotations";
+
+        log.debug("Calling method: " + methodName);
+
+        AnnotationListResponse response = new AnnotationListResponse();
+        OMRSAuditLog           auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineGUID,
+                                                                                       methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAnnotations(handler.getDiscoveryReportAnnotations(discoveryRequestGUID, startingFrom, maximumResults));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -239,7 +238,43 @@ public class DiscoveryRESTServices
                                                          int      startingFrom,
                                                          int      maximumResults)
     {
-        return null;
+        final String        methodName = "getExtendedAnnotations";
+
+        log.debug("Calling method: " + methodName);
+
+        AnnotationListResponse response = new AnnotationListResponse();
+        OMRSAuditLog           auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineGUID,
+                                                                                       methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAnnotations(handler.getExtendedAnnotations(annotationGUID, startingFrom, maximumResults));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -260,6 +295,42 @@ public class DiscoveryRESTServices
                                             String   userId,
                                             String   annotationGUID)
     {
-        return null;
+        final String        methodName = "getAnnotation";
+
+        log.debug("Calling method: " + methodName);
+
+        AnnotationResponse response = new AnnotationResponse();
+        OMRSAuditLog       auditLog = null;
+
+        try
+        {
+            DiscoveryEngineHandler handler = instanceHandler.getDiscoveryEngineHandler(userId,
+                                                                                       serverName,
+                                                                                       discoveryEngineGUID,
+                                                                                       methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAnnotation(handler.getAnnotation(annotationGUID));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 }

@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.client;
+package org.odpi.openmetadata.commonservices.odf.metadatamanagement.client;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
@@ -57,9 +57,9 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @return DiscoveryEnginePropertiesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    DiscoveryEnginePropertiesResponse callDiscoveryEnginePropertiesGetRESTCall(String    methodName,
-                                                                               String    urlTemplate,
-                                                                               Object... params) throws PropertyServerException
+    public DiscoveryEnginePropertiesResponse callDiscoveryEnginePropertiesGetRESTCall(String    methodName,
+                                                                                      String    urlTemplate,
+                                                                                      Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, DiscoveryEnginePropertiesResponse.class, urlTemplate, params);
     }
@@ -75,9 +75,9 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @return DiscoveryEngineListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    DiscoveryEngineListResponse callDiscoveryEngineListGetRESTCall(String    methodName,
-                                                                   String    urlTemplate,
-                                                                   Object... params) throws PropertyServerException
+    public DiscoveryEngineListResponse callDiscoveryEngineListGetRESTCall(String    methodName,
+                                                                          String    urlTemplate,
+                                                                          Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, DiscoveryEngineListResponse.class, urlTemplate, params);
     }
@@ -93,9 +93,9 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @return DiscoveryServicePropertiesResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    DiscoveryServicePropertiesResponse callDiscoveryServicePropertiesGetRESTCall(String    methodName,
-                                                                                 String    urlTemplate,
-                                                                                 Object... params) throws PropertyServerException
+    public DiscoveryServicePropertiesResponse callDiscoveryServicePropertiesGetRESTCall(String    methodName,
+                                                                                        String    urlTemplate,
+                                                                                        Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, DiscoveryServicePropertiesResponse.class, urlTemplate, params);
     }
@@ -111,9 +111,9 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @return DiscoveryEngineListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    DiscoveryServiceListResponse callDiscoveryServiceListGetRESTCall(String    methodName,
-                                                                     String    urlTemplate,
-                                                                     Object... params) throws PropertyServerException
+    public DiscoveryServiceListResponse callDiscoveryServiceListGetRESTCall(String    methodName,
+                                                                            String    urlTemplate,
+                                                                            Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, DiscoveryServiceListResponse.class, urlTemplate, params);
     }
@@ -129,10 +129,124 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @return RegisteredDiscoveryServiceResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    RegisteredDiscoveryServiceResponse callRegisteredDiscoveryServiceGetRESTCall(String    methodName,
-                                                                                 String    urlTemplate,
-                                                                                 Object... params) throws PropertyServerException
+    public RegisteredDiscoveryServiceResponse callRegisteredDiscoveryServiceGetRESTCall(String    methodName,
+                                                                                        String    urlTemplate,
+                                                                                        Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, RegisteredDiscoveryServiceResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a DiscoveryAnalysisReportResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportResponse callDiscoveryAnalysisReportGetRESTCall(String    methodName,
+                                                                                  String    urlTemplate,
+                                                                                  Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, DiscoveryAnalysisReportResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a DiscoveryAnalysisReportResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportResponse callDiscoveryAnalysisReportPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params) throws PropertyServerException
+    {
+        return this.callPostRESTCall(methodName, DiscoveryAnalysisReportResponse.class, urlTemplate, requestBody, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an AnnotationListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationListResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationListResponse callAnnotationListGetRESTCall(String    methodName,
+                                                                String    urlTemplate,
+                                                                Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, AnnotationListResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationListResponse callAnnotationListPostRESTCall(String    methodName,
+                                                                 String    urlTemplate,
+                                                                 Object    requestBody,
+                                                                 Object... params) throws PropertyServerException
+    {
+        return this.callPostRESTCall(methodName, AnnotationListResponse.class, urlTemplate, requestBody, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationResponse callAnnotationGetRESTCall(String    methodName,
+                                                        String    urlTemplate,
+                                                        Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, AnnotationResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns an AnnotationResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AnnotationResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public AnnotationResponse callAnnotationPostRESTCall(String    methodName,
+                                                         String    urlTemplate,
+                                                         Object    requestBody,
+                                                         Object... params) throws PropertyServerException
+    {
+        return this.callPostRESTCall(methodName, AnnotationResponse.class, urlTemplate, requestBody, params);
     }
 }

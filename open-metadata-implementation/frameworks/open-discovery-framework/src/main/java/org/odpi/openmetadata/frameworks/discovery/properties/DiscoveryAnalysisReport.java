@@ -15,27 +15,27 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DiscoveryReport describes the header information for a discovery report
+ * DiscoveryAnalysisReport describes the header information for a discovery report
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryReport extends Referenceable
+public class DiscoveryAnalysisReport extends Referenceable
 {
-    protected String              displayName           = null;
-    protected String              description           = null;
-    protected Date                creationDate          = null;
-    protected Map<String, String> analysisParameters    = null;
-
-    protected String              assetGUID             = null;
-    protected String              discoveryEngineGUID   = null;
-    protected String              discoveryServiceGUID  = null;
+    protected String                 displayName            = null;
+    protected String                 description            = null;
+    protected Date                   creationDate           = null;
+    protected Map<String, String>    analysisParameters     = null;
+    protected DiscoveryRequestStatus discoveryRequestStatus = null;
+    protected String                 assetGUID              = null;
+    protected String                 discoveryEngineGUID    = null;
+    protected String                 discoveryServiceGUID   = null;
 
 
     /**
      * Default constructor
      */
-    public DiscoveryReport()
+    public DiscoveryAnalysisReport()
     {
         super();
     }
@@ -46,7 +46,7 @@ public class DiscoveryReport extends Referenceable
      *
      * @param template object to copy
      */
-    public DiscoveryReport(DiscoveryReport template)
+    public DiscoveryAnalysisReport(DiscoveryAnalysisReport template)
     {
         super(template);
 
@@ -56,6 +56,7 @@ public class DiscoveryReport extends Referenceable
             description = template.getDescription();
             creationDate = template.getCreationDate();
             analysisParameters = template.getAnalysisParameters();
+            discoveryRequestStatus = template.getDiscoveryRequestStatus();
             assetGUID = template.getAssetGUID();
             discoveryEngineGUID = template.getDiscoveryEngineGUID();
             discoveryServiceGUID = template.getDiscoveryServiceGUID();
@@ -152,6 +153,28 @@ public class DiscoveryReport extends Referenceable
 
 
     /**
+     * Return the status of the discovery process.
+     *
+     * @return status enum
+     */
+    public DiscoveryRequestStatus getDiscoveryRequestStatus()
+    {
+        return discoveryRequestStatus;
+    }
+
+
+    /**
+     * Set up the status of the discovery process.
+     *
+     * @param discoveryRequestStatus status enum
+     */
+    public void setDiscoveryRequestStatus(DiscoveryRequestStatus discoveryRequestStatus)
+    {
+        this.discoveryRequestStatus = discoveryRequestStatus;
+    }
+
+
+    /**
      * Return the unique identifier of the asset that was analyzed.
      *
      * @return unique identifier (guid)
@@ -225,11 +248,12 @@ public class DiscoveryReport extends Referenceable
     @Override
     public String toString()
     {
-        return "DiscoveryReport{" +
+        return "DiscoveryAnalysisReport{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
                 ", creationDate=" + creationDate +
                 ", analysisParameters=" + analysisParameters +
+                ", discoveryRequestStatus=" + discoveryRequestStatus +
                 ", assetGUID='" + assetGUID + '\'' +
                 ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
                 ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
@@ -266,11 +290,12 @@ public class DiscoveryReport extends Referenceable
         {
             return false;
         }
-        DiscoveryReport that = (DiscoveryReport) objectToCompare;
+        DiscoveryAnalysisReport that = (DiscoveryAnalysisReport) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getCreationDate(), that.getCreationDate()) &&
                 Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
+                Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
                 Objects.equals(getAssetGUID(), that.getAssetGUID()) &&
                 Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
                 Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID());
@@ -286,7 +311,7 @@ public class DiscoveryReport extends Referenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCreationDate(),
-                            getAnalysisParameters(), getAssetGUID(), getDiscoveryEngineGUID(),
+                            getAnalysisParameters(), getDiscoveryRequestStatus(), getAssetGUID(), getDiscoveryEngineGUID(),
                             getDiscoveryServiceGUID());
     }
 }

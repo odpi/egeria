@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server;
 import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -14,7 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the DiscoveryEngineAdmin class.
  */
-class DiscoveryEngineServiceInstanceHandler extends OCFOMASServiceInstanceHandler
+class DiscoveryEngineServiceInstanceHandler extends ODFOMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service

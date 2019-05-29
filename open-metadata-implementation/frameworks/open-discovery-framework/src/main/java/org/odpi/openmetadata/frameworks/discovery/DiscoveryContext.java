@@ -1,11 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.discovery.properties;
+package org.odpi.openmetadata.frameworks.discovery;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 
 import java.util.Date;
@@ -13,41 +9,63 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * DiscoveryContext provides the exchange area for annotations discovered from analysing
  * a specific asset.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class DiscoveryContext extends PropertyBase
 {
-    private String              discoveryRequestGUID = null;
-    private String              reportQualifiedName  = null;
-    private String              reportDisplayName    = null;
-    private String              reportDescription    = null;
-    private Date                creationDate         = null;
-    private Map<String, String> analysisParameters   = null;
-    private Connection          assetConnection      = null;
-    private List<Annotation>    existingAnnotations  = null;
-    private List<Annotation>    newAnnotations       = null;
+    protected String                   userId;
+    protected String                   assetGUID;
+    protected String                   discoveryReportGUID;
+    protected Map<String, String>      analysisParameters;
+    protected List<String>             requestedAnnotationTypes;
+
+    protected DiscoveryAssetStore      assetStore;
+    protected DiscoveryAnnotationStore annotationStore;
+
+    protected Date                     creationDate        = new Date();
+
+    protected String                   reportQualifiedName = null;
+    protected String                   reportDisplayName   = null;
+    protected String                   reportDescription   = null;
 
 
     /**
-     * Default constructor
+     * Constructor sets up the key parameters for accessing the annotations store.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset that the annotations should be attached to
+     * @param discoveryReportGUID unique identifier of the discovery request that is used to identifier the
+     *                            discovery report.
+     * @param analysisParameters name-value properties to control the discovery service
+     * @param requestedAnnotationTypes annotation types to create
+     * @param assetStore discovery asset store for the discovery service
+     * @param annotationStore annotation store for the discovery service
      */
-    public DiscoveryContext()
+    public    DiscoveryContext(String                    userId,
+                               String                    assetGUID,
+                               String                    discoveryReportGUID,
+                               Map<String, String>       analysisParameters,
+                               List<String>              requestedAnnotationTypes,
+                               DiscoveryAssetStore       assetStore,
+                               DiscoveryAnnotationStore  annotationStore)
     {
         super();
+
+        this.userId = userId;
+        this.assetGUID = assetGUID;
+        this.discoveryReportGUID = discoveryReportGUID;
+        this.analysisParameters = analysisParameters;
+        this.requestedAnnotationTypes = requestedAnnotationTypes;
+        this.assetStore = assetStore;
+        this.annotationStore = annotationStore;
     }
 
 
     /**
-     * Copy/clone Constructor the resulting object will return true if tested with this.equals(template) as
-     * long as the template object is not null;
+     * Copy/clone Constructor
      *
      * @param template object being copied
      */
@@ -57,16 +75,31 @@ public class DiscoveryContext extends PropertyBase
 
         if (template != null)
         {
-            discoveryRequestGUID = template.getDiscoveryRequestGUID();
+            userId = template.userId;
+            assetGUID = template.getAssetGUID();
+            discoveryReportGUID = template.getDiscoveryReportGUID();
+            analysisParameters = template.getAnalysisParameters();
+            requestedAnnotationTypes = template.getRequestedAnnotationTypes();
+            assetStore = template.getAssetStore();
+            annotationStore = template.getAnnotationStore();
+
+            creationDate = template.getCreationDate();
+
             reportQualifiedName = template.getReportQualifiedName();
             reportDisplayName = template.getReportDisplayName();
             reportDescription = template.getReportDescription();
-            creationDate = template.getCreationDate();
-            analysisParameters = template.getAnalysisParameters();
-            assetConnection = template.getAssetConnection();
-            existingAnnotations = template.getExistingAnnotations();
-            newAnnotations = template.getNewAnnotations();
         }
+    }
+
+
+    /**
+     * Return the unique identifier of the asset being discovered.
+     *
+     * @return string guid
+     */
+    public String getAssetGUID()
+    {
+        return assetGUID;
     }
 
 
@@ -76,21 +109,65 @@ public class DiscoveryContext extends PropertyBase
      *
      * @return unique identifier (guid) of the new discovery report.
      */
-    public String getDiscoveryRequestGUID()
+    public String getDiscoveryReportGUID()
     {
-        return discoveryRequestGUID;
+        return discoveryReportGUID;
     }
 
 
     /**
-     * Set up the report identifier for this discovery context.  Any new annotations added to tis discovery context
-     * will be linked to this report.
+     * Return the properties that hold the parameters used to drive the discovery service's analysis.
      *
-     * @param discoveryRequestGUID unique identifier (guid) of the new discovery report.
+     * @return AdditionalProperties object storing the analysis parameters
      */
-    public void setDiscoveryRequestGUID(String discoveryRequestGUID)
+    public Map<String, String> getAnalysisParameters()
     {
-        this.discoveryRequestGUID = discoveryRequestGUID;
+        return analysisParameters;
+    }
+
+
+    /**
+     * Return the list of annotation types required by the requester (null means all types available)
+     *
+     * @return list of type names
+     */
+    public List<String> getRequestedAnnotationTypes()
+    {
+        return requestedAnnotationTypes;
+    }
+
+
+    /**
+     * Return the asset store for the discovery engine.  This is able to provide a connector to the asset
+     * configured with the properties of the asset from a property server.
+     *
+     * @return asset store
+     */
+    public DiscoveryAssetStore getAssetStore()
+    {
+        return assetStore;
+    }
+
+
+    /**
+     * Return the annotation store for the discovery engine.  This is where the annotations are stored and
+     * retrieved from.
+     *
+     * @return annotation store
+     */
+    public DiscoveryAnnotationStore getAnnotationStore()
+    {
+        return annotationStore;
+    }
+
+
+    /**
+     * Return the creation date for the discovery analysis report that will result from this discovery request.
+     *
+     * @return Date that the report was created.
+     */
+    public Date getCreationDate() {
+        return creationDate;
     }
 
 
@@ -107,6 +184,7 @@ public class DiscoveryContext extends PropertyBase
 
     /**
      * Set up the unique name of the discovery analysis report that will result from this discovery request.
+     * The discovery engine will set up a default fully-qualified name.  This method enables it to be over-ridden.
      *
      * @param reportName  String report name
      */
@@ -129,6 +207,7 @@ public class DiscoveryContext extends PropertyBase
 
     /**
      * Set up the display name of the discovery analysis report that will result from this discovery request.
+     * The default name is null.
      *
      * @param reportName  String report name
      */
@@ -140,6 +219,7 @@ public class DiscoveryContext extends PropertyBase
 
     /**
      * Return the description for the discovery analysis report that will result from this discovery request.
+     * The default value is null.
      *
      * @return String report description
      */
@@ -161,115 +241,6 @@ public class DiscoveryContext extends PropertyBase
 
 
     /**
-     * Return the creation date for the discovery analysis report that will result from this discovery request.
-     *
-     * @return Date that the annotation was created.
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-
-    /**
-     * Set up the creation date for discovery analysis report that will result from this discovery request.
-     *
-     * @param creationDate Date that the annotation was created.
-     */
-    public void setCreationDate(Date creationDate)
-    {
-        this.creationDate = creationDate;
-    }
-
-
-    /**
-     * Return the properties that hold the parameters used to drive the discovery service's analysis.
-     *
-     * @return AdditionalProperties object storing the analysis parameters
-     */
-    public Map<String, String> getAnalysisParameters()
-    {
-        return analysisParameters;
-    }
-
-
-    /**
-     * Set up the properties that hold the parameters used to drive the discovery service's analysis.
-     *
-     * @param analysisParameters AdditionalProperties object storing the analysis parameters
-     */
-    public void setAnalysisParameters(Map<String, String> analysisParameters)
-    {
-        this.analysisParameters = analysisParameters;
-    }
-
-
-    /**
-     * Return the connection for the connector to the asset.
-     *
-     * @return Connection object
-     */
-    public Connection getAssetConnection()
-    {
-        return assetConnection;
-    }
-
-
-    /**
-     * Set up the connection for the connector to the asset.
-     *
-     * @param assetConnection Connection object
-     */
-    public void setAssetConnection(Connection assetConnection)
-    {
-        this.assetConnection = assetConnection;
-    }
-
-
-    /**
-     * Return the list of current annotations associated with the asset.
-     *
-     * @return list of Annotation objects
-     */
-    public List<Annotation> getExistingAnnotations()
-    {
-        return existingAnnotations;
-    }
-
-
-    /**
-     * Set up the list of current annotations associated with the asset.
-     *
-     * @param existingAnnotations list of Annotation objects
-     */
-    public void setExistingAnnotations(List<Annotation> existingAnnotations)
-    {
-        this.existingAnnotations = existingAnnotations;
-    }
-
-
-    /**
-     * Return the list of annotation object created (so far) by this discovery service.
-     *
-     * @return list of Annotation objects
-     */
-    public synchronized List<Annotation> getNewAnnotations()
-    {
-        return newAnnotations;
-    }
-
-
-    /**
-     * Set up the list of annotation object created (so far) by this discovery service.
-     *
-     * @param newAnnotations list of Annotation objects
-     */
-    public synchronized void setNewAnnotations(List<Annotation> newAnnotations)
-    {
-        this.newAnnotations = newAnnotations;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -278,15 +249,17 @@ public class DiscoveryContext extends PropertyBase
     public String toString()
     {
         return "DiscoveryContext{" +
-                "discoveryRequestGUID='" + discoveryRequestGUID + '\'' +
+                "userId='" + userId + '\'' +
+                ", assetGUID='" + assetGUID + '\'' +
+                ", discoveryReportGUID='" + discoveryReportGUID + '\'' +
+                ", analysisParameters=" + analysisParameters +
+                ", requestedAnnotationTypes=" + requestedAnnotationTypes +
+                ", assetStore=" + assetStore +
+                ", annotationStore=" + annotationStore +
+                ", creationDate=" + creationDate +
                 ", reportQualifiedName='" + reportQualifiedName + '\'' +
                 ", reportDisplayName='" + reportDisplayName + '\'' +
                 ", reportDescription='" + reportDescription + '\'' +
-                ", creationDate=" + creationDate +
-                ", analysisParameters=" + analysisParameters +
-                ", assetConnection=" + assetConnection +
-                ", existingAnnotations=" + existingAnnotations +
-                ", newAnnotations=" + newAnnotations +
                 '}';
     }
 
@@ -300,7 +273,6 @@ public class DiscoveryContext extends PropertyBase
     @Override
     public boolean equals(Object objectToCompare)
     {
-
         if (this == objectToCompare)
         {
             return true;
@@ -310,15 +282,17 @@ public class DiscoveryContext extends PropertyBase
             return false;
         }
         DiscoveryContext that = (DiscoveryContext) objectToCompare;
-        return Objects.equals(getDiscoveryRequestGUID(), that.getDiscoveryRequestGUID()) &&
+        return Objects.equals(userId, that.userId) &&
+                Objects.equals(getAssetGUID(), that.getAssetGUID()) &&
+                Objects.equals(getDiscoveryReportGUID(), that.getDiscoveryReportGUID()) &&
+                Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
+                Objects.equals(getRequestedAnnotationTypes(), that.getRequestedAnnotationTypes()) &&
+                Objects.equals(getAssetStore(), that.getAssetStore()) &&
+                Objects.equals(getAnnotationStore(), that.getAnnotationStore()) &&
+                Objects.equals(getCreationDate(), that.getCreationDate()) &&
                 Objects.equals(getReportQualifiedName(), that.getReportQualifiedName()) &&
                 Objects.equals(getReportDisplayName(), that.getReportDisplayName()) &&
-                Objects.equals(getReportDescription(), that.getReportDescription()) &&
-                Objects.equals(getCreationDate(), that.getCreationDate()) &&
-                Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
-                Objects.equals(getAssetConnection(), that.getAssetConnection()) &&
-                Objects.equals(getExistingAnnotations(), that.getExistingAnnotations()) &&
-                Objects.equals(getNewAnnotations(), that.getNewAnnotations());
+                Objects.equals(getReportDescription(), that.getReportDescription());
     }
 
 
@@ -330,8 +304,8 @@ public class DiscoveryContext extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getDiscoveryRequestGUID(), getReportQualifiedName(), getReportDisplayName(),
-                            getReportDescription(), getCreationDate(), getAnalysisParameters(), getAssetConnection(),
-                            getExistingAnnotations(), getNewAnnotations());
+        return Objects.hash(userId, getAssetGUID(), getDiscoveryReportGUID(), getAnalysisParameters(),
+                            getRequestedAnnotationTypes(), getAssetStore(), getAnnotationStore(), getCreationDate(),
+                            getReportQualifiedName(), getReportDisplayName(), getReportDescription());
     }
 }
