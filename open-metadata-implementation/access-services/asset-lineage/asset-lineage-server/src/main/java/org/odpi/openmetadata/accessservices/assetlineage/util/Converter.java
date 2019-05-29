@@ -54,38 +54,6 @@ public class Converter {
         return assetDescription;
     }
 
-    public AssetDescription getAssetDescription(EntitySummary entitySummary) {
-        AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGuid(entitySummary.getGUID());
-        assetDescription.setMetadataCollectionId(entitySummary.getMetadataCollectionId());
-
-        assetDescription.setCreatedBy(entitySummary.getCreatedBy());
-        assetDescription.setCreateTime(entitySummary.getCreateTime());
-        assetDescription.setUpdatedBy(entitySummary.getUpdatedBy());
-        assetDescription.setUpdateTime(entitySummary.getUpdateTime());
-        assetDescription.setVersion(entitySummary.getVersion());
-
-        assetDescription.setTypeDefName(entitySummary.getType().getTypeDefName());
-        assetDescription.setTypeDefDescription(entitySummary.getType().getTypeDefDescription());
-        assetDescription.setUrl(entitySummary.getInstanceURL());
-        assetDescription.setStatus(getStatus(entitySummary.getStatus().getName()));
-
-        if (entitySummary.getClassifications() != null && !entitySummary.getClassifications().isEmpty()) {
-            assetDescription.setClassifications(toClassifications(entitySummary.getClassifications()));
-        }
-
-        return assetDescription;
-    }
-
-    public List<Relationship> toRelationships(List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationshipsEntity) {
-        if (relationshipsEntity == null) {
-            return new ArrayList<>();
-        }
-
-        return relationshipsEntity.stream()
-                .map(this::toRelationship)
-                .collect(Collectors.toCollection(() -> new ArrayList<>(relationshipsEntity.size())));
-    }
 
     public Relationship toRelationship(
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
