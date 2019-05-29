@@ -1015,12 +1015,12 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             loggingHandler.addLogMessageToAsset(userId,
-                                                guid,
-                                                connectorInstanceId,
-                                                connectionName,
-                                                connectorType,
-                                                contextId,
-                                                message);
+                    guid,
+                    connectorInstanceId,
+                    connectionName,
+                    connectorType,
+                    contextId,
+                    message);
         }
         catch (InvalidParameterException  error)
         {
