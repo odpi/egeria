@@ -691,14 +691,14 @@ public class ConnectorConfigurationFactory
                                                       String              url,
                                                       Map<String, Object> configurationProperties)
     {
-        final String endpointGUID          = "Ysns8MHD-a79I-AZB2-BdqU-T6u2d3hj4nTS";
+        final String endpointGUID          = "edc55b7b-344f-77c8-7871-e42f08a858fd";
         final String endpointDescription   = "OMRS repository endpoint for Security Sync Server.";
         String endpointName    = "SecuritySyncServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecuritySyncServer.Connection." + serverName;
-        final String connectionGUID        = "GPKHhpfW-xXjN-QbFR-T50l-XMnY68SS2Bip";
+        final String connectionGUID        = "caa5be1e-d51f-8306-fe81-d3853dc7e415";
         final String connectionDescription = "OMRS repository connection to Security Sync Server.";
         return getConnection(configurationProperties, endpoint, connectionName,
                 connectionGUID, connectionDescription, RangerSecurityServiceConnectorProvider.class.getName());
@@ -716,14 +716,14 @@ public class ConnectorConfigurationFactory
                                                          String              url,
                                                          Map<String, Object> configurationProperties)
     {
-        final String endpointGUID          = "P66yJ8gI-gJaZ-VOHw-b5fu-bfdilclSvfm1";
+        final String endpointGUID          = "4e53023d-a3ec-73ae-d4d4-0302147f7834";
         final String endpointDescription   = "OMRS repository endpoint for Security Officer Server.";
         String endpointName    = "SecurityOfficerServer.Endpoint." + serverName;
 
         Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
 
         String connectionName = "SecurityOfficerServer.Connection." + serverName;
-        final String connectionGUID        = "AhQDQ7TX-8OBe-STo6-6FMW-TwHZwpQwpOK0";
+        final String connectionGUID        = "05cfb02d-3e40-ef76-ce93-02f492ce4c4d";
         final String connectionDescription = "OMRS repository connection to Security Officer Server.";
         return getConnection(configurationProperties, endpoint, connectionName,
                 connectionGUID, connectionDescription, SecurityTagConnectorProvider.class.getName());
