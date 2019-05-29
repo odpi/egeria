@@ -1,0 +1,28 @@
+From d5c2af4727e951e56c88be4a63eb96e5c84709f4 Mon Sep 17 00:00:00 2001
+From: Nigel Jones <nigel.l.jones+git@gmail.com>
+Date: Tue, 28 May 2019 16:35:40 +0100
+Subject: [PATCH 5/5] Correction to type/object
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+---
+ addons/models/0000-Area0/0010-base_model.json | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/addons/models/0000-Area0/0010-base_model.json b/addons/models/0000-Area0/0010-base_model.json
+index 23873d59a..f1d29c3a4 100644
+--- a/addons/models/0000-Area0/0010-base_model.json
++++ b/addons/models/0000-Area0/0010-base_model.json
+@@ -327,7 +327,9 @@
+               "typeName": "string"
+             }
+           ]
+-        }
++        },{"name":"object",
++            "typeName": "string"
++          }
+     ],
+     "relationshipDefs": [
+         {
+-- 
+2.21.0
+
