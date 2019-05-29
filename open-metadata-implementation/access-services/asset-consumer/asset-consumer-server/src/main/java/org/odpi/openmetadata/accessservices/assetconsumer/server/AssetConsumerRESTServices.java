@@ -918,12 +918,12 @@ public class AssetConsumerRESTServices
             LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName);
 
             loggingHandler.addLogMessageToAsset(userId,
-                                                guid,
-                                                connectorInstanceId,
-                                                connectionName,
-                                                connectorType,
-                                                contextId,
-                                                message);
+                    guid,
+                    connectorInstanceId,
+                    connectionName,
+                    connectorType,
+                    contextId,
+                    message);
         }
         catch (InvalidParameterException  error)
         {

@@ -42,6 +42,20 @@ A member may make contributions to the Egeria content by submitting a
 Git change (Patch or a Git Pull Request) to the Egeria maintainers.
 See the [Community Guide](./Community-Guide.md).
 
+### Egeria contributors
+
+Egeria contributors are members who have actively taken additional steps to promote and foster the success of Egeria and its acceptance/adoption across the IT community. The activities that contributors engage in might include:
+
+* Provide best practices for information governance, lineage, metadata management and other related disciplines during active discussions and/or development of material
+* Actively participate in meetings and discussions
+* Promote the goals of ODPi Egeria and the benefits of open metadata to the IT community (deliver presentations, informal talks, assist at trade shows, independent blogs, etc.)
+* Assist in the recruitment of new members
+* Contribute where appropriate to documentation and code reviews, specification development, demonstration assets and other artifacts that help move Egeria forward
+
+#### How to become a contributor
+
+Being recognized as an Egeria contributor is done by nomination of an Egeria maintainer with a majority vote of Egeria maintainers to confirm. Once confirmed, you will recieve a badge to add to your social profiles and/or website, and can refer to yourself as an Egeria contributor publically.
+
 ### Egeria project maintainers
 
 Maintainers are members of the Egeria community that have permission to change the Egeria content.
@@ -60,11 +74,12 @@ working on the project (approximately 1.25 business days per week).
 New maintainers are voted onto the maintainers list by the existing maintainers - see
 [maintainer list](./MAINTAINERS.md).
 
-A person wishing to become a maintainer sends a note to the existing maintainers **(need dist list here)**
-listing their Egeria contributions to date and requesting to be made a maintainer.
+A person wishing to become a maintainer sends a note to the existing maintainers at odpi-project-egeria-maintainers@lists.odpi.org, listing their Egeria contributions to date and requesting to be made a maintainer.
 The maintainers vote and if a majority agree then the requester
 is added to the maintainers list and given write access to our
-[git repository](https://github.com/odpi/egeria).
+[git repository](https://github.com/odpi/egeria). 
+
+Once confirmed, you will recieve a badge to add to your social profiles and/or website, and can refer to yourself as an Egeria maintainer publically.
 
 #### When does a maintainer lose maintainer status
 
