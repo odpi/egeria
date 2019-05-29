@@ -20972,7 +20972,7 @@ public class OpenMetadataTypesArchive
         enumDef.setDefaultValue(elementDef);
 
         final int    element2Ordinal         = 1;
-        final String element2Value           = "In Progress";
+        final String element2Value           = "InProgress";
         final String element2Description     = "Discovery request is executing.";
         final String element2DescriptionGUID = null;
 
