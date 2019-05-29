@@ -12,7 +12,7 @@
     <parent>
         <artifactId>virtual-data-connector</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.0</version>
+        <version>0.3-SNAPSHOT</version>
     </parent>
 
    <properties>
