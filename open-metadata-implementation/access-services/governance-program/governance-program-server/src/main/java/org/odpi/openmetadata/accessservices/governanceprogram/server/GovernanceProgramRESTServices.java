@@ -15,6 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +68,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -89,8 +91,9 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createPersonalProfile(userId,
                                                            profileUserId,
                                                            employeeNumber,
@@ -111,6 +114,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -142,6 +149,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog      = null;
 
         try
         {
@@ -162,8 +170,9 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updatePersonalProfile(userId,
                                           profileGUID,
                                           employeeNumber,
@@ -184,6 +193,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -215,6 +228,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -225,8 +239,9 @@ public class GovernanceProgramRESTServices
                 employeeNumber = requestBody.getEmployeeNumber();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deletePersonalProfile(userId,
                                           profileGUID,
                                           employeeNumber);
@@ -243,7 +258,10 @@ public class GovernanceProgramRESTServices
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
-
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -271,11 +289,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
+        OMRSAuditLog            auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID));
         }
         catch (InvalidParameterException error)
@@ -289,6 +309,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -318,11 +342,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileResponse response = new PersonalProfileResponse();
+        OMRSAuditLog            auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getPersonalProfileByEmployeeNumber(userId, employeeNumber));
         }
         catch (EmployeeNumberNotUniqueException error)
@@ -340,6 +366,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -369,11 +399,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         PersonalProfileListResponse response = new PersonalProfileListResponse();
+        OMRSAuditLog                auditLog = null;
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -387,6 +419,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -416,6 +452,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
 
         GovernanceDomain           governanceDomain = null;
         String                     appointmentId = null;
@@ -436,8 +473,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createGovernanceOfficer(userId,
                                                              governanceDomain,
                                                              appointmentId,
@@ -458,7 +496,10 @@ public class GovernanceProgramRESTServices
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
-
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
@@ -490,6 +531,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
 
         GovernanceDomain           governanceDomain = null;
         String                     appointmentId = null;
@@ -510,8 +552,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateGovernanceOfficer(userId,
                                             governanceOfficerGUID,
                                             governanceDomain,
@@ -532,6 +575,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -563,6 +610,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -575,8 +623,9 @@ public class GovernanceProgramRESTServices
                 appointmentId = requestBody.getAppointmentId();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteGovernanceOfficer(userId,
                                             governanceOfficerGUID,
                                             appointmentId,
@@ -593,6 +642,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -621,11 +674,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerResponse response = new GovernanceOfficerResponse();
+        OMRSAuditLog              auditLog = null;
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficer(handler.getGovernanceOfficerByGUID(userId, governanceOfficerGUID));
         }
         catch (InvalidParameterException error)
@@ -639,6 +694,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -668,11 +727,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerResponse response = new GovernanceOfficerResponse();
+        OMRSAuditLog              auditLog = null;
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficer(handler.getGovernanceOfficerByAppointmentId(userId, appointmentId));
         }
         catch (AppointmentIdNotUniqueException error)
@@ -690,6 +751,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -715,11 +780,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
+        OMRSAuditLog                  auditLog = null;
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getGovernanceOfficers(userId));
         }
         catch (InvalidParameterException error)
@@ -733,6 +800,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -758,11 +829,13 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
+        OMRSAuditLog                  auditLog = null;
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getActiveGovernanceOfficers(userId));
         }
         catch (InvalidParameterException error)
@@ -776,6 +849,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -806,7 +883,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         GovernanceOfficerListResponse response = new GovernanceOfficerListResponse();
-
+        OMRSAuditLog                  auditLog = null;
 
         try
         {
@@ -817,8 +894,9 @@ public class GovernanceProgramRESTServices
                 governanceDomain = requestBody.getGovernanceDomain();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getGovernanceOfficersByDomain(userId, governanceDomain));
         }
         catch (InvalidParameterException error)
@@ -832,6 +910,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -862,6 +944,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -874,8 +957,9 @@ public class GovernanceProgramRESTServices
                 startDate   = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.appointGovernanceOfficer(userId,
                                              governanceOfficerGUID,
                                              profileGUID,
@@ -892,6 +976,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -923,6 +1011,7 @@ public class GovernanceProgramRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -935,8 +1024,9 @@ public class GovernanceProgramRESTServices
                 endDate     = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.relieveGovernanceOfficer(userId,
                                              governanceOfficerGUID,
                                              profileGUID,
@@ -953,6 +1043,10 @@ public class GovernanceProgramRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

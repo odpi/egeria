@@ -28,7 +28,7 @@ public class ConnectedAssetRatings extends AssetRatings
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
 
 
@@ -52,7 +52,7 @@ public class ConnectedAssetRatings extends AssetRatings
                           ConnectedAssetUniverse parentAsset,
                           int                    totalElementCount,
                           int                    maxCacheSize,
-                          RESTClient             restClient)
+                          OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -131,12 +131,12 @@ public class ConnectedAssetRatings extends AssetRatings
 
         try
         {
-            RatingsResponse restResult = restClient.callRatingGetRESTCall(methodName,
-                                                                          omasServerURL + urlTemplate,
-                                                                          userId,
-                                                                          assetGUID,
-                                                                          cacheStartPointer,
-                                                                          maximumSize);
+            RatingsResponse restResult = restClient.callRatingsGetRESTCall(methodName,
+                                                                           omasServerURL + urlTemplate,
+                                                                           userId,
+                                                                           assetGUID,
+                                                                           cacheStartPointer,
+                                                                           maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

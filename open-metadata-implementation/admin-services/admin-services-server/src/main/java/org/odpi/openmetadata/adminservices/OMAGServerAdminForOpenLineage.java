@@ -31,7 +31,7 @@ public class OMAGServerAdminForOpenLineage
 
         try
         {
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             OpenLineageConfig openLineageConfig = serverConfig.getOpenLineageConfig();
             this.setOpenLineageConfig(userId, serverName, openLineageConfig);
         }
@@ -55,7 +55,7 @@ public class OMAGServerAdminForOpenLineage
 
         try
         {
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 

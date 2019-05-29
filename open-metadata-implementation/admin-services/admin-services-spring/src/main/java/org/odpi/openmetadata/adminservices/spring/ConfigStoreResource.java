@@ -53,11 +53,10 @@ public class ConfigStoreResource
 
 
     /**
-     * Clear the connection object for the configuration store.  Null is returned if the server should
-     * use the default store.
+     * Clear the connection object for the configuration store which means the platform uses the default store.
      *
      * @param userId calling user
-     * @return connection response
+     * @return void response
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/connection")
 

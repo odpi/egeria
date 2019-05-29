@@ -30,16 +30,18 @@ class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInstanceHand
      *
      * @param userId calling user
      * @param serverName name of this server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return specific service instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     protected OMAGOperationalServicesInstance getServerServiceInstance(String  userId,
-                                                                       String  serverName) throws InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+                                                                       String  serverName,
+                                                                       String  serviceOperationName) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException
     {
-        return (OMAGOperationalServicesInstance)super.getServerServiceInstance(userId, serverName);
+        return (OMAGOperationalServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
     }
 }
