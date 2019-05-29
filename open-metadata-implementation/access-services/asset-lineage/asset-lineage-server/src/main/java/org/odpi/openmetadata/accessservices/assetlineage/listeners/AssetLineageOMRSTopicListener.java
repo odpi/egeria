@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Column;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
@@ -18,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -127,8 +130,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case UPDATED_RELATIONSHIP_EVENT:
                         processRelationship(instanceEvent.getRelationship());
                         break;
-                    case DELETED_RELATIONSHIP_EVENT:
-                        processDeletedRelationship(instanceEvent.getRelationship());
+                    case DELETE_PURGED_RELATIONSHIP_EVENT:
+                        processDeletedPurgedRelationship(instanceEvent.getRelationship());
 
                     default:
                         break;
@@ -148,25 +151,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
         else {
             log.info("Processing semantic assignment relationship event");
-            try {
                 processSemanticAssignment(relationship);
-            } catch (InvalidParameterException e) {
-                e.printStackTrace();
-            } catch (PropertyServerException e) {
-                e.printStackTrace();
-            } catch (UserNotAuthorizedException e) {
-                e.printStackTrace();
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-                e.printStackTrace();
-            } catch (RepositoryErrorException e) {
-                e.printStackTrace();
-            } catch (EntityProxyOnlyException e) {
-                e.printStackTrace();
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-                e.printStackTrace();
-            } catch (EntityNotKnownException e) {
-                e.printStackTrace();
-            }
+
         }
 
     }
@@ -196,10 +182,16 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         return false;
     }
 
-    private void processSemanticAssignment(Relationship relationship) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
+
+    /**
+     * Takes the entities of the the relationship and builds the context for entityOneProxy
+     * and publishes an event.
+     * @param relationship - details of the new relationship
+     * @return
+     */
+    private void processSemanticAssignment(Relationship relationship)  {
         RelationshipEvent relationshipEvent = new RelationshipEvent();
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
-
         try {
             ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName);
             ConvertedAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
@@ -209,6 +201,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
             relationshipEvent.setGlossaryTerm(glossaryTerm);
             relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
+            relationshipEvent.setTypeDefGUID(relationship.getType().getTypeDefGUID());
             relationshipEvent.setAssetContext(assetContext);
             relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
 
@@ -218,7 +211,15 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
-    private void processDeletedRelationship(Relationship relationship) {
+    private void processDeletedPurgedRelationship(Relationship relationship) {
+
+        if (!isValidRelationshipEvent(relationship))
+            log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
+        else {
+            log.info("Processing semantic assignment deletion relationship event");
+            processSemanticAssignmentDeletion(relationship);
+
+        }
     }
 
     private void processUpdatedEntityEvent(EntityDetail originalEntity, EntityDetail entity) {
@@ -227,4 +228,22 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void processDeletedEntity(EntityDetail entity) {
     }
 
+
+    private void processSemanticAssignmentDeletion(Relationship relationship)  {
+        DeletePurgedRelationshipEvent deletionEvent = new DeletePurgedRelationshipEvent();
+        try {
+
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
+            GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
+
+            deletionEvent.setGlossaryTerm(glossaryTerm);
+            deletionEvent.setEntityGuid(relationship.getEntityOneProxy().getGUID());
+            deletionEvent.setEntityTypeDef(relationship.getEntityOneProxy().getType().getTypeDefName());
+            deletionEvent.setOmrsInstanceEventType(OMRSInstanceEventType.DELETE_PURGED_RELATIONSHIP_EVENT);
+
+            publisher.publishRelationshipEvent(deletionEvent);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+    }
 }
