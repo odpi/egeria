@@ -49,6 +49,7 @@ USER atlas:atlas
 WORKDIR /opt/apache/atlas
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" conf/atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> conf/atlas-application.properties
+RUN echo "atlas.kafka.listeners=PLAINTEXT://:9027" >> conf/atlas-application.properties
 
 # Set env variables, add it to the path, and start Atlas.
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
