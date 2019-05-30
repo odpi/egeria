@@ -16,7 +16,7 @@ public class ConnectedAssetLineage extends AssetLineage
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
     private int                    maxCacheSize;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
 
     /**
@@ -38,7 +38,7 @@ public class ConnectedAssetLineage extends AssetLineage
                           String                 assetGUID,
                           ConnectedAssetUniverse parentAsset,
                           int                    maxCacheSize,
-                          RESTClient             restClient)
+                          OCFRESTClient restClient)
     {
         super(parentAsset);
 

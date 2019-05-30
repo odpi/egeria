@@ -170,6 +170,38 @@ public class InvalidParameterHandler
         }
     }
 
+
+    /**
+     * Throw an exception if the supplied userId is null
+     *
+     * @param object         object to validate
+     * @param nameParameter  name of the parameter that passed the object.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the object is null
+     */
+    public void validateObject(Object object,
+                               String nameParameter,
+                               String methodName) throws InvalidParameterException
+    {
+        if (object == null)
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_OBJECT;
+            String              errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(nameParameter,
+                                                                                  methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                nameParameter);
+        }
+    }
+
+
     /**
      * Throw an exception if the supplied enum is null
      *
