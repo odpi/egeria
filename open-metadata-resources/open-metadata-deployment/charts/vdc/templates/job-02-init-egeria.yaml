@@ -61,6 +61,9 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                &&
 {{- if .Values.cts.enabled }}
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
@@ -101,9 +104,6 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/access-services?serviceMode=ENABLED
-                &&
-                curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/{{- .Values.egeria.repomode -}}
