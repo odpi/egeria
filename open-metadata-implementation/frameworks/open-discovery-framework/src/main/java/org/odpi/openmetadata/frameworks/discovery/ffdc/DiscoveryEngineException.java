@@ -2,21 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.ffdc;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 
 /**
  * DiscoveryEngineException indicates there is a problem with a request to a specific discovery engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryEngineException extends ODFCheckedExceptionBase
+public class DiscoveryEngineException extends OCFCheckedExceptionBase
 {
     /**
      * This is the typical constructor for creating the exception.  It captures the essential details
@@ -42,7 +34,7 @@ public class DiscoveryEngineException extends ODFCheckedExceptionBase
 
     /**
      * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
-     * ConnectorCheckedException in order to add the essential details about the error, where it occurred and
+     * DiscoveryEngineException in order to add the essential details about the error, where it occurred and
      * how to fix it.
      *
      * @param httpCode code to use across a REST interface
@@ -62,5 +54,17 @@ public class DiscoveryEngineException extends ODFCheckedExceptionBase
                                     Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+
+    /**
+     * This constructor is used when an unexpected exception has been caught that needs to be translated in a
+     * DiscoveryEngineException.
+     *
+     * @param template exception to copy
+     */
+    public DiscoveryEngineException(OCFCheckedExceptionBase  template)
+    {
+        super(template);
     }
 }

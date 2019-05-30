@@ -40,10 +40,46 @@ service:
     ui: 30443
     ranger: 32080
     rangersecure: 30182
+    solr: 30983
     # Set this to address of one of the local nodes - public IP
     omrsmonitor: 31080
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
+
+istio:
+  # If true, will include the sidecar.istio.io/inject: "true" annotation in each
+  # pod, so as to inject the istio sidecar into each pod.
+  # This will not occur for ldap or embedded kafka as these are deployed via
+  # an independent kafka chart.
+  # Ensure you have the namespace being deployed into labelled for injection via
+  # kubectl label namespace MYNAMESPACE istio-injection=enabled
+  enabled: false
+
+# Options to switch off certain components (not egeria)
+omrsmonitor:
+  enabled: true
+
+ui:
+  enabled: true
+
+atlas:
+  enabled: true
+
+gaian:
+  enabled: true
+
+ranger:
+  enabled: true
+
+# NOTE: postgresql is required for ranger, so will be automatically enabled if ranger is enabled
+# (also used for sample data, even if not using ranger)
+postgresql:
+  enabled: true
+
+# NOTE: solr will eventually be required for both ranger and atlas, so will be automatically enabled if either of
+# those is enabled (once their embedded Solr's are migrated)
+solr:
+  enabled: false
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
@@ -53,14 +89,22 @@ debug:
 logging:
   level: NONE
 
+# Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
+cts:
+  enabled: false
+
 imageDefaults:
   registry: docker.io
-  namespace: planetf1
+  namespace: odpi
   tag: latest
   pullPolicy: IfNotPresent
 
 # supported values are in-memory-repository & local-graph-repository
-egeriarepomode: in-memory-repository
+egeria:
+  repomode: in-memory-repository
+  user: myuser
+  cohort: coco
+  server: myserver
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -71,29 +115,33 @@ egeriarepomode: in-memory-repository
 #  To build from egeria source - (example)
 #  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
 image:
-  ranger:
-    name: ranger-admin-egeriavdc
-
-  mariadb:
-    namespace: library
-    name: mariadb
-
   egeria:
     name: egeria
+
+  configure:
+    name: egeria-configure
+
+  omrsmonitor:
+    name: omrsmonitor-egeriavdc
+
+  atlas:
+    name: apache-atlas-fork
 
   gaian:
     name: gaian-egeriavdc
 
-  atlas:
-    name: apache-atlas
+  ranger:
+    name: ranger-admin-egeriavdc
 
   postgresql:
     namespace: library
     name: postgres
     tag: alpine
 
-  omrsmonitor:
-    name: omrsmonitor-egeriavdc
+  solr:
+    namespace: library
+    name: solr
+    tag: 5-alpine
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
@@ -103,11 +151,9 @@ image:
     name: infosvr
     tag: v11.7.0.2
 
-  configure:
-    name: egeria-configure
-
-  nameOverride: ""
-  fullnameOverride: ""
+# These should not be embedded under 'image' (?)
+nameOverride: ""
+fullnameOverride: ""
 
 # Set 'use' to true to use your local repository rather than Egeria's (remote) master git repository
 # (When set to true, also provide the absolute path to your local repository)
@@ -139,7 +185,9 @@ kafka:
 # in which case, also provide the hostname, IP address and port number for the domain tier
 ibmigc:
   enabled: false
-  cred: aXNhZG1pbjppc2FkbWlu
+  user: isadmin
+  password: isadmin
+  proxyserver: ibmigc
   internal:
     enabled: false
   external:
@@ -184,3 +232,4 @@ openldap:
   adminPassword: passw0rd
   configPassword: passw0rd
   servicePort: 389
+  enabled: true

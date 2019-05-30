@@ -3,11 +3,16 @@
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.PersonalProfileManagementInterface;
+import org.odpi.openmetadata.accessservices.communityprofile.api.PersonalProfileManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
-import org.springframework.web.client.RestTemplate;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 import java.util.Map;
@@ -33,10 +38,16 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      *
      * @param serverName name of the server to connect to
      * @param omasServerURL the network address of the server running the OMAS REST servers
+     *
+     * @throws InvalidParameterException bad input parameters
      */
     public PersonalProfileManagement(String     serverName,
-                                     String     omasServerURL)
+                                     String     omasServerURL) throws InvalidParameterException
     {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL);
@@ -51,12 +62,18 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @param omasServerURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     *
+     * @throws InvalidParameterException bad input parameters
      */
     public PersonalProfileManagement(String     serverName,
                                      String     omasServerURL,
                                      String     userId,
-                                     String     password)
+                                     String     password) throws InvalidParameterException
     {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
@@ -74,7 +91,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
-     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
+     * @param extendedProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @return Unique identifier for the personal profile.
@@ -90,7 +107,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                         String              knownName,
                                         String              jobTitle,
                                         String              jobRoleDescription,
-                                        Map<String, Object> profileProperties,
+                                        Map<String, Object> extendedProperties,
                                         Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -102,7 +119,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   qualifiedParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedParameterName, methodName);
@@ -115,7 +132,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         requestBody.setKnownName(knownName);
         requestBody.setJobTitle(jobTitle);
         requestBody.setJobRoleDescription(jobRoleDescription);
-        requestBody.setProfileProperties(profileProperties);
+        requestBody.setProfileProperties(extendedProperties);
         requestBody.setAdditionalProperties(additionalProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
@@ -169,7 +186,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   qualifiedNameParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
@@ -222,7 +239,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         final String   guidParameterName = "profileGUID";
         final String   employeeNumberParameterName = "employeeNumber";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, employeeNumberParameterName, methodName);
@@ -264,7 +281,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
 
         final String   guidParameterName = "profileGUID";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
 
@@ -304,7 +321,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
 
         final String  profileUserIdParameterName = "profileUserId";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(profileUserId, profileUserIdParameterName, methodName);
 
@@ -345,7 +362,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
 
         final String   qualifiedNameParameterName = "qualifiedName";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
@@ -387,7 +404,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
 
         final String   nameParameterName = "name";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 

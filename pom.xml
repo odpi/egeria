@@ -137,8 +137,13 @@
 	      <maven-compiler.version>3.8.0</maven-compiler.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-        <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	<sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+	<!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
+	<!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
+	<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	<sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
+	<sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
+	<sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
     </properties>
 
     <dependencyManagement>
@@ -396,7 +401,9 @@
                     <excludeSubProjects>true</excludeSubProjects>
                     <excludes>
                         <exclude>/CNAME</exclude>
+                        <exclude>/dco-signoffs/*.txt</exclude>
                         <exclude>**/banner.txt</exclude>
+                        <exclude>**/*.txt</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.patch</exclude>
                         <exclude>**/*.drawio</exclude>

@@ -41,8 +41,16 @@ public enum AssetLineageErrorCode {
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
             "Check that the server where the Asset Lineage OMAS is running initialized correctly and is not in the process of shutting down.  " +
-                    "Correct any errors discovered and retry the request when the open metadata services are available.");
+                    "Correct any errors discovered and retry the request when the open metadata services are available."),
+    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-LINEAGE-400-015",
+                                     "The Asset Lineage Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
+                                     "The access service has not been passed valid configuration for its out topic connection.",
+                                     "Correct the configuration and restart the service."),;
 
+    public int getHTTPErrorCode()
+    {
+        return httpErrorCode;
+    }
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageErrorCode.class);
     private int httpErrorCode;

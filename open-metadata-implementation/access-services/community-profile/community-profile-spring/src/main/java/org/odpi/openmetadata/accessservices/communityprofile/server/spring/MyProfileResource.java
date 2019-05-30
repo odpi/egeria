@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.server.spring;
 
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.accessservices.communityprofile.server.MyProfileRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -109,7 +111,7 @@ public class MyProfileResource
     public VoidResponse  addToMyAssets(@PathVariable String           serverName,
                                        @PathVariable String           userId,
                                        @PathVariable String           assetGUID,
-                                       @RequestBody NullRequestBody nullRequestBody)
+                                       @RequestBody  NullRequestBody  nullRequestBody)
     {
         return restAPI.addToMyAssets(serverName, userId, assetGUID, nullRequestBody);
     }

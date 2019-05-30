@@ -239,12 +239,14 @@ public class GraphOMRSEntityMapper {
 
         // Some properties are mandatory. If any of these are null then throw exception
         boolean missingAttribute = false;
+        String  missingAttributeName = null;
 
         if (entity.getGUID() != null)
             vertex.property(PROPERTY_KEY_ENTITY_GUID, entity.getGUID());
         else {
             log.debug("{} missing attribute: guid", methodName);
             missingAttribute = true;
+            missingAttributeName = "guid";
         }
 
         InstanceType instanceType = entity.getType();
@@ -253,25 +255,20 @@ public class GraphOMRSEntityMapper {
         else {
             log.debug("{} missing attribute: type name", methodName);
             missingAttribute = true;
+            missingAttributeName = "type or typeDefName";
         }
 
-        if (this.metadataCollectionId != null)
-            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID, this.metadataCollectionId);
+        if (entity.getMetadataCollectionId() != null)
+            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID, entity.getMetadataCollectionId());
         else {
             log.debug("{} missing attribute: metadataCollectionId", methodName);
             missingAttribute = true;
-        }
-
-        if (this.repositoryName != null)
-            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, this.repositoryName);
-        else {
-            log.debug("{} missing attribute: metadataCollectionName", methodName);
-            missingAttribute = true;
+            missingAttributeName = "metadataCollectionId";
         }
 
 
         if (missingAttribute) {
-            log.error("{} entity is missing a core attribute{}", methodName);
+            log.error("{} entity is missing core attribute {}", methodName, missingAttributeName);
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
                     this.getClass().getName(),
@@ -288,6 +285,15 @@ public class GraphOMRSEntityMapper {
         vertex.property(PROPERTY_KEY_ENTITY_VERSION, entity.getVersion());
 
         // Other properties can be removed if set to null
+
+        if (entity.getMetadataCollectionName() != null) {
+            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, entity.getMetadataCollectionName());
+        }
+        else {
+            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
+            if (vp != null)
+                vp.remove();
+        }
 
         if (entity.getCreatedBy() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_CREATED_BY, entity.getCreatedBy());
@@ -380,6 +386,13 @@ public class GraphOMRSEntityMapper {
         }
         else {
             removeProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
+        }
+
+        if (entity.getReplicatedBy() != null) {
+            vertex.property(PROPERTY_KEY_ENTITY_REPLICATED_BY, entity.getReplicatedBy());
+        }
+        else {
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_REPLICATED_BY);
         }
 
 
@@ -619,6 +632,8 @@ public class GraphOMRSEntityMapper {
             }
         }
 
+        entity.setReplicatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_ENTITY_REPLICATED_BY));
+
         // Get the classifications
         List<Classification> classifications = new ArrayList<>();
         Iterator<Edge> classifierEdges = vertex.edges(Direction.OUT, "Classifier");
@@ -659,6 +674,12 @@ public class GraphOMRSEntityMapper {
         String guid = null;
         guid = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_GUID);
         return guid;
+    }
+
+    public String getEntityMetadataCollectionId(Vertex vertex) {
+        String metadataCollectionId = null;
+        metadataCollectionId = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID);
+        return metadataCollectionId;
     }
 
 

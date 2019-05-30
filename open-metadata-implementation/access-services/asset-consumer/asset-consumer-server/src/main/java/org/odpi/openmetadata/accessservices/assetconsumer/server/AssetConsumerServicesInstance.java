@@ -3,121 +3,59 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetconsumer.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetconsumer.handlers.LoggingHandler;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
 
 /**
- * AssetConsumerServicesInstance caches references to OMRS objects for a specific server.
+ * AssetConsumerServicesInstance caches references to objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class AssetConsumerServicesInstance
+public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
 {
-    private List<String>            supportedZones;
-    private OMRSRepositoryConnector repositoryConnector;
-    private OMRSMetadataCollection  metadataCollection;
-    private String                  serverName;
-    private OMRSAuditLog            auditLog;
+    private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
+    private GlossaryHandler glossaryHandler;
+    private LoggingHandler loggingHandler;
 
     /**
-     * Set up the local repository connector that will service the REST Calls.
+     * Set up the handlers for this server.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetConsumer is allowed to serve Assets from.
+     * @param auditLog destination for audit log events.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                          List<String>            supportedZones,
                                          OMRSAuditLog            auditLog) throws NewInstanceException
     {
+        super(myDescription.getAccessServiceName() + " OMAS",
+              repositoryConnector,
+              auditLog);
+
         final String methodName = "new ServiceInstance";
 
-        if (repositoryConnector != null)
+        super.supportedZones = supportedZones;
+
+        if (repositoryHandler != null)
         {
-            try
-            {
-                this.repositoryConnector = repositoryConnector;
-                this.serverName = repositoryConnector.getServerName();
-                this.metadataCollection = repositoryConnector.getMetadataCollection();
-                this.supportedZones = supportedZones;
-                this.auditLog = auditLog;
-
-                AssetConsumerServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            }
-            catch (Throwable error)
-            {
-                AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_INITIALIZED;
-                String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-
-            }
+            glossaryHandler = new GlossaryHandler(serviceName,
+                                                  serverName,
+                                                  invalidParameterHandler,
+                                                  repositoryHelper,
+                                                  repositoryHandler);
+            loggingHandler = new LoggingHandler(auditLog);
         }
         else
         {
             AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-
-        }
-    }
-
-
-    /**
-     * Return the list of zones that this instance of the Asset Consumer OMAS should support.
-     *
-     * @return list of zone names.
-     */
-    public List<String> getSupportedZones()
-    {
-        return supportedZones;
-    }
-
-
-    /**
-     * Return the audit log for this access service.
-     *
-     * @return audit log
-     */
-    public OMRSAuditLog getAuditLog()
-    {
-        return auditLog;
-    }
-
-
-    /**
-     * Return the server name.
-     *
-     * @return serverName name of the server for this instance
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public String getServerName() throws NewInstanceException
-    {
-        final String methodName = "getServerName";
-
-        if (serverName != null)
-        {
-            return serverName;
-        }
-        else
-        {
-            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_AVAILABLE;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
@@ -126,72 +64,30 @@ public class AssetConsumerServicesInstance
                                            errorMessage,
                                            errorCode.getSystemAction(),
                                            errorCode.getUserAction());
+
         }
     }
 
 
     /**
-     * Return the local metadata collection for this server.
+     * Return the specialized glossary handler for Asset Consumer OMAS.
      *
-     * @return OMRSMetadataCollection object
-     * @throws PropertyServerException the instance has not been initialized successfully
+     * @return glossary handler
      */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException
+    GlossaryHandler getGlossaryHandler()
     {
-        final String methodName = "getMetadataCollection";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return metadataCollection;
-        }
-        else
-        {
-            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return glossaryHandler;
     }
 
 
     /**
-     * Return the repository connector for this server.
+     * Return the specialized handler for logging messages to the audit log.
      *
-     * @return OMRSRepositoryConnector object
-     * @throws PropertyServerException the instance has not been initialized successfully
+     * @return logging handler
      */
-    public OMRSRepositoryConnector  getRepositoryConnector() throws PropertyServerException
+    LoggingHandler getLoggingHandler()
     {
-        final String methodName = "getRepositoryConnector";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return repositoryConnector;
-        }
-        else
-        {
-            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return loggingHandler;
     }
 
-
-    /**
-     * Unregister this instance from the instance map.
-     */
-    public void shutdown() {
-        AssetConsumerServicesInstanceMap.removeInstanceForJVM(serverName);
-    }
 }

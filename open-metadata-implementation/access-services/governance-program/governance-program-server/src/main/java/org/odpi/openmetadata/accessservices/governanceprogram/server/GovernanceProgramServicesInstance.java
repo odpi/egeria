@@ -4,60 +4,72 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server;
 
 
 import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.GovernanceProgramErrorCode;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.accessservices.governanceprogram.handlers.ExternalReferencesHandler;
+import org.odpi.openmetadata.accessservices.governanceprogram.handlers.GovernanceOfficerHandler;
+import org.odpi.openmetadata.accessservices.governanceprogram.handlers.PersonalProfileHandler;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
 
 /**
  * GovernanceProgramServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class GovernanceProgramServicesInstance
+public class GovernanceProgramServicesInstance extends OMASServiceInstance
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSMetadataCollection  metadataCollection = null;
-    private String                  serverName = null;
+    private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS;
+
+    private GovernanceOfficerHandler  governanceOfficerHandler;
+    private ExternalReferencesHandler externalReferencesHandler;
+    private PersonalProfileHandler    personalProfileHandler;
 
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param auditLog logging destination
+     *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
+    public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector,
+                                             OMRSAuditLog auditLog) throws NewInstanceException
     {
+        super(myDescription.getAccessServiceName() + " OMAS",
+              repositoryConnector,
+              auditLog);
+
         final String methodName = "new ServiceInstance";
 
-        if (repositoryConnector != null)
+        if (repositoryHandler != null)
         {
-            try
-            {
-                this.repositoryConnector = repositoryConnector;
-                this.serverName = repositoryConnector.getServerName();
-                this.metadataCollection = repositoryConnector.getMetadataCollection();
+            this.externalReferencesHandler = new ExternalReferencesHandler(serviceName,
+                                                                           serverName,
+                                                                           invalidParameterHandler,
+                                                                           repositoryHelper,
+                                                                           repositoryHandler);
 
-                GovernanceProgramServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            }
-            catch (Throwable error)
-            {
-                GovernanceProgramErrorCode errorCode    = GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED;
-                String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            this.personalProfileHandler = new PersonalProfileHandler(serviceName,
+                                                                           serverName,
+                                                                           invalidParameterHandler,
+                                                                           repositoryHelper,
+                                                                           repositoryHandler);
 
-                throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-
-            }
+            this.governanceOfficerHandler = new GovernanceOfficerHandler(serviceName,
+                                                                         serverName,
+                                                                         invalidParameterHandler,
+                                                                         repositoryHelper,
+                                                                         repositoryHandler,
+                                                                         personalProfileHandler,
+                                                                         externalReferencesHandler);
         }
         else
         {
-            GovernanceProgramErrorCode errorCode    = GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            GovernanceProgramErrorCode errorCode   = GovernanceProgramErrorCode.OMRS_NOT_INITIALIZED;
+            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
                                            this.getClass().getName(),
@@ -100,67 +112,34 @@ public class GovernanceProgramServicesInstance
 
 
     /**
-     * Return the local metadata collection for this server.
+     * Return the governance officer handler
      *
-     * @return OMRSMetadataCollection object
-     * @throws PropertyServerException the instance has not been initialized successfully
+     * @return handler
      */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException
+    GovernanceOfficerHandler getGovernanceOfficerHandler()
     {
-        final String methodName = "getMetadataCollection";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return metadataCollection;
-        }
-        else
-        {
-            GovernanceProgramErrorCode errorCode    = GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return governanceOfficerHandler;
     }
 
 
     /**
-     * Return the repository connector for this server.
+     * Return the external references handler
      *
-     * @return OMRSRepositoryConnector object
-     * @throws PropertyServerException the instance has not been initialized successfully
+     * @return handler
      */
-    public OMRSRepositoryConnector  getRepositoryConnector() throws PropertyServerException
+    ExternalReferencesHandler getExternalReferencesHandler()
     {
-        final String methodName = "getRepositoryConnector";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return repositoryConnector;
-        }
-        else
-        {
-            GovernanceProgramErrorCode errorCode    = GovernanceProgramErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return externalReferencesHandler;
     }
 
 
     /**
-     * Unregister this instance from the instance map.
+     * Return the persona profile handler.
+     *
+     * @return handler
      */
-    public void shutdown() {
-        GovernanceProgramServicesInstanceMap.removeInstanceForJVM(serverName);
+    PersonalProfileHandler getPersonalProfileHandler()
+    {
+        return personalProfileHandler;
     }
 }

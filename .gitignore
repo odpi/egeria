@@ -78,6 +78,7 @@ omag.server.*.config
 .DS_Store
 *.swp
 .java-version
+*.graphml
 
 # Ignore Subject Area OMAS older Generated output so it is not checked in.
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**

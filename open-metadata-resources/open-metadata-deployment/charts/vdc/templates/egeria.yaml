@@ -10,6 +10,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-service
+  annotations:
+    {{ if .Values.istio.enabled }}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
   name: {{ include "myapp.fullname" . }}-egeria-service
 
 spec:
@@ -52,6 +56,9 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: egeria-service
     spec:
+      volumes:
+        - name: egeria-connector-volume
+          emptyDir: {}
       containers:
         - name: egeria
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -72,10 +79,16 @@ spec:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
+            - name: "LOADER_PATH"
+              value: "/opt/egeria/connectors"
             {{ if .Values.debug.egeriaJVM }}
             - name: JAVA_DEBUG
               value:  "true"
             {{ end }}
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-connector-volume
+              readOnly: true
           resources: {}
       restartPolicy: Always
 

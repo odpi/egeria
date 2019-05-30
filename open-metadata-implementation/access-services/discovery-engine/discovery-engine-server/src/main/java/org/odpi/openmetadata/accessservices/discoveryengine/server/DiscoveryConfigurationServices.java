@@ -2,20 +2,20 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationServerHandler;
-import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
-import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFCheckedExceptionBase;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,10 +26,11 @@ import java.util.Map;
  */
 public class DiscoveryConfigurationServices
 {
-    private static DiscoveryEngineInstanceHandler   instanceHandler     = new DiscoveryEngineInstanceHandler();
+    private static DiscoveryEngineServiceInstanceHandler instanceHandler = new DiscoveryEngineServiceInstanceHandler();
 
     private static final Logger log = LoggerFactory.getLogger(DiscoveryConfigurationServices.class);
 
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -67,6 +68,7 @@ public class DiscoveryConfigurationServices
         String       displayName   = null;
         String       description   = null;
         GUIDResponse response      = new GUIDResponse();
+        OMRSAuditLog auditLog      = null;
 
 
         if (requestBody != null)
@@ -78,24 +80,29 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createDiscoveryEngine(userId,
                                                            qualifiedName,
                                                            displayName,
                                                            description));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -125,24 +132,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryEnginePropertiesResponse response = new DiscoveryEnginePropertiesResponse();
+        OMRSAuditLog                      auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByGUID(userId, guid));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -172,24 +185,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryEnginePropertiesResponse response = new DiscoveryEnginePropertiesResponse();
+        OMRSAuditLog                      auditLog      = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByName(userId, name));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -221,24 +240,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryEngineListResponse response = new DiscoveryEngineListResponse();
+        OMRSAuditLog                auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngines(handler.getAllDiscoveryEngines(userId, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -281,6 +306,7 @@ public class DiscoveryConfigurationServices
         Map<String, String> additionalProperties = null;
         Map<String, Object> extendedProperties   = null;
         VoidResponse        response             = new VoidResponse();
+        OMRSAuditLog        auditLog             = null;
 
 
         if (requestBody != null)
@@ -298,8 +324,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateDiscoveryEngine(userId,
                                           guid,
                                           qualifiedName,
@@ -312,17 +339,21 @@ public class DiscoveryConfigurationServices
                                           additionalProperties,
                                           extendedProperties);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -348,7 +379,7 @@ public class DiscoveryConfigurationServices
     public  VoidResponse    deleteDiscoveryEngine(String             serverName,
                                                   String             userId,
                                                   String             guid,
-                                                  DeleteRequestBody  requestBody)
+                                                  DeleteRequestBody requestBody)
     {
         final String        methodName = "deleteDiscoveryEngine";
 
@@ -356,6 +387,7 @@ public class DiscoveryConfigurationServices
 
         String       qualifiedName = null;
         VoidResponse response      = new VoidResponse();
+        OMRSAuditLog auditLog      = null;
 
 
         if (requestBody != null)
@@ -365,23 +397,28 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteDiscoveryEngine(userId,
                                           guid,
                                           qualifiedName);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -420,6 +457,7 @@ public class DiscoveryConfigurationServices
         String       description   = null;
         Connection   connection    = null;
         GUIDResponse response      = new GUIDResponse();
+        OMRSAuditLog auditLog      = null;
 
 
         if (requestBody != null)
@@ -432,25 +470,30 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createDiscoveryService(userId,
                                                             qualifiedName,
                                                             displayName,
                                                             description,
                                                             connection));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -480,24 +523,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryServicePropertiesResponse response = new DiscoveryServicePropertiesResponse();
+        OMRSAuditLog                       auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByGUID(userId, guid));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -527,24 +576,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryServicePropertiesResponse response = new DiscoveryServicePropertiesResponse();
+        OMRSAuditLog                       auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByName(userId, name));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -576,24 +631,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         DiscoveryServiceListResponse response = new DiscoveryServiceListResponse();
+        OMRSAuditLog                 auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServices(handler.getAllDiscoveryServices(userId, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -614,33 +675,39 @@ public class DiscoveryConfigurationServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    public  GUIDListResponse  getDiscoveryServiceRegistrations(String   serverName,
-                                                               String   userId,
-                                                               String   discoveryServiceGUID)
+    public GUIDListResponse getDiscoveryServiceRegistrations(String   serverName,
+                                                             String   userId,
+                                                             String   discoveryServiceGUID)
     {
         final String        methodName = "getDiscoveryServiceRegistrations";
 
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getDiscoveryServiceRegistrations(userId, discoveryServiceGUID));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -685,6 +752,7 @@ public class DiscoveryConfigurationServices
         Map<String, String> additionalProperties = null;
         Map<String, Object> extendedProperties   = null;
         VoidResponse        response             = new VoidResponse();
+        OMRSAuditLog        auditLog             = null;
 
 
         if (requestBody != null)
@@ -704,8 +772,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateDiscoveryService(userId,
                                            guid,
                                            qualifiedName,
@@ -720,17 +789,21 @@ public class DiscoveryConfigurationServices
                                            additionalProperties,
                                            extendedProperties);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -765,6 +838,7 @@ public class DiscoveryConfigurationServices
 
         String       qualifiedName = null;
         VoidResponse response      = new VoidResponse();
+        OMRSAuditLog auditLog      = null;
 
 
         if (requestBody != null)
@@ -774,23 +848,28 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteDiscoveryService(userId,
                                            guid,
                                            qualifiedName);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -826,6 +905,7 @@ public class DiscoveryConfigurationServices
         String       discoveryServiceGUID = null;
         List<String> assetTypes           = null;
         VoidResponse response             = new VoidResponse();
+        OMRSAuditLog auditLog             = null;
 
 
         if (requestBody != null)
@@ -836,21 +916,26 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, assetTypes);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -882,24 +967,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         RegisteredDiscoveryServiceResponse response = new RegisteredDiscoveryServiceResponse();
+        OMRSAuditLog                       auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredDiscoveryService(handler.getRegisteredDiscoveryService(userId, discoveryEngineGUID, discoveryServiceGUID));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -933,24 +1024,30 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         GUIDListResponse response = new GUIDListResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setGUIDs(handler.getRegisteredDiscoveryServices(userId, discoveryEngineGUID, startingFrom, maximumResults));
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -984,162 +1081,34 @@ public class DiscoveryConfigurationServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
-
+        OMRSAuditLog auditLog = null;
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.unregisterDiscoveryServiceFromEngine(userId, discoveryEngineGUID, discoveryServiceGUID);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
-    }
-
-
-    /*
-     * ==========================
-     * Support methods
-     * ==========================
-     */
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         OCFCheckedExceptionBase             error,
-                                         String                              exceptionClassName,
-                                         Map<String, Object>                 exceptionProperties)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-        response.setExceptionProperties(exceptionProperties);
-    }
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         OCFCheckedExceptionBase             error,
-                                         String                              exceptionClassName)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         ODFCheckedExceptionBase             error,
-                                         String                              exceptionClassName,
-                                         Map<String, Object>                 exceptionProperties)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-        response.setExceptionProperties(exceptionProperties);
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidParameterException(DiscoveryEngineOMASAPIResponse    response,
-                                                  InvalidParameterException         error)
-    {
-        String  parameterName = error.getParameterName();
-
-        if (parameterName != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("parameterName", parameterName);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName(),  null);
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void capturePropertyServerException(DiscoveryEngineOMASAPIResponse     response,
-                                                PropertyServerException            error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUserNotAuthorizedException(DiscoveryEngineOMASAPIResponse response,
-                                                   UserNotAuthorizedException   error)
-    {
-        String  userId = error.getUserId();
-
-        if (userId != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("userId", userId);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
     }
 }
