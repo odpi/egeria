@@ -50,10 +50,12 @@ WORKDIR /opt/apache/atlas
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" conf/atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> conf/atlas-application.properties
 RUN echo "atlas.kafka.listeners=PLAINTEXT://:9027" >> conf/atlas-application.properties
+RUN echo "atlas.kafka.advertised.listeners=PLAINTEXT://\${sys:kafka.advertised.hostname}:9027" >> conf/atlas-application.properties
 
 # Set env variables, add it to the path, and start Atlas.
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 ENV HBASE_CONF_DIR=/opt/apache/atlas/hbase/conf
+ENV ATLAS_OPTS="-Dkafka.advertised.hostname=localhost"
 
 EXPOSE 9026 9027 21000
-ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/application.log"]
+ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/atlas*.out"]
