@@ -29,7 +29,7 @@ VoidReponse with error message and status
 ```
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
-Copyright Contributor
+Copyright Contributors to the ODPi Egeria project.
 
 
 
