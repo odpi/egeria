@@ -3,13 +3,6 @@
 
 FROM ubuntu:18.10 AS build
 
-LABEL org.label-schema.name = "AtlasForEgeriaVDC"
-LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
-LABEL org.label-schema.url="https://github.com/odpi/egeria/"
-LABEL org.label-schema.vcs="https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
-LABEL org.label-schema.version="0.1.4"
-LABEL org.label-schema.schema-version = "1.0"
-
 # Install Git, which is missing from the Ubuntu base images.
 RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget inetutils-ping dnsutils gzip tar
 
@@ -33,10 +26,16 @@ WORKDIR /root/atlas
 # Appy any patches - temporary as per #922
 COPY dist/0001-EGERIA-github-922-upgrade-kafka-version.patch /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
 COPY dist/0002-EGERIA-github-922-upgrade-findbugs.patch /root/0002-EGERIA-github-922-upgrade-findbugs.patch
+COPY dist/0003-Fixup-Admin-services-responses-void-and-success.patch /root/0003-Fixup-Admin-services-responses-void-and-success.patch
+COPY dist/0004-ignore-map-string-object-and-allow-creation-of-conne.patch /root/0004-ignore-map-string-object-and-allow-creation-of-conne.patch
+COPY dist/0005-Correction-to-type-object.patch /root/0005-Correction-to-type-object.patch
 RUN git config --global user.email "you@example.com"
 RUN git config --global user.name "Your Name"
 RUN git am < /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
 RUN git am < /root/0002-EGERIA-github-922-upgrade-findbugs.patch
+RUN git am < /root/0003-Fixup-Admin-services-responses-void-and-success.patch
+RUN git am < /root/0004-ignore-map-string-object-and-allow-creation-of-conne.patch
+RUN git am < /root/0005-Correction-to-type-object.patch
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
@@ -54,7 +53,16 @@ RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.rem
 
 FROM openjdk:8-jdk-alpine
 
-RUN apk add python bash
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.vendor = "ODPi"
+LABEL org.label-schema.name = "apache-atlas-fork"
+LABEL org.label-schema.description = "Apache Atlas image with an embedded ODPi Egeria OMRS Server."
+LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
+LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
+LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas-fork"
+LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
+
+RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade
 COPY --from=build /root/atlas-bin/ /root/atlas-bin/
 COPY --from=build /root/atlas/git.* /
 WORKDIR /root/atlas-bin/conf

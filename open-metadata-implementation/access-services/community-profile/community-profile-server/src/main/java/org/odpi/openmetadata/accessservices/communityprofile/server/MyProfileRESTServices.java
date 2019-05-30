@@ -3,8 +3,18 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NoProfileForUserException;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.MyProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +33,7 @@ public class MyProfileRESTServices
 
     private static final Logger log = LoggerFactory.getLogger(MyProfileRESTServices.class);
 
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Default constructor
@@ -30,7 +41,6 @@ public class MyProfileRESTServices
     public MyProfileRESTServices()
     {
     }
-
 
 
     /**
@@ -52,30 +62,35 @@ public class MyProfileRESTServices
 
         log.debug("Calling method: " + methodName);
 
-        PersonalProfileResponse  response = new PersonalProfileResponse();
+        PersonalProfileResponse response = new PersonalProfileResponse();
+        OMRSAuditLog            auditLog = null;
 
         try
         {
-            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
-                                                              instanceHandler.getRepositoryConnector(serverName));
+            MyProfileHandler handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getMyProfile(userId));
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
         }
         catch (NoProfileForUserException error)
         {
-            captureNoProfileForUserException(response, error);
+            this.captureNoProfileForUserException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -104,6 +119,7 @@ public class MyProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -126,22 +142,26 @@ public class MyProfileRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
-                                                              instanceHandler.getRepositoryConnector(serverName));
+            MyProfileHandler   handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, profileProperties, additionalProperties);
         }
-        catch (InvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (PropertyServerException  error)
+        catch (PropertyServerException error)
         {
-            capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -232,8 +252,8 @@ public class MyProfileRESTServices
      * @param error returned response.
      * @param exceptionClassName  class name of the exception to recreate
      */
-    private void captureCheckedException(CommunityProfileOMASAPIResponse response,
-                                         CommunityProfileCheckedExceptionBase error,
+    private void captureCheckedException(FFDCResponseBase                     response,
+                                         OCFCheckedExceptionBase              error,
                                          String                               exceptionClassName)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
@@ -252,10 +272,10 @@ public class MyProfileRESTServices
      * @param exceptionClassName  class name of the exception to recreate
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
-    private void captureCheckedException(CommunityProfileOMASAPIResponse      response,
-                                         CommunityProfileCheckedExceptionBase error,
-                                         String                            exceptionClassName,
-                                         Map<String, Object>               exceptionProperties)
+    private void captureCheckedException(FFDCResponseBase                     response,
+                                         OCFCheckedExceptionBase              error,
+                                         String                               exceptionClassName,
+                                         Map<String, Object>                  exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
@@ -272,70 +292,7 @@ public class MyProfileRESTServices
      * @param response  REST Response
      * @param error returned response.
      */
-    private void captureInvalidParameterException(CommunityProfileOMASAPIResponse response,
-                                                  InvalidParameterException    error)
-    {
-        String  parameterName = error.getParameterName();
-
-        if (parameterName != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("parameterName", parameterName);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void capturePropertyServerException(CommunityProfileOMASAPIResponse     response,
-                                                PropertyServerException          error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUserNotAuthorizedException(CommunityProfileOMASAPIResponse response,
-                                                   UserNotAuthorizedException   error)
-    {
-        String  userId = error.getUserId();
-
-        if (userId != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("userId", userId);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureNoProfileForUserException(CommunityProfileOMASAPIResponse response,
+    private void captureNoProfileForUserException(FFDCResponseBase             response,
                                                   NoProfileForUserException    error)
     {
         String  userId = error.getUserId();

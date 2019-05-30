@@ -2,15 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * ConnectionCheckedException provides a checked exception for reporting errors found in connection objects.
@@ -19,9 +13,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * OCFErrorCode, is to identify exactly what is wrong with the contents of the connection object
  * and the consequences of this error.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectionCheckedException extends OCFCheckedExceptionBase
 {
     private static final Logger log = LoggerFactory.getLogger(ConnectionCheckedException.class);
@@ -63,5 +54,16 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
         log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public ConnectionCheckedException(ConnectionCheckedException template)
+    {
+        super(template);
     }
 }

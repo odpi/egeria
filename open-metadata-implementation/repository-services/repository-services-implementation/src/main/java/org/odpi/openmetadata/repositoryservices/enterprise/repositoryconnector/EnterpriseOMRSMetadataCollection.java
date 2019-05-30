@@ -1999,7 +1999,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * be returned if there are no results from any repository.
          */
         Map<String, Relationship>     combinedResults               = new HashMap<>();
-
+        boolean                       resultsReturned               = false;
         InvalidParameterException     invalidParameterException     = null;
         EntityNotKnownException       entityNotKnownException       = null;
         FunctionNotSupportedException functionNotSupportedException = null;
@@ -2033,6 +2033,8 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                               sequencingProperty,
                                                                                               sequencingOrder,
                                                                                               pageSize);
+
+                    resultsReturned = true;
 
                     /*
                      * Step through the list of returned relationships and remove duplicates.
@@ -2077,13 +2079,16 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (combinedResults.isEmpty())
         {
-            throwCapturedRepositoryErrorException(repositoryErrorException);
-            throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-            throwCapturedThrowableException(anotherException, methodName);
-            throwCapturedPropertyErrorException(propertyErrorException);
-            throwCapturedInvalidParameterException(invalidParameterException);
-            throwCapturedFunctionNotSupportedException(functionNotSupportedException);
-            throwCapturedEntityNotKnownException(entityNotKnownException);
+            if (! resultsReturned)
+            {
+                throwCapturedRepositoryErrorException(repositoryErrorException);
+                throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
+                throwCapturedThrowableException(anotherException, methodName);
+                throwCapturedPropertyErrorException(propertyErrorException);
+                throwCapturedInvalidParameterException(invalidParameterException);
+                throwCapturedFunctionNotSupportedException(functionNotSupportedException);
+                throwCapturedEntityNotKnownException(entityNotKnownException);
+            }
 
             return null;
         }
@@ -5551,11 +5556,87 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      */
     public void saveEntityReferenceCopy(String userId,
-                                        EntityDetail   entity) throws FunctionNotSupportedException
-    {
+                                        EntityDetail entity) throws InvalidParameterException,
+                                                                      RepositoryErrorException,
+                                                                      TypeErrorException,
+                                                                      PropertyErrorException,
+                                                                      UserNotAuthorizedException{
         final String    methodName = "saveEntityReferenceCopy()";
 
-        throwNotEnterpriseFunction(methodName);
+        super.saveEntityReferenceParameterValidation( userId, entity);
+
+        /*
+         * Validation complete, ok to create new instance
+         *
+         * The list of cohort connectors are retrieved for each request to ensure that any changes in
+         * the shape of the cohort are reflected immediately.
+         */
+        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
+
+        /*
+         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
+         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
+         * there are no positive results from any repository.
+         */
+        InvalidParameterException     invalidParameterException     = null;
+        TypeErrorException            typeErrorException            = null;
+        PropertyErrorException        propertyErrorException        = null;
+        UserNotAuthorizedException    userNotAuthorizedException    = null;
+        RepositoryErrorException      repositoryErrorException      = null;
+        Throwable                     anotherException              = null;
+
+
+
+        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
+        {
+            if (cohortConnector != null)
+            {
+                OMRSMetadataCollection   metadataCollection = cohortConnector.getMetadataCollection();
+
+                validateMetadataCollection(metadataCollection, methodName);
+
+                try
+                {
+                    /*
+                     * Issue the request and return if it succeeds
+                     */
+                    metadataCollection.saveEntityReferenceCopy(userId, entity);
+                } catch (InvalidParameterException error)
+                {
+                    invalidParameterException = error;
+                }
+
+                catch (TypeErrorException error)
+                {
+                    typeErrorException = error;
+                }
+
+                catch (PropertyErrorException error)
+                {
+                    propertyErrorException = error;
+                }
+                catch (RepositoryErrorException error)
+                {
+                    repositoryErrorException = error;
+                }
+                catch (UserNotAuthorizedException error)
+                {
+                    userNotAuthorizedException = error;
+                }
+                catch (Throwable error)
+                {
+                    anotherException = error;
+                }
+            }
+        }
+
+        throwCapturedRepositoryErrorException(repositoryErrorException);
+        throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
+        throwCapturedThrowableException(anotherException, methodName);
+        throwCapturedTypeErrorException(typeErrorException);
+        throwCapturedPropertyErrorException(propertyErrorException);
+        throwCapturedInvalidParameterException(invalidParameterException);
+
     }
 
 

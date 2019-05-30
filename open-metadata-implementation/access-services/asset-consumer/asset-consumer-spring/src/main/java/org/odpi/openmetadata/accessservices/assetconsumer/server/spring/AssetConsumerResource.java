@@ -2,8 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.server.spring;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -82,9 +88,9 @@ public class AssetConsumerResource
      * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
      * @param guid        String - unique id for the asset.
-     * @param requestBody null request body to satisfy HTTP protocol.
+     * @param requestBody feedback request body.
      *
-     * @return guid for new like object or
+     * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException There is a problem adding the asset properties to
      *                                   the metadata repository or
@@ -92,10 +98,10 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/likes")
 
-    public GUIDResponse addLikeToAsset(@PathVariable String          serverName,
-                                       @PathVariable String          userId,
-                                       @PathVariable String          guid,
-                                       @RequestBody  NullRequestBody requestBody)
+    public VoidResponse addLikeToAsset(@PathVariable String              serverName,
+                                       @PathVariable String              userId,
+                                       @PathVariable String              guid,
+                                       @RequestBody  FeedbackRequestBody requestBody)
     {
         return restAPI.addLikeToAsset(serverName, userId, guid, requestBody);
     }
@@ -124,7 +130,7 @@ public class AssetConsumerResource
     public VoidResponse addLogMessageToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
                                              @PathVariable String                guid,
-                                             @RequestBody  LogRecordRequestBody  requestBody)
+                                             @RequestBody  LogRecordRequestBody requestBody)
     {
         return restAPI.addLogMessageToAsset(serverName, userId, guid, requestBody);
     }
@@ -143,14 +149,14 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/reviews")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/ratings")
 
-    public GUIDResponse addReviewToAsset(@PathVariable String             serverName,
+    public VoidResponse addRatingToAsset(@PathVariable String             serverName,
                                          @PathVariable String             userId,
                                          @PathVariable String             guid,
-                                         @RequestBody  ReviewRequestBody requestBody)
+                                         @RequestBody  RatingRequestBody requestBody)
     {
-        return restAPI.addReviewToAsset(serverName, userId, guid, requestBody);
+        return restAPI.addRatingToAsset(serverName, userId, guid, requestBody);
     }
 
 
@@ -170,11 +176,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/tags/{tagGUID}")
 
-    public VoidResponse addTagToAsset(@PathVariable String          serverName,
-                                      @PathVariable String          userId,
-                                      @PathVariable String          assetGUID,
-                                      @PathVariable String          tagGUID,
-                                      @RequestBody  NullRequestBody requestBody)
+    public VoidResponse addTagToAsset(@PathVariable String              serverName,
+                                      @PathVariable String              userId,
+                                      @PathVariable String              assetGUID,
+                                      @PathVariable String              tagGUID,
+                                      @RequestBody  FeedbackRequestBody requestBody)
     {
         return restAPI.addTagToAsset(serverName, userId, assetGUID, tagGUID, requestBody);
     }
@@ -299,6 +305,32 @@ public class AssetConsumerResource
 
 
     /**
+     * Return a list of assets with the requested name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of Asset summaries or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-name/{name}")
+
+    public AssetsResponse getAssetsByName(@PathVariable String   serverName,
+                                          @PathVariable String   userId,
+                                          @PathVariable String   name,
+                                          @RequestParam int      startFrom,
+                                          @RequestParam int      pageSize)
+    {
+        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+    }
+
+
+    /**
      * Returns the connection object corresponding to the supplied connection GUID.
      *
      * @param serverName name of the server instances for this request.
@@ -313,7 +345,7 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/connections/{guid}")
 
-    public ConnectionResponse getConnectionByGUID(@PathVariable String   serverName,
+    public ConnectionResponse getConnectionByGUID(@PathVariable String     serverName,
                                                   @PathVariable String     userId,
                                                   @PathVariable String     guid)
     {
@@ -346,6 +378,29 @@ public class AssetConsumerResource
 
 
     /**
+     * Returns the connection corresponding to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
+
+    public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
+                                                    @PathVariable String   userId,
+                                                    @PathVariable String   assetGUID)
+    {
+        return restAPI.getConnectionForAsset(serverName, userId, assetGUID);
+    }
+
+
+    /**
      * Return the full definition (meaning) of the terms matching the supplied name.
      *
      * @param serverName name of the server instances for this request.
@@ -360,11 +415,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{term}")
 
-    public MeaningListResponse getMeaningByName(@PathVariable String  serverName,
-                                                @PathVariable String  userId,
-                                                @PathVariable String  term,
-                                                @RequestParam int     startFrom,
-                                                @RequestParam int     pageSize)
+    public GlossaryTermListResponse getMeaningByName(@PathVariable String  serverName,
+                                                     @PathVariable String  userId,
+                                                     @PathVariable String  term,
+                                                     @RequestParam int     startFrom,
+                                                     @RequestParam int     pageSize)
     {
         return restAPI.getMeaningByName(serverName, userId, term, startFrom, pageSize);
     }
@@ -384,9 +439,9 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/meanings/{guid}")
 
-    public MeaningResponse getMeaning(@PathVariable String   serverName,
-                                      @PathVariable String   userId,
-                                      @PathVariable String   guid)
+    public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
+                                           @PathVariable String   userId,
+                                           @PathVariable String   guid)
     {
         return restAPI.getMeaning(serverName, userId, guid);
     }
@@ -429,11 +484,11 @@ public class AssetConsumerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/tags/by-name/{tagName}")
 
-    public TagListResponse getTagsByName(@PathVariable String  serverName,
-                                         @PathVariable String  userId,
-                                         @PathVariable String  tagName,
-                                         @RequestParam int     startFrom,
-                                         @RequestParam int     pageSize)
+    public TagsResponse getTagsByName(@PathVariable String  serverName,
+                                      @PathVariable String  userId,
+                                      @PathVariable String  tagName,
+                                      @RequestParam int     startFrom,
+                                      @RequestParam int     pageSize)
     {
         return restAPI.getTagsByName(serverName, userId, tagName, startFrom, pageSize);
     }
@@ -468,7 +523,7 @@ public class AssetConsumerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         String - unique id for the like object.
+     * @param guid         unique identifier for the asset where the like is attached.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -492,7 +547,7 @@ public class AssetConsumerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         unique id for the review.
+     * @param guid         unique identifier for the asset where the rating is attached.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -500,14 +555,14 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/reviews/{guid}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/ratings/delete")
 
-    public VoidResponse   removeReviewFromAsset(@PathVariable String          serverName,
+    public VoidResponse   removeRatingFromAsset(@PathVariable String          serverName,
                                                 @PathVariable String          userId,
                                                 @PathVariable String          guid,
                                                 @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.removeReviewFromAsset(serverName, userId, guid, requestBody);
+        return restAPI.removeRatingFromAsset(serverName, userId, guid, requestBody);
     }
 
 
@@ -558,31 +613,6 @@ public class AssetConsumerResource
                                         @RequestBody  CommentRequestBody  requestBody)
     {
         return restAPI.updateComment(serverName, userId, commentGUID, requestBody);
-    }
-
-
-    /**
-     * Updates the rating and optional review text attached to the asset by this user.
-     *
-     * @param serverName  name of the server instances for this request.
-     * @param userId      userId of user making request.
-     * @param reviewGUID  unique identifier for the review.
-     * @param requestBody provides the StarRating enumeration for none, one to five stars plus
-     *                    optional review test.
-     *
-     * @return void or
-     * InvalidParameterException one of the parameters is null or invalid.
-     * PropertyServerException There is a problem updating the asset properties in the metadata repository.
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/reviews/{reviewGUID}/update")
-
-    public VoidResponse   updateReviewOnAsset(@PathVariable String              serverName,
-                                              @PathVariable String              userId,
-                                              @PathVariable String              reviewGUID,
-                                              @RequestBody  ReviewRequestBody   requestBody)
-    {
-        return restAPI.updateReviewOnAsset(serverName, userId, reviewGUID, requestBody);
     }
 
 

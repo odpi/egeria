@@ -13,6 +13,7 @@ connections of the open discovery services embedded within it.
 
 ![UML](0603-Open-Discovery-Pipelines.png)
 
+Return to [Area 6](Area-6-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

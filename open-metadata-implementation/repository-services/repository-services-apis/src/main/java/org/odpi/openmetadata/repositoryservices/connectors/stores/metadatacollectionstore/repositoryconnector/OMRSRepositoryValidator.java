@@ -873,11 +873,13 @@ public interface OMRSRepositoryValidator
      * Verify whether the instance passed to this method is of the type indicated by the type guid.
      * A null type guid matches all instances (ie result is true).  A null instance returns false.
      *
+     * @param sourceName  name of caller.
      * @param instanceTypeGUID  unique identifier of the type (or null).
      * @param instance  instance to test.
      * @return boolean
      */
-    boolean verifyInstanceType(String           instanceTypeGUID,
+    boolean verifyInstanceType(String           sourceName,
+                               String           instanceTypeGUID,
                                InstanceHeader   instance);
 
 

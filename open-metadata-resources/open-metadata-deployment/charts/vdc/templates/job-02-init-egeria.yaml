@@ -13,6 +13,9 @@ metadata:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    {{ if .Values.istio.enabled -}}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
 spec:
   template:
     metadata:
@@ -59,6 +62,35 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                &&
+{{- if .Values.cts.enabled }}
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                --header "Content-Type: application/json"
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/event-bus
+                {{- if .Values.kafka.topicroot -}}
+                ?topicURLRoot={{ .Values.kafka.topicroot }}
+                {{- end -}}
+                {{- if .Values.kafka.internal.enabled }}
+                --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
+                {{- else -}}
+                {{- include "vdc.template.kafkaext.eventbus" . | nindent 16 -}}
+                {{- end -}}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories/${EGERIA_SERVER}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
+                &&
+{{- end }}
+                curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
@@ -74,10 +106,7 @@ spec:
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/access-services?serviceMode=ENABLED
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
-                &&
-                curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/{{- .Values.egeriarepomode -}}
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/{{- .Values.egeria.repomode -}}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}

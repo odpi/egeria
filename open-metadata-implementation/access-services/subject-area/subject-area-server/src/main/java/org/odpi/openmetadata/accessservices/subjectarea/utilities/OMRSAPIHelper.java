@@ -321,6 +321,84 @@ public class OMRSAPIHelper {
         }
         return response;
     }
+
+    public SubjectAreaOMASAPIResponse callGetEntitiesByType(String restAPIName, String     userId,
+                                                            String                    entityTypeGUID,
+                                                            Date                      asOfTime,
+                                                            int                       fromEntityElement,
+                                                            int                       pageSize) {
+
+        String methodName = "callGetEntitiesByType";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName );
+        }
+        SubjectAreaOMASAPIResponse response = null;
+
+        try {
+            List<EntityDetail>  foundEntities = getOMRSMetadataCollection(restAPIName).findEntitiesByProperty(userId,
+                    entityTypeGUID,
+                    null,
+                    null,
+                    fromEntityElement,
+                    null,
+                    null,
+                    asOfTime,
+                    null,
+                    null,
+                    pageSize
+                   );
+            response = new EntityDetailsResponse(foundEntities);
+
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
+            response =  this.errorHandler.handleInvalidParameterException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (RepositoryErrorException e) {
+            response =  this.errorHandler.handleRepositoryError(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            response =  this.errorHandler.handleUnauthorizedUser(userId,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e) {
+            response =  this.errorHandler.handlePropertyErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            response =  this.errorHandler.handleFunctionNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
+            response =  this.errorHandler.handleTypeErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException e) {
+            response =  this.errorHandler.handlePagingErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response =  this.errorHandler.handleMetadataServerUnContactable(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== Method: " + methodName );
+        }
+        return response;
+    }
+
+
     public  SubjectAreaOMASAPIResponse callOMRSUpdateEntityProperties(String restAPIName, String userId , EntityDetail entityDetail) {
         String methodName = "callOMRSUpdateEntityProperties";
         if (log.isDebugEnabled()) {
@@ -1265,7 +1343,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public static SubjectAreaOMASAPIResponse  findEntitiesByType(OMRSAPIHelper oMRSAPIHelper, String serverName, String restAPIName, String userId , String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
+    public static SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(OMRSAPIHelper oMRSAPIHelper, String restAPIName, String userId , String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
                   // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         if (offset == null) {
             offset = new Integer(0);
@@ -1302,6 +1380,31 @@ public class OMRSAPIHelper {
                 asOfTime,
                 sequencingProperty,
                 omrsSequencingOrder,
+                pageSize);
+    }
+    public static SubjectAreaOMASAPIResponse getEntitiesByType(OMRSAPIHelper oMRSAPIHelper,
+                                                               String restAPIName,
+                                                               String userId,
+                                                               String typeName,
+                                                               Date asOfTime,
+                                                               Integer offset,
+                                                               Integer pageSize
+                                                               ) {
+        if (offset == null) {
+            offset = new Integer(0);
+        }
+        if (pageSize == null) {
+            pageSize = new Integer(0);
+        }
+        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+        TypeDef typeDef =archiveAccessor.getEntityDefByName(typeName);
+        String entityTypeGUID = typeDef.getGUID();
+        return oMRSAPIHelper.callGetEntitiesByType(
+                restAPIName,
+                userId,
+                entityTypeGUID,
+                asOfTime,
+                offset,
                 pageSize);
     }
 }

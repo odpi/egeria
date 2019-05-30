@@ -3,15 +3,10 @@
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * OCFCheckedExceptionBase provides a checked exception for reporting errors found when using OCF connectors.
@@ -21,22 +16,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * ConnectorProvider/Connector implementation can be used.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
 public abstract class OCFCheckedExceptionBase extends Exception
 {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int       reportedHTTPCode;
-    private String    reportingClassName;
-    private String    reportingActionDescription;
-    private String    reportedErrorMessage;
-    private String    reportedSystemAction;
-    private String    reportedUserAction;
-    private Throwable reportedCaughtException = null;
-
+    private int                 reportedHTTPCode;
+    private String              reportingClassName;
+    private String              reportingActionDescription;
+    private String              reportedErrorMessage;
+    private String              reportedSystemAction;
+    private String              reportedUserAction;
+    private Throwable           reportedCaughtException = null;
+    private Map<String, Object> relatedProperties = null;
 
 
     /**
@@ -49,7 +41,12 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      */
-    public OCFCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
+    public OCFCheckedExceptionBase(int    httpCode,
+                                   String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction)
     {
         super(errorMessage);
         this.reportedHTTPCode = httpCode;
@@ -58,6 +55,36 @@ public abstract class OCFCheckedExceptionBase extends Exception
         this.reportedErrorMessage = errorMessage;
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
+    }
+
+
+    /**
+     * This is the typical constructor used for creating an OCFCheckedException.
+     *
+     * @param httpCode   http response code to use if this exception flows over a REST call
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param errorMessage   description of error
+     * @param systemAction   actions of the system as a result of the error
+     * @param userAction   instructions for correcting the error
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFCheckedExceptionBase(int                 httpCode,
+                                   String              className,
+                                   String              actionDescription,
+                                   String              errorMessage,
+                                   String              systemAction,
+                                   String              userAction,
+                                   Map<String, Object> relatedProperties)
+    {
+        super(errorMessage);
+        this.reportedHTTPCode = httpCode;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = errorMessage;
+        this.reportedSystemAction = systemAction;
+        this.reportedUserAction = userAction;
+        this.relatedProperties = relatedProperties;
     }
 
 
@@ -72,7 +99,13 @@ public abstract class OCFCheckedExceptionBase extends Exception
      * @param userAction   instructions for correcting the error
      * @param caughtError   previous error causing this exception
      */
-    public OCFCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
+    public OCFCheckedExceptionBase(int       httpCode,
+                                   String    className,
+                                   String    actionDescription,
+                                   String    errorMessage,
+                                   String    systemAction,
+                                   String    userAction,
+                                   Throwable caughtError)
     {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;
@@ -82,6 +115,59 @@ public abstract class OCFCheckedExceptionBase extends Exception
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
         this.reportedCaughtException = caughtError;
+    }
+
+    /**
+     * This is the constructor used for creating an OCFCheckedException when an unexpected error has been caught.
+     *
+     * @param httpCode   http response code to use if this exception flows over a REST call
+     * @param className   name of class reporting error
+     * @param actionDescription   description of function it was performing when error detected
+     * @param errorMessage   description of error
+     * @param systemAction   actions of the system as a result of the error
+     * @param userAction   instructions for correcting the error
+     * @param caughtError   previous error causing this exception
+     * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
+     */
+    public OCFCheckedExceptionBase(int                 httpCode,
+                                   String              className,
+                                   String              actionDescription,
+                                   String              errorMessage,
+                                   String              systemAction,
+                                   String              userAction,
+                                   Throwable           caughtError,
+                                   Map<String, Object> relatedProperties)
+    {
+        super(errorMessage, caughtError);
+        this.reportedHTTPCode = httpCode;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = errorMessage;
+        this.reportedSystemAction = systemAction;
+        this.reportedUserAction = userAction;
+        this.reportedCaughtException = caughtError;
+        this.relatedProperties = relatedProperties;
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an OCFCheckedException.
+     *
+     * @param template   object to copy
+     */
+    public OCFCheckedExceptionBase(OCFCheckedExceptionBase template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.reportedHTTPCode = template.getReportedHTTPCode();
+            this.reportingClassName = template.getReportingClassName();
+            this.reportingActionDescription = template.getReportingActionDescription();
+            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedSystemAction = template.getReportedSystemAction();
+            this.reportedUserAction = template.getReportedUserAction();
+        }
     }
 
 
@@ -161,6 +247,28 @@ public abstract class OCFCheckedExceptionBase extends Exception
 
 
     /**
+     * Return any additional properties that were added to the exception to aid diagnosis.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getRelatedProperties()
+    {
+        if (relatedProperties == null)
+        {
+            return null;
+        }
+        else if (relatedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(relatedProperties);
+        }
+    }
+
+
+    /**
      * Compare the values of the supplied object with those stored in the current object.
      *
      * @param objectToCompare supplied object
@@ -184,6 +292,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                 Objects.equals(reportedErrorMessage, that.reportedErrorMessage) &&
                 Objects.equals(getReportedSystemAction(), that.getReportedSystemAction()) &&
                 Objects.equals(getReportedUserAction(), that.getReportedUserAction()) &&
+                Objects.equals(getRelatedProperties(), that.getRelatedProperties()) &&
                 Objects.equals(getReportedCaughtException(), that.getReportedCaughtException());
     }
 
@@ -203,6 +312,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                             reportedErrorMessage,
                             getReportedSystemAction(),
                             getReportedUserAction(),
+                            getRelatedProperties(),
                             getReportedCaughtException());
     }
 
@@ -223,6 +333,7 @@ public abstract class OCFCheckedExceptionBase extends Exception
                 ", reportedSystemAction='" + reportedSystemAction + '\'' +
                 ", reportedUserAction='" + reportedUserAction + '\'' +
                 ", reportedCaughtException=" + reportedCaughtException +
+                ", relatedProperties=" + relatedProperties +
                 ", errorMessage='" + getErrorMessage() + '\'' +
                 '}';
     }

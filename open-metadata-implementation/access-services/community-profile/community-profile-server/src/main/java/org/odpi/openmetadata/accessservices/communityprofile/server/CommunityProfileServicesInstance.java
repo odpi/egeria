@@ -3,60 +3,59 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.MyProfileHandler;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+
+import java.util.List;
 
 /**
  * CommunityProfileServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class CommunityProfileServicesInstance
+public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSMetadataCollection  metadataCollection = null;
-    private String                  serverName = null;
+    private static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
+    private MyProfileHandler myProfileHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that the community profile is allowed to serve Assets from.
+     * @param auditLog logging destination
+     *
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
+    public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector,
+                                            List<String> supportedZones,
+                                            OMRSAuditLog auditLog) throws NewInstanceException
     {
+        super(myDescription.getAccessServiceName() + " OMAS",
+              repositoryConnector,
+              auditLog);
+
         final String methodName = "new ServiceInstance";
 
-        if (repositoryConnector != null)
+        super.supportedZones = supportedZones;
+
+        if (repositoryHandler != null)
         {
-            try
-            {
-                this.repositoryConnector = repositoryConnector;
-                this.serverName = repositoryConnector.getServerName();
-                this.metadataCollection = repositoryConnector.getMetadataCollection();
-
-                CommunityProfileServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            }
-            catch (Throwable error)
-            {
-                CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_INITIALIZED;
-                String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-                throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-
-            }
+            this.myProfileHandler = new MyProfileHandler(serviceName,
+                                                         serverName,
+                                                         invalidParameterHandler,
+                                                         repositoryHelper,
+                                                         repositoryHandler,
+                                                         errorHandler);
         }
         else
         {
             CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
                                            this.getClass().getName(),
@@ -69,97 +68,14 @@ public class CommunityProfileServicesInstance
     }
 
 
+
     /**
-     * Return the server name.
+     * Return the handler for my profile requests.
      *
-     * @return serverName name of the server for this instance
-     * @throws NewInstanceException a problem occurred during initialization
+     * @return handler object
      */
-    public String getServerName() throws NewInstanceException
+    MyProfileHandler getMyProfileHandler()
     {
-        final String methodName = "getServerName";
-
-        if (serverName != null)
-        {
-            return serverName;
-        }
-        else
-        {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Return the local metadata collection for this server.
-     *
-     * @return OMRSMetadataCollection object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException
-    {
-        final String methodName = "getMetadataCollection";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return metadataCollection;
-        }
-        else
-        {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Return the repository connector for this server.
-     *
-     * @return OMRSRepositoryConnector object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    public OMRSRepositoryConnector  getRepositoryConnector() throws PropertyServerException
-    {
-        final String methodName = "getRepositoryConnector";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive()))
-        {
-            return repositoryConnector;
-        }
-        else
-        {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Unregister this instance from the instance map.
-     */
-    public void shutdown() {
-        CommunityProfileServicesInstanceMap.removeInstanceForJVM(serverName);
+        return myProfileHandler;
     }
 }

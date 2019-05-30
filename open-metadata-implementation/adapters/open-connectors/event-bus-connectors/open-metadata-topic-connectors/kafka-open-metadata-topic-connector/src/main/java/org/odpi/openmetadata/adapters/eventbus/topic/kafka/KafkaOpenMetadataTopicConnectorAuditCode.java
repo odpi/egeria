@@ -32,14 +32,14 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
 
     SERVICE_PRODUCER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0002",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Producer for topic {0} are: {1}",
-              "The server is registering to receive events from Apache Kafka using the properties shown.",
+              "{0} properties passed to the Apache Kafka Producer for topic {1}",
+              "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_CONSUMER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0003",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Consumer for topic {0} are: {1}",
-              "The server is registering to receive events from Apache Kafka using the properties shown.",
+              "{0} properties passed to the Apache Kafka Consumer for topic {1}",
+              "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0004",
@@ -81,7 +81,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
     KAFKA_PRODUCER_START("OCF-KAFKA-TOPIC-CONNECTOR-0010",
              OMRSAuditLogRecordSeverity.INFO,
              "The Apache Kafka producer for topic {0} is starting up with {1} buffered messages",
-             "The local server has requested shut down of the Apache Kafka connector.",
+             "The local server has started the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),
 
     KAFKA_PRODUCER_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0011",
@@ -90,7 +90,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
              "The local server has requested shut down of the Apache Kafka connector.",
              "No action is required.  This is part of the normal operation of the server."),
 
-    EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0011",
+    EVENT_SEND_IN_ERROR_LOOP("OCF-KAFKA-TOPIC-CONNECTOR-0012",
              OMRSAuditLogRecordSeverity.ERROR,
              "Unable to send event on topic {0}.  {1} events successfully sent; {2} events buffered. Latest error message is {3}",
              "There is a reoccurring error being returned by the Apache Kafka event bus.  Outbound events are being buffered.",
@@ -99,7 +99,7 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
                                      "server or in the event bus itself. Once the error is corrected, " +
                                      "the server will send the buffered events.  "),
 
-    MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0012 ",
+    MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0013 ",
              OMRSAuditLogRecordSeverity.ERROR,
              "Property {0} is missing from the Kafka Event Bus configuration",
              "The system is unable to connect to the event bus.",

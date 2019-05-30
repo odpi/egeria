@@ -49,7 +49,24 @@ public enum ODFErrorCode
     INVALID_EMBEDDED_DISCOVERY_SERVICE(400, "ODF-DISCOVERY-SERVICE-400-003 ",
             "No embedded discovery services supplied to the discovery pipeline {0}",
             "The discovery pipeline is not able to discovery which discovery services to run.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request.");
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
+    INVALID_DISCOVERY_SERVICE_CONNECTION(400, "ODF-DISCOVERY-SERVICE-400-004 ",
+            "The discovery engine {0} is not able to create the discovery service for asset type {1} and is therefore not able to discover asset {2}.  Error message was {3}.  The connection was {4}",
+            "The discovery engine is not able to create a discovery service to analyze an asset because the connection information associated with the discovery service is not valid.",
+            "The connection is stored with the discovery service definition in the open metadata repository used by the discovery engine.  Use the error message to correct the connection properties.  Once the connection is corrected is resolved, retry the discovery request."),
+    INVALID_DISCOVERY_SERVICE_CONNECTOR(400, "ODF-DISCOVERY-SERVICE-400-005 ",
+            "Invalid discovery service for asset type {0}.  Discovery engine {1} is not able to analyze asset {2}",
+            "The discovery service is not functioning correctly.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request."),
+    INVALID_ASSET_CONNECTION(400, "ODF-DISCOVERY-SERVICE-400-006 ",
+            "The connection for asset {0} is no valid.  Error message was {1}.  The connection was {2}",
+            "The discovery engine is not able to create a connector to the asset to allow a discovery service to access its contents.",
+            "The connection is stored with the asset definition in the open metadata repository used by the discovery engine.  Use the error message to correct the connection properties.  Once the connection is corrected is resolved, retry the discovery request."),
+    INVALID_ASSET_CONNECTOR(400, "ODF-DISCOVERY-SERVICE-400-007 ",
+            "Invalid connector for asset {0}.  Error message was {1}.  The connection was {2}",
+            "The discovery service is able to analyze the asset.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the connector.  Once the cause is resolved, retry the discovery request.");
+
 
     private int    httpErrorCode;
     private String errorMessageId;

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-implementation</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Platform Services</name>
+    <description>
+        The platform services support the base services of an OMAG Server Platform.
+    </description>
+
+    <artifactId>platform-services</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>platform-services-api</module>
+        <module>platform-services-server</module>
+        <module>platform-services-spring</module>
+    </modules>
+
+</project>

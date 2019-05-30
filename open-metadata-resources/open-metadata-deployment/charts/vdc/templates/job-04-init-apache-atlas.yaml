@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
+{{ if .Values.atlas.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -13,6 +15,9 @@ metadata:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    {{ if .Values.istio.enabled -}}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
 spec:
   template:
     metadata:
@@ -64,6 +69,9 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --anyauth --user admin:admin -X POST
+                ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${ATLAS_ENDPOINT}/egeria
+                &&
+                curl -f --verbose --anyauth --user admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
@@ -79,10 +87,8 @@ spec:
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/atlas-repository
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST
-                ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${ATLAS_ENDPOINT}/egeria
-                &&
-                curl -f --verbose --anyauth --user admin:admin -X POST
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST --max-time 900
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
+{{ end }}

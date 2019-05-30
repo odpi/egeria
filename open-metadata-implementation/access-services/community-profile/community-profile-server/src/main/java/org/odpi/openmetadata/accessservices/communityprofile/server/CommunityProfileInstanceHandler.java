@@ -2,101 +2,56 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.MyProfileHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * CommunityProfileInstanceHandler retrieves information from the instance map for the
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the CommunityProfileAdmin class.
  */
-class CommunityProfileInstanceHandler
+class CommunityProfileInstanceHandler extends OCFOMASServiceInstanceHandler
 {
-    private static CommunityProfileServicesInstanceMap instanceMap   = new CommunityProfileServicesInstanceMap();
-    private static AccessServiceDescription         myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
-
     /**
      * Default constructor registers the access service
      */
-    CommunityProfileInstanceHandler() {
+    CommunityProfileInstanceHandler()
+    {
+        super(AccessServiceDescription.COMMUNITY_PROFILE_OMAS.getAccessServiceName() + " OMAS");
+
         CommunityProfileRegistration.registerAccessService();
     }
 
 
     /**
-     * Retrieve the metadata collection for the access service.
+     * Retrieve the specific handler for the access service.
      *
+     * @param userId calling user
      * @param serverName name of the server tied to the request
-     * @return metadata collection for exclusive use by the requested instance
-     * @throws PropertyServerException no available instance for the requested server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    OMRSMetadataCollection getMetadataCollection(String serverName) throws PropertyServerException
+    MyProfileHandler getMyProfileHandler(String userId,
+                                         String serverName,
+                                         String serviceOperationName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
-        CommunityProfileServicesInstance instance = instanceMap.getInstance(serverName);
+        CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getMetadataCollection();
+            return instance.getMyProfileHandler();
         }
-        else
-        {
-            final String methodName = "getMetadataCollection";
 
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return null;
     }
 
-
-    /**
-     * Return the Governance Engine's official Access Service Name
-     *
-     * @return String name
-     */
-    public String  getAccessServiceName()
-    {
-        return myDescription.getAccessServiceName();
-    }
-
-
-    /**
-     * Retrieve the metadata collection for the access service.
-     *
-     * @param serverName name of the server tied to the request
-     * @return repository connector for exclusive use by the requested instance
-     * @throws PropertyServerException no available instance for the requested server
-     */
-    OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException
-    {
-        CommunityProfileServicesInstance instance = instanceMap.getInstance(serverName);
-
-        if (instance != null)
-        {
-            return instance.getRepositoryConnector();
-        }
-        else
-        {
-            final String methodName = "getRepositoryConnector";
-
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.SERVICE_NOT_INITIALIZED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
-    }
 }

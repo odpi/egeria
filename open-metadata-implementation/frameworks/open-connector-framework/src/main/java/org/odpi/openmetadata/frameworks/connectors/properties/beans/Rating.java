@@ -33,7 +33,7 @@ public class Rating extends ElementHeader
     protected StarRating starRating = null;
     protected String     review     = null;
     protected String     user       = null;
-
+    protected boolean    isPublic   = false;
 
     /**
      * Default constructor
@@ -47,17 +47,18 @@ public class Rating extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param templateRating element to copy
+     * @param template element to copy
      */
-    public Rating(Rating templateRating)
+    public Rating(Rating template)
     {
-        super(templateRating);
+        super(template);
 
-        if (templateRating != null)
+        if (template != null)
         {
-            user = templateRating.getUser();
-            starRating = templateRating.getStarRating();
-            review = templateRating.getReview();
+            user = template.getUser();
+            starRating = template.getStarRating();
+            review = template.getReview();
+            isPublic = template.isPublic;
         }
     }
 
@@ -127,6 +128,28 @@ public class Rating extends ElementHeader
 
 
     /**
+     * Return if this rating is private ot the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether the rating is private to the creating user or not.
+     *
+     * @param aPublic boolean
+     */
+    public void setPublic(boolean aPublic)
+    {
+        isPublic = aPublic;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -138,6 +161,7 @@ public class Rating extends ElementHeader
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
                 ", user='" + user + '\'' +
+                ", isPublic='" + isPublic + '\'' +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
@@ -159,7 +183,7 @@ public class Rating extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Rating))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -168,8 +192,10 @@ public class Rating extends ElementHeader
             return false;
         }
         Rating rating = (Rating) objectToCompare;
-        return getStarRating() == rating.getStarRating() &&
+        return isPublic() == rating.isPublic() &&
+                getStarRating() == rating.getStarRating() &&
                 Objects.equals(getReview(), rating.getReview()) &&
                 Objects.equals(getUser(), rating.getUser());
     }
+
 }

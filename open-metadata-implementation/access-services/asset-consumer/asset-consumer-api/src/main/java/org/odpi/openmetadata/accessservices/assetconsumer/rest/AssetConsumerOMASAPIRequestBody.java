@@ -19,10 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = LogRecordRequestBody.class, name = "LogRecordRequestBody"),
-                @JsonSubTypes.Type(value = TagRequestBody.class, name = "TagRequestBody"),
-                @JsonSubTypes.Type(value = CommentRequestBody.class, name = "CommentRequestBody"),
-                @JsonSubTypes.Type(value = ReviewRequestBody.class, name = "RatingRequestBody")
+                @JsonSubTypes.Type(value = LogRecordRequestBody.class, name = "LogRecordRequestBody")
         })
 public abstract class AssetConsumerOMASAPIRequestBody implements java.io.Serializable
 {
