@@ -26,7 +26,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
     private String                 schemaGUID;
     private ConnectedAssetUniverse connectedAsset;
     private int                    maxCacheSize;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
     private RESTExceptionHandler   restExceptionHandler    = new RESTExceptionHandler();
 
@@ -50,7 +50,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                    ConnectedAssetUniverse parentAsset,
                                    int                 totalElementCount,
                                    int                 maxCacheSize,
-                                   RESTClient          restClient)
+                                   OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -131,12 +131,12 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 
         try
         {
-            SchemaAttributesResponse restResult = restClient.callSchemaAttributeGetRESTCall(methodName,
-                                                                                            omasServerURL + urlTemplate,
-                                                                                            userId,
-                                                                                            schemaGUID,
-                                                                                            cacheStartPointer,
-                                                                                            maximumSize);
+            SchemaAttributesResponse restResult = restClient.callSchemaAttributesGetRESTCall(methodName,
+                                                                                             omasServerURL + urlTemplate,
+                                                                                             userId,
+                                                                                             schemaGUID,
+                                                                                             cacheStartPointer,
+                                                                                             maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

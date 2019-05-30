@@ -36,7 +36,7 @@ public class OMAGServerVirtualizationService {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
@@ -61,6 +61,14 @@ public class OMAGServerVirtualizationService {
                             virtualizationConfig.getIvInTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getConfigurationProperties()
+                    )
+            );
+
+            virtualizationConfig.setVirtualizationSolutionConnection(
+                    connectorConfigurationFactory.getVirtualizationSolutionConnection(
+                            serverName,
+                            virtualizationConfig.getVirtualizationProvider(),
+                            virtualizationConfig.getVirtualizationSolutionConfig()
                     )
             );
 
@@ -95,7 +103,7 @@ public class OMAGServerVirtualizationService {
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             VirtualizationConfig virtualizationConfig = serverConfig.getVirtualizationConfig();
             this.setVirtualizerConfig(userId, serverName, virtualizationConfig);
         }

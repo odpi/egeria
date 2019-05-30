@@ -32,6 +32,9 @@ spec:
       targetPort: 9446
       nodePort: {{ .Values.service.nodeport.ibmigc }}
 {{ end }}
+    - name: kafka
+      port: 59092
+      targetPort: 59092
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -67,8 +70,8 @@ spec:
         app.kubernetes.io/component: ibm-igc-service
     spec:
 {{ if .Values.ibmigc.internal.enabled }}
-# If we are using a cluster-internal IGC, fix the hostname to what the image requires of itself and
-# define the secrets to use for pulling the container image from a private repository
+# Fix the hostname to what the image requires of itself and define the secrets to use
+# for pulling the container image from a private repository
       hostname: infosvr
       imagePullSecrets:
         - name: regcred
@@ -84,14 +87,15 @@ spec:
       volumes:
         - name: egeria-igc-connector-volume
           emptyDir: {}
-# If we are also using a cluster-internal IGC, we should mount samples to be loaded there
 {{ if .Values.ibmigc.internal.enabled }}
 {{ if .Values.localRepo.use }}
+# If we are using a local repository, mount the samples from there
         - name: egeria-samples-volume
           hostPath:
             path: {{ .Values.localRepo.location }}
             type: Directory
 {{ else }}
+# Otherwise we'll git-pull the samples from master
         - name: egeria-samples-volume
           emptyDir: {}
 {{ end }}
@@ -108,12 +112,12 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-              cd /connectors &&
-              wget https://github.com/odpi/egeria-connector-ibm-igc/releases/download/1.1-SNAPSHOT/egeria-connector-ibm-igc-package-1.1-SNAPSHOT.jar
+                cd /opt/egeria/connectors &&
+                wget https://github.com/odpi/egeria-connector-ibm-igc/releases/download/1.1-SNAPSHOT/egeria-connector-ibm-igc-package-1.1-SNAPSHOT.jar
           volumeMounts:
-            - mountPath: /connectors
+            - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume
-{{ if .Values.ibmigc.internal.enabled }}
+{{ if and .Values.ibmigc.internal.enabled (not .Values.localRepo.use) }}
 # If we are using a cluster-internal IGC, stand up both the IGC container and the proxy, embedding the Ansible
 # playbooks for loading sample metadata at runtime within the IGC container
         - name: init-samples
@@ -126,14 +130,14 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-                cd /egeria &&
+                cd /opt/egeria/samples &&
                 git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-deployment/sample-data/*' >> .git/info/sparse-checkout &&
                 git pull --depth=1 origin master
           volumeMounts:
-            - mountPath: /egeria
+            - mountPath: /opt/egeria/samples
               name: egeria-samples-volume
 {{ end }}
       containers:
@@ -148,7 +152,7 @@ spec:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
             - name: "LOADER_PATH"
-              value: "/connectors"
+              value: "/opt/egeria/connectors"
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -159,7 +163,7 @@ spec:
             failureThreshold: 6
           resources: {}
           volumeMounts:
-            - mountPath: /connectors
+            - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume
               readOnly: true
 {{ if .Values.ibmigc.internal.enabled }}
@@ -196,7 +200,7 @@ spec:
             failureThreshold: 3
           resources: {}
           volumeMounts:
-            - mountPath: /egeria
+            - mountPath: /opt/egeria/samples
               name: egeria-samples-volume
 #      hostIPC: true   # try without this setting to reduce potential risks to host system
 {{ end }}

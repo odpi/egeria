@@ -48,6 +48,10 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
     public GovernanceProgramLeadership(String     serverName,
                                        String     omasServerURL) throws InvalidParameterException
     {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL);
@@ -70,6 +74,10 @@ public class GovernanceProgramLeadership  implements GovernanceLeadershipInterfa
                                        String     userId,
                                        String     password) throws InvalidParameterException
     {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
