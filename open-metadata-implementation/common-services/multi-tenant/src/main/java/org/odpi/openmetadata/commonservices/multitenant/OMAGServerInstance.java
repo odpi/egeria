@@ -97,7 +97,7 @@ class OMAGServerInstance
     {
         if (serverStartTime == null)
         {
-            serverHistory.get(serverHistory.size() - 1);
+            return serverHistory.get(serverHistory.size() - 1).getEndTime();
         }
 
         return null;
