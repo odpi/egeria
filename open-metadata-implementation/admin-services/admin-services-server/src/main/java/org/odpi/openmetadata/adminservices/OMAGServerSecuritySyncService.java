@@ -7,7 +7,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.*;
@@ -73,7 +72,7 @@ public class OMAGServerSecuritySyncService
                                 eventBusConfig.getConfigurationProperties()));
             }
 
-            if(securitySyncConfig.getSecurityServerURL() != null && securitySyncConfig.getSecurityServerAuthorization() != null){
+            if(securitySyncConfig != null && securitySyncConfig.getSecurityServerURL() != null && securitySyncConfig.getSecurityServerAuthorization() != null){
                 Map<String, Object> additionalProperties = new HashMap<>();
                 additionalProperties.put("securityServerAuthorization", securitySyncConfig.getSecurityServerAuthorization());
                 additionalProperties.put("tagServiceName", securitySyncConfig.getTagServiceName());
