@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEventType;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -44,24 +43,27 @@ public class GovernanceEngineEventProcessor {
         }
     }
 
-    public void processClassifiedEntity(EntityDetail entityDetail) throws RepositoryErrorException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException {
-
-        if (!governedAssetHandler.containsGovernedClassification(entityDetail)) {
+    public void processClassifiedEntity(EntityDetail entity) throws RepositoryErrorException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException {
+        if (!governedAssetHandler.isSchemaElementType(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
             return;
         }
 
-        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
+        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
         sendEvent(governanceEvent);
     }
 
-    public void processReclassifiedEntity(EntityDetail entityDetail) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.RE_CLASSIFIED_ASSET);
+    public void processReclassifiedEntity(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        if (!governedAssetHandler.isSchemaElementType(entity)) {
+            return;
+        }
+
+        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.RE_CLASSIFIED_ASSET);
 
         sendEvent(governanceEvent);
     }
 
     public void processDeletedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        if (!governedAssetHandler.containsGovernedClassification(entity)) {
+        if (!governedAssetHandler.isSchemaElementType(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
             return;
         }
 
@@ -71,7 +73,7 @@ public class GovernanceEngineEventProcessor {
     }
 
     public void processDeclassifiedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        if (!governedAssetHandler.containsGovernedClassification(entity)) {
+        if (!governedAssetHandler.isSchemaElementType(entity)) {
             return;
         }
 
@@ -84,20 +86,11 @@ public class GovernanceEngineEventProcessor {
         GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
 
         governanceEvent.setEventType(governanceEngineEventType);
-        GovernedAsset governedAsset = getGovernedAsset(entityDetail);
+        GovernedAsset governedAsset = governedAssetHandler.getGovernedAsset(entityDetail);
         governanceEvent.setGovernedAsset(governedAsset);
 
         return governanceEvent;
     }
-
-    private GovernedAsset getGovernedAsset(EntityDetail entityDetail) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        GovernedAsset governedAsset = governedAssetHandler.getGovernedAsset(entityDetail);
-        GovernanceClassification governanceClassification = governedAssetHandler.getGovernanceClassifications(entityDetail.getClassifications());
-        governedAsset.setAssignedGovernanceClassification(governanceClassification);
-
-        return governedAsset;
-    }
-
 
     private void sendEvent(GovernanceEngineEvent event) {
         try {

@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMRSTopicListener.class);
-    private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
 
     public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor) {
@@ -28,7 +27,8 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
      *
      * @param omrsRegistryEvent event
      */
-    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) { }
+    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
+    }
 
 
     /**
@@ -36,8 +36,8 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
      *
      * @param event inbound event
      */
-    public void processTypeDefEvent(OMRSTypeDefEvent event) { }
-
+    public void processTypeDefEvent(OMRSTypeDefEvent event) {
+    }
 
 
     /**
@@ -54,6 +54,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                 return;
             }
 
+            String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
             switch (instanceEventType) {
                 case CLASSIFIED_ENTITY_EVENT:
                     instanceEventProcessor.processClassifiedEntityEvent(enterpriseOMRSTopic,
