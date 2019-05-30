@@ -28,7 +28,7 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
-    private RESTClient             restClient;
+    private OCFRESTClient          restClient;
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -53,7 +53,7 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
                                          ConnectedAssetUniverse parentAsset,
                                          int                    totalElementCount,
                                          int                    maxCacheSize,
-                                         RESTClient             restClient)
+                                         OCFRESTClient restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -131,12 +131,12 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
 
         try
         {
-            RelatedMediaReferencesResponse restResult = restClient.callRelatedMediaReferenceGetRESTCall(methodName,
-                                                                                                        omasServerURL + urlTemplate,
-                                                                                                        userId,
-                                                                                                        assetGUID,
-                                                                                                        cacheStartPointer,
-                                                                                                        maximumSize);
+            RelatedMediaReferencesResponse restResult = restClient.callRelatedMediaReferencesGetRESTCall(methodName,
+                                                                                                         omasServerURL + urlTemplate,
+                                                                                                         userId,
+                                                                                                         assetGUID,
+                                                                                                         cacheStartPointer,
+                                                                                                         maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

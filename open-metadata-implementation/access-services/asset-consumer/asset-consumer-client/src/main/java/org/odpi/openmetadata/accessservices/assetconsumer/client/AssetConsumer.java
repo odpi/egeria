@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.client;
 import org.odpi.openmetadata.accessservices.assetconsumer.api.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -13,7 +15,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetProperties;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetUniverse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -49,7 +51,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                       AssetConsumerTaggingInterface
 {
     private String     serverName;               /* Initialized in constructor */
-    private String     omasServerURL;            /* Initialized in constructor */
+    private String     serverPlatformRootURL;    /* Initialized in constructor */
     private RESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -61,19 +63,19 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException null URL or server name
      */
-    public AssetConsumer(String     serverName,
-                         String     omasServerURL) throws InvalidParameterException
+    public AssetConsumer(String serverName,
+                         String serverPlatformRootURL) throws InvalidParameterException
     {
         final String   methodName = "AssetConsumer client constructor";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new RESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -82,22 +84,22 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException null URL or server name
      */
     public AssetConsumer(String     serverName,
-                         String     omasServerURL,
+                         String serverPlatformRootURL,
                          String     userId,
                          String     password) throws InvalidParameterException
     {
         final String   methodName = "AssetConsumer client constructor with security";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new RESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -133,7 +135,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
-                                                                 omasServerURL + urlTemplate,
+                                                                 serverPlatformRootURL + urlTemplate,
                                                                  serverName,
                                                                  userId,
                                                                  connectionGUID);
@@ -171,7 +173,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
-                                                                 omasServerURL + urlTemplate,
+                                                                 serverPlatformRootURL + urlTemplate,
                                                                  serverName,
                                                                  userId,
                                                                  connectionName);
@@ -206,10 +208,10 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}";
 
         AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  serverName,
-                                                                  userId,
-                                                                  guid);
+                                                                   serverPlatformRootURL + urlTemplate,
+                                                                   serverName,
+                                                                   userId,
+                                                                   guid);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -244,13 +246,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     {
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name/{2}?startFrom={3}&pageSize={4}";
 
-        AssetListResponse restResult = restClient.callAssetListGetRESTCall(methodName,
-                                                                           omasServerURL + urlTemplate,
-                                                                           serverName,
-                                                                           userId,
-                                                                           name,
-                                                                           startFrom,
-                                                                           pageSize);
+        AssetsResponse restResult = restClient.callAssetsGetRESTCall(methodName,
+                                                                     serverPlatformRootURL + urlTemplate,
+                                                                     serverName,
+                                                                     userId,
+                                                                     name,
+                                                                     startFrom,
+                                                                     pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -414,7 +416,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID);
+            return new ConnectedAssetUniverse(serverName, serverPlatformRootURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
         {
@@ -497,7 +499,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
              */
             ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serverName,
                                                                                              userId,
-                                                                                             omasServerURL,
+                                                                                             serverPlatformRootURL,
                                                                                              newConnector.getConnectorInstanceId(),
                                                                                              newConnector.getConnection(),
                                                                                              assetGUID);
@@ -549,7 +551,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connections/by-name/{2}";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             omasServerURL + urlTemplate,
+                                                                             serverPlatformRootURL + urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              name);
@@ -618,7 +620,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/connection";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             omasServerURL + urlTemplate,
+                                                                             serverPlatformRootURL + urlTemplate,
                                                                              serverName,
                                                                              userId,
                                                                              assetGUID);
@@ -686,7 +688,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connections/{2}";
 
         ConnectionResponse   restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                               omasServerURL + urlTemplate,
+                                                                               serverPlatformRootURL + urlTemplate,
                                                                                serverName,
                                                                                userId,
                                                                                guid);
@@ -801,7 +803,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         requestBody.setPublic(isPublic);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -839,7 +841,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,
@@ -880,7 +882,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setPublic(isPublic);
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -916,7 +918,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,
@@ -959,13 +961,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        CommentRequestBody  requestBody = new CommentRequestBody();
+        CommentRequestBody requestBody = new CommentRequestBody();
         requestBody.setCommentType(commentType);
         requestBody.setCommentText(commentText);
         requestBody.setPublic(isPublic);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1015,7 +1017,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         requestBody.setPublic(isPublic);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1063,7 +1065,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         requestBody.setPublic(isPublic);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1099,7 +1101,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(commentGUID, guidParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,
@@ -1142,11 +1144,11 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
-        MeaningResponse restResult = restClient.callMeaningGetRESTCall(methodName,
-                                                                       omasServerURL + urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       guid);
+        GlossaryTermResponse restResult = restClient.callGlossaryTermGetRESTCall(methodName,
+                                                                                 serverPlatformRootURL + urlTemplate,
+                                                                                 serverName,
+                                                                                 userId,
+                                                                                 guid);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -1183,13 +1185,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(term, nameParameter, methodName);
 
-        MeaningListResponse restResult = restClient.callMeaningListGetRESTCall(methodName,
-                                                                               omasServerURL + urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               term,
-                                                                               startFrom,
-                                                                               pageSize);
+        GlossaryTermListResponse restResult = restClient.callGlossaryTermListGetRESTCall(methodName,
+                                                                                         serverPlatformRootURL + urlTemplate,
+                                                                                         serverName,
+                                                                                         userId,
+                                                                                         term,
+                                                                                         startFrom,
+                                                                                         pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -1240,7 +1242,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        LogRecordRequestBody  requestBody = new LogRecordRequestBody();
+        LogRecordRequestBody requestBody = new LogRecordRequestBody();
         requestBody.setConnectorInstanceId(connectorInstanceId);
         requestBody.setConnectionName(connectionName);
         requestBody.setConnectorType(connectorType);
@@ -1248,7 +1250,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         requestBody.setMessage(message);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1297,7 +1299,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         tagRequestBody.setTagDescription(tagDescription);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   tagRequestBody,
                                                                   serverName,
                                                                   userId);
@@ -1394,7 +1396,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         tagRequestBody.setTagDescription(tagDescription);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   tagRequestBody,
                                                                   serverName,
                                                                   userId,
@@ -1430,7 +1432,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(tagGUID, guidParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,
@@ -1466,7 +1468,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
         TagResponse restResult = restClient.callTagGetRESTCall(methodName,
-                                                               omasServerURL + urlTemplate,
+                                                               serverPlatformRootURL + urlTemplate,
                                                                serverName,
                                                                userId,
                                                                guid);
@@ -1506,13 +1508,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(tag, nameParameter, methodName);
 
-        TagListResponse restResult = restClient.callTagListGetRESTCall(methodName,
-                                                                       omasServerURL + urlTemplate,
-                                                                       serverName,
-                                                                       userId,
-                                                                       tag,
-                                                                       startFrom,
-                                                                       pageSize);
+        TagsResponse restResult = restClient.callTagListGetRESTCall(methodName,
+                                                                    serverPlatformRootURL + urlTemplate,
+                                                                    serverName,
+                                                                    userId,
+                                                                    tag,
+                                                                    startFrom,
+                                                                    pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -1554,7 +1556,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         FeedbackRequestBody requestBody = new FeedbackRequestBody();
         requestBody.setPublic(isPublic);
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -1597,7 +1599,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         NullRequestBody  requestBody = new NullRequestBody();
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,

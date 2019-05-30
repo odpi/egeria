@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.*;
 
@@ -95,6 +96,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private String                    localServerUserId         = defaultLocalServerUserId;
     private String                    localServerPassword       = null;
     private int                       maxPageSize               = defaultMaxPageSize;
+    private Connection                serverSecurityConnection  = null;
     private EventBusConfig            eventBusConfig            = null;
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
@@ -135,6 +137,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             localServerUserId = template.getLocalServerUserId();
             localServerPassword = template.getLocalServerPassword();
             maxPageSize = template.getMaxPageSize();
+            serverSecurityConnection = template.getServerSecurityConnection();
             eventBusConfig = template.getEventBusConfig();
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
@@ -351,6 +354,30 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setMaxPageSize(int maxPageSize)
     {
         this.maxPageSize = maxPageSize;
+    }
+
+
+    /**
+     * Return the connection for the optional server security connector that validates calls to
+     * this server from admin to operations to metadata and governance services.
+     *
+     * @return Connection bean.
+     */
+    public Connection getServerSecurityConnection()
+    {
+        return serverSecurityConnection;
+    }
+
+
+    /**
+     * Set up the connection for the optional server security connector that validates calls to
+     * this server from admin to operations to metadata and governance services.
+     *
+     * @param serverSecurityConnection connection bean
+     */
+    public void setServerSecurityConnection(Connection serverSecurityConnection)
+    {
+        this.serverSecurityConnection = serverSecurityConnection;
     }
 
 
