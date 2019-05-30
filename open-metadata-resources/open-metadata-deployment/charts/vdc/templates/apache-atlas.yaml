@@ -89,6 +89,9 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
+          env:
+            - name: "ATLAS_OPTS"
+              value: '-Dkafka.advertised.hostname={{ include "myapp.fullname" . }}-atlas-service'
       restartPolicy: Always
 
 status: {}
