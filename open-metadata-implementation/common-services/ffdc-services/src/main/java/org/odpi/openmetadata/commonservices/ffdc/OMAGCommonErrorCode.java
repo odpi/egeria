@@ -98,10 +98,20 @@ public enum OMAGCommonErrorCode
                            "The system is unable to configure the local server.",
                            "The local server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
-    UNEXPECTED_EXCEPTION(400, "OMAG-COMMON-400-001 ",
+    NULL_OBJECT(400, "OMAG-COMMON-400-015 ",
+                "The object passed on the {0} parameter of the {1} operation is null",
+                "The system is unable to process the request without this object.",
+                "Correct the code in the caller to provide the object."),
+
+    UNEXPECTED_EXCEPTION(400, "OMAG-COMMON-400-016 ",
               "An unexpected {0} exception was caught by {1}; error message was {2}",
               "The system is unable to process the request.",
               "Review the error message and other diagnostics created at the same time."),
+
+    NO_REQUEST_BODY(400, "OMAG-COMMON-400-017 ",
+                    "An request by user {0} to method {1} on server {2} had no request body",
+                    "The system is unable to process the request.",
+                    "Update the caller to provide the request body."),
 
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",

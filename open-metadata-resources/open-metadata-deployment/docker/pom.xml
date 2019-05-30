@@ -23,6 +23,7 @@
 
     <packaging>pom</packaging>
     <modules>
+        <module>apache-atlas</module>
         <module>atlas</module>
         <module>configure</module>
         <module>egeria</module>

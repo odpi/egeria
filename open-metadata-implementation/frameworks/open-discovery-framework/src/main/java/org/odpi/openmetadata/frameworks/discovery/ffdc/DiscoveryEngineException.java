@@ -34,7 +34,7 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
 
     /**
      * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
-     * ConnectorCheckedException in order to add the essential details about the error, where it occurred and
+     * DiscoveryEngineException in order to add the essential details about the error, where it occurred and
      * how to fix it.
      *
      * @param httpCode code to use across a REST interface
@@ -54,5 +54,17 @@ public class DiscoveryEngineException extends OCFCheckedExceptionBase
                                     Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+
+    /**
+     * This constructor is used when an unexpected exception has been caught that needs to be translated in a
+     * DiscoveryEngineException.
+     *
+     * @param template exception to copy
+     */
+    public DiscoveryEngineException(OCFCheckedExceptionBase  template)
+    {
+        super(template);
     }
 }
