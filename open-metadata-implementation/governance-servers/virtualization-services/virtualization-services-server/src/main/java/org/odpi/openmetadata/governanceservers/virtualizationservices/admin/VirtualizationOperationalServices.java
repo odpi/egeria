@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.virtualizationservices.admin;
 
+import org.odpi.openmetadata.accessservices.informationview.events.EndpointSource;
 import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.auditlog.VirtualizationAuditCode;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.event.VirtualizerTopicListener;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.DerbyConnector;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.DerbyConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -26,11 +29,10 @@ public class VirtualizationOperationalServices {
     private String localServerUserId;             /* Initialized in constructor */
     private String localServerURL;                /* Initialized in constructor */
 
-    private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector ivOutTopicConnector;
     private OpenMetadataTopicConnector ivInTopicConnector;
+    private DerbyConnector virtualizationSolutionConnector;
 
     /**
      * Constructor used at server startup.
@@ -55,8 +57,9 @@ public class VirtualizationOperationalServices {
 
     /**
      * Initialize the virtualization server
+     *
      * @param virtualizationConfig Virtualization server configuration.
-     * @param auditLog Audition Log instance.
+     * @param auditLog             Audition Log instance.
      */
     public void initialize(VirtualizationConfig virtualizationConfig, OMRSAuditLog auditLog) {
 
@@ -114,6 +117,19 @@ public class VirtualizationOperationalServices {
                 }
             }
 
+            /*
+             * Configuring the derby connector
+             */
+            Connection virtualizationSolutionConnection = virtualizationConfig.getVirtualizationSolutionConnection();
+            if (virtualizationSolutionConnection != null) {
+                try {
+                    DerbyConnectorProvider virtualizationConnectorProvider = new DerbyConnectorProvider();
+                    virtualizationSolutionConnector = (DerbyConnector) virtualizationConnectorProvider.getConnector(virtualizationSolutionConnection);
+                } catch (Exception e) {
+                    log.error("Error creating derby connector: ", e);
+                }
+            }
+
 
             /*
              Starting the In Topic Connector
@@ -122,10 +138,22 @@ public class VirtualizationOperationalServices {
                 try {
                     ivInTopicConnector.start();
 
+                    EndpointSource endpointSource = new EndpointSource();
+                    String connectorProviderName = virtualizationSolutionConnection.getEndpoint().getAdditionalProperties().get("connectorProviderName");
+                    int lastIndexOf = connectorProviderName.lastIndexOf(".");
+                    endpointSource.setConnectorProviderName(connectorProviderName.substring(lastIndexOf + 1, connectorProviderName.length()));
+                    String aggregatedAddress = virtualizationSolutionConnection.getEndpoint().getAddress();
+                    endpointSource.setProtocol(aggregatedAddress.split("//")[0] + "//");
+                    endpointSource.setNetworkAddress(aggregatedAddress.split("//")[1].split(":")[0]);
+                    endpointSource.setUser(virtualizationSolutionConnection.getUserId());
                      /*
                      Binding the In Topic connector to the Topic Listener for generating In Topic
                      */
-                    VirtualizerTopicListener virtualizerTopicListener = new VirtualizerTopicListener(ivInTopicConnector);
+                    VirtualizerTopicListener virtualizerTopicListener = new VirtualizerTopicListener(ivInTopicConnector,
+                            virtualizationSolutionConnector,
+                            endpointSource,
+                            virtualizationSolutionConnection.getAdditionalProperties().get("databaseName"),
+                            virtualizationSolutionConnection.getAdditionalProperties().get("dataSchema"));
                     ivOutTopicConnector.registerListener(virtualizerTopicListener);
 
                 } catch (Exception e) {
@@ -166,10 +194,18 @@ public class VirtualizationOperationalServices {
                 }
             }
 
+            if (virtualizationSolutionConnector != null) {
+                try {
+                    virtualizationSolutionConnector.start();
+                } catch (Exception e) {
+                    log.error("Error in starting the derby connector: ", e);
+                }
+            }
+
         }
 
-        if ((ivOutTopicConnector != null) && (ivInTopicConnector != null) &&
-            (ivInTopicConnector.isActive()) && (ivOutTopicConnector.isActive())){
+        if ((ivOutTopicConnector != null) && (ivInTopicConnector != null) && (virtualizationSolutionConnector != null) &&
+                (ivInTopicConnector.isActive()) && (ivOutTopicConnector.isActive()) && (virtualizationSolutionConnector.isActive())) {
             VirtualizationAuditCode auditCode = VirtualizationAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
@@ -180,7 +216,7 @@ public class VirtualizationOperationalServices {
                     auditCode.getUserAction());
         }
 
-        logger.info("Virtualizer has been started!");
+        log.info("Virtualizer has been started!");
 
     }
 
@@ -229,9 +265,10 @@ public class VirtualizationOperationalServices {
      */
     public boolean disconnect(boolean permanent) {
         VirtualizationAuditCode auditCode;
-        try{
+        try {
             ivInTopicConnector.disconnect();
             ivOutTopicConnector.disconnect();
+            virtualizationSolutionConnector.disconnect();
             auditCode = VirtualizationAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
@@ -241,7 +278,7 @@ public class VirtualizationOperationalServices {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
             return true;
-        } catch (Exception e){
+        } catch (Exception e) {
             auditCode = VirtualizationAuditCode.ERROR_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
