@@ -35,7 +35,7 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                             List<String> supportedZones,
                                             OMRSAuditLog auditLog) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName(),
+        super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               auditLog);
 

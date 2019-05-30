@@ -2,12 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ffdc;
 
+import org.odpi.openmetadata.commonservices.ffdc.auditlog.OMAGCommonAuditCode;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +27,35 @@ public class RESTExceptionHandler
     public RESTExceptionHandler()
     {
     }
+
+
+    /**
+     * Manage an unexpected exception
+     *
+     * @param userId calling user
+     * @param methodName method that caught the exception
+     * @param serverName name of the server being called
+     * @throws InvalidParameterException exception to report error
+     */
+    public void handleNoRequestBody(String      userId,
+                                    String      methodName,
+                                    String      serverName) throws InvalidParameterException
+    {
+        OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.NO_REQUEST_BODY;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId,
+                                                                                                 methodName,
+                                                                                                 serverName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction(),
+                                          "requestBody");
+    }
+
+
 
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
@@ -158,8 +191,6 @@ public class RESTExceptionHandler
     }
 
 
-
-
     /**
      * Throw an exception if the supplied guid returned an entity of the wrong type
      *
@@ -237,22 +268,67 @@ public class RESTExceptionHandler
      * Set the exception information into the response.
      *
      * @param response  REST Response
-     * @param error returned response.
+     * @param error returned response
+     * @param methodName calling method
      */
     public  void captureThrowable(FFDCResponseBase             response,
                                   Throwable                    error,
                                   String                       methodName)
     {
+        this.captureThrowable(response, error, methodName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response  REST Response
+     * @param error returned response
+     * @param methodName calling method
+     * @param auditLog log location for recording an unexpected exception
+     */
+    public  void captureThrowable(FFDCResponseBase             response,
+                                  Throwable                    error,
+                                  String                       methodName,
+                                  OMRSAuditLog                 auditLog)
+    {
         OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.UNEXPECTED_EXCEPTION;
 
+        String  message = error.getMessage();
+
+        if (message == null)
+        {
+            message = "null";
+        }
         response.setRelatedHTTPCode(errorCode.getHTTPErrorCode());
         response.setExceptionClassName(error.getClass().getName());
         response.setExceptionErrorMessage(errorCode.getFormattedErrorMessage(error.getClass().getName(),
                                                                              methodName,
-                                                                             error.getMessage()));
+                                                                             message));
         response.setExceptionSystemAction(errorCode.getSystemAction());
         response.setExceptionUserAction(errorCode.getUserAction());
         response.setExceptionProperties(null);
+
+        if (auditLog != null)
+        {
+            OMAGCommonAuditCode auditCode;
+
+            StringWriter stackTrace = new StringWriter();
+            error.printStackTrace(new PrintWriter(stackTrace));
+
+
+            auditCode = OMAGCommonAuditCode.UNEXPECTED_EXCEPTION;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getClass().getName(),
+                                                                methodName,
+                                                                message,
+                                                                stackTrace.toString()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 

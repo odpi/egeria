@@ -121,6 +121,36 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public InvalidParameterException(InvalidParameterException template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.parameterName = template.getParameterName();
+        }
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public InvalidParameterException(OCFCheckedExceptionBase template,
+                                     String                  parameterName)
+    {
+        super(template);
+
+        this.parameterName = parameterName;
+    }
+
+
+    /**
      * Return the invalid parameter's name, if known.
      *
      * @return string name

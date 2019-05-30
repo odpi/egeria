@@ -15,16 +15,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * NoteLogResponse is the response structure used on the OMAS REST API calls that returns a
- * NoteLog object as a response.  It returns details of the note log and the count of the notes within it.
+ * CommentResponse is the response structure used on the OMAS REST API calls that returns a
+ * Comment object as a response.  It returns details of the comment and the count of the replies within it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentResponse implements java.io.Serializable
+public class CommentResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
     private Comment comment    = null;
     private int     replyCount = 0;
 
