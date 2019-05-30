@@ -245,6 +245,15 @@ public class GraphOMRSRelationshipMapper {
                 ep.remove();
         }
 
+        if (relationship.getReplicatedBy() != null) {
+            edge.property(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY, relationship.getReplicatedBy());
+        }
+        else {
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY);
+            if (ep != null)
+                ep.remove();
+        }
+
 
         // relationship type-specific properties
 
@@ -408,6 +417,8 @@ public class GraphOMRSRelationshipMapper {
                         errorCode.getUserAction());
             }
         }
+
+        relationship.setReplicatedBy((String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY));
 
 
         // relationshipProperties
