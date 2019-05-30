@@ -20,9 +20,13 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: 21000
+    - name: web
+      port: 21000
       targetPort: 21000
       nodePort: {{ .Values.service.nodeport.atlas }}
+    - name: kafka
+      port: 9027
+      targetPort: 9027
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
