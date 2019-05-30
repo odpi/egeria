@@ -1,0 +1,4 @@
+I, Mandy Chessell hereby sign-off-by all of my past commits to this repo subject to the Developer Certificate of Origin (DCO), Version 1.1. In the past I have used emails: mandy-chessell@users.noreply.github.com
+
+1c20227140acadb8d1dcc7f70e34e56ad910031c Revert "Cleanup more generated files in subject area"
+f5341d7fc60cef8ad3efc54fa809207e2c377972 Set theme jekyll-theme-modernist

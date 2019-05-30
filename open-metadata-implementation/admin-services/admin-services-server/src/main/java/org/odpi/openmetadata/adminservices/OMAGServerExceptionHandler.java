@@ -54,6 +54,34 @@ class OMAGServerExceptionHandler
     }
 
 
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param methodName  method called
+     * @param response  REST Response
+     * @param runtimeException returned error.
+     */
+    void captureRuntimeException(String            methodName,
+                                 FFDCResponseBase  response,
+                                 Throwable         runtimeException)
+    {
+        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_PLATFORM_EXCEPTION;
+        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                        runtimeException.getClass().getName(),
+                                                                                                        runtimeException.getMessage());
+
+        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                                                     this.getClass().getName(),
+                                                                                     methodName,
+                                                                                     errorMessage,
+                                                                                     errorCode.getSystemAction(),
+                                                                                     errorCode.getUserAction(),
+                                                                                     runtimeException);
+        captureCheckedException(response, error, error.getClass().getName());
+    }
+
+
     /**
      * Set the exception information into the response.
      *

@@ -33,7 +33,7 @@ public class OMAGServerSecuritySyncService
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -111,7 +111,7 @@ public class OMAGServerSecuritySyncService
 
         try
         {
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             SecuritySyncConfig securitySyncConfig = serverConfig.getSecuritySyncConfig();
             this.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
         }
@@ -119,7 +119,6 @@ public class OMAGServerSecuritySyncService
         {
             exceptionHandler.captureInvalidParameterException(response, error);
         }
-
         catch (Throwable  error)
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);

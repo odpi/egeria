@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 
@@ -14,6 +15,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
 {
     private OMRSMetadataCollection localMetadataCollection;
     private String                 localServerURL;
+    private OMRSAuditLog           auditLog;
 
 
     /**
@@ -29,9 +31,13 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     public OMRSRepositoryServicesInstance(String                       localServerName,
                                           LocalOMRSRepositoryConnector localRepositoryConnector,
                                           String                       localServerURL,
-                                          String                       serviceName)
+                                          String                       serviceName,
+                                          OMRSAuditLog                 auditLog)
     {
         super(localServerName, serviceName);
+
+        this.auditLog = auditLog;
+        this.localServerURL = localServerURL;
 
         try
         {
@@ -41,8 +47,6 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
         {
             this.localMetadataCollection = null;
         }
-
-        this.localServerURL = localServerURL;
     }
 
 
@@ -65,5 +69,16 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
     public String getLocalServerURL()
     {
         return localServerURL;
+    }
+
+
+    /**
+     * Return the audit log destination for this server.
+     *
+     * @return auditLog
+     */
+    public OMRSAuditLog getAuditLog()
+    {
+        return auditLog;
     }
 }
