@@ -99,6 +99,9 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-url-root?url=${IGCPROXY_ENDPOINT}
+                &&
 {{- if .Values.cts.enabled }}
                 curl -f --verbose --basic admin:admin -X POST
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
@@ -131,9 +134,6 @@ spec:
                 curl -f --verbose --basic admin:admin -X POST
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/organization-name?name=ODPi
                 &&
-                curl -f --verbose --basic admin:admin -X POST
-                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-url-root?url=${IGCPROXY_ENDPOINT}
-                && 
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/event-bus
