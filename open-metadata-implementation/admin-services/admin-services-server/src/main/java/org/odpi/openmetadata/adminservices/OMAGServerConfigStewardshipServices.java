@@ -52,7 +52,7 @@ public class OMAGServerConfigStewardshipServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateAccessServiceRootURL(accessServiceRootURL, accessService, serverName, serviceName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -131,7 +131,7 @@ public class OMAGServerConfigStewardshipServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateAccessServiceServerName(accessServiceServerName, accessService, serverName, serviceName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -208,7 +208,7 @@ public class OMAGServerConfigStewardshipServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -276,7 +276,7 @@ public class OMAGServerConfigStewardshipServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 

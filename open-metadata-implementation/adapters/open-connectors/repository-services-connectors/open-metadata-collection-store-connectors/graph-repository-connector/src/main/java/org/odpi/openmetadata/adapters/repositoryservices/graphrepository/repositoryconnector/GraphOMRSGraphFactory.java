@@ -334,7 +334,7 @@ public class GraphOMRSGraphFactory {
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_ENTITY_INSTANCE_URL);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_LICENSE,        PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
-
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_REPLICATED_BY,           PROPERTY_KEY_ENTITY_REPLICATED_BY);
 
             /*
              *  Relationship core property indexes
@@ -368,7 +368,7 @@ public class GraphOMRSGraphFactory {
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_INSTANCE_URL,            PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
             createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_INSTANCE_LICENSE,        PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE);
-
+            createMixedIndexForEdgeCoreProperty(PROPERTY_NAME_REPLICATED_BY,           PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY);
 
             /*
              *  Classification core property indexes
@@ -386,7 +386,7 @@ public class GraphOMRSGraphFactory {
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_MAINTAINED_BY,            PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_METADATACOLLECTION_NAME,  PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);
             createMixedIndexForVertexCoreProperty(PROPERTY_NAME_INSTANCE_LICENSE,         PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE);
-
+            createMixedIndexForVertexCoreProperty(PROPERTY_NAME_REPLICATED_BY,            PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY);
 
         }
         catch (Exception e) {
@@ -418,6 +418,7 @@ public class GraphOMRSGraphFactory {
         put(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME,           MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_INSTANCE_URL,                      MixedIndexMapping.String);
         put(PROPERTY_KEY_ENTITY_INSTANCE_LICENSE,                  MixedIndexMapping.String);
+        put(PROPERTY_KEY_ENTITY_REPLICATED_BY,                     MixedIndexMapping.String);
 
         put(PROPERTY_KEY_RELATIONSHIP_CREATED_BY,                  MixedIndexMapping.String);
         put(PROPERTY_KEY_RELATIONSHIP_UPDATED_BY,                  MixedIndexMapping.String);
@@ -425,6 +426,7 @@ public class GraphOMRSGraphFactory {
         put(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME,     MixedIndexMapping.String);
         put(PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL,                MixedIndexMapping.String);
         put(PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE,            MixedIndexMapping.String);
+        put(PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY,               MixedIndexMapping.String);
 
         put(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME,       MixedIndexMapping.String);
         put(PROPERTY_KEY_CLASSIFICATION_CREATED_BY,                MixedIndexMapping.String);
@@ -432,6 +434,7 @@ public class GraphOMRSGraphFactory {
         put(PROPERTY_KEY_CLASSIFICATION_MAINTAINED_BY,             MixedIndexMapping.Text  );    // maintainedBy is stored as a serialized list so uses Text mapping
         put(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME,   MixedIndexMapping.String);
         put(PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE,          MixedIndexMapping.String);
+        put(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY,             MixedIndexMapping.String);
 
 
     }};
