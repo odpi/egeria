@@ -69,6 +69,9 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --anyauth --user admin:admin -X POST
+                ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${ATLAS_ENDPOINT}/egeria
+                &&
+                curl -f --verbose --anyauth --user admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
@@ -82,9 +85,6 @@ spec:
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/atlas-repository
-                &&
-                curl -f --verbose --anyauth --user admin:admin -X POST
-                ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${ATLAS_ENDPOINT}/egeria
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
