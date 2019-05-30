@@ -34,7 +34,7 @@ public class ContextBuilder {
 
     public Context buildContextForColumn(OMRSMetadataCollection metadataCollection, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException {
         EntityDetail column = getEntity(metadataCollection, assetId);
-        if (isRelationalColumnType(column)) {
+        if (isRelationalColumn(column)) {
             return getDatabaseContextForColumn(metadataCollection, column);
         }
         return null;
@@ -147,7 +147,7 @@ public class ContextBuilder {
         return "";
     }
 
-    private boolean isRelationalColumnType(EntityDetail entityDetail) {
+    private boolean isRelationalColumn(EntityDetail entityDetail) {
         return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
     }
 }

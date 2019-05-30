@@ -26,6 +26,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,15 +56,19 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         for (GovernedAsset governedAsset : governedAssets) {
 
-            if (governedAsset.getAssignedGovernanceClassification() == null) {
+            if (governedAsset.getAssignedGovernanceClassification() == null
+                    || governedAsset.getAssignedGovernanceClassification().getSecurityLabels() == null
+                    || governedAsset.getAssignedGovernanceClassification().getSecurityLabels().isEmpty()) {
                 continue;
             }
 
-            RangerTag rangerTag = buildTag(governedAsset.getAssignedGovernanceClassification());
-            tags.add(rangerTag);
-
             RangerServiceResource resource = createResource(governedAsset);
-            tagToResource.put(rangerTag.getGuid(), resource.getGuid());
+            for (String securityLabel: governedAsset.getAssignedGovernanceClassification().getSecurityLabels()){
+                RangerTag rangerTag = buildTag(securityLabel);
+                tags.add(rangerTag);
+
+                tagToResource.put(resource.getGuid(), rangerTag.getGuid());
+            }
         }
 
         tags.forEach(this::createRangerTag);
@@ -71,7 +76,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     @Override
-    public ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID) {
+    public ResourceTagMapper createAssociationResourceToSecurityTag(String resourceGUID, String tagGUID) {
         String rangerBaseURL = connection.getEndpoint().getAddress();
         String createAssociation = MessageFormat.format(SERVICE_TAGS_MAP_TAG_GUID_RESOURCE_GUI, rangerBaseURL, tagGUID, resourceGUID);
 
@@ -93,19 +98,30 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
+        headers.add("X-HTTP-Method-Override", "DELETE");
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-            restTemplate.delete(deleteAssociationURL, HttpMethod.DELETE, entity);
+            restTemplate.exchange(deleteAssociationURL, HttpMethod.DELETE, entity, Void.class);
         } catch (HttpStatusCodeException exception) {
             log.error("Unable to delete the association between a tag and a resource");
         }
     }
 
     @Override
-    public RangerTag createSecurityTag(GovernanceClassification classification) {
-        final RangerTag rangerTag = buildTag(classification);
-        return createRangerTag(rangerTag);
+    public List<RangerTag> createSecurityTags(GovernanceClassification classification) {
+
+        if (classification.getSecurityLabels() == null || classification.getSecurityLabels().isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<RangerTag> rangerTags = new ArrayList<>(classification.getSecurityLabels().size());
+        for (String securityTag : classification.getSecurityLabels()) {
+            RangerTag rangerTag = buildTag(securityTag);
+            rangerTags.add(createRangerTag(rangerTag));
+        }
+
+        return rangerTags;
     }
 
     @Override
@@ -194,12 +210,12 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
 
         try {
-            ResponseEntity<RangerTag> result = restTemplate.exchange(createTagURL, HttpMethod.POST, entity, RangerTag.class);
-            return result.getBody();
+            restTemplate.exchange(createTagURL, HttpMethod.POST, entity, RangerTag.class);
+            return rangerTag;
         } catch (HttpStatusCodeException exception) {
             log.debug("Unable to create a security tag");
         }
-        return null;
+        return rangerTag;
     }
 
     private RangerTagDef createRangerTagDef() {
@@ -245,15 +261,13 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return Collections.emptyList();
     }
 
-    private RangerTag buildTag(GovernanceClassification classification) {
+    private RangerTag buildTag(String tagGUID) {
         RangerTag tag = new RangerTag();
 
         tag.setCreatedBy(RANGER_CONNECTOR);
         tag.setType(CONFIDENTIALITY);
         tag.setOwner(OPEN_METADATA_OWNER);
-        if (classification.getAttributes().containsKey(LEVEL)) {
-            tag.setGuid(classification.getAttributes().get(LEVEL));
-        }
+        tag.setGuid(tagGUID);
 
         return tag;
     }
@@ -262,6 +276,10 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         Map<String, RangerPolicyResource> resourceElements = new HashMap<>(3);
         final RangerPolicyResource schemaValues = getListOfPossibleValuesOfElements(DEFAULT_SCHEMA_NAME);
         resourceElements.put(SCHEMA, schemaValues);
+
+        if (context == null) {
+            return resourceElements;
+        }
 
         final RangerPolicyResource tableValue = getListOfPossibleValuesOfElements(context.getTable());
         resourceElements.put(TABLE, tableValue);
@@ -298,10 +316,9 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = getBasicHTTPHeaders();
 
-        if (connection != null && connection.getAdditionalProperties() != null
-                && connection.getAdditionalProperties().containsKey(SECURITY_SERVER_AUTHORIZATION)
-                && connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION).matches("[a-zA-Z0-9]++")) {
-            headers.set("Authorization", connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION));
+        if (connection != null && connection.getConfigurationProperties() != null
+                && connection.getConfigurationProperties().containsKey(SECURITY_SERVER_AUTHORIZATION)) {
+            headers.set("Authorization", (String) connection.getConfigurationProperties().get(SECURITY_SERVER_AUTHORIZATION));
         }
 
         return headers;
