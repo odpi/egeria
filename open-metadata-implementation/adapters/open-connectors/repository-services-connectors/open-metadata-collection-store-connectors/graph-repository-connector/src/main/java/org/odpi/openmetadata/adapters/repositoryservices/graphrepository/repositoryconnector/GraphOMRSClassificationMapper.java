@@ -337,7 +337,14 @@ public class GraphOMRSClassificationMapper {
                     vp.remove();
             }
 
-
+            if (classification.getReplicatedBy() != null) {
+                vertex.property(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY, classification.getReplicatedBy());
+            }
+            else {
+                VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY);
+                if (vp != null)
+                    vp.remove();
+            }
 
 
         }
@@ -467,6 +474,8 @@ public class GraphOMRSClassificationMapper {
                             errorCode.getUserAction());
                 }
             }
+
+            classification.setReplicatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY));
 
         }
 
