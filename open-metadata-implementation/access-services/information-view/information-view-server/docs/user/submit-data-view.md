@@ -1,9 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Add Comment Reply
+# Submit a data view
 
-Adds a comment to an existing comment as a reply.
+Create a data view as a view on top of other relational database sources.
 
 ```
 
