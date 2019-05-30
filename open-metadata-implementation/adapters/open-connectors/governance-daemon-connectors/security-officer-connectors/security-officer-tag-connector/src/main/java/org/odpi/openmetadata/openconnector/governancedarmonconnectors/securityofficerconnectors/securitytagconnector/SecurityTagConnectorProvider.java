@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 
 public class SecurityTagConnectorProvider extends ConnectorProviderBase {
 
-    static final String connectorTypeGUID = "jghsfXyV-bEhX-G4cO-gNl2-qqEKqbqCUbWS";
+    static final String connectorTypeGUID = "810169fb-2eb4-8dcf-20f5-52896a072003";
     static final String connectorTypeName = "Security Tag Server Connector";
     static final String connectorTypeDescription = "Connector supports storing of the open metadata cohort registry in a file.";
 
