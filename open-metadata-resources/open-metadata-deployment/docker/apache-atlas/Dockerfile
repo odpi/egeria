@@ -54,5 +54,5 @@ RUN echo "atlas.notification.relationships.enabled=true" >> conf/atlas-applicati
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 ENV HBASE_CONF_DIR=/opt/apache/atlas/hbase/conf
 
-EXPOSE 21000
+EXPOSE 9026 9027 21000
 ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/application.log"]
