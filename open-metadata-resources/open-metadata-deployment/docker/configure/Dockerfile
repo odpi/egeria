@@ -14,7 +14,7 @@ LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 LABEL org.label-schema.docker.params = "SERVICE=the name of the k8s service to check is available"
 
 # Install utilities we will use to configure containers
-RUN apk --no-cache add bash curl git jq openldap-clients postgresql-client mariadb-client && apk --no-cache update && apk --no-cache upgrade
+RUN apk --no-cache add bash shadow curl git jq openldap-clients postgresql-client mariadb-client && apk --no-cache update && apk --no-cache upgrade
 
 RUN groupadd -r config -g 1000 && useradd --no-log-init -r -g config -u 1000 -d /opt/config config
 
