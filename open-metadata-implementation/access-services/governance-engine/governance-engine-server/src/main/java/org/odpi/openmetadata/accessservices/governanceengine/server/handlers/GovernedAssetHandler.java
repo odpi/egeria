@@ -139,8 +139,8 @@ public class GovernedAssetHandler {
         return false;
     }
 
-    public boolean isSchemaElementType(EntityDetail entityDetail) {
-        return false;
+    public boolean isSchemaElement(EntityDetail entityDetail) {
+        return entityDetail.getType().getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
     }
 
     private GovernanceClassification getGovernanceClassification(List<Classification> allClassifications) {
