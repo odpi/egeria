@@ -44,7 +44,7 @@ public class GovernanceEngineEventProcessor {
     }
 
     public void processClassifiedEntity(EntityDetail entity) throws RepositoryErrorException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException {
-        if (!governedAssetHandler.isSchemaElementType(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
+        if (!governedAssetHandler.isSchemaElement(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
             return;
         }
 
@@ -53,7 +53,7 @@ public class GovernanceEngineEventProcessor {
     }
 
     public void processReclassifiedEntity(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        if (!governedAssetHandler.isSchemaElementType(entity)) {
+        if (!governedAssetHandler.isSchemaElement(entity)) {
             return;
         }
 
@@ -63,7 +63,7 @@ public class GovernanceEngineEventProcessor {
     }
 
     public void processDeletedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        if (!governedAssetHandler.isSchemaElementType(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
+        if (!governedAssetHandler.isSchemaElement(entity) || !governedAssetHandler.containsGovernedClassification(entity)) {
             return;
         }
 
@@ -73,7 +73,7 @@ public class GovernanceEngineEventProcessor {
     }
 
     public void processDeclassifiedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
-        if (!governedAssetHandler.isSchemaElementType(entity)) {
+        if (!governedAssetHandler.isSchemaElement(entity)) {
             return;
         }
 
