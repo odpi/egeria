@@ -705,6 +705,69 @@ public class ConnectorConfigurationFactory
 
 
     /**
+     * Return the connection. This is used by view generator connectors
+     *
+     * @param serverName name of the real repository server
+     * @param connectorProviderClassName the class name of the
+     * @param virtualizationSolutionConfig related configuration
+     * @return
+     */
+    public Connection getVirtualizationSolutionConnection (String              serverName,
+                                                           String              connectorProviderClassName,
+                                                           Map<String, Object> virtualizationSolutionConfig){
+
+        Connection connection = new Connection();
+        Map<String, String> additionalProperties = new HashMap<>();
+        Endpoint endpoint = new Endpoint();
+
+        final String endpointGUID             = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
+        final String endpointDescription      = "Virualization solution endpoint.";
+        final String connectionDescription    = "Virualization solution connection.";
+
+        String endpointName    = "Virtualizer.Endpoint." + serverName;
+
+        if ("org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby".equals(connectorProviderClassName)){
+            endpoint.setType(Endpoint.getEndpointType());
+            endpoint.setGUID(endpointGUID);
+            endpoint.setQualifiedName(endpointName);
+            endpoint.setDisplayName(endpointName);
+            endpoint.setDescription(endpointDescription);
+            endpoint.setAddress(virtualizationSolutionConfig.get("serverAddress").toString());
+
+            Map<String, String> endpointProperties = new HashMap<>();
+            endpointProperties.put("timeoutInSecond", virtualizationSolutionConfig.get("timeoutInSecond").toString());
+            endpointProperties.put("create", virtualizationSolutionConfig.get("create").toString());
+            endpointProperties.put("connectorProviderName", connectorProviderClassName);
+
+            endpoint.setAdditionalProperties(endpointProperties);
+
+            String connectionName = "Vitualizer.Connection." + serverName;
+
+            connection.setType(Connection.getConnectionType());
+            connection.setGUID(connectionGUID);
+            connection.setQualifiedName(connectionName);
+            connection.setDisplayName(connectionName);
+            connection.setDescription(connectionDescription);
+            connection.setUserId(virtualizationSolutionConfig.get("username").toString());
+            connection.setClearPassword(virtualizationSolutionConfig.get("password").toString());
+            connection.setEndpoint(endpoint);
+
+            additionalProperties.put("gdbNode", virtualizationSolutionConfig.get("gdbNode").toString());
+            additionalProperties.put("logicTableName",virtualizationSolutionConfig.get("logicTableName").toString());
+            additionalProperties.put("logicTableDefinition", virtualizationSolutionConfig.get("logicTableDefinition").toString());
+            additionalProperties.put("getLogicTables", virtualizationSolutionConfig.get("getLogicTables").toString());
+            additionalProperties.put("frontendName", virtualizationSolutionConfig.get("frontendName").toString());
+            additionalProperties.put("dataSchema", virtualizationSolutionConfig.get("schema").toString());
+            additionalProperties.put("databaseName", virtualizationSolutionConfig.get("databaseName").toString());
+
+            connection.setAdditionalProperties(additionalProperties);
+        }
+
+        return connection;
+    }
+
+    /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.
      *
