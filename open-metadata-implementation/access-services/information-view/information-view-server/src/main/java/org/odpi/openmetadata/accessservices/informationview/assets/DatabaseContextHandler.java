@@ -27,9 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
@@ -48,7 +46,7 @@ public class DatabaseContextHandler {
     private OMRSAuditLog auditLog;
     private ColumnContextBuilder columnContextBuilder;
 
-    public DatabaseContextHandler(OMEntityDao omEntityDao, OMRSRepositoryConnector enterpriseConnector,
+    public DatabaseContextHandler(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao,
                                   OMRSAuditLog auditLog) {
         this.omEntityDao = omEntityDao;
         this.repositoryHelper = enterpriseConnector.getRepositoryHelper();
