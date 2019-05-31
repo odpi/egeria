@@ -23,7 +23,7 @@ public class ConnectedAssetMapSchemaType extends AssetMapSchemaType
                                 String                 userId,
                                 ConnectedAssetUniverse parentAsset,
                                 MapSchemaType          schemaBean,
-                                RESTClient             restClient)
+                                OCFRESTClient restClient)
     {
         super(parentAsset);
 

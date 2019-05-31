@@ -42,15 +42,19 @@ public class AssetOwner implements AssetOnboardingInterface,
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param newServerURL the network address of the server running the OMAS REST servers
+     * @param omasServerURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public AssetOwner(String     serverName,
-                      String     newServerURL) throws InvalidParameterException
+                      String     omasServerURL) throws InvalidParameterException
     {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
-        this.omasServerURL = newServerURL;
+        this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL);
     }
 
@@ -71,6 +75,10 @@ public class AssetOwner implements AssetOnboardingInterface,
                       String     userId,
                       String     password) throws InvalidParameterException
     {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
