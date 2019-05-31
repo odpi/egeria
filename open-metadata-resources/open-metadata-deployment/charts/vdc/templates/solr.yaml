@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-{{ if or .Values.solr.enabled .Values.ranger.enabled .Values.atlas.enabled }}
+# TODO: swap to (if or .Values.solr.enabled .Values.ranger.enabled .Values.atlas.enabled) once embedded Solr migrated
+{{ if .Values.solr.enabled }}
 apiVersion: v1
 kind: Service
 metadata:

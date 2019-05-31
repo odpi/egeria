@@ -47,7 +47,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                List<String>            defaultZones,
                                OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(null, serviceName + " OMAS", auditLog);
+        super(null, serviceName, auditLog);
 
         final String methodName = "new ServiceInstance";
 

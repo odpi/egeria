@@ -60,7 +60,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -129,7 +129,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -198,7 +198,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateServerName(serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -267,7 +267,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateServerName(serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -341,7 +341,7 @@ public class OMAGServerAdminServices
 
             if (maxPageSize > 0)
             {
-                OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+                OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
                 List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -427,7 +427,7 @@ public class OMAGServerAdminServices
             /*
              * Retrieve the existing configuration.
              */
-            OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             EventBusConfig   eventBusConfig = new EventBusConfig();
 
@@ -500,7 +500,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateServerName(serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -620,7 +620,7 @@ public class OMAGServerAdminServices
 
             List<Connection>              openMetadataArchiveConnections = null;
 
-            OMAGServerConfig          serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             RepositoryServicesConfig  repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
             if (repositoryServicesConfig != null)
@@ -676,7 +676,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
@@ -725,7 +725,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
@@ -816,7 +816,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
             LocalRepositoryConfig localRepositoryConfig
@@ -874,7 +874,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
@@ -928,7 +928,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -1067,7 +1067,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateMetadataCollectionName(localMetadataCollectionName, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             LocalRepositoryConfig    localRepositoryConfig    = null;
@@ -1154,7 +1154,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateCohortName(cohortName, serverName, methodName);
 
-            OMAGServerConfig serverConfig    = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             EventBusConfig   eventBusConfig  = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
@@ -1272,7 +1272,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             List<String>  configAuditTrail  = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -1355,7 +1355,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             List<String>  configAuditTrail  = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -1437,7 +1437,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
             if (configAuditTrail == null)
@@ -1523,7 +1523,7 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateCohortName(cohortName, serverName, methodName);
 
-            OMAGServerConfig         serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
             OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
             List<CohortConfig>       existingCohortConfigs = null;
@@ -1663,7 +1663,7 @@ public class OMAGServerAdminServices
                                                         errorCode.getUserAction());
             }
 
-            OMAGServerConfig         serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -1721,7 +1721,7 @@ public class OMAGServerAdminServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response.setOMAGServerConfig(configStore.getServerConfig(serverName, methodName));
+            response.setOMAGServerConfig(configStore.getServerConfig(userId, serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {

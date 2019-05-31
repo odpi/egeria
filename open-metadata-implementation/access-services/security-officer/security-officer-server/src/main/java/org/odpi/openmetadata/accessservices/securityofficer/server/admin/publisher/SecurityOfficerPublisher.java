@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.securityofficer.server.admin.process
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
@@ -45,11 +46,8 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     }
 
     @Override
-    public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId,
-                                             String originatorServerName, String originatorServerType,
-                                             String originatorOrganizationName, EntityDetail entity) {
-        log.info("[Process Classified Entity Event] GUID = {}, type = {} has been classified.", entity.getGUID(), entity.getType().getTypeDefName());
-        securityOfficerEventProcessor.processClassifiedEntity(entity);
+    public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -104,7 +102,15 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processNewRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
-        throw new UnsupportedOperationException();
+        if (relationship.getType().getTypeDefName().equals("SemanticAssignment") && isSchemaElement(relationship.getEntityOneProxy().getType())) {
+            securityOfficerEventProcessor.processSemanticAssignmentForSchemaElement(relationship);
+        } else {
+            log.debug("No processing needed");
+        }
+    }
+
+    private boolean isSchemaElement(InstanceType type) {
+        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
     }
 
     @Override
