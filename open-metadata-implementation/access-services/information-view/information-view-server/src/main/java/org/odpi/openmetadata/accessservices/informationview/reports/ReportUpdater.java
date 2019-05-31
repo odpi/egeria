@@ -79,7 +79,7 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                           RelationshipNotKnownException,
                                                                                           EntityProxyOnlyException,
                                                                                           RelationshipNotDeletedException {
-        String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getId()  + Constants.TYPE_SUFFIX);
+        String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getReport().getId()  + Constants.TYPE_SUFFIX);
 
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
         //ASSET Schema type relationship can have 1 at max for reports
@@ -106,7 +106,7 @@ public class ReportUpdater extends ReportBasicOperation {
         }
 
         String qualifiedNameForReport = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "updateReport");
-        createOrUpdateElements(qualifiedNameForReport, schemaTypeGuid, payload.getReportElements());
+        createOrUpdateElements(qualifiedNameForReport, schemaTypeGuid, payload.getReport().getReportElements());
 
     }
 
