@@ -15667,7 +15667,7 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Unique identifier (GUID) of the business capability where this asset originated from.";
         final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "otherOriginValues";
-        final String attribute3Description     = "Descriptive labels describing origin of the asset";
+        final String attribute3Description     = "Descriptive labels describing origin of the asset.";
         final String attribute3DescriptionGUID = null;
 
 
@@ -15679,9 +15679,9 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getArrayStringTypeDefAttribute(attribute3Name,
-                                                                attribute3Description,
-                                                                attribute3DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
+                                                                    attribute3Description,
+                                                                    attribute3DescriptionGUID);
         properties.add(property);
 
         classificationDef.setPropertiesDefinition(properties);
