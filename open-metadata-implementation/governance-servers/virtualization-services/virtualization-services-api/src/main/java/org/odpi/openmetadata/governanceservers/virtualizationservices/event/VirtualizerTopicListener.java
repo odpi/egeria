@@ -132,6 +132,19 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return view;
     }
 
+    private org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm convertBusinessTerm(BusinessTerm businessTerm) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm businessTerm1 = new org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm();
+        businessTerm1.setAbbreviation(businessTerm.getAbbreviation());
+        businessTerm1.setDescription(businessTerm.getDescription());
+        businessTerm1.setDisplayName(businessTerm.getDisplayName());
+        businessTerm1.setExamples(businessTerm.getExamples());
+        businessTerm1.setGuid(businessTerm.getGuid());
+        businessTerm1.setQuery(businessTerm.getQuery());
+        businessTerm1.setName(businessTerm.getName());
+
+        return businessTerm1;
+    }
+
     private org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn convertSourceColumn(TableColumn databaseColumn) {
         org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn tableColumn = new org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn();
         tableColumn.setName(databaseColumn.getName());
@@ -140,9 +153,11 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         tableColumn.setPosition(databaseColumn.getPosition());
         tableColumn.setPrimaryKey(databaseColumn.isPrimaryKey());
         tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
-        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
-        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
-        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
+        tableColumn.setNullable(databaseColumn.isNullable());
+        tableColumn.setQualifiedName(databaseColumn.getQualifiedName());
+        tableColumn.setType(databaseColumn.getType());
+        tableColumn.setUnique(databaseColumn.isUnique());
+        tableColumn.setBusinessTerm(convertBusinessTerm(databaseColumn.getBusinessTerm()));
         return tableColumn;
     }
 
