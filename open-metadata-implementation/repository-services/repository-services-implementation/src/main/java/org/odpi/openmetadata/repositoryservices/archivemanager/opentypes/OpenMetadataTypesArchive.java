@@ -8410,6 +8410,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getDataFileEntity());
         this.archiveBuilder.addEntityDef(getCSVFileEntity());
         this.archiveBuilder.addEntityDef(getAvroFileEntity());
+        this.archiveBuilder.addEntityDef(getJSONFileEntity());
 
         this.archiveBuilder.addRelationshipDef(getFolderHierarchyRelationship());
         this.archiveBuilder.addRelationshipDef(getNestedFileRelationship());
@@ -8503,7 +8504,23 @@ public class OpenMetadataTypesArchive
         final String name            = "AvroFile";
         final String description     = "A description of a file that follows the Apache Avro specification.";
         final String descriptionGUID = null;
-        final String superTypeName = "DataFile";
+        final String superTypeName   = "DataFile";
+
+        return  archiveHelper.getDefaultEntityDef(guid,
+                                                  name,
+                                                  this.archiveBuilder.getEntityDef(superTypeName),
+                                                  description,
+                                                  descriptionGUID);
+    }
+
+
+    private EntityDef getJSONFileEntity()
+    {
+        final String guid            = "baa608fa-510e-42d7-95cd-7c12fa37bb35";
+        final String name            = "JSONFile";
+        final String description     = "A description of a file that follows the JavaScript Object Notation specification.";
+        final String descriptionGUID = null;
+        final String superTypeName   = "DataFile";
 
         return  archiveHelper.getDefaultEntityDef(guid,
                                                   name,
