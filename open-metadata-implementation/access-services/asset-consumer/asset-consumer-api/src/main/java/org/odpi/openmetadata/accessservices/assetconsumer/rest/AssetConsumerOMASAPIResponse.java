@@ -6,10 +6,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -25,12 +21,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes
         ({
-                @JsonSubTypes.Type(value = ConnectionResponse.class,           name = "ConnectionResponse"),
-                @JsonSubTypes.Type(value = NoteLogResponse.class,              name = "NoteLogResponse"),
-                @JsonSubTypes.Type(value = MeaningListResponse.class,          name = "MeaningListResponse"),
-                @JsonSubTypes.Type(value = MeaningResponse.class,              name = "MeaningResponse"),
-                @JsonSubTypes.Type(value = TagListResponse.class,              name = "TagListResponse"),
-                @JsonSubTypes.Type(value = TagResponse.class,                  name = "TagResponse")
+                @JsonSubTypes.Type(value = GlossaryTermListResponse.class,          name = "GlossaryTermListResponse"),
+                @JsonSubTypes.Type(value = GlossaryTermResponse.class,              name = "GlossaryTermResponse")
         })
 public abstract class AssetConsumerOMASAPIResponse extends FFDCResponseBase
 {
