@@ -33,7 +33,11 @@ public enum GovernanceServersDescription implements Serializable
     CONFORMANCE_SUITE_SERVICES       (2005,
                                       "Conformance Suite Services",
                                       "Run automated open metadata conformance suite services",
-                                      "https://odpi.github.io/egeria/open-metadata-conformance-suite/");
+                                      "https://odpi.github.io/egeria/open-metadata-conformance-suite/"),
+    SECURITY_OFFICER_SERVICES        (2006,
+                                      "Security Officer Services",
+                                      "Manage security tags up-to-date",
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/security-officer-services/");
 
 
     private static final long     serialVersionUID    = 1L;
@@ -59,6 +63,7 @@ public enum GovernanceServersDescription implements Serializable
         serviceDescriptionList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES);
+        serviceDescriptionList.add(GovernanceServersDescription.SECURITY_OFFICER_SERVICES);
 
         return serviceDescriptionList;
     }

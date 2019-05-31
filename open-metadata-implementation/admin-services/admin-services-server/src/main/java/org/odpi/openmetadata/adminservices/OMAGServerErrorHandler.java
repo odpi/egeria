@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
  * OMAGServerErrorHandler provides common error handling routines for the admin services
@@ -271,6 +272,58 @@ class OMAGServerErrorHandler
         {
             OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_METADATA_COLLECTION_NAME;
             String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the connection is not null.
+     *
+     * @param connection  connection passed on the request
+     * @param serverName  server name for this server
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the connection is null
+     */
+    void validateConnection(Connection connection,
+                            String     serverName,
+                            String     methodName) throws OMAGInvalidParameterException
+    {
+        if (connection == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_CONNECTION;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the connection is not null.
+     *
+     * @param connection  connection passed on the request
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the connection is null
+     */
+    void validateConnection(Connection connection,
+                            String     methodName) throws OMAGInvalidParameterException
+    {
+        if (connection == null)
+        {
+            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_PLATFORM_CONNECTION;
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
                                                     this.getClass().getName(),

@@ -51,8 +51,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *          additionalProperties - Any additional properties associated with the connection.
  *      </li>
  *      <li>
- *          securedProperties - Protected properties for secure log on by connector to back end server.  These
- *          are protected properties that can only be retrieved by privileged connector code.
+ *          configurationProperties - properties for configuring the connector.
  *      </li>
  *      <li>
  *          securedProperties - Protected properties for secure log on by connector to back end server.  These
@@ -402,8 +401,8 @@ public class Connection extends Referenceable
 
 
     /**
-     * Standard toString method. Note SecuredProperties are not displayed.  This is deliberate because
-     * there is no knowing where the string will be printed.
+     * Standard toString method. Note SecuredProperties and other credential type properties are not displayed.
+     * This is deliberate because there is no knowing where the string will be printed.
      *
      * @return print out of variables in a JSON-style
      */
@@ -416,9 +415,6 @@ public class Connection extends Referenceable
                 ", connectorType=" + connectorType +
                 ", endpoint=" + endpoint +
                 ", userId='" + userId + '\'' +
-                ", encryptedPassword='" + encryptedPassword + '\'' +
-                ", clearPassword='" + clearPassword + '\'' +
-                ", securedProperties=" + securedProperties +
                 ", configurationProperties=" + configurationProperties +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
