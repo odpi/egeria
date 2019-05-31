@@ -26,7 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DEFAULT_SCHEMA_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SCHEMA_ATTRIBUTE_TYPE;
 
 public class ContextBuilder {
 
