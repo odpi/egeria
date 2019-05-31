@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.virtualizationservices.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils.ConnectorUtils;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.ViewGeneratorConnectorBase;
@@ -59,8 +60,8 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         try{
             TableContextEvent eventObject = objectMapper.readValue(event, TableContextEvent.class);
             Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
-            List<InformationViewEvent> viewEvents = generateViewEvents(eventObject, views);
-            for (InformationViewEvent item : viewEvents){
+            List<DataPlatformEvent> viewEvents = generateViewEvents(eventObject, views);
+            for (DataPlatformEvent item : viewEvents){
                 ivInTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
             }
         }catch (Exception e){
@@ -76,8 +77,8 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
      *
      * @return list of events published to kafka topic
      */
-    public List<InformationViewEvent> generateViewEvents(TableContextEvent tableContextEvent, Map<String, String> createdViews) {
-        List<InformationViewEvent> events = new ArrayList<>();
+    public List<DataPlatformEvent> generateViewEvents(TableContextEvent tableContextEvent, Map<String, String> createdViews) {
+        List<DataPlatformEvent> events = new ArrayList<>();
         try {
             if (createdViews == null || createdViews.isEmpty()) {
                 log.info("No views were created, nothing to publish");
@@ -86,7 +87,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
                     if (entry.getValue() == null) {
                         log.info("No view was created for " + entry.getKey());
                     } else {
-                        events.add(createInformationViewEvent(entry.getKey(), entry.getValue(), tableContextEvent));
+                        events.add(createDataPlatformEvent(entry.getKey(), entry.getValue(), tableContextEvent));
                     }
                 }
                 log.debug("Notification is sent out to Information View OMAS");
@@ -106,14 +107,13 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
      */
 
 
-    private InformationViewEvent createInformationViewEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
-
-        InformationViewEvent view = addConnectionDetailsAndTableContext(new InformationViewEvent(), tableName);
-        view.setOriginalTableSource(tableContextEvent.getTableSource());
-        List<DerivedColumn> derivedColumn = new ArrayList<>();
+    private DataPlatformEvent createDataPlatformEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
+        DataPlatformEvent view = addConnectionDetailsAndTableContext(new DataPlatformEvent(), tableName);
+        view.setOriginalTableSource(convertTableSource(tableContextEvent.getTableSource()));
+        List<org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn> derivedColumn = new ArrayList<>();
         for (TableColumn databaseColumn : tableContextEvent.getTableColumns()) {
             if (databaseColumn.getBusinessTerm() != null) {
-                DerivedColumn column = new DerivedColumn();
+                org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn column = new org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn();
                 if (viewType.equals(ConnectorUtils.BUSINESS_PREFIX)) {
                     //column.setName(databaseColumn.getBusinessTerm().getName());
                     column.setName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
@@ -122,7 +122,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
                 }
                 column.setPosition(databaseColumn.getPosition());
                 column.setType(databaseColumn.getType());
-                column.setSourceColumn(databaseColumn);
+                column.setSourceColumn(convertSourceColumn(databaseColumn));
                 derivedColumn.add(column);
             }
         }
@@ -132,12 +132,26 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return view;
     }
 
-    private InformationViewEvent addConnectionDetailsAndTableContext(InformationViewEvent informationViewEvent, String tableName) {
+    private org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn convertSourceColumn(TableColumn databaseColumn) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn tableColumn = new org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn();
+        tableColumn.setName(databaseColumn.getName());
+        tableColumn.setCardinality(databaseColumn.getCardinality());
+        tableColumn.setGuid(databaseColumn.getGuid());
+        tableColumn.setPosition(databaseColumn.getPosition());
+        tableColumn.setPrimaryKey(databaseColumn.isPrimaryKey());
+        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
+        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
+        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
+        tableColumn.setDefaultValueOverride(databaseColumn.getDefaultValueOverride());
+        return tableColumn;
+    }
 
-        TableSource tableSource = new TableSource();
-        DatabaseSource databaseSource = new DatabaseSource();
+    private DataPlatformEvent addConnectionDetailsAndTableContext(DataPlatformEvent informationViewEvent, String tableName) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.TableSource tableSource = new org.odpi.openmetadata.accessservices.dataplatform.events.TableSource();
+        org.odpi.openmetadata.accessservices.dataplatform.events.DatabaseSource databaseSource = new org.odpi.openmetadata.accessservices.dataplatform.events.DatabaseSource();
         tableSource.setDatabaseSource(databaseSource);
-        databaseSource.setEndpointSource(endpointSource);
+        org.odpi.openmetadata.accessservices.dataplatform.events.EndpointSource endpointSource1 = convertEndpointSource(endpointSource);
+        databaseSource.setEndpointSource(endpointSource1);
         tableSource.setName(tableName);
         databaseSource.setName(databaseName);
         tableSource.setSchemaName(dataSchema);
@@ -145,10 +159,39 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return informationViewEvent;
     }
 
-    /**
-     * send the notification to Information View OMAS
-     *
-     * @param views view to be sent to information view omas
-     */
+    private org.odpi.openmetadata.accessservices.dataplatform.events.TableSource convertTableSource(TableSource tableSource) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.TableSource tableSource1 = new org.odpi.openmetadata.accessservices.dataplatform.events.TableSource();
+        tableSource1.setName(tableSource.getName());
+        tableSource1.setSchemaName(tableSource.getSchemaName());
+        tableSource1.setGuid(tableSource.getGuid());
+        tableSource1.setQualifiedName(tableSource.getQualifiedName());
+        tableSource1.setGuid(tableSource.getGuid());
+        tableSource1.setAdditionalProperties(tableSource.getAdditionalProperties());
+        tableSource1.setDatabaseSource(convertDatabaseSource(tableSource.getDatabaseSource()));
+        return tableSource1;
+    }
+
+    private org.odpi.openmetadata.accessservices.dataplatform.events.DatabaseSource convertDatabaseSource(DatabaseSource databaseSource) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.DatabaseSource databaseSource1 = new org.odpi.openmetadata.accessservices.dataplatform.events.DatabaseSource();
+        databaseSource1.setName(databaseSource.getName());
+        databaseSource1.setGuid(databaseSource.getGuid());
+        databaseSource1.setQualifiedName(databaseSource.getQualifiedName());
+        databaseSource1.setAdditionalProperties(databaseSource.getAdditionalProperties());
+        databaseSource1.setEndpointSource(convertEndpointSource(databaseSource.getEndpointSource()));
+        return databaseSource1;
+    }
+
+    private org.odpi.openmetadata.accessservices.dataplatform.events.EndpointSource convertEndpointSource(EndpointSource endpointSource) {
+        org.odpi.openmetadata.accessservices.dataplatform.events.EndpointSource endpointSource1 = new org.odpi.openmetadata.accessservices.dataplatform.events.EndpointSource();
+        endpointSource1.setConnectorProviderName(endpointSource.getConnectorProviderName());
+        endpointSource1.setNetworkAddress(endpointSource.getNetworkAddress());
+        endpointSource1.setProtocol(endpointSource.getProtocol());
+        endpointSource1.setUser(endpointSource.getUser());
+        endpointSource1.setAdditionalProperties(endpointSource.getAdditionalProperties());
+        endpointSource1.setGuid(endpointSource.getGuid());
+        endpointSource1.setQualifiedName(endpointSource.getQualifiedName());
+        return endpointSource1;
+    }
+
 
 }
