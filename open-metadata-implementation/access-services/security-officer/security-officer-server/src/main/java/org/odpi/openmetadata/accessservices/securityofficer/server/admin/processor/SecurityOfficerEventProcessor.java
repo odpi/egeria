@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +29,7 @@ public class SecurityOfficerEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerEventProcessor.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private SecurityOfficerHandler securityOfficerHandler;
+    private OMRSRepositoryConnector omrsRepositoryConnector;
     private OMRSAuditLog auditLog;
     private Builder builder = new Builder();
     private OpenMetadataTopicConnector openMetadataTopicConnector;
@@ -36,6 +38,7 @@ public class SecurityOfficerEventProcessor {
                                          OpenMetadataTopicConnector openMetadataTopicConnector, OMRSAuditLog auditLog) {
         this.openMetadataTopicConnector = openMetadataTopicConnector;
         this.auditLog = auditLog;
+        omrsRepositoryConnector = enterpriseOMRSRepositoryConnector;
 
         try {
             securityOfficerHandler = new SecurityOfficerHandler(enterpriseOMRSRepositoryConnector);
@@ -51,7 +54,8 @@ public class SecurityOfficerEventProcessor {
 
         EntityDetail glossaryTermDetails = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityTwoProxy().getGUID());
         EntityDetail schemaElement = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityOneProxy().getGUID());
-        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTermDetails));
+        OMRSRepositoryHelper omrsRepositoryHelper = omrsRepositoryConnector.getRepositoryHelper();
+        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTermDetails, omrsRepositoryHelper));
 
         try {
             sendEvent(OBJECT_MAPPER.writeValueAsString(securityOfficerEvent));
