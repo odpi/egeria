@@ -325,7 +325,7 @@ public class DiscoveryEngineClient
 
 
     /**
-     * Return the annotations linked direction to the report.
+     * Return the annotations linked directly to the report.
      *
      * @param userId identifier of calling user
      * @param discoveryReportGUID identifier of the discovery request.
@@ -352,7 +352,7 @@ public class DiscoveryEngineClient
 
 
     /**
-     * Return the annotations linked direction to the report.
+     * Return the annotations linked directly to the report.
      *
      * @param userId identifier of calling user
      * @param discoveryReportGUID identifier of the discovery request.
