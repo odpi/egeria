@@ -8685,7 +8685,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A server that support a file system containing a hierarchy of file folders and data files.";
         final String descriptionGUID = null;
 
-        final String linkedToEntity = "SoftwareServer";
+        final String linkedToEntity = "SoftwareServerCapability";
 
         ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
                                                                                  name,
