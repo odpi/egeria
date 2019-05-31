@@ -14,12 +14,13 @@ public class SecurityTagConnector extends ConnectorBase implements SecurityOffic
 
     @Override
     public SecurityClassification resolveSecurityClassification(SchemaElementEntity schemaElementEntity) {
-        if(schemaElementEntity.getSecurityClassification() != null){
+        if (schemaElementEntity.getSecurityClassification() != null) {
             return schemaElementEntity.getSecurityClassification();
         }
 
         SecurityClassification securityClassification = new SecurityClassification();
-        securityClassification.setProperties(Collections.singletonMap("Level", "Internal"));
+        securityClassification.setSecurityLabels(Collections.singletonList("C3"));
+        securityClassification.setSecurityProperties(Collections.singletonMap("user", "SecurityTagConnector"));
         return securityClassification;
     }
 
