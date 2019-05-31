@@ -90,6 +90,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>security-officer-tag-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

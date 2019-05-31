@@ -64,6 +64,14 @@ public class OMAGServerVirtualizationService {
                     )
             );
 
+            virtualizationConfig.setVirtualizationSolutionConnection(
+                    connectorConfigurationFactory.getVirtualizationSolutionConnection(
+                            serverName,
+                            virtualizationConfig.getVirtualizationProvider(),
+                            virtualizationConfig.getVirtualizationSolutionConfig()
+                    )
+            );
+
             serverConfig.setVirtualizationConfig(virtualizationConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
