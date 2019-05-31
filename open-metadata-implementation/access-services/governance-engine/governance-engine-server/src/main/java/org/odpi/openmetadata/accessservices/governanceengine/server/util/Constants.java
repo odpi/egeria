@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.util;
 public final class Constants {
 
     public static final String GOVERNANCE_ENGINE = "GovernanceEngine";
+    public static final String SECURITY_LABELS = "securityLabels";
+    public static final String SECURITY_PROPERTIES = "securityProperties";
     public static final String SECURITY_TAG = "SecurityTags";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";

@@ -32,7 +32,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DISPLAY_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.QUALIFIED_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_LABELS;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_PROPERTIES;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_TAG;
 
 /**
  * ConnectionHandler retrieves Connection objects from the property handlers.  It runs handlers-side in the AssetConsumer
@@ -171,10 +178,11 @@ public class GovernedAssetHandler {
         governanceClassification.setName(classification.getName());
         InstanceProperties properties = classification.getProperties();
         if (properties != null) {
-            List<String> securityLabels = repositoryConnector.getRepositoryHelper().getStringArrayProperty(GOVERNANCE_ENGINE, "securityLabels", properties, "getInstanceProperties");
+            String methodName = "getInstanceProperties";
+            List<String> securityLabels = repositoryConnector.getRepositoryHelper().getStringArrayProperty(GOVERNANCE_ENGINE, SECURITY_LABELS, properties, methodName);
             governanceClassification.setSecurityLabels(securityLabels);
 
-            Map<String, String> securityProperties = repositoryConnector.getRepositoryHelper().getStringMapFromProperty(GOVERNANCE_ENGINE, "securityProperties", properties, "getInstanceProperties");
+            Map<String, String> securityProperties = repositoryConnector.getRepositoryHelper().getStringMapFromProperty(GOVERNANCE_ENGINE, SECURITY_PROPERTIES, properties, methodName);
             governanceClassification.setSecurityProperties(securityProperties);
         }
 
