@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 
 /**
- * RESTClient is responsible for issuing calls to the Community Profile OMAS REST APIs.
+ * RESTClient is responsible for issuing calls to the OMAG REST APIs.
  */
 class RESTClient extends OCFRESTClient
 {
