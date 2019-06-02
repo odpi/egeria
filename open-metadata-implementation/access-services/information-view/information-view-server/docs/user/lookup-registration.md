@@ -7,7 +7,7 @@ Lookup registration submitted by an external tool.
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/lookup-registration
+POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/registration/lookup
 
 {
    "class": "RegistrationRequestBody",
