@@ -18,6 +18,14 @@ Below is the list of tasks supported by Information View OMAS.
 
 ## Data View lookup 
 
+## Retrieve databases
+
+## Retrieve tables for a database
+
+## Retrieve context for a table
+
+## Retrieve columns for a table
+
 ## Publish Column Context Event on OUT topic
 
 When a NEW_RELATIONSHIP_EVENT event of type SemanticAssignment between a RelationalColumn and a GlossaryTern is published on cohort topic, the full context of the RelationalColumn is retrieved and published on Information View Out topic
