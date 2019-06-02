@@ -38,7 +38,7 @@ public class ConnectedAssetFeedback extends AssetFeedback
                            int                    ratingCount,
                            int                    tagCount,
                            int                    maxCacheSize,
-                           RESTClient             restClient)
+                           OCFRESTClient restClient)
     {
         super(parentAsset);
 

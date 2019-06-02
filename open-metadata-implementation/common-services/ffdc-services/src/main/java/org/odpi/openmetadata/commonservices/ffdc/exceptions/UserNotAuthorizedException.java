@@ -109,6 +109,17 @@ public class UserNotAuthorizedException extends org.odpi.openmetadata.frameworks
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public UserNotAuthorizedException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException template)
+    {
+        super(template);
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string of property names and values for this enum

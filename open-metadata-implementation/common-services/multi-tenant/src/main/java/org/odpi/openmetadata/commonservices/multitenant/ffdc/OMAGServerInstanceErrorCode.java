@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * The OMAGServerInstanceErrorCode is used to define first failure data capture (FFDC) for errors that occur when
  * working with OMAG Server instances within the OMAG Server Platform
- * It is used in conjunction with all Connected Asset OMAS Exceptions, both Checked and Runtime (unchecked).
+ * It is used in conjunction with all multi-tenant exceptions, both Checked and Runtime (unchecked).
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -30,6 +30,16 @@ import java.util.Arrays;
  */
 public enum OMAGServerInstanceErrorCode
 {
+    BAD_SERVER_SECURITY_CONNECTION(400, "OMAG-PLATFORM-400-001 ",
+            "The OMAG server {0} has been configured with a bad connection to its security connector.  Error message is {1}. Connection is {2}",
+            "The system is unable to validate the users issuing requests to this server.",
+            "Review the error message to determine the cause of the problem."),
+
+    SERVICES_NOT_SHUTDOWN(400, "OMAG-PLATFORM-400-002 ",
+            "The OMAG server {0} has been requested to shutdown but the following services are still running: {1}",
+            "The system is unable to shutdown the server correctly.",
+            "Review other error messages to determine the cause of the problem.  This is likely to be a logic error in the services listed in the message"),
+
     SERVER_NOT_AVAILABLE(404, "OMAG-PLATFORM-404-001 ",
             "The OMAG Server {0} is not available to service a request from user {1}",
             "The system is unable to process the request.",

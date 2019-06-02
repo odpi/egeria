@@ -42,7 +42,7 @@ public class ReportCreator extends ReportBasicOperation {
                                                                                           ClassificationErrorException,
                                                                                           UserNotAuthorizedException,
                                                                                           RepositoryErrorException {
-        String qualifiedNameForComplexSchemaType =  QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getId()  + Constants.TYPE_SUFFIX);
+        String qualifiedNameForComplexSchemaType =  QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getReport().getId()  + Constants.TYPE_SUFFIX);
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                 .build();
@@ -55,7 +55,7 @@ public class ReportCreator extends ReportBasicOperation {
                 complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                 new InstanceProperties());
 
-        addElements(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReportElements());
+        addElements(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReport().getReportElements());
     }
 
 

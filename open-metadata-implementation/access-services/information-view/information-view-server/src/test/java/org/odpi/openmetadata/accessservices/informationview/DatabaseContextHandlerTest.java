@@ -25,7 +25,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
     @BeforeClass
     public void setup() throws Exception {
         super.setup();
-        databaseContextHandler = new DatabaseContextHandler(omEntityDao, enterpriseConnector, auditLog);
+        databaseContextHandler = new DatabaseContextHandler(enterpriseConnector, omEntityDao, auditLog);
     }
 
 
