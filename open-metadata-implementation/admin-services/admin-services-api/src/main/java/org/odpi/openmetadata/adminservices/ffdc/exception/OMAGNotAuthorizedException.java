@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
 /**
  * OMAGNotAuthorizedException is used when invalid parameters are passed on an OMAG call.
  */
@@ -37,5 +40,20 @@ public class OMAGNotAuthorizedException extends OMAGCheckedExceptionBase
     public OMAGNotAuthorizedException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+    /**
+     * This is the constructor used for creating a OMAGNotAuthorizedException that resulted from a previous error.
+     *
+     * @param template previous error
+     * */
+    public OMAGNotAuthorizedException(UserNotAuthorizedException template)
+    {
+        super(template.getReportedHTTPCode(),
+              template.getReportingClassName(),
+              template.getReportingActionDescription(),
+              template.getErrorMessage(),
+              template.getReportedSystemAction(),
+              template.getReportedUserAction());
     }
 }

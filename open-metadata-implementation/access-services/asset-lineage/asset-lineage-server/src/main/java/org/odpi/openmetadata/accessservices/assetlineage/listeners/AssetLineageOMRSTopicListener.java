@@ -99,6 +99,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
 
+        final String  serviceOperationName = "processInstanceEvent";
+
         log.debug("Processing instance event", instanceEvent);
 
         if (instanceEvent == null) {
@@ -121,11 +123,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-                        processRelationship(instanceEvent.getRelationship());
+                        processRelationship(instanceEvent.getRelationship(), serviceOperationName);
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-                        processRelationship(instanceEvent.getRelationship());
+                        processRelationship(instanceEvent.getRelationship(), serviceOperationName);
                         break;
                     case DELETED_RELATIONSHIP_EVENT:
                         processDeletedRelationship(instanceEvent.getRelationship());
@@ -141,14 +143,16 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     /**
      * @param relationship - details of the new relationship
+     * @param serviceOperationName name of the calling operation
      */
-    public void processRelationship(Relationship relationship) {
+    public void processRelationship(Relationship relationship,
+                                    String       serviceOperationName) {
 
         if (!isValidRelationshipEvent(relationship))
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
         else {
             log.info("Processing semantic assignment relationship event");
-            processSemanticAssignment(relationship);
+            processSemanticAssignment(relationship, serviceOperationName);
         }
 
     }
@@ -179,16 +183,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         return false;
     }
 
-    private void processSemanticAssignment(Relationship relationship) {
+    private void processSemanticAssignment(Relationship relationship,
+                                           String serviceOperationName) {
         RelationshipEvent relationshipEvent = new RelationshipEvent();
 
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
 
         try {
-            ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName);
+            ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
             AssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
 
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
             GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
 
             relationshipEvent.setGlossaryTerm(glossaryTerm);

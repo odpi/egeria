@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 
 public class RangerSecurityServiceConnectorProvider extends ConnectorProviderBase {
 
-    static final String connectorTypeGUID = "XiFfC6pr-n0er-JWJ8-NGmi-rnZEoJ0c1wlm";
+    static final String connectorTypeGUID = "2b83adc5-6ce8-5865-77b4-3fe8821004f9";
     static final String connectorTypeName = "Ranger Security Server Connector";
     static final String connectorTypeDescription = "Connector supports storing of the open metadata cohort registry in a file.";
 

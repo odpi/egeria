@@ -68,7 +68,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             EventBusConfig            eventBusConfig          = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
             List<AccessServiceConfig> accessServiceConfigList = new ArrayList<>();
@@ -221,7 +221,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
@@ -288,7 +288,7 @@ public class OMAGServerAdminForAccessServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
             List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 

@@ -55,10 +55,6 @@ spec:
             backend:
               servicePort: 6144
               serviceName: {{ include "myapp.fullname" . }}-gaian-service
-          - path: /igcproxy
-            backend:
-              servicePort: 8080
-              serviceName: {{ include "myapp.fullname" . }}-igcproxy-service
           - path: /postgresql
             backend:
               servicePort: 5432

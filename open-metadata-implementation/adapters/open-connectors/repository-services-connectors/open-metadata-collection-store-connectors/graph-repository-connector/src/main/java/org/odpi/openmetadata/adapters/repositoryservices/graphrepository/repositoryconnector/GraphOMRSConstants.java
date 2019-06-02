@@ -38,6 +38,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_NAME_CLASSIFICATION_ORIGIN            = "classificationOrigin";
     public static final String PROPERTY_NAME_CLASSIFICATION_ORIGIN_GUID       = "classificationOriginGUID";
     public static final String PROPERTY_NAME_ENTITY_IS_PROXY                  = "entityIsProxy";
+    public static final String PROPERTY_NAME_REPLICATED_BY                    = "replicatedBy";
 
     // Map of core property short name to type as stored in graph (not how they appear in Instances)
 
@@ -61,6 +62,7 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_CLASSIFICATION_ORIGIN,          "java.lang.Integer");    // enum stored by ordinal
         put(PROPERTY_NAME_CLASSIFICATION_ORIGIN_GUID,     "java.lang.String");
         put(PROPERTY_NAME_ENTITY_IS_PROXY,                "java.lang.Boolean");
+        put(PROPERTY_NAME_REPLICATED_BY,                  "java.lang.String");
     }};
 
 
@@ -88,6 +90,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_ENTITY_INSTANCE_URL            = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_INSTANCE_URL;
     public static final String PROPERTY_KEY_ENTITY_INSTANCE_LICENSE        = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_INSTANCE_LICENSE;
     public static final String PROPERTY_KEY_ENTITY_IS_PROXY                = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_ENTITY_IS_PROXY;
+    public static final String PROPERTY_KEY_ENTITY_REPLICATED_BY           = PROPERTY_KEY_PREFIX_ENTITY + PROPERTY_NAME_REPLICATED_BY;
 
     // Map of names to property key names
     public static final Map<String, String> corePropertiesEntity = new HashMap<String,String>() {{
@@ -107,6 +110,7 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_INSTANCE_URL, PROPERTY_KEY_ENTITY_INSTANCE_URL);
         put(PROPERTY_NAME_INSTANCE_LICENSE, PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
         put(PROPERTY_NAME_ENTITY_IS_PROXY, PROPERTY_KEY_ENTITY_IS_PROXY);
+        put(PROPERTY_NAME_REPLICATED_BY, PROPERTY_KEY_ENTITY_REPLICATED_BY);
     }};
 
 
@@ -136,6 +140,7 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY               = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_MAINTAINED_BY;
     public static final String PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL                = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_INSTANCE_URL;
     public static final String PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE            = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_INSTANCE_LICENSE;
+    public static final String PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY               = PROPERTY_KEY_PREFIX_RELATIONSHIP+PROPERTY_NAME_REPLICATED_BY;
 
     // Map of names to property key names
     public static final Map<String, String> corePropertiesRelationship = new HashMap<String,String>() {{
@@ -154,6 +159,7 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_MAINTAINED_BY, PROPERTY_KEY_RELATIONSHIP_MAINTAINED_BY);
         put(PROPERTY_NAME_INSTANCE_URL, PROPERTY_KEY_RELATIONSHIP_INSTANCE_URL);
         put(PROPERTY_NAME_INSTANCE_LICENSE, PROPERTY_KEY_RELATIONSHIP_INSTANCE_LICENSE);
+        put(PROPERTY_NAME_REPLICATED_BY, PROPERTY_KEY_RELATIONSHIP_REPLICATED_BY);
     }};
 
     public static String getPropertyKeyRelationship(String propertyName) {
@@ -182,7 +188,8 @@ public class GraphOMRSConstants {
     public static final String PROPERTY_KEY_CLASSIFICATION_INSTANCE_LICENSE            = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_INSTANCE_LICENSE;
     public static final String PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME         = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_CLASSIFICATION_NAME;
     public static final String PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN       = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_CLASSIFICATION_ORIGIN;
-    public static final String PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID  = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_CLASSIFICATION_ORIGIN_GUID ;
+    public static final String PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID  = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_CLASSIFICATION_ORIGIN_GUID;
+    public static final String PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY               = PROPERTY_KEY_PREFIX_CLASSIFICATION+PROPERTY_NAME_REPLICATED_BY;
 
     // Map of names to property key names
     public static final Map<String, String> corePropertiesClassification = new HashMap<String,String>() {{
@@ -202,6 +209,7 @@ public class GraphOMRSConstants {
         put(PROPERTY_NAME_CLASSIFICATION_NAME, PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME);
         put(PROPERTY_NAME_CLASSIFICATION_ORIGIN, PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN);
         put(PROPERTY_NAME_CLASSIFICATION_ORIGIN_GUID, PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_ORIGIN_GUID);
+        put(PROPERTY_NAME_REPLICATED_BY, PROPERTY_KEY_CLASSIFICATION_REPLICATED_BY);
     }};
 
     public static String getPropertyKeyClassification(String propertyName) {

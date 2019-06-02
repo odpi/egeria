@@ -101,6 +101,17 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public PropertyServerException(org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException template)
+    {
+        super(template);
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string of property names and values for this enum

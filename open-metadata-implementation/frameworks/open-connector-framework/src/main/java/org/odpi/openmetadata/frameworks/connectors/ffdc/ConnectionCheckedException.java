@@ -55,4 +55,15 @@ public class ConnectionCheckedException extends OCFCheckedExceptionBase
 
         log.debug(httpCode + ", " + className + ", " + actionDescription + ", " + caughtError.toString());
     }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public ConnectionCheckedException(ConnectionCheckedException template)
+    {
+        super(template);
+    }
 }

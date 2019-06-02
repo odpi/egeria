@@ -32,11 +32,11 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssetProperties
 {
-    private String               serverName;
-    private String               userId = null;
-    private String               omasServerURL = null;
-    private String               assetGUID = null;
-    private RESTClient           restClient;
+    private String        serverName;
+    private String        userId = null;
+    private String        omasServerURL = null;
+    private String        assetGUID = null;
+    private OCFRESTClient restClient;
 
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -56,7 +56,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
                                                 String               userId,
                                                 String               omasServerURL,
                                                 String               assetGUID,
-                                                RESTClient           restClient)
+                                                OCFRESTClient restClient)
     {
         super();
 
