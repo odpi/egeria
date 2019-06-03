@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -22,11 +23,12 @@ import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscovery
 import java.util.List;
 import java.util.Map;
 
+
 public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
 {
-    private String     serverName;               /* Initialized in constructor */
-    private String     omasServerURL;            /* Initialized in constructor */
-    private RESTClient restClient;               /* Initialized in constructor */
+    private String              serverName;               /* Initialized in constructor */
+    private String              serverPlatformURLRoot;    /* Initialized in constructor */
+    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -37,20 +39,20 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param newServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
-                                        String     newServerURL) throws InvalidParameterException
+                                        String     serverPlatformURLRoot) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = newServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -59,24 +61,50 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
-                                        String     omasServerURL,
+                                        String     serverPlatformURLRoot,
                                         String     userId,
                                         String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformURLRoot, userId, password);
+    }
+
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName name of the server to connect to
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
+     * @param restClient pre-initialized REST client
+     * @param maxPageSize pre-initialized parameter checker
+     * @throws InvalidParameterException there is a problem with the information about the remote OMAS
+     */
+    public DiscoveryConfigurationClient(String                  serverName,
+                                        String                  serverPlatformURLRoot,
+                                        DiscoveryRESTClient     restClient,
+                                        int                     maxPageSize) throws InvalidParameterException
+    {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformURLRoot, serverName, methodName);
+
+        this.serverName = serverName;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
+        this.restClient = restClient;
     }
 
 
@@ -115,7 +143,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setDescription(description);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -152,7 +180,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
         DiscoveryEnginePropertiesResponse restResult = restClient.callDiscoveryEnginePropertiesGetRESTCall(methodName,
-                                                                                                           omasServerURL + urlTemplate,
+                                                                                                           serverPlatformURLRoot + urlTemplate,
                                                                                                            serverName,
                                                                                                            userId,
                                                                                                            guid);
@@ -189,7 +217,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         DiscoveryEnginePropertiesResponse restResult = restClient.callDiscoveryEnginePropertiesGetRESTCall(methodName,
-                                                                                                           omasServerURL + urlTemplate,
+                                                                                                           serverPlatformURLRoot + urlTemplate,
                                                                                                            serverName,
                                                                                                            userId,
                                                                                                            name);
@@ -227,7 +255,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DiscoveryEngineListResponse restResult = restClient.callDiscoveryEngineListGetRESTCall(methodName,
-                                                                                               omasServerURL + urlTemplate,
+                                                                                               serverPlatformURLRoot + urlTemplate,
                                                                                                serverName,
                                                                                                userId,
                                                                                                Integer.toString(startingFrom),
@@ -297,7 +325,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setExtendedProperties(extendedProperties);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -340,7 +368,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setQualifiedName(qualifiedName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -392,7 +420,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setConnection(connection);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
@@ -430,7 +458,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
         DiscoveryServicePropertiesResponse restResult = restClient.callDiscoveryServicePropertiesGetRESTCall(methodName,
-                                                                                                             omasServerURL + urlTemplate,
+                                                                                                             serverPlatformURLRoot + urlTemplate,
                                                                                                              serverName,
                                                                                                              userId,
                                                                                                              guid);
@@ -468,7 +496,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
         DiscoveryServicePropertiesResponse restResult = restClient.callDiscoveryServicePropertiesGetRESTCall(methodName,
-                                                                                                             omasServerURL + urlTemplate,
+                                                                                                             serverPlatformURLRoot + urlTemplate,
                                                                                                              serverName,
                                                                                                              userId,
                                                                                                              name);
@@ -507,7 +535,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DiscoveryServiceListResponse restResult = restClient.callDiscoveryServiceListGetRESTCall(methodName,
-                                                                                                 omasServerURL + urlTemplate,
+                                                                                                 serverPlatformURLRoot + urlTemplate,
                                                                                                  serverName,
                                                                                                  userId,
                                                                                                  Integer.toString(startingFrom),
@@ -546,7 +574,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryServiceGUID, guidParameter, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         omasServerURL + urlTemplate,
+                                                                         serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          discoveryServiceGUID);
@@ -623,7 +651,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setExtendedProperties(extendedProperties);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -667,7 +695,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setQualifiedName(qualifiedName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -714,7 +742,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         requestBody.setAssetTypes(assetTypes);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
@@ -755,7 +783,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
 
         RegisteredDiscoveryServiceResponse restResult = restClient.callRegisteredDiscoveryServiceGetRESTCall(methodName,
-                                                                                                             omasServerURL + urlTemplate,
+                                                                                                             serverPlatformURLRoot + urlTemplate,
                                                                                                              serverName,
                                                                                                              userId,
                                                                                                              discoveryEngineGUID,
@@ -799,7 +827,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         GUIDListResponse restResult = restClient.callGUIDListGetRESTCall(methodName,
-                                                                         omasServerURL + urlTemplate,
+                                                                         serverPlatformURLRoot + urlTemplate,
                                                                          serverName,
                                                                          userId,
                                                                          discoveryEngineGUID,
@@ -841,7 +869,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformURLRoot + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,

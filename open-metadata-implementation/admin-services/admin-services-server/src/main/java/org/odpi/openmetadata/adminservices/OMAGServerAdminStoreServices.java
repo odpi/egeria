@@ -6,12 +6,19 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OMAGServerAdminStoreServices provides the capability to store and retrieve configuration documents.
@@ -25,6 +32,10 @@ public class OMAGServerAdminStoreServices
 {
     private static Connection  configurationStoreConnection = null;
 
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminStoreServices.class);
+
+    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
+    private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
 
     /**
      * Override the default location of the configuration documents.
@@ -36,8 +47,36 @@ public class OMAGServerAdminStoreServices
     public synchronized VoidResponse setConfigurationStoreConnection(String       userId,
                                                                      Connection   connection)
     {
-        configurationStoreConnection = connection;
-        return new VoidResponse();
+        final String methodName = "setConfigurationStoreConnection";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            errorHandler.validateConnection(connection, methodName);
+
+            configurationStoreConnection = connection;
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable   error)
+        {
+            exceptionHandler.captureRuntimeException(methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -50,25 +89,65 @@ public class OMAGServerAdminStoreServices
      */
     public synchronized ConnectionResponse getConfigurationStoreConnection(String       userId)
     {
+        final String methodName = "getConfigurationStoreConnection";
+
+        log.debug("Calling method: " + methodName);
+
         ConnectionResponse  response = new ConnectionResponse();
 
-        response.setConnection(configurationStoreConnection);
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            response.setConnection(configurationStoreConnection);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable   error)
+        {
+            exceptionHandler.captureRuntimeException(methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
 
 
     /**
-     * Clear the connection object for the configuration store.  Null is returned if the server should
-     * use the default store.
+     * Clear the connection object for the configuration store.
      *
      * @param userId calling user
      * @return connection response
      */
     public synchronized VoidResponse clearConfigurationStoreConnection(String   userId)
     {
-        configurationStoreConnection = null;
-        return new VoidResponse();
+        final String methodName = "clearConfigurationStoreConnection";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+
+            configurationStoreConnection = null;
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable   error)
+        {
+            exceptionHandler.captureRuntimeException(methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -139,13 +218,15 @@ public class OMAGServerAdminStoreServices
      * @param methodName  method requesting the server details
      * @return  configuration properties
      * @throws OMAGInvalidParameterException problem with the configuration file
+     * @throws OMAGNotAuthorizedException user not authorized to make these changes
      */
-    OMAGServerConfig getServerConfig(String   serverName,
-                                     String   methodName) throws OMAGInvalidParameterException
+    OMAGServerConfig getServerConfig(String   userId,
+                                     String   serverName,
+                                     String   methodName) throws OMAGInvalidParameterException,
+                                                                 OMAGNotAuthorizedException
     {
         OMAGServerConfigStore   serverConfigStore = getServerConfigStore(serverName, methodName);
         OMAGServerConfig        serverConfig      = null;
-
 
         if (serverConfigStore != null)
         {
@@ -154,12 +235,21 @@ public class OMAGServerAdminStoreServices
 
         if (serverConfig == null)
         {
+            try
+            {
+                OpenMetadataPlatformSecurityVerifier.validateUserForNewServer(userId);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw new OMAGNotAuthorizedException(error);
+            }
+
             serverConfig = new OMAGServerConfig();
             serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
         }
         else
         {
-            String versionId = serverConfig.getVersionId();
+            String  versionId           = serverConfig.getVersionId();
             boolean isCompatibleVersion = false;
 
             if (versionId == null)
@@ -175,13 +265,13 @@ public class OMAGServerAdminStoreServices
                 }
             }
 
-            if (! isCompatibleVersion)
+            if (!isCompatibleVersion)
             {
                 OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_CONFIG_FILE;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(serverName,
-                                                                                versionId,
-                                                                                OMAGServerConfig.COMPATIBLE_VERSIONS.toString());
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(serverName,
+                                                             versionId,
+                                                             OMAGServerConfig.COMPATIBLE_VERSIONS.toString());
 
                 throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
                                                         this.getClass().getName(),
@@ -189,6 +279,26 @@ public class OMAGServerAdminStoreServices
                                                         errorMessage,
                                                         errorCode.getSystemAction(),
                                                         errorCode.getUserAction());
+            }
+
+            try
+            {
+                OpenMetadataServerSecurityConnector serverSecurityConnector =
+                        OpenMetadataPlatformSecurityVerifier.getServerSecurityConnector(serverName,
+                                                                                        serverConfig.getServerSecurityConnection());
+
+                if (serverSecurityConnector != null)
+                {
+                    serverSecurityConnector.validateUserAsServerAdmin(userId);
+                }
+            }
+            catch (InvalidParameterException error)
+            {
+                throw new OMAGInvalidParameterException(error);
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                throw new OMAGNotAuthorizedException(error);
             }
         }
 

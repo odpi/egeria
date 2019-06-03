@@ -388,6 +388,13 @@ public class GraphOMRSEntityMapper {
             removeProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
         }
 
+        if (entity.getReplicatedBy() != null) {
+            vertex.property(PROPERTY_KEY_ENTITY_REPLICATED_BY, entity.getReplicatedBy());
+        }
+        else {
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_REPLICATED_BY);
+        }
+
 
     }
 
@@ -624,6 +631,8 @@ public class GraphOMRSEntityMapper {
                         errorCode.getUserAction());
             }
         }
+
+        entity.setReplicatedBy((String) getVertexProperty( vertex,  PROPERTY_KEY_ENTITY_REPLICATED_BY));
 
         // Get the classifications
         List<Classification> classifications = new ArrayList<>();

@@ -54,7 +54,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
     {
         super();
 
-        RESTClient    restClient    = new RESTClient(remoteServerName, omasServerURL);
+        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName, omasServerURL);
         AssetResponse assetResponse = this.getAssetSummary(remoteServerName, omasServerURL, restClient, userId, assetGUID);
 
         this.processAssetResponse(remoteServerName, omasServerURL, userId, assetGUID, restClient, assetResponse);
@@ -89,7 +89,8 @@ public class ConnectedAssetUniverse extends AssetUniverse
     {
         super();
 
-        RESTClient    restClient = new RESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
+        OCFRESTClient
+                      restClient    = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
         AssetResponse assetResponse = this.getAssetSummary(remoteServerName, omasServerURL, restClient, userId, assetGUID);
 
         this.processAssetResponse(remoteServerName, omasServerURL, userId, assetGUID, restClient, assetResponse);
@@ -112,9 +113,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   String      omasServerURL,
                                   String      userId,
                                   String      assetGUID,
-                                  RESTClient  restClient) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+                                  OCFRESTClient restClient) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
     {
         super();
 
@@ -149,7 +150,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
     {
         super();
 
-        RESTClient restClient = new RESTClient(remoteServerName, omasServerURL);
+        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName, omasServerURL);
         AssetResponse assetResponse = this.getConnectedAssetSummary(remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
 
         this.processAssetResponse(remoteServerName, omasServerURL, userId, assetGUID, restClient, assetResponse);
@@ -185,7 +186,8 @@ public class ConnectedAssetUniverse extends AssetUniverse
     {
         super();
 
-        RESTClient restClient = new RESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
+        OCFRESTClient
+                      restClient    = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
         AssetResponse assetResponse = this.getConnectedAssetSummary(remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
 
         this.processAssetResponse(remoteServerName, omasServerURL, userId, assetGUID, restClient, assetResponse);
@@ -207,7 +209,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                        String           omasServerURL,
                                        String           userId,
                                        String           assetGUID,
-                                       RESTClient       restClient,
+                                       OCFRESTClient restClient,
                                        AssetResponse    assetResponse)
     {
         super.assetBean = assetResponse.getAsset();
@@ -365,7 +367,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private AssetResponse getConnectedAssetSummary(String     remoteServerName,
                                                    String     omasServerURL,
-                                                   RESTClient restClient,
+                                                   OCFRESTClient restClient,
                                                    String     userId,
                                                    String     assetGUID,
                                                    String     connectionGUID) throws InvalidParameterException,
@@ -417,7 +419,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
      */
     private AssetResponse getAssetSummary(String     remoteServerName,
                                           String     omasServerURL,
-                                          RESTClient restClient,
+                                          OCFRESTClient restClient,
                                           String     userId,
                                           String     assetGUID) throws InvalidParameterException,
                                                                        PropertyServerException,
@@ -466,7 +468,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                           String     omasServerURL,
                                           String     userId,
                                           SchemaType bean,
-                                          RESTClient restClient)
+                                          OCFRESTClient restClient)
     {
         if (bean == null)
         {

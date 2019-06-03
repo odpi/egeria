@@ -1,0 +1,14 @@
+I, Christopher Grote hereby sign-off-by all of my past commits to this repo subject to the Developer Certificate of Origin (DCO), Version 1.1. In the past I have used emails: cmgrote@users.noreply.github.com
+
+58a989c3a10d7766cbcf98a7e50115d611e60c53 Adds Chris Grote to maintainers
+b390142f133fe3738076c74c40c29325239444da Revert "Changes to code-style formatting" -- forgot to sign
+This reverts commit c45accfd7c945dbf5360c1430c3afe64c62c8d9f.
+c45accfd7c945dbf5360c1430c3afe64c62c8d9f Changes to code-style formatting
+0894d8965f3b38d7660575143fd52517018b9f26 Fixes formatting
+c7746b376b2916fc19ac5a3318695e6a79761982 Fixes typos
+3bb2516de9d93a8c967722f47548af1300f39bb9 Cleans up formatting for easier readability
+ab258dfd070106919b6c2b023f7d25aeae670075 Minor cleanups for code readability
+238b7b5a899b86862412b7959369c38cd5bad05e Corrects links to license examples
+4cf4347dd867118db2a4ecf30efbaa50568641e0 Fixes spacing
+9b95b66202b8826aafa1ade25f65e9fb45d391cb Capitalises Egeria for consistency and minor grammatical cleanups
+
