@@ -15,7 +15,7 @@ The connector can be used to interact with a specific [Asset](../../../../docs/c
    { 
        
        public Connector getConnector(String     serverName,
-                                     String     omasServerURL,
+                                     String     serverPlatformRootURL,
                                      String     userId,
                                      String     password,
                                      String     connectionName) throws InvalidParameterException,
@@ -26,7 +26,7 @@ The connector can be used to interact with a specific [Asset](../../../../docs/c
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException;
        { 
-           AssetConsumerClient client = new AssetConsumerClient(serverName, omasServerURL, userId, password);
+           AssetConsumerClient client = new AssetConsumerClient(serverName, serverPlatformRootURL, userId, password);
            
            return client.getConnectorByName(userId, connectionName);
        }

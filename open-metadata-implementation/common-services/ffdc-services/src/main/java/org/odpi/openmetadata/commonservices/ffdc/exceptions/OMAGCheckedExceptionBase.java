@@ -105,6 +105,17 @@ public abstract class OMAGCheckedExceptionBase extends org.odpi.openmetadata.fra
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public OMAGCheckedExceptionBase(OMAGCheckedExceptionBase template)
+    {
+        super(template);
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string of property names and values for this enum
