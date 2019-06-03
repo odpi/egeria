@@ -2,13 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ConnectionResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -27,16 +24,9 @@ import java.util.Map;
 /**
  * DiscoveryEngineClient provides the client-side operational REST APIs for a running Discovery Engine
  */
-public class DiscoveryEngineClient
+public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
-    private String              serverName;               /* Initialized in constructor */
-    private String              serverPlatformRootURL;    /* Initialized in constructor */
-    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
-
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
-
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     /**
      * Constructor sets up the key parameters for accessing the asset store.
@@ -45,12 +35,12 @@ public class DiscoveryEngineClient
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param restClient client for calling REST APIs
      */
-    public DiscoveryEngineClient(String              serverName,
-                                 String              serverPlatformRootURL,
-                                 DiscoveryRESTClient restClient)
+    public DiscoveryEngineClient(String        serverName,
+                                 String        serverPlatformRootURL,
+                                 ODFRESTClient restClient) throws InvalidParameterException
     {
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
+        super(serverName, serverPlatformRootURL);
+
         this.restClient = restClient;
     }
 
@@ -71,22 +61,11 @@ public class DiscoveryEngineClient
     {
         final String   methodName = "getConnectionForAsset";
         final String   guidParameterName = "assetGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/{2}/connection";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameterName, methodName);
 
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getConnection();
+        return super.getConnectionForAsset(restClient, userId, assetGUID);
     }
 
 
