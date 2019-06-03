@@ -7,7 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * RelatedAssetProperties returns detailed information about an asset that is related to a connected asset.
+ * RelatedAssetProperties returns detailed information about an asset that is related to an asset
+ * that is linked to the original anchor asset with a relationship.
  *
  * It is a generic interface for all types of open metadata assets.  However, it assumes the asset's metadata model
  * inherits from <b>Asset</b> (see model 0010 in Area 0).
