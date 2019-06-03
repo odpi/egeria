@@ -34,7 +34,7 @@ public enum OMAGOCFErrorCode
                               "The system is unable to process the request without this value.",
                               "Correct the code in the caller to provide the name."),
 
-    NO_ASSET_PROPERTIES(400, "OMAS-ASSET-CONSUMER-400-002 ",
+    NO_ASSET_PROPERTIES(400, "OMAG-OCF-400-002 ",
                         "The request for the properties of asset {0} failed with the following message returned: {1}",
                         "The system is unable to process the request.",
                         "Use the information in the message to understand the nature of the problem and once it is resolved, retry the request."),
