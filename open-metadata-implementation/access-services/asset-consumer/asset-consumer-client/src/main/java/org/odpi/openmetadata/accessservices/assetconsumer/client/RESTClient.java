@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
+import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -12,7 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 /**
  * RESTClient is responsible for issuing calls to the Community Profile OMAS REST APIs.
  */
-class RESTClient extends FFDCRESTClient
+class RESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication.
@@ -47,129 +47,39 @@ class RESTClient extends FFDCRESTClient
         super(serverName, serverPlatformURLRoot, userId, password);
     }
 
-    
+
     /**
-     * Issue a GET REST call that returns a Connection object.
+     * Issue a GET REST call that returns a GlossaryTermResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return GlossaryTermResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    ConnectionResponse callConnectionGetRESTCall(String    methodName,
-                                                 String    urlTemplate,
-                                                 Object... params) throws PropertyServerException
+    GlossaryTermResponse callGlossaryTermGetRESTCall(String    methodName,
+                                                     String    urlTemplate,
+                                                     Object... params) throws PropertyServerException
     {
-        return this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
+        return this.callGetRESTCall(methodName, GlossaryTermResponse.class, urlTemplate, params);
     }
 
 
     /**
-     * Issue a GET REST call that returns a AssetResponse object.
+     * Issue a GET REST call that returns a GlossaryTermListResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return AssetListResponse
+     * @return GlossaryTermListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    AssetResponse callAssetGetRESTCall(String    methodName,
-                                       String    urlTemplate,
-                                       Object... params) throws PropertyServerException
+    GlossaryTermListResponse callGlossaryTermListGetRESTCall(String    methodName,
+                                                             String    urlTemplate,
+                                                             Object... params) throws PropertyServerException
     {
-        return this.callGetRESTCall(methodName, AssetResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a AssetListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return AssetListResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    AssetListResponse callAssetListGetRESTCall(String    methodName,
-                                               String    urlTemplate,
-                                               Object... params) throws PropertyServerException
-    {
-        return this.callGetRESTCall(methodName, AssetListResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a MeaningResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return MeaningResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    MeaningResponse callMeaningGetRESTCall(String    methodName,
-                                           String    urlTemplate,
-                                           Object... params) throws PropertyServerException
-    {
-        return this.callGetRESTCall(methodName, MeaningResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a MeaningListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return MeaningListResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    MeaningListResponse callMeaningListGetRESTCall(String    methodName,
-                                                   String    urlTemplate,
-                                                   Object... params) throws PropertyServerException
-    {
-        return this.callGetRESTCall(methodName, MeaningListResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a TagResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return TagResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    TagResponse callTagGetRESTCall(String    methodName,
-                                   String    urlTemplate,
-                                   Object... params) throws PropertyServerException
-    {
-        return this.callGetRESTCall(methodName, TagResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a TagListResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return TagListResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    TagListResponse callTagListGetRESTCall(String    methodName,
-                                           String    urlTemplate,
-                                           Object... params) throws PropertyServerException
-    {
-        return this.callGetRESTCall(methodName, TagListResponse.class, urlTemplate, params);
+        return this.callGetRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, params);
     }
 }

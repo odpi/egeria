@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
@@ -98,6 +98,7 @@ public class ContextHandler {
         Optional<TypeDef> typeDefStream = allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName)).findAny();
 
         if (typeDefStream.isPresent()) {
+            //TODO There should be a hasSuperType() in class entitytypes
             Optional<TypeDef> superType = allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefStream.get().getSuperType().getName())).findAny();
             return typeDefStream.map(typeDef -> allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(
                     superType.get().getName()) && t.getSuperType().getName().equals(ASSET)).findAny()).orElse(null);

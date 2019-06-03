@@ -102,6 +102,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
 
+        final String  serviceOperationName = "processInstanceEvent";
+
         log.debug("Processing instance event", instanceEvent);
 
         if (instanceEvent == null) {
@@ -124,14 +126,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-                        processRelationship(instanceEvent.getRelationship());
+                        processRelationship(instanceEvent.getRelationship(), serviceOperationName);
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-                        processRelationship(instanceEvent.getRelationship());
+                        processRelationship(instanceEvent.getRelationship(), serviceOperationName);
                         break;
                     case DELETE_PURGED_RELATIONSHIP_EVENT:
-                        processDeletedPurgedRelationship(instanceEvent.getRelationship());
+                        processDeletedPurgedRelationship(instanceEvent.getRelationship(), serviceOperationName);
 
                     default:
                         break;
@@ -144,15 +146,16 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     /**
      * @param relationship - details of the new relationship
+     * @param serviceOperationName name of the calling operation
      */
-    public void processRelationship(Relationship relationship) {
+    public void processRelationship(Relationship relationship,
+                                    String       serviceOperationName) {
 
         if (!isValidRelationshipEvent(relationship))
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
         else {
             log.info("Processing semantic assignment relationship event");
-                processSemanticAssignment(relationship);
-
+            processSemanticAssignment(relationship, serviceOperationName);
         }
 
     }
@@ -166,21 +169,24 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     private boolean isValidRelationshipEvent(Relationship relationship) {
         String entityProxyOneType = relationship.getEntityOneProxy().getType().getTypeDefName();
-        if (relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
-                &&
-                (
-                        entityProxyOneType.equals(RELATIONAL_COLUMN)
-                                ||
-                                entityProxyOneType.equals(RELATIONAL_TABLE)
-                                ||
-                                entityProxyOneType.equals(DERIVED_RELATIONAL_COLUMN)
-                                ||
-                                entityProxyOneType.equals(DERIVED_SCHEMA_ATTRIBUTE)
-                )
+        if (
+                relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
+                        &&
+                        (
+                                entityProxyOneType.equals(RELATIONAL_COLUMN)
+                                        ||
+                                        entityProxyOneType.equals(RELATIONAL_TABLE)
+                                        ||
+                                        entityProxyOneType.equals(DERIVED_RELATIONAL_COLUMN)
+                                        ||
+                                        entityProxyOneType.equals(DERIVED_SCHEMA_ATTRIBUTE)
+                        )
         )
             return true;
         return false;
     }
+
+
 
 
     /**
@@ -189,14 +195,16 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param relationship - details of the new relationship
      * @return
      */
-    private void processSemanticAssignment(Relationship relationship)  {
+    private void processSemanticAssignment(Relationship relationship,
+                                           String serviceOperationName) {
         RelationshipEvent relationshipEvent = new RelationshipEvent();
+
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
         try {
-            ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName);
-            ConvertedAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
+            ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
+            ConvertedAssetContext assetContext  = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
 
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
             GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
 
             relationshipEvent.setGlossaryTerm(glossaryTerm);
@@ -211,13 +219,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         }
     }
 
-    private void processDeletedPurgedRelationship(Relationship relationship) {
+    private void processDeletedPurgedRelationship(Relationship relationship, String serviceOperationName) {
 
         if (!isValidRelationshipEvent(relationship))
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
         else {
             log.info("Processing semantic assignment deletion relationship event");
-            processSemanticAssignmentDeletion(relationship);
+            processSemanticAssignmentDeletion(relationship, serviceOperationName);
 
         }
     }
@@ -229,11 +237,11 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
 
-    private void processSemanticAssignmentDeletion(Relationship relationship)  {
+    private void processSemanticAssignmentDeletion(Relationship relationship, String serviceOperationName)  {
         DeletePurgedRelationshipEvent deletionEvent = new DeletePurgedRelationshipEvent();
         try {
 
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName);
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
             GlossaryTerm glossaryTerm = glossaryHandler.getGlossaryTerm(relationship.getEntityTwoProxy(), serverUserName);
 
             deletionEvent.setGlossaryTerm(glossaryTerm);

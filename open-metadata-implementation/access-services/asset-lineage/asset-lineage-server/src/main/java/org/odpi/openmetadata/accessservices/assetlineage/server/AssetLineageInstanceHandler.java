@@ -21,8 +21,11 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public AssetLineageInstanceHandler() {
-        super(AccessServiceDescription.ASSET_LINEAGE_OMAS);
+        super(AccessServiceDescription.ASSET_LINEAGE_OMAS.getAccessServiceName() + " OMAS");
 
+    }
+
+    public void registerAccessService(){
         AssetLineageRegistration.registerAccessService();
     }
 
@@ -31,16 +34,18 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @param userId     calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the calling operation
      * @return handler for use by the requested instance
      * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
     public GlossaryHandler getGlossaryHandler(String userId,
-                                           String serverName) throws InvalidParameterException,
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
-        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName);
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getGlossaryHandler();
@@ -54,16 +59,18 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      *
      * @param userId     calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the calling operation
      * @return handler for use by the requested instance
      * @throws InvalidParameterException  no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
     public ContextHandler getContextHandler(String userId,
-                                     String serverName) throws InvalidParameterException,
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
-        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName);
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getContextHandler();

@@ -5,6 +5,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -55,38 +56,6 @@ public class Converter {
         return assetDescription;
     }
 
-    public AssetDescription getAssetDescription(EntitySummary entitySummary) {
-        AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGuid(entitySummary.getGUID());
-        assetDescription.setMetadataCollectionId(entitySummary.getMetadataCollectionId());
-
-        assetDescription.setCreatedBy(entitySummary.getCreatedBy());
-        assetDescription.setCreateTime(entitySummary.getCreateTime());
-        assetDescription.setUpdatedBy(entitySummary.getUpdatedBy());
-        assetDescription.setUpdateTime(entitySummary.getUpdateTime());
-        assetDescription.setVersion(entitySummary.getVersion());
-
-        assetDescription.setTypeDefName(entitySummary.getType().getTypeDefName());
-        assetDescription.setTypeDefDescription(entitySummary.getType().getTypeDefDescription());
-        assetDescription.setUrl(entitySummary.getInstanceURL());
-        assetDescription.setStatus(getStatus(entitySummary.getStatus().getName()));
-
-        if (entitySummary.getClassifications() != null && !entitySummary.getClassifications().isEmpty()) {
-            assetDescription.setClassifications(toClassifications(entitySummary.getClassifications()));
-        }
-
-        return assetDescription;
-    }
-
-    public List<Relationship> toRelationships(List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship> relationshipsEntity) {
-        if (relationshipsEntity == null) {
-            return new ArrayList<>();
-        }
-
-        return relationshipsEntity.stream()
-                .map(this::toRelationship)
-                .collect(Collectors.toCollection(() -> new ArrayList<>(relationshipsEntity.size())));
-    }
 
     public Relationship toRelationship(
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {

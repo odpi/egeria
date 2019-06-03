@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Virtualizer
-Virtualizer communicates with Information View OMAS and virtualization tool which is currently Gaian.
+Virtualizer communicates with Information View OMAS and virtualization tool which is currently Gaian. The design of the application allows 
 
 Virtualizer has three main functions:
 1. listen to Information View OMAS Out topic(specified by property information-view-out-topic) and retrieve InformationViewEvent event (json structure);
@@ -43,13 +43,30 @@ to the following address
 	"class": "VirtualizationConfig",
 	"virtualizationProvider": "{{connector-class-name}}",
 	"ivInTopicName": "{{iv-in-topic-name}}",
-	"ivOutTopicName": "{{iv-out-topic-name}}"
+	"ivOutTopicName": "{{iv-out-topic-name}}",
+	 "virtualizationSolutionConfig": {
+            "frontendName": "",
+            "serverAddress": "",
+            "databaseName": "",
+            "schema": "",
+            "username": "",
+            "password": "",
+            "timeoutInSecond": 5,
+            "create": true,
+            "derbyDriver": "org.apache.derby.jdbc.ClientDriver",
+            "gdbNode": "GDB_NODE",
+            "logicTableName": "LTNAME",
+            "logicTableDefinition": "LTDEF",
+            "getLogicTables": "call listlts()"
+        }
 }
 ````
 to the following address
 ```
 {{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/virtualization-service/configuration
 ```
+
+The object *virtualizationSolutionConfig* is the information required to implement the specific connector to the virtualization solutions. The keys should be modified based on the information needed by the connector.
 
 - Start the instance of the OMAG Server
 

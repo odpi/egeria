@@ -6,13 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
