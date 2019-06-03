@@ -15,9 +15,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Server Chassis for Spring</name>
+    <name>OMAG Server Platform Chassis for Spring</name>
     <description>
-        Provides the spring-based server chassis.
+        Provides the spring-based OMAG server platform chassis.
     </description>
 
     <artifactId>server-chassis-spring</artifactId>
@@ -69,6 +69,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-services-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
