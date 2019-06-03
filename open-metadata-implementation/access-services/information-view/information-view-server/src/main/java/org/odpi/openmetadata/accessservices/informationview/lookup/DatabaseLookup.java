@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class DatabaseLookup extends EntityLookup<DatabaseSource> {
@@ -39,7 +40,7 @@ public class DatabaseLookup extends EntityLookup<DatabaseSource> {
         List<String> allConnectionGuids = getRelatedEntities(parentEntity.getGUID(), Constants.CONNECTION_TO_ENDPOINT);
         List<EntityDetail> allLinkedDatabasesList = getRelatedEntities(allConnectionGuids, Constants.CONNECTION_TO_ASSET);
 
-        EntityDetail databaseEntity = lookupEntity(Constants.DATA_STORE, source, allLinkedDatabasesList);
+        EntityDetail databaseEntity = lookupEntity(Arrays.asList(Constants.DATABASE), source, allLinkedDatabasesList);
         if(log.isDebugEnabled()) {
             log.debug("Database found [{}]", databaseEntity);
         }

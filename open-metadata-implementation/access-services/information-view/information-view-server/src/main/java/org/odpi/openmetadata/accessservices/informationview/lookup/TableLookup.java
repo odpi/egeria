@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TableLookup extends EntityLookup<TableSource> {
@@ -40,7 +41,7 @@ public class TableLookup extends EntityLookup<TableSource> {
         List<String> allSchemaTypeGuids = getRelatedEntities(schemaDatabase.getGUID(), Constants.ASSET_SCHEMA_TYPE);
         List<EntityDetail> allLinkedTablesList = getRelatedEntities(allSchemaTypeGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
 
-        EntityDetail tableEntity = lookupEntity(Constants.RELATIONAL_TABLE, source, allLinkedTablesList);
+        EntityDetail tableEntity = lookupEntity(Arrays.asList(Constants.RELATIONAL_TABLE), source, allLinkedTablesList);
         if(log.isDebugEnabled()) {
             log.debug("Table found [{}]", tableEntity);
         }

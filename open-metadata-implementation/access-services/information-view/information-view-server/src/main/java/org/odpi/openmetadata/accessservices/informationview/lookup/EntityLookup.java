@@ -35,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class EntityLookup<T extends Source> {
 
@@ -59,11 +58,15 @@ public abstract class EntityLookup<T extends Source> {
         this.parentChain = parentChain;
     }
 
-    public EntityDetail lookupEntity(String typeName, T source, List<EntityDetail> list)  {
+    public EntityDetail lookupEntity(List<String> typeNames, T source, List<EntityDetail> list)  {
         List<EntityDetail> filteredList =
-                list.stream().filter(e -> enterpriseConnector.getRepositoryHelper().isTypeOf("lookupEntity", e.getType().getTypeDefName(), typeName)).collect(Collectors.toList());
+                list.stream().filter(e -> isTypeOf(typeNames, e)).collect(Collectors.toList());
         InstanceProperties matchProperties = getMatchingProperties(source);
         return matchExactlyToUniqueEntity(filteredList, matchProperties);
+    }
+
+    private boolean isTypeOf(List<String> typeNames, EntityDetail e) {
+        return typeNames.stream().anyMatch(type -> enterpriseConnector.getRepositoryHelper().isTypeOf("lookupEntity", e.getType().getTypeDefName(), type));
     }
 
     protected abstract InstanceProperties getMatchingProperties(T source);

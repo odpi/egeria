@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class DatabaseSchemaLookup extends EntityLookup<TableSource> {
             return null;
         List<String> allSchemaGuids = getRelatedEntities(database.getGUID(), Constants.DATA_CONTENT_FOR_DATASET);
         List<EntityDetail> allLinkedSchemaList = allSchemaGuids.stream().map(guid -> getEntity(guid)).collect(Collectors.toList());
-        EntityDetail schemaEntity = lookupEntity(Constants.DEPLOYED_DATABASE_SCHEMA, source, allLinkedSchemaList);
+        EntityDetail schemaEntity = lookupEntity(Arrays.asList(Constants.DEPLOYED_DATABASE_SCHEMA, Constants.INFORMATION_VIEW), source, allLinkedSchemaList);
         if(log.isDebugEnabled()) {
             log.debug("DatabaseSchema found [{}]", schemaEntity);
         }
