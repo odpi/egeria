@@ -6,7 +6,8 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,20 +17,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AnnotationListResponse is the response structure used on OMAS REST API calls that return a
- * list of Annotations objects as a response.
+ * DiscoveryAnalysisReportListResponse is the response structure used on OMAS REST API calls that return a
+ * list of DiscoveryAnalysisReport properties objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AnnotationListResponse extends ODFOMASAPIResponse
+public class DiscoveryAnalysisReportListResponse extends ODFOMASAPIResponse
 {
-    private List<Annotation> annotations = null;
+    private List<DiscoveryAnalysisReport> discoveryAnalysisReports = null;
 
     /**
      * Default constructor
      */
-    public AnnotationListResponse()
+    public DiscoveryAnalysisReportListResponse()
     {
         super();
     }
@@ -40,13 +41,13 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
      *
      * @param template object to copy
      */
-    public AnnotationListResponse(AnnotationListResponse template)
+    public DiscoveryAnalysisReportListResponse(DiscoveryAnalysisReportListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.annotations = template.getAnnotations();
+            this.discoveryAnalysisReports = template.getDiscoveryAnalysisReports();
         }
     }
 
@@ -56,15 +57,15 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
      *
      * @return list of properties objects
      */
-    public List<Annotation> getAnnotations()
+    public List<DiscoveryAnalysisReport> getDiscoveryAnalysisReports()
     {
-        if (annotations == null)
+        if (discoveryAnalysisReports == null)
         {
             return null;
         }
         else
         {
-            return annotations;
+            return discoveryAnalysisReports;
         }
     }
 
@@ -72,11 +73,11 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
     /**
      * Set up the properties objects.
      *
-     * @param annotations  list of properties objects
+     * @param discoveryAnalysisReports  list of properties objects
      */
-    public void setAnnotations(List<Annotation> annotations)
+    public void setDiscoveryAnalysisReports(List<DiscoveryAnalysisReport> discoveryAnalysisReports)
     {
-        this.annotations = annotations;
+        this.discoveryAnalysisReports = discoveryAnalysisReports;
     }
 
 
@@ -88,8 +89,8 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
     @Override
     public String toString()
     {
-        return "AnnotationListResponse{" +
-                "annotations=" + annotations +
+        return "DiscoveryAnalysisReportListResponse{" +
+                "discoveryAnalysisReports=" + discoveryAnalysisReports +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -121,8 +122,8 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
         {
             return false;
         }
-        AnnotationListResponse that = (AnnotationListResponse) objectToCompare;
-        return Objects.equals(getAnnotations(), that.getAnnotations());
+        DiscoveryAnalysisReportListResponse that = (DiscoveryAnalysisReportListResponse) objectToCompare;
+        return Objects.equals(getDiscoveryAnalysisReports(), that.getDiscoveryAnalysisReports());
     }
 
     
@@ -134,6 +135,6 @@ public class AnnotationListResponse extends ODFOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAnnotations());
+        return Objects.hash(super.hashCode(), getDiscoveryAnalysisReports());
     }
 }
