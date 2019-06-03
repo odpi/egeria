@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAnno
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAssetStoreClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -53,7 +53,7 @@ public class DiscoveryEngineHandler
                                   String                       serverName,
                                   String                       serverUserId,
                                   DiscoveryConfigurationClient configurationClient,
-                                  DiscoveryRESTClient          restClient,
+                                  ODFRESTClient                restClient,
                                   OMRSAuditLog                 auditLog,
                                   int                          maxPageSize) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
