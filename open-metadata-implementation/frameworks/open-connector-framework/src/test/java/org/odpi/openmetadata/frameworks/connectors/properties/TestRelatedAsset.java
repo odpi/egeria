@@ -25,6 +25,7 @@ public class TestRelatedAsset
     private Map<String, String>    additionalProperties   = new HashMap<>();
     private Map<String, Object>    assetProperties        = new HashMap<>();
     private RelatedAssetProperties relatedAssetProperties = null;
+    private String                 relationshipName       = "TestRelationship";
 
 
     /**
@@ -59,7 +60,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relatedAssetProperties);
+        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -86,7 +87,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relatedAssetProperties);
+        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -113,7 +114,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relatedAssetProperties);
+        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -133,6 +134,7 @@ public class TestRelatedAsset
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getRelationshipTypeName().equals(relationshipName));
 
         try
         {
@@ -186,28 +188,28 @@ public class TestRelatedAsset
         AssetDescriptor parentAsset;
 
         nullBean = null;
-        nullObject = new RelatedAsset(nullBean, null);
+        nullObject = new RelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new RelatedAsset(nullBean, null);
+        nullObject = new RelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new RelatedAsset(nullBean, null);
+        nullObject = new RelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new RelatedAsset(parentAsset, nullBean, null);
+        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new RelatedAsset(parentAsset, nullBean, null);
+        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new RelatedAsset(parentAsset, nullBean, null);
+        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
@@ -227,7 +229,7 @@ public class TestRelatedAsset
 
         Asset testBean = new Asset();
 
-        RelatedAsset testTemplate = new RelatedAsset((Asset)null, null);
+        RelatedAsset testTemplate = new RelatedAsset((Asset)null, null, null);
         RelatedAsset testObject;
 
         try
@@ -240,7 +242,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(testBean, relatedAssetProperties);
+        testTemplate = new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
 
         try
         {
@@ -252,7 +254,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(parentAsset, testBean, relatedAssetProperties);
+        testTemplate = new RelatedAsset(parentAsset, testBean, relationshipName, relatedAssetProperties);
 
         try
         {
@@ -288,7 +290,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(parentAsset, testBean, null);
+        testTemplate = new RelatedAsset(parentAsset, testBean, null,null);
         testObject = new RelatedAsset(parentAsset, testTemplate);
 
         try

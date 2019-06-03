@@ -15,6 +15,7 @@ import java.util.Objects;
 public class RelatedAsset extends AssetReferenceable
 {
     protected Asset                  assetBean;
+    protected String                 relationshipTypeName;
     protected RelatedAssetProperties relatedAssetProperties;
 
 
@@ -22,9 +23,11 @@ public class RelatedAsset extends AssetReferenceable
      * Bean constructor
      *
      * @param assetBean bean containing basic properties
+     * @param relationshipTypeName name of the relationship between the anchor asset and th related asset
      * @param relatedAssetProperties client for retrieving properties from the server
      */
     public RelatedAsset(Asset                  assetBean,
+                        String                 relationshipTypeName,
                         RelatedAssetProperties relatedAssetProperties)
     {
         super(assetBean);
@@ -38,6 +41,7 @@ public class RelatedAsset extends AssetReferenceable
             this.assetBean = new Asset(assetBean);
         }
 
+        this.relationshipTypeName = relationshipTypeName;
         this.relatedAssetProperties = relatedAssetProperties;
     }
 
@@ -47,10 +51,12 @@ public class RelatedAsset extends AssetReferenceable
      *
      * @param parentAsset descriptor for parent asset
      * @param assetBean bean containing basic properties
+     * @param relationshipTypeName name of the relationship between the anchor asset and th related asset
      * @param relatedAssetProperties client for retrieving properties from the server
      */
     public RelatedAsset(AssetDescriptor        parentAsset,
                         Asset                  assetBean,
+                        String                 relationshipTypeName,
                         RelatedAssetProperties relatedAssetProperties)
     {
         super(assetBean);
@@ -64,6 +70,7 @@ public class RelatedAsset extends AssetReferenceable
             this.assetBean = new Asset(assetBean);
         }
 
+        this.relationshipTypeName = relationshipTypeName;
         this.relatedAssetProperties = relatedAssetProperties;
     }
 
@@ -81,11 +88,13 @@ public class RelatedAsset extends AssetReferenceable
         {
             this.assetBean = new Asset();
             this.relatedAssetProperties = null;
+            this.relationshipTypeName = null;
         }
         else
         {
             this.assetBean = templateRelatedAsset.getAssetBean();
             this.relatedAssetProperties = templateRelatedAsset.relatedAssetProperties;
+            this.relationshipTypeName = templateRelatedAsset.getRelationshipTypeName();
         }
     }
 
@@ -134,6 +143,17 @@ public class RelatedAsset extends AssetReferenceable
      * @return String owner
      */
     public String getOwner() { return assetBean.getOwner(); }
+
+
+    /**
+     * Return the name of the relationship between the anchor asset and th related asset
+     *
+     * @return relationship type name
+     */
+    public String getRelationshipTypeName()
+    {
+        return relationshipTypeName;
+    }
 
 
     /**
