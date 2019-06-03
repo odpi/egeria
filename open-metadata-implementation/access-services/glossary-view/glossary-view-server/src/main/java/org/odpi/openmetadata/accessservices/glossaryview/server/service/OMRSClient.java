@@ -5,12 +5,24 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSExceptionWrapper;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSRuntimeExceptionWrapper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,7 +46,6 @@ public class OMRSClient {
      */
     protected Function<Relationship, String> entityProxyTwoGUIDExtractor = relationship -> relationship.getEntityTwoProxy().getGUID();
     protected Function<Relationship, String> entityProxyOneGUIDExtractor = relationship -> relationship.getEntityOneProxy().getGUID();
-
 
     /**
      * Extract an entity detail for the given GUID
@@ -94,7 +105,7 @@ public class OMRSClient {
     }
 
     /**
-     * Extract the relationships of given entity and relationship type
+     * Extract relationships of given type and entity
      *
      * @param serverName instance to call
      * @param userId calling user
@@ -105,7 +116,6 @@ public class OMRSClient {
      *         empty list if not found or if {@code serverName} not registered in instance map
      *
      * @throws OMRSExceptionWrapper if any exception is thrown from repository level
-     *
      */
     protected List<Relationship> getRelationships(String userId, String serverName, String entityGUID, String relationshipTypeGUID)
             throws OMRSExceptionWrapper{
@@ -125,6 +135,40 @@ public class OMRSClient {
         }
 
         return relationships;
+    }
+
+    /**
+     * Extract entities related to provided guid
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param entityGUID entity to extract
+     * @param relationshipTypeGUIDs type of relationships to extract
+     *
+     * @return relationships if found
+     *         empty list if not found or if {@code serverName} not registered in instance map
+     *
+     * @throws OMRSExceptionWrapper if any exception is thrown from repository level
+     */
+    protected List<EntityDetail> getNeighbourhood(String userId, String serverName, String entityGUID, List<String> relationshipTypeGUIDs)
+            throws OMRSExceptionWrapper{
+        if( !containsInstanceForJvm(serverName) ){
+            return Collections.emptyList();
+        }
+
+        List<EntityDetail> entityDetails;
+        try {
+            InstanceGraph graph = getInstanceForJVM(serverName).getMetadataCollection()
+                    .getEntityNeighborhood(userId, entityGUID, null, relationshipTypeGUIDs, null,
+                            null, null, 0);
+            entityDetails = graph.getEntities();
+        }catch(InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException |
+                PropertyErrorException | FunctionNotSupportedException | UserNotAuthorizedException e){
+            throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+                    e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
+        }
+
+        return entityDetails;
     }
 
     /**
@@ -175,9 +219,9 @@ public class OMRSClient {
         try {
             TypeDef glossaryTypeDef = getInstanceForJVM(serverName).getMetadataCollection().getTypeDefByName(userId, typeDefName);
             entities = getInstanceForJVM(serverName).getMetadataCollection()
-                    .findEntitiesByPropertyValue(userId, glossaryTypeDef.getGUID(), "*", 0,
-                            null, null, null, null,
-                            SequencingOrder.ANY, 0);
+                    .findEntitiesByProperty(userId, glossaryTypeDef.getGUID(), new InstanceProperties(), MatchCriteria.ALL,
+                            0, null, null, null,
+                            null, SequencingOrder.LAST_UPDATE_RECENT, 0);
         }catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | PropertyErrorException
                 | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException
                 | TypeDefNotKnownException e){
