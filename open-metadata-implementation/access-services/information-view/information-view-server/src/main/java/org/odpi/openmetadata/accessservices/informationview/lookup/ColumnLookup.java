@@ -38,7 +38,7 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
 
         List<String> relatedEntitiesGuids = getRelatedEntities(tableEntity.getGUID(), Constants.SCHEMA_ATTRIBUTE_TYPE);
         List<EntityDetail> allLinkedColumnsList = getRelatedEntities(relatedEntitiesGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
-        EntityDetail columnEntity = lookupEntity(source, allLinkedColumnsList);
+        EntityDetail columnEntity = lookupEntity(Constants.RELATIONAL_COLUMN, source, allLinkedColumnsList);
         if(log.isDebugEnabled()) {
             log.debug("Column found [{}]", columnEntity);
         }

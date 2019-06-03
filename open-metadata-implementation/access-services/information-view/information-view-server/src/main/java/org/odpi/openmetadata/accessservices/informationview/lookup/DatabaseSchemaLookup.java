@@ -38,7 +38,7 @@ public class DatabaseSchemaLookup extends EntityLookup<TableSource> {
             return null;
         List<String> allSchemaGuids = getRelatedEntities(database.getGUID(), Constants.DATA_CONTENT_FOR_DATASET);
         List<EntityDetail> allLinkedSchemaList = allSchemaGuids.stream().map(guid -> getEntity(guid)).collect(Collectors.toList());
-        EntityDetail schemaEntity = lookupEntity(source, allLinkedSchemaList);
+        EntityDetail schemaEntity = lookupEntity(Constants.DEPLOYED_DATABASE_SCHEMA, source, allLinkedSchemaList);
         if(log.isDebugEnabled()) {
             log.debug("DatabaseSchema found [{}]", schemaEntity);
         }
