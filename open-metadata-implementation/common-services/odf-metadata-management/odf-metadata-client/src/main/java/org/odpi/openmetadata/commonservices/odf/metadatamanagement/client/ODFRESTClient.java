@@ -9,9 +9,9 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 
 
 /**
- * DiscoveryRESTClient is responsible for issuing calls to the OMAS REST APIs.
+ * ODFRESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-public class DiscoveryRESTClient extends OCFRESTClient
+public class ODFRESTClient extends OCFRESTClient
 {
     /**
      * Constructor for no authentication.
@@ -21,8 +21,8 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryRESTClient(String serverName,
-                               String serverPlatformURLRoot) throws InvalidParameterException
+    public ODFRESTClient(String serverName,
+                         String serverPlatformURLRoot) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot);
     }
@@ -38,10 +38,10 @@ public class DiscoveryRESTClient extends OCFRESTClient
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public DiscoveryRESTClient(String serverName,
-                               String serverPlatformURLRoot,
-                               String userId,
-                               String password) throws InvalidParameterException
+    public ODFRESTClient(String serverName,
+                         String serverPlatformURLRoot,
+                         String userId,
+                         String password) throws InvalidParameterException
     {
         super(serverName, serverPlatformURLRoot, userId, password);
     }
@@ -172,6 +172,44 @@ public class DiscoveryRESTClient extends OCFRESTClient
                                                                                    Object... params) throws PropertyServerException
     {
         return this.callPostRESTCall(methodName, DiscoveryAnalysisReportResponse.class, urlTemplate, requestBody, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a DiscoveryAnalysisReportListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListGetRESTCall(String    methodName,
+                                                                                          String    urlTemplate,
+                                                                                          Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, DiscoveryAnalysisReportListResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a POST REST call that returns a DiscoveryAnalysisReportListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the REST call - contains most of the parameters
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return DiscoveryAnalysisReportResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    public DiscoveryAnalysisReportListResponse callDiscoveryAnalysisReportListPostRESTCall(String    methodName,
+                                                                                   String    urlTemplate,
+                                                                                   Object    requestBody,
+                                                                                   Object... params) throws PropertyServerException
+    {
+        return this.callPostRESTCall(methodName, DiscoveryAnalysisReportListResponse.class, urlTemplate, requestBody, params);
     }
 
 
