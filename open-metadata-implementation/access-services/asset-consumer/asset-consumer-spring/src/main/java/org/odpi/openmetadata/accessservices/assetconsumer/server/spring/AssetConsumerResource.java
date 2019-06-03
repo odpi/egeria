@@ -257,30 +257,6 @@ public class AssetConsumerResource
 
 
     /**
-     * Returns the unique identifier for the asset connected to the connection identified by the supplied guid.
-     *
-     * @param serverName name of the server instances for this request.
-     * @param userId the userId of the requesting user.
-     * @param connectionGUID  uniqueId for the connection.
-     *
-     * @return unique identifier of asset or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
-     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
-     * NoConnectedAssetException there is no asset associated with this connection or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection/{connectionGUID}")
-
-    public GUIDResponse getAssetForConnectionGUID(@PathVariable String   serverName,
-                                                  @PathVariable String   userId,
-                                                  @PathVariable String   connectionGUID)
-    {
-        return restAPI.getAssetForConnection(serverName, userId, connectionGUID);
-    }
-
-
-    /**
      * Returns the unique identifier for the asset connected to the connection identified by the supplied name.
      *
      * @param serverName name of the server instances for this request.
@@ -300,7 +276,7 @@ public class AssetConsumerResource
                                                   @PathVariable String   userId,
                                                   @PathVariable String   connectionName)
     {
-        return restAPI.getAssetForConnection(serverName, userId, connectionName);
+        return restAPI.getAssetForConnectionName(serverName, userId, connectionName);
     }
 
 
@@ -331,29 +307,6 @@ public class AssetConsumerResource
 
 
     /**
-     * Returns the connection object corresponding to the supplied connection GUID.
-     *
-     * @param serverName name of the server instances for this request.
-     * @param userId userId of user making request.
-     * @param guid  the unique id for the connection within the property server.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/connections/{guid}")
-
-    public ConnectionResponse getConnectionByGUID(@PathVariable String     serverName,
-                                                  @PathVariable String     userId,
-                                                  @PathVariable String     guid)
-    {
-        return restAPI.getConnectionByGUID(serverName, userId, guid);
-    }
-
-
-    /**
      * Returns the connection object corresponding to the supplied connection name.
      *
      * @param serverName name of the server instances for this request
@@ -374,29 +327,6 @@ public class AssetConsumerResource
                                                   @PathVariable String   name)
     {
         return restAPI.getConnectionByName(serverName, userId, name);
-    }
-
-
-    /**
-     * Returns the connection corresponding to the supplied asset GUID.
-     *
-     * @param serverName  name of the server instances for this request
-     * @param userId      userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
-
-    public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
-                                                    @PathVariable String   userId,
-                                                    @PathVariable String   assetGUID)
-    {
-        return restAPI.getConnectionForAsset(serverName, userId, assetGUID);
     }
 
 
