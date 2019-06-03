@@ -30,6 +30,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>odf-metadata-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
 
     </dependencies>
 
