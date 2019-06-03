@@ -2,7 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.rest;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Map;
 import java.util.Objects;
@@ -18,11 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "class")
-@JsonSubTypes(
-        {
-//                @JsonSubTypes.Type(value = GUIDResponse.class, name = "GUIDResponse"),
-                @JsonSubTypes.Type(value = GlossaryViewEntityDetailResponse.class, name = "GlossaryViewEntityDetailResponse"),
-                @JsonSubTypes.Type(value = GlossaryViewEntityDetail.class, name = "GlossaryViewEntityDetail")
+@JsonSubTypes({
+                @JsonSubTypes.Type(value = GlossaryViewEntityDetailResponse.class, name = "GlossaryViewEntityDetailResponse")
         })
 public abstract class GlossaryViewOMASAPIResponse implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
