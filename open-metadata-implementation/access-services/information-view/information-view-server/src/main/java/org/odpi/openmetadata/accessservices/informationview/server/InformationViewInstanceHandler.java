@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.context.DataViewContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -75,7 +77,7 @@ class InformationViewInstanceHandler
         InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getDatabaseContextHandler();
+            return instance.getContextBuilders().getDatabaseContextHandler();
         } else {
             final String methodName = "getDatabaseContextHandler";
             throwError(serverName, methodName);
@@ -100,6 +102,33 @@ class InformationViewInstanceHandler
             return null;
         }
     }
+
+
+    ReportContextBuilder getReportContextBuilder(String serverName){
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getContextBuilders().getReportContextBuilder();
+        } else {
+            final String methodName = "getReportContextBuilder";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+
+
+        DataViewContextBuilder getDataViewContextBuilder(String serverName){
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getContextBuilders().getDataViewContextBuilder();
+        } else {
+            final String methodName = "getReportContextBuilder";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+
 
     private void throwError(String serverName, String methodName) throws PropertyServerException {
         InformationViewErrorCode errorCode = InformationViewErrorCode.SERVICE_NOT_INITIALIZED;

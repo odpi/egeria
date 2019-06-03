@@ -100,7 +100,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
     public void testReportBasicPropertiesUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
-        request.setAuthor("test_author");
+        request.getReport().setAuthor("test_author");
         reportHandler.submitReportModel(request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
@@ -111,7 +111,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
     public void testReportSectionUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
-        request.getReportElements().get(0).setName("SectionA");
+        request.getReport().getReportElements().get(0).setName("SectionA");
         reportHandler.submitReportModel(request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
@@ -134,8 +134,8 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         ReportColumn column = new ReportColumn();
         column.setName("test_column");
-        column.setSources(((ReportColumn)((ReportSection)((ReportSection)request.getReportElements().get(0)).getElements().get(0)).getElements().get(0)).getSources());
-        ((ReportSection)request.getReportElements().get(0)).getElements().add(column);
+        column.setSources(((ReportColumn)((ReportSection)((ReportSection)request.getReport().getReportElements().get(0)).getElements().get(0)).getElements().get(0)).getSources());
+        ((ReportSection)request.getReport().getReportElements().get(0)).getElements().add(column);
         reportHandler.submitReportModel(request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
