@@ -5,7 +5,7 @@ package org.odpi.openmetadata.discoveryserver.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
@@ -27,10 +27,10 @@ import java.util.Map;
  */
 public class DiscoveryServerClient extends DiscoveryEngine
 {
-    private String              serverName;               /* Initialized in constructor */
-    private String              serverPlatformRootURL;    /* Initialized in constructor */
-    private String              discoveryEngineGUID;      /* Initialized in constructor */
-    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
+    private String        serverName;               /* Initialized in constructor */
+    private String        serverPlatformRootURL;    /* Initialized in constructor */
+    private String        discoveryEngineGUID;      /* Initialized in constructor */
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -52,7 +52,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
         this.serverName = serverName;
         this.discoveryEngineGUID = discoveryEngineGUID;
 
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -76,7 +76,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
         this.serverName = serverName;
         this.discoveryEngineGUID = discoveryEngineGUID;
 
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -233,8 +233,8 @@ public class DiscoveryServerClient extends DiscoveryEngine
      */
     public DiscoveryAnalysisReport getDiscoveryReport(String   userId,
                                                       String   discoveryRequestGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     DiscoveryEngineException
+                                                                                            UserNotAuthorizedException,
+                                                                                            DiscoveryEngineException
     {
         final String   methodName = "getDiscoveryReport";
         final String   reportGUIDParameterName = "discoveryRequestGUID";
