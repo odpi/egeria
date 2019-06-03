@@ -54,7 +54,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId the userId of the requesting user.
-     * @param connectionGUID  uniqueId for the connection.
+     * @param connectionName  unique name for the connection.
      *
      * @return unique identifier of asset or
      * InvalidParameterException - one of the parameters is null or invalid or
@@ -63,11 +63,11 @@ public class AssetConsumerRESTServices
      * NoConnectedAssetException - there is no asset associated with this connection or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public GUIDResponse getAssetForConnection(String   serverName,
-                                              String   userId,
-                                              String   connectionGUID)
+    public GUIDResponse getAssetForConnectionName(String   serverName,
+                                                  String   userId,
+                                                  String   connectionName)
     {
-        final String        methodName = "getAssetForConnection";
+        final String        methodName = "getAssetForConnectionName";
 
         log.debug("Calling method: " + methodName);
 
@@ -80,7 +80,7 @@ public class AssetConsumerRESTServices
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.getAssetForConnection(userId, connectionGUID));
+            response.setGUID(handler.getAssetForConnection(userId, connectionName));
         }
         catch (InvalidParameterException error)
         {
@@ -105,58 +105,6 @@ public class AssetConsumerRESTServices
     }
 
 
-    /**
-     * Returns the connection corresponding to the supplied asset GUID.
-     *
-     * @param serverName  name of the server instances for this request
-     * @param userId      userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public ConnectionResponse getConnectionForAsset(String   serverName,
-                                                    String   userId,
-                                                    String   assetGUID)
-    {
-        final String        methodName = "getConnectionForAsset";
-
-        log.debug("Calling method: " + methodName);
-
-        ConnectionResponse  response = new ConnectionResponse();
-        OMRSAuditLog        auditLog = null;
-
-        try
-        {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
 
 
     /**
@@ -260,60 +208,6 @@ public class AssetConsumerRESTServices
             restExceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException error)
-        {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-        catch (Throwable error)
-        {
-            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Returns the connection object corresponding to the supplied connection GUID.
-     *
-     * @param serverName name of the server instances for this request
-     * @param userId userId of user making request.
-     * @param guid  the unique id for the connection within the property server.
-     *
-     * @return connection object or
-     * InvalidParameterException - one of the parameters is null or invalid or
-     * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the metadata repository or
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public ConnectionResponse getConnectionByGUID(String     serverName,
-                                                  String     userId,
-                                                  String     guid)
-    {
-        final String        methodName = "getConnectionByGUID";
-
-        log.debug("Calling method: " + methodName);
-
-        ConnectionResponse  response = new ConnectionResponse();
-        OMRSAuditLog        auditLog = null;
-
-        try
-        {
-            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(connectionHandler.getConnection(userId, guid));
-        }
-        catch (InvalidParameterException  error)
-        {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        }
-        catch (PropertyServerException  error)
         {
             restExceptionHandler.capturePropertyServerException(response, error);
         }
