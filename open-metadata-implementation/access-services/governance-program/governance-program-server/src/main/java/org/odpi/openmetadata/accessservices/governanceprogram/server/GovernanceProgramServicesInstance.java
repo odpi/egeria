@@ -38,7 +38,7 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
     public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                              OMRSAuditLog auditLog) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName(),
+        super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               auditLog);
 

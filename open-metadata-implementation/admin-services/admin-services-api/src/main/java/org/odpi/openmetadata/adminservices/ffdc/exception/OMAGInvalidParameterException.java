@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+
 /**
  * OMAGInvalidParameterException is used when invalid parameters are passed on an OMAG call.
  */
@@ -37,5 +39,20 @@ public class OMAGInvalidParameterException extends OMAGCheckedExceptionBase
     public OMAGInvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+    /**
+     * This is the constructor used for creating a OMAGInvalidParameterException that resulted from a previous error.
+     *
+     * @param template previous error
+     * */
+    public OMAGInvalidParameterException(InvalidParameterException template)
+    {
+        super(template.getReportedHTTPCode(),
+              template.getReportingClassName(),
+              template.getReportingActionDescription(),
+              template.getErrorMessage(),
+              template.getReportedSystemAction(),
+              template.getReportedUserAction());
     }
 }

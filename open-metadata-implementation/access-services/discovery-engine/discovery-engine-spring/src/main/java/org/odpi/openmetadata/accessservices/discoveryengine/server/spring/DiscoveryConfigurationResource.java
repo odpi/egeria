@@ -2,12 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryConfigurationServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -159,7 +159,7 @@ public class DiscoveryConfigurationResource
     public  VoidResponse    deleteDiscoveryEngine(@PathVariable String             serverName,
                                                   @PathVariable String             userId,
                                                   @PathVariable String             guid,
-                                                  @RequestBody  DeleteRequestBody  requestBody)
+                                                  @RequestBody  DeleteRequestBody requestBody)
     {
         return restAPI.deleteDiscoveryEngine(serverName, userId, guid, requestBody);
     }

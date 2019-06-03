@@ -31,7 +31,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                       List<String>            supportedZones,
                                       OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName(), repositoryConnector, auditLog);
+        super(myDescription.getAccessServiceName() + " OMAS", repositoryConnector, auditLog);
 
         super.supportedZones = supportedZones;
 

@@ -26,7 +26,7 @@ public class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
                                     ConnectedAssetUniverse parentAsset,
                                     int                    maxCacheSize,
                                     ComplexSchemaType      schemaBean,
-                                    RESTClient             restClient)
+                                    OCFRESTClient restClient)
     {
         super(parentAsset);
 

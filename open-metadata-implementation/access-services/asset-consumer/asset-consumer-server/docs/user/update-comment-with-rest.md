@@ -6,7 +6,7 @@
 
 final String   serverURLRoot = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/update
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMASServerURL(serverPlatformRootURL, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
@@ -15,7 +15,7 @@ final String   serverURLRoot = "/servers/{0}/open-metadata/access-services/asset
         requestBody.setCommentText(commentText);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,

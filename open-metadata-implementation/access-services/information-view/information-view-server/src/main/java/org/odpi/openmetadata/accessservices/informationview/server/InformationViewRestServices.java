@@ -3,21 +3,26 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.context.DataViewContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.events.DataView;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
+import org.odpi.openmetadata.accessservices.informationview.events.DeployedReport;
 import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.responses.DataViewResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.DatabaseListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.RegistrationResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.ReportResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableColumnsResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableContextResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
@@ -41,7 +46,7 @@ public class InformationViewRestServices {
      *
      * @param serverName
      * @param userId
-     * @param requestBody  - structure of the report
+     * @param requestBody  - metadata representation of the report
      * @return
      */
     public InformationViewOMASAPIResponse submitReport(String serverName,
@@ -196,6 +201,13 @@ public class InformationViewRestServices {
     }
 
 
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param requestBody payload containing the properties describing the external tool
+     * @return
+     */
      public InformationViewOMASAPIResponse lookupRegistration(String serverName,
                                                                 String userId,
                                                                 RegistrationRequestBody requestBody) {
@@ -212,7 +224,57 @@ public class InformationViewRestServices {
     }
 
 
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param reportId unique identifier in the owner tool of the report
+     * @return
+     */
+    public InformationViewOMASAPIResponse retrieveReport(String serverName,
+                                                         String userId,
+                                                         String reportId) {
 
+
+        try {
+            ReportContextBuilder reportContextBuilder = instanceHandler.getReportContextBuilder(serverName);
+            DeployedReport report = reportContextBuilder.retrieveReport(reportId);
+            ReportResponse reportResponse = new ReportResponse();
+            reportResponse.setReport(report);
+            return reportResponse;
+
+        }
+        catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
+            return handleErrorResponse(e);
+        }
+
+    }
+
+    /**
+     *
+     * @param serverName
+     * @param userId
+     * @param dataViewId external unique identifier of the data view
+     * @return
+     */
+    public InformationViewOMASAPIResponse retrieveDataView(String serverName,
+                                                           String userId,
+                                                           String dataViewId) {
+        try {
+            DataViewContextBuilder dataViewContextHandler = instanceHandler.getDataViewContextBuilder(serverName);
+            DataView report = dataViewContextHandler.retrieveDataView(dataViewId);
+            DataViewResponse reportResponse = new DataViewResponse();
+            reportResponse.setDataView(report);
+            return reportResponse;
+
+        }
+        catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
+            return handleErrorResponse(e);
+        }
+
+    }
 
     private InformationViewOMASAPIResponse handleErrorResponse(InformationViewUncheckedExceptionBase e) {
         VoidResponse  response = new VoidResponse();
