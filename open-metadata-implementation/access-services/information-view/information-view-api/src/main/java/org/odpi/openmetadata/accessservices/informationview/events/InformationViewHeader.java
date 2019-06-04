@@ -19,7 +19,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = InformationViewEvent.class, name = "InformationViewEvent"),
         @JsonSubTypes.Type(value = TableContextEvent.class, name = "TableContextEvent"),
         @JsonSubTypes.Type(value = RegistrationRequestBody.class, name = "RegistrationRequestBody"),
         @JsonSubTypes.Type(value = ReportRequestBody.class, name = "ReportRequestBody"),
