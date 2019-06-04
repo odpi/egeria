@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
@@ -82,6 +83,11 @@ public abstract class EntityLookup<T extends Source> {
         return typeNames.stream().anyMatch(type -> enterpriseConnector.getRepositoryHelper().isTypeOf("lookupEntity", e.getType().getTypeDefName(), type));
     }
 
+    /**
+     *
+     * @param source we want to match against
+     * @return the properties to use from source bean to match an entity against
+     */
     protected abstract InstanceProperties getMatchingProperties(T source);
 
 
@@ -104,7 +110,16 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
-    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws RuntimeException {
+    /**
+     * Returns the unique entity matching the properties
+     * @param entities to search in
+     * @param matchingProperties properties used to match
+     * @return the entity matching the properties
+     * @throws InformationViewUncheckedExceptionBase throws NoMatchingEntityException if no entity is found matching
+     * throws MultipleEntitiesMatching if multiple entities match
+     */
+    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws
+                                                                                                                             InformationViewUncheckedExceptionBase {
         if (entities != null && !entities.isEmpty()) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
             if (filteredEntities == null || filteredEntities.isEmpty()) {
@@ -128,6 +143,12 @@ public abstract class EntityLookup<T extends Source> {
         return null;
     }
 
+    /**
+     *
+     * @param entityDetail entity we want to match against
+     * @param matchingProperties properties used for matching
+     * @return true if properties match, false otherwise
+     */
     public boolean matchProperties(EntityDetail entityDetail, InstanceProperties matchingProperties) {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
@@ -141,6 +162,20 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
+    /**
+     * Return list of guids of entities linked through the mentioned relationship
+     * @param parentEntityGuid entity guid to search relationships for
+     * @param relationshipTypeName
+     * @return list of entities
+     * @throws UserNotAuthorizedException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) throws
                                                                                                     UserNotAuthorizedException,
                                                                                                     EntityNotKnownException,
