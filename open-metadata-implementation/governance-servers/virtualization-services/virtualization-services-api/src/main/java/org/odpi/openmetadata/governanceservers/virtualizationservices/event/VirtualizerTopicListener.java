@@ -115,7 +115,6 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
             if (databaseColumn.getBusinessTerm() != null) {
                 org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn column = new org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn();
                 if (viewType.equals(ConnectorUtils.BUSINESS_PREFIX)) {
-                    //column.setName(databaseColumn.getBusinessTerm().getName());
                     column.setName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
                 } else {
                     column.setName(databaseColumn.getName());
