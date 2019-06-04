@@ -58,6 +58,13 @@ public abstract class EntityLookup<T extends Source> {
         this.parentChain = parentChain;
     }
 
+    /**
+     * Returns the entity matching the criteria or null if none matches
+     * @param typeNames - list of types to use for lookup
+     * @param source - the source against which we want to match
+     * @param list of entities in which to search
+     * @return entity matching type and source
+     */
     public EntityDetail lookupEntity(List<String> typeNames, T source, List<EntityDetail> list)  {
         List<EntityDetail> filteredList =
                 list.stream().filter(e -> isTypeOf(typeNames, e)).collect(Collectors.toList());
@@ -65,6 +72,12 @@ public abstract class EntityLookup<T extends Source> {
         return matchExactlyToUniqueEntity(filteredList, matchProperties);
     }
 
+    /**
+     * Return true if the entity type is among the list of types passed as argument
+     * @param typeNames list of types to check
+     * @param e entity to check
+     * @return true if the type is the expected one
+     */
     private boolean isTypeOf(List<String> typeNames, EntityDetail e) {
         return typeNames.stream().anyMatch(type -> enterpriseConnector.getRepositoryHelper().isTypeOf("lookupEntity", e.getType().getTypeDefName(), type));
     }
@@ -72,6 +85,19 @@ public abstract class EntityLookup<T extends Source> {
     protected abstract InstanceProperties getMatchingProperties(T source);
 
 
+    /**
+     * Returns the entity matching the type and matchProperties
+     * @param matchProperties properties to use for querying the repositories
+     * @param typeDefName type name of the entities to search for
+     * @return the entity detail matching the type and properties
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE);
         return matchExactlyToUniqueEntity(existingEntities, matchProperties);
