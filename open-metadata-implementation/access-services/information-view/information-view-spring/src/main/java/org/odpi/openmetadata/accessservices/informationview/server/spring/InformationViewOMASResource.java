@@ -81,7 +81,7 @@ public class InformationViewOMASResource {
      * @param pageSize maximum number of results to return
      * @return list of tables belonging to the database
      */
-    @GetMapping(path = "database/{database}/tables")
+    @GetMapping(path = "databases/{database}/tables")
     public InformationViewOMASAPIResponse retrieveTablesForDatabase(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
                                                                     @PathVariable("database") String databaseGuid,
@@ -99,7 +99,7 @@ public class InformationViewOMASResource {
      * @param tableGuid   guid of the table entity
      * @return the full context of the table, including host, database, schema, table name and list of columns with business terms assigned
      */
-    @GetMapping(path = "table/{table}")
+    @GetMapping(path = "tables/{table}")
     public InformationViewOMASAPIResponse retrieveTableContext(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
                                                                @PathVariable("table") String tableGuid) {
@@ -116,7 +116,7 @@ public class InformationViewOMASResource {
      * @param pageSize maximum number of results to return
      * @return list of columns belonging to the table
      */
-    @GetMapping(path = "table/{table}/columns")
+    @GetMapping(path = "tables/{table}/columns")
     public InformationViewOMASAPIResponse retrieveTableColumns(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
                                                                @PathVariable("table") String tableGuid,
