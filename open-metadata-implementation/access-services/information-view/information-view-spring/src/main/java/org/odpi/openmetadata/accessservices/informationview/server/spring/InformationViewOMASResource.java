@@ -152,7 +152,7 @@ public class InformationViewOMASResource {
     public InformationViewOMASAPIResponse lookupExternalTool(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
                                                              @RequestBody RegistrationRequestBody requestBody) {
-        return restAPI.lookupRegistration(serverName, userId, requestBody);//TODO qualified name should be the value to look for
+        return restAPI.lookupRegistration(serverName, userId, requestBody);
     }
 
     /**
