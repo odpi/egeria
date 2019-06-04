@@ -5,8 +5,13 @@ package org.odpi.openmetadata.accessservices.glossaryview.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -17,6 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+@JsonSubTypes({
+                @JsonSubTypes.Type(value = Glossary.class, name = "Glossary"),
+                @JsonSubTypes.Type(value = Category.class, name = "Category"),
+                @JsonSubTypes.Type(value = Term.class, name = "Term")
+        })
 public class GlossaryViewEntityDetail{
 
     private String entityType;
@@ -36,7 +46,7 @@ public class GlossaryViewEntityDetail{
 
     public GlossaryViewEntityDetail(){}
 
-    public String getEntityType(){ return entityType; }
+    protected String getEntityType(){ return entityType; }
 
     public String getCreatedBy() {
         return createdBy;
@@ -74,7 +84,7 @@ public class GlossaryViewEntityDetail{
         return effectiveToTime;
     }
 
-    public Map<String, String> getProperties() {
+    protected Map<String, String> getProperties() {
         return properties;
     }
 
