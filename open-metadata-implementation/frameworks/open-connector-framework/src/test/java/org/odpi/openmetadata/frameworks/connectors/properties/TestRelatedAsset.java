@@ -16,7 +16,7 @@ import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Validate that the RelatedAsset can function as a facade for its bean.
+ * Validate that the AssetRelatedAsset can function as a facade for its bean.
  */
 public class TestRelatedAsset
 {
@@ -42,7 +42,7 @@ public class TestRelatedAsset
      *
      * @return filled in object
      */
-    private RelatedAsset getTestObject()
+    private AssetRelatedAsset getTestObject()
     {
         Asset testBean = new Asset();
 
@@ -60,7 +60,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -69,7 +69,7 @@ public class TestRelatedAsset
      *
      * @return filled in object
      */
-    private RelatedAsset getDifferentObject()
+    private AssetRelatedAsset getDifferentObject()
     {
         Asset testBean = new Asset();
 
@@ -87,7 +87,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -96,7 +96,7 @@ public class TestRelatedAsset
      *
      * @return filled in object
      */
-    private RelatedAsset getAnotherDifferentObject()
+    private AssetRelatedAsset getAnotherDifferentObject()
     {
         Asset testBean = new Asset();
 
@@ -114,7 +114,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
     }
 
 
@@ -123,7 +123,7 @@ public class TestRelatedAsset
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(RelatedAsset resultObject)
+    private void validateResultObject(AssetRelatedAsset resultObject)
     {
         assertTrue(resultObject.getType().getElementTypeBean().equals(type));
         assertTrue(resultObject.getGUID().equals("TestGUID"));
@@ -153,7 +153,7 @@ public class TestRelatedAsset
      *
      * @param nullObject object to test
      */
-    private void validateNullObject(RelatedAsset nullObject)
+    private void validateNullObject(AssetRelatedAsset nullObject)
     {
         assertTrue(nullObject.getType() == null);
         assertTrue(nullObject.getGUID() == null);
@@ -182,38 +182,38 @@ public class TestRelatedAsset
      */
     @Test public void testNullObject()
     {
-        Asset           nullBean;
-        RelatedAsset    nullObject;
-        RelatedAsset    nullTemplate;
-        AssetDescriptor parentAsset;
+        Asset             nullBean;
+        AssetRelatedAsset nullObject;
+        AssetRelatedAsset nullTemplate;
+        AssetDescriptor   parentAsset;
 
         nullBean = null;
-        nullObject = new RelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new RelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new RelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean, null, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new RelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
-        nullObject = new RelatedAsset(parentAsset, nullTemplate);
+        nullObject = new AssetRelatedAsset(parentAsset, nullTemplate);
         validateNullObject(nullObject);
     }
 
@@ -229,8 +229,8 @@ public class TestRelatedAsset
 
         Asset testBean = new Asset();
 
-        RelatedAsset testTemplate = new RelatedAsset((Asset)null, null, null);
-        RelatedAsset testObject;
+        AssetRelatedAsset testTemplate = new AssetRelatedAsset((Asset)null, null, null);
+        AssetRelatedAsset testObject;
 
         try
         {
@@ -242,7 +242,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        testTemplate = new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
 
         try
         {
@@ -254,7 +254,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(parentAsset, testBean, relationshipName, relatedAssetProperties);
+        testTemplate = new AssetRelatedAsset(parentAsset, testBean, relationshipName, relatedAssetProperties);
 
         try
         {
@@ -266,7 +266,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testObject = new RelatedAsset(parentAsset, testTemplate);
+        testObject = new AssetRelatedAsset(parentAsset, testTemplate);
 
         try
         {
@@ -278,7 +278,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testObject = new RelatedAsset(parentAsset, null);
+        testObject = new AssetRelatedAsset(parentAsset, null);
 
         try
         {
@@ -290,8 +290,8 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new RelatedAsset(parentAsset, testBean, null,null);
-        testObject = new RelatedAsset(parentAsset, testTemplate);
+        testTemplate = new AssetRelatedAsset(parentAsset, testBean, null, null);
+        testObject = new AssetRelatedAsset(parentAsset, testTemplate);
 
         try
         {
@@ -314,7 +314,7 @@ public class TestRelatedAsset
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        RelatedAsset sameObject = getTestObject();
+        AssetRelatedAsset sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
         assertFalse(getTestObject().equals(getDifferentObject()));
@@ -336,7 +336,7 @@ public class TestRelatedAsset
      */
     @Test public void testClone()
     {
-        validateResultObject(new RelatedAsset(null, getTestObject()));
+        validateResultObject(new AssetRelatedAsset(null, getTestObject()));
     }
 
 

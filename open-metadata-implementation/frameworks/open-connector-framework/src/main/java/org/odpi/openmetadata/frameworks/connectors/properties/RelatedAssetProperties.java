@@ -35,9 +35,9 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      *
      * If null is returned, the caller is not linked to a metadata repository.
      */
-    protected AssetUniverse   assetProperties = null;
-    protected AssetDescriptor connectedAsset  = null;
-    protected RelatedAsset    relatedAsset    = null;
+    protected AssetUniverse     assetProperties = null;
+    protected AssetDescriptor   connectedAsset  = null;
+    protected AssetRelatedAsset relatedAsset    = null;
 
 
     /**
@@ -55,7 +55,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      * @param connectedAsset original top-level asset
      * @param relatedAsset asset to extract the full set of properties.
      */
-    public RelatedAssetProperties(AssetDescriptor connectedAsset, RelatedAsset relatedAsset)
+    public RelatedAssetProperties(AssetDescriptor connectedAsset, AssetRelatedAsset relatedAsset)
     {
         /*
          * Remember the parent asset and details of the related asset to be retrieved.

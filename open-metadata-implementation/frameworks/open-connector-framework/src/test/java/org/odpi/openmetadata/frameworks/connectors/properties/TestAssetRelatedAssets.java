@@ -9,9 +9,9 @@ import static org.testng.Assert.assertTrue;
 
 
 /**
- * TestRelatedAssets tests the invocation of a specific property iterator.
+ * TestAssetRelatedAssets tests the invocation of a specific property iterator.
  */
-public class TestRelatedAssets
+public class TestAssetRelatedAssets
 {
     /**
      * Create a new property iterator
@@ -20,7 +20,7 @@ public class TestRelatedAssets
      * @param maxCacheSize size of cache
      * @return property iterator
      */
-    private RelatedAssets  getPropertyIterator(int    totalElementCount, int    maxCacheSize)
+    private AssetRelatedAssets getPropertyIterator(int    totalElementCount, int    maxCacheSize)
     {
         return new MockRelatedAssets(null, totalElementCount, maxCacheSize);
     }
@@ -34,7 +34,7 @@ public class TestRelatedAssets
      */
     private void  validatePropertyIterator(int    totalElementCount, int    maxCacheSize)
     {
-        RelatedAssets iterator = getPropertyIterator(totalElementCount, maxCacheSize);
+        AssetRelatedAssets iterator = getPropertyIterator(totalElementCount, maxCacheSize);
 
         int elementCount = 0;
         while (iterator.hasNext())
@@ -52,11 +52,11 @@ public class TestRelatedAssets
      */
     @Test public void  testClonedIterator()
     {
-        RelatedAssets propertyIterator = getPropertyIterator(10, 100);
+        AssetRelatedAssets propertyIterator = getPropertyIterator(10, 100);
 
         propertyIterator.next();
 
-        RelatedAssets propertyIteratorClone = new MockRelatedAssets(null, propertyIterator);
+        AssetRelatedAssets propertyIteratorClone = new MockRelatedAssets(null, propertyIterator);
 
         int elementCount = 0;
         while (propertyIteratorClone.hasNext())
@@ -123,11 +123,11 @@ public class TestRelatedAssets
      */
     @Test public void testElementCount()
     {
-        RelatedAssets  propertyIterator = getPropertyIterator(30, 10);
+        AssetRelatedAssets propertyIterator = getPropertyIterator(30, 10);
 
         assertTrue(propertyIterator.getElementCount() == 30);
 
-        RelatedAssets  clonedPropertyIterator = new MockRelatedAssets(null, propertyIterator);
+        AssetRelatedAssets clonedPropertyIterator = new MockRelatedAssets(null, propertyIterator);
 
         assertTrue(clonedPropertyIterator.getElementCount() == 30);
 
@@ -162,6 +162,6 @@ public class TestRelatedAssets
      */
     @Test public void testToString()
     {
-        assertTrue(getPropertyIterator(10, 100).toString().contains("RelatedAssets"));
+        assertTrue(getPropertyIterator(10, 100).toString().contains("AssetRelatedAssets"));
     }
 }

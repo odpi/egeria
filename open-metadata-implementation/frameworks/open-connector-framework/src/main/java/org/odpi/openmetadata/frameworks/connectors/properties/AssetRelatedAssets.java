@@ -8,11 +8,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
 import java.util.Iterator;
 
 /**
- * RelatedAssets supports an iterator over a list of related assets.  Callers can use it to step through the list
+ * AssetRelatedAssets supports an iterator over a list of related assets.  Callers can use it to step through the list
  * just once.  If they want to parse the list again, they could use the copy/clone constructor to create
  * a new iterator.
  */
-public abstract class RelatedAssets extends AssetPropertyIteratorBase implements Iterator<RelatedAsset>
+public abstract class AssetRelatedAssets extends AssetPropertyIteratorBase implements Iterator<AssetRelatedAsset>
 {
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
@@ -22,9 +22,9 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      */
-    public RelatedAssets(AssetDescriptor              parentAsset,
-                         int                          totalElementCount,
-                         int                          maxCacheSize)
+    public AssetRelatedAssets(AssetDescriptor              parentAsset,
+                              int                          totalElementCount,
+                              int                          maxCacheSize)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
     }
@@ -36,7 +36,7 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    public RelatedAssets(AssetDescriptor   parentAsset, RelatedAssets template)
+    public AssetRelatedAssets(AssetDescriptor   parentAsset, AssetRelatedAssets template)
     {
         super(parentAsset, template);
     }
@@ -51,7 +51,7 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
      */
     protected  AssetPropertyBase  cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase   template)
     {
-        return new RelatedAsset(parentAsset, (RelatedAsset)template);
+        return new AssetRelatedAsset(parentAsset, (AssetRelatedAsset)template);
     }
 
 
@@ -61,7 +61,7 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
-    protected  abstract RelatedAssets cloneIterator(AssetDescriptor  parentAsset);
+    protected  abstract AssetRelatedAssets cloneIterator(AssetDescriptor  parentAsset);
 
 
     /**
@@ -80,12 +80,12 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
     /**
      * Return the next element in the iteration.
      *
-     * @return RelatedAsset next element object that has been cloned.
+     * @return AssetRelatedAsset next element object that has been cloned.
      */
     @Override
-    public RelatedAsset next()
+    public AssetRelatedAsset next()
     {
-        return (RelatedAsset)super.pagingIterator.next();
+        return (AssetRelatedAsset)super.pagingIterator.next();
     }
 
 
@@ -119,7 +119,7 @@ public abstract class RelatedAssets extends AssetPropertyIteratorBase implements
     @Override
     public String toString()
     {
-        return "RelatedAssets{" +
+        return "AssetRelatedAssets{" +
                 "pagingIterator=" + pagingIterator +
                 '}';
     }
