@@ -7,9 +7,9 @@ import java.util.List;
 
 
 /**
- * MockRelatedAssets implements the abstract methods for RelatedAssets so it can be tested.
+ * MockRelatedAssets implements the abstract methods for AssetRelatedAssets so it can be tested.
  */
-public class MockRelatedAssets extends RelatedAssets
+public class MockRelatedAssets extends AssetRelatedAssets
 {
     /**
      * Typical Constructor creates an iterator with the supplied list of elements.
@@ -33,7 +33,7 @@ public class MockRelatedAssets extends RelatedAssets
      * @param parentAsset - descriptor of parent asset
      * @param template - type-specific iterator to copy; null to create an empty iterator
      */
-    public MockRelatedAssets(AssetDescriptor   parentAsset, RelatedAssets template)
+    public MockRelatedAssets(AssetDescriptor   parentAsset, AssetRelatedAssets template)
     {
         super(parentAsset, template);
     }
@@ -45,7 +45,7 @@ public class MockRelatedAssets extends RelatedAssets
      * @param parentAsset - descriptor of parent asset
      * @return new cloned object.
      */
-    protected RelatedAssets cloneIterator(AssetDescriptor  parentAsset)
+    protected AssetRelatedAssets cloneIterator(AssetDescriptor  parentAsset)
     {
         return new MockRelatedAssets(parentAsset, this);
     }
@@ -75,7 +75,7 @@ public class MockRelatedAssets extends RelatedAssets
 
         for (int i=0; i< numberOfEntries ; i++)
         {
-            RelatedAsset propertyObject = new RelatedAsset(null, (RelatedAsset)null);
+            AssetRelatedAsset propertyObject = new AssetRelatedAsset(null, (AssetRelatedAsset)null);
             propertyList.add(propertyObject);
         }
 
