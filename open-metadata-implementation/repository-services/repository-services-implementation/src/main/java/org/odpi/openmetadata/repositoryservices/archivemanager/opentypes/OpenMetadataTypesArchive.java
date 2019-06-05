@@ -14169,7 +14169,7 @@ public class OpenMetadataTypesArchive
      */
 
     /**
-     * 0422 Governance Action Classifications provide the key classification that drive information governance.
+     * 0421 Governance Confidentiality Level defines the organization's levels of confidentiality.
      */
     private void add0421GovernanceConfidentialityLevels()
     {
