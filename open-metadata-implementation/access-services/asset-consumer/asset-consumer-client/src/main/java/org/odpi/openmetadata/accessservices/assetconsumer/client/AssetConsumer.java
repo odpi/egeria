@@ -859,7 +859,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param userId userId of the user making the request.
      * @param guid unique identifier of the glossary term.
      *
-     * @return meaning response object
+     * @return properties that describe the meaning
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -898,7 +898,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
-     * @return meaning list response or
+     * @return list of glossary terms that contain the properties that describe the term and its meaning.
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
