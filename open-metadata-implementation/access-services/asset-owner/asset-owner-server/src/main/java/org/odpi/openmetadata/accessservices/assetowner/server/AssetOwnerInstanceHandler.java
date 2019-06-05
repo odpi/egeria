@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstanceHandler;
 
 
 /**
@@ -11,7 +11,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHa
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the AssetConsumerAdmin class.
  */
-class AssetOwnerInstanceHandler extends OCFOMASServiceInstanceHandler
+class AssetOwnerInstanceHandler extends ODFOMASServiceInstanceHandler
 {
     /**
      * Default constructor registers the access service

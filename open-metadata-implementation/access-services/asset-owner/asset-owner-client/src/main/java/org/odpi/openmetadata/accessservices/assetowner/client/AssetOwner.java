@@ -14,6 +14,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.Connec
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.OriginRequestBody;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.OwnerRequestBody;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.SchemaRequestBody;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
@@ -147,23 +148,29 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
 
     /**
-     * Links the supplied schema to the asset.  If the schema is not defined in the metadata repository, it
-     * is created.
+     * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
+     * an existing schema defined in the metadata repository.  If this schema is either not found, or
+     * already attached to an asset, then an error occurs.  If the GUID is null then a new schemaType
+     * is added to the metadata repository and attached to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param schemaType schema to attach - a new schema is always created because schema can not be shared
-     *                   between assets.
+     * @param schemaType schema to attach
+     * @param schemaAttributes list of schema attribute objects.
+     *
+     * @return unique identifier (guid) of the schema
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String   addSchemaToAsset(String     userId,
-                                     String     assetGUID,
-                                     SchemaType schemaType) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public String   addSchemaToAsset(String                userId,
+                                     String                assetGUID,
+                                     SchemaType            schemaType,
+                                     List<SchemaAttribute> schemaAttributes) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
     {
         final String   methodName = "addSchemaToAsset";
 
@@ -173,9 +180,14 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
+        SchemaRequestBody  requestBody = new SchemaRequestBody();
+
+        requestBody.setSchemaType(schemaType);
+        requestBody.setSchemaAttributes(schemaAttributes);
+
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
-                                                                  schemaType,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   assetGUID);
@@ -276,7 +288,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
     /**
      * Create a simple relationship between a glossary term and an element in an Asset description (typically
-     * a field in the schema.
+     * a field in the schema).
      *
      * @param userId calling user
      * @param assetGUID unique identifier of asset
@@ -646,6 +658,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         DiscoveryAnalysisReportListResponse restResult = restClient.callDiscoveryAnalysisReportListGetRESTCall(methodName,
                                                                                                                serverPlatformRootURL + urlTemplate,
@@ -694,6 +707,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryReportGUID, discoveryReportGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         StatusRequestBody  requestBody = new StatusRequestBody();
 
@@ -747,6 +761,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         StatusRequestBody  requestBody = new StatusRequestBody();
 

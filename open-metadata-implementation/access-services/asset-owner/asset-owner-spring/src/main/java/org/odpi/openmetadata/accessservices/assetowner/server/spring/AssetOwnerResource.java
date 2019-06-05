@@ -12,11 +12,10 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -71,28 +70,30 @@ public class AssetOwnerResource
 
 
     /**
-     * Links the supplied schema to the asset.  If the schema is not defined in the metadata repository, it
-     * is created.
+     * Links the supplied schema to the asset.  If the schema has the GUID set, it is assumed to refer to
+     * an existing schema defined in the metadata repository.  If this schema is either not found, or
+     * already attached to an asset, then an error occurs.  If the GUID is null then a new schemaType
+     * is added to the metadata repository and attached to the asset.  If another schema is currently
+     * attached to the asset, it is unlinked and deleted.
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset that the schema is to be attached to
-     * @param schemaType schema to attach - a new schema is always created because schema can not be shared
-     *                   between assets.
+     * @param requestBody schema to attach
      *
-     * @return void or
+     * @return guid of the schema type or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/schema-type")
 
-    public GUIDResponse   addSchemaToAsset(@PathVariable String     serverName,
-                                           @PathVariable String     userId,
-                                           @PathVariable String     assetGUID,
-                                           @RequestBody  SchemaType schemaType)
+    public GUIDResponse   addSchemaToAsset(@PathVariable String            serverName,
+                                           @PathVariable String            userId,
+                                           @PathVariable String            assetGUID,
+                                           @RequestBody  SchemaRequestBody requestBody)
     {
-        return restAPI.addSchemaToAsset(serverName, userId, assetGUID, schemaType);
+        return restAPI.addSchemaToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -157,7 +158,7 @@ public class AssetOwnerResource
 
     /**
      * Create a simple relationship between a glossary term and an element in an Asset description (typically
-     * a field in the schema.
+     * a field in the schema).
      *
      * @param serverName name of the server instance to connect to
      * @param userId calling user
@@ -326,51 +327,6 @@ public class AssetOwnerResource
      */
 
 
-    /**
-     * Return the basic attributes of an asset.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     *
-     * @return basic asset properties or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/summary")
-
-    public AssetResponse getAssetSummary(@PathVariable String  serverName,
-                                         @PathVariable String  userId,
-                                         @PathVariable String  assetGUID)
-    {
-        return restAPI.getAssetSummary(serverName, userId, assetGUID);
-    }
-
-
-
-    /**
-     * Return a connector for the asset to enable the calling user to access the content.
-     *
-     * @param serverName name of the server instance to connect to
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     *
-     * @return connection object or
-     * InvalidParameterException full path or userId is null or
-     * PropertyServerException problem accessing property server or
-     * UserNotAuthorizedException security access problem
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
-
-    public ConnectionResponse getConnectionForAsset(@PathVariable String  serverName,
-                                                    @PathVariable String  userId,
-                                                    @PathVariable String  assetGUID)
-    {
-        return restAPI.getConnectionForAsset(serverName, userId, assetGUID);
-    }
-
-
 
     /**
      * Return the discovery analysis reports about the asset.
@@ -388,11 +344,11 @@ public class AssetOwnerResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/discovery-analysis-reports")
 
-    public DiscoveryAnalysisReportResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
-                                                                       @PathVariable String  userId,
-                                                                       @PathVariable String  assetGUID,
-                                                                       @RequestParam int     startingFrom,
-                                                                       @RequestParam int     maximumResults)
+    public DiscoveryAnalysisReportListResponse getDiscoveryAnalysisReports(@PathVariable String  serverName,
+                                                                           @PathVariable String  userId,
+                                                                           @PathVariable String  assetGUID,
+                                                                           @RequestParam int     startingFrom,
+                                                                           @RequestParam int     maximumResults)
     {
         return restAPI.getDiscoveryAnalysisReports(serverName,
                                                    userId,

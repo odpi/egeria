@@ -19,7 +19,7 @@ public interface AssetClassificationInterface
 {
     /**
      * Create a simple relationship between a glossary term and an element in an Asset description (typically
-     * a field in the schema.
+     * a field in the schema).
      *
      * @param userId calling user
      * @param assetGUID unique identifier of asset
