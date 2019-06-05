@@ -42,7 +42,7 @@ public class RegistrationHandler {
     public EntityDetail registerTool(RegistrationRequestBody requestBody) {
 
         SoftwareServerCapabilitySource softwareServerCapability = requestBody.getSoftwareServerCapability();
-        String qualifiedNameForSoftwareServer = softwareServerCapability.getName();
+        String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
                 .withStringProperty(Constants.PATCH_LEVEL, softwareServerCapability.getPatchLevel())

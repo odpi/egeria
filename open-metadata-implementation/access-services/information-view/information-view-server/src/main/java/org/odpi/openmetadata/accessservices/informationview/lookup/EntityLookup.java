@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
@@ -58,21 +59,67 @@ public abstract class EntityLookup<T extends Source> {
         this.parentChain = parentChain;
     }
 
-    public EntityDetail lookupEntity(T source, List<EntityDetail> list)  {
+    /**
+     * Returns the entity matching the criteria or null if none matches
+     * @param typeNames - list of types to use for lookup
+     * @param source - the source against which we want to match
+     * @param list of entities in which to search
+     * @return entity matching type and source
+     */
+    public EntityDetail lookupEntity(List<String> typeNames, T source, List<EntityDetail> list)  {
+        List<EntityDetail> filteredList =
+                list.stream().filter(e -> isTypeOf(typeNames, e)).collect(Collectors.toList());
         InstanceProperties matchProperties = getMatchingProperties(source);
-        return matchExactlyToUniqueEntity(list, matchProperties);
+        return matchExactlyToUniqueEntity(filteredList, matchProperties);
     }
 
+    /**
+     * Return true if the entity type is among the list of types passed as argument
+     * @param typeNames list of types to check
+     * @param e entity to check
+     * @return true if the type is the expected one
+     */
+    private boolean isTypeOf(List<String> typeNames, EntityDetail e) {
+        return typeNames.stream().anyMatch(type -> enterpriseConnector.getRepositoryHelper().isTypeOf("lookupEntity", e.getType().getTypeDefName(), type));
+    }
+
+    /**
+     *
+     * @param source we want to match against
+     * @return the properties to use from source bean to match an entity against
+     */
     protected abstract InstanceProperties getMatchingProperties(T source);
 
 
+    /**
+     * Returns the entity matching the type and matchProperties
+     * @param matchProperties properties to use for querying the repositories
+     * @param typeDefName type name of the entities to search for
+     * @return the entity detail matching the type and properties
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE);
         return matchExactlyToUniqueEntity(existingEntities, matchProperties);
     }
 
 
-    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws RuntimeException {
+    /**
+     * Returns the unique entity matching the properties
+     * @param entities to search in
+     * @param matchingProperties properties used to match
+     * @return the entity matching the properties
+     * @throws InformationViewUncheckedExceptionBase throws NoMatchingEntityException if no entity is found matching
+     * throws MultipleEntitiesMatching if multiple entities match
+     */
+    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws
+                                                                                                                             InformationViewUncheckedExceptionBase {
         if (entities != null && !entities.isEmpty()) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
             if (filteredEntities == null || filteredEntities.isEmpty()) {
@@ -96,6 +143,12 @@ public abstract class EntityLookup<T extends Source> {
         return null;
     }
 
+    /**
+     *
+     * @param entityDetail entity we want to match against
+     * @param matchingProperties properties used for matching
+     * @return true if properties match, false otherwise
+     */
     public boolean matchProperties(EntityDetail entityDetail, InstanceProperties matchingProperties) {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
@@ -109,6 +162,20 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
+    /**
+     * Return list of guids of entities linked through the mentioned relationship
+     * @param parentEntityGuid entity guid to search relationships for
+     * @param relationshipTypeName
+     * @return list of entities
+     * @throws UserNotAuthorizedException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) throws
                                                                                                     UserNotAuthorizedException,
                                                                                                     EntityNotKnownException,
