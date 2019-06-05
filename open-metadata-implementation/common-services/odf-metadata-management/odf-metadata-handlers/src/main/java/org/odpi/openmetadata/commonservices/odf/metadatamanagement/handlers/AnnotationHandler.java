@@ -4,6 +4,8 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -74,14 +76,50 @@ public class AnnotationHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    List<Annotation> getAnnotationsLinkedToAnchor(String   userId,
-                                                  String   anchorGUID,
-                                                  String   anchorGUIDParameterName,
-                                                  int      startingFrom,
-                                                  int      maximumResults,
-                                                  String   methodName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+    List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
+                                                  String            anchorGUID,
+                                                  String            anchorGUIDParameterName,
+                                                  int               startingFrom,
+                                                  int               maximumResults,
+                                                  String            methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
+
+        // todo
+        return null;
+    }
+
+
+    /**
+     * Return the annotations linked direction to the report.
+     *
+     * @param userId identifier of calling user
+     * @param anchorGUID identifier of the anchor for the annotations.
+     * @param anchorGUIDParameterName parameter that passed the identifier of the anchor for the annotations.
+     * @param annotationStatus limit the results to this annotation status
+     * @param startingFrom initial position in the stored list.
+     * @param maximumResults maximum number of definitions to return on this call.
+     * @param methodName calling method
+     *
+     * @return list of annotations
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    List<Annotation> getAnnotationsLinkedToAnchor(String            userId,
+                                                  String            anchorGUID,
+                                                  String            anchorGUIDParameterName,
+                                                  AnnotationStatus  annotationStatus,
+                                                  int               startingFrom,
+                                                  int               maximumResults,
+                                                  String            methodName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
     {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
@@ -93,34 +131,37 @@ public class AnnotationHandler
 
 
 
+
+
     /**
-     * Return the list of annotations from previous runs of the discovery service that are set to a specific status.
-     * If status is null then annotations that have been reviewed, approved and/or actioned are returned from
-     * discovery reports that are not waiting or in progress.
+     * Return any annotations attached to this annotation.
      *
-     * @param userId calling user
-     * @param assetGUID unique identifier of the asset
-     * @param status status value to use on the query
-     * @param startingFrom starting position in the list.
-     * @param maximumResults maximum number of elements that can be returned
-     * @return list of annotation (or null if none are registered)
-     * @throws InvalidParameterException one of the parameters is invalid
-     * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
+     * @param userId identifier of calling user
+     * @param annotationGUID anchor annotation
+     * @param annotationStatus status of the desired annotations - null means all statuses.
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of annotations that can be returned.
+     * @param methodName calling method
+     *
+     * @return list of Annotation objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public  List<Annotation> getAnnotationsForAssetByStatus(String           userId,
-                                                            String           assetGUID,
-                                                            AnnotationStatus status,
-                                                            int              startingFrom,
-                                                            int              maximumResults) throws InvalidParameterException,
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    PropertyServerException
+    public List<Annotation>  getExtendedAnnotations(String           userId,
+                                                    String           annotationGUID,
+                                                    AnnotationStatus annotationStatus,
+                                                    int              startingFrom,
+                                                    int              maximumResults,
+                                                    String           methodName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        final String   methodName = "getAnnotationsForAssetByStatus";
-        final String   assetGUIDParameterName = "assetGUID";
+        final String   annotationGUIDParameter = "annotationGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
         // todo
@@ -128,12 +169,13 @@ public class AnnotationHandler
     }
 
 
-    /**
+       /**
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
      * @param userId identifier of calling user
      * @param annotationGUID unique identifier of the annotation
+     * @param methodName calling method
      *
      * @return Annotation object
      *
@@ -142,11 +184,11 @@ public class AnnotationHandler
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
     public  Annotation        getAnnotation(String   userId,
-                                            String   annotationGUID) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                            String   annotationGUID,
+                                            String   methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
-        final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}";
 
@@ -166,6 +208,7 @@ public class AnnotationHandler
      * @param relationshipTypeGUID guid for the relationship between the anchor and the annotation
      * @param relationshipTypeName name of the relationship between the anchor and the annotation
      * @param annotation annotation object
+     * @param methodName calling method
      * @return unique identifier of new annotation
      * @throws InvalidParameterException the annotation is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
@@ -176,11 +219,11 @@ public class AnnotationHandler
                                           String     anchorGUIDParameterName,
                                           String     relationshipTypeGUID,
                                           String     relationshipTypeName,
-                                          Annotation annotation) throws InvalidParameterException,
+                                          Annotation annotation,
+                                          String     methodName) throws InvalidParameterException,
                                                                         UserNotAuthorizedException,
                                                                         PropertyServerException
     {
-        final String   methodName = "addAnnotationToDiscoveryReport";
         final String   annotationParameterName = "annotation";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -198,6 +241,7 @@ public class AnnotationHandler
      * @param userId identifier of calling user
      * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
      * @param annotation annotation object
+     * @param methodName calling method
      * @return fully filled out annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
@@ -205,11 +249,11 @@ public class AnnotationHandler
      */
     public  Annotation  addAnnotationToAnnotation(String     userId,
                                                   String     anchorAnnotationGUID,
-                                                  Annotation annotation) throws InvalidParameterException,
+                                                  Annotation annotation,
+                                                  String     methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 PropertyServerException
     {
-        final String   methodName = "addAnnotationToAnnotation";
         final String   annotationGUIDParameterName = "anchorAnnotationGUID";
         final String   annotationParameterName = "annotation";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/extended-annotations";
@@ -229,17 +273,18 @@ public class AnnotationHandler
      * @param userId identifier of calling user
      * @param anchorGUID unique identifier that the annotation is to be linked to
      * @param annotationGUID unique identifier of the annotation
+     * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating annotations in the annotation store.
      */
     public  void    linkAnnotation(String userId,
                                    String anchorGUID,
-                                   String annotationGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+                                   String annotationGUID,
+                                   String methodName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException
     {
-        final String   methodName = "linkAnnotation";
         final String   anchorGUIDParameterName = "anchorGUID";
         final String   annotationGUIDParameterName = "annotationGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/related-instances{3}";
@@ -258,17 +303,18 @@ public class AnnotationHandler
      * @param userId identifier of calling user
      * @param anchorGUID unique identifier that the annotation is to be unlinked from
      * @param annotationGUID unique identifier of the annotation
+     * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating annotations in the annotation store.
      */
     public  void    unlinkAnnotation(String userId,
                                      String anchorGUID,
-                                     String annotationGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                     String annotationGUID,
+                                     String methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        final String   methodName = "unlinkAnnotation";
         final String   anchorGUIDParameterName = "anchorGUID";
         final String   annotationGUIDParameterName = "annotationGUID";
 
@@ -284,7 +330,9 @@ public class AnnotationHandler
      * Replace the current properties of an annotation.
      *
      * @param userId identifier of calling user
+     * @param annotationGUID unique identifier
      * @param annotation new properties
+     * @param methodName calling method
      *
      * @return fully filled out annotation
      * @throws InvalidParameterException one of the parameters is invalid
@@ -292,17 +340,18 @@ public class AnnotationHandler
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
     public  Annotation  updateAnnotation(String     userId,
-                                         Annotation annotation) throws InvalidParameterException,
+                                         String     annotationGUID,
+                                         Annotation annotation,
+                                         String     methodName) throws InvalidParameterException,
                                                                        UserNotAuthorizedException,
                                                                        PropertyServerException
     {
-        final String   methodName = "updateAnnotation";
         final String   annotationParameterName = "annotation";
-        final String   annotationGUIDParameterName = "annotation.getGUID()";
+        final String   annotationGUIDParameterName = "annotationGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateObject(annotation, annotationParameterName, methodName);
-        invalidParameterHandler.validateGUID(annotation.getGUID(), annotationGUIDParameterName, methodName);
+        invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
 
         // todo
         return null;
@@ -314,16 +363,17 @@ public class AnnotationHandler
      *
      * @param userId identifier of calling user
      * @param annotationGUID unique identifier of the annotation
+     * @param methodName calling method
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
     public  void  deleteAnnotation(String   userId,
-                                   String   annotationGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+                                   String   annotationGUID,
+                                   String   methodName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
-        final String   methodName = "deleteAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
