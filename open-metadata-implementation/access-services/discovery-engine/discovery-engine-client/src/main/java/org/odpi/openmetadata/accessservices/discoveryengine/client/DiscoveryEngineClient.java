@@ -54,10 +54,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
-    protected Connection getConnectionForAsset(String    userId,
-                                               String    assetGUID) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    Connection getConnectionForAsset(String    userId,
+                                     String    assetGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException
     {
         final String   methodName = "getConnectionForAsset";
         final String   guidParameterName = "assetGUID";
@@ -106,11 +106,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                                                    PropertyServerException
     {
         final String   methodName = "createDiscoveryAnalysisReport";
+        final String   nameParameterName = "qualifiedName";
         final String   assetGUIDParameterName = "assetGUID";
         final String   discoveryEngineGUIDParameterName = "discoveryEngineGUID";
         final String   discoveryServiceGUIDParameterName = "discoveryServiceGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/assets/{2}/discovery-analysis-reports";
 
+        invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameterName, methodName);
@@ -124,12 +126,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         requestBody.setCreationDate(creationDate);
         requestBody.setAnalysisParameters(analysisParameters);
         requestBody.setDiscoveryRequestStatus(discoveryRequestStatus);
-        requestBody.setAssetGUID(assetGUID);
         requestBody.setDiscoveryEngineGUID(discoveryEngineGUID);
         requestBody.setDiscoveryServiceGUID(discoveryServiceGUID);
         requestBody.setAdditionalProperties(additionalProperties);
         requestBody.setClassifications(classifications);
-
 
         DiscoveryAnalysisReportResponse restResult = restClient.callDiscoveryAnalysisReportPostRESTCall(methodName,
                                                                                                         serverPlatformRootURL + urlTemplate,
@@ -202,7 +202,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException
     {
-        DiscoveryAnalysisReport report = this.getDiscoveryReport(userId, discoveryReportGUID);
+        DiscoveryAnalysisReport report = this.getDiscoveryAnalysisReport(userId, discoveryReportGUID);
 
         if (report != null)
         {
@@ -225,12 +225,12 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public DiscoveryAnalysisReport getDiscoveryReport(String   userId,
-                                                      String   discoveryReportGUID) throws InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException
+    public DiscoveryAnalysisReport getDiscoveryAnalysisReport(String   userId,
+                                                              String   discoveryReportGUID) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException
     {
-        final String   methodName = "getDiscoveryReport";
+        final String   methodName = "getDiscoveryAnalysisReport";
         final String   reportGUIDParameterName = "discoveryReportGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-analysis-reports/{2}";
 
@@ -561,7 +561,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         final String   methodName = "linkAnnotation";
         final String   anchorGUIDParameterName = "anchorGUID";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/related-instances{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/annotations/{2}/related-instances/{3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameterName, methodName);
@@ -684,6 +684,7 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
+                                                                  nullRequestBody,
                                                                   serverName,
                                                                   userId,
                                                                   annotationGUID);
