@@ -236,7 +236,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
                                                                                             UserNotAuthorizedException,
                                                                                             DiscoveryEngineException
     {
-        final String   methodName = "getDiscoveryReport";
+        final String   methodName = "getDiscoveryAnalysisReport";
         final String   reportGUIDParameterName = "discoveryRequestGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}";
 
