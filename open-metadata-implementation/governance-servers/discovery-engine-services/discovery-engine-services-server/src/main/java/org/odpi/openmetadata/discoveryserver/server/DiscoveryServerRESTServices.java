@@ -118,7 +118,7 @@ public class DiscoveryServerRESTServices
                                                               String   userId,
                                                               String   discoveryRequestGUID)
     {
-        final String        methodName = "getDiscoveryReport";
+        final String        methodName = "getDiscoveryAnalysisReport";
 
         log.debug("Calling method: " + methodName);
 

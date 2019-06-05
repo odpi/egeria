@@ -207,7 +207,7 @@ public class DiscoveryEngineHandler
     {
         try
         {
-            return discoveryEngineClient.getDiscoveryReport(serverUserId, discoveryRequestGUID);
+            return discoveryEngineClient.getDiscoveryAnalysisReport(serverUserId, discoveryRequestGUID);
         }
         catch (PropertyServerException  error)
         {
