@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.mappers;
+package org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers;
 
 /**
  * DiscoveryServicePropertiesMapper provides property name mapping for Discovery Services.
