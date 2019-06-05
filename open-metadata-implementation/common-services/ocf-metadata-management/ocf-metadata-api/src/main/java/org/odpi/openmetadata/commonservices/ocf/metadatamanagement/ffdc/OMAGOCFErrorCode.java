@@ -39,6 +39,16 @@ public enum OMAGOCFErrorCode
                         "The system is unable to process the request.",
                         "Use the information in the message to understand the nature of the problem and once it is resolved, retry the request."),
 
+    NULL_CLASSIFICATION_NAME(400, "OMAG-OCF-400-003 ",
+                             "Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null",
+                             "The system is unable to create a new instance.",
+                             "Verify the classification parameters passed with this request."),
+
+    BAD_CLASSIFICATION_PROPERTIES(400, "OMAG-OCF-400-004 ",
+                                  "Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}",
+                                  "The system is unable to create a new instance.",
+                                  "Verify the classification parameters passed with this request."),
+
     OMRS_NOT_INITIALIZED(404, "OMAG-OCF-404-001 ",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
