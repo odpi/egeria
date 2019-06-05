@@ -9,8 +9,8 @@ import org.odpi.openmetadata.accessservices.discoveryengine.converters.Discovery
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.RegisteredDiscoveryServiceConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ConnectionHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ConnectionMapper;
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryEnginePropertiesMapper;
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryServicePropertiesMapper;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryServicePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
