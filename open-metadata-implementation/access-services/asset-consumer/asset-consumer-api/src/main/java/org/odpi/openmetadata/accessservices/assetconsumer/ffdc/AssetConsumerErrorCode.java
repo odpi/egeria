@@ -29,10 +29,15 @@ import java.util.Arrays;
  */
 public enum AssetConsumerErrorCode
 {
-    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-CONSUMER-400-001",
+    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-CONSUMER-400-001 ",
              "The Asset Consumer Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
              "The access service has not been passed valid configuration for its out topic connection.",
              "Correct the configuration and restart the service."),
+    OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CONSUMER-404-002 ",
+                         "The open metadata repository services are not initialized for the {0} operation",
+                         "The system is unable to connect to an open metadata repository.",
+                         "Check that the server where the Asset Owner OMAS is running initialized correctly.  " +
+                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
     CONNECTION_NOT_FOUND(404, "OMAS-ASSET-CONSUMER-404-005 ",
             "The requested connection {0} is not found in OMAS Server {1}, optional error message {2}",
             "The system is unable to populate the requested connection object.",
