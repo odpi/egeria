@@ -23,7 +23,8 @@ import java.util.Map;
 
 
 /**
- * AssetOnboardingRESTServices provides the server-side implementation of the Asset Owner OMAS AssetOnboardingInterface.
+ * AssetOnboardingRESTServices provides the server-side implementation of the Asset Owner OMAS AssetOnboardingInterface
+ * for specialized assets.
  */
 public class AssetOnboardingRESTServices
 {

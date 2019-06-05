@@ -54,6 +54,7 @@ public interface AssetVisibilityInterface
      * @param qualifiedName unique name for the zone
      *
      * @return properties of the governance zone
+     *
      * @throws InvalidParameterException qualifiedName or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -71,6 +72,7 @@ public interface AssetVisibilityInterface
      * @param assetGUID unique identifier for the asset to update
      * @param assetZones list of zones for the asset - these values override the current values - null means belongs
      *                   to no zones.
+     *
      * @throws InvalidParameterException guid or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
@@ -89,6 +91,7 @@ public interface AssetVisibilityInterface
      * @param assetGUID unique identifier for the asset to update
      * @param ownerId userId or profileGUID of the owner - or null to clear the field
      * @param ownerType indicator of the type of Id provides above - or null to clear the field
+     *
      * @throws InvalidParameterException userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
