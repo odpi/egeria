@@ -13245,8 +13245,8 @@ public class OpenMetadataTypesArchive
         EnumElementDef            elementDef;
 
         final int    element1Ordinal         = 0;
-        final String element1Value           = "Unclassified";
-        final String element1Description     = "The governance domain is not specified.";
+        final String element1Value           = "All";
+        final String element1Description     = "Relevant to all governance domains.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
@@ -21902,23 +21902,6 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "assetGUID";
-        final String attribute1Description     = "Unique identifier for the analyzed asset.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
         return relationshipDef;
     }
 
@@ -21982,7 +21965,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "dataFieldPosition";
-        final String attribute1Description     = "Ordering for the data field.";
+        final String attribute1Description     = "Positional order of the data field in the parent annotation.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
@@ -22048,23 +22031,6 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "assetGUID";
-        final String attribute1Description     = "Unique identifier for the analyzed asset.";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
-
         return relationshipDef;
     }
 
@@ -22128,7 +22094,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "dataFieldPosition";
-        final String attribute1Description     = "Ordering for the data field.";
+        final String attribute1Description     = "Positional order of the data field with its parent data field.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
