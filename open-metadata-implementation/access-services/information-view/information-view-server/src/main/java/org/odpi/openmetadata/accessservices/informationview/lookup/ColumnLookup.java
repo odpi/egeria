@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
@@ -38,7 +39,7 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
 
         List<String> relatedEntitiesGuids = getRelatedEntities(tableEntity.getGUID(), Constants.SCHEMA_ATTRIBUTE_TYPE);
         List<EntityDetail> allLinkedColumnsList = getRelatedEntities(relatedEntitiesGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
-        EntityDetail columnEntity = lookupEntity(source, allLinkedColumnsList);
+        EntityDetail columnEntity = lookupEntity(Arrays.asList(Constants.RELATIONAL_COLUMN, Constants.DERIVED_RELATIONAL_COLUMN), source, allLinkedColumnsList);
         if(log.isDebugEnabled()) {
             log.debug("Column found [{}]", columnEntity);
         }
