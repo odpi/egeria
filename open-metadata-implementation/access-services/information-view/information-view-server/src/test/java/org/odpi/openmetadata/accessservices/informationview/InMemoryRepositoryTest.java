@@ -176,7 +176,7 @@ public class InMemoryRepositoryTest {
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
                 .withStringProperty(Constants.NAME, "XE")
                 .build();
-        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE,
+        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATABASE,
                 qualifiedNameForDataStore, dataStoreProperties, true);
 
 
