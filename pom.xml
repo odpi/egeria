@@ -409,7 +409,7 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>${maven-javadoc-plugin.version}</version>
             <configuration>
-                <additionalJOption>-J-Xmx512m</additionalJOption>
+                <additionalJOption>-J-Xmx1536m</additionalJOption>
             </configuration>
             <executions>
                 <execution>
