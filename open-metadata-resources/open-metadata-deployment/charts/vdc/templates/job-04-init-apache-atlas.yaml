@@ -89,6 +89,6 @@ spec:
                 curl -f --verbose --anyauth --user admin:admin -X POST
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
-                curl -f --verbose --anyauth --user admin:admin -X POST --max-time 900
+                curl -f --verbose --anyauth --user admin:admin -X POST --max-time 300
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
 {{ end }}
