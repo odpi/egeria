@@ -918,6 +918,7 @@ public interface OMRSRepositoryHelper
      * @param propertyName name of property
      * @param mapValues contents of the map
      * @param methodName calling method name
+     * @throws InvalidParameterException one of the parameters is null or invalid
      * @return instance properties object.
      */
     InstanceProperties addPropertyMapToInstance(String              sourceName,
@@ -931,6 +932,8 @@ public interface OMRSRepositoryHelper
      * Returns the type name from an instance (entity, relationship or classification).
      *
      * @param instance instance to read
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws InvalidParameterException one of the parameters is null or invalid
      * @return String type name
      */
     String   getTypeName(InstanceAuditHeader      instance) throws RepositoryErrorException,

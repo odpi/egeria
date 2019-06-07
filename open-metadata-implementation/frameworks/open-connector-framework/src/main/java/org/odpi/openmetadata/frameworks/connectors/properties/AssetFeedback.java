@@ -19,7 +19,9 @@ public class AssetFeedback extends AssetPropertyBase
 
 
     /**
-     * Simple constructor only for subclasses
+     * Simple constructor for subclasses
+     *
+     * @param parentAsset parent asset
      */
     protected AssetFeedback(AssetDescriptor parentAsset)
     {

@@ -1320,6 +1320,7 @@ public interface OMRSRepositoryValidator
      * @param typeName name of the type of entities requested.
      * @param serviceName service that requested the entities.
      * @param methodName calling method.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     void validateAtMostOneEntityResult(List<EntityDetail>   findResults,
                                        String               typeName,
@@ -1335,6 +1336,7 @@ public interface OMRSRepositoryValidator
      * @param typeName name of the type of relationships requested.
      * @param serviceName service that requested the relationships.
      * @param methodName calling method.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     void validateAtMostOneRelationshipResult(List<Relationship>   findResults,
                                              String               typeName,
