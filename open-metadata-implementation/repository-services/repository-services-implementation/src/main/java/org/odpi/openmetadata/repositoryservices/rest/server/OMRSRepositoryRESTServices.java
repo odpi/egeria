@@ -1479,7 +1479,7 @@ public class OMRSRepositoryRESTServices
     public  TypeDefResponse reIdentifyTypeDef(String                    serverName,
                                               String                    userId,
                                               String                    originalTypeDefGUID,
-                                              TypeDefReIdentifyRequest  requestParameters)
+                                              TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
 
@@ -2428,7 +2428,7 @@ public class OMRSRepositoryRESTServices
     public  EntityListResponse findEntitiesByClassification(String                    serverName,
                                                             String                    userId,
                                                             String                    classificationName,
-                                                            PropertyMatchFindRequest  findRequestParameters)
+                                                            PropertyMatchFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByClassification";
 
@@ -3634,11 +3634,11 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getLinkingEntities(String                    serverName,
-                                                     String                    userId,
-                                                     String                    startEntityGUID,
-                                                     String                    endEntityGUID,
-                                                     OMRSAPIFindRequest        findRequestParameters)
+    public InstanceGraphResponse getLinkingEntities(String                    serverName,
+                                                    String                    userId,
+                                                    String                    startEntityGUID,
+                                                    String                    endEntityGUID,
+                                                    OMRSAPIFindRequest        findRequestParameters)
     {
         final  String   methodName = "getLinkingEntities";
 
@@ -4300,7 +4300,7 @@ public class OMRSRepositoryRESTServices
      */
     public EntityDetailResponse addEntity(String                serverName,
                                           String                userId,
-                                          EntityCreateRequest   requestBody)
+                                          EntityCreateRequest requestBody)
     {
         final  String   methodName = "addEntity";
 
@@ -5425,7 +5425,7 @@ public class OMRSRepositoryRESTServices
     public RelationshipResponse deleteRelationship(String                        serverName,
                                                    String                        userId,
                                                    String                        obsoleteRelationshipGUID,
-                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
+                                                   TypeDefValidationForRequest typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
 

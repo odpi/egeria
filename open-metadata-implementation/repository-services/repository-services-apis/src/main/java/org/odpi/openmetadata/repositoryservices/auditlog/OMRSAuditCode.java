@@ -219,6 +219,35 @@ public enum OMRSAuditCode
                       "The event manager is fully initialized and distributing buffered events that describe type definitions",
                       "No action is required.  This is part of the normal operation of the server."),
 
+    BAD_REAL_LOCAL_REPOSITORY_CONNECTOR("OMRS-AUDIT-0034",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The connector to the local repository failed with a {0} exception and the following error message: {1}",
+                             "The server fails to start.",
+                             "Correct the configuration to ensure that the local repository local connection is valid."),
+
+    BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The connector to the local repository's event mapper failed with a {0} exception and the following error message: {1}",
+                             "The server fails to start.",
+                             "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
+
+    BAD_ARCHIVE_STORE("OMRS-AUDIT-0036",
+                                OMRSAuditLogRecordSeverity.EXCEPTION,
+                                "The connector to the local repository archive store failed with a {0} exception and the following error message: {1}",
+                                "The server fails to start.",
+                                "Correct the configuration to ensure that the local repository's archive store connection is valid."),
+
+    BAD_AUDIT_LOG_DESTINATION("OMRS-AUDIT-0037",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The connector to the local repository audit log destination failed with a {0} exception and the following error message: {1}",
+                      "The server fails to start.",
+                      "Correct the configuration to ensure that the local repository's audit log destination connection is valid."),
+
+    BAD_TOPIC_CONNECTION("OMRS-AUDIT-0038",
+                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                              "The connector to the {0} topic failed with a {1} exception and the following error message: {2}",
+                              "The server fails to start.",
+                              "Correct the configuration to ensure that the cohort's topic connection is valid."),
 
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
