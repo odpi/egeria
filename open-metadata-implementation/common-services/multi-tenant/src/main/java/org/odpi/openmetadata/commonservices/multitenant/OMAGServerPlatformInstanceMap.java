@@ -7,9 +7,10 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
-import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
@@ -89,17 +90,22 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Add a new server security connector to the server map.
      *
+     * @param localServerUserId server's userId
      * @param serverName name of the server
+     * @param auditLog logging destination
      * @param connection connection for the server's security validator
+     * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connector is not valid.
      */
-    private static synchronized void setServerActiveWithSecurity(String     serverName,
-                                                                 Connection connection) throws InvalidParameterException
+    private static synchronized OpenMetadataServerSecurityVerifier setServerActiveWithSecurity(String       localServerUserId,
+                                                                                               String       serverName,
+                                                                                               OMRSAuditLog auditLog,
+                                                                                               Connection   connection) throws InvalidParameterException
     {
         OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
 
         serverInstance.initialize();
-        serverInstance.registerSecurityValidator(connection);
+        return serverInstance.registerSecurityValidator(localServerUserId, auditLog, connection);
     }
 
 
@@ -179,21 +185,19 @@ public class OMAGServerPlatformInstanceMap
 
         if (serverInstance != null)
         {
-            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+            OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            if (serverSecurityVerifier != null)
+            try
             {
-                try
-                {
-                    serverSecurityVerifier.validateUserForServer(userId);
-                    serverSecurityVerifier.validateUserForService(userId, serviceName);
-                    serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
-                }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-                {
-                    throw new UserNotAuthorizedException(error);
-                }
+                serverSecurityVerifier.validateUserForServer(userId);
+                serverSecurityVerifier.validateUserForService(userId, serviceName);
+                serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
             }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
             return serverInstance.getRegisteredService(userId, serviceName, serviceOperationName);
         }
         else
@@ -280,19 +284,16 @@ public class OMAGServerPlatformInstanceMap
     {
         if (serverInstance != null)
         {
-            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+            OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            if (serverSecurityVerifier != null)
+            try
             {
-                try
-                {
-                    serverSecurityVerifier.validateUserForServer(userId);
-                    serverSecurityVerifier.validateUserAsServerInvestigator(userId);
-                }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-                {
-                    throw new UserNotAuthorizedException(error);
-                }
+                serverSecurityVerifier.validateUserForServer(userId);
+                serverSecurityVerifier.validateUserAsServerInvestigator(userId);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
             }
         }
     }
@@ -496,6 +497,36 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return the security verifier for the server.
+     *
+     * @param userId calling user
+     * @param serverName name of the server
+     *
+     * @return OpenMetadataServerSecurityVerifier object - never null
+     * @throws InvalidParameterException the server name is not known
+     */
+    private static synchronized OpenMetadataServerSecurityVerifier getServerSecurityVerifierForPlatform(String    userId,
+                                                                                                        String    serverName) throws InvalidParameterException
+    {
+        final String  methodName = "getServerSecurityVerifierForPlatform";
+
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            return serverInstance.getSecurityVerifier();
+        }
+
+        /*
+         * Null will never be returned since handlerBadServerName always throws an exception (but the
+         * compiler is not sure :).
+         */
+        handleBadServerName(userId, serverName, methodName);
+        return null;
+    }
+
+
+    /**
      * Throw a standard exception for when the server name is not known.
      *
      * @param userId calling user
@@ -637,14 +668,19 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Start up the server with the requested security.
      *
+     * @param localServerUserId userId for local server
      * @param serverName name of the server
+     * @param auditLog logging destination
      * @param connection connection properties for open metadata security connector for server (can be null for no security)
+     * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connection is invalid
      */
-    public void startUpServerInstance(String       serverName,
-                                      Connection   connection) throws InvalidParameterException
+    public OpenMetadataServerSecurityVerifier startUpServerInstance(String       localServerUserId,
+                                                                    String       serverName,
+                                                                    OMRSAuditLog auditLog,
+                                                                    Connection   connection) throws InvalidParameterException
     {
-        OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(serverName, connection);
+        return OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(localServerUserId, serverName, auditLog, connection);
     }
 
 
@@ -702,6 +738,20 @@ public class OMAGServerPlatformInstanceMap
     }
 
 
+    /**
+     * Return the security verifier for the server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return OpenMetadataServerSecurityVerifier object - never null
+     * @throws InvalidParameterException the server name is not known
+     */
+    OpenMetadataServerSecurityVerifier getServerSecurityVerifier(String    userId,
+                                                                 String    serverName) throws InvalidParameterException
+    {
+        return OMAGServerPlatformInstanceMap.getServerSecurityVerifierForPlatform(userId, serverName);
+    }
 
 
     /**
