@@ -20,12 +20,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestRelatedAsset
 {
-    private ElementType            type                   = new ElementType();
-    private List<Classification>   classifications        = new ArrayList<>();
-    private Map<String, String>    additionalProperties   = new HashMap<>();
-    private Map<String, Object>    assetProperties        = new HashMap<>();
-    private RelatedAssetProperties relatedAssetProperties = null;
-    private String                 relationshipName       = "TestRelationship";
+    private ElementType            type                      = new ElementType();
+    private List<Classification>   classifications           = new ArrayList<>();
+    private Map<String, String>    additionalProperties      = new HashMap<>();
+    private Map<String, Object>    assetProperties           = new HashMap<>();
+    private RelatedAssetProperties relatedAssetProperties    = null;
+    private String                 relationshipName          = "TestRelationship";
+    private String                 relationshipAttributeName = "TestRelationshipAttribute";
 
 
     /**
@@ -60,7 +61,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relationshipAttributeName, relatedAssetProperties);
     }
 
 
@@ -87,7 +88,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relationshipAttributeName, relatedAssetProperties);
     }
 
 
@@ -114,7 +115,7 @@ public class TestRelatedAsset
         testBean.setOwner("TestOwner");
         testBean.setExtendedProperties(assetProperties);
 
-        return new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        return new AssetRelatedAsset(testBean, relationshipName, relationshipAttributeName, relatedAssetProperties);
     }
 
 
@@ -188,28 +189,28 @@ public class TestRelatedAsset
         AssetDescriptor   parentAsset;
 
         nullBean = null;
-        nullObject = new AssetRelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean, null,null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new AssetRelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean, null,null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new AssetRelatedAsset(nullBean, null, null);
+        nullObject = new AssetRelatedAsset(nullBean,null, null, null);
         validateNullObject(nullObject);
 
         parentAsset = null;
         nullBean = null;
-        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null,null);
         validateNullObject(nullObject);
 
         nullBean = new Asset();
-        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullBean = new Asset(null);
-        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null);
+        nullObject = new AssetRelatedAsset(parentAsset, nullBean, null, null, null);
         validateNullObject(nullObject);
 
         nullTemplate = null;
@@ -229,7 +230,7 @@ public class TestRelatedAsset
 
         Asset testBean = new Asset();
 
-        AssetRelatedAsset testTemplate = new AssetRelatedAsset((Asset)null, null, null);
+        AssetRelatedAsset testTemplate = new AssetRelatedAsset((Asset)null, null,null, null);
         AssetRelatedAsset testObject;
 
         try
@@ -242,7 +243,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new AssetRelatedAsset(testBean, relationshipName, relatedAssetProperties);
+        testTemplate = new AssetRelatedAsset(testBean, relationshipName, relationshipAttributeName, relatedAssetProperties);
 
         try
         {
@@ -254,7 +255,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new AssetRelatedAsset(parentAsset, testBean, relationshipName, relatedAssetProperties);
+        testTemplate = new AssetRelatedAsset(parentAsset, testBean, relationshipName, relationshipAttributeName, relatedAssetProperties);
 
         try
         {
@@ -290,7 +291,7 @@ public class TestRelatedAsset
             assertTrue(false);
         }
 
-        testTemplate = new AssetRelatedAsset(parentAsset, testBean, null, null);
+        testTemplate = new AssetRelatedAsset(parentAsset, testBean, null, null,null);
         testObject = new AssetRelatedAsset(parentAsset, testTemplate);
 
         try
