@@ -15,6 +15,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -49,6 +50,8 @@ public class AssetHandler
     private RatingHandler             ratingHandler;
     private RelatedMediaHandler       relatedMediaHandler;
     private SchemaTypeHandler         schemaTypeHandler;
+
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
     protected List<String>            supportedZones;
     protected List<String>            defaultZones;
@@ -119,6 +122,25 @@ public class AssetHandler
         this.schemaTypeHandler         = schemaTypeHandler;
         this.supportedZones            = supportedZones;
         this.defaultZones              = defaultZones;
+    }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
     }
 
 
@@ -680,18 +702,20 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removeAsset(String                 userId,
-                            String                 assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public void removeAsset(String   userId,
+                            String   assetGUID,
+                            String   methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
-        final String  methodName = "removeAsset";
         final String  validatingParameterName = "qualifiedName";
 
-        Asset asset = this.getAsset(userId, assetGUID);
+        Asset asset = this.getAsset(userId, assetGUID, methodName);
 
         if (asset != null)
         {
+            securityVerifier.validateUserForAssetDelete(userId, asset);
+
             /*
              * Locate the linked connections.
              */
@@ -790,11 +814,11 @@ public class AssetHandler
      * @throws PropertyServerException problem accessing the property server
      */
     public Asset getAsset(String                 userId,
-                          String                 assetGUID) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
+                          String                 assetGUID,
+                          String                 methodName) throws InvalidParameterException,
+                                                                    PropertyServerException,
+                                                                    UserNotAuthorizedException
     {
-        final String  methodName = "getAsset";
         final String  guidParameterName = "assetGUID";
 
         EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
@@ -833,11 +857,11 @@ public class AssetHandler
      */
     public Asset getAsset(String                 userId,
                           String                 assetGUID,
-                          String                 connectionGUID) throws InvalidParameterException,
+                          String                 connectionGUID,
+                          String                 methodName) throws InvalidParameterException,
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        final String  methodName = "getAsset";
         final String  guidParameterName = "assetGUID";
 
         EntityDetail assetEntity = repositoryHandler.getEntityByGUID(userId,
