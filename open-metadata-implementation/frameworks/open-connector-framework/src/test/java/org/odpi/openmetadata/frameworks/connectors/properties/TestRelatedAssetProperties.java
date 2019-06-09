@@ -46,7 +46,7 @@ public class TestRelatedAssetProperties
     @Test public void  testNormalConstructor()
     {
         AssetSummary           connectedAsset = new AssetSummary(new Asset());
-        AssetRelatedAsset      relatedAsset   = new AssetRelatedAsset(new Asset(), null, null);
+        AssetRelatedAsset      relatedAsset   = new AssetRelatedAsset(new Asset(), null, null, null);
         RelatedAssetProperties testObject     = new MockRelatedAssetProperties(connectedAsset, relatedAsset);
 
         assertTrue(testObject.getAssetSummary() == null);
