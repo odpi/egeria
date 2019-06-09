@@ -854,7 +854,6 @@ public class AssetOwnerRESTServices
     }
 
 
-
     /*
      * ==============================================
      * AssetDecommissioningInterface
@@ -862,4 +861,60 @@ public class AssetOwnerRESTServices
      */
 
 
+    /**
+     * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
+     * another asset), discovery reports and associated feedback.
+     *
+     * Given the depth of the delete performed by this call, it should be used with care.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException full path or userId is null or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    public VoidResponse deleteAsset(String          serverName,
+                                    String          userId,
+                                    String          assetGUID,
+                                    NullRequestBody requestBody)
+    {
+        final String methodName = "deleteAsset";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            handler.removeAsset(userId, assetGUID, methodName);
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
 }

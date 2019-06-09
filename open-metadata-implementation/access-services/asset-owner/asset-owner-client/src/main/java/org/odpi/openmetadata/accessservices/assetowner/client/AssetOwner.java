@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetRequestBody;
@@ -791,5 +792,42 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
      * ==============================================
      */
 
+    /**
+     * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
+     * another asset), discovery reports and associated feedback.
+     *
+     * Given the depth of the delete performed by this call, it should be used with care.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @throws InvalidParameterException full path or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void deleteAsset(String        userId,
+                            String        assetGUID) throws InvalidParameterException,
+                                                            UserNotAuthorizedException,
+                                                            PropertyServerException
+    {
+        final String   methodName = "deleteAsset";
 
+        final String   assetGUIDParameter = "assetGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/delete";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+
+        NullRequestBody requestBody = new NullRequestBody();
+
+        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  assetGUID);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    }
 }
