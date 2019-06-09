@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminSecurityServices;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +26,15 @@ public class ConfigOpenMetadataSecurityResource
      * Set up a platform security connector
      *
      * @param userId calling user.
-     * @param connection connection used to create and configure the connector that performs platform security
+     * @param requestBody requestBody used to create and configure the connector that performs platform security
      * @return void response
      */
     @RequestMapping(method = RequestMethod.POST, path = "/platform/connection")
 
-    public VoidResponse setPlatformSecurityConnection(@PathVariable String     userId,
-                                                      @RequestBody  Connection connection)
+    public VoidResponse setPlatformSecurityConnection(@PathVariable String                     userId,
+                                                      @RequestBody  PlatformSecurityRequestBody requestBody)
     {
-        return adminSecurityAPI.setPlatformSecurityConnection(userId, connection);
+        return adminSecurityAPI.setPlatformSecurityConnection(userId, requestBody);
     }
 
 
