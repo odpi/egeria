@@ -1446,8 +1446,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (asOfTime == null)
         {
-            final String              urlTemplate = "users/{0}/instances/entities/by-classification/{1}";
-            PropertyMatchFindRequest  findRequestParameters = new PropertyMatchFindRequest();
+            final String             urlTemplate           = "users/{0}/instances/entities/by-classification/{1}";
+            PropertyMatchFindRequest findRequestParameters = new PropertyMatchFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
             findRequestParameters.setMatchProperties(matchClassificationProperties);
@@ -2248,7 +2248,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "addEntity";
         final String urlTemplate = "users/{0}/instances/entity";
 
-        EntityCreateRequest   requestBody = new EntityCreateRequest();
+        EntityCreateRequest requestBody = new EntityCreateRequest();
 
         requestBody.setEntityTypeGUID(entityTypeGUID);
         requestBody.setInitialClassifications(initialClassifications);
