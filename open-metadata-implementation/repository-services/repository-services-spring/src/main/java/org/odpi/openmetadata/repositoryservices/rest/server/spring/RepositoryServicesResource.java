@@ -90,7 +90,7 @@ public class RepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/metadata-collection-id")
 
-    public MetadataCollectionIdResponse      getMetadataCollectionId(@PathVariable String   serverName)
+    public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName)
     {
         return restAPI.getMetadataCollectionId(serverName);
     }
