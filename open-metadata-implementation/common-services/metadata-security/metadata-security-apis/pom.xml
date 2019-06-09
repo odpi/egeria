@@ -7,25 +7,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>common-services</artifactId>
+        <artifactId>metadata-security</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Security</name>
+    <name>Metadata Security APIs</name>
     <description>
-        Plugin points for the server and the connectors to support fine-grained metadata security
-        authorization checks.
+        Interfaces for connectors that support fine-grained security for open metadata and governance.
     </description>
 
-    <artifactId>metadata-security</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>metadata-security-apis</module>
-        <module>metadata-security-connectors</module>
-        <module>metadata-security-server</module>
-    </modules>
+    <artifactId>metadata-security-apis</artifactId>
 
 </project>
