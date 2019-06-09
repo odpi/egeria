@@ -31,13 +31,13 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>rest-client-factory</artifactId>
+            <artifactId>repository-services-apis</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
+            <artifactId>rest-client-factory</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
