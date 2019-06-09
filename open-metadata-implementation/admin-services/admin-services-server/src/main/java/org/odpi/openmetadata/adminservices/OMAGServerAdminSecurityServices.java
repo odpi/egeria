@@ -6,11 +6,12 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.PlatformSecurityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,17 +39,18 @@ public class OMAGServerAdminSecurityServices
     private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminSecurityServices.class);
 
     private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
-    private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
-    private OMAGServerAdminStoreServices configStore  = new OMAGServerAdminStoreServices();
+    private OMAGServerErrorHandler       errorHandler     = new OMAGServerErrorHandler();
+    private OMAGServerAdminStoreServices configStore      = new OMAGServerAdminStoreServices();
 
     /**
      * Override the default platform security connector.
      *
      * @param userId calling user.
-     * @param connection connection used to create and configure the connector.
+     * @param requestBody containing serverPlatformURL (URL Root of the server platform) and
+     * connection used to create and configure the connector.
      */
-    public synchronized VoidResponse setPlatformSecurityConnection(String       userId,
-                                                                   Connection   connection)
+    public synchronized VoidResponse setPlatformSecurityConnection(String                      userId,
+                                                                   PlatformSecurityRequestBody requestBody)
     {
         final String methodName = "setPlatformSecurityConnection";
 
@@ -58,9 +60,18 @@ public class OMAGServerAdminSecurityServices
 
         try
         {
-            errorHandler.validateConnection(connection, methodName);
+            if (requestBody == null)
+            {
+                exceptionHandler.handleNoRequestBody(userId, methodName, "<null>");
+            }
+            else
+            {
+                errorHandler.validateConnection(requestBody.getPlatformSecurityConnection(), methodName);
 
-            OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(userId, connection);
+                OpenMetadataPlatformSecurityVerifier.setPlatformSecurityConnection(userId,
+                                                                                   requestBody.getUrlRoot(),
+                                                                                   requestBody.getPlatformSecurityConnection());
+            }
         }
         catch (InvalidParameterException error)
         {
