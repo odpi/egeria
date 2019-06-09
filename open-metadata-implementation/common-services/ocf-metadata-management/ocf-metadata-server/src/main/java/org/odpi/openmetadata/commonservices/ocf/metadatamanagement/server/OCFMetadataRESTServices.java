@@ -237,11 +237,11 @@ public class OCFMetadataRESTServices
 
             if (connectionGUID != null)
             {
-                response.setAsset(assetHandler.getAsset(userId, assetGUID, connectionGUID));
+                response.setAsset(assetHandler.getAsset(userId, assetGUID, connectionGUID, methodName));
             }
             else
             {
-                response.setAsset(assetHandler.getAsset(userId, assetGUID));
+                response.setAsset(assetHandler.getAsset(userId, assetGUID, methodName));
             }
             response.setCertificationCount(assetHandler.getCertificationCount(userId, assetGUID, methodName));
             response.setCommentCount(assetHandler.getCommentCount(userId, assetGUID, methodName));

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -34,6 +35,8 @@ public class ConnectionHandler
     private RepositoryHandler       repositoryHandler;
     private EndpointHandler         endpointHandler;
     private ConnectorTypeHandler    connectorTypeHandler;
+
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
 
     /**
@@ -68,6 +71,25 @@ public class ConnectionHandler
                                                              invalidParameterHandler,
                                                              repositoryHandler,
                                                              repositoryHelper);
+    }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
     }
 
 
