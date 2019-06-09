@@ -434,4 +434,29 @@ public class AssetOwnerResource
      */
 
 
+    /**
+     * Deletes an asset and all of its associated elements such as schema, connections (unless they are linked to
+     * another asset), discovery reports and associated feedback.
+     *
+     * Given the depth of the delete performed by this call, it should be used with care.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param requestBody dummy request body to satisfy POST protocol.
+     *
+     * @return void or
+     *  InvalidParameterException full path or userId is null or
+     *  PropertyServerException problem accessing property server or
+     *  UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/delete")
+
+    public VoidResponse deleteAsset(@PathVariable String          serverName,
+                                    @PathVariable String          userId,
+                                    @PathVariable String          assetGUID,
+                                    @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.deleteAsset(serverName, userId, assetGUID, requestBody);
+    }
 }
