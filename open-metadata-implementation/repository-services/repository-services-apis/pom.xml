@@ -15,10 +15,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Repository Services Connector APIs</name>
+    <name>Repository Services General APIs</name>
     <description>
-        The repository services connector APIs are the interfaces that open metadata
-        repository services (OMRS) connectors need to implement.
+        The repository services general APIs used by all components that depend on the OMRS.
     </description>
 
     <artifactId>repository-services-apis</artifactId>
