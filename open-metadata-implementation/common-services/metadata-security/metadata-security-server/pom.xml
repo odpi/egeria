@@ -14,18 +14,26 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Security</name>
+    <name>Metadata security connectors</name>
     <description>
-        Plugin points for the server and the connectors to support fine-grained metadata security
-        authorization checks.
+        Server plugins for open metadata security.
     </description>
 
-    <artifactId>metadata-security</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>metadata-security-apis</module>
-        <module>metadata-security-connectors</module>
-        <module>metadata-security-server</module>
-    </modules>
+    <artifactId>metadata-security-server</artifactId>
 
+    <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>metadata-security-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>metadata-security-connectors</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+    </dependencies>
 </project>
