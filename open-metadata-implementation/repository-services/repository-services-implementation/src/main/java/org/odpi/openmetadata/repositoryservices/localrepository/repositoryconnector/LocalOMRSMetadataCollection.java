@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -98,6 +99,30 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         this.localOrganizationName = localOrganizationName;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.localTypeDefManager = typeDefManager;
+    }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        super.setSecurityVerifier(securityVerifier);
+
+        if (securityVerifier != null)
+        {
+            if (realMetadataCollection != null)
+            {
+                this.realMetadataCollection.setSecurityVerifier(securityVerifier);
+            }
+        }
     }
 
 

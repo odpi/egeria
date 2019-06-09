@@ -422,6 +422,15 @@ public class OMRSMetadataHighwayManager
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(cohortName);
 
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_TOPIC_CONNECTION;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(cohortName, error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
                                                methodName,
