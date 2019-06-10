@@ -136,7 +136,7 @@ public class ReportContextBuilder extends ContextBuilder{
             reportElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
             ((ReportColumn) reportElement).setAggregation(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
             ((ReportColumn) reportElement).setFormula(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.FORMULA, entityDetail.getProperties(), "buildElement"));
-            ((ReportColumn) reportElement).setBusinessTerm(getAssignedBusinessTerm(entityDetail.getGUID()));
+            ((ReportColumn) reportElement).setBusinessTerms(getAssignedBusinessTerms(entityDetail.getGUID()));
             ((ReportColumn) reportElement).setSources(getSources(entityDetail.getGUID()));
 
         }

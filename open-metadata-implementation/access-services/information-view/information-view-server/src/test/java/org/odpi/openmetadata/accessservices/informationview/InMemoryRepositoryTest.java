@@ -293,7 +293,7 @@ public class InMemoryRepositoryTest {
                 new InstanceProperties());
 //        omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
 //                derivedColumnEntity.getGUID(),
-//                derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
+//                derivedColumn.getSourceColumn().getBusinessTerms().getGuid(),
 //                Constants.INFORMATION_VIEW_OMAS_NAME,
 //                new InstanceProperties());
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
