@@ -80,7 +80,7 @@ public interface OMRSInstanceEventProcessorInterface
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerType  type of server that the event came from.
+     * @param originatorServerName  name of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
      */

@@ -2786,7 +2786,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                 present values.
      * @param level the number of the relationships out from the starting entity that the query will traverse to
      *              gather results.
-     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
      *                              metadata collection.
@@ -3320,6 +3319,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityGUID unique identifier (guid) for the requested entity.
      * @param newStatus new InstanceStatus for the entity.
+     * @param methodName calling method.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -3415,6 +3415,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param instanceGUID String unique identifier (guid) for the entity.
      * @param properties a list of properties to change.
+     * @param methodName calling method.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -3566,6 +3567,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param typeDefGUID unique identifier of the type of the instance to delete.
      * @param typeDefName unique name of the type of the instance to delete.
      * @param instanceGUID String unique identifier (guid) for the instance.
+     * @param methodName calling method.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -3877,7 +3879,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
-     * @return EntityDetail showing the resulting entity header, properties and classifications.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
@@ -4095,6 +4096,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @return TypeDef returns typedef of the relationship
      */
     protected TypeDef addRelationshipParameterValidation(String               userId,
                                                          String               relationshipTypeGUID,

@@ -2,15 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecordOriginator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogReportingComponent;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStore;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * OMRSAuditLog is a class for managing the audit logging of activity for the OMRS components.  Each auditing component
@@ -56,7 +50,7 @@ public class OMRSAuditLog
 
     /**
      * Constructor used to create the root audit log for OMRS
-     *
+     * @param destination destination for the log records
      * @param reportingComponent information about the component that will use this instance of the audit log.
      */
     public OMRSAuditLog(OMRSAuditLogDestination destination,
@@ -77,6 +71,7 @@ public class OMRSAuditLog
      * @param componentName display name for the component.
      * @param componentDescription description of the component.
      * @param componentWikiURL link to more information.
+     * @return OMRSAuditLog auditlog instance
      */
     public OMRSAuditLog  createNewAuditLog(int                     componentId,
                                            String                  componentName,
@@ -95,6 +90,7 @@ public class OMRSAuditLog
      * Constructor used to create the root audit log for OMRS
      *
      * @param reportingComponent information about the component that will use this instance of the audit log.
+     * @return OMRSAuditLog auditlog instance
      */
     public OMRSAuditLog  createNewAuditLog(OMRSAuditingComponent reportingComponent)
     {
