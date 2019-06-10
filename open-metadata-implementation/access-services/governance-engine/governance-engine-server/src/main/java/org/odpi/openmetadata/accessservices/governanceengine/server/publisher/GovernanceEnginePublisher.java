@@ -23,10 +23,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
-
 /**
  * GovernanceEnginePublisher is responsible for publishing events about governed asset components .  It is called
  * when an interesting OMRS Event is added to the Enterprise OMRS Topic.
@@ -64,10 +60,6 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
     public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
         log.info("GE Process Classified Entity");
 
-        if (validateEntityType(entity)) return;
-
-        if (validateClassifications(entity)) return;
-
         try {
             governanceEngineEventProcessor.processClassifiedEntity(entity);
         } catch (RepositoryErrorException | EntityProxyOnlyException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
@@ -78,10 +70,6 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
     @Override
     public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
         log.info("GE Process De-Classified Entity");
-
-        if (validateEntityType(entity)) return;
-
-        if (validateClassifications(entity)) return;
 
         try {
             governanceEngineEventProcessor.processDeclassifiedEntityEvent(entity);
@@ -94,10 +82,6 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
     public void processReclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
         log.info("GE Process Re-Classified Entity");
 
-        if (validateEntityType(entity)) return;
-
-        if (validateClassifications(entity)) return;
-
         try {
             governanceEngineEventProcessor.processReclassifiedEntity(entity);
         } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
@@ -108,9 +92,6 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
     @Override
     public void processDeletedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
         log.info("GE Process Deleted Entity Event");
-        if (validateEntityType(entity)) return;
-
-        if (validateClassifications(entity)) return;
 
         try {
             governanceEngineEventProcessor.processDeletedEntityEvent(entity);
@@ -225,27 +206,4 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
         throw new UnsupportedOperationException();
     }
 
-    private boolean validateEntityType(EntityDetail entity) {
-        final String typeDefName = entity.getType().getTypeDefName();
-        if (!(typeDefName.equals(RELATIONAL_COLUMN) || typeDefName.equals(RELATIONAL_TABLE) || typeDefName.equals(GLOSSARY_TERM))) {
-            log.info("GE OMAS processes only Relational Column, Relational Table and Glossary Terms");
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Should check if the entity has a "Security Tag"
-     *
-     * @param entity - asset received contains classifications that needs to be validated
-     * @return boolean
-     */
-    private boolean validateClassifications(EntityDetail entity) {
-
-        if (entity.getClassifications() == null || entity.getClassifications().isEmpty()) {
-            log.info("GE OMAS does not processes entities without classifications, this is a wrong event!");
-            return true;
-        }
-        return false;
-    }
 }
