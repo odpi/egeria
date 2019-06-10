@@ -64,6 +64,9 @@ ui:
 
 atlas:
   enabled: true
+  user: admin
+  password: admin
+  proxyserver: apacheatlas
 
 gaian:
   enabled: true
@@ -125,7 +128,7 @@ image:
     name: omrsmonitor-egeriavdc
 
   atlas:
-    name: apache-atlas-fork
+    name: apache-atlas
 
   gaian:
     name: gaian-egeriavdc
