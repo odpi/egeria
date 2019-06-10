@@ -57,11 +57,11 @@ public class DatabaseContextHandler {
     public List<DatabaseSource> getDatabases(int startFrom, int pageSize) {
         InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
         try {
-            List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATA_STORE, startFrom, pageSize);
+            List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, startFrom, pageSize);
             return buildDatabaseContext(entities);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
             throw new RetrieveEntityException(DatabaseContextHandler.class.getName(),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getFormattedErrorMessage("type", Constants.DATA_STORE, e.getMessage()), InformationViewErrorCode.GET_ENTITY_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getFormattedErrorMessage("type", Constants.DATABASE, e.getMessage()), InformationViewErrorCode.GET_ENTITY_EXCEPTION.getSystemAction(),
                     InformationViewErrorCode.GET_ENTITY_EXCEPTION.getUserAction(), e);
         }
     }
@@ -114,7 +114,7 @@ public class DatabaseContextHandler {
         try {
             entityDetail = omEntityDao.getEntityByGuid(guid);
         } catch (EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | InvalidParameterException | RepositoryErrorException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), e);
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), e);
         }
         if (entityDetail == null)
             throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
