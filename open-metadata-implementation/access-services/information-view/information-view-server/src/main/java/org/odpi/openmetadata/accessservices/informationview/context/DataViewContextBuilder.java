@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
 
@@ -139,9 +140,9 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
             ((DataViewColumn) dataViewElement).setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, entityDetail.getProperties(), "buildElement"));
             dataViewElement.setComment(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.COMMENT, entityDetail.getProperties(), "buildElement"));
             ((DataViewColumn) dataViewElement).setRegularAggregate(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
-            BusinessTerm businessTerm = getAssignedBusinessTerm(entityDetail.getGUID());
-            if(businessTerm != null) {
-                ((DataViewColumn) dataViewElement).setBusinessTermGuid(businessTerm.getGuid());
+            List<BusinessTerm> businessTerms = getAssignedBusinessTerms(entityDetail.getGUID());
+            if(businessTerms != null && !businessTerms.isEmpty()) {
+                ((DataViewColumn) dataViewElement).setBusinessTermGuids(businessTerms.stream().map(bt -> bt.getGuid()).collect(Collectors.toList()));
             }
             ((DataViewColumn) dataViewElement).setDataViewSource(getSources(entityDetail.getGUID()));
         }
