@@ -421,6 +421,28 @@
             </executions>
         </plugin>
 
+        <!-- always create empty javadoc and source jars for every project           -->
+        <!-- Needed for Maven central release process for all components of type jar -->
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>createemptydocsource</id>
+                    <phase>process-resources</phase>
+                    <configuration>
+                        <tasks>
+                            <touch file="${project.build.directory}/${artifactId}-${version}-sources.jar"/>
+                            <touch file="${project.build.directory}/${artifactId}-${version}-javadoc.jar"/>
+                        </tasks>
+                    </configuration>
+                    <goals>
+                        <goal>run</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
+
         </plugins>
     </build>
 
