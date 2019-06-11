@@ -16,7 +16,7 @@ public interface SecurityServiceConnector {
 
     void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper);
 
-    RangerTag createSecurityTag(GovernanceClassification classification);
+    List<RangerTag> createSecurityTags(GovernanceClassification classification);
 
     ResourceTagMapper getTagAssociatedWithTheResource(Long id);
 
