@@ -91,4 +91,5 @@ public class Constants {
     public static final String SOURCE = "source";
     public static final String USER_ID = "userId";
     public static final String OWNER_TYPE = "ownerType";
+    public static final String DATABASE = "Database";
 }

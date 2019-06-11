@@ -294,7 +294,6 @@ public abstract class ReportBasicOperation extends BasicOperation{
                                                     derivedColumnEntity.getGUID(),
                                                     sourceColumnGUID,
                                                     schemaQueryImplProperties);
-
             } else {
                 InformationViewErrorCode code = InformationViewErrorCode.SOURCE_NOT_FOUND_EXCEPTION;
                 throw new SourceNotFoundException(code.getHttpErrorCode(),
