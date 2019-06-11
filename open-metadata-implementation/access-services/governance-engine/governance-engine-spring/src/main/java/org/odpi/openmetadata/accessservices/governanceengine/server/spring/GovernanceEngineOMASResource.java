@@ -28,9 +28,8 @@ public class GovernanceEngineOMASResource {
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param userId         - String - userId of user making request.
-     * @param classification - this may be the qualifiedName or displayName of the connection.
-     * @param type           - the type of the entities that are returned
+     * @param userId - String - userId of user making request.
+     * @param type   - the type of the entities that are returned
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -41,9 +40,8 @@ public class GovernanceEngineOMASResource {
     @RequestMapping(method = RequestMethod.GET, path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     public GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
                                                           @PathVariable String userId,
-                                                          @RequestParam(value = "classification", required = false) List<String> classification,
                                                           @RequestParam(value = "type", required = false) List<String> type) {
-        return restAPI.getGovernedAssets(serverName, userId, classification, type);
+        return restAPI.getGovernedAssets(serverName, userId, type);
     }
 
     /**
