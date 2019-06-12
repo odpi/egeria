@@ -166,8 +166,8 @@
                 mvn clean install -DskipUI
 		        -->
                 <property>
-	            <name>!skipUI</name>
-		</property>
+	                <name>!skipUI</name>
+		        </property>
             </activation>
             <build>
                 <plugins>
@@ -285,6 +285,7 @@
                     <excludes>
                         <exclude>**/tools/**</exclude>
                         <exclude>**/resources/public/**</exclude>
+                        <exclude>**/resources/**</exclude>
                         <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
                         <exclude>**/build/**</exclude>
