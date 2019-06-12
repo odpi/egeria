@@ -20,11 +20,9 @@ public class SecurityOfficerOMRSTopicListener implements OMRSTopicListener {
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerOMRSTopicListener.class);
     private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
-    private OMRSAuditLog auditLog;
 
     public SecurityOfficerOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
         this.instanceEventProcessor = instanceEventProcessor;
-        this.auditLog = auditLog;
     }
 
     @Override
@@ -51,18 +49,13 @@ public class SecurityOfficerOMRSTopicListener implements OMRSTopicListener {
                 return;
             }
 
-            switch (instanceEventType) {
-                case CLASSIFIED_ENTITY_EVENT:
-                    instanceEventProcessor.processClassifiedEntityEvent(enterpriseOMRSTopic,
-                            instanceEventOriginator.getMetadataCollectionId(),
-                            instanceEventOriginator.getServerName(),
-                            instanceEventOriginator.getServerType(),
-                            instanceEventOriginator.getOrganizationName(),
-                            instanceEvent.getEntity());
-                    break;
-                default:
-                    break;
-
+            if (instanceEventType == OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT) {
+                instanceEventProcessor.processNewRelationshipEvent(enterpriseOMRSTopic,
+                        instanceEventOriginator.getMetadataCollectionId(),
+                        instanceEventOriginator.getServerName(),
+                        instanceEventOriginator.getServerType(),
+                        instanceEventOriginator.getOrganizationName(),
+                        instanceEvent.getRelationship());
             }
         }
     }

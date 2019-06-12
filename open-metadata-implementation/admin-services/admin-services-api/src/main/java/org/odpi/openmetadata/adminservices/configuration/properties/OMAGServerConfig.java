@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.*;
 
@@ -95,6 +96,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private String                    localServerUserId         = defaultLocalServerUserId;
     private String                    localServerPassword       = null;
     private int                       maxPageSize               = defaultMaxPageSize;
+    private Connection                serverSecurityConnection  = null;
     private EventBusConfig            eventBusConfig            = null;
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
@@ -103,6 +105,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
+    private SecurityOfficerConfig     securityOfficerConfig     = null;
     private List<String>              auditTrail                = null;
     private VirtualizationConfig      virtualizationConfig      = null;
 
@@ -134,6 +137,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             localServerUserId = template.getLocalServerUserId();
             localServerPassword = template.getLocalServerPassword();
             maxPageSize = template.getMaxPageSize();
+            serverSecurityConnection = template.getServerSecurityConnection();
             eventBusConfig = template.getEventBusConfig();
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
@@ -142,6 +146,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
+            securityOfficerConfig = template.getSecurityOfficerConfig();
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
         }
@@ -353,6 +358,30 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the connection for the optional server security connector that validates calls to
+     * this server from admin to operations to metadata and governance services.
+     *
+     * @return Connection bean.
+     */
+    public Connection getServerSecurityConnection()
+    {
+        return serverSecurityConnection;
+    }
+
+
+    /**
+     * Set up the connection for the optional server security connector that validates calls to
+     * this server from admin to operations to metadata and governance services.
+     *
+     * @param serverSecurityConnection connection bean
+     */
+    public void setServerSecurityConnection(Connection serverSecurityConnection)
+    {
+        this.serverSecurityConnection = serverSecurityConnection;
+    }
+
+
+    /**
      * Set up the information used to create connections to an event bus.
      *
      * @return EventBusConfig object
@@ -525,6 +554,25 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.securitySyncConfig = securitySyncConfig;
     }
 
+    /**
+     * Return the configuration for the security officer services.
+     *
+     * @return SecurityOfficerConfig properties
+     */
+    public SecurityOfficerConfig getSecurityOfficerConfig()
+    {
+        return securityOfficerConfig;
+    }
+
+    /**
+     * Set up the configuration for the security officer services.
+     *
+     * @param securityOfficerConfig SecurityOfficerConfig properties
+     */
+    public void setSecurityOfficerConfig(SecurityOfficerConfig securityOfficerConfig)
+    {
+        this.securityOfficerConfig = securityOfficerConfig;
+    }
 
     /**
      * Return the configuration for the virtualization services.
@@ -594,6 +642,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", openLineageConfig=" + openLineageConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
+                ", securityOfficerConfig=" + securityOfficerConfig +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -631,6 +680,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
@@ -647,6 +697,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
+                            getAuditTrail(), getVirtualizationConfig());
     }
 }

@@ -3,12 +3,12 @@
 
 final String   serverURLRoot = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/delete
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMASServerURL(serverPlatformRootURL, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(commentGUID, guidParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,

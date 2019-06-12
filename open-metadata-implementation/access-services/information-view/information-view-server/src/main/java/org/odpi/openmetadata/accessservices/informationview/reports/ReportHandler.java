@@ -51,22 +51,22 @@ public class ReportHandler {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
             }
-            URL url = new URL(payload.getReportUrl());
+            URL url = new URL(payload.getReport().getReportUrl());
             String networkAddress = url.getHost();
             if (url.getPort() > 0) {
                 networkAddress = networkAddress + ":" + url.getPort();
             }
 
-            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("",Constants.DEPLOYED_REPORT,networkAddress + BasicOperation.SEPARATOR + payload.getId());
+            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT,networkAddress + BasicOperation.SEPARATOR + payload.getReport().getId());
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
-                    .withStringProperty(Constants.NAME, payload.getReportName())
-                    .withStringProperty(Constants.AUTHOR, payload.getAuthor())
-                    .withStringProperty(Constants.ID, payload.getId())
-                    .withStringProperty(Constants.URL, payload.getReportUrl())
-                    .withStringProperty(Constants.LAST_MODIFIER, payload.getLastModifier())
-                    .withDateProperty(Constants.LAST_MODIFIED_TIME, payload.getLastModifiedTime())
-                    .withDateProperty(Constants.CREATE_TIME, payload.getCreatedTime())
+                    .withStringProperty(Constants.NAME, payload.getReport().getReportName())
+                    .withStringProperty(Constants.AUTHOR, payload.getReport().getAuthor())
+                    .withStringProperty(Constants.ID, payload.getReport().getId())
+                    .withStringProperty(Constants.URL, payload.getReport().getReportUrl())
+                    .withStringProperty(Constants.LAST_MODIFIER, payload.getReport().getLastModifier())
+                    .withDateProperty(Constants.LAST_MODIFIED_TIME, payload.getReport().getLastModifiedTime())
+                    .withDateProperty(Constants.CREATE_TIME, payload.getReport().getCreatedTime())
                     .build();
 
 
@@ -92,10 +92,9 @@ public class ReportHandler {
                     REPORT_SUBMIT_EXCEPTION.getUserAction(),
                     REPORT_SUBMIT_EXCEPTION.getSystemAction(),
                     e,
-                    payload.getReportName());
+                    payload.getReport().getReportName());
         }
 
     }
-
 
 }
