@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Context implements Serializable {
 
@@ -34,5 +35,20 @@ public class Context implements Serializable {
 
     public void setSchema(String schema) {
         this.schema = schema;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Context context = (Context) o;
+        return Objects.equals(column, context.column) &&
+                Objects.equals(table, context.table) &&
+                Objects.equals(schema, context.schema);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(column, table, schema);
     }
 }
