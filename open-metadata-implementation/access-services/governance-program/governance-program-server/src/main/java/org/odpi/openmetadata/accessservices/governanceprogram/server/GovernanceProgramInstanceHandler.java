@@ -24,7 +24,7 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      */
     GovernanceProgramInstanceHandler()
     {
-        super(AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS);
+        super(AccessServiceDescription.GOVERNANCE_PROGRAM_OMAS.getAccessServiceName() + " OMAS");
 
         GovernanceProgramRegistration.registerAccessService();
     }
@@ -35,17 +35,19 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     ExternalReferencesHandler getExternalReferencesHandler(String userId,
-                                                           String serverName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException
+                                                           String serverName,
+                                                           String serviceOperationName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
-        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName);
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
@@ -61,17 +63,19 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     GovernanceOfficerHandler getGovernanceOfficerHandler(String userId,
-                                                         String serverName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                         String serverName,
+                                                         String serviceOperationName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
-        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName);
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {
@@ -87,17 +91,19 @@ class GovernanceProgramInstanceHandler extends OMASServiceInstanceHandler
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     PersonalProfileHandler getPersonalProfileHandler(String userId,
-                                                     String serverName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                                     String serverName,
+                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName);
+        GovernanceProgramServicesInstance instance = (GovernanceProgramServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
 
         if (instance != null)
         {

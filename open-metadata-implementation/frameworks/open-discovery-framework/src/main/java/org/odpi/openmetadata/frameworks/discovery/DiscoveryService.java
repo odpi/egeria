@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServiceException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryContext;
 
 
 /**
@@ -58,6 +57,7 @@ public abstract class DiscoveryService extends ConnectorBase
     {
         return discoveryContext;
     }
+
 
     /**
      * Indicates that the discovery service is completely configured and can begin processing.

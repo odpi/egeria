@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +43,6 @@ public class MyProfileRESTServices
     }
 
 
-
     /**
      * Return the profile for this user.
      *
@@ -62,17 +62,19 @@ public class MyProfileRESTServices
 
         log.debug("Calling method: " + methodName);
 
-        PersonalProfileResponse  response = new PersonalProfileResponse();
+        PersonalProfileResponse response = new PersonalProfileResponse();
+        OMRSAuditLog            auditLog = null;
 
         try
         {
-            MyProfileHandler handler = instanceHandler.getMyProfileHandler(serverName, userId);
+            MyProfileHandler handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getMyProfile(userId));
         }
         catch (NoProfileForUserException error)
         {
-            captureNoProfileForUserException(response, error);
+            this.captureNoProfileForUserException(response, error);
         }
         catch (InvalidParameterException error)
         {
@@ -85,6 +87,10 @@ public class MyProfileRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -113,6 +119,7 @@ public class MyProfileRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -135,8 +142,9 @@ public class MyProfileRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            MyProfileHandler   handler = instanceHandler.getMyProfileHandler(serverName, userId);
+            MyProfileHandler   handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, profileProperties, additionalProperties);
         }
         catch (InvalidParameterException error)
@@ -150,6 +158,10 @@ public class MyProfileRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

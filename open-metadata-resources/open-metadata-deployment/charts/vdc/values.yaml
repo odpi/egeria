@@ -76,9 +76,10 @@ ranger:
 postgresql:
   enabled: true
 
-# NOTE: solr is required for both ranger and atlas, so will be automatically enabled if either of those is enabled
+# NOTE: solr will eventually be required for both ranger and atlas, so will be automatically enabled if either of
+# those is enabled (once their embedded Solr's are migrated)
 solr:
-  enabled: true
+  enabled: false
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
@@ -87,6 +88,10 @@ debug:
 # Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
 logging:
   level: NONE
+
+# Egeria Conformance Test Suite - sets up to run against all Egeria repositories (if enabled=true)
+cts:
+  enabled: false
 
 imageDefaults:
   registry: docker.io
@@ -120,7 +125,7 @@ image:
     name: omrsmonitor-egeriavdc
 
   atlas:
-    name: apache-atlas
+    name: apache-atlas-fork
 
   gaian:
     name: gaian-egeriavdc
@@ -182,6 +187,7 @@ ibmigc:
   enabled: false
   user: isadmin
   password: isadmin
+  proxyserver: ibmigc
   internal:
     enabled: false
   external:

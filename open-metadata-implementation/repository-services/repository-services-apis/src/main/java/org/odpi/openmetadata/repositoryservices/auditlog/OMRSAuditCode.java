@@ -86,7 +86,7 @@ public enum OMRSAuditCode
     OMRS_DISCONNECTING("OMRS-AUDIT-0010",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The Open Metadata Repository Services (OMRS) is disconnecting the open metadata repositories",
-                      "The local server has completed the initialization of the OMRS.",
+                      "The local server has begun the shutdown of the OMRS.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     OMRS_DISCONNECTED("OMRS-AUDIT-0011",
@@ -127,7 +127,7 @@ public enum OMRSAuditCode
     OPEN_METADATA_TOPIC_LISTENER_SHUTDOWN("OMRS-AUDIT-0016",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The listener thread for the OMRS Topic Connector for topic {0} has shutdown",
-                      "The listener thread will process inbound events",
+                      "The listener thread has stopped processing inbound events",
                       "No action is required.  This is part of the normal operation of the server."),
 
     NULL_TOPIC_CONNECTOR("OMRS-AUDIT-0017",
@@ -595,7 +595,13 @@ public enum OMRSAuditCode
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Disconnecting of the enterprise connector manager generated an exception with message {0}",
                         "The server may not have disconnected from all repositories cleanly.",
-                        "Review the exception and resolve the issue it documents.")
+                        "Review the exception and resolve the issue it documents."),
+    UNEXPECTED_EXCEPTION("OMRS-AUDIT-9014",
+                         OMRSAuditLogRecordSeverity.EXCEPTION,
+                         "The Open Metadata Repository Service has generated an unexpected {0} exception during method {1}.  The message was <{2}> and the stack trace was: {3}",
+                         "The request returns a RepositoryServerException.",
+                         "This is probably a logic error. Review the stack trace to identify where the error " +
+                                 "occurred and work to resolve the cause.")
 
 
     ;

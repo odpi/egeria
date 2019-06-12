@@ -26,7 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DEFAULT_SCHEMA_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SCHEMA_ATTRIBUTE_TYPE;
 
 public class ContextBuilder {
 
@@ -34,7 +39,7 @@ public class ContextBuilder {
 
     public Context buildContextForColumn(OMRSMetadataCollection metadataCollection, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException {
         EntityDetail column = getEntity(metadataCollection, assetId);
-        if (isRelationalColumnType(column)) {
+        if (isRelationalColumn(column)) {
             return getDatabaseContextForColumn(metadataCollection, column);
         }
         return null;
@@ -147,7 +152,7 @@ public class ContextBuilder {
         return "";
     }
 
-    private boolean isRelationalColumnType(EntityDetail entityDetail) {
+    private boolean isRelationalColumn(EntityDetail entityDetail) {
         return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
     }
 }

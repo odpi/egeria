@@ -7,8 +7,13 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.handle
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,4 +49,16 @@ public class SecurityOfficerHandler {
             }
         }
     }
+
+    public EntityDetail getEntityDetailById(String userId, String assetGuid) {
+
+        try {
+            return metadataCollection.getEntityDetail(userId, assetGuid);
+        } catch (InvalidParameterException | RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | EntityNotKnownException e) {
+            log.debug("Unable to retrieve the entity with guid = {}", assetGuid);
+        }
+
+        return null;
+    }
+
 }
