@@ -16,6 +16,8 @@ import "../../node_modules/@polymer/paper-dialog/paper-dialog.js";
 import "../../node_modules/@polymer/paper-dialog-behavior/paper-dialog-behavior.js";
 import "../../node_modules/@polymer/iron-localstorage/iron-localstorage.js";
 import "../../node_modules/@polymer/iron-ajax/iron-ajax.js";
+import {mixinBehaviors} from "../../node_modules/@polymer/polymer/lib/legacy/class.js";
+import {AppLocalizeBehavior} from "../../node_modules/@polymer/app-localize-behavior/app-localize-behavior.js";
 import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid.js";
 import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid-selection-column.js";
 import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid-sort-column.js";
@@ -30,7 +32,8 @@ import './project-selector.js';
 *
 *SubjectAreaView is the top level web component for the subject area expert.
 */
-class SubjectAreaView extends PolymerElement {
+
+class SubjectAreaView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
   static get template() {
     return html`
       <style include="shared-styles">
@@ -39,9 +42,10 @@ class SubjectAreaView extends PolymerElement {
           padding: 10px 20px;
         }
       </style>
-
        <div style="margin-bottom: 20px">
-       Prototype - create Glossaries and see them in the dropdown. Work in progress.<p>
+
+       [[localize('subject-area_prototypeLabel')]]
+       <p>
          <glossary-selector selected-glossary="{{selectedGlossary}}" ></glossary-selector>
          <p>
          <project-selector selected-project="{{selectedProject}}" ></project-selector>
@@ -51,7 +55,8 @@ class SubjectAreaView extends PolymerElement {
 
   static get properties() {
     return {
-
+    // language
+      language: { value: 'en' },
       //  selected project
       selectedProject: {
         type: Object,
@@ -64,16 +69,17 @@ class SubjectAreaView extends PolymerElement {
       }
     };
   }
-
-    ready(){
-        super.ready();
-    }
-
-
-
-
-
-
+  attached() {
+        this.loadResources(
+               // The specified file only contains the flattened translations for that language:
+               "locales/subjectarea/" + this.language + ".json",  //e.g. for es {"hi": "hola"}
+               this.language,               // unflatten -> {"es": {"hi": "hola"}}
+               true                // merge so existing resources won't be clobbered
+             );
+  }
+  ready(){
+     super.ready();
+  }
 }
 
 window.customElements.define('subject-area-view', SubjectAreaView);
