@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -51,6 +52,10 @@ public class ReportHandler {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
             }
+            EntityDetail softwareServerCapability = reportCreator.retrieveSoftwareServerCapability(payload.getRegistrationGuid(),
+                    payload.getRegistrationQualifiedName());
+            payload.setRegistrationGuid(softwareServerCapability.getGUID());
+
             URL url = new URL(payload.getReport().getReportUrl());
             String networkAddress = url.getHost();
             if (url.getPort() > 0) {
