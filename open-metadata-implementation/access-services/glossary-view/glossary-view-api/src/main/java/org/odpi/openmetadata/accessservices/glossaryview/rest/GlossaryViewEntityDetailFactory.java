@@ -7,6 +7,7 @@ public class GlossaryViewEntityDetailFactory {
     private final static String GLOSSARY = "Glossary";
     private final static String CATEGORY = "GlossaryCategory";
     private final static String TERM = "GlossaryTerm";
+    private final static String EXTERNAL_GLOSSARY_LINK = "ExternalGlossaryLink";
 
     public static GlossaryViewEntityDetail build(String entityType){
         GlossaryViewEntityDetail prototype = null;
@@ -19,7 +20,14 @@ public class GlossaryViewEntityDetailFactory {
         if(entityType.equalsIgnoreCase(TERM)){
             prototype = buildDefaultTerm();
         }
+        if(entityType.equalsIgnoreCase(EXTERNAL_GLOSSARY_LINK)){
+            prototype = buildDefaultGlossaryViewEntityDetail();
+        }
         return prototype;
+    }
+
+    private static GlossaryViewEntityDetail buildDefaultGlossaryViewEntityDetail(){
+        return new GlossaryViewEntityDetail();
     }
 
     private static Glossary buildDefaultGlossary(){
