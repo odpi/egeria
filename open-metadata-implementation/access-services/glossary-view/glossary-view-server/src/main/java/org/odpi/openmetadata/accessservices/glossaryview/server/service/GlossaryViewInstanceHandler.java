@@ -1,3 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
