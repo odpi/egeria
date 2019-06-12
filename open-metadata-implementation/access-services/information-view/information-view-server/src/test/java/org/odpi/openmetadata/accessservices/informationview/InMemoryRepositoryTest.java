@@ -132,6 +132,18 @@ public class InMemoryRepositoryTest {
 
     private void populateRepository() throws Exception {
 
+        String qualifiedNameForSoftwareServerCapability = "registration-qualified-name";
+        InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServerCapability)
+                .withStringProperty(Constants.NAME, "test-1234")
+                .withStringProperty(Constants.PATCH_LEVEL, "1")
+                .withStringProperty(Constants.VERSION, "1.1.1")
+                .build();
+         omEntityDao.addEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
+                qualifiedNameForSoftwareServerCapability,
+                softwareServerProperties,
+                false);
+
         String qualifiedNameForEndpoint = "host";
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
