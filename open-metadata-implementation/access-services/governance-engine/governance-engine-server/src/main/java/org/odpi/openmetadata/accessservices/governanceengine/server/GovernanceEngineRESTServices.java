@@ -58,10 +58,9 @@ public class GovernanceEngineRESTServices {
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param serverName     - name of the server that the request is for
-     * @param userId         - String - userId of user making request.
-     * @param classification - this may be the qualifiedName or displayName of the connection.
-     * @param type           types to start query from
+     * @param serverName - name of the server that the request is for
+     * @param userId     - String - userId of user making request.
+     * @param type       types to start query from
      * @return GovernedAssetComponentList or
      * InvalidParameterException - one of the parameters is null or invalid.
      * UnrecognizedConnectionNameException - there is no connection defined for this name.
@@ -71,14 +70,13 @@ public class GovernanceEngineRESTServices {
      */
     public GovernedAssetListAPIResponse getGovernedAssets(String serverName,
                                                           String userId,
-                                                          List<String> classification,
                                                           List<String> type) {
         GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
 
         try {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
 
-            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, classification, type));
+            response.setGovernedAssetList(governedAssetHandler.getGovernedAssets(userId, type));
         } catch (InvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (MetadataServerException error) {
