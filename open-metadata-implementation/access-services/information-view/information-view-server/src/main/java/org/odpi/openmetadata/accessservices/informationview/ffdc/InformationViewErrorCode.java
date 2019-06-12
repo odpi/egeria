@@ -108,7 +108,11 @@ public enum InformationViewErrorCode {
     ILLEGAL_UPDATE_EXCEPTION(403, "OMAS-INFORMATION-VIEW-024",
                 "Illegal update for entity: {0}",
                 "The system will not process the request.",
-                  "This entity is owned by another tool.");
+                  "This entity is owned by another tool."),
+    NO_REGISTRATION_DETAILS_PROVIDED(403, "OMAS-INFORMATION-VIEW-025",
+                                            "No registration details were provided in the request",
+                                            "The system will not process the request.",
+                                            "The request should contain guid or qualifiedName of the external tool registration.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
