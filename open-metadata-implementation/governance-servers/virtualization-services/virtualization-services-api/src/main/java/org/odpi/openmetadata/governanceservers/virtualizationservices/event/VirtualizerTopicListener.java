@@ -58,10 +58,12 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         ObjectMapper objectMapper = new ObjectMapper();
         try{
             TableContextEvent eventObject = objectMapper.readValue(event, TableContextEvent.class);
-            Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
-            List<InformationViewEvent> viewEvents = generateViewEvents(eventObject, views);
-            for (InformationViewEvent item : viewEvents){
-                ivInTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
+            if (eventObject != null){
+                Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
+                List<InformationViewEvent> viewEvents = generateViewEvents(eventObject, views);
+                for (InformationViewEvent item : viewEvents){
+                    ivInTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
+                }
             }
         }catch (Exception e){
             log.error("Error in processing the event from Information View OMAS", e);

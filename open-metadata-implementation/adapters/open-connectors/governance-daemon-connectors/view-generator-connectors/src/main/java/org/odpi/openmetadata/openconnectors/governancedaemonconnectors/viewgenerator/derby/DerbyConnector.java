@@ -163,8 +163,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
      * @param tableName table name
      * @return boolean whether the table is deleted successfully
      */
-    @Override
-    public boolean deleteLogicalTable(String tableName) {
+    private boolean deleteLogicalTable(String tableName) {
         final String actionDescription = "deleteLogicalTable";
 
         try {
@@ -190,8 +189,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         }
     }
 
-    @Override
-    public List<LogicTable> getAllLogicTables() {
+    private List<LogicTable> getAllLogicTables() {
         final String actionDescription = "getAllLogicTables";
 
         List logicTableList = new ArrayList();
@@ -333,7 +331,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         logicTableList = getAllLogicTables();
 
         if (logicTableList != null && !logicTableList.isEmpty()) {
-            return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
+            return logicTableList.stream().filter(e -> (e.getNodeName().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
         }
         return null;
     }
@@ -342,7 +340,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
     private LogicTable extractLogicTableDefinition(ResultSet sqlResults) throws SQLException {
         LogicTable logicTable = new LogicTable();
         Map<String, String> defLists = new HashMap<>();
-        logicTable.setGaianNode(sqlResults.getString(gdbNode));
+        logicTable.setNodeName(sqlResults.getString(gdbNode));
         logicTable.setLogicalTableName(sqlResults.getString(logicTableName));
         String def = sqlResults.getString(logicTableDefinition);
         String[] defs = def.split(", ");//here we need to split with ,+space, it is showed in Gaian LTDEF
@@ -360,7 +358,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         Map<String, String> createdTables = new HashMap();
         LogicTable backendTable = getMatchingTables(gaianNodeName, Collections.singletonList(logicalTableName));
         if (backendTable != null) {
-            if (!backendTable.getGaianNode().equals(gaianFrontendName)) {
+            if (!backendTable.getNodeName().equals(gaianFrontendName)) {
                 createMirroringLogicalTable(logicalTableName, gaianNodeName);
             }
             ConnectorUtils.updateColumnDataType(mappedColumns, backendTable);
@@ -375,7 +373,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
                 createdTables.put(ConnectorUtils.TECHNICAL_PREFIX, updatedTable);
             }
 
-            if (!backendTable.getGaianNode().equals(gaianFrontendName)) {
+            if (!backendTable.getNodeName().equals(gaianFrontendName)) {
                 log.info("Remove mirrored logical table: {}", logicalTableName);
                 deleteLogicalTable(logicalTableName);
             }

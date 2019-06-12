@@ -25,13 +25,13 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>view-generator-connectors</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
