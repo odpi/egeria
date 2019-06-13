@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
