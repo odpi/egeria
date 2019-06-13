@@ -134,6 +134,7 @@
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotbugs-maven.version>3.1.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta2</spotbugs.version>
+        <owasp.version>5.0.0</owasp.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
 	      <maven-install.version>3.0.0-M1</maven-install.version>
 	      <maven-shade.version>3.2.1</maven-shade.version>
@@ -626,6 +627,18 @@
                             <printFailingErrors>true</printFailingErrors>
                             <linkXRef>false</linkXRef>
                         </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <version>${owasp.version}</version>
                         <executions>
                             <execution>
                                 <goals>
