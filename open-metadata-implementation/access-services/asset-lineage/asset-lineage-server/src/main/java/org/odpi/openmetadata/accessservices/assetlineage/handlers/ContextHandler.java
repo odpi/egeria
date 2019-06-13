@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
@@ -21,6 +22,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,6 +31,8 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class ContextHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
 
     private Converter converter = new Converter();
     private TypeDefGallery allTypes = new TypeDefGallery();
@@ -60,35 +65,48 @@ public class ContextHandler {
         this.repositoryHandler = repositoryHandler;
     }
 
-    public ConvertedAssetContext getAssetContext(String serverName, String userId, String GUID) throws InvalidParameterException, FunctionNotSupportedException, PropertyServerException, PropertyErrorException, EntityProxyOnlyException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, RepositoryErrorException {
+    public ConvertedAssetContext getAssetContext(String serverName, String userId, String GUID){
         AssetContext assetContext = new AssetContext();
         ConvertedAssetContext convertedAssetContext = new ConvertedAssetContext();
-        this.allTypes = repositoryHandler.getMetadataCollection().getAllTypes(userId);
 
-        EntityDetail entityDetail = getEntityDetails(serverName, userId, GUID);
-        Map<String, List<Connection>> knownAssetConnection = new HashMap<>();
+        try {
 
-        String typeDefName = entityDetail.getType().getTypeDefName();
-        if (typeDefName.equals(GLOSSARY_TERM)) {
-            Term term = getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
-            assetContext.setAssets(Collections.singletonList(term));
-        } else {
-            Term term = buildTerm(entityDetail);
-            AssetElement assetElement = new AssetElement();
+            this.allTypes = repositoryHandler.getMetadataCollection().getAllTypes(userId);
 
-            if (isAsset(typeDefName).isPresent()) {
-                getAsset(userId, assetElement, knownAssetConnection, entityDetail);
+            EntityDetail entityDetail = getEntityDetails(serverName, userId, GUID);
+            Map<String, List<Connection>> knownAssetConnection = new HashMap<>();
+
+            String typeDefName = entityDetail.getType().getTypeDefName();
+            if (typeDefName.equals(GLOSSARY_TERM)) {
+                Term term = getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
+                assetContext.setAssets(Collections.singletonList(term));
             } else {
-                buildContextForAsset(userId, assetElement, knownAssetConnection, entityDetail);
+                Term term = buildTerm(entityDetail);
+                AssetElement assetElement = new AssetElement();
+
+                if (isAsset(typeDefName).isPresent()) {
+                    getAsset(userId, assetElement, knownAssetConnection, entityDetail);
+                } else {
+                    buildContextForAsset(userId, assetElement, knownAssetConnection, entityDetail);
+                }
+
+
+                term.setElements(Collections.singletonList(assetElement));
+                assetContext.setAssets(Collections.singletonList(term));
+
+
+                convertedAssetContext = converter.convertAssetContext(term);
+
+
             }
-
-
-            term.setElements(Collections.singletonList(assetElement));
-            assetContext.setAssets(Collections.singletonList(term));
-
-
-            convertedAssetContext = converter.convertAssetContext(term);;
-
+        } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | TypeDefNotKnownException | EntityNotKnownException | EntityProxyOnlyException e) {
+            log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection. Excpetion message is: " + e.getErrorMessage());
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
+            log.error("OMAS throws an error because input parameter is null or invalid. Exception message is " + e.getErrorMessage());
+        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
+            log.error("UserId passed is not authorized to perform the action. Exception message is " + e.getMessage());
+        } catch (PropertyServerException e) {
+            log.error("Error when trying to connect in a repository to retrieve information about the connenction. Exception message is " + e.getMessage());
         }
 
         return convertedAssetContext;

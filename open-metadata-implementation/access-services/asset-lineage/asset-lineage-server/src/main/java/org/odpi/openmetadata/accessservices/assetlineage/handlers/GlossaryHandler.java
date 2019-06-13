@@ -58,7 +58,7 @@ public class GlossaryHandler {
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID) {
         final  String   guidParameter = "guid";
         final  String   methodName = "getGlossaryTerm";
         GlossaryTerm glossaryTerm = new GlossaryTerm();
@@ -70,7 +70,16 @@ public class GlossaryHandler {
 
         glossaryTerm.setGuid(GUID);
         glossaryTerm.setQualifiedName(qualifiedName);
-        EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userID, GUID, guidParameter, GLOSSARY_TERM_TYPE_NAME, methodName);
+        EntityDetail entityDetail = null;
+        try {
+            entityDetail = repositoryHandler.getEntityByGUID(userID, GUID, guidParameter, GLOSSARY_TERM_TYPE_NAME, methodName);
+        } catch (InvalidParameterException e) {
+            e.printStackTrace();
+        } catch (UserNotAuthorizedException e) {
+            e.printStackTrace();
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
         InstancePropertyValue displayNameInstancePropertyValue = entityDetail.getProperties().getPropertyValue("displayName");
         PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
         String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
