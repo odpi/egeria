@@ -99,7 +99,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
             } else {
                 log.error("Errors in the server configuration. The address of the server cannot be extracted");
                 if (omrsAuditLog != null) {
-                    auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_CONFIGURATION_ERROR;
+                    auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
                     omrsAuditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -112,7 +112,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } else {
             log.error("Errors in server address. The endpoint containing the server address is invalid!");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_ADDRESS_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -132,7 +132,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } else {
             log.error("Errors in settings of the GaianDB");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_LOGICAL_TABLE_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_LOGICAL_TABLE_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -176,7 +176,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (SQLException e) {
             log.error("Error deleting table", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -205,7 +205,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (SQLException e) {
             log.error("Error in getting all the logic tables: ", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -231,7 +231,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (SQLException e) {
             log.error("Error in executing a customized update!", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -257,7 +257,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         if (tableContextEvent == null) {
             log.debug("Object TableContextEvent is null");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_IV_EVENT_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_INBOUND_EVENT_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -310,7 +310,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (Exception e) {
             log.error("Error in creating the connection to derby: ", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_CONNECTION_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
