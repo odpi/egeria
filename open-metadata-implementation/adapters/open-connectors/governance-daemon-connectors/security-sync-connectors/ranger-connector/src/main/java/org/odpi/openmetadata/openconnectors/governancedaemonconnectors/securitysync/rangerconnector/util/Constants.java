@@ -11,7 +11,6 @@ public class Constants {
      * In Ranger, the default owner is 0 and the global owner is 1.
      */
     public static final Short OPEN_METADATA_OWNER = 2;
-    public static final String LEVEL = "level";
     public static final String TABLE = "table";
     public static final String COLUMN = "column";
     public static final String SCHEMA = "schema";
@@ -21,7 +20,7 @@ public class Constants {
     public static final String TAG_RESOURCE_ASSOCIATION = "{0}/service/tags/tagresourcemap/{1}";
     public static final String SERVICE_TAGS_MAP_TAG_GUID_RESOURCE_GUI = "{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}";
     public static final String SERVICE_TAGS_RESOURCES = "{0}/service/tags/resources/";
-    public static final String SERVICE_TAGS = "{0}/service/tags";
+    public static final String SERVICE_TAGS = "{0}/service/tags/tags";
     public static final String SERVICE_TAGS_TAGDEF = "{0}/service/tags/tagdefs";
     public static final String SECURITY_SERVER_AUTHORIZATION = "securityServerAuthorization";
     private Constants() {

@@ -3,9 +3,13 @@
 package org.odpi.openmetadata.commonservices.multitenant;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
 
 import java.util.*;
 
@@ -13,32 +17,21 @@ import java.util.*;
  * OMAGServerInstance represents an instance of a service in an OMAG Server.
  * It is also responsible for registering itself in the instance map.
  */
-public class OMAGServerInstance
+class OMAGServerInstance
 {
     private String                                 serverName;
+    private List<OMAGServerInstanceHistory>        serverHistory      = new ArrayList<>();
     private Map<String, OMAGServerServiceInstance> serviceInstanceMap = new HashMap<>();
     private Date                                   serverStartTime    = new Date();
-    private Date                                   serverEndTime      = null;
-    private OpenMetadataServiceSecurity            securityValidator  = null;
+    private OpenMetadataServerSecurityConnector    securityValidator  = null;
 
 
     /**
-     * Default constructor
+     * Only constructor - server name is always set
      */
     OMAGServerInstance(String   serverName)
     {
         this.serverName = serverName;
-    }
-
-
-    /**
-     * Set up the security validator for this server
-     *
-     * @param securityValidator pluggable authentication validator
-     */
-    void setServiceSecurityValidator(OpenMetadataServiceSecurity   securityValidator)
-    {
-        this.securityValidator = securityValidator;
     }
 
 
@@ -50,6 +43,17 @@ public class OMAGServerInstance
     String getServerName()
     {
         return serverName;
+    }
+
+
+    /**
+     * Prepare to start a new instance
+     */
+    void initialize()
+    {
+        serviceInstanceMap = new HashMap<>();
+        serverStartTime    = new Date();
+        securityValidator  = null;
     }
 
 
@@ -74,24 +78,77 @@ public class OMAGServerInstance
 
 
     /**
-     * Return the time this server instance started.
+     * Return the time this server instance last started.
      *
      * @return start time
      */
-    public Date getServerStartTime()
+    synchronized Date getServerStartTime()
     {
         return serverStartTime;
     }
 
 
     /**
-     * Return the time this server instance ended (or null if it is still running).
+     * Return the time this server instance last ended (or null if it is still running).
      *
      * @return end time or null
      */
-    public Date getServerEndTime()
+    synchronized Date getServerEndTime()
     {
-        return serverEndTime;
+        if (serverStartTime == null)
+        {
+            serverHistory.get(serverHistory.size() - 1);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the time this server instance last started.
+     *
+     * @return start time
+     */
+    synchronized List<OMAGServerInstanceHistory> getServerHistory()
+    {
+        if (serverHistory.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(serverHistory);
+        }
+    }
+
+
+    /**
+     * Register an open metadata server security connector to verify access to the server's services.
+     *
+     * @param connection properties used to create the connector
+     * @throws InvalidParameterException the connection is invalid
+     */
+    synchronized  void registerSecurityValidator(Connection connection) throws InvalidParameterException
+    {
+        try
+        {
+            this.securityValidator = OpenMetadataPlatformSecurityVerifier.getServerSecurityConnector(serverName, connection);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
+        {
+            throw new InvalidParameterException(error);
+        }
+    }
+
+
+    /**
+     * Return the security verifier for the server.
+     *
+     * @return connector
+     */
+    synchronized OpenMetadataServerSecurityConnector  getSecurityVerifier()
+    {
+        return securityValidator;
     }
 
 
@@ -113,7 +170,7 @@ public class OMAGServerInstance
      *
      * @param userId calling user
      * @param serviceName server name
-     * @param methodName calling method
+     * @param serviceOperationName calling method (should be top-level method name)
      *
      * @return instance object with runtime properties for the service
      * @throws UserNotAuthorizedException calling user not authorized to call the request
@@ -121,12 +178,20 @@ public class OMAGServerInstance
      */
     synchronized OMAGServerServiceInstance getRegisteredService(String    userId,
                                                                 String    serviceName,
-                                                                String    methodName) throws UserNotAuthorizedException,
-                                                                                             PropertyServerException
+                                                                String    serviceOperationName) throws UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         if (securityValidator != null)
         {
-            securityValidator.validateUserForService(userId, serviceName);
+            try
+            {
+                securityValidator.validateUserForService(userId, serviceName);
+                securityValidator.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
         }
 
         OMAGServerServiceInstance serverServiceInstance = serviceInstanceMap.get(serviceName);
@@ -134,13 +199,14 @@ public class OMAGServerInstance
         if (serverServiceInstance == null)
         {
             OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVICE_NOT_AVAILABLE;
-            String          errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serviceName,
-                                                                                                              serverName,
-                                                                                                              userId);
+            String                      errorMessage = errorCode.getErrorMessageId()
+                                                     + errorCode.getFormattedErrorMessage(serviceName,
+                                                                                          serverName,
+                                                                                          userId);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
-                                              methodName,
+                                              serviceOperationName,
                                               errorMessage,
                                               errorCode.getSystemAction(),
                                               errorCode.getUserAction());
@@ -148,6 +214,7 @@ public class OMAGServerInstance
 
         return serverServiceInstance;
     }
+
 
     /**
      * Remove the service from the active map - this normally happens during server shutdown.
@@ -161,11 +228,27 @@ public class OMAGServerInstance
 
 
     /**
-     * The server is being shutdown
+     * The server is being shutdown.  No services should be active at this time
      */
-    synchronized void shutdown()
+    synchronized void shutdown(String  methodName) throws PropertyServerException
     {
-        serviceInstanceMap = new HashMap<>();
-        this.serverEndTime = new Date();
+        if (serviceInstanceMap.isEmpty())
+        {
+            this.serverHistory.add(new OMAGServerInstanceHistory(this.serverStartTime, new Date()));
+            this.serverStartTime = null;
+        }
+        else
+        {
+            OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVICES_NOT_SHUTDOWN;
+            String                      errorMessage = errorCode.getErrorMessageId()
+                                                     + errorCode.getFormattedErrorMessage(serverName,
+                                                                                          serviceInstanceMap.keySet().toString());
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());        }
     }
 }

@@ -27,6 +27,7 @@
     <modules>
         <module>view-generator-connectors</module>
         <module>security-sync-connectors</module>
+        <module>security-officer-connectors</module>
     </modules>
 
 

@@ -5,8 +5,11 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Note;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -15,17 +18,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * NoteLogResponse is the response structure used on the OMAS REST API calls that returns a
- * NoteLog object as a response.  It returns details of the note log and the count of the notes within it.
+ * NoteLog object as a response.  It returns details of the note log, the first few notes and the total count
+ * of the notes within it.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NoteLogResponse implements java.io.Serializable
+public class NoteLogResponse extends OCFOMASAPIResponse
 {
-    private static final long    serialVersionUID = 1L;
-
-    private NoteLog noteLog   = null;
-    private int     noteCount = 0;
+    private NoteLog    noteLog   = null;
+    private List<Note> notes     = null;
+    private int        noteCount = 0;
 
 
     /**
@@ -33,6 +36,7 @@ public class NoteLogResponse implements java.io.Serializable
      */
     public NoteLogResponse()
     {
+        super();
     }
 
 
@@ -43,9 +47,12 @@ public class NoteLogResponse implements java.io.Serializable
      */
     public NoteLogResponse(NoteLogResponse template)
     {
+        super(template);
+
         if (template != null)
         {
             this.noteLog = template.getNoteLog();
+            this.notes = template.getNotes();
             this.noteCount = template.getNoteCount();
         }
     }
@@ -73,6 +80,38 @@ public class NoteLogResponse implements java.io.Serializable
     }
 
 
+    /**
+     * Return the notes in the note log.
+     *
+     * @return list of notes
+     */
+    public List<Note> getNotes()
+    {
+        if (notes == null)
+        {
+            return null;
+        }
+        else if (notes.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(notes);
+        }
+    }
+
+
+    /**
+     * Set up the list of notes from the note log.  If there are too many notes to return on a single call,
+     * the starting element number for the notes returned in this response are
+     *
+     * @param notes list of notes
+     */
+    public void setNotes(List<Note> notes)
+    {
+        this.notes = notes;
+    }
     /**
      * Return the count of the notes within the note log.
      *
@@ -105,7 +144,14 @@ public class NoteLogResponse implements java.io.Serializable
     {
         return "NoteLogResponse{" +
                 "noteLog=" + noteLog +
+                ", notes=" + notes +
                 ", noteCount=" + noteCount +
+                ", relatedHTTPCode=" + getRelatedHTTPCode() +
+                ", exceptionClassName='" + getExceptionClassName() + '\'' +
+                ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
+                ", exceptionSystemAction='" + getExceptionSystemAction() + '\'' +
+                ", exceptionUserAction='" + getExceptionUserAction() + '\'' +
+                ", exceptionProperties=" + getExceptionProperties() +
                 '}';
     }
 
@@ -127,10 +173,16 @@ public class NoteLogResponse implements java.io.Serializable
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         NoteLogResponse that = (NoteLogResponse) objectToCompare;
         return getNoteCount() == that.getNoteCount() &&
-                Objects.equals(getNoteLog(), that.getNoteLog());
+                Objects.equals(getNoteLog(), that.getNoteLog()) &&
+                Objects.equals(getNotes(), that.getNotes());
     }
+
 
 
     /**
@@ -141,6 +193,6 @@ public class NoteLogResponse implements java.io.Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getNoteLog(), getNoteCount());
+        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getNoteCount());
     }
 }

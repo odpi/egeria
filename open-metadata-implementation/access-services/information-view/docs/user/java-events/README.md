@@ -11,19 +11,18 @@ and publishes events to one topic:
 From cohort topic IV OMAS listens to the following OMRS events:
  
  *  NewRelationshipEvent with type SemanticAssignment between a RelationalColumn and a GlossaryTerm. Following events will be published on OUT topic:
-    * a SemanticAssignment event
+    * a SemanticAssignment event: [semantic-assignment-example](semantic-assignment.json)
     * event containing the full context of the parent table of the referenced column: host address of the database, database name, schema name, table name, all columns (including primary and foreign keys defined, column type) and the business terms assigned (null if column doesn't have any business term) 
- 
+    
+    [full-context-example](table-full-context.json)
  *  UpdatedEntityEvent for a GlossaryTerm. Following events will be published on OUT topic:
-    * an UpdatedEntityEvent
+    * an UpdatedEntityEvent:  [updated-entity](updated-entity-event.json)
     * if the glossary term name was updated, it will publish events containing the full context of tables that contain a column linked to the referenced glossary term 
     
  *  DeletedRelationshipEvent with type SemanticAssignment between a RelationalColumn and a GlossaryTerm. Following events will be published on OUT topic: 
     *  event containing the full context of the parent table of the referenced column: host address of the database, database name, schema name, table name, all columns (including primary and foreign keys defined, column type) and the business terms assigned (null if column doesn't have any business term) 
   
         
-From IN topic IV OMAS listens to events describing views: host address of the database, database name, schema name, table name, all derived columns (including the referenced real columns)
-
 
 
 ----

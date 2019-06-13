@@ -40,7 +40,7 @@ public class DiscoveryEngineServicesInstance extends OCFOMASServiceInstance
                                            List<String>            defaultZones,
                                            OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName(),
+        super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               auditLog);
 
