@@ -132,6 +132,9 @@
         <surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
+        <spotbugs-maven.version>3.1.2</spotbugs-maven.version>
+        <spotbugs.version>4.0.0-beta2</spotbugs.version>
+        <maven-pmd.version>3.12.0</maven-pmd.version>
 	      <maven-install.version>3.0.0-M1</maven-install.version>
 	      <maven-shade.version>3.2.1</maven-shade.version>
 	      <maven-compiler.version>3.8.0</maven-compiler.version>
@@ -582,12 +585,12 @@
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>3.1.2</version>
+                        <version>${spotbugs-maven.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>com.github.spotbugs</groupId>
                                 <artifactId>spotbugs</artifactId>
-                                <version>4.0.0-beta2</version>
+                                <version>${spotbugs.version}</version>
                             </dependency>
                         </dependencies>
                         <configuration>
@@ -603,13 +606,30 @@
                                     <version>LATEST</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
-                            <!--spotbugsXmlOutputDirectory>${maven.multiModuleProjectDirectory}/target</spotbugsXmlOutputDirectory -->
                         </configuration>
                         <executions>
                             <execution>
-                                <phase>install</phase>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>spotbugs</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Optional PMD scan - static code analysis -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <version>${maven-pmd.version}</version>
+                        <configuration>
+                            <failOnViolation>false</failOnViolation>
+                            <printFailingErrors>true</printFailingErrors>
+                            <linkXRef>false</linkXRef>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
                                 </goals>
                             </execution>
                         </executions>

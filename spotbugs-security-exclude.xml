@@ -1,4 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 <FindBugsFilter>
+  <Match>
+    <!-- Exclude fvt open types test -- too large causing OOM -->
+    <Source name=".*fvt/open.*" />
+  </Match>
 </FindBugsFilter>
