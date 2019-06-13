@@ -11,12 +11,16 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GLOSSARY_TERM_TYPE_NAME;
 
 public class GlossaryHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(GlossaryHandler.class);
 
     private String                  serviceName;
     private String                  serverName;
@@ -58,7 +62,9 @@ public class GlossaryHandler {
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID) {
+    public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID){
+
+
         final  String   guidParameter = "guid";
         final  String   methodName = "getGlossaryTerm";
         GlossaryTerm glossaryTerm = new GlossaryTerm();
@@ -74,12 +80,13 @@ public class GlossaryHandler {
         try {
             entityDetail = repositoryHandler.getEntityByGUID(userID, GUID, guidParameter, GLOSSARY_TERM_TYPE_NAME, methodName);
         } catch (InvalidParameterException e) {
-            e.printStackTrace();
+            log.error("OMAS throws an error because input parameter is null or invalid. Exception message is " + e.getErrorMessage());
         } catch (UserNotAuthorizedException e) {
-            e.printStackTrace();
+            log.error("UserId passed is not authorized to perform the action. Exception message is " + e.getMessage());
         } catch (PropertyServerException e) {
-            e.printStackTrace();
+            log.error("Error when trying to connect in a repository to retrieve information about the connenction. Exception message is " + e.getMessage());
         }
+
         InstancePropertyValue displayNameInstancePropertyValue = entityDetail.getProperties().getPropertyValue("displayName");
         PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
         String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
