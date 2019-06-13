@@ -5,6 +5,7 @@
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.services;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagResponse;
@@ -40,11 +41,11 @@ public class SecurityOfficerService {
         return response;
     }
 
-    public SecurityOfficerOMASAPIResponse updateSecurityTag(String serverName, String userId, String securityTag, String schemaElementId) {
+    public SecurityOfficerOMASAPIResponse updateSecurityTag(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) {
         SecurityOfficerSchemaElementResponse response = new SecurityOfficerSchemaElementResponse();
 
         try {
-            response.setSchemaElementEntity(instanceHandler.updateSecurityTagBySchemaElementId(serverName, userId, schemaElementId, securityTag));
+            response.setSchemaElementEntity(instanceHandler.updateSecurityTagBySchemaElementId(serverName, userId, schemaElementId, securityClassification));
         } catch (UserNotAuthorizedException | RepositoryErrorException | ClassificationErrorException | EntityProxyOnlyException
                 | PropertyErrorException | InvalidParameterException | FunctionNotSupportedException | EntityNotKnownException e) {
             exceptionHandler.captureOMRSException(response, e);
