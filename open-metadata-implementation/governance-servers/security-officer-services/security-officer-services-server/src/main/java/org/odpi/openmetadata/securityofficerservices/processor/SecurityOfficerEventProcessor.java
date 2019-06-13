@@ -5,6 +5,8 @@
 
 package org.odpi.openmetadata.securityofficerservices.processor;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
@@ -38,7 +40,7 @@ public class SecurityOfficerEventProcessor {
     }
 
     public void processNewAssignment(SchemaElementEntity schemaElementEntity) {
-        if(schemaElementEntity == null){
+        if (schemaElementEntity == null) {
             return;
         }
 
@@ -46,39 +48,40 @@ public class SecurityOfficerEventProcessor {
         setSecurityTag(schemaElementEntity.getGuid(), securityClassification);
     }
 
-    private void setSecurityTag(String guid, SecurityClassification securityClassification){
-        String securityTag = getSecurityTagLevel(securityClassification);
-
-        String securityOMASURL = getSecurityOMASURL(guid, securityTag);
+    private void setSecurityTag(String guid, SecurityClassification securityClassification) {
+        String securityOMASURL = getSecurityOMASURL(guid);
+        String securityClassificationBody = getBody(securityClassification);
 
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getBasicHTTPHeaders());
+        HttpEntity<String> entity = new HttpEntity<>(securityClassificationBody, getBasicHTTPHeaders());
 
         try {
             ResponseEntity<SchemaElementEntity> elementEntity = restTemplate.exchange(securityOMASURL, HttpMethod.POST, entity, SchemaElementEntity.class);
-            if(elementEntity.getBody() != null) {
-                log.debug(elementEntity.toString());
+            if (elementEntity.getBody() != null) {
+                log.debug(String.valueOf(elementEntity));
             }
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to set/update the security tag {} for schema element {}", securityTag, guid);
+            log.debug("Unable to set/update the security tag for schema element {}", guid);
         }
     }
 
-    private String getSecurityTagLevel(SecurityClassification securityClassification) {
-        String securityTag = "Internal";
-        if( securityClassification.getProperties().containsKey("Level")){
-            securityTag = securityClassification.getProperties().get("Level");
+    private String getBody(Object resource) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(resource);
+        } catch (JsonProcessingException e) {
+            log.error("error write json ");
         }
-        return securityTag;
+        return null;
     }
 
-    private String getSecurityOMASURL(String guid, String securityTag) {
+    private String getSecurityOMASURL(String guid) {
 
         return MessageFormat.format(
                 securitySyncConfig.getSecurityOfficerOMASURL(),
                 securitySyncConfig.getSecurityOfficerOMASServerName(),
                 securitySyncConfig.getSecurityOfficerOMASUsername(),
-                securityTag, guid);
+                guid);
     }
 
     private HttpHeaders getBasicHTTPHeaders() {
