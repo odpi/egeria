@@ -131,18 +131,23 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return view;
     }
 
-    private org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm convertBusinessTerm(List<BusinessTerm> businessTerms) {
+    private List<org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm> convertBusinessTerm(List<BusinessTerm> businessTerms) {
         if(businessTerms != null && !businessTerms.isEmpty()) {
-            //TODO logic to handle multiple business terms
-            org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm businessTerm1 = new org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm();
-            businessTerm1.setAbbreviation(businessTerms.get(0).getAbbreviation());
-            businessTerm1.setDescription(businessTerms.get(0).getDescription());
-            businessTerm1.setDisplayName(businessTerms.get(0).getDisplayName());
-            businessTerm1.setExamples(businessTerms.get(0).getExamples());
-            businessTerm1.setGuid(businessTerms.get(0).getGuid());
-            businessTerm1.setQuery(businessTerms.get(0).getQuery());
-            businessTerm1.setName(businessTerms.get(0).getName());
-            return businessTerm1;
+            List<org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm> businessTermList= new ArrayList<>();
+
+            for (org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm businessTerm : businessTerms)
+            {
+                org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm businessTermCount = new org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm();
+                businessTermCount.setAbbreviation(businessTerm.getAbbreviation());
+                businessTermCount.setDescription(businessTerm.getDescription());
+                businessTermCount.setDisplayName(businessTerm.getDisplayName());
+                businessTermCount.setExamples(businessTerm.getExamples());
+                businessTermCount.setGuid(businessTerm.getGuid());
+                businessTermCount.setQuery(businessTerm.getQuery());
+                businessTermCount.setName(businessTerm.getName());
+                businessTermList.add(businessTermCount);
+            }
+            return businessTermList;
         }
         return null;
     }
@@ -159,7 +164,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         tableColumn.setQualifiedName(databaseColumn.getQualifiedName());
         tableColumn.setType(databaseColumn.getType());
         tableColumn.setUnique(databaseColumn.isUnique());
-        tableColumn.setBusinessTerm(convertBusinessTerm(databaseColumn.getBusinessTerms()));
+        tableColumn.setBusinessTerms(convertBusinessTerm(databaseColumn.getBusinessTerms()));
         return tableColumn;
     }
 

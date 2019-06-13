@@ -34,6 +34,7 @@ public class TestDataHelper {
     public static final String SCHEMA_NAME = "schema";
     public static final String PROVIDER_CLASS_NAME = "GaianConnectorProvider";
     public static final String BUSINESS_TERM_GUID = "businessTermGuid";
+    public static final String BUSINESS_TERM_GUID2 = "businessTermGuid2";
     public static final String REAL_COLUMN_GUID = "realColumnGuid";
     public static final String CONNECTION_ENDPOINT_REL_TYPE_GUID = "ConnectionEndpointTypeGuid";
     public static final String SERVER_ENDPOINT_REL_TYPE_GUID = "ServerEndpointTypeGuid";
@@ -387,10 +388,17 @@ public class TestDataHelper {
         event.getTableSource().setName(TABLE_NAME);
         event.getTableSource().getDatabaseSource().setName(DATABASE_NAME);
 
-        BusinessTerm businessTerm = new BusinessTerm();
+        List<BusinessTerm> businessTerms = new ArrayList<>();
+        businessTerms.get(0).setName("clientName");
+        businessTerms.get(0).setQuery("query");
+        businessTerms.get(0).setGuid(BUSINESS_TERM_GUID);
+        businessTerms.get(1).setName("clientName1");
+        businessTerms.get(1).setQuery("query1");
+        businessTerms.get(1).setGuid(BUSINESS_TERM_GUID2);
+
         TableColumn realColumn = new TableColumn();
         realColumn.setName("cl_nm");
-        realColumn.setBusinessTerm(businessTerm);
+        realColumn.setBusinessTerms(businessTerms);
         realColumn.setPosition(2);
         realColumn.setGuid(REAL_COLUMN_GUID);
         realColumn.setQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type.client_name");
@@ -399,9 +407,7 @@ public class TestDataHelper {
         columnClientName.setPosition(1);
         columnClientName.setName("client_name");
         columnClientName.setSourceColumn(realColumn);
-        businessTerm.setName("clientName");
-        businessTerm.setQuery("query");
-        businessTerm.setGuid(BUSINESS_TERM_GUID);
+
         event.setDerivedColumns(Collections.singletonList(columnClientName));
 
 
