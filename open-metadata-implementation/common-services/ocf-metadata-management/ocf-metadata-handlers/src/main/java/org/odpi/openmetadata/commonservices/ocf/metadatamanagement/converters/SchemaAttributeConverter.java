@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -88,6 +89,11 @@ public class SchemaAttributeConverter extends ReferenceableConverter
                                                                                    SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                                    instanceProperties,
                                                                                    methodName));
+
+                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                                          ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                          instanceProperties,
+                                                                                          methodName));
 
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
             }

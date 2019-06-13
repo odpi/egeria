@@ -42,7 +42,6 @@ public class AssetBuilder extends ReferenceableBuilder
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
         this.displayName = displayName;
-        this.description = description;
     }
 
 
