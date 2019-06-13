@@ -355,7 +355,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
     /**
      * Set up the OCF Connection for the Security Server used to pass requests to this Security Sync.
      *
-     * @param securityServerConnection Connection for Out Topic
+     * @param securityServerConnection Connection for Security Server
      */
     public void setSecurityServerConnection(Connection securityServerConnection)
     {
