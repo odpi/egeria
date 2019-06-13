@@ -146,9 +146,24 @@ public enum OMAGAdminErrorCode
             "The access service has not been passed valid configuration.",
             "Correct the configuration and restart the service."),
 
+    NULL_CONNECTION(400, "OMAG-ADMIN-400-026 ",
+            "OMAG server {0} has been called with a null connection for method {1}",
+            "The system is unable to add this connection to the configuration.",
+            "Change the call to pass a valid connection.  If you want to clear the connection use the clear version of the method."),
+
+    NULL_PLATFORM_CONNECTION(400, "OMAG-ADMIN-400-027 ",
+            "The OMAG server platform has been called with a null connection for method {0}",
+            "The system is unable to add this connection to the configuration.",
+            "Change the call to pass a valid connection.  If you want to clear the connection use the clear version of the method."),
+
     UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
             "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
-            "The system is unable to configure the local server.",
+            "The system is unable to configure the OMAG server.",
+            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue."),
+
+    UNEXPECTED_PLATFORM_EXCEPTION(500, "OMAG-ADMIN-500-002 ",
+            "Method {1} returned an unexpected exception of {1} with message {2}",
+            "The system is unable to configure the OMAG server.",
             "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue.")
             ;
 

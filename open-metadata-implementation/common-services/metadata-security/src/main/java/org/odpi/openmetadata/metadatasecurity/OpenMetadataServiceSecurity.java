@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity;
 
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * OpenMetadataServiceSecurity provides the interface for a plugin connector that validates whether a calling
@@ -14,14 +15,6 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedExc
  */
 public interface OpenMetadataServiceSecurity
 {
-    /**
-     * Set the name of the server that this connector is supporting.
-     *
-     * @param serverName name of server
-     */
-    void  setServerName(String   serverName);
-
-
     /**
      * Check that the calling user is authorized to issue this request.
      *

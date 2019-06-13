@@ -49,10 +49,10 @@ public abstract class OMAGServerServiceInstanceHandler
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    public boolean isServerKnown(String    userId,
-                                 String    serverName) throws UserNotAuthorizedException
+    public boolean isServerActive(String    userId,
+                                  String    serverName) throws UserNotAuthorizedException
     {
-        return platformInstanceMap.isServerKnown(userId, serverName);
+        return platformInstanceMap.isServerActive(userId, serverName);
     }
 
 
@@ -61,17 +61,19 @@ public abstract class OMAGServerServiceInstanceHandler
      *
      * @param userId calling user
      * @param serverName name of this server
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return specific service instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
     protected  OMAGServerServiceInstance getServerServiceInstance(String  userId,
-                                                                  String  serverName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+                                                                  String  serverName,
+                                                                  String  serviceOperationName) throws InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
-        return platformInstanceMap.getServiceInstance(userId, serverName, serviceName);
+        return platformInstanceMap.getServiceInstance(userId, serverName, serviceName, serviceOperationName);
     }
 
 

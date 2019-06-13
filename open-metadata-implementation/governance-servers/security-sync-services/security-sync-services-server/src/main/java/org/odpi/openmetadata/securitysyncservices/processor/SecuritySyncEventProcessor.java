@@ -31,7 +31,6 @@ import java.util.List;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.CONFIDENTIALITY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.LEVEL;
 
 public class SecuritySyncEventProcessor {
 
@@ -65,11 +64,15 @@ public class SecuritySyncEventProcessor {
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
         logProcessing("processClassifiedGovernedAssetEvent", SecuritySyncAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        RangerTag tag = rangerOpenConnector.createSecurityTag(governedAsset.getAssignedGovernanceClassification());
+        List<RangerTag> securityTags = rangerOpenConnector.createSecurityTags(governedAsset.getAssignedGovernanceClassification());
+        if (securityTags == null || securityTags.isEmpty()) {
+            return;
+        }
         RangerServiceResource resource = rangerOpenConnector.createResource(governedAsset);
 
-        rangerOpenConnector.createAssociationResourceToSecurityTag(tag.getGuid(), resource.getGuid());
-
+        for (RangerTag securityTag : securityTags) {
+            rangerOpenConnector.createAssociationResourceToSecurityTag(resource.getGuid(), securityTag.getGuid());
+        }
     }
 
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
@@ -82,14 +85,16 @@ public class SecuritySyncEventProcessor {
         }
 
         GovernanceClassification classification = governedAsset.getAssignedGovernanceClassification();
-        if (!classification.getAttributes().containsKey(LEVEL)) {
+        if (classification.getSecurityLabels() == null || classification.getSecurityLabels().isEmpty()) {
             return;
         }
 
-        RangerTag securityTag = rangerOpenConnector.createSecurityTag(classification);
+        List<RangerTag> securityTags = rangerOpenConnector.createSecurityTags(classification);
 
         if (resource != null && resource.getGuid() != null) {
-            rangerOpenConnector.createAssociationResourceToSecurityTag(securityTag.getGuid(), resource.getGuid());
+            for (RangerTag securityTag : securityTags) {
+                rangerOpenConnector.createAssociationResourceToSecurityTag(resource.getGuid(), securityTag.getGuid());
+            }
         }
     }
 
@@ -160,6 +165,8 @@ public class SecuritySyncEventProcessor {
         if (governedAsset == null) {
             return null;
         }
+
+        log.debug("de-classified entity: " + governedAsset.getGuid());
 
         RangerServiceResource resource = rangerOpenConnector.getResourceByGUID(governedAsset.getGuid());
         if (resource == null) {

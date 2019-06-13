@@ -31,7 +31,6 @@ public abstract class OCFCheckedExceptionBase extends Exception
     private Map<String, Object> relatedProperties = null;
 
 
-
     /**
      * This is the typical constructor used for creating an OCFCheckedException.
      *
@@ -148,6 +147,27 @@ public abstract class OCFCheckedExceptionBase extends Exception
         this.reportedUserAction = userAction;
         this.reportedCaughtException = caughtError;
         this.relatedProperties = relatedProperties;
+    }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an OCFCheckedException.
+     *
+     * @param template   object to copy
+     */
+    public OCFCheckedExceptionBase(OCFCheckedExceptionBase template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.reportedHTTPCode = template.getReportedHTTPCode();
+            this.reportingClassName = template.getReportingClassName();
+            this.reportingActionDescription = template.getReportingActionDescription();
+            this.reportedErrorMessage = template.getErrorMessage();
+            this.reportedSystemAction = template.getReportedSystemAction();
+            this.reportedUserAction = template.getReportedUserAction();
+        }
     }
 
 

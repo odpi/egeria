@@ -1,0 +1,144 @@
+{
+  "class": "TableContextEvent",
+  "eventVersionId": 1,
+  "tableSource": {
+    "class": "TableSource",
+    "@id": 1,
+    "guid": "b1c497ce.54bd3a08.0v9mgsb23.pa2bef1.34r7co.tgr5b7dgjjrm6tesftbr5",
+    "name": "EMPLOYEE",
+    "schemaName": "DB2INST1",
+    "databaseSource": {
+      "class": "DatabaseSource",
+      "@id": 2,
+      "guid": "b1c497ce.6e83759b.0v9mgsb23.pajbvbk.bi4t6t.6bj8srpdi3ra2uo10pslq",
+      "name": "EMPLOYEE",
+      "endpointSource": {
+        "class": "EndpointSource",
+        "@id": 3,
+        "networkAddress": "{{host}}",
+        "connectorProviderName": "DB2Connector"
+      }
+    }
+  },
+  "tableColumns": [
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.pa305oe.kii6u4.qdcfiucddadpe5qho0n8o",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=EMPSTATUS",
+      "name": "EMPSTATUS",
+      "position": 4,
+      "businessTerm": {
+        "guid": "6662c0f2.e1b1ec6c.00263pfrb.66t5p8c.jk5353.69k7s3u2do49odaavci58",
+        "name": "Employee Status",
+        "description": "",
+        "abbreviation": "",
+        "usage": "",
+        "summary": "Employee Status represents current various status that an employee could have. Possible values: 1=Student; 2=Temporary-Assignment; 3=Board-Advisor; 4=Sabbatical; 5=Executive; 6=Part-Time-Perm; 7=Full-Time-Perm; 8=Left; 9=Retired; 10=DIS",
+        "examples": "",
+        "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Employee Status"
+      },
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.pa2mb5g.o6aanb.ghn0ho4o1apm5kms0g957",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=LOCCODE",
+      "name": "LOCCODE",
+      "position": 8,
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.pa318je.s48jct.1hd6uud0rv9fu94lvo0ro",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=LNAME",
+      "name": "LNAME",
+      "position": 3,
+      "businessTerm": {
+        "guid": "6662c0f2.e1b1ec6c.54865omgq.rfvlanh.nnt92o.b897ae4a46b6lji08q04c",
+        "name": "Last Name",
+        "description": "",
+        "abbreviation": "",
+        "usage": "",
+        "summary": "",
+        "examples": "",
+        "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Last Name"
+      },
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.pa2ik40.j8n8mn.j3ev5o280kc6gr2j6m44b",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=DEPT",
+      "name": "DEPT",
+      "position": 6,
+      "businessTerm": {
+        "guid": "6662c0f2.e1b1ec6c.00263pfv9.8dicae6.ms2vnv.944jep7aa2u7e0epjv35l",
+        "name": "Department Code",
+        "description": "",
+        "abbreviation": "",
+        "usage": "",
+        "summary": "",
+        "examples": "",
+        "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Department Code"
+      },
+      "referencedColumn": {
+        "columnGuid": "b1c497ce.60641b50.0v9mgsb23.pa30d9h.p5tahl.6ib6pt8gt4i8nnso0vreo",
+        "columnName": "DEPCODE",
+        "tableName": "DEPT"
+      },
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.pa32d69.aig05d.srl9paej3itqugq468ah4",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=PNUM",
+      "name": "PNUM",
+      "position": 1,
+      "primaryKeyName": "SQL190121170031730",
+      "isNullable": false,
+      "isPrimaryKey": true,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.p9ia47i.olib8a.fgogj3tln5ibkcdu6i5o5",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=FNAME",
+      "name": "FNAME",
+      "position": 2,
+      "businessTerm": {
+        "guid": "6662c0f2.e1b1ec6c.54865omh1.pco9ecb.c3g5f1.pfvf6bdv95dnc67jq2jli",
+        "name": "First Name",
+        "description": "",
+        "abbreviation": "",
+        "usage": "",
+        "summary": "",
+        "examples": "",
+        "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=First Name"
+      },
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    },
+    {
+      "guid": "b1c497ce.60641b50.0v9mgsb23.p9i9d64.5qdc19.d6ntnlgms84k93kd4p6bp",
+      "qualifiedName": "(host_(engine))={{host}}::(database)=EMPLOYEE::(database_schema)=DB2INST1::(database_table)=EMPLOYEE::(database_column)=LVL",
+      "name": "LVL",
+      "position": 5,
+      "businessTerm": {
+        "guid": "6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes",
+        "name": "Job Level",
+        "description": "Job Level term identifies job level within the enterprise. Job level is from 1-9. This term is assigned to each employee.",
+        "abbreviation": "",
+        "usage": "",
+        "summary": "Job Level term identifies job level within the enterprise. Job level is from 1-9.",
+        "examples": "3",
+        "qualifiedName": "(category)=Coco Pharmaceuticals::(category)=Terms::(term)=Job Level"
+      },
+      "isNullable": false,
+      "isPrimaryKey": false,
+      "isUnique": false
+    }
+  ]
+}
