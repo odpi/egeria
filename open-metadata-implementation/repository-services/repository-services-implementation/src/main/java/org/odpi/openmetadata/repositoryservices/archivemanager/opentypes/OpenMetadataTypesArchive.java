@@ -596,10 +596,18 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "displayName";
         final String attribute1Description     = "Display name of the process";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "formula";
+        final String attribute2Description     = "Formula for the process";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -10206,7 +10214,7 @@ public class OpenMetadataTypesArchive
          */
         final String guid            = "BgehpbcK-M5NI-KQ4R-ElaX-cmzumvM0AW8k";
         final String name            = "PortAlias";
-        final String description     = "Entity that describes the interaction point a process and a schema type.";
+        final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
@@ -10231,7 +10239,7 @@ public class OpenMetadataTypesArchive
          */
         final String guid            = "hy9is7dx-xQF9-wGFb-dkP6-ddyd362NBp68";
         final String name            = "PortImplementation";
-        final String description     = "Entity that describes the interaction point between two assets.";
+        final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
@@ -10248,7 +10256,7 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "type";
+        final String attribute1Name            = "portType";
         final String attribute1Description     = "Type of port";
         final String attribute1DescriptionGUID = null;
 

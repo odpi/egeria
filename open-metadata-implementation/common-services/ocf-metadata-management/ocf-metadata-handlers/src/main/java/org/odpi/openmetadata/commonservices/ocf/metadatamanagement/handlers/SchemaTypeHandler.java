@@ -306,6 +306,7 @@ public class SchemaTypeHandler
                     schemaAttribute.setAttributeName(columnName);
                     schemaAttribute.setCardinality("1");
                     schemaAttribute.setElementPosition(positionCount);
+                    tableColumns.add(schemaAttribute);
                     positionCount++;
                 }
             }
@@ -470,9 +471,9 @@ public class SchemaTypeHandler
                     if (schemaAttributeGUID != null)
                     {
                         repositoryHandler.createRelationship(userId,
-                                                             SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                                                             schemaAttributeGUID,
+                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                              schemaTypeGUID,
+                                                             schemaAttributeGUID,
                                                              null,
                                                              methodName);
                     }
@@ -588,7 +589,7 @@ public class SchemaTypeHandler
             return this.findSchemaType(userId,
                                        schemaAttribute.getGUID(),
                                        schemaAttribute.getQualifiedName(),
-                                       schemaAttribute.getAttributeName(),
+                                       null,
                                        methodName);
         }
 
