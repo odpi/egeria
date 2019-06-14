@@ -87,6 +87,7 @@ public class CriticalityMapper extends ClassificationMapper{
         if (criticality.getLevel()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(criticality.getLevel().getOrdinal());
+            enumPropertyValue.setSymbolicName(criticality.getLevel().getName());
             instanceProperties.setProperty("level",enumPropertyValue);
         }
 

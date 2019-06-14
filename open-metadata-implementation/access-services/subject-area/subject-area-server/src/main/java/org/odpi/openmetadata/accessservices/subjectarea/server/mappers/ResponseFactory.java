@@ -78,6 +78,9 @@ public class ResponseFactory
        {
            response = new CategoryAnchorRelationshipResponse((CategoryAnchorRelationship) line);
 
+       } else if (bundleName.equals(ProjectScopeRelationship.class.getName()))
+       {
+           response = new ProjectScopeRelationshipResponse((ProjectScopeRelationship) line);
        }
        return response;
    }
