@@ -732,7 +732,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param preferredTerm the Synonym relationship
+     * @param preferredTerm the preferred term relationship
      * @return response, when successful contains the created preferredTerm relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1445,7 +1445,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermIsaTypeOfRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
-        return restAPI.restoreTermISATypeOF(serverName,userId,guid);
+        return restAPI.restoreTermISATypeOFRelationship(serverName,userId,guid);
     }
 
 
@@ -1471,7 +1471,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations")
     public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
     {
-        return  restAPI.createTermCategorization(serverName, userId, termCategorizationRelationship);
+        return  restAPI.createTermCategorizationRelationship(serverName, userId, termCategorizationRelationship);
     }
 
     /**
@@ -1594,7 +1594,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor")
     public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermAnchorRelationship  termAnchorRelationship)
     {
-        return restAPI.createTermAnchor(serverName, userId, termAnchorRelationship);
+        return restAPI.createTermAnchorRelationship(serverName, userId, termAnchorRelationship);
     }
 
     /**
@@ -1665,7 +1665,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
     }
     /**
-     *  Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
+     * Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
      * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
      * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS or to recreate
      * the CategoryAnchor relationship if it has been purged.
@@ -1689,7 +1689,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor")
     public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
     {
-        return restAPI.createCategoryAnchor(serverName, userId, categoryAnchorRelationship);
+        return restAPI.createCategoryAnchorRelationship(serverName, userId, categoryAnchorRelationship);
     }
 
     /**
@@ -1758,6 +1758,120 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.restoreCategoryAnchorRelationship(serverName, userId,  guid);
     }
 
+    /**
+     *  Create a project scope relationship, which is a link between the project content and the project.
+     *
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param projectScope the Project scope relationship
+     * @return response, when successful contains the created project scope relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes")
+    public SubjectAreaOMASAPIResponse createProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope)
+    {
+        return restAPI.createProjectScopeRelationship(serverName, userId,projectScope);
+    }
+    /**
+     * Get a project scope relationship, which is a link between the project content and the project.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the project scope relationship to get
+     * @return response which when successful contains the project scope relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    public SubjectAreaOMASAPIResponse getProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+        return restAPI.getProjectScopeRelationship(serverName, userId,guid);
+    }
+    /**
+     * Update a Project scope relationship which is a link between the project content and the project.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param projectScope     the projectScope relationship
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the created ProjectScopeRelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/project-scopes")
+    public SubjectAreaOMASAPIResponse updateProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ProjectScopeRelationship projectScope,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+        return restAPI.updateProjectScopeRelationship(serverName, userId,projectScope,isReplace);
+    }
+    /**
+     * Delete a Project scope relationship which is a link between the project content and the project.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the Project scope relationship to delete
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the Project scope relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    public SubjectAreaOMASAPIResponse deleteProjectScopeRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+        if (isPurge == null) {
+            // default to soft delete if isPurge is not specified.
+            isPurge = false;
+        }
+        return restAPI.deleteProjectScopeRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a ProjectScope, which is a link between the project content and the project.
+     *
+     * Restore allows the deleted ProjectScopeRelationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ProjectScopeRelationship to delete
+     * @return response which when successful contains the restored ProjectScopeRelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/project-scopes/{guid}")
+    public SubjectAreaOMASAPIResponse restoreProjectScoperRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid) {
+        return restAPI.restoreProjectScopeRelationship(serverName, userId, guid);
+    }
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *
