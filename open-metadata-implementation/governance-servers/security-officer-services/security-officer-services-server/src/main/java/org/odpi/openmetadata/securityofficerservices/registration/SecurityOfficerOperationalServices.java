@@ -46,11 +46,11 @@ public class SecurityOfficerOperationalServices {
      * @param maxPageSize           maximum number of records that can be requested on the pageSize parameter
      */
     public SecurityOfficerOperationalServices(String localServerName,
-                                           String localServerType,
-                                           String localOrganizationName,
-                                           String localServerUserId,
-                                           String localServerURL,
-                                           int maxPageSize) {
+                                              String localServerType,
+                                              String localOrganizationName,
+                                              String localServerUserId,
+                                              String localServerURL,
+                                              int maxPageSize) {
         this.localServerName = localServerName;
         this.localServerType = localServerType;
         this.localOrganizationName = localOrganizationName;
