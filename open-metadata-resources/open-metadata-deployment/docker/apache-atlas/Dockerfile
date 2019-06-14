@@ -18,7 +18,8 @@ RUN tar zxf apache-atlas-2.0.0-sources.tar.gz
 WORKDIR /root/apache-atlas-sources-2.0.0
 
 # need more java heap
-ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
+ENV JAVA_TOOL_OPTIONS "-Xmx1024m"
+ENV MAVEN_OPTS "-Xms2g -Xmx2g"
 
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean -DskipTests install
@@ -47,15 +48,15 @@ COPY --from=build --chown=atlas:atlas /root/atlas-bin/ /opt/apache/atlas/
 USER atlas:atlas
 
 WORKDIR /opt/apache/atlas
-RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" conf/atlas-application.properties
+RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=200|g" conf/atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> conf/atlas-application.properties
 RUN echo "atlas.kafka.listeners=PLAINTEXT://:9027" >> conf/atlas-application.properties
 RUN echo "atlas.kafka.advertised.listeners=PLAINTEXT://\${sys:kafka.advertised.hostname}:9027" >> conf/atlas-application.properties
 
 # Set env variables, add it to the path, and start Atlas.
-ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
-ENV HBASE_CONF_DIR=/opt/apache/atlas/hbase/conf
-ENV ATLAS_OPTS="-Dkafka.advertised.hostname=localhost"
+ENV JAVA_TOOL_OPTIONS "-Xmx1024m"
+ENV HBASE_CONF_DIR "/opt/apache/atlas/hbase/conf"
+ENV ATLAS_OPTS "-Dkafka.advertised.hostname=localhost"
 
 EXPOSE 9026 9027 21000
 ENTRYPOINT ["/bin/bash", "-c", "/opt/apache/atlas/bin/atlas_start.py; tail -fF /opt/apache/atlas/logs/atlas*.out"]
