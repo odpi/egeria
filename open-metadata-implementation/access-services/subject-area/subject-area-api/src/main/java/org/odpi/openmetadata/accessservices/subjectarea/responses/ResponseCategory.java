@@ -38,6 +38,8 @@ public enum ResponseCategory {
     TermAnchorRelationship,
     // category to glossary relationships
     CategoryAnchorRelationship,
+    // project scope relationship
+    ProjectScopeRelationship,
     // Lines
     Lines,
     // external glossary relationships
@@ -77,6 +79,6 @@ public enum ResponseCategory {
     GlossarySummary,
     TermSummary,
     CategorySummary,
-    IconSummarySet
-    ;
+    IconSummarySet,
+
 }
