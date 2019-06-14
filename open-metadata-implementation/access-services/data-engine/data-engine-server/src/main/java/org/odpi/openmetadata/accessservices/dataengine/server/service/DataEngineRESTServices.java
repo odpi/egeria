@@ -53,7 +53,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName);
+            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
+                    methodName);
 
             response.setGUID(handler.createSoftwareServerCapability(userId, requestBody.getQualifiedName(),
                     requestBody.getName(), requestBody.getDescription(), requestBody.getType(),
@@ -93,7 +94,8 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName);
+            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
+                    methodName);
 
             response.setGUID(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
 
@@ -117,7 +119,7 @@ public class DataEngineRESTServices {
 
         try {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                    instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName);
+                    instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
             String newSchemaTypeGUID = dataEngineSchemaTypeHandler.createSchemaType(userId, serverName, schemaTypeGUID);
 
@@ -160,7 +162,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName);
+            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
             String schemaTypeGUID = portImplementationRequestBody.getSchemaTypeGUID();
 
@@ -206,7 +208,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName);
+            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
             response.setGUID(portHandler.createPortAlias(portRequestBody.getDisplayName(), userId));
 
@@ -245,7 +247,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName);
+            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
             String newPortAliasGUID = portHandler.createPortAlias(portRequestBody.getDisplayName(), userId);
 
@@ -290,7 +292,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName);
+            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
             String newPortImplementationGUID = portHandler.createPortImplementation(userId,
                     portImplementationRequestBody.getDisplayName(), portImplementationRequestBody.getPortType());
@@ -345,7 +347,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName);
+            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
             String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
                     zoneMembership, displayName, formula, owner, ownerType);
@@ -388,7 +390,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName);
+            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
             processHandler.addProcessPortRelationships(userId, processGuid, portListRequestBody.getPorts());
 

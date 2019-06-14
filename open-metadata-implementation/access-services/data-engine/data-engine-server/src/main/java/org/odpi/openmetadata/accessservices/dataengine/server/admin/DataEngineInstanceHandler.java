@@ -22,7 +22,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * Default constructor registers the access service
      */
     public DataEngineInstanceHandler() {
-        super(AccessServiceDescription.DATA_ENGINE_OMAS);
+        super(AccessServiceDescription.DATA_ENGINE_OMAS.getAccessServiceName());
 
         DataEngineRegistration.registerAccessService();
     }
@@ -30,8 +30,9 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     /**
      * Retrieve the process handler for the access service.
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
@@ -39,11 +40,12 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public ProcessHandler getProcessHandler(String userId, String serverName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     PropertyServerException {
+    public ProcessHandler getProcessHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                           InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName);
+                serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getProcessHandler();
@@ -64,12 +66,13 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public SoftwareServerRegistrationHandler getRegistrationHandler(String userId, String serverName) throws
-                                                                                                      InvalidParameterException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      PropertyServerException {
+    public SoftwareServerRegistrationHandler getRegistrationHandler(String userId, String serverName,
+                                                                    String serviceOperationName) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName);
+                serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getSoftwareServerRegistrationHandler();
@@ -81,8 +84,9 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     /**
      * Retrieve the registration handler for the access service.
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
@@ -90,12 +94,13 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler(String userId, String serverName) throws
-                                                                                                        InvalidParameterException,
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        PropertyServerException {
+    public DataEngineSchemaTypeHandler getDataEngineSchemaTypeHandler(String userId, String serverName,
+                                                                      String serviceOperationName) throws
+                                                                                                   InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
+                                                                                                   PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName);
+                serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getDataEngineSchemaTypeHandler();
@@ -107,8 +112,9 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     /**
      * Retrieve the process handler for the access service.
      *
-     * @param userId     calling user
-     * @param serverName name of the server tied to the request
+     * @param userId               calling user
+     * @param serverName           name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      *
      * @return handler for use by the requested instance
      *
@@ -116,11 +122,12 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public PortHandler getPortHandler(String userId, String serverName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException {
+    public PortHandler getPortHandler(String userId, String serverName, String serviceOperationName) throws
+                                                                                                     InvalidParameterException,
+                                                                                                     UserNotAuthorizedException,
+                                                                                                     PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
-                serverName);
+                serverName, serviceOperationName);
 
         if (instance != null) {
             return instance.getPortHandler();
@@ -128,7 +135,6 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
 
         return null;
     }
-
 }
 
 
