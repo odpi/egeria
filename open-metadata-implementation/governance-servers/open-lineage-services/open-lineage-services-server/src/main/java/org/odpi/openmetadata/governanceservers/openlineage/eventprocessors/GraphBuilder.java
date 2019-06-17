@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurge
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +27,6 @@ public class GraphBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
     private JanusGraph janusGraph;
-    private OMRSAuditLog auditLog;
 
     public GraphBuilder() {
 
@@ -39,10 +37,7 @@ public class GraphBuilder {
         }
     }
 
-
     public void addAsset(RelationshipEvent event) {
-
-
         GlossaryTerm glossaryTerm = event.getGlossaryTerm();
         Element technicalTerm = event.getAssetContext().getBaseAsset();
 

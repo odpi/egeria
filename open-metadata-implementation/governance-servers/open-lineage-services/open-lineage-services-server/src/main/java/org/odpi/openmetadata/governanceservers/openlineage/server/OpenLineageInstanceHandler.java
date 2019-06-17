@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 
@@ -34,5 +35,17 @@ class OpenLineageInstanceHandler
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
+    }
+
+    public GraphTester graphTester(String serverName) throws PropertyServerException {
+        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getGraphTester();
+        } else {
+            final String methodName = "graphTester";
+            throwError(serverName, methodName);
+            return null;
+        }
     }
 }

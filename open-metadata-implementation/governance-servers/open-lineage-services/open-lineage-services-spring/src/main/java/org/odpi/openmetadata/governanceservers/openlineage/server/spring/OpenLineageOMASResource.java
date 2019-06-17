@@ -19,4 +19,9 @@ public class OpenLineageOMASResource {
                                                    @PathVariable("serverName") String serverName) {
         return restAPI.exportGraph(serverName, userId);
     }
+    @GetMapping(path = "/exportTest")
+    public OpenLineageOMASAPIResponse exportTestGraph(@PathVariable("userId") String userId,
+                                                   @PathVariable("serverName") String serverName) {
+        return restAPI.exportTestGraph(serverName, userId);
+    }
 }
