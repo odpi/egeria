@@ -10,6 +10,8 @@ type system, frameworks, APIs, event payloads and interchange protocols to enabl
 engines and platforms to exchange metadata in order to get the best
 value from data whilst ensuring it is properly governed.
 
+[![Watch the video](https://i1.ytimg.com/vi/56ypavDrMw8/hqdefault.jpg)](https://youtu.be/56ypavDrMw8)
+
 ## Digging deeper
 
 See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md)
