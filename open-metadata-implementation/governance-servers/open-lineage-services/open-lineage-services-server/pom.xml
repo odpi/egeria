@@ -69,6 +69,15 @@
             <scope>compile</scope>
         </dependency>
 
+        <!-- Spring for REST APIs -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+
+
+
     </dependencies>
 
 </project>

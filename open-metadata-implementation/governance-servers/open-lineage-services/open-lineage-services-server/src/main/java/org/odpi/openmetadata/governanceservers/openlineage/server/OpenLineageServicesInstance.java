@@ -4,23 +4,30 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
 
-public class OpenLineageServicesInstance
-{
+public class OpenLineageServicesInstance {
     private String serverName;
     private GraphBuilder graphBuilder;
+    private GraphTester graphTester;
 
     public OpenLineageServicesInstance(GraphBuilder graphBuilder,
-                                       String serverName)  {
+                                       GraphTester graphTester,
+                                       String serverName) {
         this.graphBuilder = graphBuilder;
-        this.serverName    = serverName;
+        this.graphTester = graphTester;
+        this.serverName = serverName;
 
         OpenLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
     }
 
 
-    public GraphBuilder getGraphBuilder()  {
+    public GraphBuilder getGraphBuilder() {
         return this.graphBuilder;
+    }
+
+    public GraphTester getGraphTester() {
+        return this.graphTester;
     }
 
 

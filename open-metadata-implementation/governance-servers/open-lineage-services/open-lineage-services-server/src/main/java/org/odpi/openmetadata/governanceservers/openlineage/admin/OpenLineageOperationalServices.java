@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -83,7 +84,8 @@ public class OpenLineageOperationalServices {
 
             this.auditLog = auditLog;
             this.graphBuilder = new GraphBuilder();
-
+            GraphTester graphTester = new GraphTester();
+            graphTester.generate();
             Connection inTopicConnection = openLineageConfig.getInTopicConnection();
             String inTopicName = getTopicName(inTopicConnection);
 
@@ -95,7 +97,7 @@ public class OpenLineageOperationalServices {
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
             }
 
-            this.instance = new OpenLineageServicesInstance(graphBuilder, localServerName);
+            this.instance = new OpenLineageServicesInstance(graphBuilder, graphTester, localServerName);
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
