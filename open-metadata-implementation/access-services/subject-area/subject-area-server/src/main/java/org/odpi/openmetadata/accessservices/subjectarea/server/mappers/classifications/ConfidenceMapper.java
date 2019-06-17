@@ -96,11 +96,13 @@ public class ConfidenceMapper extends ClassificationMapper{
         if (confidence.getLevel()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(confidence.getLevel().getOrdinal());
+            enumPropertyValue.setSymbolicName(confidence.getLevel().getName());
             instanceProperties.setProperty("level",enumPropertyValue);
         }
         if (confidence.getStatus()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(confidence.getStatus().getOrdinal());
+            enumPropertyValue.setSymbolicName(confidence.getStatus().getName());
             instanceProperties.setProperty("status",enumPropertyValue);
         }
 

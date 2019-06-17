@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Static mapping methods to map between an OMAS Classificaiton and the OMRS Classification.
+ * Static mapping methods to map between an OMAS Classification and the OMRS Classification.
  */
 abstract public class ClassificationMapper {
     private static final Logger log = LoggerFactory.getLogger( ClassificationMapper.class);
@@ -41,9 +41,9 @@ abstract public class ClassificationMapper {
             //set core attributes
             SystemAttributes systemAttributes = createSystemAttributesFromOMRSClassification(omrsClassification);
             omasClassification.setSystemAttributes(systemAttributes);
-            // Set properties
+            // Set properties if there are any to set
             InstanceProperties omrsClassificationProperties = omrsClassification.getProperties();
-            if (omrsClassificationProperties != null) {
+            if (omrsClassificationProperties !=null && omrsClassificationProperties.getInstanceProperties() !=null && !omrsClassificationProperties.getInstanceProperties().isEmpty() ) {
                 omasClassification.setEffectiveFromTime(omrsClassificationProperties.getEffectiveFromTime());
                 omasClassification.setEffectiveToTime(omrsClassificationProperties.getEffectiveToTime());
 
@@ -58,32 +58,32 @@ abstract public class ClassificationMapper {
 
                     if (!attributeNameSet.contains(name)) {
                         // this is not an attribute we know about so put the attribute in extra Attributes
-                        Object attributeValue=null;
+                        String attributeValue = null;
                         switch (value.getInstancePropertyCategory()) {
                             case PRIMITIVE:
                                 PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) value;
                                 // put out the omrs value object
-                                if (null == omasClassification.getExtraAttributes()) {
-                                    omasClassification.setExtraAttributes(new HashMap<String, Object>());
+                                if (null == omasClassification.getAdditionalProperties()) {
+                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
                                 }
-                                attributeValue=primitivePropertyValue;
+                                attributeValue = primitivePropertyValue.valueAsString();
                                 break;
                             case ENUM:
                                 EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                                 // put out the omrs value object
-                                if (null == omasClassification.getExtraAttributes()) {
-                                    omasClassification.setExtraAttributes(new HashMap<String, Object>());
+                                if (null == omasClassification.getAdditionalProperties()) {
+                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
                                 }
-                                attributeValue= enumPropertyValue;
+                                attributeValue = enumPropertyValue.valueAsString();
 
                                 break;
                             case MAP:
                                 MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                                 // put out the omrs value object
-                                if (null == omasClassification.getExtraAttributes()) {
-                                    omasClassification.setExtraAttributes(new HashMap<String, Object>());
+                                if (null == omasClassification.getAdditionalProperties()) {
+                                    omasClassification.setAdditionalProperties(new HashMap<String, String>());
                                 }
-                                attributeValue= mapPropertyValue.getMapValues();
+                                attributeValue = mapPropertyValue.getMapValues().toString();
                                 break;
                             case ARRAY:
                             case STRUCT:
@@ -91,16 +91,27 @@ abstract public class ClassificationMapper {
                                 // error
                                 break;
                         }
-                        omasClassification.getExtraAttributes().put(name,attributeValue);
-                    }
+                        omasClassification.getAdditionalProperties().put(name, attributeValue);
 
-                }   // end while
+
+                    }   // end while
+                } // end   if (omrsClassificationProperties !=null)
             }
             return omasClassification;
         } else {
             // TODO wrong type
         }
         return null;
+    }
+    public Classification mapBeanToOmrs(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+         SystemAttributes systemAttributes = omasClassification.getSystemAttributes();
+         org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification();
+         SubjectAreaUtils.populateSystemAttributesForInstanceAuditHeader(systemAttributes, omrsClassification);
+         // copy over the classification name
+         omrsClassification.setName(omasClassification.getClassificationName());
+         // copy over the classification properties
+        omrsClassification.setProperties(updateOMRSAttributes(omasClassification));
+        return omrsClassification;
     }
 
     /**
