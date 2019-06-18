@@ -70,9 +70,6 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                           InvalidParameterException,
                                                                                           RepositoryErrorException,
                                                                                           FunctionNotSupportedException,
-                                                                                          ClassificationErrorException,
-                                                                                          StatusNotSupportedException,
-                                                                                          TypeDefNotKnownException,
                                                                                           PropertyErrorException,
                                                                                           TypeErrorException,
                                                                                           PagingErrorException,
@@ -97,11 +94,11 @@ public class ReportUpdater extends ReportBasicOperation {
                 log.info("Entity {} already exists", qualifiedNameForComplexSchemaType);
             } else {
                 omEntityDao.purgeEntity(schemaTypeRelationship.getEntityTwoProxy());
-                schemaTypeEntity = addReportSchemaType(reportEntity, qualifiedNameForComplexSchemaType, complexSchemaTypeProperties);
+                schemaTypeEntity = addAssetSchemaType(reportEntity.getGUID(), qualifiedNameForComplexSchemaType, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
                 schemaTypeGuid = schemaTypeEntity.getGUID();
             }
         } else {
-            schemaTypeEntity = addReportSchemaType(reportEntity, qualifiedNameForComplexSchemaType, complexSchemaTypeProperties);
+            schemaTypeEntity = addAssetSchemaType(reportEntity.getGUID(), qualifiedNameForComplexSchemaType, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
             schemaTypeGuid = schemaTypeEntity.getGUID();
         }
 
@@ -276,7 +273,7 @@ public class ReportUpdater extends ReportBasicOperation {
             String qualifiedNameForSectionType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection.getName() + Constants.TYPE_SUFFIX);
             sectionTypeRelationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
             if (sectionTypeRelationships == null || sectionTypeRelationships.isEmpty()) {
-                EntityDetail schemaType = addSchemaType(qualifiedNameForSectionType, matchingSection, Constants.DOCUMENT_SCHEMA_TYPE);
+                EntityDetail schemaType = createSchemaType(Constants.DOCUMENT_SCHEMA_TYPE,  qualifiedNameForSectionType, helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, new InstanceProperties(), Constants.QUALIFIED_NAME, qualifiedNameForSectionType, "addSchemaType"), Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID() );
                 sectionTypeGuid = schemaType.getGUID();
             } else {
                 sectionTypeGuid = sectionTypeRelationships.get(0).getEntityTwoProxy().getGUID();
@@ -341,7 +338,9 @@ public class ReportUpdater extends ReportBasicOperation {
             columnType = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
             if (columnType == null || columnType.isEmpty()) {
                 String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.SCHEMA_TYPE, reportColumn.getName());
-                addSchemaType(qualifiedNameForColumnType, wrapper.getEntityDetail(), Constants.SCHEMA_TYPE);
+                InstanceProperties schemaAttributeTypeProperties = new EntityPropertiesBuilder().withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumnType)
+                                                                                                .build();
+                createSchemaType(Constants.SCHEMA_TYPE,  qualifiedNameForColumnType, schemaAttributeTypeProperties, Constants.SCHEMA_ATTRIBUTE_TYPE, wrapper.getEntityDetail().getGUID() );
             }
         } else {
             addReportColumn(parentQualifiedName, parentGuid, reportColumn);
@@ -405,8 +404,6 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                                        PropertyErrorException,
                                                                                                        TypeErrorException,
                                                                                                        PagingErrorException,
-                                                                                                       RelationshipNotKnownException,
-                                                                                                       RelationshipNotDeletedException,
                                                                                                        StatusNotSupportedException{
         List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
         if (reportColumn.getBusinessTerm() == null) {

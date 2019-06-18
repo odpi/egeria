@@ -78,6 +78,11 @@ public class InMemoryRepositoryTest {
                 any(String.class),
                 anyList(),
                 any(String.class))).thenCallRealMethod();
+        when(omrsRepositoryHelper.addStringPropertyToInstance(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                any(InstanceProperties.class),
+                any(String.class),
+                any(String.class),
+                any(String.class))).thenCallRealMethod();
 
     }
 

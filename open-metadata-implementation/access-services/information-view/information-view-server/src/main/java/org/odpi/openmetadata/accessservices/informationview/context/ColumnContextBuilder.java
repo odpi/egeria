@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.informationview.views;
+package org.odpi.openmetadata.accessservices.informationview.context;
 
 
 import org.apache.commons.collections.CollectionUtils;

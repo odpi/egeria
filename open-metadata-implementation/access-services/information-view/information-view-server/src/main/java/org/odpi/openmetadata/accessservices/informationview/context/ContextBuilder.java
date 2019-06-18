@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveRelationshipException;
+
 public abstract class ContextBuilder<T> {
 
     protected OMRSRepositoryConnector enterpriseConnector;
@@ -85,7 +87,7 @@ public abstract class ContextBuilder<T> {
 
 
     /**
-     * Return the business term associated to the entoty
+     * Return the business term associated to the entity
      * @param entityGuid unique identifier of the entity for which we want to retrieve the business term
      * @return bean describing the business term associated
      */
@@ -138,17 +140,11 @@ public abstract class ContextBuilder<T> {
      * @return the list of asset schema type relationships linked to the entity
      */
     protected List<Relationship> getAssetSchemaTypeRelationships(String guid) {
-        List<Relationship> relationships;
+        List<Relationship> relationships = Collections.emptyList();
         try {
             relationships = entityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, guid);
         } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
-                    OMEntityDao.class.getName(),
-                    auditCode.getFormattedErrorMessage(Constants.ASSET_SCHEMA_TYPE, guid, e.getMessage()),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
+            throwRetrieveRelationshipException(guid, Constants.ASSET_SCHEMA_TYPE, e, ContextBuilder.class.getName());
         }
         return relationships;
     }

@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.ReportLookup;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -30,6 +29,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 
 import java.util.Date;
 import java.util.List;
+
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveRelationshipException;
 
 public class ReportContextBuilder extends ContextBuilder{
 
@@ -122,13 +123,7 @@ public class ReportContextBuilder extends ContextBuilder{
                     ((ReportSection) reportElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-                InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-                throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
-                                                        OMEntityDao.class.getName(),
-                                                        auditCode.getFormattedErrorMessage(Constants.ASSET_SCHEMA_TYPE, entityDetail.getGUID(), e.getMessage()),
-                                                        auditCode.getSystemAction(),
-                                                        auditCode.getUserAction(),
-                                                        e);
+                return throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e, ReportContextBuilder.class.getName());
             }
 
         }else{

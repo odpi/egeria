@@ -87,7 +87,7 @@ public class ReportHandler {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
 
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),
