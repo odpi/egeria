@@ -37,11 +37,10 @@ public class Node implements Serializable {
     private SystemAttributes systemAttributes=null;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
-    private Map<String,String> additionalProperties;
     private String description =null;
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
-    private Map<String,Object> extraAttributes;
+    private Map<String,String> additionalProperties;
 
     /**
      * Node type
@@ -127,14 +126,6 @@ public class Node implements Serializable {
 
     public void setIcons(Set<IconSummary> icons) {
         this.icons = icons;
-    }
-
-    public Map<String, String> getAdditionalProperties() {
-        return additionalProperties;
-    }
-
-    public void setAdditionalProperties(Map<String, String> additionalProperties) {
-        this.additionalProperties = additionalProperties;
     }
 
     /**
@@ -239,27 +230,27 @@ public class Node implements Serializable {
     protected void processClassification(Classification classification) {
     }
     /**
-     * Set the extra attributes.
-     * The extra attributes are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
-     * the open types and adds extra attributes.
+     * Set the additional properties.
+     * The additional properties are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
+     * the open types and adds additional properties.
      *
-     * These extra attributes should be supplied on calls for this node - or they will be lost.
-     * @param  extraAttributes the extra attributes
+     * These additional properties should be supplied on calls for this node - or they will be lost.
+     * @param  additionalProperties the additional properties
      */
-    public void setExtraAttributes(Map<String,Object> extraAttributes) {
-        this.extraAttributes = extraAttributes;
+    public void setAdditionalProperties(Map<String,String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
     /**
-     * Get the extra attributes.
+     * Get the additional properties
      *
-     * The extra attributes are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
-     * the open types and adds extra attributes.
+     * The additional properties are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
+     * the open types and adds additional properties.
      *
-     * These extra attributes should be supplied on calls for this node - or they will be lost.
-     * @return the extra attributes
+     * These additional properties should be supplied on calls for this node - or they will be lost.
+     * @return the additional properties
      */
-    public Map<String,Object> getExtraAttributes() {
-        return this.extraAttributes;
+    public Map<String,String> getAdditionalProperties() {
+        return this.additionalProperties;
     }
 }
