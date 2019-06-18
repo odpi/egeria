@@ -37,7 +37,7 @@ public enum LineType {
     CategoryAnchor,
     //glossary term
     TermAnchor,
-     // TODO add support for the following
+    // TODO add support for the following
 //    AttachedComment,
 //    License,
 //    ToDoSource,
@@ -57,6 +57,8 @@ public enum LineType {
 //    ReferenceableFacet,
 //    AttachedLike,
     SemanticAssignment,
+    // project scope
+    ProjectScope,
     Unknown;
 }
 
