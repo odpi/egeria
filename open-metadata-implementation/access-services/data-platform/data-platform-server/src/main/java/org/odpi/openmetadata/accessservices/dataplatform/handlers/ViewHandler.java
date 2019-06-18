@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.views;
+package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
@@ -10,7 +10,7 @@ import org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
+import org.odpi.openmetadata.accessservices.dataplatform.asset.View;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -21,9 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
