@@ -6,22 +6,17 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.janusgraph.core.JanusGraph;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_NAME_QUALIFIED_NAME;
 
 @Component
 public class GraphTester {
@@ -32,10 +27,11 @@ public class GraphTester {
 
     private int numberGlossaryTerms;
     private int numberTables;
+    private int processesPerFlow;
+    private int tablesPerFlow;
     private int columnsPerTable;
     private int numberProcesses;
-    private int columnsPerProces;
-    private int processesPerFlow;
+    private int numberFlows;
 
     private List<String> nodes = new ArrayList<>();
     private List<String> properties = new ArrayList<>();
@@ -52,13 +48,14 @@ public class GraphTester {
     }
 
     private void setProperties() {
-        this.numberGlossaryTerms = 5;
-        this.numberTables = 3;
-        this.columnsPerTable = 4;
-        this.numberProcesses = 2;
-        this.columnsPerProces = 1;
-        this.processesPerFlow = 1;
+        this.numberGlossaryTerms = 0;
+        this.processesPerFlow = 3;
+        this.numberFlows = 3;
+        this.columnsPerTable = 3;
 
+        this.tablesPerFlow = processesPerFlow + 1;
+        this.numberProcesses = numberFlows * processesPerFlow;
+        this.numberTables =  numberFlows * tablesPerFlow;
 
         nodes.add("table");
         nodes.add("column");
@@ -76,8 +73,8 @@ public class GraphTester {
     }
 
     private void generateVerbose() {
+        List<Vertex> columnNodes;
         List<Vertex> glossaryNodes = new ArrayList<>();
-        List<Vertex> columnNodes = new ArrayList<>();
         List<List<Vertex>> tableNodes = new ArrayList<>();
 
         GraphTraversalSource g = janusGraph.traversal();
@@ -90,40 +87,44 @@ public class GraphTester {
             processNodes.add(g.addV("Process").next());
 
         for (int j = 0; j < numberTables; j++) {
-            Vertex tableVertex = g.addV("table").next();
+            Vertex tableVertex = g.addV("Table").next();
             tableVertex.property("qualifiedName", "Qualified Name " + j);
             columnNodes = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
-                Vertex columnVertex = g.addV("column").next();
+                Vertex columnVertex = g.addV("Column").next();
                 columnVertex.property("qualifiedName", "Qualified Name " + i);
                 tableVertex.addEdge("Included in", columnVertex);
-                int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
-                Vertex glossaryNode = glossaryNodes.get(randomNum);
-                glossaryNode.addEdge("Semantic relationship", columnVertex);
+                if (numberGlossaryTerms != 0) {
+                    int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
+                    Vertex glossaryNode = glossaryNodes.get(randomNum);
+                    glossaryNode.addEdge("Semantic relationship", columnVertex);
+                }
                 columnNodes.add(columnVertex);
             }
             tableNodes.add(columnNodes);
         }
 
-        for (int j = 0; j < numberTables; j++) {
-            for (int i = 0; i < columnsPerTable; i++) {
-                if (j < numberTables -1)
-                    tableNodes.get(j).get(i).addEdge("ETL", processNodes.get(j));
-                if (j + 1 < numberTables)
-                    processNodes.get(j).addEdge("ETL", tableNodes.get(j + 1).get(i));
+        for (int k = 0; k < numberFlows; k++) {
+            for (int j = 0; j < tablesPerFlow; j++) {
+                for (int i = 0; i < columnsPerTable; i++) {
+                    if (j + 1 < tablesPerFlow)
+                        tableNodes.get(k * tablesPerFlow + j).get(i).addEdge("ETL", processNodes.get(k * processesPerFlow + j));
+                    if (j + 1 < tablesPerFlow)
+                        processNodes.get(k * processesPerFlow + j).addEdge("ETL", tableNodes.get(k * tablesPerFlow + j + 1).get(i));
+                }
             }
         }
         g.tx().commit();
     }
 
-    public void exportGraph() {
+        public void exportGraph () {
 
-        try {
-            janusGraph.io(IoCore.graphml()).writeGraph("testGraph.graphml");
-        } catch (IOException e) {
-            log.error(e.getMessage());
+            try {
+                janusGraph.io(IoCore.graphml()).writeGraph("testGraph.graphml");
+            } catch (IOException e) {
+                log.error(e.getMessage());
+            }
         }
+
+
     }
-
-
-}
