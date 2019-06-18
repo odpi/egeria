@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRe
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
@@ -57,8 +58,8 @@ public class DataEngineRESTServices {
                     methodName);
 
             response.setGUID(handler.createSoftwareServerCapability(userId, requestBody.getQualifiedName(),
-                    requestBody.getName(), requestBody.getDescription(), requestBody.getType(),
-                    requestBody.getVersion(), requestBody.getPatchLevel(), requestBody.getSource()));
+                    requestBody.getDisplayName(), requestBody.getDescription(), requestBody.getEngineType(),
+                    requestBody.getEngineVersion(), requestBody.getPatchLevel(), requestBody.getSource()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -112,8 +113,13 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    public GUIDResponse createSchemaType(String userId, String serverName, String schemaTypeGUID) {
+    public GUIDResponse createSchemaType(String userId, String serverName,
+                                         SchemaTypeRequestBody schemaTypeRequestBody) {
         final String methodName = "createSchemaType";
+
+        if (schemaTypeRequestBody == null) {
+            return null;
+        }
 
         GUIDResponse response = new GUIDResponse();
 
@@ -121,9 +127,12 @@ public class DataEngineRESTServices {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                     instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-            String newSchemaTypeGUID = dataEngineSchemaTypeHandler.createSchemaType(userId, serverName, schemaTypeGUID);
+            String newSchemaTypeGUID = dataEngineSchemaTypeHandler.createSchemaType(userId,
+                    schemaTypeRequestBody.getQualifiedName(), schemaTypeRequestBody.getDisplayName(),
+                    schemaTypeRequestBody.getAuthor(), schemaTypeRequestBody.getEncodingStandard(),
+                    schemaTypeRequestBody.getUsage(), schemaTypeRequestBody.getColumnList());
 
-            dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, schemaTypeGUID, newSchemaTypeGUID);
+            //dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, schemaTypeGUID, newSchemaTypeGUID);
 
             response.setGUID(newSchemaTypeGUID);
 
@@ -167,8 +176,9 @@ public class DataEngineRESTServices {
             String schemaTypeGUID = portImplementationRequestBody.getSchemaTypeGUID();
 
             String portGUID = portHandler.createPortImplementation(userId,
-                    portImplementationRequestBody.getDisplayName(),
-                    portImplementationRequestBody.getPortType());
+                    portImplementationRequestBody.getQualifiedName(), portImplementationRequestBody.getDisplayName(),
+                    portImplementationRequestBody.getPortType()
+            );
 
             portHandler.addPortSchemaRelationship(userId, portGUID, schemaTypeGUID);
 
@@ -210,7 +220,8 @@ public class DataEngineRESTServices {
         try {
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-            response.setGUID(portHandler.createPortAlias(portRequestBody.getDisplayName(), userId));
+            response.setGUID(portHandler.createPortAlias(userId, portRequestBody.getQualifiedName(),
+                    portRequestBody.getDisplayName()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -249,7 +260,8 @@ public class DataEngineRESTServices {
         try {
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-            String newPortAliasGUID = portHandler.createPortAlias(portRequestBody.getDisplayName(), userId);
+            String newPortAliasGUID = portHandler.createPortAlias(userId, portRequestBody.getQualifiedName(),
+                    portRequestBody.getDisplayName());
 
             portHandler.addPortDelegationRelationship(userId, portAliasGUID, newPortAliasGUID);
 
@@ -295,7 +307,8 @@ public class DataEngineRESTServices {
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
             String newPortImplementationGUID = portHandler.createPortImplementation(userId,
-                    portImplementationRequestBody.getDisplayName(), portImplementationRequestBody.getPortType());
+                    portImplementationRequestBody.getQualifiedName(), portImplementationRequestBody.getDisplayName(),
+                    portImplementationRequestBody.getPortType());
 
             portHandler.addPortSchemaRelationship(userId, newPortImplementationGUID,
                     portImplementationRequestBody.getSchemaTypeGUID());

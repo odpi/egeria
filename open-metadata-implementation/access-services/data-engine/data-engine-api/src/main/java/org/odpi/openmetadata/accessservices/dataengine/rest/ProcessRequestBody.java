@@ -16,12 +16,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ProcessRequestBody extends AssetRequestBody {
+public class ProcessRequestBody extends DataEngineOMASAPIRequestBody {
+    private String name;
+    private String description;
+    private String latestChange;
+    private List<String> zoneMembership;
     private String displayName;
     private String owner;
     private OwnerType ownerType;
     private String formula;
     private List<String> ports;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLatestChange() {
+        return latestChange;
+    }
+
+    public List<String> getZoneMembership() {
+        return zoneMembership;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -71,7 +91,11 @@ public class ProcessRequestBody extends AssetRequestBody {
     @Override
     public String toString() {
         return "ProcessRequestBody{" +
-                "displayName='" + displayName + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", latestChange='" + latestChange + '\'' +
+                ", zoneMembership=" + zoneMembership +
+                ", displayName='" + displayName + '\'' +
                 ", owner='" + owner + '\'' +
                 ", ownerType=" + ownerType +
                 ", formula='" + formula + '\'' +
@@ -85,7 +109,11 @@ public class ProcessRequestBody extends AssetRequestBody {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ProcessRequestBody that = (ProcessRequestBody) o;
-        return Objects.equals(displayName, that.displayName) &&
+        return Objects.equals(name, that.name) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(latestChange, that.latestChange) &&
+                Objects.equals(zoneMembership, that.zoneMembership) &&
+                Objects.equals(displayName, that.displayName) &&
                 Objects.equals(owner, that.owner) &&
                 ownerType == that.ownerType &&
                 Objects.equals(formula, that.formula) &&
@@ -94,6 +122,6 @@ public class ProcessRequestBody extends AssetRequestBody {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), displayName, owner, ownerType, formula, ports);
+        return Objects.hash(super.hashCode(), name, description, latestChange, zoneMembership, displayName, owner, ownerType, formula, ports);
     }
 }

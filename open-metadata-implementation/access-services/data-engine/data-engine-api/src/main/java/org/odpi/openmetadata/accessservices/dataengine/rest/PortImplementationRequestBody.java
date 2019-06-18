@@ -45,7 +45,6 @@ public class PortImplementationRequestBody extends PortRequestBody {
         return "PortImplementationRequestBody{" +
                 "schemaTypeGUID='" + schemaTypeGUID + '\'' +
                 ", portType=" + portType +
-                ", displayName='" + displayName + '\'' +
                 '}';
     }
 
@@ -53,6 +52,7 @@ public class PortImplementationRequestBody extends PortRequestBody {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         PortImplementationRequestBody that = (PortImplementationRequestBody) o;
         return Objects.equals(schemaTypeGUID, that.schemaTypeGUID) &&
                 portType == that.portType;
@@ -60,6 +60,6 @@ public class PortImplementationRequestBody extends PortRequestBody {
 
     @Override
     public int hashCode() {
-        return Objects.hash(schemaTypeGUID, portType);
+        return Objects.hash(super.hashCode(), schemaTypeGUID, portType);
     }
 }

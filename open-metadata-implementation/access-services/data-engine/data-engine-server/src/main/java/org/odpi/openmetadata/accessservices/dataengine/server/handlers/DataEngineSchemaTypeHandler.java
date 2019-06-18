@@ -1,22 +1,28 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.Column;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.SchemaTypeConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class DataEngineSchemaTypeHandler {
@@ -50,71 +56,98 @@ public class DataEngineSchemaTypeHandler {
     }
 
 
-    public String createSchemaType(String userId, String serverName, String schemaTypeGUID) throws
-                                                                                            InvalidParameterException,
-                                                                                            PropertyServerException,
-                                                                                            UserNotAuthorizedException {
+    public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
+                                   String encodingStandard, String usage, List<Column> columnList) throws
+                                                                                                   InvalidParameterException,
+                                                                                                   PropertyServerException,
+                                                                                                   UserNotAuthorizedException {
+
+
         final String methodName = "createSchemaType";
 
-        List<SchemaAttribute> schemaAttributes = schemaTypeHandler.getSchemaAttributes(userId, schemaTypeGUID,
-                0, 0, methodName);
+        //TODO check displayName issue when finding existing schema
+        SchemaType newSchemaType = this.createComplexSchemaType(qualifiedName, qualifiedName + "::" + displayName,
+                author, encodingStandard, usage);
 
-        EntityDetail schemaTypeEntityDetail = repositoryHandler.getEntityByGUID(userId, schemaTypeGUID,
-                "guid", "SchemaType", methodName);
+        Map<SchemaAttribute, SchemaType> newSchemaAttributes = this.createSchemaAttributes(columnList);
 
-        SchemaTypeConverter schemaTypeConverter = new SchemaTypeConverter(schemaTypeEntityDetail,
-                schemaAttributes.size(), repositoryHelper, serverName);
-        SchemaType schemaType = schemaTypeConverter.getBean();
+        String newSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaType,
+                new ArrayList<>(newSchemaAttributes.keySet()), methodName);
 
-        //TODO add method to build qualifiedName & displayName for the new schema
-        String schemaTypeQualifiedName = schemaTypeGUID + "::" + "dataEngine" + "::";
+        //TODO update SchemaTypeHandler to save attributes along with the type schema types and
+        // SchemaAttributeType relationship
+        for (SchemaAttribute schemaAttribute : newSchemaAttributes.keySet()) {
+            String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaAttributes.get(schemaAttribute),
+                    null, methodName);
 
-        SchemaType newSchemaType = this.createSchemaType(schemaTypeQualifiedName, schemaType);
+            String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute.getQualifiedName(), methodName);
 
-        List<SchemaAttribute> newSchemaAttributes = this.createSchemaAttributes(newSchemaType.getQualifiedName(),
-                schemaAttributes);
-
-        return schemaTypeHandler.saveSchemaType(userId, newSchemaType, newSchemaAttributes, methodName);
-    }
-
-    private List<SchemaAttribute> createSchemaAttributes(String parentSchemaQualifiedName,
-                                                         List<SchemaAttribute> schemaAttributes) {
-
-        List<SchemaAttribute> newSchemaAttributes = new ArrayList<>();
-
-        for (SchemaAttribute schemaAttribute : schemaAttributes) {
-            SchemaAttribute newSchemaAttribute = new SchemaAttribute();
-
-            newSchemaAttribute.setQualifiedName(parentSchemaQualifiedName + ":Column:" + schemaAttribute.getAttributeName());
-
-            newSchemaAttribute.setAttributeName(schemaAttribute.getAttributeName());
-            newSchemaAttribute.setCardinality(schemaAttribute.getCardinality());
-            newSchemaAttribute.setElementPosition(schemaAttribute.getElementPosition());
-            newSchemaAttribute.setType(schemaAttribute.getType());
-            newSchemaAttribute.setAdditionalProperties(schemaAttribute.getAdditionalProperties());
-            newSchemaAttribute.setExtendedProperties(schemaAttribute.getExtendedProperties());
-
-            newSchemaAttributes.add(newSchemaAttribute);
+            repositoryHandler.createRelationship(userId, SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                    schemaAttributeGUID, schemaTypeGUID,null, methodName);
         }
 
-        return newSchemaAttributes;
+        return newSchemaTypeGUID;
     }
 
-    private SchemaType createSchemaType(String parentSchemaQualifiedName, SchemaType schemaType) {
+    private String findSchemaAttribute(String userId, String qualifiedName, String methodName) throws
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
-        ComplexSchemaType newSchemaType = new ComplexSchemaType();
+        EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, methodName);
 
-        newSchemaType.setQualifiedName(parentSchemaQualifiedName + schemaType.getDisplayName());
-        newSchemaType.setDisplayName(parentSchemaQualifiedName + schemaType.getDisplayName());
-        newSchemaType.setAuthor(schemaType.getAuthor());
-        newSchemaType.setEncodingStandard(schemaType.getEncodingStandard());
-        newSchemaType.setUsage(schemaType.getUsage());
-        newSchemaType.setAdditionalProperties(schemaType.getAdditionalProperties());
-        newSchemaType.setExtendedProperties(schemaType.getExtendedProperties());
-        newSchemaType.setType(schemaType.getType());
+        return retrievedEntity.getGUID();
+    }
 
-        return newSchemaType;
-}
+    private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Column> columnList) {
+        Map<SchemaAttribute, SchemaType> schemaAttributes = new HashMap<>();
+
+        for (Column column : columnList) {
+            SchemaAttribute schemaAttribute = schemaTypeHandler.getEmptySchemaAttribute();
+
+            schemaAttribute.setQualifiedName(column.getQualifiedName());
+            schemaAttribute.setAttributeName(column.getAttributeName());
+            schemaAttribute.setCardinality(column.getCardinality());
+            schemaAttribute.setElementPosition(column.getElementPosition());
+
+
+            SchemaType schemaAttributeType = this.createSchemaTypeAttribute(column);
+            schemaAttributes.put(schemaAttribute, schemaAttributeType);
+        }
+
+        return schemaAttributes;
+    }
+
+    private SchemaType createSchemaTypeAttribute(Column column) {
+
+        PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
+                SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID,
+                SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME);
+        schemaType.setDataType(column.getType().name());
+        // schemaType.setDefaultValue(column.getDefaultValue());
+        schemaType.setDisplayName(column.getQualifiedName() + "::" + "type" + column.getAttributeName());
+        schemaType.setQualifiedName(column.getQualifiedName() + "::" + "type");
+
+        return schemaType;
+    }
+
+    private SchemaType createComplexSchemaType(String qualifiedName, String displayName, String author,
+                                               String encodingStandard, String usage) {
+        ComplexSchemaType schemaType = schemaTypeHandler.getEmptyComplexSchemaType(
+                SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
+
+        schemaType.setQualifiedName(qualifiedName);
+        schemaType.setDisplayName(displayName);
+        schemaType.setAuthor(author);
+        schemaType.setEncodingStandard(encodingStandard);
+        schemaType.setUsage(usage);
+
+        return schemaType;
+    }
 
     public void addLineageMappingRelationship(String userId, String schemaTypeGUID, String newSchemaTypeGUID) throws
                                                                                                               org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,

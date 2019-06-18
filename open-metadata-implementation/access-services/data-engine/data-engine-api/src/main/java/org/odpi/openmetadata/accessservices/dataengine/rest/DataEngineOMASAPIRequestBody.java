@@ -17,16 +17,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = SoftwareServerCapabilityRequestBody.class, name =
-                        "SoftwareServerCapabilityRequestBody"),
-                @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "PortImplementationRequestBody"),
-                @JsonSubTypes.Type(value = PortRequestBody.class, name = "PortRequestBody"),
-                @JsonSubTypes.Type(value = ProcessRequestBody.class, name = "ProcessRequestBody"),
+                @JsonSubTypes.Type(value = SoftwareServerCapabilityRequestBody.class, name = "dataEngine"),
+                @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "port"),
+                @JsonSubTypes.Type(value = PortRequestBody.class, name = "portAlias"),
+                @JsonSubTypes.Type(value = ProcessRequestBody.class, name = "process"),
+                @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
         })
 
 public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializable {
