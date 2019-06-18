@@ -601,8 +601,16 @@ public class DetectUtils {
         }
         return categoryAnchorRelationship;
     }
-
-
+    public static ProjectScopeRelationship detectAndReturnProjectScope(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        ProjectScopeRelationship projectScopeRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.ProjectScopeRelationship)) {
+            ProjectScopeRelationshipResponse relationshipResponse = (ProjectScopeRelationshipResponse) restResponse;
+            projectScopeRelationship= relationshipResponse.getProjectScope();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return projectScopeRelationship;
+    }
 
     /**
      * Convert a subject area a checked exception to a response
@@ -630,5 +638,6 @@ public class DetectUtils {
         }
         return response;
     }
+
 
 }

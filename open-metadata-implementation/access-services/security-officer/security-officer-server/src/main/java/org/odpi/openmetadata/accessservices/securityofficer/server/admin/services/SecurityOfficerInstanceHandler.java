@@ -13,9 +13,9 @@ import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.B
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -28,7 +28,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_TAG;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_LABELS;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_PROPERTIES;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_TAGS;
 
 /**
  * SecurityOfficerInstanceHandler retrieves information from the instance map for the
@@ -74,39 +77,44 @@ class SecurityOfficerInstanceHandler {
     }
 
 
-    public SecurityClassification getSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+    SecurityClassification getSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
         OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
 
         EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, schemaElementId);
         List<Classification> classifications = entityDetail.getClassifications();
-        Optional<Classification> securityTag = classifications.stream().filter(classification -> classification.getName().equals(SECURITY_TAG)).findAny();
+        Optional<Classification> securityTag = classifications.stream().filter(classification -> classification.getName().equals(SECURITY_TAGS)).findAny();
 
-        return securityTag.map(classification -> builder.buildSecurityTag(classification)).orElse(null);
+        OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
+        return securityTag.map(classification -> builder.buildSecurityTag(classification, repositoryHelper)).orElse(null);
 
     }
 
-    public SchemaElementEntity updateSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId, String securityTagLevel) throws PropertyServerException, RepositoryErrorException, ClassificationErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, EntityProxyOnlyException {
+    SchemaElementEntity updateSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) throws PropertyServerException, RepositoryErrorException, ClassificationErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, EntityProxyOnlyException {
         OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
 
-        InstanceProperties instanceProperties = getInstanceProperties(securityTagLevel);
+        InstanceProperties instanceProperties = getInstanceProperties(serverName, securityClassification);
         EntityDetail schemaElement = metadataCollection.getEntityDetail(userId, schemaElementId);
 
         EntityDetail entityDetail;
-        if(schemaElement.getClassifications() != null && !schemaElement.getClassifications().isEmpty()){
-            entityDetail =  metadataCollection.updateEntityClassification(userId, schemaElementId, SECURITY_TAG, instanceProperties);
+        if (schemaElement.getClassifications() != null && !schemaElement.getClassifications().isEmpty()) {
+            entityDetail = metadataCollection.updateEntityClassification(userId, schemaElementId, SECURITY_TAGS, instanceProperties);
 
         } else {
-            entityDetail = metadataCollection.classifyEntity(userId, schemaElementId, SECURITY_TAG, instanceProperties);
+            entityDetail = metadataCollection.classifyEntity(userId, schemaElementId, SECURITY_TAGS, instanceProperties);
         }
-        return builder.buildSchemaElement(entityDetail);
+
+        OMRSRepositoryHelper omrsRepositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
+        return builder.buildSchemaElement(entityDetail, omrsRepositoryHelper);
     }
 
-    private InstanceProperties getInstanceProperties(String securityTagLevel) {
+    private InstanceProperties getInstanceProperties(String serverName, SecurityClassification securityTagLevel) throws PropertyServerException {
         InstanceProperties instanceProperties = new InstanceProperties();
+        String methodName = "getInstanceProperties";
+        OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
 
-        EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-        enumPropertyValue.setSymbolicName(securityTagLevel);
-        instanceProperties.setProperty("level", enumPropertyValue);
+        repositoryHelper.addMapPropertyToInstance(SECURITY_OFFICER, instanceProperties, SECURITY_PROPERTIES, securityTagLevel.getSecurityProperties(), methodName);
+        repositoryHelper.addStringArrayPropertyToInstance(SECURITY_OFFICER, instanceProperties, SECURITY_LABELS, securityTagLevel.getSecurityLabels(), methodName);
+
         return instanceProperties;
     }
 }
