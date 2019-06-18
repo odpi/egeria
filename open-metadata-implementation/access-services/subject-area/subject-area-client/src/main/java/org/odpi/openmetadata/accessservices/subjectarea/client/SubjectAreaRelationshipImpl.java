@@ -41,6 +41,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
     private static final String SEMANTIC_ASSIGNMENT = "/semantic-assignments";
     private static final String TERM_ANCHOR = "/term-anchor";
     private static final String CATEGORY_ANCHOR = "/category-anchor";
+    private static final String PROJECT_SCOPE = "/project-scopes";
 
     // urls to use when creating types of relationships
     private static final String BASE_RELATIONSHIPS_HASA_URL = BASE_RELATIONSHIPS_URL + HASA;
@@ -59,6 +60,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
     private static final String BASE_RELATIONSHIPS_SEMANTIC_ASSIGNMENT_URL = BASE_RELATIONSHIPS_URL +SEMANTIC_ASSIGNMENT;
     private static final String BASE_RELATIONSHIPS_TERM_ANCHOR_URL = BASE_RELATIONSHIPS_URL +TERM_ANCHOR;
     private static final String BASE_RELATIONSHIPS_CATEGORY_ANCHOR_URL = BASE_RELATIONSHIPS_URL +CATEGORY_ANCHOR;
+    private static final String BASE_RELATIONSHIPS_PROJECT_SCOPE_URL = BASE_RELATIONSHIPS_URL + PROJECT_SCOPE;
 
     /*
      * The URL of the server where OMAS is active
@@ -494,7 +496,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
     /**
      * Restore a Related Term relationship
      *
-     * Restore allows the deleted Synonym relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted related term relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the related term relationship to restore
@@ -4076,6 +4078,265 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
         }
         return gotCategoryAnchorRelationship;
     }
+    /**
+     *  Create a ProjectScope relationship. A link between the project content and the project.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param projectScope the ProjectScope relationship
+     * @return the created ProjectScope relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public ProjectScopeRelationship createProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship projectScope) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    {
+        final String methodName = "createProjectScopeRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId );
+        }
+        InputValidator.validateUserIdNotNull(className,methodName,userId);
+
+        String urlTemplate = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
+        String url = String.format(urlTemplate,serverName,userId);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writeValueAsString(projectScope);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className,methodName,error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className,methodName,requestBody,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+
+        ProjectScopeRelationship createdProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return createdProjectScope;
+    }
+    /**
+     *  Get a ProjectScope relationship. A link between the project content and the project.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the RelatedTerm relationship to get
+     * @return ProjectScope
+     * Exceptions returned by the server
+     * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     *
+     */
+    public ProjectScopeRelationship getProjectScopeRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "getProjectScopeRelationship";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
+        SubjectAreaOMASAPIResponse restResponse = getRelationship(serverName, userId, guid, methodName,url);
+        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotProjectScope;
+    }
+    /**
+     * Update a ProjectScope relationship which is a link between the project content and the project.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param projectScopeRelationship the ProjectScope relationship
+     * @return updated ProjectScope relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public ProjectScopeRelationship updateProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship projectScopeRelationship)  throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException {
+        final String methodName = "updateProjectScopeRelationship";
+        String requestBody = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            requestBody = mapper.writeValueAsString(projectScopeRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className,methodName,error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_PROJECT_SCOPE_URL,requestBody,false);
+        ProjectScopeRelationship updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return updatedProjectScopeRelationship;
+    }
+    /**
+     * Replace a ProjectScope relationship which is a link between the project content and the project.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param ProjectScopeRelationship the ProjectScope relationship
+     * @return replaced ProjectScope relationship
+     *  Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public ProjectScopeRelationship replaceProjectScopeRelationship(String serverName, String userId, ProjectScopeRelationship ProjectScopeRelationship)  throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException {
+        final String methodName = "updateProjectScopeRelationship";
+        String requestBody = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            requestBody = mapper.writeValueAsString(ProjectScopeRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className,methodName,error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_PROJECT_SCOPE_URL,requestBody,true);
+        ProjectScopeRelationship updatedProjectScopeRelationship = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return updatedProjectScopeRelationship;
+    }
+
+    /**
+     *  Delete a ProjectScope relationship. A link between the project content and the project.
+     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the RelatedTerm relationship to delete
+     * @return deleted ProjectScope
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public ProjectScopeRelationship deleteProjectScopeRelationship(String serverName, String userId,String guid) throws
+            InvalidParameterException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            UserNotAuthorizedException,
+            FunctionNotSupportedException,
+            RelationshipNotDeletedException,
+            UnexpectedResponseException
+    {
+        final String methodName = "deleteProjectScopeRelationship";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
+        SubjectAreaOMASAPIResponse restResponse = deleteRelationship(serverName, userId, guid, methodName,url);
+        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotProjectScope;
+    }
+
+
+    /**
+     *  Purge a ProjectScope relationship. A link between the project content and the project.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the ProjectScope relationship to delete
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public void purgeProjectScopeRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException
+    {
+        final String methodName = "purgeProjectScopeRelationship";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
+        purgeRelationship(serverName, userId, guid, methodName, url);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+    }
+    /**
+     * Restore a ProjectScope relationship which  is a link between the project content and the project.
+     *
+     * Restore allows the deleted ProjectScope relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ProjectScope relationship to restore
+     * @return response which when successful contains the restored ProjectScope relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public ProjectScopeRelationship restoreProjectScopeRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "restoreProjectScopeRelationship";
+        String url = this.omasServerURL + BASE_RELATIONSHIPS_PROJECT_SCOPE_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        ProjectScopeRelationship gotProjectScope = DetectUtils.detectAndReturnProjectScope(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotProjectScope;
+    }
+
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *

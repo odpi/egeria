@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetlineage.model.assetContext;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
@@ -19,7 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = RelationshipEvent.class, name = "RelationshipEvent"),
-        @JsonSubTypes.Type(value = AssetContext.class, name = "AssetContext")
+        @JsonSubTypes.Type(value = ConvertedAssetContext.class, name = "ConvertedAssetContext"),
+        @JsonSubTypes.Type(value = DeletePurgedRelationshipEvent.class, name = "DeletePurgedRelationshipEvent")
 })
 public abstract class AssetLineageEvent {
 
