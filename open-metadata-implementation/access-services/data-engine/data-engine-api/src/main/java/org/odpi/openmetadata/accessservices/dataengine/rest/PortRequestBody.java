@@ -16,6 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PortRequestBody  extends DataEngineOMASAPIRequestBody {
     protected String displayName;
+    private String qualifiedName;
 
     public String getDisplayName() {
         return displayName;
@@ -25,10 +26,19 @@ public class PortRequestBody  extends DataEngineOMASAPIRequestBody {
         this.displayName = displayName;
     }
 
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
+
     @Override
     public String toString() {
         return "PortRequestBody{" +
                 "displayName='" + displayName + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
 
@@ -37,11 +47,12 @@ public class PortRequestBody  extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PortRequestBody that = (PortRequestBody) o;
-        return Objects.equals(displayName, that.displayName);
+        return Objects.equals(displayName, that.displayName) &&
+                Objects.equals(qualifiedName, that.qualifiedName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName);
+        return Objects.hash(displayName, qualifiedName);
     }
 }

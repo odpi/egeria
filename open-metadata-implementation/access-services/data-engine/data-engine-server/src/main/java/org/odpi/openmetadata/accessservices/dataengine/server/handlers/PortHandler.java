@@ -41,18 +41,19 @@ public class PortHandler {
         this.repositoryHandler = repositoryHandler;
     }
 
-    public String createPortImplementation(String userId, String displayName, PortType portType) throws
-                                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException {
+    public String createPortImplementation(String userId, String qualifiedName, String displayName,
+                                           PortType portType) throws
+                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                              UserNotAuthorizedException,
+                                                              PropertyServerException {
         final String methodName = "createPortImplementation";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(userId, qualifiedName, methodName);
         invalidParameterHandler.validateName(userId, displayName, methodName);
 
-        //TODO buildQualifiedName
-        PortImplementationPropertiesBuilder builder = new PortImplementationPropertiesBuilder(displayName + ":: " +
-                "qualifiedName", displayName, portType, repositoryHelper, serviceName, serverName);
+        PortImplementationPropertiesBuilder builder = new PortImplementationPropertiesBuilder(qualifiedName,
+                displayName, portType, repositoryHelper, serviceName, serverName);
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         return repositoryHandler.createEntity(userId, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_GUID,
@@ -79,18 +80,18 @@ public class PortHandler {
                 schemaTypeGUID, null, methodName);
     }
 
-    public String createPortAlias(String displayName, String userId) throws
-                                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException {
+    public String createPortAlias(String userId, String qualifiedName, String displayName) throws
+                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException {
         final String methodName = "createPortAlias";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(userId, displayName, methodName);
+        invalidParameterHandler.validateName(userId, qualifiedName, methodName);
 
-        //TODO buildQualifiedName
-        PortPropertiesBuilder builder = new PortPropertiesBuilder(displayName +
-                ":: qualifiedName", displayName, repositoryHelper, serviceName, serverName);
+        PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, repositoryHelper,
+                serviceName, serverName);
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         return repositoryHandler.createEntity(userId, PortPropertiesMapper.PORT_ALIAS_TYPE_GUID,

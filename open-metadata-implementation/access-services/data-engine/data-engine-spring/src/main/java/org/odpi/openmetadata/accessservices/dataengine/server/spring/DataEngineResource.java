@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRe
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -62,17 +63,17 @@ public class DataEngineResource {
     /**
      * Create a SchemaType entity with all the needed relationships
      *
-     * @param serverName     name of server instance to call
-     * @param userId         the name of the calling user
-     * @param schemaTypeGUID the schema type guid
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the schema type
      *
      * @return unique identifier of the created entity
      */
-    @PostMapping(path = "/schema-types/by-schema-type/{schemaTypeGUID}")
+    @PostMapping(path = "/schema-types")
     public GUIDResponse createSchemaType(@PathVariable("userId") String userId,
                                          @PathVariable("serverName") String serverName,
-                                         @PathVariable("schemaTypeGUID") String schemaTypeGUID) {
-        return restAPI.createSchemaType(userId, serverName, schemaTypeGUID);
+                                         @RequestBody SchemaTypeRequestBody requestBody) {
+        return restAPI.createSchemaType(userId, serverName, requestBody);
     }
 
 
