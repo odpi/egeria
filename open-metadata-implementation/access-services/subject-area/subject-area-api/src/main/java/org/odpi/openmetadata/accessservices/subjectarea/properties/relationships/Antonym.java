@@ -136,45 +136,6 @@ public class Antonym extends Line {
         this.antonym2Guid = antonym2Guid;
     }
 
-    InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue=null;
-        enumPropertyValue = new EnumPropertyValue();
-        // the status of or confidence in the relationship.
-        enumPropertyValue.setOrdinal(status.ordinal());
-        enumPropertyValue.setSymbolicName(status.name());
-        instanceProperties.setProperty("status",enumPropertyValue);
-        MapPropertyValue mapPropertyValue=null;
-        PrimitivePropertyValue primitivePropertyValue=null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-        
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("description",primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-        
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("expression",primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-        
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("status",primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-        
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("steward",primitivePropertyValue);
-        primitivePropertyValue = new PrimitivePropertyValue();
-        
-        primitivePropertyValue.setPrimitiveValue(null);
-        instanceProperties.setProperty("source",primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-            log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
-    }
 
     private String description;
     /**
