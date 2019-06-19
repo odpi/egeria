@@ -1,5 +1,5 @@
-# # SPDX-License-Identifier: Apache-2.0
-# # Copyright Contributors to the Egeria project
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project
 
 # FROM maven:3.6.0-jdk-8 AS build
 
