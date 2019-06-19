@@ -262,7 +262,7 @@ public class TermFVT
     private GovernanceActions createGovernanceActions() {
         GovernanceActions governanceActions = new GovernanceActions();
         Confidentiality confidentiality = new Confidentiality();
-        confidentiality.setLevel(ConfidentialityLevel.Confidential);
+        confidentiality.setLevel(6);
         governanceActions.setConfidentiality(confidentiality);
 
         Confidence confidence = new Confidence();
@@ -281,7 +281,7 @@ public class TermFVT
     private GovernanceActions create2ndGovernanceActions() {
         GovernanceActions governanceActions = new GovernanceActions();
         Confidentiality confidentiality = new Confidentiality();
-        confidentiality.setLevel(ConfidentialityLevel.Internal);
+        confidentiality.setLevel(5);
         governanceActions.setConfidentiality(confidentiality);
 
         Confidence confidence = new Confidence();
