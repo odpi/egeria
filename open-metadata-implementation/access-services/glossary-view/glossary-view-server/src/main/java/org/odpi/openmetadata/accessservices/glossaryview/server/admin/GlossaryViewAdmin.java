@@ -9,8 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-import java.util.List;
-
 /**
  * Called by the OMAG Server to initialize and terminate the Glossary View OMAS.
  * The initialization call provides this OMAS with resources from the Open Metadata Repository Services.
@@ -43,9 +41,7 @@ public class GlossaryViewAdmin extends AccessServiceAdmin {
                     auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                    accessServiceConfig.getAccessServiceName(), auditLog);
-            instance = new GlossaryViewServiceInstance(supportedZones, repositoryConnector, auditLog);
+            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog);
             serverName = instance.getServerName();
 
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZED;
