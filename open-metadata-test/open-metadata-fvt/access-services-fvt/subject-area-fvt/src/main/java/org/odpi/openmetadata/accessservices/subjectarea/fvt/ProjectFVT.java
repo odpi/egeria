@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.io.IOException;
 import java.util.Date;
@@ -21,6 +22,10 @@ public class ProjectFVT
     private static final String DEFAULT_TEST_PROJECT_NAME = "Testproject1";
     private static final String DEFAULT_TEST_PROJECT_NAME2 = "Testproject2";
     private static final String DEFAULT_TEST_PROJECT_NAME3 = "Testproject3";
+    private static final String DEFAULT_TEST_PROJECT_NAME4 = "Testproject4";
+    private static final String DEFAULT_TEST_PROJECT_NAME5 = "Testproject5";
+    private static final String DEFAULT_TEST_PROJECT_NAME6 = "Testproject6";
+    private static final String DEFAULT_TEST_PROJECT_NAME7 = "Testproject7";
     private SubjectAreaProject subjectAreaProject = null;
     private String serverName = null;
     private String userId = null;
@@ -101,29 +106,29 @@ public class ProjectFVT
         FVTUtils.validateNode(project);
 
         System.out.println("create projects to find");
-        Project projectForFind1 = getProjectForInput("abc");
-        projectForFind1.setQualifiedName("yyy");
+        Project projectForFind1 = getProjectForInput(DEFAULT_TEST_PROJECT_NAME7);
+        projectForFind1.setQualifiedName(DEFAULT_TEST_PROJECT_NAME6);
         projectForFind1 = issueCreateProject(projectForFind1);
         FVTUtils.validateNode(projectForFind1);
-        Project projectForFind2 = createProject("yyy");
+        Project projectForFind2 = createProject(DEFAULT_TEST_PROJECT_NAME6);
         FVTUtils.validateNode(projectForFind2);
-        Project projectForFind3 = createProject("zzz");
+        Project projectForFind3 = createProject(DEFAULT_TEST_PROJECT_NAME5);
         FVTUtils.validateNode(projectForFind3);
         Project projectForFind4 = createProject("This is a Project with spaces in name");
         FVTUtils.validateNode(projectForFind4);
 
-        results = findProjects("zzz");
+        results = findProjects(DEFAULT_TEST_PROJECT_NAME5);
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
         }
-        results = findProjects("yyy");
+        results = findProjects(DEFAULT_TEST_PROJECT_NAME6);
         if (results.size() !=2 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
         }
         //soft delete a project and check it is not found
         Project deleted4 = deleteProject(projectForFind2.getSystemAttributes().getGUID());
         FVTUtils.validateNode(deleted4);
-        results = findProjects("yyy");
+        results = findProjects(DEFAULT_TEST_PROJECT_NAME6);
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
         }
@@ -132,6 +137,11 @@ public class ProjectFVT
         results = findProjects("This is a Project with spaces in name");
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+        Project projectForGraph = createProject(DEFAULT_TEST_PROJECT_NAME4);
+        List<Term> terms = getProjectTerms(projectForGraph.getSystemAttributes().getGUID());
+        if (terms != null ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected null got " +terms.size(), "", "");
         }
     }
 
@@ -160,52 +170,7 @@ public class ProjectFVT
         glossaryProject.setName(projectName);
         return glossaryProject;
     }
-    public  Project createPastToProject(String name) throws SubjectAreaCheckedExceptionBase
-    {
-        Project project = new Project();
-        project.setName(name);
-        long now = new Date().getTime();
-        // expire the project 10 milliseconds ago
-        project.setEffectiveToTime(new Date(now-10));
-        Project newProject  = subjectAreaProject.createProject(serverName,this.userId, project);
-        FVTUtils.validateNode(newProject);
-        System.out.println("Created Project " + newProject.getName() + " with guid " + newProject.getSystemAttributes().getGUID());
 
-        return newProject;
-    }
-    public  Project createPastFromProject(String name) throws SubjectAreaCheckedExceptionBase
-    {
-        Project project = new Project();
-        project.setName(name);
-        long now = new Date().getTime();
-        // expire the project 10 milliseconds ago
-        project.setEffectiveFromTime(new Date(now-10));
-       return  subjectAreaProject.createProject(serverName,this.userId, project);
-    }
-    public  Project createInvalidEffectiveDateProject(String name) throws SubjectAreaCheckedExceptionBase
-    {
-        Project project = new Project();
-        project.setName(name);
-        long now = new Date().getTime();
-        // expire the project 10 milliseconds ago
-        project.setEffectiveFromTime(new Date(now - 10));
-        project.setEffectiveToTime(new Date(now - 11));
-        return  subjectAreaProject.createProject(serverName, this.userId, project);
-    }
-
-    public  Project createFutureProject(String name) throws SubjectAreaCheckedExceptionBase
-    {
-        Project project = new Project();
-        project.setName(name);
-        long now = new Date().getTime();
-        // make the project effective in a days time for day
-        project.setEffectiveFromTime(new Date(now+1000*60*60*24));
-        project.setEffectiveToTime(new Date(now+2000*60*60*24));
-        Project newProject  = subjectAreaProject.createProject(serverName,this.userId, project);
-        FVTUtils.validateNode(newProject);
-        System.out.println("Created Project " + newProject.getName() + " with guid " + newProject.getSystemAttributes().getGUID());
-        return newProject;
-    }
     public List<Project> findProjects(String criteria) throws SubjectAreaCheckedExceptionBase
     {
         List<Project> projects = subjectAreaProject.findProject(
@@ -226,6 +191,11 @@ public class ProjectFVT
         System.out.println("Got Project " + project.getName() + " with guid " + project.getSystemAttributes().getGUID() + " and status " + project.getSystemAttributes().getStatus());
 
         return project;
+    }
+    public  List<Term> getProjectTerms(String guid) throws SubjectAreaCheckedExceptionBase {
+        List<Term> terms = subjectAreaProject.getProjectTerms(serverName, this.userId, guid,null);
+        System.out.println("Got terms from project with guid " + guid);
+        return terms;
     }
     public  Project updateProject(String guid, Project project) throws SubjectAreaCheckedExceptionBase
     {
