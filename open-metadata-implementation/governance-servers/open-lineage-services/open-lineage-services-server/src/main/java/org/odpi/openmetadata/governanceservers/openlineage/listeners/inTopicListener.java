@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
@@ -69,15 +70,15 @@ public class inTopicListener implements OpenMetadataTopicListener {
                     break;
                 case NEW_RELATIONSHIP_EVENT:
                         RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
-                        graphBuilder.addAsset(relationshipEvent.getAssetContext());
+                        graphBuilder.addAsset(relationshipEvent);
                     break;
                 case UPDATED_RELATIONSHIP_EVENT:
                     //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
                     //            graphBuilder.processEvent(updatedEntityEvent);;
                     break;
-                case DELETED_RELATIONSHIP_EVENT: //TODO Check the difference between delete and purged events
-                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                    //            graphBuilder.processEvent(updatedEntityEvent);
+                case DELETE_PURGED_RELATIONSHIP_EVENT:
+                         DeletePurgedRelationshipEvent deletePurgedRelationshipEvent =OBJECT_MAPPER.readValue(eventAsString, DeletePurgedRelationshipEvent.class);
+                         graphBuilder.removeSemanticRelationship(deletePurgedRelationshipEvent);
                     break;
             }
         }catch (IOException e){

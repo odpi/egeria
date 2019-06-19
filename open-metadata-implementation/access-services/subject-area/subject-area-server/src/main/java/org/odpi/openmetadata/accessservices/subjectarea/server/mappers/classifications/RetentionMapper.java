@@ -72,7 +72,7 @@ public class RetentionMapper extends ClassificationMapper{
             }
         }
 
-        return Retention.ATTRIBUTE_NAMES_SET;
+        return Retention.PROPERTY_NAMES_SET;
     }
 
     @Override
@@ -127,11 +127,13 @@ public class RetentionMapper extends ClassificationMapper{
         if (retention.getBasis()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(retention.getBasis().getOrdinal());
+            enumPropertyValue.setSymbolicName(retention.getBasis().getName());
             instanceProperties.setProperty("basis",enumPropertyValue);
         }
-        if (retention.getBasis()!=null) {
+        if (retention.getStatus()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(retention.getStatus().getOrdinal());
+            enumPropertyValue.setSymbolicName(retention.getStatus().getName());
             instanceProperties.setProperty("status",enumPropertyValue);
         }
 

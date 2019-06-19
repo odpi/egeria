@@ -72,20 +72,20 @@ public abstract class LineMapper implements ILineMapper
                         actualValue = primitivePropertyValue.getPrimitiveValue();
 
                         if (!mapPrimitiveToLine(line, propertyName, actualValue)) {
-                            // there are properties we are not aware of, as they have been added by a subtype, put them in the extraAttributes
-                            if (null==line.getExtraAttributes())  {
-                                line.setExtraAttributes(new HashMap<String, Object>());
+                            // there are properties we are not aware of, as they have been added by a subtype, put them in the additionalProperties
+                            if (null==line.getAdditionalProperties())  {
+                                line.setAdditionalProperties(new HashMap<String, String>());
                             }
-                            line.getExtraAttributes().put(propertyName, actualValue);
+                            line.getAdditionalProperties().put(propertyName, actualValue.toString());
                         }
                         break;
                     case ENUM:
                         EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                         if (!mapEnumToLine(line, propertyName,enumPropertyValue)) {
-                            if (null==line.getExtraAttributes())  {
-                                line.setExtraAttributes(new HashMap<String, Object>());
+                            if (null==line.getAdditionalProperties())  {
+                                line.setAdditionalProperties(new HashMap<String, String>());
                             }
-                            line.getExtraAttributes().put(propertyName, enumPropertyValue);
+                            line.getAdditionalProperties().put(propertyName, enumPropertyValue.valueAsString());
                         }
 
                         break;
@@ -93,10 +93,10 @@ public abstract class LineMapper implements ILineMapper
                         MapPropertyValue mapPropertyValue = (MapPropertyValue) value;
                         InstanceProperties instancePropertyForMap = mapPropertyValue.getMapValues();
                         if (!mapMapToLine(line, propertyName, instancePropertyForMap)) {
-                            if (null==line.getExtraAttributes())  {
-                                line.setExtraAttributes(new HashMap<String, Object>());
+                            if (null==line.getAdditionalProperties())  {
+                                line.setAdditionalProperties(new HashMap<String, String>());
                             }
-                            line.getExtraAttributes().put(propertyName,mapPropertyValue);
+                            line.getAdditionalProperties().put(propertyName,mapPropertyValue.valueAsString());
                         }
                         break;
                     case ARRAY:
