@@ -1,15 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.model.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Column;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,12 +18,11 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Asse
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class")
-public class RelationshipEvent extends AssetLineageEvent {
+public class DeletePurgedRelationshipEvent extends AssetLineageEvent {
 
     private GlossaryTerm glossaryTerm;
-    private String typeDefName;
-    private String typeDefGUID;
-    private ConvertedAssetContext assetContext;
+    private String entityGuid;
+    private String entityTypeDef;
 
     public GlossaryTerm getGlossaryTerm() {
         return glossaryTerm;
@@ -32,27 +32,19 @@ public class RelationshipEvent extends AssetLineageEvent {
         this.glossaryTerm = glossaryTerm;
     }
 
-    public String getTypeDefName() {
-        return typeDefName;
+    public String getEntityGuid() {
+        return entityGuid;
     }
 
-    public void setTypeDefName(String typeDefName) {
-        this.typeDefName = typeDefName;
+    public void setEntityGuid(String entityGuid) {
+        this.entityGuid = entityGuid;
     }
 
-    public String getTypeDefGUID() {
-        return typeDefGUID;
+    public String getEntityTypeDef() {
+        return entityTypeDef;
     }
 
-    public void setTypeDefGUID(String typeDefGUID) {
-        this.typeDefGUID = typeDefGUID;
-    }
-
-    public ConvertedAssetContext getAssetContext() {
-        return assetContext;
-    }
-
-    public void setAssetContext(ConvertedAssetContext assetContext) {
-        this.assetContext = assetContext;
+    public void setEntityTypeDef(String entityTypeDef) {
+        this.entityTypeDef = entityTypeDef;
     }
 }
