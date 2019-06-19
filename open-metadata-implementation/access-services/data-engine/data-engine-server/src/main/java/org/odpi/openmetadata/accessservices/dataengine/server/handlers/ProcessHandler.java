@@ -36,7 +36,7 @@ public class ProcessHandler {
      * Construct the process handler with a link to the property server's connector, a link to the metadata collection
      * and this access service's official name.
      *
-     * @param serviceName         name of this service
+     * @param serviceName name of this service
      */
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
@@ -63,9 +63,9 @@ public class ProcessHandler {
     public String createProcess(String userId, String processName, String description, String latestChange,
                                 List<String> zoneMembership, String displayName, String formula, String owner,
                                 OwnerType ownerType) throws
-                                                      org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException {
+                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                     UserNotAuthorizedException,
+                                                     PropertyServerException {
 
         final String methodName = "createProcess";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -86,27 +86,21 @@ public class ProcessHandler {
      * Create ProcessPort relationships between a Process asset and the corresponding Ports
      *
      * @param userId      the name of the calling user
-     * @param processGuid the unique identifier of the process
-     * @param ports       list of port unique identifiers
+     * @param processGUID the unique identifier of the process
+     * @param portGUID    the unique identifier of the port
      */
-    public void addProcessPortRelationships(String userId, String processGuid, List<String> ports) throws
-                                                                                                   InvalidParameterException,
-                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
-                                                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
-        final String methodName = "createProcess";
+    public void addProcessPortRelationship(String userId, String processGUID, String portGUID) throws
+                                                                                               InvalidParameterException,
+                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
+        final String methodName = "addProcessPortRelationship";
 
-        if (CollectionUtils.isEmpty(ports)) {
-            return;
-        }
 
-        invalidParameterHandler.validateUserId(userId, "addInputRelationship");
-        invalidParameterHandler.validateGUID(processGuid, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(processGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(portGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        for (String portGuid : ports) {
-            invalidParameterHandler.validateGUID(portGuid, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-
-            repositoryHandler.createRelationship(userId, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, processGuid,
-                    portGuid, null, methodName);
-        }
+        repositoryHandler.createRelationship(userId, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, processGUID,
+                portGUID, null, methodName);
     }
 }

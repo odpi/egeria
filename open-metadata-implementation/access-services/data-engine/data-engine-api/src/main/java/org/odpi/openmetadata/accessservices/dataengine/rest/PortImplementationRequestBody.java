@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 
 import java.util.Objects;
 
@@ -15,36 +15,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortImplementationRequestBody extends PortRequestBody {
-    private String schemaTypeGUID;
-    private PortType portType;
+public class PortImplementationRequestBody extends PortAliasRequestBody {
+    private PortImplementation portImplementation;
 
-    public String getSchemaTypeGUID() {
-        return schemaTypeGUID;
+    public PortImplementation getPortImplementation() {
+        return portImplementation;
     }
 
-    public void setSchemaTypeGUID(String schemaTypeGUID) {
-        this.schemaTypeGUID = schemaTypeGUID;
+    public void setPortImplementation(PortImplementation portImplementation) {
+        this.portImplementation = portImplementation;
     }
 
-    public PortType getPortType() {
-        return portType;
-    }
-
-    public void setPortType(PortType portType) {
-        this.portType = portType;
-    }
-
-    /**
-     * JSON-like toString
-     *
-     * @return string containing the property names and values
-     */
     @Override
     public String toString() {
         return "PortImplementationRequestBody{" +
-                "schemaTypeGUID='" + schemaTypeGUID + '\'' +
-                ", portType=" + portType +
+                "portImplementation=" + portImplementation +
                 '}';
     }
 
@@ -54,12 +39,11 @@ public class PortImplementationRequestBody extends PortRequestBody {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         PortImplementationRequestBody that = (PortImplementationRequestBody) o;
-        return Objects.equals(schemaTypeGUID, that.schemaTypeGUID) &&
-                portType == that.portType;
+        return Objects.equals(portImplementation, that.portImplementation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), schemaTypeGUID, portType);
+        return Objects.hash(super.hashCode(), portImplementation);
     }
 }

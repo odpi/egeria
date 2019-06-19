@@ -66,10 +66,10 @@ public class DataEngineSchemaTypeHandler {
         final String methodName = "createSchemaType";
 
         //TODO check displayName issue when finding existing schema
-        SchemaType newSchemaType = this.createComplexSchemaType(qualifiedName, qualifiedName + "::" + displayName,
+        SchemaType newSchemaType = createComplexSchemaType(qualifiedName, qualifiedName + "::" + displayName,
                 author, encodingStandard, usage);
 
-        Map<SchemaAttribute, SchemaType> newSchemaAttributes = this.createSchemaAttributes(columnList);
+        Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(columnList);
 
         String newSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaType,
                 new ArrayList<>(newSchemaAttributes.keySet()), methodName);
@@ -80,10 +80,10 @@ public class DataEngineSchemaTypeHandler {
             String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaAttributes.get(schemaAttribute),
                     null, methodName);
 
-            String schemaAttributeGUID = this.findSchemaAttribute(userId, schemaAttribute.getQualifiedName(), methodName);
+            String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName(), methodName);
 
             repositoryHandler.createRelationship(userId, SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                    schemaAttributeGUID, schemaTypeGUID,null, methodName);
+                    schemaAttributeGUID, schemaTypeGUID, null, methodName);
         }
 
         return newSchemaTypeGUID;
@@ -115,7 +115,7 @@ public class DataEngineSchemaTypeHandler {
             schemaAttribute.setElementPosition(column.getElementPosition());
 
 
-            SchemaType schemaAttributeType = this.createSchemaTypeAttribute(column);
+            SchemaType schemaAttributeType = createSchemaTypeAttribute(column);
             schemaAttributes.put(schemaAttribute, schemaAttributeType);
         }
 
@@ -149,17 +149,32 @@ public class DataEngineSchemaTypeHandler {
         return schemaType;
     }
 
-    public void addLineageMappingRelationship(String userId, String schemaTypeGUID, String newSchemaTypeGUID) throws
-                                                                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException {
+    public String findSchemaType(String userId, String qualifiedName, String methodName) throws
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException {
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
+
+        EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, methodName);
+
+        return retrievedEntity.getGUID();
+    }
+
+    public void addLineageMappingRelationship(String userId, String sourceSchemaTypeGUID,
+                                              String targetSchemaTypeGUID) throws
+                                                                           org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException {
         final String methodName = "addLineageMappingRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(schemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateGUID(newSchemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(sourceSchemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(targetSchemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
         repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
-                schemaTypeGUID, newSchemaTypeGUID, null, methodName);
+                sourceSchemaTypeGUID, targetSchemaTypeGUID, null, methodName);
     }
 }
