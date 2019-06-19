@@ -11,6 +11,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterExce
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -116,5 +117,42 @@ public class PortHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(firstGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(secondGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+
+    /**
+     * Return the properties from a discovery engine definition.  The discovery engine
+     * definition is completely contained in a single entity that can be retrieved
+     * from the repository services and converted to a bean.
+     *
+     * @param userId        identifier of calling user
+     * @param qualifiedName unique identifier (guid) of the discovery engine definition.
+     *
+     * @return properties from the discovery engine definition.
+     *
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException one of the parameters is
+     * null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definition.
+     */
+    public String getPortByQualifiedName(String userId, String qualifiedName) throws
+                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException {
+        final String methodName = "getPortByQualifiedName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
+
+
+        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
+
+        EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, PortPropertiesMapper.PORT_TYPE_GUID,
+                PortPropertiesMapper.PORT_TYPE_NAME, methodName);
+
+        return retrievedEntity.getGUID();
     }
 }

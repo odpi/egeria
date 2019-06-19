@@ -14,4 +14,7 @@ public class PortPropertiesMapper {
     public static final String DISPLAY_NAME = "displayName";
     public static final String PORT_TYPE = "portType";
     public static final String GUID_PROPERTY_NAME = "guid";
+    public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
+    public static final String PORT_TYPE_GUID = "4253ee4F-AUBw-PA91-AwA3-rP3ZEsUgii6w";
+    public static final String PORT_TYPE_NAME = "Port";
 }

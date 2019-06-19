@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         {
                 @JsonSubTypes.Type(value = SoftwareServerCapabilityRequestBody.class, name = "dataEngine"),
                 @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "port"),
-                @JsonSubTypes.Type(value = PortRequestBody.class, name = "portAlias"),
+                @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
                 @JsonSubTypes.Type(value = ProcessRequestBody.class, name = "process"),
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
         })

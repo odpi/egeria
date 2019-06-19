@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -97,17 +99,17 @@ public class DataEngineResource {
     /**
      * Create the Port entity
      *
-     * @param serverName      name of server instance to call
-     * @param userId          the name of the calling user
-     * @param portRequestBody properties of the port
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
+     * @param portAliasRequestBody properties of the port
      *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/port-aliases")
     public GUIDResponse createPortAlias(@PathVariable("userId") String userId,
                                         @PathVariable("serverName") String serverName,
-                                        @RequestBody PortRequestBody portRequestBody) {
-        return restAPI.createPortAlias(userId, serverName, portRequestBody);
+                                        @RequestBody PortAliasRequestBody portAliasRequestBody) {
+        return restAPI.createPortAlias(userId, serverName, portAliasRequestBody);
     }
 
     /**
@@ -122,8 +124,8 @@ public class DataEngineResource {
     public GUIDResponse createPortAliasOfPortAlias(@PathVariable("userId") String userId,
                                                    @PathVariable("serverName") String serverName,
                                                    @PathVariable("portAliasGUID") String portAliasGUID,
-                                                   @RequestBody PortRequestBody portRequestBody) {
-        return restAPI.createPortAliasOfPortAlias(userId, serverName, portRequestBody, portAliasGUID);
+                                                   @RequestBody PortAliasRequestBody portAliasRequestBody) {
+        return restAPI.createPortAliasOfPortAlias(userId, serverName, portAliasRequestBody, portAliasGUID);
     }
 
     /**
@@ -176,4 +178,21 @@ public class DataEngineResource {
                                           @RequestBody PortListRequestBody portListRequestBody) {
         return restAPI.addPortsToProcess(userId, serverName, processGuid, portListRequestBody);
     }
+
+    /**
+     * Create the Process entity with all the needed relationships
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param lineageMappingsRequestBody properties of the process
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/lineage-mappings")
+    public VoidResponse addLineageMappings(@PathVariable("userId") String userId,
+                                           @PathVariable("serverName") String serverName,
+                                           @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
+        return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
+    }
+
 }
