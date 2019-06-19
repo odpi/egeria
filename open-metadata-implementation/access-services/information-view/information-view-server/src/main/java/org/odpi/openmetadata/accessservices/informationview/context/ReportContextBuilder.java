@@ -123,7 +123,7 @@ public class ReportContextBuilder extends ContextBuilder{
                     ((ReportSection) reportElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-                return throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e, ReportContextBuilder.class.getName());
+                throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e, ReportContextBuilder.class.getName());
             }
 
         }else{

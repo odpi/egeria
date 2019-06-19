@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportSubmitException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -52,17 +53,13 @@ public class ReportHandler {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
             }
-            EntityDetail softwareServerCapability = reportCreator.retrieveSoftwareServerCapability(payload.getRegistrationGuid(),
+            SoftwareServerCapabilitySource softwareServerCapabilitySource =
+                    reportCreator.retrieveSoftwareServerCapability(payload.getRegistrationGuid(),
                     payload.getRegistrationQualifiedName());
-            payload.setRegistrationGuid(softwareServerCapability.getGUID());
+            payload.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
+            payload.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
 
-            URL url = new URL(payload.getReport().getReportUrl());
-            String networkAddress = url.getHost();
-            if (url.getPort() > 0) {
-                networkAddress = networkAddress + ":" + url.getPort();
-            }
-
-            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT, networkAddress + BasicOperation.SEPARATOR + payload.getReport().getId());
+            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT, payload.getRegistrationQualifiedName() + BasicOperation.SEPARATOR + payload.getReport().getId());
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
                     .withStringProperty(Constants.NAME, payload.getReport().getReportName())
@@ -87,7 +84,7 @@ public class ReportHandler {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
 
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),

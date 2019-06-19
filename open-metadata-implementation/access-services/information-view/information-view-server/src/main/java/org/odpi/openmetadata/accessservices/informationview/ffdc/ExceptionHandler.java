@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc;
 
-import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
@@ -12,13 +11,12 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.SourceNotFoundException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 public class ExceptionHandler {
 
-    public static EntityDetail throwEntityNotFoundException(String searchCriteriaPropertyName,
+    public static void throwEntityNotFoundException(String searchCriteriaPropertyName,
                                                                String searchCriteriaPropertyValue, String entityType,
                                                                String reportingClassName) {
         InformationViewErrorCode errorCode = InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION;
@@ -50,7 +48,7 @@ public class ExceptionHandler {
                 null);
     }
 
-    public static EntityDetail throwNoRegistrationDetailsProvided(Throwable exception, String reportingClassName) {
+    public static void throwNoRegistrationDetailsProvided(Throwable exception, String reportingClassName) {
         InformationViewErrorCode errorCode = InformationViewErrorCode.NO_REGISTRATION_DETAILS_PROVIDED;
         throw new NoRegistrationDetailsProvided(errorCode.getHttpErrorCode(), reportingClassName,
                 errorCode.getFormattedErrorMessage(),
@@ -91,7 +89,7 @@ public class ExceptionHandler {
                                             exception);
     }
 
-    public static ReportElement throwRetrieveRelationshipException(String entityDetailGuid,
+    public static void throwRetrieveRelationshipException(String entityDetailGuid,
                                                    String schemaTypeName,
                                                    OMRSCheckedExceptionBase e,
                                                    String reportingClassName) {

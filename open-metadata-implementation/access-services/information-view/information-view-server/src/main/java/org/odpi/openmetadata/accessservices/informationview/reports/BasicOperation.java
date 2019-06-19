@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -54,10 +55,10 @@ public abstract class BasicOperation {
      * @param registrationQualifiedName qualifiedName of the softwareServerCapability
      * @return entity of type SoftwareServerCapability retrieved by provided identifiers
      */
-    public EntityDetail retrieveSoftwareServerCapability(String registrationGuid, String registrationQualifiedName) {
+    public SoftwareServerCapabilitySource retrieveSoftwareServerCapability(String registrationGuid, String registrationQualifiedName) {
         EntityDetail softwareServerCapability = null;
         if (StringUtils.isEmpty(registrationGuid) && StringUtils.isEmpty(registrationQualifiedName)) {
-            return throwNoRegistrationDetailsProvided(null, ReportBasicOperation.class.getName());
+             throwNoRegistrationDetailsProvided(null, ReportBasicOperation.class.getName());
         }
 
         String searchProperty = "";
@@ -78,9 +79,13 @@ public abstract class BasicOperation {
             throwEntityNotFoundException(searchProperty, searchValue, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
         }
         if (softwareServerCapability == null) {
-            return throwEntityNotFoundException(Constants.QUALIFIED_NAME, registrationQualifiedName, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
+             throwEntityNotFoundException(Constants.QUALIFIED_NAME, registrationQualifiedName, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
         }
-        return softwareServerCapability;
+
+        SoftwareServerCapabilitySource softwareServerCapabilitySource = new SoftwareServerCapabilitySource();
+        softwareServerCapabilitySource.setGuid(softwareServerCapability.getGUID());
+        softwareServerCapabilitySource.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, softwareServerCapability.getProperties(), "retrieveSoftwareServerCapability"));
+        return softwareServerCapabilitySource;
     }
 
 
