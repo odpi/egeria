@@ -22,4 +22,8 @@
 
     <artifactId>open-metadata-conformance-suite-api</artifactId>
 
+    <dependencies>
+
+    </dependencies>
+
 </project>
