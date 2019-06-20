@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
 
 import org.apache.log4j.varia.NullAppender;
-import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 
 /**
