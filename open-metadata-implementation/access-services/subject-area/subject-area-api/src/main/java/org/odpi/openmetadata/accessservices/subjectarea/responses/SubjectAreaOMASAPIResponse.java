@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.LibraryTermReference;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -59,6 +60,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 // external glossary responses
                 @JsonSubTypes.Type(value = LibraryTermReference.class, name = "LibraryTermReference"),
                 @JsonSubTypes.Type(value = LibraryCategoryReferenceResponse.class, name = "LibraryCategoryReferenceResponse"),
+
+                @JsonSubTypes.Type(value = ProjectScopeRelationshipResponse.class, name = "ProjectScopeRelationshipResponse"),
                 /*
                  Exception responses - note that each exception has the same 4 Exception orientated fields.
                  Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it is only possible to have

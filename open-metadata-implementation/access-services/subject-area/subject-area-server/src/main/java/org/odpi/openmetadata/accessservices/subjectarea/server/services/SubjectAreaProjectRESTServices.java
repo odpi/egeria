@@ -6,22 +6,27 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.ProjectScopeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -158,7 +163,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
         }
 
         if (log.isDebugEnabled()) {
-                log.debug("<== successful method : " + methodName + ",userId=" + userId);
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return response;
     }
@@ -185,12 +190,12 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      * </ul>
      */
     public  SubjectAreaOMASAPIResponse findProject(String serverName, String userId,
-                                                String searchCriteria,
-                                                Date asOfTime,
-                                                Integer offset,
-                                                Integer pageSize,
-                                                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                String sequencingProperty) {
+                                                   String searchCriteria,
+                                                   Date asOfTime,
+                                                   Integer offset,
+                                                   Integer pageSize,
+                                                   org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                   String sequencingProperty) {
 
         final String methodName = "findProject";
         if (log.isDebugEnabled())
@@ -266,14 +271,71 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
      */
 
     public  SubjectAreaOMASAPIResponse getProjectRelationships(String serverName, String userId,String guid,
-                                                            Date asOfTime,
-                                                            Integer offset,
-                                                            Integer pageSize,
-                                                            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                            String sequencingProperty
+                                                               Date asOfTime,
+                                                               Integer offset,
+                                                               Integer pageSize,
+                                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                               String sequencingProperty
     ) {
         String methodName = "getProjectRelationships";
         return  getRelationshipsFromGuid(serverName, methodName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+    }
+    /*
+     * Get the terms in this project.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the Project to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @return a response which when successful contains the Project relationships
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * </ul>
+     */
+    public  SubjectAreaOMASAPIResponse getProjectTerms(String serverName,
+                                                       String userId,
+                                                       String guid,
+                                                       Date asOfTime
+    ) {
+        String methodName = "getProjectTerms";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+
+        SubjectAreaGraphRESTServices subjectAreaGraphRESTServices = new SubjectAreaGraphRESTServices(oMRSAPIHelper);
+        // find all nodes, project and its subclass GlossaryProject, Term and its subclass Activity
+        String nodeFilter =  (new HashSet<>(Arrays.asList(NodeType.Project,NodeType.Term,NodeType.GlossaryProject,NodeType.Activity))).toString();
+        // filter on the project scope relationship
+        String lineFilter=   (new HashSet<>(Arrays.asList(LineType.ProjectScope))).toString();
+        SubjectAreaOMASAPIResponse response = subjectAreaGraphRESTServices.getGraph(serverName,userId,guid,asOfTime,nodeFilter,lineFilter,null,1);
+        List<Term> terms = null;
+        if (response.getResponseCategory() == ResponseCategory.Graph) {
+            GraphResponse graphResponse = (GraphResponse)response;
+            Graph graph =graphResponse.getGraph();
+            if (graph != null) {
+                Set<Node> nodes = graph.getNodes();
+                if (nodes != null) {
+                    for (Node node : nodes) {
+                        if (node.getNodeType() == NodeType.Term) {
+                            if (terms == null) {
+                                terms = new ArrayList();
+                            }
+                            terms.add((Term) node);
+                        }
+                    }
+                }
+            }
+            response = new TermsResponse(terms);
+        }
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
+        }
+        return response;
     }
 
     /**
