@@ -120,6 +120,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
     /**
      * Copy/clone constructor.
+     *
+     * @param template object to copy
      */
     public OMAGServerConfig(OMAGServerConfig  template)
     {

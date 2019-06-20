@@ -44,6 +44,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
+     * @return void response
      */
     public synchronized VoidResponse setConfigurationStoreConnection(String       userId,
                                                                      Connection   connection)
@@ -215,6 +216,7 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve any saved configuration for this server.
      *
+     * @param userId calling user
      * @param serverName  name of the server
      * @param methodName  method requesting the server details
      * @return  configuration properties

@@ -48,6 +48,7 @@ public class OMAGServerAdminSecurityServices
      * @param userId calling user.
      * @param requestBody containing serverPlatformURL (URL Root of the server platform) and
      * connection used to create and configure the connector.
+     * @return void response
      */
     public synchronized VoidResponse setPlatformSecurityConnection(String                      userId,
                                                                    PlatformSecurityRequestBody requestBody)
@@ -165,6 +166,7 @@ public class OMAGServerAdminSecurityServices
      * @param userId calling user.
      * @param serverName server to configure
      * @param connection connection used to create and configure the connector.
+     * @return void response
      */
     public synchronized VoidResponse setServerSecurityConnection(String       userId,
                                                                  String       serverName,

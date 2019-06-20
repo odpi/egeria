@@ -572,9 +572,13 @@ public class OMAGServerOperationalServices
     /**
      * Shutdown any running services for a specific server instance.
      *
+     * @param userId calling user
      * @param serverName name of this server
+     * @param methodName calling method
      * @param instance a list of the running services
      * @param permanentDeactivation should the server be permanently disconnected
+     * @throws InvalidParameterException one of the services detected an invalid parameter
+     * @throws PropertyServerException one of the services had problems shutting down
      */
     private void deactivateRunningServiceInstances(String                          userId,
                                                    String                          serverName,

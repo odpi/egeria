@@ -31,7 +31,7 @@ public class ConfigOpenMetadataSecurityResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/platform/connection")
 
-    public VoidResponse setPlatformSecurityConnection(@PathVariable String                     userId,
+    public VoidResponse setPlatformSecurityConnection(@PathVariable String                      userId,
                                                       @RequestBody  PlatformSecurityRequestBody requestBody)
     {
         return adminSecurityAPI.setPlatformSecurityConnection(userId, requestBody);
@@ -73,6 +73,7 @@ public class ConfigOpenMetadataSecurityResource
      * @param userId calling user.
      * @param serverName server to configure
      * @param connection connection used to create and configure the connector.
+     * @return void response
      */
     @RequestMapping(method = RequestMethod.POST, path = "/servers/{serverName}/connection")
 
