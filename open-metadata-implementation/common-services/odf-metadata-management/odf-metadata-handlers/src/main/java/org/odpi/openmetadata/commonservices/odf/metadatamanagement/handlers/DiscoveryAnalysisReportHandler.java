@@ -43,6 +43,7 @@ public class DiscoveryAnalysisReportHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param annotationHandler handler for managing annotations
      */
     public DiscoveryAnalysisReportHandler(String                  serviceName,
                                           String                  serverName,
@@ -75,6 +76,7 @@ public class DiscoveryAnalysisReportHandler
      * @param discoveryServiceGUID unique identifier of the discovery service creating the report
      * @param additionalProperties additional properties for the report
      * @param classifications classifications to attach to the report
+     * @param methodName calling method
      *
      * @return The new discovery report.
      * @throws InvalidParameterException one of the parameters is invalid

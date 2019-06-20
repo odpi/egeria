@@ -79,6 +79,8 @@ public class DiscoveryAnalysisReportBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
+     * @param description long description
+     * @param creationDate date that the report ran
      * @param assetGUID unique identifier of the asset described in the discovery report
      * @param discoveryRequestStatus status of the discovery request (is it still running?)
      * @param analysisParameters list of zones that this discovery service belongs to.
