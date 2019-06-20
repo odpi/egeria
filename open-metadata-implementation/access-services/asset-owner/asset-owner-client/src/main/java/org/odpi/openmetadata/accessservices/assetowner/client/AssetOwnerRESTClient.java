@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
+import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -58,29 +59,47 @@ class AssetOwnerRESTClient extends ODFRESTClient
      * @return DiscoveryAnalysisReportResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ZoneResponse callZoneGetRESTCall(String    methodName,
-                                            String    urlTemplate,
-                                            Object... params) throws PropertyServerException
+    ZoneListResponse callZoneListGetRESTCall(String    methodName,
+                                             String    urlTemplate,
+                                             Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, ZoneListResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a ZoneResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ZoneResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    ZoneResponse callZoneGetRESTCall(String    methodName,
+                                     String    urlTemplate,
+                                     Object... params) throws PropertyServerException
     {
         return this.callGetRESTCall(methodName, ZoneResponse.class, urlTemplate, params);
     }
 
 
     /**
-     * Issue a POST REST call that returns a DiscoveryAnalysisReportResponse object.
+     * Issue a POST REST call that returns a ZoneResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param requestBody request body for the REST call - contains most of the parameters
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return DiscoveryAnalysisReportResponse
+     * @return ZoneResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public ZoneResponse callZonePostRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object    requestBody,
-                                             Object... params) throws PropertyServerException
+    ZoneResponse callZonePostRESTCall(String    methodName,
+                                      String    urlTemplate,
+                                      Object    requestBody,
+                                      Object... params) throws PropertyServerException
     {
         return this.callPostRESTCall(methodName, ZoneResponse.class, urlTemplate, requestBody, params);
     }

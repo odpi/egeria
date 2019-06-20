@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
+import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -20,22 +21,37 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
+    private GovernanceZoneHandler governanceZoneHandler;
+
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetOwner is allowed to serve Assets from.
+     * @param defaultZones list of zones that AssetOwner sets up in new Asset instances.
+     * @param auditLog logging destination
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetOwnerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                       List<String>            supportedZones,
+                                      List<String>            defaultZones,
                                       OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(myDescription.getAccessServiceName() + " OMAS", repositoryConnector, auditLog);
+        super(myDescription.getAccessServiceName() + " OMAS",
+              repositoryConnector,
+              supportedZones,
+              defaultZones,
+              auditLog);
 
-        super.supportedZones = supportedZones;
-
-        if (repositoryConnector == null)
+        if (repositoryHandler != null)
+        {
+            this.governanceZoneHandler = new GovernanceZoneHandler(serviceName,
+                                                                   serverName,
+                                                                   invalidParameterHandler,
+                                                                   repositoryHandler,
+                                                                   repositoryHelper);
+        }
+        else
         {
             final String methodName = "new ServiceInstance";
 
@@ -50,5 +66,16 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                            errorCode.getUserAction());
 
         }
+    }
+
+
+    /**
+     * Return the handler for governance zone requests.
+     *
+     * @return handler object
+     */
+    GovernanceZoneHandler getGovernanceZoneHandler()
+    {
+        return governanceZoneHandler;
     }
 }

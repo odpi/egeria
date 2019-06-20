@@ -39,6 +39,7 @@ public interface AssetClassificationInterface
 
 
     /**
+     * Add the asset origin classification to an asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of asset

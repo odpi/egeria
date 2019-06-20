@@ -2,8 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
+import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstanceHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 
 /**
@@ -21,5 +25,35 @@ class AssetOwnerInstanceHandler extends ODFOMASServiceInstanceHandler
         super(AccessServiceDescription.ASSET_OWNER_OMAS.getAccessServiceName() + " OMAS");
 
         AssetOwnerRegistration.registerAccessService();
+    }
+
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    GovernanceZoneHandler getGovernanceZoneHandler(String userId,
+                                                   String serverName,
+                                                   String serviceOperationName) throws InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException
+    {
+        AssetOwnerServicesInstance instance = (AssetOwnerServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                         serverName,
+                                                                                                         serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getGovernanceZoneHandler();
+        }
+
+        return null;
     }
 }

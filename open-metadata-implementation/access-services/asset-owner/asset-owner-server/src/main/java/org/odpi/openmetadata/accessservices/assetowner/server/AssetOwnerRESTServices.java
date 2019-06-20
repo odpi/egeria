@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
+import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
@@ -268,7 +270,8 @@ public class AssetOwnerRESTServices
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset to attach the connection to
-     * @param connection connection object.  If the connection is already stored (matching guid)
+     * @param requestBody request body including a summary and connection object.
+     *                   If the connection is already stored (matching guid)
      *                   then the existing connection is used.
      *
      * @return void or
@@ -276,10 +279,10 @@ public class AssetOwnerRESTServices
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    public VoidResponse addConnectionToAsset(String        serverName,
-                                             String        userId,
-                                             String        assetGUID,
-                                             Connection    connection)
+    public VoidResponse addConnectionToAsset(String                serverName,
+                                             String                userId,
+                                             String                assetGUID,
+                                             ConnectionRequestBody requestBody)
     {
         final String   methodName = "addConnectionToAsset";
 
@@ -288,14 +291,24 @@ public class AssetOwnerRESTServices
 
         try
         {
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            AssetHandler   handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            if (requestBody != null)
+            {
+                String     assetSummary = requestBody.getShortDescription();
+                Connection connection = requestBody.getConnection();
 
-            handler.saveAssociatedConnection(userId,
-                                             assetGUID,
-                                             null,
-                                             connection,
-                                             methodName);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+                handler.saveAssociatedConnection(userId,
+                                                 assetGUID,
+                                                 assetSummary,
+                                                 connection,
+                                                 methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
 
         }
         catch (InvalidParameterException error)
@@ -488,10 +501,104 @@ public class AssetOwnerRESTServices
         final String   methodName = "createGovernanceZone";
 
         VoidResponse response = new VoidResponse();
-        // todo
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            if (requestBody != null)
+            {
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+                handler.createGovernanceZone(userId,
+                                             requestBody.getQualifiedName(),
+                                             requestBody.getDisplayName(),
+                                             requestBody.getDescription(),
+                                             requestBody.getCriteria(),
+                                             requestBody.getAdditionalProperties(),
+                                             requestBody.getExtendedProperties(),
+                                             methodName);
+            }
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
         return response;
     }
 
+
+    /**
+     * Return information about all of the governance zones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    public ZoneListResponse getGovernanceZones(String   serverName,
+                                               String   userId,
+                                               int      startingFrom,
+                                               int      maximumResults)
+    {
+        final String   methodName = "getGovernanceZones";
+
+        ZoneListResponse response = new ZoneListResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+            response.setGovernanceZone(handler.getGovernanceZones(userId,
+                                                                  startingFrom,
+                                                                  maximumResults,
+                                                                  methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        return response;
+    }
 
 
     /**
@@ -513,7 +620,35 @@ public class AssetOwnerRESTServices
         final String   methodName = "getGovernanceZone";
 
         ZoneResponse response = new ZoneResponse();
-        // todo
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            GovernanceZoneHandler handler = instanceHandler.getGovernanceZoneHandler(userId, serverName, methodName);
+
+            response.setGovernanceZone(handler.getGovernanceZone(userId,
+                                                                 qualifiedName,
+                                                                 methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
         return response;
     }
 
