@@ -4296,7 +4296,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a GET REST call that returns the requested object.
      *
+     * @param <T> class name
      * @param methodName  name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -4312,7 +4314,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a GET REST call that returns a TypeDefResponse object.
      *
+     * @param <T> class name
      * @param methodName  name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
@@ -4350,7 +4354,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a POST REST call that returns the requested type of object.
      *
+     * @param <T> class name
      * @param methodName name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
      * @param request request body object
      * @param params a list of parameters that are slotted into the url template
