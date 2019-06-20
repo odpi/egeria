@@ -66,6 +66,26 @@ public interface AssetVisibilityInterface
 
 
     /**
+     * Return information about the defined governance zones.
+     *
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<GovernanceZone>  getGovernanceZones(String   userId,
+                                             int      startingFrom,
+                                             int      maximumResults) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException;
+
+
+    /**
      * Update the zones for a specific asset.
      *
      * @param userId calling user

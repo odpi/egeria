@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
+import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerRESTServices;
@@ -129,7 +130,8 @@ public class AssetOwnerResource
      * @param serverName name of the server instance to connect to
      * @param userId calling user
      * @param assetGUID unique identifier of the asset to attach the connection to
-     * @param connection connection object.  If the connection is already stored (matching guid)
+     * @param requestBody request body including a summary and connection object.
+     *                   If the connection is already stored (matching guid)
      *                   then the existing connection is used.
      *
      * @return void or
@@ -139,12 +141,12 @@ public class AssetOwnerResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/connection")
 
-    public VoidResponse addConnectionToAsset(@PathVariable String     serverName,
-                                             @PathVariable String     userId,
-                                             @PathVariable String     assetGUID,
-                                             @RequestBody  Connection connection)
+    public VoidResponse addConnectionToAsset(@PathVariable String                serverName,
+                                             @PathVariable String                userId,
+                                             @PathVariable String                assetGUID,
+                                             @RequestBody  ConnectionRequestBody requestBody)
     {
-        return restAPI.addConnectionToAsset(serverName, userId, assetGUID, connection);
+        return restAPI.addConnectionToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -244,6 +246,29 @@ public class AssetOwnerResource
         return restAPI.createGovernanceZone(serverName, userId, requestBody);
     }
 
+
+    /**
+     * Return information about all of the governance zones.
+     *
+     * @param serverName name of the server instance to connect to
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone or
+     * InvalidParameterException full path or userId is null or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/governance-zones/")
+
+    public ZoneListResponse getGovernanceZones(@PathVariable String   serverName,
+                                               @PathVariable String   userId,
+                                               @RequestParam int      startingFrom,
+                                               @RequestParam int      maximumResults)
+    {
+        return restAPI.getGovernanceZones(serverName, userId, startingFrom, maximumResults);
+    }
 
 
     /**

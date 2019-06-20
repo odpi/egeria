@@ -27,6 +27,8 @@ public interface AssetOnboardingInterface
      * @param qualifiedName unique name for the asset in the catalog
      * @param displayName display name for the asset in the catalog
      * @param description description of the asset in the catalog
+     * @param additionalProperties additional properties added by the caller
+     * @param extendedProperties properties from the subtypes
      *
      * @return unique identifier (guid) of the asset
      *
@@ -77,6 +79,10 @@ public interface AssetOnboardingInterface
      * @param userId calling user
      * @param schemaTypeGUID unique identifier if the schema to anchor these attributes to.
      * @param schemaAttributes list of schema attribute objects.
+     *
+     * @throws InvalidParameterException userId or schemaTypeGUID is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
      */
     void   addSchemaAttributesToSchema(String                 userId,
                                        String                 schemaTypeGUID,
@@ -90,6 +96,7 @@ public interface AssetOnboardingInterface
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connection connection object.  If the connection is already stored (matching guid)
      *                   then the existing connection is used.
      * @throws InvalidParameterException full path or userId is null
@@ -98,6 +105,7 @@ public interface AssetOnboardingInterface
      */
     void addConnectionToAsset(String        userId,
                               String        assetGUID,
+                              String        assetSummary,
                               Connection    connection) throws InvalidParameterException,
                                                                UserNotAuthorizedException,
                                                                PropertyServerException;

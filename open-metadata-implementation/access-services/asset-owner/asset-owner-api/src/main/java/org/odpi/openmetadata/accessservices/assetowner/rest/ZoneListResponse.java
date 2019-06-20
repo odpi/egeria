@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -16,21 +18,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ZoneResponse is the response structure used on the OMAS REST API calls that return the properties
- * for a governance zone.
+ * ZoneListResponse is the response structure used on the OMAS REST API calls that return a list of governance zones.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneResponse extends FFDCResponseBase
+public class ZoneListResponse extends FFDCResponseBase
 {
-    private GovernanceZone governanceZone = null;
+    private List<GovernanceZone> governanceZones = null;
 
 
     /**
      * Default constructor
      */
-    public ZoneResponse()
+    public ZoneListResponse()
     {
         super();
     }
@@ -41,13 +42,13 @@ public class ZoneResponse extends FFDCResponseBase
      *
      * @param template object to copy
      */
-    public ZoneResponse(ZoneResponse template)
+    public ZoneListResponse(ZoneListResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.governanceZone = template.getGovernanceZone();
+            this.governanceZones = template.getGovernanceZones();
         }
     }
 
@@ -55,22 +56,31 @@ public class ZoneResponse extends FFDCResponseBase
     /**
      * Return the governanceZone result.
      *
-     * @return bean
+     * @return list of governance zone objects
      */
-    public GovernanceZone getGovernanceZone()
+    public List<GovernanceZone> getGovernanceZones()
     {
-        return governanceZone;
+        if (governanceZones == null)
+        {
+            return null;
+        }
+        else if (governanceZones.isEmpty())
+        {
+            return null;
+        }
+
+        return new ArrayList<>(governanceZones);
     }
 
 
     /**
-     * Set up the governanceZone result.
+     * Set up the governanceZones result.
      *
-     * @param governanceZone - bean
+     * @param governanceZones list of results
      */
-    public void setGovernanceZone(GovernanceZone governanceZone)
+    public void setGovernanceZone(List<GovernanceZone> governanceZones)
     {
-        this.governanceZone = governanceZone;
+        this.governanceZones = governanceZones;
     }
 
 
@@ -82,8 +92,8 @@ public class ZoneResponse extends FFDCResponseBase
     @Override
     public String toString()
     {
-        return "ZoneResponse{" +
-                "zone='" + getGovernanceZone() + '\'' +
+        return "ZoneListResponse{" +
+                "governanceZones='" + getGovernanceZones() + '\'' +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -107,7 +117,7 @@ public class ZoneResponse extends FFDCResponseBase
         {
             return true;
         }
-        if (!(objectToCompare instanceof ZoneResponse))
+        if (!(objectToCompare instanceof ZoneListResponse))
         {
             return false;
         }
@@ -115,8 +125,8 @@ public class ZoneResponse extends FFDCResponseBase
         {
             return false;
         }
-        ZoneResponse that = (ZoneResponse) objectToCompare;
-        return Objects.equals(governanceZone, that.governanceZone);
+        ZoneListResponse that = (ZoneListResponse) objectToCompare;
+        return Objects.equals(governanceZones, that.governanceZones);
     }
 
 
@@ -128,6 +138,6 @@ public class ZoneResponse extends FFDCResponseBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceZone);
+        return Objects.hash(governanceZones);
     }
 }

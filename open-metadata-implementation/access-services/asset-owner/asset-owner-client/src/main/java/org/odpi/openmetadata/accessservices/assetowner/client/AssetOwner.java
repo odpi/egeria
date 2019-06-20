@@ -6,21 +6,20 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.*;
 import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
+import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.OriginRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.OwnerRequestBody;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.SchemaRequestBody;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
@@ -44,6 +43,9 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
 {
     private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
+
+    private static final String  serviceURLName = "asset-owner";
+
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -247,6 +249,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
      *
      * @param userId calling user
      * @param assetGUID unique identifier of the attest to attach the connection to
+     * @param assetSummary summary of the asset that is stored in the relationship between the asset and the connection.
      * @param connection connection object.  If the connection is already stored (matching guid)
      *                   then the existing connection is used.
      * @throws InvalidParameterException full path or userId is null
@@ -255,6 +258,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
      */
     public void addConnectionToAsset(String     userId,
                                      String     assetGUID,
+                                     String     assetSummary,
                                      Connection connection) throws InvalidParameterException,
                                                                    UserNotAuthorizedException,
                                                                    PropertyServerException
@@ -267,9 +271,14 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
+        ConnectionRequestBody requestBody = new ConnectionRequestBody();
+
+        requestBody.setShortDescription(assetSummary);
+        requestBody.setConnection(connection);
+
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
-                                                                  connection,
+                                                                  requestBody,
                                                                   serverName,
                                                                   userId,
                                                                   assetGUID);
@@ -334,6 +343,7 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
 
     /**
+     * Add the asset origin classification to an asset.
      *
      * @param userId calling user
      * @param assetGUID unique identifier of asset
@@ -475,6 +485,44 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
     }
 
 
+    /**
+     * Return information about the defined governance zones.
+     *
+     * @param userId calling user
+     * @param startingFrom position in the list (used when there are so many reports that paging is needed
+     * @param maximumResults maximum number of elements to return an this call
+     *
+     * @return properties of the governance zone
+     *
+     * @throws InvalidParameterException qualifiedName or userId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<GovernanceZone>  getGovernanceZones(String   userId,
+                                                    int      startingFrom,
+                                                    int      maximumResults) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException
+    {
+        final String   methodName = "getGovernanceZones";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/governance-zones?startingFrom={4}&maximumResults={5}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        ZoneListResponse restResult = restClient.callZoneListGetRESTCall(methodName,
+                                                                         serverPlatformRootURL + urlTemplate,
+                                                                         serverName,
+                                                                         userId,
+                                                                         Integer.toString(startingFrom),
+                                                                         Integer.toString(maximumResults));
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getGovernanceZones();
+    }
+
 
     /**
      * Update the zones for a specific asset.
@@ -588,7 +636,28 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
 
-        return super.getAssetSummary(restClient, userId, assetGUID, methodName);
+        return super.getAssetSummary(restClient, serviceURLName, userId, assetGUID, methodName);
+    }
+
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     *
+     * @return a comprehensive collection of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 
@@ -617,8 +686,9 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
         try
         {
             return super.getConnectorForConnection(restClient,
+                                                   serviceURLName,
                                                    userId,
-                                                   getConnectionForAsset(restClient, userId, assetGUID),
+                                                   getConnectionForAsset(restClient, serviceURLName, userId, assetGUID),
                                                    methodName);
         }
         catch (ConnectionCheckedException error)
