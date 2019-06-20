@@ -3200,7 +3200,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                             {
                                                 try
                                                 {
-                                                    if ((instancePropertyName.equals(matchPropertyName)) &&
+                                                    if ((instancePropertyValueString.contains(matchPropertyValueString)) ||
                                                         (instancePropertyValueString.matches(matchPropertyValueString)))
                                                     {
                                                         matchingProperties++;

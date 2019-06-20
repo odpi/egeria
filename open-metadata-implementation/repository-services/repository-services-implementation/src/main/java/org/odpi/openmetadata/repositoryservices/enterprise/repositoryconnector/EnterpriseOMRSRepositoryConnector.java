@@ -280,6 +280,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
+     * @param sourceMetadataCollectionId unique identifier for the home collection
      * @param entity the retrieved entity.
      * @return Validated and processed entity.
      */
@@ -311,6 +312,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
      * (if the rules permit) cached in the local repository.
      *
+     * @param sourceMetadataCollectionId unique identifier for the home collection
      * @param entity the retrieved entity.
      * @return Validated and processed entity.
      */

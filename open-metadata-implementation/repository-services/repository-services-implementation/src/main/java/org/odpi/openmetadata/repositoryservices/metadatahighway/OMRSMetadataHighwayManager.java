@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * OMRSMetadataHighwayManager is responsible for managing the connectivity to to each cohort that the local
+ * OMRSMetadataHighwayManager is responsible for managing the connectivity to each cohort that the local
  * server is a member of.
  */
 public class OMRSMetadataHighwayManager
@@ -387,6 +387,7 @@ public class OMRSMetadataHighwayManager
      *
      * @param cohortName name of the cohort that this registry store is for
      * @param topicConnection connection parameters
+     * @param protocolVersion event protocol version
      * @return OMRSTopicConnector for managing communications with the event/messaging infrastructure.
      */
     private OMRSTopicConnector getTopicConnector(String                           cohortName,
