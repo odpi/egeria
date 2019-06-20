@@ -3000,6 +3000,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a requested relationship.
      *
+     * @param serverName name of the active server
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -6695,7 +6696,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
-     * @param instances instances to save or
+     * @param instances instances to save
+     * @return void response or
      * InvalidParameterException the relationship is null or
      * RepositoryErrorException  there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -7273,10 +7275,14 @@ public class OMRSRepositoryRESTServices
      *
      * @param methodName calling method
      * @param serverName name of the server
+     * @param userId calling user
      * @param requestURLTemplate template of the request URL
      * @param requestBody requestBody to include
      * @param parameters parameters to include in the url
      * @return formatted string
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws RepositoryErrorException the service name is not know - indicating a logic error
      */
     private String  formatNextPageURL(String    methodName,
                                       String    serverName,
@@ -7306,6 +7312,10 @@ public class OMRSRepositoryRESTServices
                 }
                 catch (Throwable  exc)
                 {
+                    /*
+                     * No further action is taken because the URL is a "nice to have" and do not want to
+                     * fail the entire request.
+                     */
                     log.debug("Unable to format return URL; exception is: " + exc.getMessage());
                 }
             }

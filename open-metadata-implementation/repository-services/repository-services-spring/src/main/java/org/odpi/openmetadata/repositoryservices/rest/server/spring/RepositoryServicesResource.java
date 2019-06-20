@@ -2151,6 +2151,7 @@ public class RepositoryServicesResource
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName unique name for the new home metadata collection/repository.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
@@ -2403,7 +2404,8 @@ public class RepositoryServicesResource
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
-     * @param instances instances to save or
+     * @param instances instances to save
+     * @return void response or
      * InvalidParameterException the relationship is null or
      * RepositoryErrorException  there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or

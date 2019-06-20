@@ -56,13 +56,14 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
      * Constructor saves all of the information necessary to process incoming instance events.  It is intolerant
      * of nulls in any of its parameters and will throw a logic error exception is it finds any.
      *
-     * @param localMetadataCollectionId local metadata collection identifier
-     * @param localServerName           name of the local server for logging
-     * @param realLocalConnector        connector to the real local repository
-     * @param repositoryHelper          helper class for building instances
-     * @param repositoryValidator       helper class for validating instances
-     * @param saveExchangeRule          rule that determines which events to process.
-     * @param auditLog                  audit log for this component.
+     * @param localMetadataCollectionId        local metadata collection identifier
+     * @param localServerName                  name of the local server for logging
+     * @param realLocalConnector               connector to the real local repository
+     * @param repositoryHelper                 helper class for building instances
+     * @param repositoryValidator              helper class for validating instances
+     * @param saveExchangeRule                 rule that determines which events to process.
+     * @param outboundRepositoryEventProcessor event processor
+     * @param auditLog                         audit log for this component.
      */
     LocalOMRSInstanceEventProcessor(String                          localMetadataCollectionId,
                                     String                          localServerName,

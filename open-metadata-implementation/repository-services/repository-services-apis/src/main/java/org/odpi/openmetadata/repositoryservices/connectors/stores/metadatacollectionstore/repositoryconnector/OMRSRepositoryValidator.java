@@ -29,9 +29,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  calling method
      * @throws RepositoryErrorException  a conflicting or invalid TypeDef has been returned
      */
-    void   validateEnterpriseTypeDefs(String sourceName,
+    void   validateEnterpriseTypeDefs(String        sourceName,
                                       List<TypeDef> typeDefs,
-                                      String methodName) throws RepositoryErrorException;
+                                      String        methodName) throws RepositoryErrorException;
 
 
     /**
@@ -46,9 +46,9 @@ public interface OMRSRepositoryValidator
      * @param methodName          calling method
      * @throws RepositoryErrorException  a conflicting or invalid AttributeTypeDef has been returned
      */
-    void   validateEnterpriseAttributeTypeDefs(String sourceName,
+    void   validateEnterpriseAttributeTypeDefs(String                 sourceName,
                                                List<AttributeTypeDef> attributeTypeDefs,
-                                               String methodName) throws RepositoryErrorException;
+                                               String                 methodName) throws RepositoryErrorException;
 
 
     /**
@@ -138,9 +138,9 @@ public interface OMRSRepositoryValidator
      * @param category  category for the TypeDef
      * @return boolean result
      */
-     boolean validTypeDefId(String sourceName,
-                            String typeDefGUID,
-                            String typeDefName,
+     boolean validTypeDefId(String          sourceName,
+                            String          typeDefGUID,
+                            String          typeDefName,
                             TypeDefCategory category);
 
 
@@ -153,9 +153,9 @@ public interface OMRSRepositoryValidator
      * @param category category for the AttributeTypeDef
      * @return boolean result
      */
-    boolean validAttributeTypeDefId(String sourceName,
-                                    String attributeTypeDefGUID,
-                                    String attributeTypeDefName,
+    boolean validAttributeTypeDefId(String                   sourceName,
+                                    String                   attributeTypeDefGUID,
+                                    String                   attributeTypeDefName,
                                     AttributeTypeDefCategory category);
 
 
@@ -169,10 +169,10 @@ public interface OMRSRepositoryValidator
      * @param category  category for the TypeDef
      * @return boolean result
      */
-    boolean validTypeDefId(String sourceName,
-                           String typeDefGUID,
-                           String typeDefName,
-                           long typeDefVersion,
+    boolean validTypeDefId(String          sourceName,
+                           String          typeDefGUID,
+                           String          typeDefName,
+                           long            typeDefVersion,
                            TypeDefCategory category);
 
 
@@ -186,10 +186,10 @@ public interface OMRSRepositoryValidator
      * @param category  category for the TypeDef
      * @return boolean result
      */
-    boolean validAttributeTypeDefId(String sourceName,
-                                    String attributeTypeDefGUID,
-                                    String attributeTypeDefName,
-                                    long attributeTypeDefVersion,
+    boolean validAttributeTypeDefId(String                   sourceName,
+                                    String                   attributeTypeDefGUID,
+                                    String                   attributeTypeDefName,
+                                    long                     attributeTypeDefVersion,
                                     AttributeTypeDefCategory category);
 
 
@@ -200,7 +200,7 @@ public interface OMRSRepositoryValidator
      * @param typeDef  TypeDef to test
      * @return boolean result
      */
-    boolean validTypeDef(String sourceName,
+    boolean validTypeDef(String  sourceName,
                          TypeDef typeDef);
 
 
@@ -211,7 +211,7 @@ public interface OMRSRepositoryValidator
      * @param attributeTypeDef  TypeDef to test
      * @return boolean result
      */
-    boolean validAttributeTypeDef(String sourceName,
+    boolean validAttributeTypeDef(String           sourceName,
                                   AttributeTypeDef attributeTypeDef);
 
 
@@ -222,7 +222,7 @@ public interface OMRSRepositoryValidator
      * @param typeDefSummary  TypeDefSummary to test.
      * @return boolean result.
      */
-    boolean validTypeDefSummary(String sourceName,
+    boolean validTypeDefSummary(String         sourceName,
                                 TypeDefSummary typeDefSummary);
 
 
@@ -233,7 +233,7 @@ public interface OMRSRepositoryValidator
      * @param entity  entity to test
      * @return boolean result
      */
-    boolean validEntity(String sourceName,
+    boolean validEntity(String        sourceName,
                         EntitySummary entity);
 
 
@@ -244,7 +244,7 @@ public interface OMRSRepositoryValidator
      * @param entity  entity to test
      * @return boolean result
      */
-    boolean validEntity(String sourceName,
+    boolean validEntity(String      sourceName,
                         EntityProxy entity);
 
 
@@ -255,7 +255,7 @@ public interface OMRSRepositoryValidator
      * @param entity  entity to test
      * @return boolean result
      */
-    boolean validEntity(String sourceName,
+    boolean validEntity(String       sourceName,
                         EntityDetail entity);
 
 
@@ -266,7 +266,7 @@ public interface OMRSRepositoryValidator
      * @param relationship  relationship to test
      * @return boolean result
      */
-    boolean validRelationship(String sourceName,
+    boolean validRelationship(String       sourceName,
                               Relationship relationship);
 
 
@@ -280,11 +280,11 @@ public interface OMRSRepositoryValidator
      * @param instanceGUID  unique identifier for the instance.
      * @return boolean indicating whether the identifiers are ok.
      */
-    boolean validInstanceId(String sourceName,
-                            String typeDefGUID,
-                            String typeDefName,
+    boolean validInstanceId(String          sourceName,
+                            String          typeDefGUID,
+                            String          typeDefName,
                             TypeDefCategory category,
-                            String instanceGUID);
+                            String          instanceGUID);
 
 
     /* ==============================================================
@@ -385,9 +385,9 @@ public interface OMRSRepositoryValidator
      * @throws InvalidParameterException  the patch is null
      * @throws PatchErrorException  the patch is invalid
      */
-    void validateTypeDefPatch(String sourceName,
+    void validateTypeDefPatch(String       sourceName,
                               TypeDefPatch patch,
-                              String methodName) throws InvalidParameterException,
+                              String       methodName) throws InvalidParameterException,
                                                               PatchErrorException;
 
 
@@ -430,10 +430,10 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws InvalidParameterException no name provided
      */
-    void validateTypeDefCategory(String sourceName,
-                                 String nameParameterName,
+    void validateTypeDefCategory(String          sourceName,
+                                 String          nameParameterName,
                                  TypeDefCategory category,
-                                 String methodName) throws InvalidParameterException;
+                                 String          methodName) throws InvalidParameterException;
 
 
     /**
@@ -445,10 +445,10 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws InvalidParameterException  no name provided
      */
-    void validateAttributeTypeDefCategory(String sourceName,
-                                          String nameParameterName,
+    void validateAttributeTypeDefCategory(String                   sourceName,
+                                          String                   nameParameterName,
                                           AttributeTypeDefCategory category,
-                                          String methodName) throws InvalidParameterException;
+                                          String                   methodName) throws InvalidParameterException;
 
 
     /**
@@ -461,10 +461,11 @@ public interface OMRSRepositoryValidator
      * @throws InvalidParameterException  no typeDef provided
      * @throws InvalidTypeDefException  invalid typeDef provided
      */
-    void validateTypeDef(String sourceName,
-                         String parameterName,
+    void validateTypeDef(String  sourceName,
+                         String  parameterName,
                          TypeDef typeDef,
-                         String methodName) throws InvalidParameterException, InvalidTypeDefException;
+                         String  methodName) throws InvalidParameterException,
+                                                    InvalidTypeDefException;
 
 
     /**
@@ -476,10 +477,10 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws TypeDefNotKnownException  no recognized typeDef provided
      */
-    void validateKnownTypeDef(String sourceName,
-                              String parameterName,
+    void validateKnownTypeDef(String  sourceName,
+                              String  parameterName,
                               TypeDef typeDef,
-                              String methodName) throws TypeDefNotKnownException;
+                              String  methodName) throws TypeDefNotKnownException;
 
 
     /**
@@ -492,10 +493,10 @@ public interface OMRSRepositoryValidator
      * @throws TypeDefKnownException  the TypeDef is already defined
      * @throws TypeDefConflictException  the TypeDef is already defined but differently
      */
-    void validateUnknownTypeDef(String sourceName,
-                                String parameterName,
+    void validateUnknownTypeDef(String  sourceName,
+                                String  parameterName,
                                 TypeDef typeDef,
-                                String methodName) throws TypeDefKnownException,
+                                String  methodName) throws TypeDefKnownException,
                                                            TypeDefConflictException;
 
 
@@ -510,10 +511,10 @@ public interface OMRSRepositoryValidator
      * @throws TypeDefKnownException  the TypeDef is already defined
      * @throws TypeDefConflictException  the TypeDef is already defined but differently
      */
-    void validateUnknownAttributeTypeDef(String sourceName,
-                                         String parameterName,
+    void validateUnknownAttributeTypeDef(String           sourceName,
+                                         String           parameterName,
                                          AttributeTypeDef attributeTypeDef,
-                                         String methodName) throws TypeDefKnownException,
+                                         String           methodName) throws TypeDefKnownException,
                                                                              TypeDefConflictException;
 
 
@@ -527,10 +528,10 @@ public interface OMRSRepositoryValidator
      * @throws TypeErrorException  no typeDef provided
      * @throws RepositoryErrorException  the TypeDef from the repository is in error.
      */
-    void validateTypeDefForInstance(String sourceName,
-                                    String parameterName,
+    void validateTypeDefForInstance(String  sourceName,
+                                    String  parameterName,
                                     TypeDef typeDef,
-                                    String methodName) throws TypeErrorException,
+                                    String  methodName) throws TypeErrorException,
                                                                RepositoryErrorException;
 
 
@@ -545,11 +546,11 @@ public interface OMRSRepositoryValidator
      * @throws InvalidParameterException incompatibility detected between the TypeDef and the instance's type
      * @throws RepositoryErrorException the instance from the repository is in error.
      */
-    void validateTypeForInstanceDelete(String sourceName,
-                                       String typeDefGUID,
-                                       String typeDefName,
+    void validateTypeForInstanceDelete(String         sourceName,
+                                       String         typeDefGUID,
+                                       String         typeDefName,
                                        InstanceHeader instance,
-                                       String methodName) throws InvalidParameterException,
+                                       String         methodName) throws InvalidParameterException,
                                                                          RepositoryErrorException;
 
 
@@ -563,10 +564,10 @@ public interface OMRSRepositoryValidator
      * @throws InvalidParameterException  no attributeTypeDef provided
      * @throws InvalidTypeDefException  bad attributeTypeDef provided
      */
-    void validateAttributeTypeDef(String sourceName,
-                                  String parameterName,
+    void validateAttributeTypeDef(String           sourceName,
+                                  String           parameterName,
                                   AttributeTypeDef attributeTypeDef,
-                                  String methodName) throws InvalidParameterException,
+                                  String           methodName) throws InvalidParameterException,
                                                                       InvalidTypeDefException;
 
 
@@ -579,10 +580,10 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws InvalidParameterException  no name provided
      */
-    void validateTypeDefGallery(String sourceName,
-                                String parameterName,
+    void validateTypeDefGallery(String         sourceName,
+                                String         parameterName,
                                 TypeDefGallery gallery,
-                                String methodName) throws InvalidParameterException;
+                                String         methodName) throws InvalidParameterException;
 
 
     /**
@@ -640,9 +641,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws RepositoryErrorException  no guid provided
      */
-    void validateHomeMetadataGUID(String sourceName,
+    void validateHomeMetadataGUID(String         sourceName,
                                   InstanceHeader instance,
-                                  String methodName) throws RepositoryErrorException;
+                                  String         methodName) throws RepositoryErrorException;
 
 
     /**
@@ -656,7 +657,7 @@ public interface OMRSRepositoryValidator
      */
     void validateAsOfTime(String sourceName,
                           String parameterName,
-                          Date asOfTime,
+                          Date   asOfTime,
                           String methodName) throws InvalidParameterException;
 
 
@@ -671,7 +672,7 @@ public interface OMRSRepositoryValidator
      */
     void validateAsOfTimeNotNull(String sourceName,
                                  String parameterName,
-                                 Date asOfTime,
+                                 Date   asOfTime,
                                  String methodName) throws InvalidParameterException;
 
 
@@ -686,7 +687,7 @@ public interface OMRSRepositoryValidator
      */
     void validatePageSize(String sourceName,
                           String parameterName,
-                          int pageSize,
+                          int    pageSize,
                           String methodName) throws PagingErrorException;
 
 
@@ -715,11 +716,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws PropertyErrorException  classification name is null
      */
-    void validateClassificationProperties(String sourceName,
-                                          String classificationName,
-                                          String propertiesParameterName,
+    void validateClassificationProperties(String             sourceName,
+                                          String             classificationName,
+                                          String             propertiesParameterName,
                                           InstanceProperties classificationProperties,
-                                          String methodName) throws PropertyErrorException;
+                                          String             methodName) throws PropertyErrorException;
 
 
     /**
@@ -738,7 +739,7 @@ public interface OMRSRepositoryValidator
                                 String classificationName,
                                 String entityTypeName,
                                 String methodName) throws InvalidParameterException,
-                                                                      ClassificationErrorException;
+                                                          ClassificationErrorException;
 
 
     /**
@@ -754,11 +755,11 @@ public interface OMRSRepositoryValidator
      * @throws PropertyErrorException  the classification's properties are invalid for its type
      * @throws TypeErrorException  the classification's type is invalid
      */
-    void validateClassificationList(String sourceName,
-                                    String parameterName,
+    void validateClassificationList(String               sourceName,
+                                    String               parameterName,
                                     List<Classification> classifications,
-                                    String entityTypeName,
-                                    String methodName) throws InvalidParameterException,
+                                    String               entityTypeName,
+                                    String               methodName) throws InvalidParameterException,
                                                                             ClassificationErrorException,
                                                                             PropertyErrorException,
                                                                             TypeErrorException;
@@ -773,10 +774,10 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws InvalidParameterException  no guid provided
      */
-    void validateMatchCriteria(String sourceName,
-                               String parameterName,
+    void validateMatchCriteria(String            sourceName,
+                               String            parameterName,
                                TypeDefProperties matchCriteria,
-                               String methodName) throws InvalidParameterException;
+                               String            methodName) throws InvalidParameterException;
 
 
     /**
@@ -791,12 +792,12 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws InvalidParameterException  no guid provided
      */
-    void validateMatchCriteria(String sourceName,
-                               String matchCriteriaParameterName,
-                               String matchPropertiesParameterName,
-                               MatchCriteria matchCriteria,
+    void validateMatchCriteria(String             sourceName,
+                               String             matchCriteriaParameterName,
+                               String             matchPropertiesParameterName,
+                               MatchCriteria      matchCriteria,
                                InstanceProperties matchProperties,
-                               String methodName) throws InvalidParameterException;
+                               String             methodName) throws InvalidParameterException;
 
 
     /**
@@ -824,11 +825,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call.
      * @throws PropertyErrorException  invalid property
      */
-    void validatePropertiesForType(String sourceName,
-                                   String parameterName,
-                                   TypeDef typeDef,
+    void validatePropertiesForType(String             sourceName,
+                                   String             parameterName,
+                                   TypeDef            typeDef,
                                    InstanceProperties properties,
-                                   String methodName) throws PropertyErrorException;
+                                   String             methodName) throws PropertyErrorException;
 
 
 
@@ -843,11 +844,11 @@ public interface OMRSRepositoryValidator
      * @throws TypeErrorException  no typeDef provided
      * @throws PropertyErrorException  invalid property
      */
-    void validatePropertiesForType(String sourceName,
-                                   String parameterName,
-                                   TypeDefSummary typeDefSummary,
+    void validatePropertiesForType(String             sourceName,
+                                   String             parameterName,
+                                   TypeDefSummary     typeDefSummary,
                                    InstanceProperties properties,
-                                   String methodName) throws PropertyErrorException,
+                                   String             methodName) throws PropertyErrorException,
                                                                          TypeErrorException;
 
 
@@ -861,11 +862,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  method receiving the call
      * @throws PropertyErrorException  invalid property
      */
-    void validateNewPropertiesForType(String sourceName,
-                                      String parameterName,
-                                      TypeDef typeDef,
+    void validateNewPropertiesForType(String             sourceName,
+                                      String             parameterName,
+                                      TypeDef            typeDef,
                                       InstanceProperties properties,
-                                      String methodName) throws PropertyErrorException;
+                                      String             methodName) throws PropertyErrorException;
 
 
 
@@ -878,8 +879,8 @@ public interface OMRSRepositoryValidator
      * @param instance  instance to test.
      * @return boolean
      */
-    boolean verifyInstanceType(String sourceName,
-                               String instanceTypeGUID,
+    boolean verifyInstanceType(String         sourceName,
+                               String         instanceTypeGUID,
                                InstanceHeader instance);
 
 
@@ -894,11 +895,11 @@ public interface OMRSRepositoryValidator
      * @throws EntityNotKnownException  No entity found
      * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
-    void validateEntityFromStore(String sourceName,
-                                 String guid,
+    void validateEntityFromStore(String        sourceName,
+                                 String        guid,
                                  EntitySummary entity,
-                                 String methodName) throws RepositoryErrorException,
-                                                                     EntityNotKnownException;
+                                 String        methodName) throws RepositoryErrorException,
+                                                                  EntityNotKnownException;
 
 
     /**
@@ -911,11 +912,11 @@ public interface OMRSRepositoryValidator
      * @throws EntityNotKnownException  No entity found
      * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
-    void validateEntityFromStore(String sourceName,
-                                 String guid,
+    void validateEntityFromStore(String       sourceName,
+                                 String       guid,
                                  EntityDetail entity,
-                                 String methodName) throws RepositoryErrorException,
-                                                                     EntityNotKnownException;
+                                 String       methodName) throws RepositoryErrorException,
+                                                                 EntityNotKnownException;
 
 
     /**
@@ -928,10 +929,10 @@ public interface OMRSRepositoryValidator
      * @throws RelationshipNotKnownException  No relationship found
      * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
-    void validateRelationshipFromStore(String sourceName,
-                                       String guid,
+    void validateRelationshipFromStore(String       sourceName,
+                                       String       guid,
                                        Relationship relationship,
-                                       String methodName) throws RepositoryErrorException,
+                                       String       methodName) throws RepositoryErrorException,
                                                                        RelationshipNotKnownException;
 
 
@@ -942,7 +943,7 @@ public interface OMRSRepositoryValidator
      * @param instance  the retrieved instance
      * @throws RepositoryErrorException  logic error in the repository corrupted instance
      */
-    void validateInstanceType(String sourceName,
+    void validateInstanceType(String         sourceName,
                               InstanceHeader instance) throws RepositoryErrorException;
 
 
@@ -957,11 +958,11 @@ public interface OMRSRepositoryValidator
      * @throws InvalidParameterException  the type is null or contains invalid values
      * @throws TypeErrorException  the type is not active
      */
-    void validateType(String sourceName,
-                      String typeParameterName,
-                      TypeDefSummary typeDefSummary,
+    void validateType(String          sourceName,
+                      String          typeParameterName,
+                      TypeDefSummary  typeDefSummary,
                       TypeDefCategory category,
-                      String methodName) throws TypeErrorException, InvalidParameterException;
+                      String          methodName) throws TypeErrorException, InvalidParameterException;
 
 
     /**
@@ -978,14 +979,14 @@ public interface OMRSRepositoryValidator
      * @throws TypeErrorException  problem with type
      * @throws InvalidParameterException  invalid parameter
      */
-    void validateInstanceType(String sourceName,
+    void validateInstanceType(String         sourceName,
                               InstanceHeader instance,
-                              String typeGUIDParameterName,
-                              String typeNameParameterName,
-                              String expectedTypeGUID,
-                              String expectedTypeName) throws RepositoryErrorException,
-                                                                        TypeErrorException,
-                                                                        InvalidParameterException;
+                              String         typeGUIDParameterName,
+                              String         typeNameParameterName,
+                              String         expectedTypeGUID,
+                              String         expectedTypeName) throws RepositoryErrorException,
+                                                                      TypeErrorException,
+                                                                      InvalidParameterException;
 
 
     /**
@@ -996,7 +997,7 @@ public interface OMRSRepositoryValidator
      * @return boolean result
      */
     boolean verifyInstanceHasRightStatus(List<InstanceStatus> validStatuses,
-                                         InstanceHeader instance);
+                                         InstanceHeader       instance);
 
 
     /**
@@ -1009,11 +1010,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  method called
      * @throws StatusNotSupportedException  the initial status is invalid for this type
      */
-    void validateInstanceStatus(String sourceName,
-                                String instanceStatusParameterName,
+    void validateInstanceStatus(String         sourceName,
+                                String         instanceStatusParameterName,
                                 InstanceStatus instanceStatus,
-                                TypeDef typeDef,
-                                String methodName) throws StatusNotSupportedException;
+                                TypeDef        typeDef,
+                                String         methodName) throws StatusNotSupportedException;
 
 
 
@@ -1028,11 +1029,11 @@ public interface OMRSRepositoryValidator
      * @throws StatusNotSupportedException  the initial status is invalid for this type
      * @throws InvalidParameterException  invalid parameter
      */
-    void validateNewStatus(String sourceName,
-                           String instanceStatusParameterName,
+    void validateNewStatus(String         sourceName,
+                           String         instanceStatusParameterName,
                            InstanceStatus instanceStatus,
-                           TypeDef typeDef,
-                           String methodName) throws StatusNotSupportedException,
+                           TypeDef        typeDef,
+                           String         methodName) throws StatusNotSupportedException,
                                                              InvalidParameterException;
 
 
@@ -1045,9 +1046,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of method called
      * @throws InvalidParameterException  the instance is already deleted
      */
-    void validateInstanceStatusForDelete(String sourceName,
+    void validateInstanceStatusForDelete(String         sourceName,
                                          InstanceHeader instance,
-                                         String methodName) throws InvalidParameterException;
+                                         String         methodName) throws InvalidParameterException;
 
 
     /**
@@ -1059,9 +1060,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of calling method
      * @throws EntityNotKnownException  the entity is in deleted status
      */
-    void validateEntityIsNotDeleted(String sourceName,
+    void validateEntityIsNotDeleted(String         sourceName,
                                     InstanceHeader instance,
-                                    String methodName) throws EntityNotKnownException;
+                                    String         methodName) throws EntityNotKnownException;
 
 
     /**
@@ -1072,9 +1073,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of calling method
      * @throws EntityNotDeletedException  the entity is not in deleted status
      */
-    void validateEntityIsDeleted(String sourceName,
+    void validateEntityIsDeleted(String         sourceName,
                                  InstanceHeader instance,
-                                 String methodName) throws EntityNotDeletedException;
+                                 String         methodName) throws EntityNotDeletedException;
 
 
     /**
@@ -1086,9 +1087,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of calling method
      * @throws RelationshipNotKnownException  the relationship is in deleted status
      */
-    void validateRelationshipIsNotDeleted(String sourceName,
+    void validateRelationshipIsNotDeleted(String         sourceName,
                                           InstanceHeader instance,
-                                          String methodName) throws RelationshipNotKnownException;
+                                          String         methodName) throws RelationshipNotKnownException;
 
 
     /**
@@ -1099,9 +1100,9 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of calling method
      * @throws RelationshipNotDeletedException  the relationship is not in deleted status
      */
-    void validateRelationshipIsDeleted(String sourceName,
+    void validateRelationshipIsDeleted(String         sourceName,
                                        InstanceHeader instance,
-                                       String methodName) throws RelationshipNotDeletedException;
+                                       String         methodName) throws RelationshipNotDeletedException;
 
 
     /**
@@ -1114,11 +1115,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of the method making the request
      * @throws InvalidParameterException  types do not align
      */
-    void validateRelationshipEnds(String sourceName,
+    void validateRelationshipEnds(String      sourceName,
                                   EntityProxy entityOneProxy,
                                   EntityProxy entityTwoProxy,
-                                  TypeDef typeDef,
-                                  String methodName) throws InvalidParameterException;
+                                  TypeDef     typeDef,
+                                  String      methodName) throws InvalidParameterException;
 
 
     /**
@@ -1130,7 +1131,7 @@ public interface OMRSRepositoryValidator
      * @param entity  entity to test.
      * @return boolean result
      */
-    boolean verifyEntityIsClassified(List<String> requiredClassifications,
+    boolean verifyEntityIsClassified(List<String>  requiredClassifications,
                                      EntitySummary entity);
 
 
@@ -1146,7 +1147,7 @@ public interface OMRSRepositoryValidator
      */
     int countMatchingPropertyValues(InstanceProperties matchProperties,
                                     InstanceProperties instanceProperties,
-                                    boolean exactMatch) throws InvalidParameterException;
+                                    boolean            exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1160,10 +1161,10 @@ public interface OMRSRepositoryValidator
      * @return integer count of the matching properties.
      * @throws InvalidParameterException invalid search criteria
      */
-    int countMatchingHeaderPropertyValues(InstanceProperties matchProperties,
+    int countMatchingHeaderPropertyValues(InstanceProperties  matchProperties,
                                           InstanceAuditHeader instanceHeader,
-                                          InstanceProperties instanceProperties,
-                                          boolean exactMatch) throws InvalidParameterException;
+                                          InstanceProperties  instanceProperties,
+                                          boolean             exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1177,11 +1178,11 @@ public interface OMRSRepositoryValidator
      * @return boolean flag indicating whether the two sets of properties match
      * @throws InvalidParameterException invalid search criteria
      */
-    boolean verifyMatchingInstancePropertyValues(InstanceProperties matchProperties,
+    boolean verifyMatchingInstancePropertyValues(InstanceProperties  matchProperties,
                                                  InstanceAuditHeader instanceHeader,
-                                                 InstanceProperties instanceProperties,
-                                                 MatchCriteria matchCriteria,
-                                                 boolean exactMatch) throws InvalidParameterException;
+                                                 InstanceProperties  instanceProperties,
+                                                 MatchCriteria       matchCriteria,
+                                                 boolean             exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1195,11 +1196,11 @@ public interface OMRSRepositoryValidator
      * @throws RepositoryErrorException  problem with repository
      * @throws InvalidParameterException  the instance is null or linked to local metadata repository
      */
-    void validateReferenceInstanceHeader(String sourceName,
-                                         String localMetadataCollectionId,
-                                         String instanceParameterName,
+    void validateReferenceInstanceHeader(String         sourceName,
+                                         String         localMetadataCollectionId,
+                                         String         instanceParameterName,
                                          InstanceHeader instance,
-                                         String methodName) throws InvalidParameterException,
+                                         String         methodName) throws InvalidParameterException,
                                                                            RepositoryErrorException;
 
 
@@ -1213,11 +1214,11 @@ public interface OMRSRepositoryValidator
      * @param methodName  name of the method that adds the proxy
      * @throws InvalidParameterException the entity proxy is null or for an entity homed in this repository
      */
-    void validateEntityProxy(String sourceName,
-                             String localMetadataCollectionId,
-                             String proxyParameterName,
+    void validateEntityProxy(String      sourceName,
+                             String      localMetadataCollectionId,
+                             String      proxyParameterName,
                              EntityProxy entityProxy,
-                             String methodName) throws InvalidParameterException;
+                             String      methodName) throws InvalidParameterException;
 
 
     /**
@@ -1230,10 +1231,10 @@ public interface OMRSRepositoryValidator
      * @return boolean indicating whether the search criteria is located in any of the string parameter values.
      * @throws RepositoryErrorException  the properties are not properly set up in the instance
      */
-    boolean verifyInstancePropertiesMatchSearchCriteria(String sourceName,
+    boolean verifyInstancePropertiesMatchSearchCriteria(String             sourceName,
                                                         InstanceProperties properties,
-                                                        String searchCriteria,
-                                                        String methodName) throws RepositoryErrorException;
+                                                        String             searchCriteria,
+                                                        String             methodName) throws RepositoryErrorException;
 
 
     /**
@@ -1246,10 +1247,10 @@ public interface OMRSRepositoryValidator
      * @return boolean indicating whether the search criteria is located in any of the string parameter values.
      * @throws RepositoryErrorException the properties are not properly set up in the instance
      */
-    boolean verifyInstancePropertiesMatchPropertyValue(String sourceName,
+    boolean verifyInstancePropertiesMatchPropertyValue(String             sourceName,
                                                        InstanceProperties properties,
-                                                       String searchPropertyValue,
-                                                       String methodName) throws RepositoryErrorException;
+                                                       String             searchPropertyValue,
+                                                       String             methodName) throws RepositoryErrorException;
 
 
     /**
@@ -1302,10 +1303,10 @@ public interface OMRSRepositoryValidator
      * @param localMethodName  local method that deleted the error
      * @return  boolean
      */
-    boolean isATypeOf(String sourceName,
+    boolean isATypeOf(String              sourceName,
                       InstanceAuditHeader instance,
-                      String typeName,
-                      String localMethodName);
+                      String              typeName,
+                      String              localMethodName);
 
     /*
      * ===========================================
@@ -1322,11 +1323,12 @@ public interface OMRSRepositoryValidator
      * @param typeName name of the type of entities requested.
      * @param serviceName service that requested the entities.
      * @param methodName calling method.
+     * @throws RepositoryErrorException results are not as expected
      */
     void validateAtMostOneEntityResult(List<EntityDetail> findResults,
-                                       String typeName,
-                                       String serviceName,
-                                       String methodName) throws RepositoryErrorException;
+                                       String             typeName,
+                                       String             serviceName,
+                                       String             methodName) throws RepositoryErrorException;
 
 
     /**
@@ -1337,9 +1339,10 @@ public interface OMRSRepositoryValidator
      * @param typeName name of the type of relationships requested.
      * @param serviceName service that requested the relationships.
      * @param methodName calling method.
+     * @throws RepositoryErrorException results are not as expected
      */
     void validateAtMostOneRelationshipResult(List<Relationship> findResults,
-                                             String typeName,
-                                             String serviceName,
-                                             String methodName) throws RepositoryErrorException;
+                                             String             typeName,
+                                             String             serviceName,
+                                             String             methodName) throws RepositoryErrorException;
 }

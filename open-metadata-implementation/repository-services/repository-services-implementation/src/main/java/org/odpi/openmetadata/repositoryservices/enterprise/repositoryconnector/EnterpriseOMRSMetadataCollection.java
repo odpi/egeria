@@ -5556,87 +5556,11 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
      */
     public void saveEntityReferenceCopy(String userId,
-                                        EntityDetail entity) throws InvalidParameterException,
-                                                                      RepositoryErrorException,
-                                                                      TypeErrorException,
-                                                                      PropertyErrorException,
-                                                                      UserNotAuthorizedException{
+                                        EntityDetail entity) throws FunctionNotSupportedException
+    {
         final String    methodName = "saveEntityReferenceCopy()";
 
-        super.saveEntityReferenceParameterValidation( userId, entity);
-
-        /*
-         * Validation complete, ok to create new instance
-         *
-         * The list of cohort connectors are retrieved for each request to ensure that any changes in
-         * the shape of the cohort are reflected immediately.
-         */
-        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-
-        /*
-         * Ready to process the request.  Create requests occur in the first repository that accepts the call.
-         * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
-         * there are no positive results from any repository.
-         */
-        InvalidParameterException     invalidParameterException     = null;
-        TypeErrorException            typeErrorException            = null;
-        PropertyErrorException        propertyErrorException        = null;
-        UserNotAuthorizedException    userNotAuthorizedException    = null;
-        RepositoryErrorException      repositoryErrorException      = null;
-        Throwable                     anotherException              = null;
-
-
-
-        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-        {
-            if (cohortConnector != null)
-            {
-                OMRSMetadataCollection   metadataCollection = cohortConnector.getMetadataCollection();
-
-                validateMetadataCollection(metadataCollection, methodName);
-
-                try
-                {
-                    /*
-                     * Issue the request and return if it succeeds
-                     */
-                    metadataCollection.saveEntityReferenceCopy(userId, entity);
-                } catch (InvalidParameterException error)
-                {
-                    invalidParameterException = error;
-                }
-
-                catch (TypeErrorException error)
-                {
-                    typeErrorException = error;
-                }
-
-                catch (PropertyErrorException error)
-                {
-                    propertyErrorException = error;
-                }
-                catch (RepositoryErrorException error)
-                {
-                    repositoryErrorException = error;
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    userNotAuthorizedException = error;
-                }
-                catch (Throwable error)
-                {
-                    anotherException = error;
-                }
-            }
-        }
-
-        throwCapturedRepositoryErrorException(repositoryErrorException);
-        throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-        throwCapturedThrowableException(anotherException, methodName);
-        throwCapturedTypeErrorException(typeErrorException);
-        throwCapturedPropertyErrorException(propertyErrorException);
-        throwCapturedInvalidParameterException(invalidParameterException);
-
+        throwNotEnterpriseFunction(methodName);
     }
 
 
@@ -6307,6 +6231,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * to a cohort connector.
      *
      * @param exception captured exception
+     * @param methodName calling method
      * @throws RepositoryErrorException there was an unexpected error in the repository
      */
     private void throwCapturedThrowableException(Throwable   exception,
@@ -6447,7 +6372,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException user not recognized or not granted access to the TypeDefs
      */
     private List<AttributeTypeDef> validatedAttributeTypeDefListResults(String                                 repositoryName,
-                                                                        Map<String, AttributeTypeDef>      combinedAttributeTypeDefResults,
+                                                                        Map<String, AttributeTypeDef>          combinedAttributeTypeDefResults,
                                                                         UserNotAuthorizedException             userNotAuthorizedException,
                                                                         RepositoryErrorException               repositoryErrorException,
                                                                         Throwable                              anotherException,
@@ -6560,6 +6485,12 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param anotherException captured Throwable exception
      * @param methodName name of calling method
      * @return InstanceGraph
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws PropertyErrorException issue with a property value
+     * @throws FunctionNotSupportedException the repository does not support the requested method
+     * @throws EntityNotKnownException the requested entity is not known in the metadata collection
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * the metadata collection is stored.
      */
     private InstanceGraph validatedInstanceGraphResults(String                        repositoryName,
                                                         Map<String, EntityDetail>     accumulatedEntityResults,

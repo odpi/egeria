@@ -382,7 +382,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated TypeDef
      * @throws PatchErrorException problem adding attributes
      */
-    private TypeDef patchTypeDefAttributes(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefAttributes(TypeDef                clonedTypeDef,
                                            List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
     {
         List<TypeDefAttribute> propertyDefinitions = clonedTypeDef.getPropertiesDefinition();
@@ -436,7 +436,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated TypeDef
      * @throws PatchErrorException problem adding options
      */
-    private TypeDef patchTypeDefNewOptions(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefNewOptions(TypeDef             clonedTypeDef,
                                            Map<String, String> typeDefOptions) throws PatchErrorException
     {
         // TODO
@@ -450,7 +450,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated TypeDef
      * @throws PatchErrorException problem updating options
      */
-    private TypeDef patchTypeDefUpdateOptions(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefUpdateOptions(TypeDef             clonedTypeDef,
                                               Map<String, String> typeDefOptions) throws PatchErrorException
     {
         // TODO
@@ -464,7 +464,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated TypeDef
      * @throws PatchErrorException problem deleting options
      */
-    private TypeDef patchTypeDefDeleteOptions(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefDeleteOptions(TypeDef             clonedTypeDef,
                                               Map<String, String> typeDefOptions) throws PatchErrorException
     {
         // TODO
@@ -477,12 +477,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param clonedTypeDef            TypeDef object to update
      * @param externalStandardMappings new mappings to add
+     * @param typeDefAttributes new attributes to add.
      * @return updated TypeDef
      * @throws PatchErrorException problem adding mapping(s)
      */
-    private TypeDef patchTypeDefAddExternalStandards(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefAddExternalStandards(TypeDef                       clonedTypeDef,
                                                      List<ExternalStandardMapping> externalStandardMappings,
-                                                     List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
+                                                     List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
     {
         // TODO
         return null;
@@ -494,12 +495,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param clonedTypeDef            TypeDef object to update
      * @param externalStandardMappings mappings to update
+     * @param typeDefAttributes new attributes to add.
      * @return updated TypeDef
      * @throws PatchErrorException problem updating mapping(s)
      */
-    private TypeDef patchTypeDefUpdateExternalStandards(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefUpdateExternalStandards(TypeDef                       clonedTypeDef,
                                                         List<ExternalStandardMapping> externalStandardMappings,
-                                                        List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
+                                                        List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
     {
         // TODO
         return null;
@@ -511,12 +513,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param clonedTypeDef            TypeDef object to update
      * @param externalStandardMappings list of mappings to delete
+     * @param typeDefAttributes new attributes to add.
      * @return updated TypeDef
      * @throws PatchErrorException problem deleting mapping(s)
      */
-    private TypeDef patchTypeDefDeleteExternalStandards(TypeDef clonedTypeDef,
+    private TypeDef patchTypeDefDeleteExternalStandards(TypeDef                       clonedTypeDef,
                                                         List<ExternalStandardMapping> externalStandardMappings,
-                                                        List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
+                                                        List<TypeDefAttribute>        typeDefAttributes) throws PatchErrorException
     {
         // TODO
         return null;
@@ -530,12 +533,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param clonedTypeDef   TypeDef object to update
      * @param description     new description
      * @param descriptionGUID new unique identifier for glossary term that provides detailed description of TypeDef
+     * @param typeDefAttributes new attributes to add.
      * @return updated TypeDef
      * @throws PatchErrorException problem adding new description
      */
-    private TypeDef patchTypeDefNewDescriptions(TypeDef clonedTypeDef,
-                                                String description,
-                                                String descriptionGUID,
+    private TypeDef patchTypeDefNewDescriptions(TypeDef                clonedTypeDef,
+                                                String                 description,
+                                                String                 descriptionGUID,
                                                 List<TypeDefAttribute> typeDefAttributes) throws PatchErrorException
     {
         if (description != null)
@@ -2730,6 +2734,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 primitivePropertyValue.setPrimitiveValue(arrayValue);
 
                 arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+                index++;
             }
 
             resultingProperties.setProperty(propertyName, arrayPropertyValue);

@@ -168,9 +168,9 @@ public interface OMRSRepositoryHelper
      * @param methodName calling method.
      * @return list of property names.
      */
-    List<TypeDefAttribute> getAllPropertiesForTypeDef(String sourceName,
+    List<TypeDefAttribute> getAllPropertiesForTypeDef(String  sourceName,
                                                       TypeDef typeDef,
-                                                      String methodName);
+                                                      String  methodName);
 
 
     /**
@@ -185,8 +185,8 @@ public interface OMRSRepositoryHelper
      * @throws PatchErrorException        the patch is either badly formatted, or does not apply to the supplied TypeDef
      * @throws InvalidParameterException  the TypeDefPatch is null.
      */
-    TypeDef applyPatch(String sourceName,
-                       TypeDef originalTypeDef,
+    TypeDef applyPatch(String       sourceName,
+                       TypeDef      originalTypeDef,
                        TypeDefPatch typeDefPatch) throws PatchErrorException, InvalidParameterException;
 
 
@@ -239,11 +239,11 @@ public interface OMRSRepositoryHelper
      * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException  the type name is not recognized.
      */
-    EntityDetail getSkeletonEntity(String sourceName,
-                                   String metadataCollectionId,
+    EntityDetail getSkeletonEntity(String                 sourceName,
+                                   String                 metadataCollectionId,
                                    InstanceProvenanceType provenanceType,
-                                   String userName,
-                                   String typeName) throws TypeErrorException;
+                                   String                 userName,
+                                   String                 typeName) throws TypeErrorException;
 
 
     /**
@@ -275,11 +275,11 @@ public interface OMRSRepositoryHelper
      * @return partially filled out relationship needs properties
      * @throws TypeErrorException  the type name is not recognized as a relationship type.
      */
-    Relationship getSkeletonRelationship(String sourceName,
-                                         String metadataCollectionId,
+    Relationship getSkeletonRelationship(String                 sourceName,
+                                         String                 metadataCollectionId,
                                          InstanceProvenanceType provenanceType,
-                                         String userName,
-                                         String typeName) throws TypeErrorException;
+                                         String                 userName,
+                                         String                 typeName) throws TypeErrorException;
 
 
     /**
@@ -291,7 +291,7 @@ public interface OMRSRepositoryHelper
      * @return instance type
      * @throws TypeErrorException  the type name is not recognized as a relationship type.
      */
-    InstanceType getNewInstanceType(String sourceName,
+    InstanceType getNewInstanceType(String         sourceName,
                                     TypeDefSummary typeDefSummary) throws TypeErrorException;
 
 
@@ -308,13 +308,13 @@ public interface OMRSRepositoryHelper
      * @return an entity that is filled out
      * @throws TypeErrorException  the type name is not recognized as an entity type
      */
-    EntityDetail getNewEntity(String sourceName,
-                              String metadataCollectionId,
+    EntityDetail getNewEntity(String                 sourceName,
+                              String                 metadataCollectionId,
                               InstanceProvenanceType provenanceType,
-                              String userName,
-                              String typeName,
-                              InstanceProperties properties,
-                              List<Classification> classifications) throws TypeErrorException;
+                              String                 userName,
+                              String                 typeName,
+                              InstanceProperties     properties,
+                              List<Classification>   classifications) throws TypeErrorException;
 
 
     /**
@@ -329,12 +329,12 @@ public interface OMRSRepositoryHelper
      * @return a relationship that is filled out
      * @throws TypeErrorException  the type name is not recognized as a relationship type
      */
-    Relationship getNewRelationship(String sourceName,
-                                    String metadataCollectionId,
+    Relationship getNewRelationship(String                 sourceName,
+                                    String                 metadataCollectionId,
                                     InstanceProvenanceType provenanceType,
-                                    String userName,
-                                    String typeName,
-                                    InstanceProperties properties) throws TypeErrorException;
+                                    String                 userName,
+                                    String                 typeName,
+                                    InstanceProperties     properties) throws TypeErrorException;
 
 
     /**
@@ -351,13 +351,13 @@ public interface OMRSRepositoryHelper
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException  the type name is not recognized as a classification type.
      */
-    Classification getNewClassification(String sourceName,
-                                        String userName,
-                                        String typeName,
-                                        String entityTypeName,
+    Classification getNewClassification(String               sourceName,
+                                        String               userName,
+                                        String               typeName,
+                                        String               entityTypeName,
                                         ClassificationOrigin classificationOrigin,
-                                        String classificationOriginGUID,
-                                        InstanceProperties properties) throws TypeErrorException;
+                                        String               classificationOriginGUID,
+                                        InstanceProperties   properties) throws TypeErrorException;
 
 
     /**
@@ -369,10 +369,10 @@ public interface OMRSRepositoryHelper
      * @param methodName         calling method
      * @return updated entity
      */
-    EntityDetail addClassificationToEntity(String sourceName,
-                                           EntityDetail entity,
+    EntityDetail addClassificationToEntity(String         sourceName,
+                                           EntityDetail   entity,
                                            Classification newClassification,
-                                           String methodName);
+                                           String         methodName);
 
 
     /**
@@ -385,10 +385,10 @@ public interface OMRSRepositoryHelper
      * @return located classification
      * @throws ClassificationErrorException  the classification is not attached to the entity
      */
-    Classification getClassificationFromEntity(String sourceName,
+    Classification getClassificationFromEntity(String       sourceName,
                                                EntityDetail entity,
-                                               String classificationName,
-                                               String methodName) throws ClassificationErrorException;
+                                               String       classificationName,
+                                               String       methodName) throws ClassificationErrorException;
 
 
     /**
@@ -401,11 +401,11 @@ public interface OMRSRepositoryHelper
      * @param methodName         calling method
      * @return updated entity
      */
-    EntityDetail updateClassificationInEntity(String sourceName,
-                                              String userName,
-                                              EntityDetail entity,
+    EntityDetail updateClassificationInEntity(String         sourceName,
+                                              String         userName,
+                                              EntityDetail   entity,
                                               Classification newClassification,
-                                              String methodName);
+                                              String         methodName);
 
 
     /**
@@ -419,10 +419,10 @@ public interface OMRSRepositoryHelper
      * @return updated entity
      * @throws ClassificationErrorException  the entity was not classified with this classification
      */
-    EntityDetail deleteClassificationFromEntity(String sourceName,
+    EntityDetail deleteClassificationFromEntity(String       sourceName,
                                                 EntityDetail entity,
-                                                String oldClassificationName,
-                                                String methodName) throws ClassificationErrorException;
+                                                String       oldClassificationName,
+                                                String       methodName) throws ClassificationErrorException;
 
 
     /**
@@ -433,7 +433,7 @@ public interface OMRSRepositoryHelper
      * @param newProperties       properties to add/update
      * @return merged properties
      */
-    InstanceProperties mergeInstanceProperties(String sourceName,
+    InstanceProperties mergeInstanceProperties(String             sourceName,
                                                InstanceProperties existingProperties,
                                                InstanceProperties newProperties);
 
@@ -446,9 +446,9 @@ public interface OMRSRepositoryHelper
      * @param updatedInstance   new version of the instance that needs updating
      * @return updated instance
      */
-    Relationship incrementVersion(String userId,
+    Relationship incrementVersion(String              userId,
                                   InstanceAuditHeader originalInstance,
-                                  Relationship updatedInstance);
+                                  Relationship        updatedInstance);
 
     /**
      * Changes the control information to reflect an update in an instance.
@@ -458,9 +458,9 @@ public interface OMRSRepositoryHelper
      * @param updatedInstance   new version of the instance that needs updating
      * @return updated instance
      */
-    Classification incrementVersion(String userId,
+    Classification incrementVersion(String              userId,
                                     InstanceAuditHeader originalInstance,
-                                    Classification updatedInstance);
+                                    Classification      updatedInstance);
 
 
     /**
@@ -471,9 +471,9 @@ public interface OMRSRepositoryHelper
      * @param updatedInstance   new version of the instance that needs updating
      * @return updated instance
      */
-    EntityDetail incrementVersion(String userId,
+    EntityDetail incrementVersion(String              userId,
                                   InstanceAuditHeader originalInstance,
-                                  EntityDetail updatedInstance);
+                                  EntityDetail        updatedInstance);
 
 
     /**
@@ -484,12 +484,12 @@ public interface OMRSRepositoryHelper
      * @return                           new entity proxy
      * @throws RepositoryErrorException  logic error in the repository corrupted entity
      */
-    EntityProxy getNewEntityProxy(String sourceName,
+    EntityProxy getNewEntityProxy(String       sourceName,
                                   EntityDetail entity) throws RepositoryErrorException;
 
 
     /**
-     * Return a filled out entity.
+     * Return a filled out entity proxy.
      *
      * @param sourceName            source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
@@ -498,16 +498,16 @@ public interface OMRSRepositoryHelper
      * @param typeName              name of the type
      * @param properties            properties for the entity
      * @param classifications       list of classifications for the entity
-     * @return                      an entity that is filled out
+     * @return  an entity proxy that is filled out
      * @throws TypeErrorException   the type name is not recognized as an entity type
      */
-    EntityProxy getNewEntityProxy(String sourceName,
-                                  String metadataCollectionId,
+    EntityProxy getNewEntityProxy(String                 sourceName,
+                                  String                 metadataCollectionId,
                                   InstanceProvenanceType provenanceType,
-                                  String userName,
-                                  String typeName,
-                                  InstanceProperties properties,
-                                  List<Classification> classifications) throws TypeErrorException;
+                                  String                 userName,
+                                  String                 typeName,
+                                  InstanceProperties     properties,
+                                  List<Classification>   classifications) throws TypeErrorException;
 
     /**
      * Return boolean true if entity is linked by this relationship.
@@ -517,8 +517,8 @@ public interface OMRSRepositoryHelper
      * @param relationship  relationship to test
      * @return boolean indicating whether the entity is mentioned in the relationship
      */
-    boolean relatedEntity(String sourceName,
-                          String entityGUID,
+    boolean relatedEntity(String       sourceName,
+                          String       entityGUID,
                           Relationship relationship);
 
 
@@ -532,10 +532,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    String getStringProperty(String sourceName,
-                             String propertyName,
+    String getStringProperty(String             sourceName,
+                             String             propertyName,
                              InstanceProperties properties,
-                             String methodName);
+                             String             methodName);
 
 
     /**
@@ -548,10 +548,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    String removeStringProperty(String sourceName,
-                                String propertyName,
+    String removeStringProperty(String             sourceName,
+                                String             propertyName,
                                 InstanceProperties properties,
-                                String methodName);
+                                String             methodName);
 
 
     /**
@@ -564,10 +564,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    InstanceProperties getMapProperty(String sourceName,
-                                      String propertyName,
+    InstanceProperties getMapProperty(String             sourceName,
+                                      String             propertyName,
                                       InstanceProperties properties,
-                                      String methodName);
+                                      String             methodName);
 
 
 
@@ -581,10 +581,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return map property value or null
      */
-    Map<String, String> getStringMapFromProperty(String sourceName,
-                                                 String propertyName,
+    Map<String, String> getStringMapFromProperty(String             sourceName,
+                                                 String             propertyName,
                                                  InstanceProperties properties,
-                                                 String methodName);
+                                                 String             methodName);
 
 
     /**
@@ -598,10 +598,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return map property value or null
      */
-    Map<String, String> removeStringMapFromProperty(String sourceName,
-                                                    String propertyName,
+    Map<String, String> removeStringMapFromProperty(String             sourceName,
+                                                    String             propertyName,
                                                     InstanceProperties properties,
-                                                    String methodName);
+                                                    String             methodName);
 
 
     /**
@@ -615,10 +615,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return map property value or null
      */
-    Map<String, Object> getMapFromProperty(String sourceName,
-                                           String propertyName,
+    Map<String, Object> getMapFromProperty(String             sourceName,
+                                           String             propertyName,
                                            InstanceProperties properties,
-                                           String methodName);
+                                           String             methodName);
 
 
     /**
@@ -632,10 +632,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return map property value or null
      */
-    Map<String, Object> removeMapFromProperty(String sourceName,
-                                              String propertyName,
+    Map<String, Object> removeMapFromProperty(String             sourceName,
+                                              String             propertyName,
                                               InstanceProperties properties,
-                                              String methodName);
+                                              String             methodName);
 
     /**
      * Convert an instance properties object into a map.
@@ -656,10 +656,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return array property value or null
      */
-    List<String> getStringArrayProperty(String sourceName,
-                                        String propertyName,
+    List<String> getStringArrayProperty(String             sourceName,
+                                        String             propertyName,
                                         InstanceProperties properties,
-                                        String methodName);
+                                        String             methodName);
 
 
     /**
@@ -673,10 +673,10 @@ public interface OMRSRepositoryHelper
      * @param methodName method of caller
      * @return array property value or null
      */
-    List<String> removeStringArrayProperty(String sourceName,
-                                           String propertyName,
+    List<String> removeStringArrayProperty(String             sourceName,
+                                           String             propertyName,
                                            InstanceProperties properties,
-                                           String methodName);
+                                           String             methodName);
 
 
     /**
@@ -689,10 +689,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    int    getIntProperty(String sourceName,
-                          String propertyName,
+    int    getIntProperty(String             sourceName,
+                          String             propertyName,
                           InstanceProperties properties,
-                          String methodName);
+                          String             methodName);
 
 
     /**
@@ -706,10 +706,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    int    removeIntProperty(String sourceName,
-                             String propertyName,
+    int    removeIntProperty(String             sourceName,
+                             String             propertyName,
                              InstanceProperties properties,
-                             String methodName);
+                             String             methodName);
 
 
     /**
@@ -722,10 +722,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    Date   getDateProperty(String sourceName,
-                           String propertyName,
+    Date   getDateProperty(String             sourceName,
+                           String             propertyName,
                            InstanceProperties properties,
-                           String methodName);
+                           String             methodName);
 
 
     /**
@@ -739,10 +739,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    Date   removeDateProperty(String sourceName,
-                              String propertyName,
+    Date   removeDateProperty(String             sourceName,
+                              String             propertyName,
                               InstanceProperties properties,
-                              String methodName);
+                              String             methodName);
 
 
     /**
@@ -755,10 +755,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    boolean getBooleanProperty(String sourceName,
-                               String propertyName,
+    boolean getBooleanProperty(String             sourceName,
+                               String             propertyName,
                                InstanceProperties properties,
-                               String methodName);
+                               String             methodName);
 
 
     /**
@@ -772,10 +772,10 @@ public interface OMRSRepositoryHelper
      * @param methodName  method of caller
      * @return string property value or null
      */
-    boolean removeBooleanProperty(String sourceName,
-                                  String propertyName,
+    boolean removeBooleanProperty(String             sourceName,
+                                  String             propertyName,
                                   InstanceProperties properties,
-                                  String methodName);
+                                  String             methodName);
 
 
     /**
@@ -789,11 +789,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addStringPropertyToInstance(String sourceName,
+    InstanceProperties addStringPropertyToInstance(String             sourceName,
                                                    InstanceProperties properties,
-                                                   String propertyName,
-                                                   String propertyValue,
-                                                   String methodName);
+                                                   String             propertyName,
+                                                   String             propertyValue,
+                                                   String             methodName);
 
 
     /**
@@ -807,11 +807,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addIntPropertyToInstance(String sourceName,
+    InstanceProperties addIntPropertyToInstance(String             sourceName,
                                                 InstanceProperties properties,
-                                                String propertyName,
-                                                int propertyValue,
-                                                String methodName);
+                                                String             propertyName,
+                                                int                propertyValue,
+                                                String             methodName);
 
 
     /**
@@ -825,11 +825,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addLongPropertyToInstance(String sourceName,
+    InstanceProperties addLongPropertyToInstance(String             sourceName,
                                                  InstanceProperties properties,
-                                                 String propertyName,
-                                                 long propertyValue,
-                                                 String methodName);
+                                                 String             propertyName,
+                                                 long               propertyValue,
+                                                 String             methodName);
 
 
     /**
@@ -843,11 +843,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addFloatPropertyToInstance(String sourceName,
+    InstanceProperties addFloatPropertyToInstance(String             sourceName,
                                                   InstanceProperties properties,
-                                                  String propertyName,
-                                                  float propertyValue,
-                                                  String methodName);
+                                                  String             propertyName,
+                                                  float              propertyValue,
+                                                  String             methodName);
 
 
     /**
@@ -861,11 +861,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addDatePropertyToInstance(String sourceName,
+    InstanceProperties addDatePropertyToInstance(String             sourceName,
                                                  InstanceProperties properties,
-                                                 String propertyName,
-                                                 Date propertyValue,
-                                                 String methodName);
+                                                 String             propertyName,
+                                                 Date               propertyValue,
+                                                 String             methodName);
 
 
     /**
@@ -879,11 +879,11 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addBooleanPropertyToInstance(String sourceName,
+    InstanceProperties addBooleanPropertyToInstance(String             sourceName,
                                                     InstanceProperties properties,
-                                                    String propertyName,
-                                                    boolean propertyValue,
-                                                    String methodName);
+                                                    String             propertyName,
+                                                    boolean            propertyValue,
+                                                    String             methodName);
 
 
     /**
@@ -899,13 +899,13 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
-    InstanceProperties addEnumPropertyToInstance(String sourceName,
+    InstanceProperties addEnumPropertyToInstance(String             sourceName,
                                                  InstanceProperties properties,
-                                                 String propertyName,
-                                                 int ordinal,
-                                                 String symbolicName,
-                                                 String description,
-                                                 String methodName);
+                                                 String             propertyName,
+                                                 int                ordinal,
+                                                 String             symbolicName,
+                                                 String             description,
+                                                 String             methodName);
 
 
     /**
@@ -920,11 +920,11 @@ public interface OMRSRepositoryHelper
      * @param methodName calling method name
      * @return instance properties object.
      */
-    InstanceProperties addStringArrayPropertyToInstance(String sourceName,
+    InstanceProperties addStringArrayPropertyToInstance(String             sourceName,
                                                         InstanceProperties properties,
-                                                        String propertyName,
-                                                        List<String> arrayValues,
-                                                        String methodName);
+                                                        String             propertyName,
+                                                        List<String>       arrayValues,
+                                                        String             methodName);
 
 
     /**
@@ -939,11 +939,11 @@ public interface OMRSRepositoryHelper
      * @param methodName calling method name
      * @return instance properties object.
      */
-    InstanceProperties addMapPropertyToInstance(String sourceName,
-                                                InstanceProperties properties,
-                                                String propertyName,
+    InstanceProperties addMapPropertyToInstance(String              sourceName,
+                                                InstanceProperties  properties,
+                                                String              propertyName,
                                                 Map<String, Object> mapValues,
-                                                String methodName);
+                                                String              methodName);
 
 
     /**
@@ -958,11 +958,11 @@ public interface OMRSRepositoryHelper
      * @param methodName calling method name
      * @return instance properties object.
      */
-    InstanceProperties addStringMapPropertyToInstance(String sourceName,
-                                                      InstanceProperties properties,
-                                                      String propertyName,
+    InstanceProperties addStringMapPropertyToInstance(String              sourceName,
+                                                      InstanceProperties  properties,
+                                                      String              propertyName,
                                                       Map<String, String> mapValues,
-                                                      String methodName);
+                                                      String              methodName);
 
 
     /**
@@ -975,11 +975,12 @@ public interface OMRSRepositoryHelper
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
+     * @throws InvalidParameterException invalid property value
      */
-    InstanceProperties addPropertyMapToInstance(String sourceName,
-                                                InstanceProperties properties,
+    InstanceProperties addPropertyMapToInstance(String              sourceName,
+                                                InstanceProperties  properties,
                                                 Map<String, Object> mapValues,
-                                                String methodName) throws InvalidParameterException;
+                                                String              methodName) throws InvalidParameterException;
 
 
 
@@ -994,12 +995,13 @@ public interface OMRSRepositoryHelper
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
+     * @throws InvalidParameterException invalid property value
      */
-    InstanceProperties addStringPropertyMapToInstance(String sourceName,
-                                                      InstanceProperties properties,
-                                                      String propertyName,
+    InstanceProperties addStringPropertyMapToInstance(String              sourceName,
+                                                      InstanceProperties  properties,
+                                                      String              propertyName,
                                                       Map<String, String> mapValues,
-                                                      String methodName) throws InvalidParameterException;
+                                                      String              methodName) throws InvalidParameterException;
 
 
 
@@ -1010,6 +1012,8 @@ public interface OMRSRepositoryHelper
      *
      * @param instance instance to read
      * @return String type name
+     * @throws RepositoryErrorException unable to locate type
+     * @throws InvalidParameterException invalid property value
      */
     String   getTypeName(InstanceAuditHeader instance) throws RepositoryErrorException,
                                                               InvalidParameterException;
@@ -1050,11 +1054,11 @@ public interface OMRSRepositoryHelper
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      */
     List<EntityDetail>  formatEntityResults(List<EntityDetail> fullResults,
-                                            int fromElement,
-                                            String sequencingProperty,
-                                            SequencingOrder sequencingOrder,
-                                            int pageSize) throws PagingErrorException,
-                                                                                  PropertyErrorException;
+                                            int                fromElement,
+                                            String             sequencingProperty,
+                                            SequencingOrder    sequencingOrder,
+                                            int                pageSize) throws PagingErrorException,
+                                                                                PropertyErrorException;
 
 
     /**
@@ -1075,9 +1079,9 @@ public interface OMRSRepositoryHelper
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      */
      List<Relationship>  formatRelationshipResults(List<Relationship> fullResults,
-                                                   int fromElement,
-                                                   String sequencingProperty,
-                                                   SequencingOrder sequencingOrder,
-                                                   int pageSize) throws PagingErrorException,
-                                                                                         PropertyErrorException;
+                                                   int                fromElement,
+                                                   String             sequencingProperty,
+                                                   SequencingOrder    sequencingOrder,
+                                                   int                pageSize) throws PagingErrorException,
+                                                                                       PropertyErrorException;
 }

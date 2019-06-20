@@ -507,6 +507,8 @@ public class OMRSOperationalServices
      * OMRS repository connectors.
      *
      * @param enterpriseAccessConfig enterprise access configuration from the OMAG server
+     * @param maxPageSize maximum number of results that can be returned
+     * @param repositoryContentManager type knowledge base and other utilities
      * @return initialized OMRSEnterpriseConnectorManager object
      */
     private OMRSEnterpriseConnectorManager initializeEnterpriseConnectorManager(EnterpriseAccessConfig        enterpriseAccessConfig,
