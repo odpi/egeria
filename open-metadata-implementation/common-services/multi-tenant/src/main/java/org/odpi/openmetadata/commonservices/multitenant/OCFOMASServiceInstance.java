@@ -46,11 +46,11 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
      * @param auditLog logging destination
      * @throws NewInstanceException a problem occurred during initialization
      */
-    OCFOMASServiceInstance(String                  serviceName,
-                           OMRSRepositoryConnector repositoryConnector,
-                           List<String>            supportedZones,
-                           List<String>            defaultZones,
-                           OMRSAuditLog            auditLog) throws NewInstanceException
+    public OCFOMASServiceInstance(String                  serviceName,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  List<String>            supportedZones,
+                                  List<String>            defaultZones,
+                                  OMRSAuditLog            auditLog) throws NewInstanceException
     {
         super(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog);
 
@@ -93,6 +93,12 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           supportedZones,
                                                           defaultZones);
 
+
+        if (securityVerifier != null)
+        {
+            assetHandler.setSecurityVerifier(securityVerifier);
+            connectionHandler.setSecurityVerifier(securityVerifier);
+        }
     }
 
 
@@ -109,35 +115,6 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                   OMRSAuditLog            auditLog) throws NewInstanceException
     {
         this(serviceName, repositoryConnector, null, null, auditLog);
-    }
-
-
-    /**
-     * Set up a new security verifier (the handler runs with a default verifier until this
-     * method is called).
-     *
-     * The security verifier provides authorization checks for access and maintenance
-     * changes to open metadata.  Authorization checks are enabled through the
-     * OpenMetadataServerSecurityConnector.
-     *
-     * @param securityVerifier new security verifier
-     */
-    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
-    {
-        super.setSecurityVerifier(securityVerifier);
-
-        if (securityVerifier != null)
-        {
-            if (assetHandler != null)
-            {
-                assetHandler.setSecurityVerifier(securityVerifier);
-            }
-
-            if (connectionHandler != null)
-            {
-                connectionHandler.setSecurityVerifier(securityVerifier);
-            }
-        }
     }
 
 

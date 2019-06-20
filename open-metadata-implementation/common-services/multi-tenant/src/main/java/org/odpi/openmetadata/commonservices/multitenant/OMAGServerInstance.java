@@ -28,6 +28,8 @@ class OMAGServerInstance
 
     /**
      * Only constructor - server name is always set
+     *
+     * @param serverName active server name
      */
     OMAGServerInstance(String   serverName)
     {
@@ -51,7 +53,6 @@ class OMAGServerInstance
      */
     void initialize()
     {
-        serviceInstanceMap = new HashMap<>();
         serverStartTime    = new Date();
     }
 
@@ -136,10 +137,17 @@ class OMAGServerInstance
                                                                                OMRSAuditLog   auditLog,
                                                                                Connection     connection) throws InvalidParameterException
     {
-        this.securityVerifier.registerSecurityValidator(localServerUserId,
-                                                        serverName,
-                                                        auditLog,
-                                                        connection);
+        try
+        {
+            this.securityVerifier.registerSecurityValidator(localServerUserId,
+                                                            serverName,
+                                                            auditLog,
+                                                            connection);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException  error)
+        {
+            throw new InvalidParameterException(error);
+        }
 
         return this.securityVerifier;
     }
@@ -233,22 +241,24 @@ class OMAGServerInstance
 
 
     /**
-     * The server is being shutdown.  No services should be active at this time
+     * The server is being shutdown.  No services should be active at this time.
+     *
+     * @param methodName calling method
+     * @throws PropertyServerException residual services left in the service map
      */
     synchronized void shutdown(String  methodName) throws PropertyServerException
     {
-        if (serviceInstanceMap.isEmpty())
-        {
-            this.serverHistory.add(new OMAGServerInstanceHistory(this.serverStartTime, new Date()));
-            this.serverStartTime = null;
-        }
-        else
+        this.serverHistory.add(new OMAGServerInstanceHistory(this.serverStartTime, new Date()));
+        this.serverStartTime = null;
+
+        if (!serviceInstanceMap.isEmpty())
         {
             OMAGServerInstanceErrorCode errorCode    = OMAGServerInstanceErrorCode.SERVICES_NOT_SHUTDOWN;
             String                      errorMessage = errorCode.getErrorMessageId()
                                                      + errorCode.getFormattedErrorMessage(serverName,
                                                                                           serviceInstanceMap.keySet().toString());
 
+            this.serviceInstanceMap = new HashMap<>();
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
                                               methodName,

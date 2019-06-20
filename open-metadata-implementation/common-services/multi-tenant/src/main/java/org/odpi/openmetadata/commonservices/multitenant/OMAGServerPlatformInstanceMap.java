@@ -412,6 +412,7 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Return the list of services running in an OMAG Server that is running on this OMAG Server Platform.
      *
+     * @param userId calling user
      * @param serverName name of the server
      * @return list on OMAG Services or null if the server is not
      * @throws InvalidParameterException the server name is not known

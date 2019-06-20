@@ -14,7 +14,7 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
  */
 public abstract class OMAGServerServiceInstanceHandler
 {
-    private  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    protected  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     protected String serviceName;
 
