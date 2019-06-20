@@ -54,6 +54,7 @@ public class ConnectedAssetClientBase
      * Return the basic properties of a asset.
      *
      * @param restClient client that calls REST APIs
+     * @param serviceName name of the calling service
      * @param userId calling user
      * @param guid unique identifier of asset
      * @param methodName calling method
@@ -65,17 +66,19 @@ public class ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
     protected Asset getAssetSummary(OCFRESTClient  restClient,
+                                    String         serviceName,
                                     String         userId,
                                     String         guid,
                                     String         methodName) throws InvalidParameterException,
                                                                       PropertyServerException,
                                                                       UserNotAuthorizedException
     {
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}";
 
         AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
                                                                    serverPlatformRootURL + urlTemplate,
                                                                    serverName,
+                                                                   serviceName,
                                                                    userId,
                                                                    guid);
 
@@ -90,6 +93,7 @@ public class ConnectedAssetClientBase
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
+     * @param serviceName name of the calling service
      * @param userId         userId of user making request.
      * @param assetGUID      unique identifier for asset.
      *
@@ -99,10 +103,11 @@ public class ConnectedAssetClientBase
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    protected AssetUniverse getAssetProperties(String serviceName,
+                                               String userId,
+                                               String assetGUID) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String   methodName = "getAssetProperties";
         final String   guidParameter = "assetGUID";
@@ -116,7 +121,7 @@ public class ConnectedAssetClientBase
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAssetUniverse(serverName, serverPlatformRootURL, userId, assetGUID);
+            return new ConnectedAssetUniverse(serviceName, serverName, serverPlatformRootURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
         {
@@ -141,6 +146,8 @@ public class ConnectedAssetClientBase
      * Use the Open Connector Framework (OCF) to create a connector using the supplied connection.
      *
      * @param restClient client that calls REST APIs
+     * @param serviceName calling service
+     * @param userId calling user
      * @param requestedConnection  connection describing the required connector.
      * @param methodName  name of the calling method.
      *
@@ -150,6 +157,7 @@ public class ConnectedAssetClientBase
      * @throws ConnectorCheckedException the connector had an operational issue accessing the asset.
      */
     protected Connector getConnectorForConnection(OCFRESTClient   restClient,
+                                                  String          serviceName,
                                                   String          userId,
                                                   Connection      requestedConnection,
                                                   String          methodName) throws ConnectionCheckedException,
@@ -189,14 +197,15 @@ public class ConnectedAssetClientBase
 
         try
         {
-            String  assetGUID = this.getAssetForConnection(restClient, userId, requestedConnection.getGUID());
+            String  assetGUID = this.getAssetForConnection(restClient, serviceName, userId, requestedConnection.getGUID());
 
             /*
              * If the connector is successfully created, set up the Connected Asset Properties for the connector.
              * The properties should be retrieved from the open metadata repositories, so use an OMAS implementation
              * of the ConnectedAssetProperties object.
              */
-            ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serverName,
+            ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serviceName,
+                                                                                             serverName,
                                                                                              userId,
                                                                                              serverPlatformRootURL,
                                                                                              newConnector.getConnectorInstanceId(),
@@ -233,6 +242,7 @@ public class ConnectedAssetClientBase
      * Returns the connection corresponding to the supplied connection GUID.
      *
      * @param restClient client that calls REST APIs
+     * @param serviceName name of the calling service
      * @param userId userId of user making request.
      * @param guid   the unique id for the connection within the metadata repository.
      *
@@ -243,17 +253,19 @@ public class ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionByGUID(OCFRESTClient  restClient,
+                                             String         serviceName,
                                              String         userId,
                                              String         guid) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException
     {
         final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/connections/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/connections/{3}";
 
         ConnectionResponse   restResult = restClient.callConnectionGetRESTCall(methodName,
                                                                                serverPlatformRootURL + urlTemplate,
                                                                                serverName,
+                                                                               serviceName,
                                                                                userId,
                                                                                guid);
 
@@ -270,6 +282,7 @@ public class ConnectedAssetClientBase
      * Returns the connection corresponding to the supplied asset GUID.
      *
      * @param restClient client that calls REST APIs
+     * @param serviceName name of the calling service
      * @param userId       userId of user making request.
      * @param assetGUID   the unique id for the asset within the metadata repository.
      *
@@ -280,17 +293,19 @@ public class ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected Connection getConnectionForAsset(OCFRESTClient  restClient,
+                                               String         serviceName,
                                                String         userId,
                                                String         assetGUID) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getConnectionForAsset";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}/connection";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/connection";
 
         ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
                                                                              serverPlatformRootURL + urlTemplate,
                                                                              serverName,
+                                                                             serviceName,
                                                                              userId,
                                                                              assetGUID);
 
@@ -305,6 +320,8 @@ public class ConnectedAssetClientBase
     /**
      * Returns the unique identifier for the asset connected to the requested connection.
      *
+     * @param restClient initialized client for calling REST APIs.
+     * @param serviceName name of the calling service.
      * @param userId the userId of the requesting user.
      * @param connectionGUID  unique identifier for the connection.
      *
@@ -315,17 +332,19 @@ public class ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     protected String  getAssetForConnection(OCFRESTClient  restClient,
+                                            String         serviceName,
                                             String         userId,
                                             String         connectionGUID) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
         final String   methodName = "getAssetForConnection";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/by-connection/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/by-connection/{3}";
 
         GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
                                                                  serverPlatformRootURL + urlTemplate,
                                                                  serverName,
+                                                                 serviceName,
                                                                  userId,
                                                                  connectionGUID);
 

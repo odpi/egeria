@@ -129,6 +129,8 @@ public class ConnectionHandler
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the feedback is attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
      * @return list of connections
      * @throws InvalidParameterException  the input properties are invalid
@@ -755,6 +757,7 @@ public class ConnectionHandler
      *
      * @param userId  String - userId of user making request.
      * @param name  this may be the qualifiedName or displayName of the connection.
+     * @param methodName calling method
      *
      * @return Connection retrieved from property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -762,11 +765,11 @@ public class ConnectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public Connection getConnectionByName(String   userId,
-                                          String   name) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                          String   name,
+                                          String   methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
-        final  String   methodName = "getConnectionByName";
         final  String   nameParameter = "name";
 
         invalidParameterHandler.validateName(name, nameParameter, methodName);

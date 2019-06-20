@@ -60,4 +60,10 @@ public class AssetMapper
     public static final String DELIMITER_CHARACTER_PROPERTY_NAME         = "delimiterCharacter";                   /* from CSVFile entity */
     public static final String QUOTE_CHARACTER_PROPERTY_NAME             = "quoteCharacter";                       /* from CSVFile entity */
 
+    public static final String ASSET_ORIGIN_CLASSIFICATION_GUID          = "e530c566-03d2-470a-be69-6f52bfbd5fb7";
+    public static final String ASSET_ORIGIN_CLASSIFICATION_NAME          = "AssetOrigin";
+
+    public static final String ORGANIZATION_GUID_PROPERTY_NAME           = "organization";
+    public static final String BUSINESS_CAPABILITY_GUID_PROPERTY_NAME    = "businessCapability";
+    public static final String OTHER_ORIGIN_VALUES_PROPERTY_NAME         = "otherOriginValues";
 }
