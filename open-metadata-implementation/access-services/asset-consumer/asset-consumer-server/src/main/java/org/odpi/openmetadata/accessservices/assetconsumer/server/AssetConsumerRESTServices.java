@@ -80,7 +80,7 @@ public class AssetConsumerRESTServices
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.getAssetForConnection(userId, connectionName));
+            response.setGUID(handler.getAssetForConnectionName(userId, connectionName, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -201,7 +201,7 @@ public class AssetConsumerRESTServices
             ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setConnection(connectionHandler.getConnectionByName(userId, name));
+            response.setConnection(connectionHandler.getConnectionByName(userId, name, methodName));
         }
         catch (InvalidParameterException error)
         {
@@ -548,6 +548,7 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
+     * @param assetGUID     String - unique id of asset that this chain of comments is linked.
      * @param commentGUID  String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -559,6 +560,7 @@ public class AssetConsumerRESTServices
      */
     public GUIDResponse addCommentReply(String             serverName,
                                         String             userId,
+                                        String             assetGUID,
                                         String             commentGUID,
                                         CommentRequestBody requestBody)
     {
@@ -615,7 +617,8 @@ public class AssetConsumerRESTServices
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       userId of user making request.
-     * @param guid         unique identifier for the comment to change.
+     * @param assetGUID    unique identifier for the asset that the comment is attached to (directly or indirectly).
+     * @param commentGUID  unique identifier for the comment to change.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -625,7 +628,8 @@ public class AssetConsumerRESTServices
      */
     public VoidResponse   updateComment(String              serverName,
                                         String              userId,
-                                        String              guid,
+                                        String              assetGUID,
+                                        String              commentGUID,
                                         CommentRequestBody  requestBody)
     {
         final String        methodName = "updateComment";
@@ -651,7 +655,7 @@ public class AssetConsumerRESTServices
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.updateComment(userId, guid, commentType, commentText, isPublic, methodName);
+            handler.updateComment(userId, commentGUID, commentType, commentText, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
         {
@@ -681,7 +685,8 @@ public class AssetConsumerRESTServices
      *
      * @param serverName name of the server instances for this request
      * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the comment object
+     * @param assetGUID  String - unique id for the asset object
+     * @param commentGUID  String - unique id for the comment object
      * @param requestBody null request body needed to satisfy the HTTP Post request
      *
      * @return void or
@@ -692,7 +697,8 @@ public class AssetConsumerRESTServices
      */
     public VoidResponse removeCommentFromAsset(String          serverName,
                                                String          userId,
-                                               String          guid,
+                                               String          assetGUID,
+                                               String          commentGUID,
                                                NullRequestBody requestBody)
     {
         final String        methodName = "removeComment";
@@ -707,7 +713,7 @@ public class AssetConsumerRESTServices
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeComment(userId, guid, methodName);
+            handler.removeComment(userId, commentGUID, methodName);
         }
         catch (InvalidParameterException  error)
         {
@@ -947,25 +953,23 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Creates a new public informal tag and returns the unique identifier for it.
+     * Creates a new informal tag and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request
-     * @param userId           userId of user making request
+     * @param userId       userId of user making request
      * @param requestBody  contains the name of the tag and (optional) description of the tag
-     * @param isPublic is the tag to be visible to everyone or private to the creator
-     * @param methodName calling method
      *
      * @return guid for new tag or
      * InvalidParameterException - one of the parameters is invalid or
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    private GUIDResponse createTag(String         serverName,
+    public GUIDResponse createTag(String         serverName,
                                    String         userId,
-                                   TagRequestBody requestBody,
-                                   boolean        isPublic,
-                                   String         methodName)
+                                   TagRequestBody requestBody)
     {
+        final String   methodName = "createTag";
+
         log.debug("Calling method: " + methodName);
 
         GUIDResponse  response = new GUIDResponse();
@@ -973,19 +977,21 @@ public class AssetConsumerRESTServices
 
         try
         {
-            String      tagName = null;
-            String      tagDescription = null;
-
             if (requestBody != null)
             {
-                tagName = requestBody.getTagName();
-                tagDescription = requestBody.getTagDescription();
+                InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                response.setGUID(handler.createTag(userId,
+                                                   requestBody.getTagName(),
+                                                   requestBody.getTagDescription(),
+                                                   requestBody.isPublic(),
+                                                   methodName));
             }
-
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.createTag(userId, tagName, tagDescription, isPublic, methodName));
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (InvalidParameterException  error)
         {
@@ -1011,51 +1017,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Creates a new public informal tag and returns the unique identifier for it.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param userId           userId of user making request.
-     * @param requestBody  contains the name of the tag and (optional) description of the tag.
-     *
-     * @return guid for new tag or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createPublicTag(String         serverName,
-                                        String         userId,
-                                        TagRequestBody requestBody)
-    {
-        final String   methodName = "createPublicTag";
-
-        return this.createTag(serverName, userId, requestBody, true, methodName);
-    }
-
-
-    /**
-     * Creates a new private informal tag and returns the unique identifier for it.
-     *
-     * @param serverName   name of the server instances for this request
-     * @param userId           userId of user making request.
-     * @param requestBody  contains the name of the tag and (optional) description of the tag.
-     *
-     * @return guid for new tag or
-     * InvalidParameterException - one of the parameters is invalid or
-     * PropertyServerException - there is a problem retrieving information from the property server(s) or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse createPrivateTag(String         serverName,
-                                         String         userId,
-                                         TagRequestBody requestBody)
-    {
-        final String   methodName = "createPrivateTag";
-
-        return this.createTag(serverName, userId, requestBody, false, methodName);
-    }
-
-
-    /**
-     * Updates the description of an existing tag (either private of public).
+     * Updates the description of an existing tag (either private or public).
      *
      * @param serverName   name of the server instances for this request
      * @param userId       userId of user making request.
@@ -1081,17 +1043,17 @@ public class AssetConsumerRESTServices
 
         try
         {
-            String      tagDescription = null;
-
             if (requestBody != null)
             {
-                tagDescription = requestBody.getTagDescription();
+                InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+                handler.updateTagDescription(userId, tagGUID, requestBody.getTagDescription(), methodName);
             }
-
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
-
-            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.updateTagDescription(userId, tagGUID, tagDescription, methodName);
+            else
+            {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+            }
         }
         catch (InvalidParameterException  error)
         {
@@ -1117,7 +1079,7 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to assets are lost.
+     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
      *
      * @param serverName   name of the server instances for this request
      * @param userId    userId of user making request.
@@ -1134,7 +1096,7 @@ public class AssetConsumerRESTServices
                                     String          tagGUID,
                                     NullRequestBody requestBody)
     {
-        final String   methodName = "removeTag";
+        final String   methodName = "deleteTag";
 
         log.debug("Calling method: " + methodName);
 
