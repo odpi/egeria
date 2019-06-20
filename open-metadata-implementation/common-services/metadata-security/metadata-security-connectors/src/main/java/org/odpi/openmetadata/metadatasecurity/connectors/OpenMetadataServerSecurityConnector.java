@@ -4,6 +4,8 @@ package org.odpi.openmetadata.metadatasecurity.connectors;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -13,11 +15,14 @@ import org.odpi.openmetadata.metadatasecurity.OpenMetadataServerSecurity;
 import org.odpi.openmetadata.metadatasecurity.OpenMetadataServiceSecurity;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityAuditCode;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
+import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+
+import java.util.List;
 
 /**
  * OpenMetadataServerSecurityConnector provides the base class for an Open Metadata Security Connector for
@@ -56,7 +61,7 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(connectorName),
+                               auditCode.getFormattedLogMessage(connectorName, serverName),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
@@ -107,6 +112,29 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
         }
 
         return asset.getGUID();
+    }
+
+
+
+    /**
+     * Return a string representing the list of zones.
+     *
+     * @param zones zones to output
+     * @return string for messages
+     */
+    protected  String  printZoneList(List<String>   zones)
+    {
+        if (zones == null)
+        {
+            return "<null>";
+        }
+
+        if (zones.isEmpty())
+        {
+            return "[]";
+        }
+
+        return zones.toString();
     }
 
 
@@ -489,7 +517,101 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
         OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ASSET_CHANGE;
         String                        errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(userId, this.getAssetGUID(asset));
+                                                   + errorCode.getFormattedErrorMessage(userId,
+                                                                                        this.getAssetGUID(asset));
+
+        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             errorMessage,
+                                             errorCode.getSystemAction(),
+                                             errorCode.getUserAction(),
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an
+     * unauthorized access.
+     *
+     * @param userId calling user
+     * @param asset asset being accessed
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwIncompleteAsset(String   userId,
+                                        Asset    asset,
+                                        String   methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            OpenMetadataSecurityAuditCode auditCode;
+
+            auditCode = OpenMetadataSecurityAuditCode.INCOMPLETE_ASSET;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(userId, this.getAssetGUID(asset)),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+
+        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.INCOMPLETE_ASSET;
+        String                        errorMessage = errorCode.getErrorMessageId()
+                                                   + errorCode.getFormattedErrorMessage(userId,
+                                                                                        this.getAssetGUID(asset));
+
+        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             errorMessage,
+                                             errorCode.getSystemAction(),
+                                             errorCode.getUserAction(),
+                                             userId);
+    }
+
+
+    /**
+     * Write an audit log message and throw exception to record an
+     * unauthorized access.
+     *
+     * @param userId calling user
+     * @param asset asset being accessed
+     * @param originalZones previous value of the zone membership for the asset being accessed
+     * @param newZones new value of the zone membership for the asset being accessed
+     * @param methodName calling method
+     * @throws UserNotAuthorizedException the authorization check failed
+     */
+    protected void throwUnauthorizedZoneChange(String        userId,
+                                               Asset         asset,
+                                               List<String>  originalZones,
+                                               List<String>  newZones,
+                                               String        methodName) throws UserNotAuthorizedException
+    {
+        if (auditLog != null)
+        {
+            OpenMetadataSecurityAuditCode auditCode;
+
+            auditCode = OpenMetadataSecurityAuditCode.UNAUTHORIZED_ZONE_CHANGE;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(userId,
+                                                                this.getAssetGUID(asset),
+                                                                this.printZoneList(originalZones),
+                                                                this.printZoneList(newZones)),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+
+        OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.UNAUTHORIZED_ZONE_CHANGE;
+        String                        errorMessage = errorCode.getErrorMessageId()
+                                                   + errorCode.getFormattedErrorMessage(userId,
+                                                                                        this.getAssetGUID(asset),
+                                                                                        this.printZoneList(originalZones),
+                                                                                        this.printZoneList(newZones));
 
         throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
                                              this.getClass().getName(),
@@ -507,10 +629,11 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param userId calling user
      * @param asset asset in error
+     * @param methodName calling method
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
     protected void throwUnauthorizedAssetFeedback(String       userId,
-                                                  Asset       asset,
+                                                  Asset        asset,
                                                   String       methodName) throws UserNotAuthorizedException
     {
         if (auditLog != null)
@@ -631,6 +754,75 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
 
         connectorName = this.getClass().getName();
         logConnectorStarting();
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * default zones.  This is called whenever a new asset is created.
+     *
+     * The default behavior is to use the default values, unless the zones have been explicitly set up,
+     * in which case, they are left unchanged.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param asset initial values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> initializeAssetZones(List<String>  defaultZones,
+                                             Asset         asset) throws InvalidParameterException,
+                                                                         PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (asset != null)
+        {
+            if ((asset.getZoneMembership() == null) || (asset.getZoneMembership().isEmpty()))
+            {
+                resultingZones = defaultZones;
+            }
+            else
+            {
+                resultingZones = asset.getZoneMembership();
+            }
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (updatedAsset != null)
+        {
+            resultingZones = updatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
     }
 
 
@@ -791,12 +983,14 @@ public class OpenMetadataServerSecurityConnector extends ConnectorBase implement
      *
      * @param userId identifier of user
      * @param originalAsset original asset details
+     * @param originalAssetAuditHeader details of the asset's audit header
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    public void  validateUserForAssetDetailUpdate(String     userId,
-                                                  Asset      originalAsset,
-                                                  Asset      newAsset) throws UserNotAuthorizedException
+    public void  validateUserForAssetDetailUpdate(String           userId,
+                                                  Asset            originalAsset,
+                                                  AssetAuditHeader originalAssetAuditHeader,
+                                                  Asset            newAsset) throws UserNotAuthorizedException
     {
         final String  methodName = "validateUserForAssetDetailUpdate";
 

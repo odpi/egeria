@@ -80,22 +80,27 @@ public enum OpenMetadataSecurityErrorCode
                               "The system is unable to process a request from the user because they do not have access to the necessary services and/or resources.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-009 ",
+    INCOMPLETE_ASSET(         403, "OMAG-PLATFORM-SECURITY-403-009 ",
+                              "User {0} is not authorized to change asset {1} because it has missing properties",
+                              "The system is unable to process a request from the user because the asset is not correctly or completely filled out.",
+                              "The request fails with a UserNotAuthorizedException exception."),
+
+    UNAUTHORIZED_TYPE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-010 ",
                               "User {0} is not authorized to access open metadata type {1} ({2}) on server {3}",
                               "The system is unable to process a request from the user because they do not have access to the necessary services and/or resources.",
                               "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-010 ",
+    UNAUTHORIZED_TYPE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-011 ",
                              "User {0} is not authorized to change open metadata type {1} ({2}) on server {3}",
                              "The system is unable to process a request from the user because they do not have access to the necessary services and/or resources.",
                              "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-011 ",
+    UNAUTHORIZED_INSTANCE_ACCESS(403, "OMAG-PLATFORM-SECURITY-403-012 ",
                              "User {0} is not authorized to access open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have access to the necessary services and/or resources.",
                              "The request fails with a UserNotAuthorizedException exception."),
 
-    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-012 ",
+    UNAUTHORIZED_INSTANCE_CHANGE(403, "OMAG-PLATFORM-SECURITY-403-013 ",
                              "User {0} is not authorized to change open metadata instance {1} of type {2} on server {3}",
                              "The system is unable to process a request from the user because they do not have access to the necessary services and/or resources.",
                              "The request fails with a UserNotAuthorizedException exception."),

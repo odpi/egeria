@@ -14,7 +14,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Metadata security connectors</name>
+    <name>Open Metadata Security APIs and Connectors</name>
     <description>
         Server plugins for open metadata security.
     </description>
@@ -32,6 +32,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>metadata-security-connectors</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-security-samples</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
