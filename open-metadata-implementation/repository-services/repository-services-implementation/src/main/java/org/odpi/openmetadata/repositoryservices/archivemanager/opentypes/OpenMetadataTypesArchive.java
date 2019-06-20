@@ -6548,6 +6548,9 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
+        final String attribute1Name            = "anchorGUID";
+        final String attribute1Description     = "Optional identifier of the referenceable that this rating is connected to (either directly or indirectly).";
+        final String attribute1DescriptionGUID = null;
         final String attribute2Name            = "stars";
         final String attribute2Description     = "Rating level provided.";
         final String attribute2DescriptionGUID = null;
@@ -6555,6 +6558,10 @@ public class OpenMetadataTypesArchive
         final String attribute3Description     = "Additional comments associated with the rating.";
         final String attribute3DescriptionGUID = null;
 
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("StarRating",
                                                          attribute2Name,
                                                          attribute2Description,
@@ -6592,9 +6599,12 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "text";
-        final String attribute1Description     = "Feedback comments or additional information.";
+        final String attribute1Name            = "anchorGUID";
+        final String attribute1Description     = "Optional identifier of the referenceable that this comment is connected to (either directly or indirectly).";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "text";
+        final String attribute2Description     = "Feedback comments or additional information.";
+        final String attribute2DescriptionGUID = null;
         final String attribute3Name            = "type";
         final String attribute3Description     = "Type of comment.";
         final String attribute3DescriptionGUID = null;
@@ -6602,6 +6612,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("CommentType",
                                                          attribute3Name,
@@ -6622,11 +6636,30 @@ public class OpenMetadataTypesArchive
         final String description     = "Boolean type of rating expressing a favorable impression.";
         final String descriptionGUID = null;
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 null,
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
+                                                                 name,
+                                                                 null,
+                                                                 description,
+                                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "anchorGUID";
+        final String attribute1Description     = "Optional identifier of the referenceable that this comment is connected to (either directly or indirectly).";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -17277,8 +17310,8 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "owningAssetGUID";
-        final String attribute1Description     = "Optional identification of the Asset that this schema element is a part of.";
+        final String attribute1Name            = "anchorGUID";
+        final String attribute1Description     = "Optional identification of the referenceable that this schema element is a part of.";
         final String attribute1DescriptionGUID = null;
 
 
@@ -21094,6 +21127,9 @@ public class OpenMetadataTypesArchive
         final String attribute5Name            = "discoveryRequestStatus";
         final String attribute5Description     = "Status of the discovery analysis show in the report.";
         final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "anchorGUID";
+        final String attribute6Description     = "Optional identifier of the asset that this report is connected to.";
+        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -21115,6 +21151,10 @@ public class OpenMetadataTypesArchive
                                                          attribute5Name,
                                                          attribute5Description,
                                                          attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -21351,6 +21391,9 @@ public class OpenMetadataTypesArchive
         final String attribute8Name            = "additionalProperties";
         final String attribute8Description     = "Additional properties discovered during the analysis.";
         final String attribute8DescriptionGUID = null;
+        final String attribute9Name            = "anchorGUID";
+        final String attribute9Description     = "Optional identifier of the asset that this annotation is indirectly connected to.";
+        final String attribute9DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -21383,6 +21426,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute8Name,
                                                                     attribute8Description,
                                                                     attribute8DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
+                                                           attribute9Description,
+                                                           attribute9DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -21830,6 +21877,9 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "additionalProperties";
         final String attribute3Description     = "Additional properties discovered during the analysis.";
         final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "anchorGUID";
+        final String attribute4Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
+        final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -21842,6 +21892,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
