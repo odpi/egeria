@@ -3,10 +3,13 @@
 package org.odpi.openmetadata.metadatasecurity.samples;
 
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
@@ -37,7 +40,10 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     private List<String>              metadataArchitects  = new ArrayList<>();
     private List<String>              npaAccounts         = new ArrayList<>();
 
+    private List<String>              defaultZoneMembership = new ArrayList<>();
+
     private Map<String, List<String>> zoneAccess   = new HashMap<>();
+    private Map<String, String>       ownerZones   = new HashMap<>();
 
     /*
      * Zones requiring special processing
@@ -59,9 +65,9 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
          * Standard zones in use by Coco Pharmaceuticals
          */
         final String researchZoneName        = "research";
-        final String clinicalTrialsZoneName  = "clinical-trials";
         final String hrZoneName              = "human-resources";
         final String financeZoneName         = "finance";
+        final String clinicalTrialsZoneName  = "clinical-trials";
         final String infrastructureZoneName  = "infrastructure";
         final String developmentZoneName     = "development";
         final String manufacturingZoneName   = "manufacturing";
@@ -98,6 +104,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         final String archiverUserId    = "archiver01";
         final String etlEngineUserId   = "dlETL";
+
+        /*
+         * Set up default zone membership
+         */
+        defaultZoneMembership.add(quarantineZoneName);
 
         /*
          * Add all the users into the all group
@@ -171,6 +182,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         List<String> zoneSetUp = new ArrayList<>();
 
         /*
+         * Set up the assignment of zones for specific users
+         */
+        ownerZones.put(tanyaTidieUserId, clinicalTrialsZoneName);
+
+        /*
          * Set up the zones
          */
         zoneAccess.put(trashCanZoneName, npaAccounts);
@@ -183,11 +199,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         zoneAccess.put(researchZoneName, zoneSetUp);
 
-        zoneSetUp.add(callieQuartileUserId);
-        zoneSetUp.add(tessaTubeUserId);
-        zoneSetUp.add(grantAbleUserId);
-        zoneSetUp.add(julieStitchedUserId);
-        zoneSetUp.add(angelaCummingUserId);
+        zoneSetUp.add(tanyaTidieUserId);
 
         zoneAccess.put(clinicalTrialsZoneName, zoneSetUp);
 
@@ -243,6 +255,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this function
      */
+    @Override
     public void  validateUserForServer(String   userId) throws UserNotAuthorizedException
     {
         if (allUsers.contains(userId))
@@ -261,6 +274,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to change configuration
      */
+    @Override
     public void  validateUserAsServerAdmin(String   userId) throws UserNotAuthorizedException
     {
         if (serverAdmins.contains(userId))
@@ -279,6 +293,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this server
      */
+    @Override
     public void  validateUserAsServerOperator(String   userId) throws UserNotAuthorizedException
     {
         if (serverOperators.contains(userId))
@@ -297,6 +312,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this server
      */
+    @Override
     public void  validateUserAsServerInvestigator(String   userId) throws UserNotAuthorizedException
     {
         if (serverInvestigators.contains(userId))
@@ -316,6 +332,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForService(String   userId,
                                         String   serviceName) throws UserNotAuthorizedException
     {
@@ -337,13 +354,34 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForServiceOperation(String   userId,
                                                  String   serviceName,
                                                  String   serviceOperationName) throws UserNotAuthorizedException
     {
-        if (allUsers.contains(userId))
+        final String  assetOwnerServiceName = "Asset Owner OMAS";
+        final String  deleteAssetOperationName = "deleteAsset";
+
+        /*
+         * Coco Pharmaceuticals have decided that the assetDelete method from Asset Owner OMAS is too powerful
+         * to use and so this test means that only non-personal accounts (NPA) can use it.
+         *
+         * They delete an asset by moving it to the "trash-can" zone where it is cleaned up by automated
+         * processes the next day.
+         */
+        if ((assetOwnerServiceName.equals(serviceName)) && (deleteAssetOperationName.equals(serviceOperationName)))
         {
-            return;
+            if (npaAccounts.contains(userId))
+            {
+                return;
+            }
+        }
+        else
+        {
+            if (allUsers.contains(userId))
+            {
+                return;
+            }
         }
 
         super.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
@@ -357,6 +395,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param connection connection object
      * @throws UserNotAuthorizedException the user is not authorized to access this service
      */
+    @Override
     public void  validateUserForConnection(String     userId,
                                            Connection connection) throws UserNotAuthorizedException
     {
@@ -429,19 +468,6 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
                 }
 
                 /*
-                 * If the asset is in the quarantine zone then there is a restricted list of people that can change
-                 * the zone membership.  Other people may change the asset's zones if they have permission
-                 * via another one of the asset's zones.
-                 */
-                else if ((zoneName.equals(quarantineZoneName)) && (zoneMembershipChanged))
-                {
-                    if (assetOnboardingExit.contains(userId))
-                    {
-                        return true;
-                    }
-                }
-
-                /*
                  * Access to personal files is only permitted by the owner of the asset.  If they assign the
                  * asset to another zone, this may allow others to read and change the asset.
                  */
@@ -469,6 +495,64 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         }
 
         return false;
+    }
+
+
+    /**
+     * Adds the requested zone to the list of zones for an asset (avoiding duplicates).
+     *
+     * @param currentZones current list of zones
+     * @param zoneToAdd new zone
+     * @return new list of zones
+     */
+    private List<String>  addZoneName(List<String>   currentZones,
+                                      String         zoneToAdd)
+    {
+        if (zoneToAdd == null)
+        {
+            return currentZones;
+        }
+
+        List<String>  resultingZones;
+
+        if (currentZones == null)
+        {
+            resultingZones = new ArrayList<>();
+            resultingZones.add(zoneToAdd);
+        }
+        else
+        {
+            resultingZones = currentZones;
+
+            if (! resultingZones.contains(zoneToAdd))
+            {
+                resultingZones.add(zoneToAdd);
+            }
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Remove the requested zone from the list of zones if it is present.
+     *
+     * @param currentZones current list of zones
+     * @param zoneToRemove obsolete zone
+     * @return new list of zones
+     */
+    private List<String>  removeZoneName(List<String>   currentZones,
+                                         String         zoneToRemove)
+    {
+        if ((zoneToRemove == null) || (currentZones == null))
+        {
+            return currentZones;
+        }
+
+        List<String>  resultingZones = new ArrayList<>(currentZones);
+        resultingZones.remove(zoneToRemove);
+
+        return resultingZones;
     }
 
 
@@ -530,11 +614,168 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
 
     /**
+     * Test to see if a specific zone has been removed.
+     *
+     * @param zoneName name of zone ot test for
+     * @param oldZoneMembership old zone membership
+     * @param newZoneMembership new zone membership
+     * @return flag - true if the zone has been removed; otherwise false
+     */
+    private boolean  zoneBeenRemoved(String       zoneName,
+                                     List<String> oldZoneMembership,
+                                     List<String> newZoneMembership)
+    {
+        /*
+         * Being defensive to prevent NPEs in the server processing.
+         */
+        if (zoneName == null)
+        {
+            return false;
+        }
+
+        /*
+         * Are they the same object or both null?
+         */
+        if (oldZoneMembership == newZoneMembership)
+        {
+            return false;
+        }
+
+        /*
+         * If the old zone is null then nothing could have been removed.
+         */
+        if (oldZoneMembership == null)
+        {
+            return false;
+        }
+
+        if (oldZoneMembership.contains(zoneName))
+        {
+            /*
+             * Determine if the new zone still contains the zone of interest.
+             */
+            if (newZoneMembership == null)
+            {
+                return true;
+            }
+            else if (newZoneMembership.contains(zoneName))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * default zones.  This is called whenever a new asset is created.
+     *
+     * The default behavior is to use the default values, unless the zones have been explicitly set up,
+     * in which case, they are left unchanged.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param asset initial values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    @Override
+    public List<String> initializeAssetZones(List<String>  defaultZones,
+                                             Asset         asset) throws InvalidParameterException,
+                                                                         PropertyServerException
+    {
+        if (asset != null)
+        {
+            if (asset.getZoneMembership() == null)
+            {
+                return defaultZoneMembership;
+            }
+        }
+        return super.initializeAssetZones(defaultZones, asset);
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    @Override
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        if (updatedAsset != null)
+        {
+            if (updatedAsset.getOwner() != null)
+            {
+                return addZoneName(updatedAsset.getZoneMembership(),
+                                   ownerZones.get(updatedAsset.getOwner()));
+            }
+            else
+            {
+                return updatedAsset.getZoneMembership();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Test to see that the separation of duty rules are adhered to in the quarantine zone.
+     *
+     * @param userId calling user
+     * @param auditHeader audit header of the asset
+     * @return boolean flag - true = all in ok
+     */
+    private boolean validateSeparationOfDuties(String           userId,
+                                               AssetAuditHeader auditHeader)
+    {
+        if (auditHeader != null)
+        {
+            if (userId.equals(auditHeader.getCreatedBy()))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * Tests for whether a specific user should have the right to create an asset within a zone.
      *
      * @param userId identifier of user
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
+    @Override
     public void  validateUserForAssetCreate(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
@@ -563,6 +804,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param userId identifier of user
      * @throws UserNotAuthorizedException the user is not authorized to access this zone
      */
+    @Override
     public void  validateUserForAssetRead(String     userId,
                                           Asset      asset) throws UserNotAuthorizedException
     {
@@ -592,40 +834,94 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      *
      * @param userId identifier of user
      * @param originalAsset original asset details
+     * @param originalAssetAuditHeader details of the asset's audit header
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    public void  validateUserForAssetDetailUpdate(String     userId,
-                                                  Asset      originalAsset,
-                                                  Asset      newAsset) throws UserNotAuthorizedException
+    @Override
+    public void  validateUserForAssetDetailUpdate(String           userId,
+                                                  Asset            originalAsset,
+                                                  AssetAuditHeader originalAssetAuditHeader,
+                                                  Asset            newAsset) throws UserNotAuthorizedException
     {
-        if ((originalAsset != null) && (newAsset != null))
+        final String methodName = "validateUserForAssetDetailUpdate";
+        if (userId != null)
         {
-            if (userHasAccessToAssetZones(userId,
-                                          originalAsset.getZoneMembership(),
-                                          true,
-                                          this.hasZoneChanged(originalAsset.getZoneMembership(), newAsset.getZoneMembership()),
-                                          this.isUserAssetOwner(userId, originalAsset)))
+            if ((originalAsset != null) && (newAsset != null))
             {
-                return;
+                if (userHasAccessToAssetZones(userId,
+                                              originalAsset.getZoneMembership(),
+                                              true,
+                                              this.hasZoneChanged(originalAsset.getZoneMembership(),
+                                                                  newAsset.getZoneMembership()),
+                                              this.isUserAssetOwner(userId, originalAsset)))
+                {
+                    /*
+                     * Do not allow zone to be null
+                     */
+                    if (newAsset.getZoneMembership() != null)
+                    {
+                        if (zoneBeenRemoved(quarantineZoneName,
+                                            originalAsset.getZoneMembership(),
+                                            newAsset.getZoneMembership()))
+                        {
+                            /*
+                             * Perform special processing for quarantine zone.
+                             * The owner must be specified
+                             */
+                            if ((newAsset.getOwner() != null) && (newAsset.getOwnerType() != null))
+                            {
+                                if (validateSeparationOfDuties(userId, originalAssetAuditHeader))
+                                {
+                                    return;
+                                }
+                                else
+                                {
+                                    super.throwUnauthorizedZoneChange(userId,
+                                                                      newAsset,
+                                                                      originalAsset.getZoneMembership(),
+                                                                      newAsset.getZoneMembership(),
+                                                                      methodName);
+                                }
+                            }
+                            else
+                            {
+                                super.throwIncompleteAsset(userId,
+                                                           newAsset,
+                                                           methodName);
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        super.throwIncompleteAsset(userId,
+                                                   newAsset,
+                                                   methodName);
+                    }
+                }
             }
         }
 
         /*
          * Any other conditions, use superclass to throw user not authorized exception
          */
-        super.validateUserForAssetDetailUpdate(userId, originalAsset, newAsset);
+        super.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, newAsset);
     }
 
 
     /**
      * Tests for whether a specific user should have the right to update elements attached directly
-     * to an asset such as schema and connections.
+     * to an asset such as glossary terms, schema and connections.
      *
      * @param userId identifier of user
      * @param asset original asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetAttachmentUpdate(String     userId,
                                                       Asset      asset) throws UserNotAuthorizedException
     {
@@ -655,6 +951,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param asset asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
+    @Override
     public void  validateUserForAssetDelete(String     userId,
                                             Asset      asset) throws UserNotAuthorizedException
     {
@@ -694,6 +991,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param typeDef typeDef details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeCreate(String  userId,
                                            String  metadataCollectionName,
                                            TypeDef typeDef) throws UserNotAuthorizedException
@@ -723,6 +1021,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param typeDef typeDef details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve types
      */
+    @Override
     public void  validateUserForTypeRead(String     userId,
                                          String     metadataCollectionName,
                                          TypeDef    typeDef) throws UserNotAuthorizedException
@@ -752,6 +1051,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param typeDef typeDef details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeUpdate(String     userId,
                                            String     metadataCollectionName,
                                            TypeDef    typeDef) throws UserNotAuthorizedException
@@ -773,6 +1073,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param typeDef typeDef details
      * @throws UserNotAuthorizedException the user is not authorized to maintain types
      */
+    @Override
     public void  validateUserForTypeDelete(String     userId,
                                            String     metadataCollectionName,
                                            TypeDef    typeDef) throws UserNotAuthorizedException
@@ -803,6 +1104,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityCreate(String       userId,
                                              String       metadataCollectionName,
                                              EntityDetail instance) throws UserNotAuthorizedException
@@ -818,6 +1120,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityRead(String          userId,
                                            String          metadataCollectionName,
                                            EntityDetail    instance) throws UserNotAuthorizedException
@@ -833,6 +1136,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntitySummaryRead(String        userId,
                                                   String        metadataCollectionName,
                                                   EntitySummary instance) throws UserNotAuthorizedException
@@ -848,6 +1152,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForEntityProxyRead(String      userId,
                                                 String      metadataCollectionName,
                                                 EntityProxy instance) throws UserNotAuthorizedException
@@ -863,6 +1168,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityUpdate(String          userId,
                                              String          metadataCollectionName,
                                              EntityDetail    instance) throws UserNotAuthorizedException
@@ -880,6 +1186,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param classification classification details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityClassificationUpdate(String          userId,
                                                            String          metadataCollectionName,
                                                            EntityDetail    instance,
@@ -896,6 +1203,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForEntityDelete(String       userId,
                                              String       metadataCollectionName,
                                              EntityDetail instance) throws UserNotAuthorizedException
@@ -911,6 +1219,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipCreate(String       userId,
                                                    String       metadataCollectionName,
                                                    Relationship instance) throws UserNotAuthorizedException
@@ -926,6 +1235,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to retrieve instances
      */
+    @Override
     public void  validateUserForRelationshipRead(String          userId,
                                                  String          metadataCollectionName,
                                                  Relationship    instance) throws UserNotAuthorizedException
@@ -941,6 +1251,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipUpdate(String          userId,
                                                    String          metadataCollectionName,
                                                    Relationship    instance) throws UserNotAuthorizedException
@@ -956,6 +1267,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
      * @param instance instance details
      * @throws UserNotAuthorizedException the user is not authorized to maintain instances
      */
+    @Override
     public void  validateUserForRelationshipDelete(String       userId,
                                                    String       metadataCollectionName,
                                                    Relationship instance) throws UserNotAuthorizedException
