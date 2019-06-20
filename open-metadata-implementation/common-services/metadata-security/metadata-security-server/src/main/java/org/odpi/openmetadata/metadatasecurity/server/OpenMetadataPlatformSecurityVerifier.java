@@ -26,6 +26,7 @@ public class OpenMetadataPlatformSecurityVerifier
      * @param serverPlatformURL URL Root of the server platform.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
+     * @throws InvalidParameterException one of the properties is either null or invalid
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
     public static synchronized void setPlatformSecurityConnection(String       userId,
@@ -103,7 +104,6 @@ public class OpenMetadataPlatformSecurityVerifier
      * use the default store.
      *
      * @param userId calling user
-     * @return connection response
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
     public static synchronized void clearPlatformSecurityConnection(String   userId) throws UserNotAuthorizedException

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  * the specific user's approval.  This is why this optional check is performed by any open metadata service
  * that is returning a Connection object (or a Connector created with the Connection object) to an external party.
  */
-public interface OpenMetadataConnectionSecurity extends OpenMetadataServerSecurity
+public interface OpenMetadataConnectionSecurity
 {
     /**
      * Tests for whether a specific user should have access to a connection.

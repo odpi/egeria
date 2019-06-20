@@ -2,19 +2,27 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.metadatasecurity.server;
 
-import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.*;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
 import org.odpi.openmetadata.metadatasecurity.ffdc.OpenMetadataSecurityErrorCode;
+import org.odpi.openmetadata.metadatasecurity.properties.AssetAuditHeader;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaPlatformSecurityProvider;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.samples.CocoPharmaServerSecurityProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OpenMetadataRepositorySecurity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+
+import java.util.List;
 
 
 /**
@@ -28,8 +36,13 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                                                            OpenMetadataConnectionSecurity,
                                                            OpenMetadataAssetSecurity
 {
-    private OpenMetadataServerSecurityConnector  connector = null;
+    private OpenMetadataServerSecurityConnector connector   = null;
 
+    // Todo remove - temporary workaround to being connectors into class path
+    private CocoPharmaServerSecurityConnector   demoObject1 = null;
+    private CocoPharmaServerSecurityProvider    demoObject2 = null;
+    private CocoPharmaPlatformSecurityConnector demoObject3 = null;
+    private CocoPharmaPlatformSecurityProvider  demoObject4 = null;
 
     /**
      * Default constructor
@@ -43,7 +56,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * Register an open metadata server security connector to verify access to the server's services.
      *
      * @param localServerUserId local server's userId
-     * @param localServerUserId local server's name
+     * @param serverName local server's name
      * @param auditLog logging destination
      * @param connection properties used to create the connector
      *
@@ -57,11 +70,11 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
         try
         {
             this.connector = this.getServerSecurityConnector(localServerUserId,
-                                                                                             serverName,
-                                                                                             auditLog,
-                                                                                             connection);
+                                                             serverName,
+                                                             auditLog,
+                                                             connection);
         }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException error)
+        catch (InvalidParameterException error)
         {
             throw new InvalidParameterException(error);
         }
@@ -76,12 +89,12 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      * @param auditLog logging destination
      * @param connection connection from the configuration document
      * @return connector or null
-     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException connection did not create a connector
+     * @throws InvalidParameterException connection did not create a connector
      */
     private   OpenMetadataServerSecurityConnector getServerSecurityConnector(String       localServerUserId,
                                                                              String       serverName,
                                                                              OMRSAuditLog auditLog,
-                                                                             Connection   connection) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException
+                                                                             Connection   connection) throws InvalidParameterException
     {
         final String methodName = "getServerSecurityConnector";
 
@@ -108,22 +121,101 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
                  */
                 OpenMetadataSecurityErrorCode errorCode = OpenMetadataSecurityErrorCode.BAD_SERVER_SECURITY_CONNECTION;
                 String                        errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(serverName,
-                                                             error.getMessage(),
-                                                             connection.toString());
+                                                           + errorCode.getFormattedErrorMessage(serverName,
+                                                                                                error.getMessage(),
+                                                                                                connection.toString());
 
-                throw new org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                                                                     OpenMetadataPlatformSecurityVerifier.class.getName(),
-                                                                                                     methodName,
-                                                                                                     errorMessage,
-                                                                                                     errorCode.getSystemAction(),
-                                                                                                     errorCode.getUserAction(),
-                                                                                                     error,
-                                                                                                     "connection");
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    OpenMetadataPlatformSecurityVerifier.class.getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction(),
+                                                    error,
+                                                    "connection");
             }
         }
 
         return serverSecurityConnector;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * default zones.  This is called whenever a new asset is created.
+     *
+     * The default behavior is to use the default values, unless the zones have been explicitly set up,
+     * in which case, they are left unchanged.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param asset initial values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> initializeAssetZones(List<String>  defaultZones,
+                                             Asset         asset) throws InvalidParameterException,
+                                                                         PropertyServerException
+    {
+        List<String>  resultingZones = null;
+
+        if (asset != null)
+        {
+            if ((asset.getZoneMembership() == null) || (asset.getZoneMembership().isEmpty()))
+            {
+                resultingZones = defaultZones;
+            }
+            else
+            {
+                resultingZones = asset.getZoneMembership();
+            }
+        }
+
+        if (connector != null)
+        {
+            return connector.initializeAssetZones(resultingZones, asset);
+        }
+
+        return resultingZones;
+    }
+
+
+    /**
+     * Determine the appropriate setting for the asset zones depending on the content of the asset and the
+     * settings of both default zones and supported zones.  This method is called whenever an asset's
+     * values are changed.
+     *
+     * The default behavior is to keep the updated zones as they are.
+     *
+     * @param defaultZones setting of the default zones for the service
+     * @param supportedZones setting of the supported zones for the service
+     * @param originalAsset original values for the asset
+     * @param updatedAsset updated values for the asset
+     *
+     * @return list of zones to set in the asset
+     * @throws InvalidParameterException one of the asset values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> verifyAssetZones(List<String>  defaultZones,
+                                         List<String>  supportedZones,
+                                         Asset         originalAsset,
+                                         Asset         updatedAsset) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        if (connector != null)
+        {
+            return connector.verifyAssetZones(defaultZones, supportedZones, originalAsset, updatedAsset);
+        }
+
+        List<String>  resultingZones = null;
+
+        if (updatedAsset != null)
+        {
+            resultingZones = updatedAsset.getZoneMembership();
+        }
+
+        return resultingZones;
     }
 
 
@@ -241,7 +333,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForConnection(userId, connection);
+            connector.validateUserForConnection(userId, new Connection(connection));
         }
     }
 
@@ -257,7 +349,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForAssetCreate(userId, asset);
+            connector.validateUserForAssetCreate(userId, new Asset(asset));
         }
     }
 
@@ -273,7 +365,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForAssetRead(userId, asset);
+            connector.validateUserForAssetRead(userId, new Asset(asset));
         }
     }
 
@@ -285,16 +377,18 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
      *
      * @param userId identifier of user
      * @param originalAsset original asset details
+     * @param originalAssetAuditHeader details of the asset's audit header
      * @param newAsset new asset details
      * @throws UserNotAuthorizedException the user is not authorized to change this asset
      */
-    public void  validateUserForAssetDetailUpdate(String     userId,
-                                                  Asset      originalAsset,
-                                                  Asset      newAsset) throws UserNotAuthorizedException
+    public void  validateUserForAssetDetailUpdate(String           userId,
+                                                  Asset            originalAsset,
+                                                  AssetAuditHeader originalAssetAuditHeader,
+                                                  Asset            newAsset) throws UserNotAuthorizedException
     {
         if (connector != null)
         {
-            connector.validateUserForAssetDetailUpdate(userId, originalAsset, newAsset);
+            connector.validateUserForAssetDetailUpdate(userId, originalAsset, originalAssetAuditHeader, new Asset(newAsset));
         }
     }
 
@@ -312,7 +406,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForAssetAttachmentUpdate(userId, asset);
+            connector.validateUserForAssetAttachmentUpdate(userId, new Asset(asset));
         }
     }
 
@@ -330,7 +424,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForAssetFeedback(userId, asset);
+            connector.validateUserForAssetFeedback(userId, new Asset(asset));
         }
     }
 
@@ -347,7 +441,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForAssetDelete(userId, asset);
+            connector.validateUserForAssetDelete(userId, new Asset(asset));
         }
     }
 
@@ -371,7 +465,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForTypeCreate(userId, metadataCollectionName, typeDef);
+            connector.validateUserForTypeCreate(userId, metadataCollectionName, typeDef.cloneFromSubclass());
         }
     }
 
@@ -390,7 +484,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForTypeRead(userId, metadataCollectionName, typeDef);
+            connector.validateUserForTypeRead(userId, metadataCollectionName, typeDef.cloneFromSubclass());
         }
     }
 
@@ -409,7 +503,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef);
+            connector.validateUserForTypeUpdate(userId, metadataCollectionName, typeDef.cloneFromSubclass());
         }
     }
 
@@ -428,7 +522,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForTypeDelete(userId, metadataCollectionName, typeDef);
+            connector.validateUserForTypeDelete(userId, metadataCollectionName, typeDef.cloneFromSubclass());
         }
     }
 
@@ -456,7 +550,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityCreate(userId, metadataCollectionName, instance);
+            connector.validateUserForEntityCreate(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -475,7 +569,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityRead(userId, metadataCollectionName, instance);
+            connector.validateUserForEntityRead(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -494,7 +588,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntitySummaryRead(userId, metadataCollectionName, instance);
+            connector.validateUserForEntitySummaryRead(userId, metadataCollectionName, new EntitySummary(instance));
         }
     }
 
@@ -513,7 +607,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityProxyRead(userId, metadataCollectionName, instance);
+            connector.validateUserForEntityProxyRead(userId, metadataCollectionName, new EntityProxy(instance));
         }
     }
 
@@ -532,7 +626,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityUpdate(userId, metadataCollectionName, instance);
+            connector.validateUserForEntityUpdate(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -554,7 +648,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityClassificationUpdate(userId, metadataCollectionName, instance, classification);
+            connector.validateUserForEntityClassificationUpdate(userId, metadataCollectionName, new EntityDetail(instance), new Classification(classification));
         }
     }
 
@@ -573,7 +667,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForEntityDelete(userId, metadataCollectionName, instance);
+            connector.validateUserForEntityDelete(userId, metadataCollectionName, new EntityDetail(instance));
         }
     }
 
@@ -592,7 +686,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForRelationshipCreate(userId, metadataCollectionName, instance);
+            connector.validateUserForRelationshipCreate(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 
@@ -611,7 +705,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForRelationshipRead(userId, metadataCollectionName, instance);
+            connector.validateUserForRelationshipRead(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 
@@ -630,7 +724,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForRelationshipUpdate(userId, metadataCollectionName, instance);
+            connector.validateUserForRelationshipUpdate(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 
@@ -649,7 +743,7 @@ public class OpenMetadataServerSecurityVerifier implements OpenMetadataRepositor
     {
         if (connector != null)
         {
-            connector.validateUserForRelationshipDelete(userId, metadataCollectionName, instance);
+            connector.validateUserForRelationshipDelete(userId, metadataCollectionName, new Relationship(instance));
         }
     }
 }
