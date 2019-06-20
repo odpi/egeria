@@ -7,9 +7,9 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
@@ -28,12 +28,15 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
 {
     private ODFRESTClient restClient;               /* Initialized in constructor */
 
+    private static final String  serviceURLName = "discovery-engine";
+
     /**
      * Constructor sets up the key parameters for accessing the asset store.
      *
      * @param serverName name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param restClient client for calling REST APIs
+     * @throws InvalidParameterException unable to initialize the client due to bad parameters
      */
     public DiscoveryEngineClient(String        serverName,
                                  String        serverPlatformRootURL,
@@ -49,6 +52,8 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * Return the connection information for the asset.  This is used to create the connector.  The connector
      * is an Open Connector Framework (OCF) connector that provides access to the asset's data and metadata properties.
      *
+     * @param userId calling user
+     * @param assetGUID unique identifier (guid) for the asset
      * @return Connection bean
      * @throws InvalidParameterException the asset guid is not recognized
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection
@@ -65,7 +70,55 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameterName, methodName);
 
-        return super.getConnectionForAsset(restClient, userId, assetGUID);
+        return super.getConnectionForAsset(restClient, serviceURLName, userId, assetGUID);
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection.
+     *
+     * @param userId       userId of user making request.
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return Connector   connector instance
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    public Connector getConnectorForConnection(String     userId,
+                                               Connection connection) throws InvalidParameterException,
+                                                                             ConnectionCheckedException,
+                                                                             ConnectorCheckedException
+    {
+        final  String  methodName = "getConnectorForConnection";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        return super.getConnectorForConnection(restClient, serviceURLName, userId, connection, methodName);
+    }
+
+
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     *
+     * @return a comprehensive collection of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    AssetUniverse getAssetProperties(String userId,
+                                     String assetGUID) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
+    {
+        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 
@@ -266,13 +319,13 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving annotations from the annotation store.
      */
-    public  List<Annotation> getAnnotationsForAssetByStatus(String           userId,
-                                                            String           assetGUID,
-                                                            AnnotationStatus status,
-                                                            int              startingFrom,
-                                                            int              maximumResults) throws InvalidParameterException,
-                                                                                                     UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+    List<Annotation> getAnnotationsForAssetByStatus(String           userId,
+                                                    String           assetGUID,
+                                                    AnnotationStatus status,
+                                                    int              startingFrom,
+                                                    int              maximumResults) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
         final String   methodName = "getAnnotationsForAssetByStatus";
         final String   assetGUIDParameterName = "assetGUID";
@@ -471,11 +524,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
      */
-    public  String  addAnnotationToDiscoveryReport(String     userId,
-                                                   String     discoveryReportGUID,
-                                                   Annotation annotation) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+    String  addAnnotationToDiscoveryReport(String     userId,
+                                           String     discoveryReportGUID,
+                                           Annotation annotation) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException
     {
         final String   methodName = "addAnnotationToDiscoveryReport";
         final String   annotationParameterName = "annotation";
@@ -512,11 +565,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    public  Annotation  addAnnotationToAnnotation(String     userId,
-                                                  String     anchorAnnotationGUID,
-                                                  Annotation annotation) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+    Annotation  addAnnotationToAnnotation(String     userId,
+                                          String     anchorAnnotationGUID,
+                                          Annotation annotation) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String   methodName = "addAnnotationToAnnotation";
         final String   annotationGUIDParameterName = "anchorAnnotationGUID";
@@ -552,11 +605,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating annotations in the annotation store.
      */
-    public  void    linkAnnotation(String userId,
-                                   String anchorGUID,
-                                   String annotationGUID) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException
+    void    linkAnnotation(String userId,
+                           String anchorGUID,
+                           String annotationGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException
     {
         final String   methodName = "linkAnnotation";
         final String   anchorGUIDParameterName = "anchorGUID";
@@ -591,11 +644,11 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating annotations in the annotation store.
      */
-    public  void    unlinkAnnotation(String userId,
-                                     String anchorGUID,
-                                     String annotationGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    void    unlinkAnnotation(String userId,
+                             String anchorGUID,
+                             String annotationGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String   methodName = "unlinkAnnotation";
         final String   anchorGUIDParameterName = "anchorGUID";
@@ -631,10 +684,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
-    public  Annotation  updateAnnotation(String     userId,
-                                         Annotation annotation) throws InvalidParameterException,
-                                                                       UserNotAuthorizedException,
-                                                                       PropertyServerException
+    Annotation  updateAnnotation(String     userId,
+                                 Annotation annotation) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException
     {
         final String   methodName = "updateAnnotation";
         final String   annotationParameterName = "annotation";
@@ -670,10 +723,10 @@ public class DiscoveryEngineClient extends ConnectedAssetClientBase
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem deleting the annotation from the annotation store.
      */
-    public  void  deleteAnnotation(String   userId,
-                                   String   annotationGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    void  deleteAnnotation(String   userId,
+                           String   annotationGUID) throws InvalidParameterException,
+                                                           UserNotAuthorizedException,
+                                                           PropertyServerException
     {
         final String   methodName = "deleteAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
