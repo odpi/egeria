@@ -31,6 +31,8 @@ public class PersonalProfileConverter extends CommonHeaderConverter
      *
      * @param personEntity properties to convert
      * @param contributionEntity properties to convert
+     * @param associatedUserIds userIds to be linked to the profile
+     * @param contactDetails contact methods for the profile
      * @param repositoryHelper helper object to parse entities
      * @param componentName name of this component
      */
