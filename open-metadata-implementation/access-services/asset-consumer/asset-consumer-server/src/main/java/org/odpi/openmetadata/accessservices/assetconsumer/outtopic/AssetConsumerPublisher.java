@@ -33,6 +33,7 @@ public class AssetConsumerPublisher
      *
      * @param assetConsumerOutTopic connection to the out topic
      * @param auditLog log file for the connector.
+     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
     public AssetConsumerPublisher(Connection              assetConsumerOutTopic,
                                   OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
@@ -92,6 +93,7 @@ public class AssetConsumerPublisher
      * @param topicConnection connection to create the connector
      * @param auditLog audit log for the connector
      * @return open metadata topic connector
+     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
     private OpenMetadataTopicConnector getTopicConnector(Connection   topicConnection,
                                                          OMRSAuditLog auditLog) throws OMAGConfigurationErrorException
@@ -133,6 +135,7 @@ public class AssetConsumerPublisher
      * Return the event as a String where the field contents are encoded in JSON.   The event beans
      * contain annotations that mean the whole event, down to the lowest subclass, is serialized.
      *
+     * @param event event to serialize
      * @return JSON payload (as String)
      */
     private String getJSONPayload(AssetConsumerEventHeader    event)
