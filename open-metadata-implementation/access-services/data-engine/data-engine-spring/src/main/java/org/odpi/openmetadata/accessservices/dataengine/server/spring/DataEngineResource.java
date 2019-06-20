@@ -194,5 +194,4 @@ public class DataEngineResource {
                                            @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
         return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
     }
-
 }

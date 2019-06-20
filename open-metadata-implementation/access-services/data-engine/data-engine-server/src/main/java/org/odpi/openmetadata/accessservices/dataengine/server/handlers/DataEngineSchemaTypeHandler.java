@@ -1,9 +1,10 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.Column;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
@@ -61,12 +62,17 @@ public class DataEngineSchemaTypeHandler {
                                                                                                    InvalidParameterException,
                                                                                                    PropertyServerException,
                                                                                                    UserNotAuthorizedException {
-
-
         final String methodName = "createSchemaType";
 
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
+        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
+                methodName);
+
+
         //TODO check displayName issue when finding existing schema
-        SchemaType newSchemaType = createComplexSchemaType(qualifiedName, qualifiedName + "::" + displayName,
+        SchemaType newSchemaType = createTabularSchemaType(qualifiedName, qualifiedName + "::" + displayName,
                 author, encodingStandard, usage);
 
         Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(columnList);
@@ -80,7 +86,7 @@ public class DataEngineSchemaTypeHandler {
             String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaAttributes.get(schemaAttribute),
                     null, methodName);
 
-            String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName(), methodName);
+            String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName());
 
             repositoryHandler.createRelationship(userId, SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
                     schemaAttributeGUID, schemaTypeGUID, null, methodName);
@@ -89,9 +95,11 @@ public class DataEngineSchemaTypeHandler {
         return newSchemaTypeGUID;
     }
 
-    private String findSchemaAttribute(String userId, String qualifiedName, String methodName) throws
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException {
+    private String findSchemaAttribute(String userId, String qualifiedName) throws
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException {
+        final String methodName = "findSchemaAttribute";
+
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
@@ -113,8 +121,7 @@ public class DataEngineSchemaTypeHandler {
             schemaAttribute.setAttributeName(column.getAttributeName());
             schemaAttribute.setCardinality(column.getCardinality());
             schemaAttribute.setElementPosition(column.getElementPosition());
-
-
+            schemaAttribute.setDefaultValueOverride(column.getDefaultValueOverride());
             SchemaType schemaAttributeType = createSchemaTypeAttribute(column);
             schemaAttributes.put(schemaAttribute, schemaAttributeType);
         }
@@ -125,17 +132,16 @@ public class DataEngineSchemaTypeHandler {
     private SchemaType createSchemaTypeAttribute(Column column) {
 
         PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
-                SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_GUID,
-                SchemaElementMapper.PRIMITIVE_SCHEMA_TYPE_TYPE_NAME);
-        schemaType.setDataType(column.getType().name());
-        // schemaType.setDefaultValue(column.getDefaultValue());
+                SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME);
+        schemaType.setDataType(column.getDataType().name());
+        schemaType.setDefaultValue(column.getDefaultValue());
         schemaType.setDisplayName(column.getQualifiedName() + "::" + "type" + column.getAttributeName());
         schemaType.setQualifiedName(column.getQualifiedName() + "::" + "type");
 
         return schemaType;
     }
 
-    private SchemaType createComplexSchemaType(String qualifiedName, String displayName, String author,
+    private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author,
                                                String encodingStandard, String usage) {
         ComplexSchemaType schemaType = schemaTypeHandler.getEmptyComplexSchemaType(
                 SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
@@ -149,9 +155,10 @@ public class DataEngineSchemaTypeHandler {
         return schemaType;
     }
 
-    public String findSchemaType(String userId, String qualifiedName, String methodName) throws
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException {
+    public String findSchemaType(String userId, String qualifiedName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException {
+        final String methodName = "findSchemaType";
+
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 

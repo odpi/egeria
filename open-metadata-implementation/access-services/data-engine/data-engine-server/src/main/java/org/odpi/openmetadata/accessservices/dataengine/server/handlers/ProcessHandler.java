@@ -13,9 +13,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -24,8 +21,6 @@ import java.util.List;
  * and creates process entities with input/output relationships through the OMRSRepositoryConnector.
  */
 public class ProcessHandler {
-    private static final Logger log = LoggerFactory.getLogger(ProcessHandler.class);
-
     private String serviceName;
     private String serverName;
     private RepositoryHandler repositoryHandler;
@@ -57,23 +52,25 @@ public class ProcessHandler {
      * @param latestChange   the description for the latest change done for the asset
      * @param zoneMembership the list of zones of the process
      * @param displayName    the display name of the process
+     * @param qualifiedName  the qualifiedName name of the process
      *
      * @return the guid of the created process
      **/
-    public String createProcess(String userId, String processName, String description, String latestChange,
-                                List<String> zoneMembership, String displayName, String formula, String owner,
-                                OwnerType ownerType) throws
-                                                     org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                     UserNotAuthorizedException,
-                                                     PropertyServerException {
+    public String createProcess(String userId, String qualifiedName, String processName, String description,
+                                String latestChange, List<String> zoneMembership, String displayName, String formula,
+                                String owner, OwnerType ownerType) throws
+                                                                   org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException {
 
         final String methodName = "createProcess";
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME, methodName);
 
-        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(processName + "::" +
-                "qualifiedName", processName, displayName, description, owner, ownerType, zoneMembership,
-                latestChange, formula, null, null, repositoryHelper, serverName,
-                serviceName);
+
+        ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,
+                description, owner, ownerType, zoneMembership, latestChange, formula, null, null, repositoryHelper,
+                serverName, serviceName);
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 

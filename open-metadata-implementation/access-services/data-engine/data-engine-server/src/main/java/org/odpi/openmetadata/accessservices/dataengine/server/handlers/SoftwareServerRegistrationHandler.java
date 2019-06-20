@@ -12,12 +12,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class SoftwareServerRegistrationHandler {
-    private static final Logger log = LoggerFactory.getLogger(SoftwareServerRegistrationHandler.class);
-
     private String serviceName;
     private String serverName;
     private RepositoryHandler repositoryHandler;
@@ -44,7 +40,8 @@ public class SoftwareServerRegistrationHandler {
         final String methodName = "createSoftwareServerCapability";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(userId, qualifiedName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
         SoftwareServerPropertiesBuilder builder = new SoftwareServerPropertiesBuilder(qualifiedName, name, description,
                 type, version, patchLevel, source, null, null, repositoryHelper,

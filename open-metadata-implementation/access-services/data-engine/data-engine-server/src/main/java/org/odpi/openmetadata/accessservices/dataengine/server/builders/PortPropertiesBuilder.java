@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
@@ -26,7 +28,7 @@ public class PortPropertiesBuilder extends ReferenceableBuilder {
 
         if (displayName != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    PortPropertiesMapper.DISPLAY_NAME, displayName, methodName);
+                    PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, displayName, methodName);
         }
 
         return properties;

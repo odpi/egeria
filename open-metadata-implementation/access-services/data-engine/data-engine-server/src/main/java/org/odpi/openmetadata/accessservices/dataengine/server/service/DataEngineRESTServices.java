@@ -133,8 +133,7 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            String newSchemaTypeGUID = createSchemaType(userId, serverName, methodName,
-                    schemaTypeRequestBody.getSchemaType());
+            String newSchemaTypeGUID = createSchemaType(userId, serverName, schemaTypeRequestBody.getSchemaType());
 
             response.setGUID(newSchemaTypeGUID);
 
@@ -174,7 +173,7 @@ public class DataEngineRESTServices {
 
         try {
             String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                    methodName, portImplementationRequestBody.getPortImplementation());
+                    portImplementationRequestBody.getPortImplementation());
 
             response.setGUID(portImplementationGUID);
 
@@ -302,7 +301,7 @@ public class DataEngineRESTServices {
 
         try {
             String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                    methodName, portImplementationRequestBody.getPortImplementation());
+                    portImplementationRequestBody.getPortImplementation());
 
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
             portHandler.addPortDelegationRelationship(userId, portAliasGUID, portImplementationGUID);
@@ -332,14 +331,16 @@ public class DataEngineRESTServices {
      * @return the unique identifier (guid) of the created process
      */
     public GUIDResponse createProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
-
         final String methodName = "createProcess";
+
+        log.debug("Calling method: {}", methodName);
 
         if (processRequestBody == null) {
             return null;
         }
 
         org.odpi.openmetadata.accessservices.dataengine.model.Process process = processRequestBody.getProcess();
+        String qualifiedName = process.getQualifiedName();
         String processName = process.getName();
         String description = process.getDescription();
         String latestChange = process.getLatestChange();
@@ -358,12 +359,12 @@ public class DataEngineRESTServices {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-            String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
-                    zoneMembership, displayName, formula, owner, ownerType);
+            String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
+                    latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
             for (PortImplementation portImplementation : portImplementations) {
                 String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                        methodName, portImplementation);
+                        portImplementation);
                 processHandler.addProcessPortRelationship(userId, processGuid, portImplementationGUID);
             }
 
@@ -381,7 +382,7 @@ public class DataEngineRESTServices {
             }
 
             for (LineageMapping lineageMapping : lineageMappings) {
-                createLineageMapping(userId, serverName, methodName, lineageMapping);
+                createLineageMapping(userId, serverName, lineageMapping);
             }
             response.setGUID(processGuid);
 
@@ -393,24 +394,9 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
-    }
-
-    private void createLineageMapping(String userId, String serverName, String methodName,
-                                      LineageMapping lineageMapping) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException {
-        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-        String sourceSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
-                lineageMapping.getSourceColumn(), methodName);
-        String targetSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
-                lineageMapping.getSourceColumn(), methodName);
-
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, sourceSchemaTypeGUID,
-                targetSchemaTypeGUID);
     }
 
     /**
@@ -425,6 +411,8 @@ public class DataEngineRESTServices {
     public GUIDResponse addPortsToProcess(String userId, String serverName, String processGuid,
                                           PortListRequestBody portListRequestBody) {
         final String methodName = "addPortsToProcess";
+
+        log.debug("Calling method: {}", methodName);
 
         if (portListRequestBody == null) {
             return null;
@@ -454,39 +442,11 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private String createSchemaType(String userId, String serverName, String methodName, SchemaType schemaType) throws
-                                                                                                                InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException {
-        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
-                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-
-        return dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
-                schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
-                schemaType.getUsage(), schemaType.getColumnList());
-    }
-
-    private String createPortImplementationWithSchemaType(String userId, String serverName, String methodName,
-                                                          PortImplementation portImplementation) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException {
-        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
-        String schemaTypeGUID = createSchemaType(userId, serverName, methodName, portImplementation.getSchemaType());
-
-        String portImplementationGUID = portHandler.createPortImplementation(userId,
-                portImplementation.getQualifiedName(), portImplementation.getDisplayName(),
-                portImplementation.getPortType());
-
-        portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
-
-        return portImplementationGUID;
-    }
-
     public VoidResponse addLineageMappings(String userId, String serverName,
                                            LineageMappingsRequestBody lineageMappingsRequestBody) {
         final String methodName = "addLineageMappings";
+
+        log.debug("Calling method: {}", methodName);
 
         if (lineageMappingsRequestBody == null) {
             return null;
@@ -495,7 +455,7 @@ public class DataEngineRESTServices {
         VoidResponse response = new VoidResponse();
         try {
             for (LineageMapping lineageMapping : lineageMappingsRequestBody.getLineageMappings()) {
-                createLineageMapping(userId, serverName, methodName, lineageMapping);
+                createLineageMapping(userId, serverName, lineageMapping);
             }
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -508,5 +468,61 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
+    }
+
+    private void createLineageMapping(String userId, String serverName, LineageMapping lineageMapping) throws
+                                                                                                       InvalidParameterException,
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       PropertyServerException {
+        final String methodName = "createLineageMapping";
+
+        log.debug("Calling method: {}", methodName);
+
+        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
+                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+        String sourceSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
+                lineageMapping.getSourceColumn());
+        String targetSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
+                lineageMapping.getSourceColumn());
+
+        dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, sourceSchemaTypeGUID, targetSchemaTypeGUID);
+    }
+
+    private String createSchemaType(String userId, String serverName, SchemaType schemaType) throws
+                                                                                             InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException {
+        final String methodName = "createSchemaType";
+
+        log.debug("Calling method: {}", methodName);
+
+        DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
+                instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+
+        return dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
+                schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
+                schemaType.getUsage(), schemaType.getColumnList());
+    }
+
+    private String createPortImplementationWithSchemaType(String userId, String serverName,
+                                                          PortImplementation portImplementation) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException {
+        final String methodName = "createPortImplementationWithSchemaType";
+
+        log.debug("Calling method: {}", methodName);
+
+        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+
+        String schemaTypeGUID = createSchemaType(userId, serverName, portImplementation.getSchemaType());
+
+        String portImplementationGUID = portHandler.createPortImplementation(userId,
+                portImplementation.getQualifiedName(), portImplementation.getDisplayName(),
+                portImplementation.getPortType());
+
+        portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
+
+        return portImplementationGUID;
     }
 }

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
@@ -20,8 +22,7 @@ public class PortImplementationPropertiesBuilder extends PortPropertiesBuilder {
      * @param serverName       name of local server
      */
     public PortImplementationPropertiesBuilder(String qualifiedName, OMRSRepositoryHelper repositoryHelper,
-                                               String serviceName,
-                                               String serverName) {
+                                               String serviceName, String serverName) {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
     }
 

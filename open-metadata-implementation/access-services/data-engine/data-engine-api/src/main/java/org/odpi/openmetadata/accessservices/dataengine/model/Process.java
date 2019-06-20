@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Process implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    private String qualifiedName;
     private String name;
     private String description;
     private String latestChange;
@@ -33,8 +34,12 @@ public class Process implements Serializable {
     private List<PortDelegation> portDelegations;
     private List<LineageMapping> lineageMappings;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
     }
 
     public String getName() {
@@ -136,7 +141,8 @@ public class Process implements Serializable {
     @Override
     public String toString() {
         return "Process{" +
-                "name='" + name + '\'' +
+                "qualifiedName='" + qualifiedName + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", latestChange='" + latestChange + '\'' +
                 ", zoneMembership=" + zoneMembership +
@@ -156,7 +162,8 @@ public class Process implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Process process = (Process) o;
-        return Objects.equals(name, process.name) &&
+        return Objects.equals(qualifiedName, process.qualifiedName) &&
+                Objects.equals(name, process.name) &&
                 Objects.equals(description, process.description) &&
                 Objects.equals(latestChange, process.latestChange) &&
                 Objects.equals(zoneMembership, process.zoneMembership) &&
@@ -172,8 +179,8 @@ public class Process implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, description, latestChange, zoneMembership, displayName, owner, ownerType, formula,
-                portImplementations, portAliases, portDelegations, lineageMappings);
+        return Objects.hash(qualifiedName, name, description, latestChange, zoneMembership, displayName, owner,
+                ownerType, formula, portImplementations, portAliases, portDelegations, lineageMappings);
     }
 }
 
