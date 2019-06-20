@@ -75,17 +75,7 @@ public class InstanceProvenanceTypeTest
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = InstanceProvenanceType.DATA_PLATFORM;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceProvenanceType.EXTERNAL_ENGINE;
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = InstanceProvenanceType.EXTERNAL_TOOL;
+        testValue = InstanceProvenanceType.EXTERNAL_SOURCE;
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
