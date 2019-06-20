@@ -24,6 +24,8 @@ public class TechnologyUnderTestWorkPad
 
     /**
      * Constructor
+     *
+     * @param workbenchWorkPads result work pads for the requested workbenches
      */
     public TechnologyUnderTestWorkPad(List<OpenMetadataConformanceWorkbenchWorkPad>  workbenchWorkPads)
     {

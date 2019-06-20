@@ -25,6 +25,8 @@ public class TestConsistentTypeDef extends RepositoryConformanceTestCase
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param typeDef type definition to test
+     * @param eventIdentifier event count to ensure test case ids are consistent
      */
     public TestConsistentTypeDef(RepositoryConformanceWorkPad workPad,
                                  TypeDef                      typeDef,
