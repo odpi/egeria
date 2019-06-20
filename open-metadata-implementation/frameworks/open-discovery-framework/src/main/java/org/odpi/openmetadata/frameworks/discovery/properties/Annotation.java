@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery.properties;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
 import java.util.*;
@@ -15,6 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = SchemaAnalysisAnnotation.class, name = "SchemaAnalysisAnnotation"),
+
+        })
 public class Annotation extends ElementHeader
 {
     protected String           annotationType   = null;
@@ -43,7 +49,6 @@ public class Annotation extends ElementHeader
      * the sub-types of Annotation.
      */
     protected Map<String, String>  additionalProperties = null;
-    protected Map<String, Object>  extendedProperties   = null;
 
 
     /**
@@ -368,28 +373,6 @@ public class Annotation extends ElementHeader
     public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the extended properties for the Annotation.  These are properties defined for a subtype.
-     *
-     * @return  properties map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        return extendedProperties;
-    }
-
-
-    /**
-     * Set up the extended properties for the Annotation.  These are properties defined for a subtype.
-     *
-     * @param extendedProperties properties map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
     }
 
 
