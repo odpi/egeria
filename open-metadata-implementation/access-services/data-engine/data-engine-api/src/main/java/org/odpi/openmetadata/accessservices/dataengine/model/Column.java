@@ -13,7 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * The Column object contains the name and the type of the column where a RelationshipColumn asset can be find in a database.
+ * The Column object contains the name and the type of the column where a RelationshipColumn asset can be find in a
+ * database.
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,7 +25,9 @@ public class Column implements Serializable {
     private String attributeName;
     private String cardinality;
     private int elementPosition;
-    private DataType type;
+    private String defaultValueOverride;
+    private DataType dataType;
+    private String defaultValue;
 
 
     public String getQualifiedName() {
@@ -59,12 +62,28 @@ public class Column implements Serializable {
         this.elementPosition = elementPosition;
     }
 
-    public DataType getType() {
-        return type;
+    public DataType getDataType() {
+        return dataType;
     }
 
-    public void setType(DataType type) {
-        this.type = type;
+    public void setDataType(DataType dataType) {
+        this.dataType = dataType;
+    }
+
+    public String getDefaultValueOverride() {
+        return defaultValueOverride;
+    }
+
+    public void setDefaultValueOverride(String defaultValueOverride) {
+        this.defaultValueOverride = defaultValueOverride;
+    }
+
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -74,7 +93,9 @@ public class Column implements Serializable {
                 ", attributeName='" + attributeName + '\'' +
                 ", cardinality='" + cardinality + '\'' +
                 ", elementPosition=" + elementPosition +
-                ", type=" + type +
+                ", defaultValueOverride='" + defaultValueOverride + '\'' +
+                ", dataType=" + dataType +
+                ", defaultValue='" + defaultValue + '\'' +
                 '}';
     }
 
@@ -87,11 +108,14 @@ public class Column implements Serializable {
                 Objects.equals(qualifiedName, column.qualifiedName) &&
                 Objects.equals(attributeName, column.attributeName) &&
                 Objects.equals(cardinality, column.cardinality) &&
-                type == column.type;
+                Objects.equals(defaultValueOverride, column.defaultValueOverride) &&
+                dataType == column.dataType &&
+                Objects.equals(defaultValue, column.defaultValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, attributeName, cardinality, elementPosition, type);
+        return Objects.hash(qualifiedName, attributeName, cardinality, elementPosition, defaultValueOverride,
+                dataType, defaultValue);
     }
 }

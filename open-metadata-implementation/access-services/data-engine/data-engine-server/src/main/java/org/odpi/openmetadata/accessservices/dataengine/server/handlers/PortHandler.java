@@ -50,8 +50,9 @@ public class PortHandler {
         final String methodName = "createPortImplementation";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(userId, qualifiedName, methodName);
-        invalidParameterHandler.validateName(userId, displayName, methodName);
+        invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
+        invalidParameterHandler.validateName(displayName, PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
 
         PortImplementationPropertiesBuilder builder = new PortImplementationPropertiesBuilder(qualifiedName,
                 displayName, portType, repositoryHelper, serviceName, serverName);
@@ -72,7 +73,6 @@ public class PortHandler {
                                                                                                  InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException {
-
         final String methodName = "addPortSchemaRelationship";
 
         validateRelationshipParameters(userId, portGUID, schemaTypeGUID, methodName);
