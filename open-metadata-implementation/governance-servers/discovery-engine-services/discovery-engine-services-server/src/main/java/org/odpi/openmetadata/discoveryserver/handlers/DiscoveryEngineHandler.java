@@ -46,7 +46,14 @@ public class DiscoveryEngineHandler
      * @param discoveryEngineGUID the unique identifier of the discovery engine.
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
      * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverUserId user id for the server to use
+     * @param configurationClient client to retrieve the configuration
+     * @param restClient REST client for direct REST Calls
+     * @param auditLog logging destination
+     * @param maxPageSize maximum number of results that can be returned in a single request
      * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
      */
     public DiscoveryEngineHandler(String                       discoveryEngineGUID,
                                   String                       serverPlatformRootURL,
