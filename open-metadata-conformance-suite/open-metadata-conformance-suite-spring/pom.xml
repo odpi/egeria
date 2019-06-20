@@ -30,6 +30,17 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-conformance-suite-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring-web.version^Wi-f}</version>
+        </dependency>
     </dependencies>
 
 </project>
