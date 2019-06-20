@@ -42,6 +42,8 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
+              supportedZones,
+              defaultZones,
               auditLog);
 
         final String methodName = "new ServiceInstance";

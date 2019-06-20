@@ -23,6 +23,7 @@ public class RegisteredDiscoveryServiceConverter extends ReferenceableConverter
      * Constructor captures the repository content needed to create the endpoint object.
      *
      * @param discoveryServiceProperties properties to convert
+     * @param relationship relationship for asset types
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
      */
