@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;

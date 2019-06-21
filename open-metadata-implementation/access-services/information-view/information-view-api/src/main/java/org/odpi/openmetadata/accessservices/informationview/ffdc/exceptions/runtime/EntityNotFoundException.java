@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class EntityNotFoundException extends InformationViewUncheckedExceptionBase{
+public class EntityNotFoundException extends InformationViewExceptionBase {
 
 
     public EntityNotFoundException(String className, String errorMessage,

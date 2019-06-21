@@ -15,7 +15,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServe
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
@@ -60,7 +60,7 @@ public class InformationViewRestServices {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
             reportCreator.submitReportModel(requestBody);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
@@ -85,7 +85,7 @@ public class InformationViewRestServices {
             DataViewHandler dataViewHandler = instanceHandler.getDataViewHandler(serverName);
             dataViewHandler.createDataView(requestBody);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
@@ -112,7 +112,7 @@ public class InformationViewRestServices {
             List<DatabaseSource> databases = databaseContextHandler.getDatabases(startFrom, pageSize);
             response.setDatabasesList(databases);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
@@ -141,7 +141,7 @@ public class InformationViewRestServices {
             List<TableSource> tables = databaseContextHandler.getTables(databaseGuid, startFrom, pageSize);
             response.setTableList(tables);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
@@ -159,7 +159,7 @@ public class InformationViewRestServices {
             List<TableContextEvent> tables = databaseContextHandler.getTableContext(tableGuid);
             response.setTableContexts(tables);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
@@ -178,7 +178,7 @@ public class InformationViewRestServices {
             List<TableColumn> columns = databaseContextHandler.getTableColumns(tableGuid, startFrom, pageSize);
             response.setTableColumns(columns);
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
@@ -194,7 +194,7 @@ public class InformationViewRestServices {
          try {
              SoftwareServerCapabilitySource softwareServerCapabilitySource = registrationHandler.registerTool(requestBody);
              response.setSoftwareServerCapabilitySource(softwareServerCapabilitySource);
-         } catch (InformationViewUncheckedExceptionBase e) {
+         } catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
               return handleErrorResponse(e);
          }
@@ -217,7 +217,7 @@ public class InformationViewRestServices {
          try {
              SoftwareServerCapabilitySource softwareServerCapabilitySource = registrationHandler.lookupSoftwareServerCapability(requestBody);
              response.setSoftwareServerCapabilitySource(softwareServerCapabilitySource);
-         } catch (InformationViewUncheckedExceptionBase e) {
+         } catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
          }
@@ -245,7 +245,7 @@ public class InformationViewRestServices {
             return reportResponse;
 
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
@@ -270,14 +270,14 @@ public class InformationViewRestServices {
             return reportResponse;
 
         }
-        catch (InformationViewUncheckedExceptionBase e) {
+        catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
 
     }
 
-    private InformationViewOMASAPIResponse handleErrorResponse(InformationViewUncheckedExceptionBase e) {
+    private InformationViewOMASAPIResponse handleErrorResponse(InformationViewExceptionBase e) {
         VoidResponse  response = new VoidResponse();
         response.setExceptionClassName(e.getReportingClassName());
         response.setExceptionErrorMessage(e.getReportedErrorMessage());

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class DeleteRelationshipException extends InformationViewUncheckedExceptionBase{
+public class DeleteRelationshipException extends InformationViewExceptionBase{
 
 
     public DeleteRelationshipException(String className, String errorMessage, String systemAction, String userAction, Throwable caughtError) {

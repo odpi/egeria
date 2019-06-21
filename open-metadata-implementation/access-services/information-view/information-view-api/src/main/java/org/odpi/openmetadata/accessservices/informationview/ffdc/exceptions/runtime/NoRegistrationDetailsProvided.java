@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class NoRegistrationDetailsProvided extends InformationViewUncheckedExceptionBase{
+public class NoRegistrationDetailsProvided extends InformationViewExceptionBase{
 
 
     public NoRegistrationDetailsProvided(int httpErrorCode, String reportingClassName, String reportedErrorMessage,

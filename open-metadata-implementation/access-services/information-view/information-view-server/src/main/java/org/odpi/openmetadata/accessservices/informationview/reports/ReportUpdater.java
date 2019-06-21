@@ -5,12 +5,14 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -47,6 +49,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddRelationshipException;
 
 public class ReportUpdater extends ReportBasicOperation {
 
@@ -332,7 +336,7 @@ public class ReportUpdater extends ReportBasicOperation {
                     .build();
 
             OMEntityWrapper wrapper = omEntityDao.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true, false);
-            createOrUpdateSemanticAssignment(reportColumn, wrapper.getEntityDetail().getGUID());
+            createOrUpdateSemanticAssignments(reportColumn, wrapper.getEntityDetail().getGUID());
             createOrUpdateSchemaQueryImplementation(reportColumn, wrapper.getEntityDetail().getGUID());
 
             columnType = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
@@ -396,20 +400,26 @@ public class ReportUpdater extends ReportBasicOperation {
         }
     }
 
-    private void createOrUpdateSemanticAssignment(ReportColumn reportColumn, String columnGuid) throws UserNotAuthorizedException,
-                                                                                                       EntityNotKnownException,
-                                                                                                       FunctionNotSupportedException,
-                                                                                                       InvalidParameterException,
-                                                                                                       RepositoryErrorException,
-                                                                                                       PropertyErrorException,
-                                                                                                       TypeErrorException,
-                                                                                                       PagingErrorException,
-                                                                                                       StatusNotSupportedException{
+    private void createOrUpdateSemanticAssignments(ReportColumn reportColumn, String columnGuid) throws UserNotAuthorizedException,
+                                                                                                        EntityNotKnownException,
+                                                                                                        FunctionNotSupportedException,
+                                                                                                        InvalidParameterException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        PropertyErrorException,
+                                                                                                        TypeErrorException,
+                                                                                                        PagingErrorException{
         List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
-        if (reportColumn.getBusinessTerm() == null) {
+        if (reportColumn.getBusinessTerms() == null || reportColumn.getBusinessTerms().isEmpty()) {
             deleteRelationships(existingAssignments);
         } else {
-            String businessTermAssignedToColumnGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
+            reportColumn.getBusinessTerms().stream().forEach( bt -> createOrUpdateSemanticAssignment(columnGuid, bt, existingAssignments));
+        }
+    }
+
+    private void createOrUpdateSemanticAssignment(String columnGuid, BusinessTerm businessTerm,
+                                                  List<Relationship> existingAssignments) {
+        try {
+            String businessTermAssignedToColumnGuid = entityReferenceResolver.getBusinessTermGuid(businessTerm);
             List<Relationship> matchingRelationship = new ArrayList<>();
             if (existingAssignments != null && !existingAssignments.isEmpty()) {
                 matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
@@ -422,6 +432,8 @@ public class ReportUpdater extends ReportBasicOperation {
                                             businessTermAssignedToColumnGuid,
                                             new InstanceProperties());
             }
+        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
+            throwAddRelationshipException(Constants.SEMANTIC_ASSIGNMENT, e, ReportUpdater.class.getName());
         }
     }
 

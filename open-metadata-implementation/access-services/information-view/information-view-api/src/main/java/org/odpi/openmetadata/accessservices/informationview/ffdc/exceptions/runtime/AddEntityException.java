@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class AddEntityException extends InformationViewUncheckedExceptionBase {
+public class AddEntityException extends InformationViewExceptionBase {
+
 
     public AddEntityException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
                               String reportedSystemAction, String reportedUserAction,
