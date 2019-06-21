@@ -36,8 +36,13 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-        <version>3.8.1</version>
-    </dependency>
+            <version>3.8.1</version>
+         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
