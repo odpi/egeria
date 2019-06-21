@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class IllegalUpdateException extends InformationViewUncheckedExceptionBase {
+public class IllegalUpdateException extends InformationViewExceptionBase {
 
     public IllegalUpdateException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
                                   String reportedSystemAction, String reportedUserAction,
