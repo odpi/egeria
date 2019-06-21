@@ -111,15 +111,15 @@ public class ReportContextBuilder extends ContextBuilder{
      * @return
      */
     protected ReportElement buildElement(EntityDetail entityDetail) {
-        ReportElement reportElement;
+
         if(entityDetail.getType().getTypeDefName().equals(Constants.DOCUMENT_SCHEMA_ATTRIBUTE)){
-            reportElement = new ReportSection();
+            ReportSection reportElement = new ReportSection();
             reportElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
             try {
                 List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,
                         entityDetail.getGUID());
                 if(schemaType != null && !schemaType.isEmpty()) {
-                    ((ReportSection) reportElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
+                    reportElement.setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
                 InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
@@ -130,17 +130,16 @@ public class ReportContextBuilder extends ContextBuilder{
                                                         auditCode.getUserAction(),
                                                         e);
             }
-
+            return reportElement;
         }else{
-            reportElement = new ReportColumn();
+            ReportColumn reportElement = new ReportColumn();
             reportElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
-            ((ReportColumn) reportElement).setAggregation(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
-            ((ReportColumn) reportElement).setFormula(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.FORMULA, entityDetail.getProperties(), "buildElement"));
-            ((ReportColumn) reportElement).setBusinessTerm(getAssignedBusinessTerm(entityDetail.getGUID()));
-            ((ReportColumn) reportElement).setSources(getSources(entityDetail.getGUID()));
-
+            reportElement.setAggregation(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
+            reportElement.setFormula(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.FORMULA, entityDetail.getProperties(), "buildElement"));
+            reportElement.setBusinessTerms(getAssignedBusinessTerms(entityDetail.getGUID()));
+            reportElement.setSources(getSources(entityDetail.getGUID()));
+            return reportElement;
         }
-        return reportElement;
     }
 
     private List<Source> getSources(String guid) {
