@@ -46,7 +46,7 @@ public class AssetLineagePublisher {
      *
      * @param event event to send
      */
-    public void publishRelationshipEvent(RelationshipEvent event) {
+    public void publishRelationshipEvent(AssetLineageEvent event) {
         try {
             if (connector != null) {
                 connector.sendEvent(this.getJSONPayload(event));

@@ -109,7 +109,7 @@ public class SubjectAreaRESTServicesInstance
         this.oMRSAPIHelper = oMRSAPIHelper;
     }
     /*
-     * Get Term relationships
+     * Get relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param restAPIName ret API name
