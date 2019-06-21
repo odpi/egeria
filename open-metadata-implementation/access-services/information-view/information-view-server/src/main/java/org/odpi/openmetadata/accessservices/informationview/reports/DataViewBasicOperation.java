@@ -7,6 +7,8 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
@@ -19,7 +21,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -145,7 +146,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
         EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        addBusinessTerm(dataViewColumn, dataViewColumnEntity);
+        addBusinessTerms(dataViewColumn, dataViewColumnEntity);
         addQueryTargets(dataViewColumn, dataViewColumnEntity);
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
@@ -178,7 +179,6 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      * @throws ClassificationErrorException
      */
     protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeType, InstanceProperties properties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-
         InstanceProperties typeProperties;
         if (properties != null) {
             Map<String, InstancePropertyValue> prop = properties.getInstanceProperties();
@@ -186,12 +186,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
             typeProperties = new InstanceProperties();
             typeProperties.setInstanceProperties(prop);
         } else {
-            typeProperties = new EntityPropertiesBuilder()
-                                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
-                                .build();
+            typeProperties = helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, new InstanceProperties(), Constants.QUALIFIED_NAME, qualifiedNameForType, "addSchemaType");
         }
-
-
         EntityDetail schemaTypeEntity = createSchemaType(schemaAttributeType, qualifiedNameForType, typeProperties,
                 Constants.SCHEMA_ATTRIBUTE_TYPE, schemaAttributeEntity.getGUID());
         return schemaTypeEntity;
@@ -202,24 +198,25 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      *
      * @param dataViewColumn element describing the data view column
      * @param derivedColumnEntity the entity representing the derived column
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     * @throws StatusNotSupportedException
-     * @throws TypeDefNotKnownException
-     * @throws EntityNotKnownException
      */
-    private void addBusinessTerm(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
-        String businessTermGuid = dataViewColumn.getBusinessTermGuid();
-        if (!StringUtils.isEmpty(businessTermGuid)) {
-            omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                    derivedColumnEntity.getGUID(),
-                    businessTermGuid,
-                    new InstanceProperties());
+    private void addBusinessTerms(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity){
+        List<String> businessTermGuids = dataViewColumn.getBusinessTermGuids();
+        if (businessTermGuids!= null && !businessTermGuids.isEmpty()) {
+            businessTermGuids.stream().forEach(btGuid -> {
+                try {
+                    omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+                                                derivedColumnEntity.getGUID(),
+                                                btGuid,
+                                                new InstanceProperties());
+                } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
+                    InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+                    throw new AddRelationshipException(errorCode.getHttpErrorCode(), ReportUpdater.class.getName(),
+                            errorCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, e.getMessage()),
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            e);
+                }
+            });
         }
     }
 
@@ -238,18 +235,25 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      * @throws UserNotAuthorizedException
      * @throws RepositoryErrorException
      */
-    private void addQueryTargets(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
+    private void addQueryTargets(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws
+                                                                                                  InvalidParameterException,
+                                                                                                  StatusNotSupportedException,
+                                                                                                  TypeErrorException,
+                                                                                                  FunctionNotSupportedException,
+                                                                                                  PropertyErrorException,
+                                                                                                  EntityNotKnownException,
+                                                                                                  PagingErrorException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  RepositoryErrorException {
         String sourceColumnGUID = dataViewColumn.getColumnGuid();
-
         InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUERY, "")
                 .build();
 
-            omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                    derivedColumnEntity.getGUID(),
-                    sourceColumnGUID,
-                    schemaQueryImplProperties);
-
+        omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+                derivedColumnEntity.getGUID(),
+                sourceColumnGUID,
+                schemaQueryImplProperties);
     }
 
 

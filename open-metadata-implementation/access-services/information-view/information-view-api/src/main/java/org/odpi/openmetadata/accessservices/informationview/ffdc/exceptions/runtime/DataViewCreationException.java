@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
 
-public class DataViewCreationException extends InformationViewUncheckedExceptionBase {
+public class DataViewCreationException extends InformationViewExceptionBase {
 
 
     private String dataViewId;
