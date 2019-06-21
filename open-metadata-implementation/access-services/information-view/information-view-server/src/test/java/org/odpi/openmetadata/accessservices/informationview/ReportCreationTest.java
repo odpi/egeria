@@ -41,9 +41,9 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         reportHandler.submitReportModel(request);
-        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
+        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("report_number_35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.ID)).getPrimitiveValue());
         assertEquals("Employee35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("John Martin", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.LAST_MODIFIER)).getPrimitiveValue());
@@ -57,19 +57,19 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertTrue("Relationship between reports and reports type was not created", !relationships.isEmpty() && relationships.size() == 1);
 
 
-        EntityDetail reportSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1", false);
+        EntityDetail reportSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1", false);
         assertNotNull("Report section was not created", reportSectionEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("section1", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
 
-        EntityDetail reportNestedSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1", false);
+        EntityDetail reportNestedSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1", false);
         assertNotNull("Nested Report section was not created", reportNestedSectionEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1", ((PrimitivePropertyValue) reportNestedSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1", ((PrimitivePropertyValue) reportNestedSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("section1.1", ((PrimitivePropertyValue) reportNestedSectionEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
 
-        EntityDetail reportNestedSectionTypeEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_TYPE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaType)=section1.1_type", false);
+        EntityDetail reportNestedSectionTypeEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_TYPE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaType)=section1.1_type", false);
         assertNotNull("Nested Report section type was not created", reportNestedSectionTypeEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaType)=section1.1_type", ((PrimitivePropertyValue) reportNestedSectionTypeEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaType)=section1.1_type", ((PrimitivePropertyValue) reportNestedSectionTypeEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
 
 
         relationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, reportNestedSectionTypeEntity.getGUID());
@@ -82,15 +82,15 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertTrue("columns for section 1.1 were not created", !relationships.isEmpty() && relationships.size() == 2);
 
 
-        EntityDetail fullNameColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", false);
+        EntityDetail fullNameColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", false);
         assertNotNull("Report column was not created", fullNameColumnEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("Full Name", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("concat", ((PrimitivePropertyValue) fullNameColumnEntity.getProperties().getPropertyValue(Constants.FORMULA)).getPrimitiveValue());
 
-        EntityDetail roleOfTheEmployee = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", false);
+        EntityDetail roleOfTheEmployee = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", false);
         assertNotNull("Report column was not created", roleOfTheEmployee);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DocumentSchemaAttribute)=section1.1::(DerivedSchemaAttribute)=Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("Role of the employee", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
         assertEquals("upper", ((PrimitivePropertyValue) roleOfTheEmployee.getProperties().getPropertyValue(Constants.FORMULA)).getPrimitiveValue());
 
@@ -102,7 +102,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         request.getReport().setAuthor("test_author");
         reportHandler.submitReportModel(request);
-        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
+        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         assertEquals("test_author", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.AUTHOR)).getPrimitiveValue());
     }
@@ -113,7 +113,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         request.getReport().getReportElements().get(0).setName("SectionA");
         reportHandler.submitReportModel(request);
-        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
+        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         EntityDetail reportTypeEntity = omEntityDao.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "(AssetSchemaType)=report_number_35_type", false);
         assertNotNull("Report type was not created", reportTypeEntity);
@@ -122,9 +122,9 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertTrue("Relationship between reports and reports type was not created", !relationships.isEmpty() && relationships.size() == 1);
 
 
-        EntityDetail reportSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=SectionA", false);
+        EntityDetail reportSectionEntity = omEntityDao.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=SectionA", false);
         assertNotNull("Report section was not created", reportSectionEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
     }
 
@@ -137,7 +137,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         column.setSources(((ReportColumn)((ReportSection)((ReportSection)request.getReport().getReportElements().get(0)).getElements().get(0)).getElements().get(0)).getSources());
         ((ReportSection)request.getReport().getReportElements().get(0)).getElements().add(column);
         reportHandler.submitReportModel(request);
-        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=powerbi-server::report_number_35", true);
+        EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         EntityDetail reportTypeEntity = omEntityDao.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "(AssetSchemaType)=report_number_35_type", false);
         assertNotNull("Report type was not created", reportTypeEntity);
@@ -145,9 +145,9 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         assertNotNull(relationships);
         assertTrue("Relationship between reports and reports type was not created", !relationships.isEmpty() && relationships.size() == 1);
 
-        EntityDetail reportColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", false);//powerbi-server::report_number_35::section1::test_column
+        EntityDetail reportColumnEntity = omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", false);//registration-qualified-name::report_number_35::section1::test_column
         assertNotNull("Report column was not created", reportColumnEntity);
-        assertEquals("(DeployedReport)=powerbi-server::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("(DeployedReport)=registration-qualified-name::report_number_35::(DocumentSchemaAttribute)=section1::(DerivedSchemaAttribute)=test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
         assertEquals("test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
     }
 

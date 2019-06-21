@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
