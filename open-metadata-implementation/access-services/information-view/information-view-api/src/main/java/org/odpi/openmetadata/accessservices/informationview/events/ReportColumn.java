@@ -19,7 +19,7 @@ public class ReportColumn extends ReportElement {
     private String aggregation;
     private String formula;
     private List<Source> sources;
-    private BusinessTerm businessTerm;
+    private List<BusinessTerm> businessTerms;
 
     public String getAggregation() {
         return aggregation;
@@ -45,12 +45,12 @@ public class ReportColumn extends ReportElement {
         this.sources = sources;
     }
 
-    public BusinessTerm getBusinessTerm() {
-        return businessTerm;
+    public List<BusinessTerm> getBusinessTerms() {
+        return businessTerms;
     }
 
-    public void setBusinessTerm(BusinessTerm businessTerm) {
-        this.businessTerm = businessTerm;
+    public void setBusinessTerms(List<BusinessTerm> businessTerms) {
+        this.businessTerms = businessTerms;
     }
 
     @Override
@@ -59,7 +59,7 @@ public class ReportColumn extends ReportElement {
                 "aggregation='" + aggregation + '\'' +
                 ", formula='" + formula + '\'' +
                 ", sources=" + sources +
-                ", businessTerm=" + businessTerm +
+                ", businessTerms=" + businessTerms +
                 ", name='" + name + '\'' +
                 '}';
     }
