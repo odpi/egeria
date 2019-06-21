@@ -28,26 +28,38 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
-            <version>${janusgraph.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-server</artifactId>
-            <version>${tinkerpop.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-berkeleyje</artifactId>
-            <version>${janusgraph.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-lucene</artifactId>
             <version>${janusgraph.version}</version>
         </dependency>
 
@@ -57,11 +69,6 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-api</artifactId>
