@@ -30,6 +30,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
 
@@ -114,14 +115,14 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
      * @return
      */
     DataViewElement buildElement(EntityDetail entityDetail) {
-        DataViewElement dataViewElement;
+
         if(entityDetail.getType().getTypeDefName().equals(Constants.SCHEMA_ATTRIBUTE)){
-            dataViewElement = new DataViewTable();
+            DataViewTable dataViewElement = new DataViewTable();
             dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
             try {
                 List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,  entityDetail.getGUID());
                 if(schemaType != null && !schemaType.isEmpty()) {
-                    ((DataViewTable) dataViewElement).setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
+                    dataViewElement.setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
                 InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
@@ -132,20 +133,20 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
                                                         auditCode.getUserAction(),
                                                         e);
             }
-
+            return dataViewElement;
         }else{
-            dataViewElement = new DataViewColumn();
+            DataViewColumn dataViewElement = new DataViewColumn();
             dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
-            ((DataViewColumn) dataViewElement).setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, entityDetail.getProperties(), "buildElement"));
+            dataViewElement.setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, entityDetail.getProperties(), "buildElement"));
             dataViewElement.setComment(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.COMMENT, entityDetail.getProperties(), "buildElement"));
-            ((DataViewColumn) dataViewElement).setRegularAggregate(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
-            BusinessTerm businessTerm = getAssignedBusinessTerm(entityDetail.getGUID());
-            if(businessTerm != null) {
-                ((DataViewColumn) dataViewElement).setBusinessTermGuid(businessTerm.getGuid());
+             dataViewElement.setRegularAggregate(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
+            List<BusinessTerm> businessTerms = getAssignedBusinessTerms(entityDetail.getGUID());
+            if(businessTerms != null && !businessTerms.isEmpty()) {
+                dataViewElement.setBusinessTermGuids(businessTerms.stream().map(bt -> bt.getGuid()).collect(Collectors.toList()));
             }
-            ((DataViewColumn) dataViewElement).setDataViewSource(getSources(entityDetail.getGUID()));
+            dataViewElement.setDataViewSource(getSources(entityDetail.getGUID()));
+            return dataViewElement;
         }
-        return dataViewElement;
     }
 
     private DataViewSource getSources(String guid) {
