@@ -106,6 +106,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                 .build();
 
         EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+
         addBusinessTerm(dataViewColumnEntity.getGUID(), dataViewColumn.getColumnGuid());
         addQueryTarget(dataViewColumnEntity.getGUID(), dataViewColumn.getDataViewSource().getGuid(), "");
 
@@ -117,5 +118,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
         return dataViewColumnEntity;
     }
+
+
 
 }
