@@ -137,18 +137,19 @@
         <owasp.version>5.0.0</owasp.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <springfox.version>2.9.2</springfox.version>
-	      <maven-install.version>3.0.0-M1</maven-install.version>
-	      <maven-shade.version>3.2.1</maven-shade.version>
-	      <maven-compiler.version>3.8.0</maven-compiler.version>
+        <maven-install.version>3.0.0-M1</maven-install.version>
+	    <maven-shade.version>3.2.1</maven-shade.version>
+	    <maven-compiler.version>3.8.0</maven-compiler.version>
+        <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-	<sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
-	<!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
-	<!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
-	<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-	<sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
-	<sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
-	<sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
+	    <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+	    <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
+	    <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
+	    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+	    <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
+	    <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
+	    <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
     </properties>
 
     <dependencyManagement>
@@ -317,15 +318,19 @@
                    <groupId>org.jacoco</groupId>
                    <artifactId>jacoco-maven-plugin</artifactId>
                    <version>0.8.3</version>
-	   </plugin>
-	        <plugin>
+                </plugin>
+	            <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-	    	    <version>${spring-boot.version}</version>
-	        </plugin>
-        </plugins>
-
-    </pluginManagement>
+	    	        <version>${spring-boot.version}</version>
+                </plugin>
+	            <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>${maven-jar-plugin.version}</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
 
         <!-- Should be default, but needed to keep IntelliJ happy -->
         <sourceDirectory>src/main/java</sourceDirectory>
@@ -641,6 +646,7 @@
                         <artifactId>dependency-check-maven</artifactId>
 			<version>${owasp.version}</version>
 			<configuration>
+                            <skipSystemScope>true</skipSystemScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
                             <enableExperimental>true</enableExperimental>
                             <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>

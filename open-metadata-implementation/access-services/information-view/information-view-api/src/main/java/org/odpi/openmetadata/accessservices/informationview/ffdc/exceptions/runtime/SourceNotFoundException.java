@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class SourceNotFoundException extends InformationViewUncheckedExceptionBase{
+public class SourceNotFoundException extends InformationViewExceptionBase {
 
     public SourceNotFoundException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
                                    String reportedSystemAction, String reportedUserAction,

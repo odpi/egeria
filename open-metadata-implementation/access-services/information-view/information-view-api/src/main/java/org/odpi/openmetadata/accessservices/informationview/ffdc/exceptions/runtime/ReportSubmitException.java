@@ -3,9 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
 
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
-
-public class ReportSubmitException extends InformationViewUncheckedExceptionBase {
+public class ReportSubmitException extends InformationViewExceptionBase {
 
     private String reportName;
 
