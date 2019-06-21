@@ -51,9 +51,9 @@ public class ConnectorUtils {
         List<MappedColumn> mappedColumns = new ArrayList<>();
         List<TableColumn> databaseColumnList = tableContextEvent.getTableColumns();
         for (TableColumn databaseColumn : databaseColumnList) {
-            if (databaseColumn.getBusinessTerm() != null) {
+            if (databaseColumn.getBusinessTerms() != null && !databaseColumn.getBusinessTerms().isEmpty()) {
                 MappedColumn mappedColumn = new MappedColumn();
-                mappedColumn.setBusinessName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
+                mappedColumn.setBusinessName(databaseColumn.getBusinessTerms().get(0).getName().replace(" ", "_"));//TODO logic for having only one business term
                 mappedColumn.setType(databaseColumn.getType());
                 mappedColumn.setTechnicalName(databaseColumn.getName());
                 mappedColumns.add(mappedColumn);

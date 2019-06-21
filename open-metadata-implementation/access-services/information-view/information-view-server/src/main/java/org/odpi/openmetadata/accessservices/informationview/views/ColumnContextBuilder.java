@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.views;
 
 
+import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.commons.collections.CollectionUtils;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
@@ -183,7 +184,7 @@ public class ColumnContextBuilder {
             tableColumn.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, columnEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME));
             tableColumn.setPosition(omrsRepositoryHelper.getIntProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ELEMENT_POSITION_NAME, columnEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME));
             tableColumn.setGuid(columnEntity.getGUID());
-            tableColumn.setBusinessTerm(getBusinessTermAssociated(columnEntity));
+            tableColumn.setBusinessTerms(getBusinessTermsAssociated(columnEntity));
             tableColumn.setPrimaryKeyName(getPrimaryKeyClassification(columnEntity));
             if (tableColumn.getPrimaryKeyName() != null && !tableColumn.getPrimaryKeyName().isEmpty()) {
                 tableColumn.setPrimaryKey(true);
@@ -299,13 +300,20 @@ public class ColumnContextBuilder {
             log.debug("Load table for database with guid {}", databaseEntityGuid);
         }
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.DATA_CONTENT_FOR_DATASET).getGUID();
-        Relationship databaseToDbSchema;
-        List<TableSource> tableSources = new ArrayList<>();
+        List<Relationship> databaseToDbSchemaRelationships;
         try {
-            databaseToDbSchema = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-            EntityDetail dbSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseToDbSchema.getEntityTwoProxy().getGUID());
+            databaseToDbSchemaRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+            return databaseToDbSchemaRelationships.parallelStream().flatMap(r -> getTablesForSchema(r.getEntityTwoProxy().getGUID(), startFrom, pageSize).stream()).collect(Collectors.toList());
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(databaseEntityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
+    }
 
-            relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
+    private List<TableSource> getTablesForSchema(String databaseSchemaGuid, int startFrom, int pageSize)  {
+        try {
+            EntityDetail dbSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseSchemaGuid);
+            String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
             Relationship dbSchemaToSchemaType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, dbSchemaEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
             EntityDetail dbSchemaTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, dbSchemaToSchemaType.getEntityTwoProxy().getGUID());
             String schemaName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, dbSchemaEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
@@ -314,24 +322,25 @@ public class ColumnContextBuilder {
             List<Relationship> dbSchemaTypeToTableRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
                     dbSchemaTypeEntity.getGUID(), relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
 
-
-            for(Relationship relationship : dbSchemaTypeToTableRelationships){
-                String tableGuid = relationship.getEntityTwoProxy().getGUID();
-                EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
-                String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
-                TableSource tableSource = new TableSource();
-                tableSource.setName(tableName);
-                tableSource.setGuid(tableGuid);
-                tableSource.setSchemaName(schemaName);
-                tableSources.add(tableSource);
+            List<TableSource> tableSources = new ArrayList<>();
+            if (dbSchemaTypeToTableRelationships != null && !dbSchemaTypeToTableRelationships.isEmpty()) {
+                for (Relationship relationship : dbSchemaTypeToTableRelationships) {
+                    String tableGuid = relationship.getEntityTwoProxy().getGUID();
+                    EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
+                    String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
+                    TableSource tableSource = new TableSource();
+                    tableSource.setName(tableName);
+                    tableSource.setGuid(tableGuid);
+                    tableSource.setSchemaName(schemaName);
+                    tableSources.add(tableSource);
+                }
             }
-        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException | EntityProxyOnlyException e) {
-            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
-            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(databaseEntityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+            return tableSources;
         }
-
-
-        return tableSources;
+         catch (UserNotAuthorizedException | EntityProxyOnlyException | RepositoryErrorException | PagingErrorException | TypeErrorException | EntityNotKnownException | InvalidParameterException | PropertyErrorException | FunctionNotSupportedException e) {
+             InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+             throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(databaseSchemaGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+         }
     }
 
     private String getPrimaryKeyClassification(EntityDetail columnEntity) {
@@ -367,25 +376,25 @@ public class ColumnContextBuilder {
      * @param columnEntity for which business term is retrieved
      * @return the business term associated to the column
      */
-    private BusinessTerm getBusinessTermAssociated(EntityDetail columnEntity) {
+    private List<BusinessTerm> getBusinessTermsAssociated(EntityDetail columnEntity) {
         if(log.isDebugEnabled()) {
             log.debug("Load business term associated to column with guid {}", columnEntity.getGUID());
         }
-        BusinessTerm businessTerm = null;
         List<Relationship> btRelationships = getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnEntity.getGUID());
         if (btRelationships != null && !btRelationships.isEmpty()) {
-            Relationship btRelationship = btRelationships.get(0);//TODO should send list of business terms
-            String businessTermGuid = btRelationship.getEntityTwoProxy().getGUID();
-            EntityDetail btDetail;
-            try {
-                btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, businessTermGuid);
-            } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
-                InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-                throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, columnEntity.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
-            }
-            businessTerm = buildBusinessTerm(btDetail);
+            return btRelationships.stream().map(btRelationship -> {
+                String businessTermGuid = btRelationship.getEntityTwoProxy().getGUID();
+                EntityDetail btDetail;
+                try {
+                    btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, businessTermGuid);
+                } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+                    InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+                    throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, columnEntity.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+                }
+                return buildBusinessTerm(btDetail);
+            }).collect(Collectors.toList());
         }
-        return businessTerm;
+        return Collections.emptyList();
     }
 
     /**

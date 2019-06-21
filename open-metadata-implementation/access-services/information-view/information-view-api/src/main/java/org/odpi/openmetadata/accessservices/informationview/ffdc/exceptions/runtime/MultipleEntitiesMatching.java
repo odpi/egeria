@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class MultipleEntitiesMatching extends InformationViewUncheckedExceptionBase{
+public class MultipleEntitiesMatching extends InformationViewExceptionBase {
 
     public MultipleEntitiesMatching(String className, String errorMessage, String systemAction, String userAction,
                                     Throwable caughtError) {

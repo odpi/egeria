@@ -121,10 +121,10 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         view.setOriginalTableSource(convertTableSource(tableContextEvent.getTableSource()));
         List<org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn> derivedColumn = new ArrayList<>();
         for (TableColumn databaseColumn : tableContextEvent.getTableColumns()) {
-            if (databaseColumn.getBusinessTerm() != null) {
+            if (databaseColumn.getBusinessTerms() != null && !databaseColumn.getBusinessTerms().isEmpty()) {
                 org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn column = new org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn();
                 if (viewType.equals(ConnectorUtils.BUSINESS_PREFIX)) {
-                    column.setName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
+                    column.setName(databaseColumn.getBusinessTerms().get(0).getName().replace(" ", "_"));//TODO logic for handling multiple business terms
                 } else {
                     column.setName(databaseColumn.getName());
                 }
@@ -140,17 +140,20 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return view;
     }
 
-    private org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm convertBusinessTerm(BusinessTerm businessTerm) {
-        org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm businessTerm1 = new org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm();
-        businessTerm1.setAbbreviation(businessTerm.getAbbreviation());
-        businessTerm1.setDescription(businessTerm.getDescription());
-        businessTerm1.setDisplayName(businessTerm.getDisplayName());
-        businessTerm1.setExamples(businessTerm.getExamples());
-        businessTerm1.setGuid(businessTerm.getGuid());
-        businessTerm1.setQuery(businessTerm.getQuery());
-        businessTerm1.setName(businessTerm.getName());
-
-        return businessTerm1;
+    private org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm convertBusinessTerm(List<BusinessTerm> businessTerms) {
+        if(businessTerms != null && !businessTerms.isEmpty()) {
+            //TODO logic to handle multiple business terms
+            org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm businessTerm1 = new org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm();
+            businessTerm1.setAbbreviation(businessTerms.get(0).getAbbreviation());
+            businessTerm1.setDescription(businessTerms.get(0).getDescription());
+            businessTerm1.setDisplayName(businessTerms.get(0).getDisplayName());
+            businessTerm1.setExamples(businessTerms.get(0).getExamples());
+            businessTerm1.setGuid(businessTerms.get(0).getGuid());
+            businessTerm1.setQuery(businessTerms.get(0).getQuery());
+            businessTerm1.setName(businessTerms.get(0).getName());
+            return businessTerm1;
+        }
+        return null;
     }
 
     private org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn convertSourceColumn(TableColumn databaseColumn) {
@@ -165,7 +168,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         tableColumn.setQualifiedName(databaseColumn.getQualifiedName());
         tableColumn.setType(databaseColumn.getType());
         tableColumn.setUnique(databaseColumn.isUnique());
-        tableColumn.setBusinessTerm(convertBusinessTerm(databaseColumn.getBusinessTerm()));
+        tableColumn.setBusinessTerm(convertBusinessTerm(databaseColumn.getBusinessTerms()));
         return tableColumn;
     }
 
