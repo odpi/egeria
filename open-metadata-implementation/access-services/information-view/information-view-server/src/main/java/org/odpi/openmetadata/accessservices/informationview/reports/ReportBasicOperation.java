@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.SourceNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -36,7 +38,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 public abstract class ReportBasicOperation extends BasicOperation{
@@ -190,7 +191,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 derivedColumnEntity.getGUID(),
                 new InstanceProperties());
 
-        addBusinessTerm(reportColumn, derivedColumnEntity);
+        addSemanticAssignments(reportColumn, derivedColumnEntity);
         addQueryTargets(reportColumn, derivedColumnEntity);
         String qualifiedNameForColumnType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.SCHEMA_TYPE, reportColumn);
 
@@ -241,28 +242,36 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
     /**
-     *
+     * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms defined for the report column and the entity representing the column
      * @param reportColumn object describing the report column
      * @param derivedColumnEntity entity describing the derived column
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     * @throws StatusNotSupportedException
-     * @throws TypeDefNotKnownException
-     * @throws EntityNotKnownException
      */
-    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, EntityNotKnownException {
-        String businessTermGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
+    private void addSemanticAssignments(ReportColumn reportColumn, EntityDetail derivedColumnEntity){
+        if(reportColumn.getBusinessTerms() != null && !reportColumn.getBusinessTerms().isEmpty()) {
+            reportColumn.getBusinessTerms().stream().forEach(bt -> {
+                addSemanticAssignments(derivedColumnEntity, bt);
+            });
+        }
+    }
+
+    private void addSemanticAssignments(EntityDetail derivedColumnEntity, BusinessTerm bt)  {
+        String businessTermGuid;
+        try {
+            businessTermGuid = entityReferenceResolver.getBusinessTermGuid(bt);
             if (!StringUtils.isEmpty(businessTermGuid)) {
                 omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                                            derivedColumnEntity.getGUID(),
-                                            businessTermGuid,
+                        derivedColumnEntity.getGUID(),
+                        businessTermGuid,
                         new InstanceProperties());
             }
+        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
+            InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+            throw new AddRelationshipException(errorCode.getHttpErrorCode(), ReportUpdater.class.getName(),
+                    errorCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, e.getMessage()),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
+        }
     }
 
     /**

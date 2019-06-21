@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class ContextBuilder<T> {
 
@@ -89,8 +90,7 @@ public abstract class ContextBuilder<T> {
      * @param entityGuid unique identifier of the entity for which we want to retrieve the business term
      * @return bean describing the business term associated
      */
-    protected BusinessTerm getAssignedBusinessTerm(String entityGuid) {
-        BusinessTerm businessTerm = null;
+    protected List<BusinessTerm> getAssignedBusinessTerms(String entityGuid) {
         List<Relationship> semanticAssignments ;
         try {
             semanticAssignments = entityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, entityGuid);
@@ -104,30 +104,33 @@ public abstract class ContextBuilder<T> {
                     e);
         }
         if(semanticAssignments != null && !semanticAssignments.isEmpty()){
-            businessTerm = new BusinessTerm();
-            String businessTermGuid = semanticAssignments.get(0).getEntityTwoProxy().getGUID();
-            EntityDetail businessTermEntity;
-            try {
-                businessTermEntity = entityDao.getEntityByGuid(businessTermGuid);
-            } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException e) {
-                throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                        ReportLookup.class.getName(),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, businessTermGuid),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                        null);
-            }
-            businessTerm.setGuid(businessTermGuid);
-            businessTerm.setName(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setSummary(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.SUMMARY, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setExamples(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.EXAMPLES, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setUsage(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setQuery(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUERY, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setAbbreviation(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ABBREVIATION, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setDescription(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DESCRIPTION, businessTermEntity.getProperties(), "retrieveReport"));
-            businessTerm.setDisplayName(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DISPLAY_NAME, businessTermEntity.getProperties(), "retrieveReport"));
-
+            return semanticAssignments.stream().map(r -> retrieveBusinessTerm(r.getEntityTwoProxy().getGUID())).collect(Collectors.toList());
         }
+        return Collections.emptyList();
+    }
+
+    private BusinessTerm retrieveBusinessTerm(String businessTermGuid) {
+        BusinessTerm businessTerm = new BusinessTerm();
+        EntityDetail businessTermEntity;
+        try {
+            businessTermEntity = entityDao.getEntityByGuid(businessTermGuid);
+        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException e) {
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
+                    ReportLookup.class.getName(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, businessTermGuid),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
+                    null);
+        }
+        businessTerm.setGuid(businessTermGuid);
+        businessTerm.setName(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setSummary(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.SUMMARY, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setExamples(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.EXAMPLES, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setUsage(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setQuery(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUERY, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setAbbreviation(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ABBREVIATION, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setDescription(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DESCRIPTION, businessTermEntity.getProperties(), "retrieveReport"));
+        businessTerm.setDisplayName(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DISPLAY_NAME, businessTermEntity.getProperties(), "retrieveReport"));
         return businessTerm;
     }
 
