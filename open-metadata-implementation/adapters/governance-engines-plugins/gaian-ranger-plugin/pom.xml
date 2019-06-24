@@ -93,7 +93,7 @@
                 <groupId>org.apache.hadoop</groupId>
                 <artifactId>hadoop-common</artifactId>
                 <version>${hadoop.version}</version>
-                <scope>runtime</scope>
+                <scope>compile</scope>
             </dependency>
 
             <dependency>
@@ -166,6 +166,14 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.hadoop/hadoop-common -->
+        <dependency>
+            <groupId>org.apache.hadoop</groupId>
+            <artifactId>hadoop-common</artifactId>
+            <version>${hadoop.version}</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -181,6 +189,25 @@
                         <goals>
                             <goal>shade</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <!-- Appears to be false positive - remove if not needed -->
+                                <ignoredUnusedDeclaredDependency>org.apache.hadoop:*</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

@@ -25,6 +25,24 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring-web.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>${spring-web.version}</version>
@@ -168,7 +186,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <scope>runtime</scope>
+            <version>${spring-boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
         </dependency>
 
         <!-- Spring Fox for Swagger API documentation generation -->
@@ -176,7 +200,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>${springfox.version}</version>
-            <scope>runtime</scope>
         </dependency>
 
         <!-- Spring Fox Swagger UI dependency for presentation of generated swagger.json -->
@@ -184,7 +207,30 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${springfox.version}</version>
-            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spring-web</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spi</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-core</artifactId>
+            <version>${springfox.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
@@ -205,6 +251,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+           <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <!-- all egeria spring modules are dynamically added -->
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
+                                <!-- springfox added for swagger UI -->
+                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui</ignoredUnusedDeclaredDependency>
+                                <!-- Spring seems to cause false positives on dependency checker -->
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-data-jpa:*</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Special configuration for dependency checking due to the way spring scans -->
+
         </plugins>
     </build>
 
