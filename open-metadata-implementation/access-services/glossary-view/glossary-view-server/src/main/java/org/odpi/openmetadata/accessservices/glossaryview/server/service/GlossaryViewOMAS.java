@@ -46,10 +46,12 @@ public class GlossaryViewOMAS extends OMRSClient {
         glossaryViewClassification.setUpdateTime(classification.getUpdateTime());
         glossaryViewClassification.setStatus(classification.getStatus().getName());
 
-        classification.getProperties().getInstanceProperties().entrySet().stream()
-                .forEach( incoming -> {
-                    glossaryViewClassification.addProperty(incoming.getKey(), helper.getStringProperty(GLOSSARY_VIEW_OMAS, incoming.getKey(), classification.getProperties(), "GlossaryViewOMAS.classificationConverter.apply"));
-                });
+        if(classification.getProperties().getInstanceProperties() != null) {
+            classification.getProperties().getInstanceProperties().entrySet().stream()
+                    .forEach(incoming -> {
+                        glossaryViewClassification.addProperty(incoming.getKey(), incoming.getValue().valueAsString());
+                    });
+        }
 
         return glossaryViewClassification;
     };
@@ -148,7 +150,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             List<EntityDetail> entities = getRelatedEntities(userId, serverName, entityGUID, entityTypeName,
                     relationshipTypeGUID, relationshipTypeName, from, size, methodName);
             Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(userId, serverName);
-            if(!omrsRepositoryHelper.isPresent()){
+            if(entities == null || !omrsRepositoryHelper.isPresent()){
                 return response;
             }
 
@@ -183,7 +185,7 @@ public class GlossaryViewOMAS extends OMRSClient {
         try {
             List<EntityDetail> entities = getAllEntityDetails(userId, serverName, entityTypeGUID, from, size, methodName);
             Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(userId, serverName);
-            if(!omrsRepositoryHelper.isPresent()){
+            if(entities == null || !omrsRepositoryHelper.isPresent()){
                 return response;
             }
 
