@@ -4,8 +4,8 @@
 package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
-import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
+import org.odpi.openmetadata.accessservices.informationview.context.ContextBuilders;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -14,7 +14,6 @@ import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
-import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -22,12 +21,10 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
@@ -41,7 +38,6 @@ import java.util.Map;
 public class InformationViewAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
-    private OpenMetadataTopicConnector informationViewInTopicConnector;
     private OpenMetadataTopicConnector informationViewOutTopicConnector;
     private OMRSAuditLog auditLog;
     private String serverName = null;
@@ -80,9 +76,7 @@ public class InformationViewAdmin extends AccessServiceAdmin {
             serverName = enterpriseConnector.getServerName();
         }
 
-        String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
@@ -103,13 +97,6 @@ public class InformationViewAdmin extends AccessServiceAdmin {
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
-
-        if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(), supportedZones, auditLog);
-            this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
-            startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
-        }
-
         if (informationViewOutTopicConnector != null) {
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_OUT_TOPIC, actionDescription, outTopicName, informationViewOutTopicConnector);
         }
@@ -117,9 +104,9 @@ public class InformationViewAdmin extends AccessServiceAdmin {
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
         DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
         ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
-        DatabaseContextHandler databaseContextHandler = new DatabaseContextHandler(omEntityDao, enterpriseConnector, auditLog );
         RegistrationHandler registrationHandler = new RegistrationHandler(omEntityDao, enterpriseConnector, auditLog);
-        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, databaseContextHandler, registrationHandler, serverName);
+        ContextBuilders contextBuilders = new ContextBuilders(enterpriseConnector, omEntityDao, auditLog);
+        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, registrationHandler, contextBuilders, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
@@ -310,11 +297,6 @@ public class InformationViewAdmin extends AccessServiceAdmin {
      * Shutdown the access service.
      */
     public void shutdown() {
-        try {
-            informationViewInTopicConnector.disconnect();
-        } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting information view topic connector");
-        }
         try {
             informationViewOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {

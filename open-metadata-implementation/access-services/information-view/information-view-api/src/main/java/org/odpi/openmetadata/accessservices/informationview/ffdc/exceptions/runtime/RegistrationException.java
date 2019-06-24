@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class RegistrationException extends InformationViewUncheckedExceptionBase{
+public class RegistrationException extends InformationViewExceptionBase {
 
 
     public RegistrationException(String className, String errorMessage, String systemAction, String userAction,
