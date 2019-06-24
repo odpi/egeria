@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.model;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,6 +20,8 @@ public class Port implements Serializable {
     private static final long serialVersionUID = 1L;
     private String displayName;
     private String qualifiedName;
+    @JsonProperty("type")
+    private PortType portType;
 
     public String getDisplayName() {
         return displayName;
@@ -36,11 +39,20 @@ public class Port implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
+    public PortType getPortType() {
+        return portType;
+    }
+
+    public void setPortType(PortType portType) {
+        this.portType = portType;
+    }
+
     @Override
     public String toString() {
         return "Port{" +
                 "displayName='" + displayName + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
+                ", portType=" + portType +
                 '}';
     }
 
@@ -48,13 +60,14 @@ public class Port implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Port that = (Port) o;
-        return Objects.equals(displayName, that.displayName) &&
-                Objects.equals(qualifiedName, that.qualifiedName);
+        Port port = (Port) o;
+        return Objects.equals(displayName, port.displayName) &&
+                Objects.equals(qualifiedName, port.qualifiedName) &&
+                portType == port.portType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, qualifiedName);
+        return Objects.hash(displayName, qualifiedName, portType);
     }
 }

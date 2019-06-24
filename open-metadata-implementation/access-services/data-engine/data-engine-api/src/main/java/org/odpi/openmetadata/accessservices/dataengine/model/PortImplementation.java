@@ -17,17 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PortImplementation extends Port {
     private static final long serialVersionUID = 1L;
-    private PortType portType;
     @JsonProperty("schema")
     private SchemaType schemaType;
-
-    public PortType getPortType() {
-        return portType;
-    }
-
-    public void setPortType(PortType portType) {
-        this.portType = portType;
-    }
 
     public SchemaType getSchemaType() {
         return schemaType;
@@ -37,16 +28,10 @@ public class PortImplementation extends Port {
         this.schemaType = schemaType;
     }
 
-    /**
-     * JSON-like toString
-     *
-     * @return string containing the property names and values
-     */
     @Override
     public String toString() {
         return "PortImplementation{" +
-                "portType=" + portType +
-                ", schemaType=" + schemaType +
+                "schemaType=" + schemaType +
                 '}';
     }
 
@@ -56,12 +41,11 @@ public class PortImplementation extends Port {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         PortImplementation that = (PortImplementation) o;
-        return portType == that.portType &&
-                Objects.equals(schemaType, that.schemaType);
+        return Objects.equals(schemaType, that.schemaType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), portType, schemaType);
+        return Objects.hash(super.hashCode(), schemaType);
     }
 }
