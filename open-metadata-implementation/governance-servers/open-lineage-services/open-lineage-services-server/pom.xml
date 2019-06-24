@@ -29,6 +29,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>graph-repository-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
@@ -74,6 +80,12 @@
             <artifactId>asset-lineage-api</artifactId>
             <version>1.1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+            <version>3.3.3</version>
         </dependency>
 
     </dependencies>

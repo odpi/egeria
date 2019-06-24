@@ -53,5 +53,13 @@
             <artifactId>ffdc-services</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 </project>
