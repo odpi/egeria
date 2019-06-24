@@ -25,6 +25,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-handler</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
             <version>${spring-web.version}</version>
@@ -51,6 +63,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-view-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

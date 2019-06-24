@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class ContextLoadException extends InformationViewUncheckedExceptionBase {
+public class ContextLoadException extends InformationViewExceptionBase {
 
     public ContextLoadException(String className, String errorMessage, String systemAction, String userAction,
                                 Throwable caughtError) {

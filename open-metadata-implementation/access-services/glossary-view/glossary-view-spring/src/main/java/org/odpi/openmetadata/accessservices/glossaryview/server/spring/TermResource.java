@@ -7,11 +7,20 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.TermService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.PositiveOrZero;
+
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_FROM_DEFAULT_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_DEFAULT_VALUE;
 
 /**
- * Provides the server-side implementation of the Glossary View Open Metadata Access Service
- * (OMAS). This interface facilitates the retrieval of glossary categories
+ * Spring Rest Controller defining 'GlossaryTerm' oriented endpoints
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
@@ -26,7 +35,7 @@ public class TermResource {
      * Called by Spring
      */
     public TermResource() {
-        termService = TermService.getInstance();
+        termService = new TermService();
     }
 
     /**
@@ -35,16 +44,20 @@ public class TermResource {
      * @param serverName instance to call
      * @param userId calling user
      * @param categoryGUID category GUID
+     * @param from from
+     * @param size size
      *
-     * @return all categories
+     * @return terms
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms")
     public GlossaryViewEntityDetailResponse getTerms(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
-                                                     @RequestParam("categoryGUID") String categoryGUID) {
+                                                     @RequestParam("categoryGUID") String categoryGUID,
+                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response =  termService.getTerms(userId, serverName, categoryGUID);
+        GlossaryViewEntityDetailResponse response =  termService.getTerms(userId, serverName, categoryGUID, from, size);
 
         watch.stop();
         log.debug("Method: getTerms; Duration: " + watch.getTime()/1000 + "seconds");
@@ -59,7 +72,7 @@ public class TermResource {
      * @param userId calling user
      * @param termGUID category GUID
      *
-     * @return a category
+     * @return term
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}")
     public GlossaryViewEntityDetailResponse getTerm(@PathVariable("serverName") String serverName,
@@ -76,21 +89,78 @@ public class TermResource {
     }
 
     /**
+     * Extract term definitions for the given glossary GUID via the 'TermAnchor' type relationships
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param glossaryGUID glossary GUID
+     * @param from from
+     * @param size size
+     *
+     * @return terms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/terms")
+    public GlossaryViewEntityDetailResponse getTermsViaTermAnchorRelationships(@PathVariable("serverName") String serverName,
+                                                                               @PathVariable("userId") String userId, @PathVariable("glossaryGUID") String glossaryGUID,
+                                                                               @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                               @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response =  termService.getTermsViaTermAnchorRelationships(userId, serverName, glossaryGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getTermsViaTermAnchorRelationships; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract term definitions for the given GUID via the 'TermCategorization' type relationships
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param categoryGUID category GUID
+     * @param from from
+     * @param size size
+     *
+     * @return subcategories
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/terms")
+    public GlossaryViewEntityDetailResponse getTermsViaTermCategorizationRelationships(@PathVariable("serverName") String serverName,
+                                                                                       @PathVariable("userId") String userId,
+                                                                                       @PathVariable("categoryGUID") String categoryGUID,
+                                                                                       @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                                       @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getTermsViaTermCategorizationRelationships(userId, serverName, categoryGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getTermsViaTermCategorizationRelationships; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
      * Extract external glossary definitions for the given term
      *
      * @param serverName instance to call
      * @param userId calling user
      * @param termGUID term GUID
+     * @param from from
+     * @param size size
      *
-     * @return subcategories
+     * @return external glossaries
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
-                                                                  @PathVariable("termGUID") String termGUID) {
+                                                                  @PathVariable("termGUID") String termGUID,
+                                                                  @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response = termService.getExternalGlossaries(userId, serverName, termGUID);
+        GlossaryViewEntityDetailResponse response = termService.getExternalGlossaries(userId, serverName, termGUID, from, size);
 
         watch.stop();
         log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
