@@ -1,13 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
-
 /**
  * The PropertyServerException is thrown by the Information View OMAS when it is not able to communicate with the
  * property server.
  */
-public class PropertyServerException extends InformationViewUncheckedExceptionBase {
+public class PropertyServerException extends InformationViewExceptionBase {
     /**
      * This is the typical constructor used for creating a PropertyServerException.
      *

@@ -19,6 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataViewRequestBody extends InformationViewHeader{
 
     private String registrationGuid;
+    private String registrationQualifiedName;
     private DataView dataView;
 
     public DataView getDataView() {
@@ -45,11 +46,19 @@ public class DataViewRequestBody extends InformationViewHeader{
         this.registrationGuid = registrationGuid;
     }
 
+    public String getRegistrationQualifiedName() {
+        return registrationQualifiedName;
+    }
+
+    public void setRegistrationQualifiedName(String registrationQualifiedName) {
+        this.registrationQualifiedName = registrationQualifiedName;
+    }
 
     @Override
     public String toString() {
         return "{" +
                 "registrationGuid='" + registrationGuid + '\'' +
+                ", registrationQualifiedName='" + registrationQualifiedName + '\'' +
                 ", dataView=" + dataView +
                 '}';
     }
