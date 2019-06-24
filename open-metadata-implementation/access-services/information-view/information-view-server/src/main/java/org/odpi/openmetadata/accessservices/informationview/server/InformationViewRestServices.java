@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSourc
 import org.odpi.openmetadata.accessservices.informationview.events.DeployedReport;
 import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
@@ -191,8 +192,8 @@ public class InformationViewRestServices {
          RegistrationResponse response = new RegistrationResponse();
          RegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(serverName);
          try {
-             EntityDetail entityDetail  = registrationHandler.registerTool(requestBody);
-             response.setGuid(entityDetail.getGUID());
+             SoftwareServerCapabilitySource softwareServerCapabilitySource = registrationHandler.registerTool(requestBody);
+             response.setSoftwareServerCapabilitySource(softwareServerCapabilitySource);
          } catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
               return handleErrorResponse(e);
@@ -214,8 +215,8 @@ public class InformationViewRestServices {
          RegistrationResponse response = new RegistrationResponse();
          RegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(serverName);
          try {
-             EntityDetail entityDetail  = registrationHandler.lookupSoftwareServerCapability(requestBody);
-             response.setGuid(entityDetail.getGUID());
+             SoftwareServerCapabilitySource softwareServerCapabilitySource = registrationHandler.lookupSoftwareServerCapability(requestBody);
+             response.setSoftwareServerCapabilitySource(softwareServerCapabilitySource);
          } catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);
              return handleErrorResponse(e);
