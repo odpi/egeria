@@ -24,6 +24,7 @@ public class SchemaType implements Serializable {
     private String author;
     private String usage;
     private String encodingStandard;
+    private String versionNumber;
     @JsonProperty("columns")
     private List<Column> columnList;
 
@@ -67,6 +68,14 @@ public class SchemaType implements Serializable {
         this.encodingStandard = encodingStandard;
     }
 
+    public String getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
     public List<Column> getColumnList() {
         return columnList;
     }
@@ -77,12 +86,13 @@ public class SchemaType implements Serializable {
 
     @Override
     public String toString() {
-        return "SchemaTypeRequestBody{" +
+        return "SchemaType{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
+                ", versionNumber='" + versionNumber + '\'' +
                 ", columnList=" + columnList +
                 '}';
     }
@@ -97,11 +107,12 @@ public class SchemaType implements Serializable {
                 Objects.equals(author, that.author) &&
                 Objects.equals(usage, that.usage) &&
                 Objects.equals(encodingStandard, that.encodingStandard) &&
+                Objects.equals(versionNumber, that.versionNumber) &&
                 Objects.equals(columnList, that.columnList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, author, usage, encodingStandard, columnList);
+        return Objects.hash(qualifiedName, displayName, author, usage, encodingStandard, versionNumber, columnList);
     }
 }

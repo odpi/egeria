@@ -27,6 +27,12 @@ import java.util.Map;
 
 
 public class DataEngineSchemaTypeHandler {
+    private static final String TYPE_SUFFIX = "_type";
+    private static final String SEPARATOR = "::";
+    private static final String EQUALS = "=";
+    private static final String OPEN_BRACKET = "(";
+    private static final String CLOSE_BRACKET = ")";
+
     private String serviceName;
     private String serverName;
     private RepositoryHandler repositoryHandler;
@@ -58,10 +64,10 @@ public class DataEngineSchemaTypeHandler {
 
 
     public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
-                                   String encodingStandard, String usage, List<Column> columnList) throws
-                                                                                                   InvalidParameterException,
-                                                                                                   PropertyServerException,
-                                                                                                   UserNotAuthorizedException {
+                                   String encodingStandard, String usage, String versionNumber,
+                                   List<Column> columnList) throws InvalidParameterException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException {
         final String methodName = "createSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -70,10 +76,8 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
                 methodName);
 
-
-        //TODO check displayName issue when finding existing schema
-        SchemaType newSchemaType = createTabularSchemaType(qualifiedName, qualifiedName + "::" + displayName,
-                author, encodingStandard, usage);
+        SchemaType newSchemaType = createTabularSchemaType(qualifiedName, displayName, author, encodingStandard,
+                usage, versionNumber);
 
         Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(columnList);
 
@@ -111,38 +115,62 @@ public class DataEngineSchemaTypeHandler {
         return retrievedEntity.getGUID();
     }
 
-    private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Column> columnList) {
+    private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Column> columnList) throws
+                                                                                             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        final String methodName = "createSchemaAttributes";
+
         Map<SchemaAttribute, SchemaType> schemaAttributes = new HashMap<>();
 
         for (Column column : columnList) {
             SchemaAttribute schemaAttribute = schemaTypeHandler.getEmptySchemaAttribute();
 
-            schemaAttribute.setQualifiedName(column.getQualifiedName());
-            schemaAttribute.setAttributeName(column.getAttributeName());
+            String qualifiedName = column.getQualifiedName();
+            String displayName = column.getDisplayName();
+
+            invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                    methodName);
+            invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
+                    methodName);
+
+            schemaAttribute.setQualifiedName(qualifiedName);
+            schemaAttribute.setAttributeName(displayName);
             schemaAttribute.setCardinality(column.getCardinality());
             schemaAttribute.setElementPosition(column.getElementPosition());
             schemaAttribute.setDefaultValueOverride(column.getDefaultValueOverride());
-            SchemaType schemaAttributeType = createSchemaTypeAttribute(column);
-            schemaAttributes.put(schemaAttribute, schemaAttributeType);
+
+            SchemaType tabularColumnType = createTabularColumnType(column);
+
+            schemaAttributes.put(schemaAttribute, tabularColumnType);
         }
 
         return schemaAttributes;
     }
 
-    private SchemaType createSchemaTypeAttribute(Column column) {
-
+    private SchemaType createTabularColumnType(Column column) throws
+                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+        final String methodName = "createTabularColumnType";
         PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
                 SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME);
-        schemaType.setDataType(column.getDataType().name());
+
+        String displayName = column.getDisplayName() + TYPE_SUFFIX;
+        invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
+                methodName);
+
+        schemaType.setDisplayName(displayName);
+        schemaType.setQualifiedName(buildQualifiedName(column.getQualifiedName(), column.getDisplayName()));
+        schemaType.setDataType(column.getDataType());
         schemaType.setDefaultValue(column.getDefaultValue());
-        schemaType.setDisplayName(column.getQualifiedName() + "::" + "type" + column.getAttributeName());
-        schemaType.setQualifiedName(column.getQualifiedName() + "::" + "type");
 
         return schemaType;
     }
 
+    private String buildQualifiedName(String qualifiedName, String attributeName) {
+        return qualifiedName + SEPARATOR + OPEN_BRACKET + SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME
+                + CLOSE_BRACKET + EQUALS + attributeName + TYPE_SUFFIX;
+    }
+
     private SchemaType createTabularSchemaType(String qualifiedName, String displayName, String author,
-                                               String encodingStandard, String usage) {
+                                               String encodingStandard, String usage, String versionNumber) {
         ComplexSchemaType schemaType = schemaTypeHandler.getEmptyComplexSchemaType(
                 SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_SCHEMA_TYPE_TYPE_NAME);
 
@@ -151,6 +179,7 @@ public class DataEngineSchemaTypeHandler {
         schemaType.setAuthor(author);
         schemaType.setEncodingStandard(encodingStandard);
         schemaType.setUsage(usage);
+        schemaType.setVersionNumber(versionNumber);
 
         return schemaType;
     }
@@ -164,8 +193,7 @@ public class DataEngineSchemaTypeHandler {
 
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, methodName);
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, methodName);
 
         return retrievedEntity.getGUID();
     }

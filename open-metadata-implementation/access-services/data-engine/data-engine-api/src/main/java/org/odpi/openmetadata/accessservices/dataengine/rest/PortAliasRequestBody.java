@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataengine.model.Port;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 
 import java.util.Objects;
 
@@ -16,20 +16,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
-   private Port port;
+    private PortAlias portAlias;
 
-    public Port getPort() {
-        return port;
+    public PortAlias getPort() {
+        return portAlias;
     }
 
-    public void setPort(Port port) {
-        this.port = port;
+    public void setPort(PortAlias portAlias) {
+        this.portAlias = portAlias;
     }
 
     @Override
     public String toString() {
         return "PortAliasRequestBody{" +
-                "port=" + port +
+                "portAlias=" + portAlias +
                 '}';
     }
 
@@ -38,11 +38,11 @@ public class PortAliasRequestBody extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PortAliasRequestBody that = (PortAliasRequestBody) o;
-        return Objects.equals(port, that.port);
+        return Objects.equals(portAlias, that.portAlias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(port);
+        return Objects.hash(portAlias);
     }
 }

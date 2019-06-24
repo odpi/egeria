@@ -22,11 +22,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Column implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
-    private String attributeName;
+    private String displayName;
     private String cardinality;
     private int elementPosition;
     private String defaultValueOverride;
-    private DataType dataType;
+    private String dataType;
     private String defaultValue;
 
 
@@ -38,12 +38,12 @@ public class Column implements Serializable {
         this.qualifiedName = qualifiedName;
     }
 
-    public String getAttributeName() {
-        return attributeName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setAttributeName(String attributeName) {
-        this.attributeName = attributeName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getCardinality() {
@@ -62,11 +62,11 @@ public class Column implements Serializable {
         this.elementPosition = elementPosition;
     }
 
-    public DataType getDataType() {
+    public String getDataType() {
         return dataType;
     }
 
-    public void setDataType(DataType dataType) {
+    public void setDataType(String dataType) {
         this.dataType = dataType;
     }
 
@@ -90,7 +90,7 @@ public class Column implements Serializable {
     public String toString() {
         return "Column{" +
                 "qualifiedName='" + qualifiedName + '\'' +
-                ", attributeName='" + attributeName + '\'' +
+                ", displayName='" + displayName + '\'' +
                 ", cardinality='" + cardinality + '\'' +
                 ", elementPosition=" + elementPosition +
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
@@ -106,16 +106,16 @@ public class Column implements Serializable {
         Column column = (Column) o;
         return elementPosition == column.elementPosition &&
                 Objects.equals(qualifiedName, column.qualifiedName) &&
-                Objects.equals(attributeName, column.attributeName) &&
+                Objects.equals(displayName, column.displayName) &&
                 Objects.equals(cardinality, column.cardinality) &&
                 Objects.equals(defaultValueOverride, column.defaultValueOverride) &&
-                dataType == column.dataType &&
+                Objects.equals(dataType, column.dataType) &&
                 Objects.equals(defaultValue, column.defaultValue);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, attributeName, cardinality, elementPosition, defaultValueOverride,
+        return Objects.hash(qualifiedName, displayName, cardinality, elementPosition, defaultValueOverride,
                 dataType, defaultValue);
     }
 }

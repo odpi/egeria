@@ -30,8 +30,7 @@ public class Process implements Serializable {
     private OwnerType ownerType;
     private String formula;
     private List<PortImplementation> portImplementations;
-    private List<Port> portAliases;
-    private List<PortDelegation> portDelegations;
+    private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
 
     public String getQualifiedName() {
@@ -114,20 +113,12 @@ public class Process implements Serializable {
         this.portImplementations = portImplementations;
     }
 
-    public List<Port> getPortAliases() {
+    public List<PortAlias> getPortAliases() {
         return portAliases;
     }
 
-    public void setPortAliases(List<Port> portAliases) {
+    public void setPortAliases(List<PortAlias> portAliases) {
         this.portAliases = portAliases;
-    }
-
-    public List<PortDelegation> getPortDelegations() {
-        return portDelegations;
-    }
-
-    public void setPortDelegations(List<PortDelegation> portDelegations) {
-        this.portDelegations = portDelegations;
     }
 
     public List<LineageMapping> getLineageMappings() {
@@ -152,7 +143,6 @@ public class Process implements Serializable {
                 ", formula='" + formula + '\'' +
                 ", portImplementations=" + portImplementations +
                 ", portAliases=" + portAliases +
-                ", portDelegations=" + portDelegations +
                 ", lineageMappings=" + lineageMappings +
                 '}';
     }
@@ -173,14 +163,13 @@ public class Process implements Serializable {
                 Objects.equals(formula, process.formula) &&
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
-                Objects.equals(portDelegations, process.portDelegations) &&
                 Objects.equals(lineageMappings, process.lineageMappings);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(qualifiedName, name, description, latestChange, zoneMembership, displayName, owner,
-                ownerType, formula, portImplementations, portAliases, portDelegations, lineageMappings);
+                ownerType, formula, portImplementations, portAliases, lineageMappings);
     }
 }
 

@@ -14,31 +14,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortDelegation {
-    private String portSource;
-    private String portTarget;
+public class PortAlias extends Port {
+    private String delegatesTo;
 
-    public String getPortSource() {
-        return portSource;
+    public String getDelegatesTo() {
+        return delegatesTo;
     }
 
-    public void setPortSource(String portSource) {
-        this.portSource = portSource;
-    }
-
-    public String getPortTarget() {
-        return portTarget;
-    }
-
-    public void setPortTarget(String portTarget) {
-        this.portTarget = portTarget;
+    public void setDelegatesTo(String delegatesTo) {
+        this.delegatesTo = delegatesTo;
     }
 
     @Override
     public String toString() {
-        return "PortDelegation{" +
-                "portSource='" + portSource + '\'' +
-                ", portTarget='" + portTarget + '\'' +
+        return "PortAlias{" +
+                "delegatesTo='" + delegatesTo + '\'' +
                 '}';
     }
 
@@ -46,13 +36,13 @@ public class PortDelegation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PortDelegation that = (PortDelegation) o;
-        return Objects.equals(portSource, that.portSource) &&
-                Objects.equals(portTarget, that.portTarget);
+        if (!super.equals(o)) return false;
+        PortAlias portAlias = (PortAlias) o;
+        return Objects.equals(delegatesTo, portAlias.delegatesTo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(portSource, portTarget);
+        return Objects.hash(super.hashCode(), delegatesTo);
     }
 }

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortImplementationPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -12,8 +11,10 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.springframework.util.StringUtils;
 
 
 /**
@@ -47,19 +48,8 @@ public class PortHandler {
                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                               UserNotAuthorizedException,
                                                               PropertyServerException {
-        final String methodName = "createPortImplementation";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                methodName);
-        invalidParameterHandler.validateName(displayName, PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
-
-        PortImplementationPropertiesBuilder builder = new PortImplementationPropertiesBuilder(qualifiedName,
-                displayName, portType, repositoryHelper, serviceName, serverName);
-        InstanceProperties properties = builder.getInstanceProperties(methodName);
-
-        return repositoryHandler.createEntity(userId, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_GUID,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, properties, methodName);
+        return createPortEntity(userId, qualifiedName, displayName, portType,
+                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_GUID, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
     }
 
     /**
@@ -81,22 +71,51 @@ public class PortHandler {
                 schemaTypeGUID, null, methodName);
     }
 
-    public String createPortAlias(String userId, String qualifiedName, String displayName) throws
-                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                                           UserNotAuthorizedException,
-                                                                                           PropertyServerException {
-        final String methodName = "createPortAlias";
+    public String createPortAliasWithDelegation(String userId, String qualifiedName, String displayName,
+                                                PortType portType, String delegatesTo) throws
+                                                                                       org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       PropertyServerException {
+        final String methodName = "createPortAliasWithDelegation";
+
+        return createPortEntity(userId, qualifiedName, displayName, portType,
+                PortPropertiesMapper.PORT_ALIAS_TYPE_GUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+        //TODO implement for port delegation
+
+//        if (!StringUtils.isEmpty(delegatesTo)) {
+//            EntityDetail delegatedPort = getPortEntityByQualifiedName(userId, qualifiedName);
+//
+//            EnumPropertyValue portTypeValue =
+//                    (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PortPropertiesMapper
+//                    .PORT_TYPE);
+//
+//            if (portTypeValue.getSymbolicName().equalsIgnoreCase(portType.getName())) {
+//                addPortDelegationRelationship(userId, portAliasGUID, delegatedPort.getGUID());
+//            } else {
+//                // validations needed
+//            }
+//
+//        }
+//        return portAliasGUID;
+    }
+
+    private String createPortEntity(String userId, String qualifiedName, String displayName, PortType portType,
+                                    String entityTypeGUID, String entityTpeName) throws
+                                                                                 org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException {
+        final String methodName = "createPortEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(userId, displayName, methodName);
         invalidParameterHandler.validateName(userId, qualifiedName, methodName);
 
-        PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, repositoryHelper,
+        PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, portType,
+                repositoryHelper,
                 serviceName, serverName);
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
-        return repositoryHandler.createEntity(userId, PortPropertiesMapper.PORT_ALIAS_TYPE_GUID,
-                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, properties, methodName);
+        return repositoryHandler.createEntity(userId, entityTypeGUID, entityTpeName, properties, methodName);
     }
 
     public void addPortDelegationRelationship(String userId, String firstPortGUID, String secondPortGUID) throws
@@ -135,11 +154,11 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public String getPortByQualifiedName(String userId, String qualifiedName) throws
-                                                                              org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException {
-        final String methodName = "getPortByQualifiedName";
+    private EntityDetail getPortEntityByQualifiedName(String userId, String qualifiedName) throws
+                                                                                           org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException {
+        final String methodName = "getPortEntityByQualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
@@ -149,10 +168,8 @@ public class PortHandler {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
-        EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
+        return repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, PortPropertiesMapper.PORT_TYPE_GUID,
                 PortPropertiesMapper.PORT_TYPE_NAME, methodName);
-
-        return retrievedEntity.getGUID();
     }
 }

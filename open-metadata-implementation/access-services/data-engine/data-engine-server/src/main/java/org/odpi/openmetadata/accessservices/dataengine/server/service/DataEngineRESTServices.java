@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.Port;
-import org.odpi.openmetadata.accessservices.dataengine.model.PortDelegation;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
@@ -201,7 +201,7 @@ public class DataEngineRESTServices {
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse createPortAlias(String userId, String serverName, PortAliasRequestBody portAliasRequestBody) {
-        final String methodName = "createPortAlias";
+        final String methodName = "createPortAliasWithDelegation";
 
         log.debug("Calling method: {}", methodName);
 
@@ -213,10 +213,10 @@ public class DataEngineRESTServices {
 
         try {
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-            Port portAlias = portAliasRequestBody.getPort();
+            PortAlias portAlias = portAliasRequestBody.getPort();
 
-            response.setGUID(portHandler.createPortAlias(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName()));
+            response.setGUID(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -254,10 +254,10 @@ public class DataEngineRESTServices {
 
         try {
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-            Port portAlias = portAliasRequestBody.getPort();
+            PortAlias portAlias = portAliasRequestBody.getPort();
 
-            String newPortAliasGUID = portHandler.createPortAlias(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName());
+            String newPortAliasGUID = portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo());
 
             portHandler.addPortDelegationRelationship(userId, portAliasGUID, newPortAliasGUID);
 
@@ -350,8 +350,7 @@ public class DataEngineRESTServices {
         String owner = process.getOwner();
         OwnerType ownerType = process.getOwnerType();
         List<PortImplementation> portImplementations = process.getPortImplementations();
-        List<Port> portAliases = process.getPortAliases();
-        List<PortDelegation> portDelegations = process.getPortDelegations();
+        List<PortAlias> portAliases = process.getPortAliases();
         List<LineageMapping> lineageMappings = process.getLineageMappings();
         GUIDResponse response = new GUIDResponse();
 
@@ -362,28 +361,13 @@ public class DataEngineRESTServices {
             String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
                     latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
-            for (PortImplementation portImplementation : portImplementations) {
-                String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                        portImplementation);
-                processHandler.addProcessPortRelationship(userId, processGuid, portImplementationGUID);
-            }
+            createPortImplementations(userId, serverName, portImplementations, response, processHandler, processGuid);
 
-            for (Port portAlias : portAliases) {
-                String portAliasGUID = portHandler.createPortAlias(userId, portAlias.getQualifiedName(),
-                        portAlias.getDisplayName());
-                processHandler.addProcessPortRelationship(userId, processGuid, portAliasGUID);
-            }
+            createPortAliases(userId, portAliases, response, processHandler, portHandler, processGuid);
 
-            for (PortDelegation portDelegation : portDelegations) {
-                String portSourceGUID = portHandler.getPortByQualifiedName(userId, portDelegation.getPortSource());
-                String portTargetGUID = portHandler.getPortByQualifiedName(userId, portDelegation.getPortTarget());
-
-                portHandler.addPortDelegationRelationship(userId, portSourceGUID, portTargetGUID);
-            }
-
-            for (LineageMapping lineageMapping : lineageMappings) {
-                createLineageMapping(userId, serverName, lineageMapping);
-            }
+//            for (LineageMapping lineageMapping : lineageMappings) {
+//                createLineageMapping(userId, serverName, lineageMapping);
+//            }
             response.setGUID(processGuid);
 
         } catch (InvalidParameterException error) {
@@ -397,6 +381,49 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
+    }
+
+    private void createPortImplementations(String userId, String serverName,
+                                           List<PortImplementation> portImplementations, GUIDResponse response,
+                                           ProcessHandler processHandler, String processGuid) {
+        if (CollectionUtils.isEmpty(portImplementations)) {
+            return;
+        }
+
+        portImplementations.forEach(portImplementation -> {
+            try {
+                String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
+                        portImplementation);
+                processHandler.addProcessPortRelationship(userId, processGuid, portImplementationGUID);
+            } catch (InvalidParameterException error) {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            } catch (PropertyServerException error) {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            } catch (UserNotAuthorizedException error) {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+        });
+    }
+
+    private void createPortAliases(String userId, List<PortAlias> portAliases, GUIDResponse response,
+                                   ProcessHandler processHandler, PortHandler portHandler, String processGuid) {
+        if (CollectionUtils.isEmpty(portAliases)) {
+            return;
+        }
+
+        portAliases.forEach(portAlias -> {
+            try {
+                String portAliasGUID = portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                        portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo());
+                processHandler.addProcessPortRelationship(userId, processGuid, portAliasGUID);
+            } catch (InvalidParameterException error) {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            } catch (PropertyServerException error) {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            } catch (UserNotAuthorizedException error) {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+        });
     }
 
     /**
@@ -501,7 +528,7 @@ public class DataEngineRESTServices {
 
         return dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
                 schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
-                schemaType.getUsage(), schemaType.getColumnList());
+                schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getColumnList());
     }
 
     private String createPortImplementationWithSchemaType(String userId, String serverName,
