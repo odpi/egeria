@@ -27,6 +27,8 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveEntityException;
+
 public class EntityReferenceResolver {
 
 
@@ -63,9 +65,7 @@ public class EntityReferenceResolver {
      * @throws TypeErrorException
      * @throws PagingErrorException
      */
-    public String getSourceGuid(Source source) throws UserNotAuthorizedException, FunctionNotSupportedException,
-                                                      InvalidParameterException, RepositoryErrorException,
-                                                      PropertyErrorException, TypeErrorException, PagingErrorException {
+    public String getSourceGuid(Source source)  {
         if (source == null)
             return null;
         if (!StringUtils.isEmpty(source.getGuid())) {
@@ -73,12 +73,22 @@ public class EntityReferenceResolver {
         }
         String sourceName = source.getClass().getName();
         if (!StringUtils.isEmpty(source.getQualifiedName())) {
-            EntityDetail entity = omEntityDao.getEntity(sourceName, source.getQualifiedName(), false);
+            EntityDetail entity = null;
+            try {
+                entity = omEntityDao.getEntity(sourceName, source.getQualifiedName(), false);
+            } catch (PagingErrorException | UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException e) {
+                throwRetrieveEntityException(Constants.QUALIFIED_NAME, source.getQualifiedName(), e, EntityReferenceResolver.class.getName());
+            }
             return entity.getGUID();
         }
         LookupStrategy strategy = strategies.get(sourceName);
         if (strategy != null) {
-            EntityDetail entity = strategy.lookup(source);
+            EntityDetail entity = null;
+            try {
+                entity = strategy.lookup(source);
+            } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
+                throwRetrieveEntityException(Constants.SOURCE, source.toString(), e, EntityReferenceResolver.class.getName());
+            }
             if (entity != null)
                 return entity.getGUID();
         }
