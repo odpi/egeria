@@ -49,7 +49,7 @@ public class RunAllFVTNow
         } else
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter a OMAG Server Name. Press enter to get the default (" + FVTConstants.SERVER_NAME1 + ")):");
+            System.out.print("Enter a OMAG Server Name. Press enter to get the default (" + FVTConstants.SERVER_NAME1 + ")) :");
             name = br.readLine();
             if (name.equals(""))
             {
@@ -73,13 +73,13 @@ public class RunAllFVTNow
     public static String getUserId(String args[]) throws IOException
     {
         String userId = null;
-        if (args.length > 1)
+        if (args.length > 2)
         {
-            userId = args[1];
+            userId = args[2];
         } else
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter a userId. Press enter to get the default (" + FVTConstants.USERID + ")):");
+            System.out.print("Enter a userId. Press enter to get the default (" + FVTConstants.USERID + ")) :");
             userId = br.readLine();
             if (userId.equals(""))
             {
@@ -110,7 +110,7 @@ public class RunAllFVTNow
         } else
         {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("Enter a URL. Press enter to get the default (" + FVTConstants.DEFAULT_URL + ".)):");
+            System.out.print("Enter a URL. Press enter to get the default (" + FVTConstants.DEFAULT_URL + ".)) :");
             url = br.readLine();
             if (url.equals(""))
             {

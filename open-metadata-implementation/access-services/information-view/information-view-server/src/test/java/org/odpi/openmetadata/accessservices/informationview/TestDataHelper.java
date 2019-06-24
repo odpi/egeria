@@ -373,42 +373,6 @@ public class TestDataHelper {
     }
 
 
-    public InformationViewEvent buildEvent() {
-        InformationViewEvent event = new InformationViewEvent();
-        TableSource tableSource = new TableSource();
-        tableSource.setDatabaseSource(new DatabaseSource());
-        tableSource.getDatabaseSource().setEndpointSource(new EndpointSource());
-        event.setTableSource(tableSource);
-        tableSource.getDatabaseSource().getEndpointSource().setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
-        tableSource.getDatabaseSource().getEndpointSource().setProtocol(PROTOCOL_VALUE);
-        tableSource.getDatabaseSource().getEndpointSource().setConnectorProviderName(PROVIDER_CLASS_NAME);
-        tableSource.getDatabaseSource().getEndpointSource().setConnectorProviderName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
-        tableSource.getDatabaseSource().getEndpointSource().setUser("Connection");
-        event.getTableSource().setSchemaName(SCHEMA_NAME);
-        event.getTableSource().setName(TABLE_NAME);
-        event.getTableSource().getDatabaseSource().setName(DATABASE_NAME);
-
-        BusinessTerm businessTerm = new BusinessTerm();
-        TableColumn realColumn = new TableColumn();
-        realColumn.setName("cl_nm");
-        realColumn.setBusinessTerm(businessTerm);
-        realColumn.setPosition(2);
-        realColumn.setGuid(REAL_COLUMN_GUID);
-        realColumn.setQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type.client_name");
-
-        DerivedColumn columnClientName = new DerivedColumn();
-        columnClientName.setPosition(1);
-        columnClientName.setName("client_name");
-        columnClientName.setSourceColumn(realColumn);
-        businessTerm.setName("clientName");
-        businessTerm.setQuery("query");
-        businessTerm.setGuid(BUSINESS_TERM_GUID);
-        event.setDerivedColumns(Collections.singletonList(columnClientName));
-
-
-        return event;
-    }
-
     public TypeDef buildInstanceType(String typeDefName, String typeDefGuid) {
         InstanceType instanceType = new InstanceType();
         instanceType.setTypeDefName(typeDefName);

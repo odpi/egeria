@@ -78,6 +78,11 @@ public class InMemoryRepositoryTest {
                 any(String.class),
                 anyList(),
                 any(String.class))).thenCallRealMethod();
+        when(omrsRepositoryHelper.addStringPropertyToInstance(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                any(InstanceProperties.class),
+                any(String.class),
+                any(String.class),
+                any(String.class))).thenCallRealMethod();
 
     }
 
@@ -132,6 +137,18 @@ public class InMemoryRepositoryTest {
 
     private void populateRepository() throws Exception {
 
+        String qualifiedNameForSoftwareServerCapability = "registration-qualified-name";
+        InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServerCapability)
+                .withStringProperty(Constants.NAME, "test-1234")
+                .withStringProperty(Constants.PATCH_LEVEL, "1")
+                .withStringProperty(Constants.VERSION, "1.1.1")
+                .build();
+         omEntityDao.addEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
+                qualifiedNameForSoftwareServerCapability,
+                softwareServerProperties,
+                false);
+
         String qualifiedNameForEndpoint = "host";
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
@@ -176,7 +193,7 @@ public class InMemoryRepositoryTest {
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
                 .withStringProperty(Constants.NAME, "XE")
                 .build();
-        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE,
+        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATABASE,
                 qualifiedNameForDataStore, dataStoreProperties, true);
 
 
@@ -293,7 +310,7 @@ public class InMemoryRepositoryTest {
                 new InstanceProperties());
 //        omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
 //                derivedColumnEntity.getGUID(),
-//                derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
+//                derivedColumn.getSourceColumn().getBusinessTerms().getGuid(),
 //                Constants.INFORMATION_VIEW_OMAS_NAME,
 //                new InstanceProperties());
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,

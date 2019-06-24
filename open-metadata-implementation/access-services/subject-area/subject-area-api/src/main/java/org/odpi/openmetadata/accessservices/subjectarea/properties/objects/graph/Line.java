@@ -54,7 +54,7 @@ public class Line implements Serializable {
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
-    private Map<String, Object> extraAttributes;
+    private Map<String, String> additionalProperties;
     protected String typeDefGuid;
     protected LineType lineType;
     protected String entity1Name;
@@ -68,11 +68,11 @@ public class Line implements Serializable {
      */
     public Line() {}
     public Line(Line template) {
-            this.setExtraAttributes(template.getExtraAttributes());
+            this.setAdditionalProperties(template.getAdditionalProperties());
             this.setSystemAttributes(template.getSystemAttributes());
             this.setGuid(template.getGuid());
             this.setLineType(template.getLineType());
-            this.setExtraAttributes(template.getExtraAttributes());
+            this.setAdditionalProperties(template.getAdditionalProperties());
     }
     public Line(String name) {
         this.name=name;
@@ -171,11 +171,11 @@ public class Line implements Serializable {
      * Get the extra attributes - ones that are in addition to the standard types.
      * @return extra attributes
      */
-    public Map<String, Object> getExtraAttributes() {
-        return extraAttributes;
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
     }
-    public void setExtraAttributes(Map<String, Object> extraAttributes) {
-        this.extraAttributes = extraAttributes;
+    public void setAdditionalProperties(Map<String,String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 
     /**

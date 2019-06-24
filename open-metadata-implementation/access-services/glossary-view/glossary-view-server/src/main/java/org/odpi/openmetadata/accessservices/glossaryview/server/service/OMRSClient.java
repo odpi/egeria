@@ -4,23 +4,15 @@
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSExceptionWrapper;
-import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSRuntimeExceptionWrapper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static org.odpi.openmetadata.accessservices.glossaryview.server.admin.GlossaryViewServicesInstanceMap.containsInstanceForJvm;
-import static org.odpi.openmetadata.accessservices.glossaryview.server.admin.GlossaryViewServicesInstanceMap.getInstanceForJVM;
 
 /**
  * Queries OMRS layer and handles incoming exceptions by reducing them to this OMAS exceptions.
@@ -28,133 +20,64 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.admin.Glo
  */
 public class OMRSClient {
 
-    /**
-     * Functional interfaces that extract the GUID of an entity from relationship's end. Their purpose is to be used as
-     * an argument for method getEntityDetails
-     */
-    protected Function<Relationship, String> entityProxyTwoGUIDExtractor = relationship -> relationship.getEntityTwoProxy().getGUID();
-    protected Function<Relationship, String> entityProxyOneGUIDExtractor = relationship -> relationship.getEntityOneProxy().getGUID();
-
+    protected GlossaryViewInstanceHandler instanceHandler = new GlossaryViewInstanceHandler();
 
     /**
      * Extract an entity detail for the given GUID
      *
-     * @param serverName instance to call
      * @param userId calling user
-     * @param guid GUID
+     * @param serverName instance to call
+     * @param guid entity to extract
+     * @param entityTypeName entity type name
      *
-     * @return optional with entity details if found
-     *         empty optional if not found or if {@code serverName} not registered in instance map
+     * @return optional with entity details if found, empty optional if not found
      *
      * @throws OMRSExceptionWrapper if any exception is thrown from repository level
      */
-    protected Optional<EntityDetail> getEntityDetail(String userId, String serverName, String guid) throws OMRSExceptionWrapper {
-        Optional<EntityDetail> entityDetail = Optional.empty();
-        if( !containsInstanceForJvm(serverName) ){
-            return entityDetail;
-        }
+    protected Optional<EntityDetail> getEntityDetail(String userId, String serverName, String guid, String entityTypeName, String methodName)
+            throws OMRSExceptionWrapper {
 
+        Optional<EntityDetail> entityDetail ;
         try {
-            entityDetail = Optional.ofNullable( getInstanceForJVM(serverName).getMetadataCollection().getEntityDetail(userId, guid) );
-        }catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException
-                | UserNotAuthorizedException e){
+            entityDetail = Optional.ofNullable( instanceHandler.getRepositoryHandler(userId, serverName, methodName)
+                    .getEntityByGUID(userId, guid, "guid", entityTypeName, methodName) );
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
-
         return entityDetail;
     }
 
     /**
-     * Extract the GUIDs of requested
-     * {@code org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef}
-     * A GUID belongs to the entity type definition, not the entity detail
+     * Extract entities related to provided guid
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param typeDefNames names of TypeDef
+     * @param entityGUID target entity
+     * @param relationshipTypeGUID relationship type guid to navigate
+     * @param relationshipTypeName relationship type name to navigate
+     * @param from from
+     * @param size size
      *
-     * @return list of GUIDs if found
-     *         empty list if not found or if {@code serverName} not registered in instance map
-     *
-     * @throws  OMRSRuntimeExceptionWrapper if any exception is thrown from repository level
-     */
-    protected List<String> getTypeDefGUIDs(String userId, String serverName, String... typeDefNames) throws OMRSRuntimeExceptionWrapper{
-        if( !containsInstanceForJvm(serverName) ){
-            return Collections.emptyList();
-        }
-
-        return Arrays.stream(typeDefNames).map(typeDefName -> {
-            try {
-                return getInstanceForJVM(serverName).getMetadataCollection().getTypeDefByName(userId, typeDefName).getGUID();
-            }catch(InvalidParameterException | RepositoryErrorException | TypeDefNotKnownException | UserNotAuthorizedException e){
-                throw new OMRSRuntimeExceptionWrapper(e);
-            }
-        }).collect(Collectors.toList());
-    }
-
-    /**
-     * Extract the relationships of given entity and relationship type
-     *
-     * @param serverName instance to call
-     * @param userId calling user
-     * @param entityGUID entity to extract relationships from
-     * @param relationshipTypeGUID type of relationship to extract
-     *
-     * @return relationships if found
-     *         empty list if not found or if {@code serverName} not registered in instance map
+     * @return entities if found
      *
      * @throws OMRSExceptionWrapper if any exception is thrown from repository level
-     *
      */
-    protected List<Relationship> getRelationships(String userId, String serverName, String entityGUID, String relationshipTypeGUID)
+    protected List<EntityDetail> getRelatedEntities(String userId, String serverName, String entityGUID, String entityTypeName,
+                                                    String relationshipTypeGUID, String relationshipTypeName, Integer from, Integer size,
+                                                    String methodName)
             throws OMRSExceptionWrapper{
-        if( !containsInstanceForJvm(serverName) ){
-            return Collections.emptyList();
-        }
 
-        List<Relationship> relationships;
+        List<EntityDetail> entityDetails;
         try {
-            relationships = getInstanceForJVM(serverName).getMetadataCollection()
-                    .getRelationshipsForEntity(userId, entityGUID, relationshipTypeGUID, 0, null,
-                            null, null, SequencingOrder.ANY, 0);
-        }catch(InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException |
-                PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e){
+            entityDetails = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
+                    .getEntitiesForRelationshipType(userId, entityGUID, entityTypeName, relationshipTypeGUID, relationshipTypeName,
+                            from, size, methodName);
+        }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
-
-        return relationships;
-    }
-
-    /**
-     * Extract entity details from given relationships
-     *
-     * @param serverName instance to call
-     * @param userId calling user
-     * @param relationships entity to extract relationships from
-     * @param guidExtractor use {@code entityProxyOneGUIDExtractor} or {@code entityProxyTwoGUIDExtractor}, depending on
-     *                      which end of the relationship is needed
-     *
-     * @return entity details if found
-     *         empty list if {@code serverName} not registered in instance map
-     *
-     * @throws OMRSRuntimeExceptionWrapper if any exception is thrown from repository level
-     */
-    protected List<EntityDetail> getEntityDetails(String userId, String serverName, List<Relationship> relationships,
-                                                  Function<Relationship, String> guidExtractor) throws OMRSRuntimeExceptionWrapper{
-        if( !containsInstanceForJvm(serverName) ){
-            return Collections.emptyList();
-        }
-
-        return relationships.stream().map( relationship -> {
-            try{
-                return getInstanceForJVM(serverName).getMetadataCollection().getEntityDetail(userId, guidExtractor.apply(relationship));
-            }catch( InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException
-                    | UserNotAuthorizedException e){
-                throw new OMRSRuntimeExceptionWrapper(e);
-            }
-        }).collect(Collectors.toList());
+        return entityDetails;
     }
 
     /**
@@ -162,25 +85,22 @@ public class OMRSClient {
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param typeDefName entity type name
+     * @param entityTypeGUID entity type
+     * @param from from
+     * @param size size
      *
-     * @return EntityDetail entities
+     * @return entities if found
+     *
+     * @throws OMRSExceptionWrapper if any exception is thrown from repository level
      */
-    protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String typeDefName) throws OMRSExceptionWrapper{
-        List<EntityDetail> entities = Collections.emptyList();
-        if( !containsInstanceForJvm(serverName) ){
-            return entities;
-        }
-
+    protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String entityTypeGUID, Integer from, Integer size,
+                                                     String methodName)
+            throws OMRSExceptionWrapper{
+        List<EntityDetail> entities;
         try {
-            TypeDef glossaryTypeDef = getInstanceForJVM(serverName).getMetadataCollection().getTypeDefByName(userId, typeDefName);
-            entities = getInstanceForJVM(serverName).getMetadataCollection()
-                    .findEntitiesByPropertyValue(userId, glossaryTypeDef.getGUID(), "*", 0,
-                            null, null, null, null,
-                            SequencingOrder.ANY, 0);
-        }catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | PropertyErrorException
-                | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException
-                | TypeDefNotKnownException e){
+            entities = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
+                    .getEntitiesByName(userId, new InstanceProperties(), entityTypeGUID, from, size, methodName);
+        }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
@@ -191,18 +111,20 @@ public class OMRSClient {
     /**
      * Returns the repository helper for the given serverName
      *
+     * @param userId calling user
      * @param serverName instance to call
      *
      * @return optional with helper if found
      *         empty optional if not found
      */
-    protected Optional<OMRSRepositoryHelper> getOMRSRepositoryHelper(String serverName){
+    protected Optional<OMRSRepositoryHelper> getOMRSRepositoryHelper(String userId, String serverName){
         Optional<OMRSRepositoryHelper> helper = Optional.empty();
-        if( !containsInstanceForJvm(serverName) ){
+        try {
+            helper = Optional.ofNullable(instanceHandler.getRepositoryConnector(userId, serverName, serverName).getRepositoryHelper());
+        }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             return helper;
         }
-
-        return Optional.ofNullable(getInstanceForJVM(serverName).getRepositoryConnector().getRepositoryHelper());
+        return helper;
     }
 
 }

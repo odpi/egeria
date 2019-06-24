@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -24,7 +26,7 @@ public class TableColumn {
     private String defaultValueOverride;
     private String type;
     private String primaryKeyName;
-    private BusinessTerm businessTerm;
+    private List<BusinessTerm> businessTerms;
     private ForeignKey referencedColumn;
     private boolean isUnique;
     private boolean isPrimaryKey;
@@ -108,17 +110,17 @@ public class TableColumn {
      *
      * @return business term of the column
      */
-    public BusinessTerm getBusinessTerm() {
-        return businessTerm;
+    public List<BusinessTerm> getBusinessTerms() {
+        return businessTerms;
     }
 
     /**
      * set up the business term associated with the column
      *
-     * @param businessTerm - business term linked to the column
+     * @param businessTerms - business term linked to the column
      */
-    public void setBusinessTerm(BusinessTerm businessTerm) {
-        this.businessTerm = businessTerm;
+    public void setBusinessTerms(List<BusinessTerm> businessTerms) {
+        this.businessTerms = businessTerms;
     }
 
     /**
@@ -224,7 +226,7 @@ public class TableColumn {
                 ", defaultValueOverride='" + defaultValueOverride + '\'' +
                 ", type='" + type + '\'' +
                 ", primaryKeyName='" + primaryKeyName + '\'' +
-                ", businessTerm=" + businessTerm +
+                ", businessTerms=" + businessTerms +
                 ", referencedColumn=" + referencedColumn +
                 ", isUnique=" + isUnique +
                 ", isPrimaryKey=" + isPrimaryKey +

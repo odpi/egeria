@@ -30,6 +30,7 @@
         <module>security-sync-services</module>
         <module>stewardship-services</module>
         <module>virtualization-services</module>
+        <module>security-officer-services</module>
     </modules>
 
 </project>
