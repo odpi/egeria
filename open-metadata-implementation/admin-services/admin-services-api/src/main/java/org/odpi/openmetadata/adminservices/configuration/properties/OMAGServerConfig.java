@@ -108,6 +108,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private SecurityOfficerConfig     securityOfficerConfig     = null;
     private List<String>              auditTrail                = null;
     private VirtualizationConfig      virtualizationConfig      = null;
+    private DataEngineProxyConfig     dataEngineProxyConfig     = null;
 
 
     /**
@@ -149,6 +150,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             securityOfficerConfig = template.getSecurityOfficerConfig();
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
+            dataEngineProxyConfig = template.getDataEngineProxyConfig();
         }
     }
 
@@ -586,6 +588,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Set up the configuration for the data engine proxy services.
+     *
+     * @param dataEngineProxyConfig properties
+     */
+    public void setDataEngineProxyConfig(DataEngineProxyConfig dataEngineProxyConfig)
+    {
+        this.dataEngineProxyConfig = dataEngineProxyConfig;
+    }
+
+    /**
+     * Return the configuration for the data engine proxy services.
+     *
+     * @return DataEngineProxyConfig properties
+     */
+    public DataEngineProxyConfig getDataEngineProxyConfig()
+    {
+        return dataEngineProxyConfig;
+    }
+
+
+    /**
      * Set up the configuration for the virtualization services.
      *
      * @param virtualizationConfig properties
@@ -594,7 +617,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     {
         this.virtualizationConfig = virtualizationConfig;
     }
-
 
     /**
      * Return the list of audit log entries associated with this config file.
@@ -643,6 +665,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", securityOfficerConfig=" + securityOfficerConfig +
+                ", dataEngineProxyConfig=" + dataEngineProxyConfig +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -682,6 +705,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
                 Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
+                Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -698,6 +722,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
                             getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
-                            getAuditTrail(), getVirtualizationConfig());
+                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig());
     }
 }
