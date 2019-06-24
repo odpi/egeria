@@ -794,6 +794,52 @@ public class ConnectorConfigurationFactory
     }
 
     /**
+     * Returns the connection for an arbitrary data engine proxy.
+     *
+     * @param serverName  name of the real data engine server
+     * @param connectorProviderClassName  class name of the connector provider
+     * @param url  location of the data engine proxy
+     * @param configurationProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection  getDataEngineProxyConnection(String              serverName,
+                                                    String              connectorProviderClassName,
+                                                    String              url,
+                                                    Map<String, Object> configurationProperties)
+    {
+        final String endpointGUID             = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
+        final String endpointDescription      = "Data Engine native endpoint.";
+        final String connectionDescription    = "Data Engine native connection.";
+
+        String endpointName    = "DataEngineNative.Endpoint." + serverName;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(this.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(url);
+
+        String connectionName = "DataEngineNative.Connection." + serverName;
+
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConfigurationProperties(configurationProperties);
+
+        return connection;
+    }
+
+    /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.
      *
