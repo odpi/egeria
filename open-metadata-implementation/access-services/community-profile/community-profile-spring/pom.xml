@@ -26,7 +26,19 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
