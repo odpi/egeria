@@ -29,12 +29,6 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-server</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
     </dependencies>
 
 </project>

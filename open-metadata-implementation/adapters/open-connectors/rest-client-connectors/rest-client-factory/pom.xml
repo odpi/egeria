@@ -23,6 +23,12 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>rest-client-connectors-api</artifactId>
             <version>${open-metadata.version}</version>
