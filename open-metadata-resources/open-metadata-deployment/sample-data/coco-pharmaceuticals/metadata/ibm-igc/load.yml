@@ -285,7 +285,6 @@
           into_project: dstage1
           with_options:
             overwrite: True
-  when: (egeria_samples_cocopharma_db_type == 'ibm-db2')
 
 - name: remove cached files
   file:
