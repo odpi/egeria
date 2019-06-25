@@ -26,13 +26,26 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>governance-program-api</artifactId>
+            <artifactId>ffdc-services</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-program-api</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
