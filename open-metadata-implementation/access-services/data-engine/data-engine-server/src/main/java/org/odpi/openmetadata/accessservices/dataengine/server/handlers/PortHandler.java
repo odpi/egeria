@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
@@ -76,24 +77,45 @@ public class PortHandler {
                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException {
+        String methodName = "createPortAliasWithDelegation";
 
         String portAliasGUID = createPortEntity(userId, qualifiedName, displayName, portType,
                 PortPropertiesMapper.PORT_ALIAS_TYPE_GUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
 
         if (!StringUtils.isEmpty(delegatesTo)) {
             EntityDetail delegatedPort = getPortEntityByQualifiedName(userId, delegatesTo);
-
-            EnumPropertyValue portTypeValue =
-                    (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PortPropertiesMapper.PORT_TYPE);
-
-            if (portTypeValue.getSymbolicName().equalsIgnoreCase(portType.getName())) {
+            String delegatedPortType = getPortType(delegatedPort);
+            if (delegatedPortType.equalsIgnoreCase(portType.getName())) {
                 addPortDelegationRelationship(userId, portAliasGUID, delegatedPort.getGUID());
             } else {
-                //TODO validation?
-            }
+                DataEngineErrorCode errorCode = DataEngineErrorCode.INVALID_PORT_TYPE;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(delegatedPort.getGUID(), portAliasGUID);
 
+                throw new InvalidParameterException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName,
+                        errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), delegatedPortType);
+            }
         }
         return portAliasGUID;
+    }
+
+    private String getPortType(EntityDetail delegatedPort) {
+        if (delegatedPort == null) {
+            return null;
+        }
+
+        InstanceProperties instanceProperties = delegatedPort.getProperties();
+        if (instanceProperties == null) {
+            return null;
+        }
+
+        EnumPropertyValue portTypeValue =
+                (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PortPropertiesMapper.PORT_TYPE);
+        if (portTypeValue == null) {
+            return null;
+        }
+
+        return portTypeValue.getSymbolicName();
     }
 
     private String createPortEntity(String userId, String qualifiedName, String displayName, PortType portType,

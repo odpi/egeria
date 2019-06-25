@@ -43,7 +43,12 @@ public enum DataEngineErrorCode {
     NULL_USER_ID(400, "OMAS-DATA-ENGINE-400-001 ",
             "The user identifier (user id) passed on the {0} operation is null",
             "The system is unable to process the request without a user id.",
-            "Correct the code in the caller to provide the user id.");
+            "Correct the code in the caller to provide the user id."),
+    INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-005 ",
+            "The port type passed for the {1} is invalid, or different from {2}",
+            "The system is unable to create a new PortDelegation relation the request without equal types between the ports.",
+            "Correct the code in the caller to provide the correct port type.");
+
 
     private int httpErrorCode;
     private String errorMessageId;

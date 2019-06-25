@@ -29,6 +29,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -358,12 +360,16 @@ public class DataEngineRESTServices {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
+            List<String> portGuids = createPortImplementations(userId, serverName, portImplementations);
+
+            portGuids.addAll(createPortAliases(userId, portAliases, portHandler));
+
             String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
-                    latestChange, zoneMembership, displayName, formula, owner, ownerType);
+                     latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
-            createPortImplementations(userId, serverName, portImplementations, response, processHandler, processGuid);
-
-            createPortAliases(userId, portAliases, response, processHandler, portHandler, processGuid);
+            for(String portGUID : portGuids) {
+                processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
+            }
 
             if (CollectionUtils.isNotEmpty(lineageMappings)) {
                 for (LineageMapping lineageMapping : lineageMappings) {
@@ -386,47 +392,39 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void createPortImplementations(String userId, String serverName,
-                                           List<PortImplementation> portImplementations, GUIDResponse response,
-                                           ProcessHandler processHandler, String processGuid) {
+
+    private List<String> createPortImplementations(String userId, String serverName,
+                                                   List<PortImplementation> portImplementations) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException {
         if (CollectionUtils.isEmpty(portImplementations)) {
-            return;
+            return Collections.emptyList();
         }
 
-        portImplementations.forEach(portImplementation -> {
-            try {
-                String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                        portImplementation);
-                processHandler.addProcessPortRelationship(userId, processGuid, portImplementationGUID);
-            } catch (InvalidParameterException error) {
-                restExceptionHandler.captureInvalidParameterException(response, error);
-            } catch (PropertyServerException error) {
-                restExceptionHandler.capturePropertyServerException(response, error);
-            } catch (UserNotAuthorizedException error) {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
-            }
-        });
+        List<String> portImplementationGUIDs = new ArrayList<>();
+        for (PortImplementation portImplementation : portImplementations) {
+            portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
+        }
+
+        return portImplementationGUIDs;
     }
 
-    private void createPortAliases(String userId, List<PortAlias> portAliases, GUIDResponse response,
-                                   ProcessHandler processHandler, PortHandler portHandler, String processGuid) {
+    private List<String> createPortAliases(String userId, List<PortAlias> portAliases, PortHandler portHandler) throws
+                                                                                                                InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException {
         if (CollectionUtils.isEmpty(portAliases)) {
-            return;
+            return Collections.emptyList();
         }
 
-        portAliases.forEach(portAlias -> {
-            try {
-                String portAliasGUID = portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
-                        portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo());
-                processHandler.addProcessPortRelationship(userId, processGuid, portAliasGUID);
-            } catch (InvalidParameterException error) {
-                restExceptionHandler.captureInvalidParameterException(response, error);
-            } catch (PropertyServerException error) {
-                restExceptionHandler.capturePropertyServerException(response, error);
-            } catch (UserNotAuthorizedException error) {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
-            }
-        });
+        List<String> portAliasGUIDs = new ArrayList<>();
+        for (PortAlias portAlias : portAliases) {
+            portAliasGUIDs.add(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
+        }
+
+        return portAliasGUIDs;
     }
 
     /**
