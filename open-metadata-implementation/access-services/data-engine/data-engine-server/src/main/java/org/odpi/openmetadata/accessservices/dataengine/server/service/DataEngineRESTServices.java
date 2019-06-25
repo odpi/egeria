@@ -365,9 +365,12 @@ public class DataEngineRESTServices {
 
             createPortAliases(userId, portAliases, response, processHandler, portHandler, processGuid);
 
-//            for (LineageMapping lineageMapping : lineageMappings) {
-//                createLineageMapping(userId, serverName, lineageMapping);
-//            }
+            if (CollectionUtils.isNotEmpty(lineageMappings)) {
+                for (LineageMapping lineageMapping : lineageMappings) {
+                    createLineageMapping(userId, serverName, lineageMapping);
+                }
+            }
+
             response.setGUID(processGuid);
 
         } catch (InvalidParameterException error) {
@@ -507,12 +510,9 @@ public class DataEngineRESTServices {
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
-        String sourceSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
-                lineageMapping.getSourceColumn());
-        String targetSchemaTypeGUID = dataEngineSchemaTypeHandler.findSchemaType(userId,
-                lineageMapping.getSourceColumn());
 
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, sourceSchemaTypeGUID, targetSchemaTypeGUID);
+        dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceColumn(),
+                lineageMapping.getTargetColumn());
     }
 
     private String createSchemaType(String userId, String serverName, SchemaType schemaType) throws
