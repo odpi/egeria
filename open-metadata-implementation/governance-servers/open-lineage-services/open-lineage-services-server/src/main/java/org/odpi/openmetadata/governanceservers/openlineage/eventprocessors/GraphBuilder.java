@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
+import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.janusGraph;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_NAME_QUALIFIED_NAME;
@@ -26,15 +26,9 @@ import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphCons
 public class GraphBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
-    private JanusGraph janusGraph;
+
 
     public GraphBuilder() {
-
-        try {
-           janusGraph = open();
-        }         catch (RepositoryErrorException e) {
-            log.error("{} Could not open graph database", "GraphBuilder constructor");
-        }
     }
 
     public void addAsset(RelationshipEvent event) {
@@ -118,7 +112,6 @@ public class GraphBuilder {
 
             Iterator<Vertex> vertexIt = g.V().hasLabel(key).has(PROPERTY_KEY_ENTITY_GUID, value.getGuid());
             if (!vertexIt.hasNext()) {
-
 
                 Vertex v = g.addV(key).next();
                 v.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, value.getQualifiedName());

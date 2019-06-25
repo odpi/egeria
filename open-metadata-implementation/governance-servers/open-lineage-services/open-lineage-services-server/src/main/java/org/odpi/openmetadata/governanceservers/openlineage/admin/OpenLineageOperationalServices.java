@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
+import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -10,8 +11,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.TestGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -19,8 +21,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
 
 
 /**
@@ -41,6 +46,7 @@ public class OpenLineageOperationalServices {
     private OpenMetadataTopicConnector inTopicConnector;
     private GraphBuilder graphBuilder;
     private OpenLineageServicesInstance instance;
+    public static JanusGraph janusGraph;
 
 
     /**
@@ -81,11 +87,19 @@ public class OpenLineageOperationalServices {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-
             this.auditLog = auditLog;
-            this.graphBuilder = new GraphBuilder();
-            GraphTester graphTester = new GraphTester();
-            graphTester.generate();
+
+            try {
+                this.janusGraph = open();
+                this.graphBuilder = new GraphBuilder();
+                TestGraphGenerator testGraphGenerator = new TestGraphGenerator();
+                QueryHandler queryHandler = new QueryHandler();
+                this.instance = new OpenLineageServicesInstance(testGraphGenerator, queryHandler, localServerName);
+            } catch (RepositoryErrorException e) {
+                log.error("{} Could not open graph database", "GraphBuilder constructor");
+            }
+
+
             Connection inTopicConnection = openLineageConfig.getInTopicConnection();
             String inTopicName = getTopicName(inTopicConnection);
 
@@ -97,7 +111,6 @@ public class OpenLineageOperationalServices {
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
             }
 
-            this.instance = new OpenLineageServicesInstance(graphBuilder, graphTester, localServerName);
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -110,8 +123,6 @@ public class OpenLineageOperationalServices {
         }
         //TODO Error handling and logging
     }
-
-
 
 
     private String getTopicName(Connection connection) {
@@ -190,7 +201,6 @@ public class OpenLineageOperationalServices {
 
         }
     }
-
 
 
     private void startConnector(OpenLineageAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {

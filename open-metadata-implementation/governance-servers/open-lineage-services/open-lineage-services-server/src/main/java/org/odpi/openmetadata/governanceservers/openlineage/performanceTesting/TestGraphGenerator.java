@@ -9,21 +9,19 @@ import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.janusGraph;
 import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
 
-@Component
-public class GraphTester {
+public class TestGraphGenerator {
 
-
-    private static final Logger log = LoggerFactory.getLogger(GraphTester.class);
-    private JanusGraph janusGraph;
+    private static final Logger log = LoggerFactory.getLogger(TestGraphGenerator.class);
 
     private int numberGlossaryTerms;
     private int numberTables;
@@ -37,25 +35,19 @@ public class GraphTester {
     private List<String> properties = new ArrayList<>();
 
 
-    public GraphTester() {
+    public TestGraphGenerator() {
         setProperties();
-
-        try {
-            janusGraph = open();
-        } catch (RepositoryErrorException e) {
-            log.error("{} Could not open graph database", "GraphBuilder constructor");
-        }
     }
 
     private void setProperties() {
         this.numberGlossaryTerms = 0;
-        this.processesPerFlow = 3;
-        this.numberFlows = 3;
-        this.columnsPerTable = 3;
+        this.numberFlows = 2;
+        this.processesPerFlow = 2;
+        this.columnsPerTable = 2;
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberProcesses = numberFlows * processesPerFlow;
-        this.numberTables =  numberFlows * tablesPerFlow;
+        this.numberTables = numberFlows * tablesPerFlow;
 
         nodes.add("table");
         nodes.add("column");
@@ -64,6 +56,7 @@ public class GraphTester {
 
         properties.add("port");
         properties.add("qualifiedName");
+        properties.add("guid");
     }
 
     public void generate() {
@@ -93,6 +86,7 @@ public class GraphTester {
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV("Column").next();
                 columnVertex.property("qualifiedName", "Qualified Name " + i);
+                columnVertex.property(PROPERTY_KEY_ENTITY_GUID, j + i);
                 tableVertex.addEdge("Included in", columnVertex);
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
@@ -117,14 +111,4 @@ public class GraphTester {
         g.tx().commit();
     }
 
-        public void exportGraph () {
-
-            try {
-                janusGraph.io(IoCore.graphml()).writeGraph("testGraph.graphml");
-            } catch (IOException e) {
-                log.error(e.getMessage());
-            }
-        }
-
-
-    }
+}
