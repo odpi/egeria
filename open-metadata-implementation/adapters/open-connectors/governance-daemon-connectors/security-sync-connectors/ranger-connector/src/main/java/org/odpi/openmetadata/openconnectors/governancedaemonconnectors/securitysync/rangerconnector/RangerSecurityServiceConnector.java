@@ -37,7 +37,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.COLUMN;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.CONFIDENTIALITY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.NAME;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.DEFAULT_SCHEMA_NAME;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.OPEN_METADATA_OWNER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.RANGER_CONNECTOR;
@@ -77,8 +78,10 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             }
 
             RangerServiceResource resource = createResource(governedAsset);
-            for (String securityLabel: governedAsset.getAssignedGovernanceClassification().getSecurityLabels()){
-                RangerTag rangerTag = buildTag(securityLabel);
+            GovernanceClassification governanceClassification = governedAsset.getAssignedGovernanceClassification();
+            for (String securityLabel: governanceClassification.getSecurityLabels()){
+                RangerTag rangerTag = buildTag(securityLabel, governanceClassification.getSecurityProperties());
+
                 tags.add(rangerTag);
 
                 tagToResource.put(resource.getGuid(), rangerTag.getGuid());
@@ -131,7 +134,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         List<RangerTag> rangerTags = new ArrayList<>(classification.getSecurityLabels().size());
         for (String securityTag : classification.getSecurityLabels()) {
-            RangerTag rangerTag = buildTag(securityTag);
+            RangerTag rangerTag = buildTag(securityTag, classification.getSecurityProperties());
             rangerTags.add(createRangerTag(rangerTag));
         }
 
@@ -194,7 +197,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to create the association between tag and resource");
+            log.debug("Unable to create the resource");
         }
         return null;
     }
@@ -254,7 +257,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         RangerTagDef rangerTagDef = new RangerTagDef();
         rangerTagDef.setId(1L);
         rangerTagDef.setCreatedBy(RANGER_CONNECTOR);
-        rangerTagDef.setName(CONFIDENTIALITY);
+        rangerTagDef.setName(SECURITY_TAGS);
 
         return rangerTagDef;
     }
@@ -275,13 +278,16 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return Collections.emptyList();
     }
 
-    private RangerTag buildTag(String tagGUID) {
+    private RangerTag buildTag(String tagGUID, Map<String,String> tagAttributes) {
         RangerTag tag = new RangerTag();
 
         tag.setCreatedBy(RANGER_CONNECTOR);
-        tag.setType(CONFIDENTIALITY);
+        tag.setType(SECURITY_TAGS);
         tag.setOwner(OPEN_METADATA_OWNER);
         tag.setGuid(tagGUID);
+
+        tagAttributes.put(NAME, tagGUID);
+        tag.setAttributes(tagAttributes);
 
         return tag;
     }
