@@ -32,16 +32,31 @@
             <artifactId>janusgraph-core</artifactId>
             <version>${janus.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-berkeleyje</artifactId>
-            <version>${janus.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
+
+         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
         <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-lucene</artifactId>
-            <version>${janus.version}</version>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+            <version>3.3.3</version>
+         </dependency>
+
     </dependencies>
 
 </project>

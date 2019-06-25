@@ -25,13 +25,31 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-api</artifactId>
+            <artifactId>open-connector-framework</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-server</artifactId>
+            <artifactId>open-discovery-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>odf-metadata-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>odf-metadata-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

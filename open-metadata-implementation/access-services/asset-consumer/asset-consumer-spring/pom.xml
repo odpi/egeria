@@ -26,6 +26,24 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-consumer-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
