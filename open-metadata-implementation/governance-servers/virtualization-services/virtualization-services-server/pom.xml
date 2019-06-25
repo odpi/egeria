@@ -22,6 +22,37 @@
     <artifactId>virtualization-services-server</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>information-view-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>view-generator-connectors</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
