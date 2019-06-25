@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.CONFIDENTIALITY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
 
 public class SecuritySyncEventProcessor {
@@ -145,7 +145,7 @@ public class SecuritySyncEventProcessor {
 
     private String getGovernanceEngineURL(String endpoint) {
         String geBaseURL = securitySyncConfig.getGovernanceEngineServerURL();
-        return MessageFormat.format(endpoint, geBaseURL, CONFIDENTIALITY);
+        return MessageFormat.format(endpoint, geBaseURL, SECURITY_TAGS);
     }
 
     private Object mapToObject(ResponseEntity<String> result, Class className) {

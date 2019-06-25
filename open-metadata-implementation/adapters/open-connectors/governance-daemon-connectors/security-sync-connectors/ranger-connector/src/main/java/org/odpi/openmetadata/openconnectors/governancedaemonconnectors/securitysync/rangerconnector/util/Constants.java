@@ -6,7 +6,7 @@ public class Constants {
 
     public static final String DEFAULT_SCHEMA_NAME = "gaian";
     public static final String RANGER_CONNECTOR = "Egeria - Ranger Connector";
-    public static final String CONFIDENTIALITY = "Confidentiality";
+    public static final String SECURITY_TAGS = "SecurityTags";
     /**
      * In Ranger, the default owner is 0 and the global owner is 1.
      */
@@ -14,6 +14,7 @@ public class Constants {
     public static final String TABLE = "table";
     public static final String COLUMN = "column";
     public static final String SCHEMA = "schema";
+    public static final String NAME = "name";
     public static final String SERVICE_TAGS_RESOURCE_BY_GUID = "{0}/service/tags/resource/guid/{1}";
     public static final String SERVICE_TAGS_TAG_RESOURCE_MAPS = "{0}/service/tags/tagresourcemaps";
     public static final String GOVERNED_ASSETS = "{0}/assets?classification={1}";
