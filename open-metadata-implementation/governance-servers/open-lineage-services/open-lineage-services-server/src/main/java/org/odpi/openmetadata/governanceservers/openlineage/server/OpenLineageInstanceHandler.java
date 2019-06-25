@@ -4,7 +4,8 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.TestGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 
@@ -13,14 +14,13 @@ class OpenLineageInstanceHandler
 {
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
-
-    public GraphBuilder graphConstructor(String serverName) throws PropertyServerException {
+    public QueryHandler queryHandler(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getGraphBuilder();
+            return instance.getQueryHandler();
         } else {
-            final String methodName = "graphConstructor";
+            final String methodName = "queryHandler";
             throwError(serverName, methodName);
             return null;
         }
@@ -37,13 +37,13 @@ class OpenLineageInstanceHandler
                 errorCode.getUserAction());
     }
 
-    public GraphTester graphTester(String serverName) throws PropertyServerException {
+    public TestGraphGenerator testGraphGenerator(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getGraphTester();
+            return instance.getTestGraphGenerator();
         } else {
-            final String methodName = "graphTester";
+            final String methodName = "queryHandler";
             throwError(serverName, methodName);
             return null;
         }

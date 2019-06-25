@@ -3,31 +3,26 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.GraphTester;
+import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.TestGraphGenerator;
 
 public class OpenLineageServicesInstance {
     private String serverName;
-    private GraphBuilder graphBuilder;
-    private GraphTester graphTester;
+    private TestGraphGenerator testGraphGenerator;
+    private QueryHandler queryHandler;
 
-    public OpenLineageServicesInstance(GraphBuilder graphBuilder,
-                                       GraphTester graphTester,
+    public OpenLineageServicesInstance(TestGraphGenerator testGraphGenerator,
+                                       QueryHandler queryHandler,
                                        String serverName) {
-        this.graphBuilder = graphBuilder;
-        this.graphTester = graphTester;
+        this.testGraphGenerator = testGraphGenerator;
         this.serverName = serverName;
+        this.queryHandler = queryHandler;
 
         OpenLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
     }
 
-
-    public GraphBuilder getGraphBuilder() {
-        return this.graphBuilder;
-    }
-
-    public GraphTester getGraphTester() {
-        return this.graphTester;
+    public QueryHandler getQueryHandler() {
+        return this.queryHandler;
     }
 
 
@@ -36,5 +31,9 @@ public class OpenLineageServicesInstance {
      */
     public void shutdown() {
         OpenLineageServicesInstanceMap.removeInstanceForJVM(serverName);
+    }
+
+    public TestGraphGenerator getTestGraphGenerator() {
+        return this.testGraphGenerator;
     }
 }
