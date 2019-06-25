@@ -76,27 +76,24 @@ public class PortHandler {
                                                                                        org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException {
-        final String methodName = "createPortAliasWithDelegation";
 
-        return createPortEntity(userId, qualifiedName, displayName, portType,
+        String portAliasGUID = createPortEntity(userId, qualifiedName, displayName, portType,
                 PortPropertiesMapper.PORT_ALIAS_TYPE_GUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
-        //TODO implement for port delegation
 
-//        if (!StringUtils.isEmpty(delegatesTo)) {
-//            EntityDetail delegatedPort = getPortEntityByQualifiedName(userId, qualifiedName);
-//
-//            EnumPropertyValue portTypeValue =
-//                    (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PortPropertiesMapper
-//                    .PORT_TYPE);
-//
-//            if (portTypeValue.getSymbolicName().equalsIgnoreCase(portType.getName())) {
-//                addPortDelegationRelationship(userId, portAliasGUID, delegatedPort.getGUID());
-//            } else {
-//                // validations needed
-//            }
-//
-//        }
-//        return portAliasGUID;
+        if (!StringUtils.isEmpty(delegatesTo)) {
+            EntityDetail delegatedPort = getPortEntityByQualifiedName(userId, delegatesTo);
+
+            EnumPropertyValue portTypeValue =
+                    (EnumPropertyValue) delegatedPort.getProperties().getPropertyValue(PortPropertiesMapper.PORT_TYPE);
+
+            if (portTypeValue.getSymbolicName().equalsIgnoreCase(portType.getName())) {
+                addPortDelegationRelationship(userId, portAliasGUID, delegatedPort.getGUID());
+            } else {
+                //TODO validation?
+            }
+
+        }
+        return portAliasGUID;
     }
 
     private String createPortEntity(String userId, String qualifiedName, String displayName, PortType portType,
