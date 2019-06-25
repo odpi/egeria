@@ -24,17 +24,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-science-api</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>
