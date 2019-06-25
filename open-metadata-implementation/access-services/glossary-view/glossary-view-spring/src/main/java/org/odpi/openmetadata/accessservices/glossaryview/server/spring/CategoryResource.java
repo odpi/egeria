@@ -39,33 +39,6 @@ public class CategoryResource {
     }
 
     /**
-     * Extract all category definitions for the given glossary GUID
-     *
-     * @param serverName instance to call
-     * @param userId calling user
-     * @param glossaryGUID glossary GUID
-     * @param from from
-     * @param size size
-     *
-     * @return categories
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories")
-    public GlossaryViewEntityDetailResponse getCategories(@PathVariable("serverName") String serverName,
-                                                          @PathVariable("userId") String userId,
-                                                          @RequestParam("glossaryGUID") String glossaryGUID,
-                                                          @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                          @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
-        StopWatch watch = StopWatch.createStarted();
-
-        GlossaryViewEntityDetailResponse response =  categoryService.getCategories(userId, serverName, glossaryGUID, from, size);
-
-        watch.stop();
-        log.debug("Method: getCategories; Duration: " + watch.getTime()/1000 + "seconds");
-
-        return response;
-    }
-
-    /**
      * Extract the category definition for the given GUID
      *
      * @param serverName instance to call

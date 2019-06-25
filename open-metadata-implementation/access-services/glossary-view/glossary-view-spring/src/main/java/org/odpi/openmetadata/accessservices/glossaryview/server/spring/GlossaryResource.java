@@ -24,7 +24,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class GlossaryResource {
 
     public static final String PAGE_FROM_DEFAULT_VALUE = "0";
-    public static final String PAGE_SIZE_DEFAULT_VALUE = "100";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "1000";
     private static final Logger log = LoggerFactory.getLogger(GlossaryResource.class);
 
     private GlossaryService glossaryService;
@@ -93,10 +93,10 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{categoryGUID}/glossary")
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/glossary")
     public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
-                                                            @PathVariable("userId") String userId,
-                                                            @PathVariable("categoryGUID") String termGUID) {
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("termGUID") String termGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getTermHomeGlossary(userId, serverName, termGUID);

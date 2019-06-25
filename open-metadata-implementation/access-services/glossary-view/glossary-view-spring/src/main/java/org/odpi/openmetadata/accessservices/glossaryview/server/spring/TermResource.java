@@ -39,33 +39,6 @@ public class TermResource {
     }
 
     /**
-     * Extract all term definitions for the given category GUID
-     *
-     * @param serverName instance to call
-     * @param userId calling user
-     * @param categoryGUID category GUID
-     * @param from from
-     * @param size size
-     *
-     * @return terms
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms")
-    public GlossaryViewEntityDetailResponse getTerms(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @RequestParam("categoryGUID") String categoryGUID,
-                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
-        StopWatch watch = StopWatch.createStarted();
-
-        GlossaryViewEntityDetailResponse response =  termService.getTerms(userId, serverName, categoryGUID, from, size);
-
-        watch.stop();
-        log.debug("Method: getTerms; Duration: " + watch.getTime()/1000 + "seconds");
-
-        return response;
-    }
-
-    /**
      * Extract a term definition for the given GUID
      *
      * @param serverName instance to call
@@ -164,6 +137,249 @@ public class TermResource {
 
         watch.stop();
         log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract related terms
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return related terms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/see-also")
+    public GlossaryViewEntityDetailResponse getRelatedTerms(@PathVariable("serverName") String serverName,
+                                                            @PathVariable("userId") String userId,
+                                                            @PathVariable("termGUID") String termGUID,
+                                                            @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                            @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getRelatedTerms(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getRelatedTerms; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract synonyms
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return synonyms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/synonyms")
+    public GlossaryViewEntityDetailResponse getSynonyms(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
+                                                        @PathVariable("termGUID") String termGUID,
+                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getSynonyms(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getSynonyms; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract antonyms
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return antonyms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/antonyms")
+    public GlossaryViewEntityDetailResponse getAntonyms(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
+                                                        @PathVariable("termGUID") String termGUID,
+                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getAntonyms(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getAntonyms; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract preferred terms
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return preferred terms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/preferred-terms")
+    public GlossaryViewEntityDetailResponse getPreferredTerms(@PathVariable("serverName") String serverName,
+                                                              @PathVariable("userId") String userId,
+                                                              @PathVariable("termGUID") String termGUID,
+                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getPreferredTerms(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getPreferredTerms; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract replacement terms
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return replacement terms
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/replacement-terms")
+    public GlossaryViewEntityDetailResponse getReplacementTerms(@PathVariable("serverName") String serverName,
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("termGUID") String termGUID,
+                                                                @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getReplacementTerms(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getReplacementTerms; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract translations
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return translations
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/translations")
+    public GlossaryViewEntityDetailResponse getTranslations(@PathVariable("serverName") String serverName,
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("termGUID") String termGUID,
+                                                                @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getTranslations(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getTranslations; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract "is a"
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return "is a"
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/is-a")
+    public GlossaryViewEntityDetailResponse getIsA(@PathVariable("serverName") String serverName,
+                                                   @PathVariable("userId") String userId,
+                                                   @PathVariable("termGUID") String termGUID,
+                                                   @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                   @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getIsA(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getIsA; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract valid values
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/valid-values")
+    public GlossaryViewEntityDetailResponse getValidValues(@PathVariable("serverName") String serverName,
+                                                           @PathVariable("userId") String userId,
+                                                           @PathVariable("termGUID") String termGUID,
+                                                           @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                           @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getValidValues(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getValidValues; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract "used in contexts"
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/used-in-contexts")
+    public GlossaryViewEntityDetailResponse getUsedInContexts(@PathVariable("serverName") String serverName,
+                                                              @PathVariable("userId") String userId,
+                                                              @PathVariable("termGUID") String termGUID,
+                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getUsedInContexts(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getUsedInContexts; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }
