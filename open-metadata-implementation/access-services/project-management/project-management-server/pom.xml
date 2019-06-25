@@ -24,12 +24,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>project-management-api</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
     </dependencies>
 
 </project>
