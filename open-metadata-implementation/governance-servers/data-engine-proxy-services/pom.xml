@@ -13,6 +13,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Data Engine Proxy Services</name>
+    <description>
+        The data engine proxy services implementation.
+    </description>
+
     <artifactId>data-engine-proxy-services</artifactId>
     <packaging>pom</packaging>
     <modules>
