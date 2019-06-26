@@ -11,10 +11,9 @@ import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.UpdatedEntityEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -31,14 +30,8 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,7 +105,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                 if(assignedColumns != null && !assignedColumns.isEmpty()) {
                     assignedColumns.parallelStream().forEach(s -> publishColumnContextEvent(s.getGUID()));
                 }
-            }  catch (InformationViewUncheckedExceptionBase e) {
+            }  catch (InformationViewExceptionBase e) {
                log.error(e.getMessage(), e);
             }
         }
@@ -296,7 +289,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             events = columnContextBuilder.buildContexts(guid);
             sendColumnContextEvents(events);
         }
-        catch(InformationViewUncheckedExceptionBase e){
+        catch(InformationViewExceptionBase e){
             log.error(e.getMessage(), e);
         }
     }

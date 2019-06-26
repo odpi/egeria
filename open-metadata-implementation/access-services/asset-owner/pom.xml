@@ -33,11 +33,6 @@
 
     <!-- Asset Owner consumes OCF Connected Asset -->
     <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

@@ -35,7 +35,6 @@ public class UpdatedEntityEvent extends InformationViewHeader{
         this.guid = guid;
     }
 
-
     public InstanceType getType() {
         return type;
     }
