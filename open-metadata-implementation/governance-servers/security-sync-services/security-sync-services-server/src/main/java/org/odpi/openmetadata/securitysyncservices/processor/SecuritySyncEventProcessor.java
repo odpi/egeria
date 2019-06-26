@@ -29,8 +29,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 
 public class SecuritySyncEventProcessor {
 
@@ -54,9 +54,6 @@ public class SecuritySyncEventProcessor {
         }
 
         List<GovernedAsset> governedAssets = governedAssetResponse.getGovernedAssetList();
-        if (governedAssets.isEmpty()) {
-            return;
-        }
 
         rangerOpenConnector.importTaggedResources(governedAssets);
     }
@@ -110,7 +107,7 @@ public class SecuritySyncEventProcessor {
         RangerServiceResource resource = declassifiedGovernedAsset(governedAsset);
 
         if (resource != null && resource.getGuid() != null) {
-            rangerOpenConnector.deleteResourceByGUID(resource.getGuid());
+            rangerOpenConnector.deleteResource(resource.getGuid());
         }
     }
 
@@ -166,18 +163,19 @@ public class SecuritySyncEventProcessor {
             return null;
         }
 
-        log.debug("de-classified entity: " + governedAsset.getGuid());
+        log.debug("de-classified entity: {}", governedAsset.getGuid());
 
         RangerServiceResource resource = rangerOpenConnector.getResourceByGUID(governedAsset.getGuid());
         if (resource == null) {
             return null;
         }
 
-        ResourceTagMapper resourceTagMapper = rangerOpenConnector.getTagAssociatedWithTheResource(resource.getId());
+        List<ResourceTagMapper> resourceTagMapper = rangerOpenConnector.getTagsAssociatedWithTheResource(resource.getId());
 
         if (resourceTagMapper != null) {
-            rangerOpenConnector.deleteAssociationResourceToSecurityTag(resourceTagMapper);
+            resourceTagMapper.forEach(mapping -> rangerOpenConnector.deleteAssociationResourceToSecurityTag(mapping));
         }
+
         return resource;
     }
 }
