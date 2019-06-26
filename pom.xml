@@ -472,10 +472,6 @@
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.apache.hadoop:*</ignoredUnusedDeclaredDependency>
                                     <!-- These exceptions should be removed once code is clean -->
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:admin-services-api:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:admin-services-api:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:repository-services-apis:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:ffdc-services:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
