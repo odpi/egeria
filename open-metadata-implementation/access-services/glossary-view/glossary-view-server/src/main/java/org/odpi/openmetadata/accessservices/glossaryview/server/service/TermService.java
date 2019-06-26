@@ -50,6 +50,9 @@ public class TermService extends GlossaryViewOMAS {
     private static final String USED_IN_CONTEXT_RELATIONSHIP_NAME = "UsedInContext";
     private static final String USED_IN_CONTEXT_RELATIONSHIP_GUID = "2dc524d2-e29f-4186-9081-72ea956c75de";
 
+    private static final String SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME = "SemanticAssignment";
+    private static final String SEMANTIC_ASSIGNMENT_RELATIONSHIP_GUID = "e6670973-645f-441a-bec7-6f5570345b92";
+
     public TermService() {}
 
     /**
@@ -287,6 +290,23 @@ public class TermService extends GlossaryViewOMAS {
                                                            Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME,
                 USED_IN_CONTEXT_RELATIONSHIP_GUID, USED_IN_CONTEXT_RELATIONSHIP_NAME, from, size, "getUsedInContexts");
+    }
+
+    /**
+     * Extract assigned elements
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return EntityDetailResponse "used in contexts"
+     */
+    public GlossaryViewEntityDetailResponse getAssignedElements(String userId, String serverName, String termGUID,
+                                                                Integer from, Integer size){
+        return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME,
+                SEMANTIC_ASSIGNMENT_RELATIONSHIP_GUID, SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME, from, size, "getAssignedElements");
     }
 
 }
