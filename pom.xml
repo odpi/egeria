@@ -470,7 +470,6 @@
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
                                     <!-- Used with sl44j as default implementaion in test scope only -->
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.apache.hadoop:*</ignoredUnusedDeclaredDependency>
                                     <!-- These exceptions should be removed once code is clean -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
