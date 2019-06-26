@@ -31,21 +31,6 @@
         <module>open-metadata-conformance-suite-spring</module>
     </modules>
     <dependencies>
-
-        <!-- File I/O processing -->
-
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>${commons-collections.version}</version>
-        </dependency>
-
     </dependencies>
 
     <build>
