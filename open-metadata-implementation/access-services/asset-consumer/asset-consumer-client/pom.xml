@@ -32,13 +32,19 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>rest-client-connectors-api</artifactId>
+            <artifactId>ocf-metadata-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>rest-client-factory</artifactId>
+            <artifactId>ffdc-services</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

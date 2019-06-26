@@ -22,11 +22,5 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-consumer-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-        
     </dependencies>
 </project>
