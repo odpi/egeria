@@ -30,6 +30,7 @@ public class GlossaryViewEntityDetailResponse extends GlossaryViewOMASAPIRespons
         singularToPlural.put("Glossary", "glossaries");
         singularToPlural.put("GlossaryCategory", "categories");
         singularToPlural.put("GlossaryTerm", "terms");
+        singularToPlural.put("ExternalGlossaryLink", "externalGlossaryLinks");
     }
 
     private List<GlossaryViewEntityDetail> glossaryViewEntityDetails = new ArrayList<>();
