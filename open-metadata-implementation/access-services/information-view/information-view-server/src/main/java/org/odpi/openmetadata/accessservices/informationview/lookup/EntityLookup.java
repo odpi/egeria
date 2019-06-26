@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
@@ -115,11 +115,11 @@ public abstract class EntityLookup<T extends Source> {
      * @param entities to search in
      * @param matchingProperties properties used to match
      * @return the entity matching the properties
-     * @throws InformationViewUncheckedExceptionBase throws NoMatchingEntityException if no entity is found matching
+     * @throws InformationViewExceptionBase throws NoMatchingEntityException if no entity is found matching
      * throws MultipleEntitiesMatching if multiple entities match
      */
     public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws
-                                                                                                                             InformationViewUncheckedExceptionBase {
+                                                                                                                             InformationViewExceptionBase {
         if (entities != null && !entities.isEmpty()) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
             if (filteredEntities == null || filteredEntities.isEmpty()) {
