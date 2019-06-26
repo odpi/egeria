@@ -104,7 +104,7 @@ imageDefaults:
 
 # supported values are in-memory-repository & local-graph-repository
 egeria:
-  repomode: in-memory-repository
+  repomode: local-graph-repository
   user: myuser
   cohort: coco
   server: myserver

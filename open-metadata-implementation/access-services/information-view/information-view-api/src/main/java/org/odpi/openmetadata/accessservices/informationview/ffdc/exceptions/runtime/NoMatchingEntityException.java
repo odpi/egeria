@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class NoMatchingEntityException extends InformationViewUncheckedExceptionBase {
+public class NoMatchingEntityException extends InformationViewExceptionBase {
 
 
     public NoMatchingEntityException(String className, String errorMessage, String systemAction, String userAction,

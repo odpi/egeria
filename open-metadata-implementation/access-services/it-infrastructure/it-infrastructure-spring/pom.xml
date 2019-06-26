@@ -24,19 +24,6 @@
 
     <dependencies>
 
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>it-infrastructure-server</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <!-- Spring for REST APIs -->
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-
     </dependencies>
 
 </project>

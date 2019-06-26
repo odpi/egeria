@@ -46,10 +46,12 @@ public class GlossaryViewOMAS extends OMRSClient {
         glossaryViewClassification.setUpdateTime(classification.getUpdateTime());
         glossaryViewClassification.setStatus(classification.getStatus().getName());
 
-        classification.getProperties().getInstanceProperties().entrySet().stream()
-                .forEach( incoming -> {
-                    glossaryViewClassification.addProperty(incoming.getKey(), helper.getStringProperty(GLOSSARY_VIEW_OMAS, incoming.getKey(), classification.getProperties(), "GlossaryViewOMAS.classificationConverter.apply"));
-                });
+        if(classification.getProperties().getInstanceProperties() != null) {
+            classification.getProperties().getInstanceProperties().entrySet().stream()
+                    .forEach(incoming -> {
+                        glossaryViewClassification.addProperty(incoming.getKey(), incoming.getValue().valueAsString());
+                    });
+        }
 
         return glossaryViewClassification;
     };
@@ -95,52 +97,65 @@ public class GlossaryViewOMAS extends OMRSClient {
     };
 
     /**
-     * Extract an entity based on provided GUID
+     * Extract an entity based on provided GUID and convert it to this omas's type
      *
      * @param userId calling user
      * @param serverName instance to call
      * @param entityGUID guid to search for
+     * @param entityTypeName entity type
      *
-     * @return EntityDetailResponse entity
+     * @return entity
      */
-    protected GlossaryViewEntityDetailResponse getEntityDetailResponse(String userId, String serverName, String entityGUID){
+    protected GlossaryViewEntityDetailResponse getEntityDetailResponse(String userId, String serverName, String entityGUID,
+                                                                       String entityTypeName, String methodName){
         GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
 
         try {
-            Optional<EntityDetail> entityDetail = getEntityDetail(userId, serverName, entityGUID);
-            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(serverName);
+            Optional<EntityDetail> entityDetail = getEntityDetail(userId, serverName, entityGUID, entityTypeName, methodName);
+            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(userId, serverName);
+            if(!omrsRepositoryHelper.isPresent()){
+                return response;
+            }
 
             if( entityDetail.isPresent() && omrsRepositoryHelper.isPresent()) {
                 response.addEntityDetail(entityDetailConverter.apply(entityDetail.get(), omrsRepositoryHelper.get()));
             }
-        }catch (OMRSExceptionWrapper e){
-            prepare(response, e);
+        }catch (OMRSExceptionWrapper ew){
+            prepare(response, ew);
         }
         return response;
     }
 
     /**
-     * Extract all entities related to given entity. This is done by first extracting the GUID for specified
-     * relationship type, then the actual relationships and, ultimately, the entities at end two of these relationships
+     * Extract related entities to the given one and convert them to this omas's type
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param relationshipEndOneEntityGUID entity for which we extract relationships
-     * @param relationshipTypeDefNames relationship type
+     * @param entityGUID target entity
+     * @param entityTypeName target entity relationship type
+     * @param relationshipTypeGUID relationship type guid
+     * @param relationshipTypeName relationship type name
+     * @param from
+     * @param size
      *
-     * @return EntityDetailResponse related entities
+     * @return related entities
      */
-    protected GlossaryViewEntityDetailResponse getRelatedEntities(String userId, String serverName, String relationshipEndOneEntityGUID,
-                                                                  String relationshipTypeDefNames){
+    protected GlossaryViewEntityDetailResponse getRelatedEntitiesResponse(String userId, String serverName, String entityGUID,
+                                                                          String entityTypeName, String relationshipTypeGUID,
+                                                                          String relationshipTypeName, Integer from, Integer size,
+                                                                          String methodName){
         GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
 
         try {
-            List<String> relationshipTypeGUIDs = getTypeDefGUIDs(userId, serverName, relationshipTypeDefNames);
-            List<EntityDetail> entities = getNeighbourhood(userId, serverName, relationshipEndOneEntityGUID, relationshipTypeGUIDs);
-            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(serverName);
+            List<EntityDetail> entities = getRelatedEntities(userId, serverName, entityGUID, entityTypeName,
+                    relationshipTypeGUID, relationshipTypeName, from, size, methodName);
+            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(userId, serverName);
+            if(entities == null || !omrsRepositoryHelper.isPresent()){
+                return response;
+            }
 
             response.addEntityDetails(entities.stream()
-                    .filter(entity -> !entity.getGUID().equals(relationshipEndOneEntityGUID))
+                    .filter(entity -> !entity.getGUID().equals(entityGUID))
                     .map(entity -> entityDetailConverter.apply(entity, omrsRepositoryHelper.get()))
                     .collect(Collectors.toList()));
         }catch (OMRSExceptionWrapper e){
@@ -153,20 +168,26 @@ public class GlossaryViewOMAS extends OMRSClient {
     }
 
     /**
-     * Extract all entities of specified type
+     * Extract all entities of specified type and convert them to this omas's type
      *
      * @param userId calling user
      * @param serverName instance to call
-     * @param typeDefName entity type name
+     * @param entityTypeGUID entity type guid
+     * @param from from
+     * @param size size
      *
-     * @return EntityDetailResponse all entities
+     * @return all entities
      */
-    protected GlossaryViewEntityDetailResponse getAllEntityDetailsResponse(String userId, String serverName, String typeDefName){
+    protected GlossaryViewEntityDetailResponse getAllEntityDetailsResponse(String userId, String serverName, String entityTypeGUID,
+                                                                           Integer from, Integer size, String methodName){
         GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
 
         try {
-            List<EntityDetail> entities = getAllEntityDetails(userId, serverName, typeDefName);
-            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(serverName);
+            List<EntityDetail> entities = getAllEntityDetails(userId, serverName, entityTypeGUID, from, size, methodName);
+            Optional<OMRSRepositoryHelper> omrsRepositoryHelper = getOMRSRepositoryHelper(userId, serverName);
+            if(entities == null || !omrsRepositoryHelper.isPresent()){
+                return response;
+            }
 
             response.addEntityDetails(entities.stream()
                     .map(entity -> entityDetailConverter.apply(entity, omrsRepositoryHelper.get()) )
