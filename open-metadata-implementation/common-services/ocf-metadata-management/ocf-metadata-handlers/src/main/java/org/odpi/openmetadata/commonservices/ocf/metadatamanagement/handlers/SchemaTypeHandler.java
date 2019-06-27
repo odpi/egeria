@@ -541,22 +541,6 @@ public class SchemaTypeHandler
             return existingSchemaType.getGUID();
         }
 
-        if (attributeName != null)
-        {
-            existingSchemaType = repositoryHandler.getUniqueEntityByName(userId,
-                                                                         qualifiedName,
-                                                                         qualifiedNameParameter,
-                                                                         builder.getNameInstanceProperties(methodName),
-                                                                         SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                                                                         SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                                         methodName);
-
-            if (existingSchemaType != null)
-            {
-                return existingSchemaType.getGUID();
-            }
-        }
-
         return null;
     }
 
@@ -780,22 +764,6 @@ public class SchemaTypeHandler
         if (existingSchemaType != null)
         {
             return existingSchemaType.getGUID();
-        }
-
-        if (displayName != null)
-        {
-            existingSchemaType = repositoryHandler.getUniqueEntityByName(userId,
-                                                                         qualifiedName,
-                                                                         qualifiedNameParameter,
-                                                                         builder.getNameInstanceProperties(methodName),
-                                                                         SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
-                                                                         SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                                         methodName);
-
-            if (existingSchemaType != null)
-            {
-                return existingSchemaType.getGUID();
-            }
         }
 
         return null;
