@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class InformationViewUncheckedExceptionBase extends RuntimeException{
+public class InformationViewExceptionBase extends RuntimeException{
 
     private int httpErrorCode;
     private String reportingClassName;
@@ -11,7 +11,7 @@ public class InformationViewUncheckedExceptionBase extends RuntimeException{
     private String reportedUserAction;
     private Throwable reportedCaughtException ;
 
-    public InformationViewUncheckedExceptionBase(
+    public InformationViewExceptionBase(
             String className,
             String errorMessage,
             String systemAction,
@@ -25,12 +25,12 @@ public class InformationViewUncheckedExceptionBase extends RuntimeException{
         this.reportedCaughtException = caughtError;
     }
 
-    public InformationViewUncheckedExceptionBase(int httpErrorCode,
-                                                 String reportingClassName,
-                                                 String reportedErrorMessage,
-                                                 String reportedSystemAction,
-                                                 String reportedUserAction,
-                                                 Throwable reportedCaughtException) {
+    public InformationViewExceptionBase(int httpErrorCode,
+                                        String reportingClassName,
+                                        String reportedErrorMessage,
+                                        String reportedSystemAction,
+                                        String reportedUserAction,
+                                        Throwable reportedCaughtException) {
         this.httpErrorCode = httpErrorCode;
         this.reportingClassName = reportingClassName;
         this.reportedErrorMessage = reportedErrorMessage;

@@ -3,146 +3,173 @@
 package org.odpi.openmetadata.governanceservers.openlineage.eventprocessors;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.graphml.GraphMLWriter;
-import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
+import org.apache.tinkerpop.gremlin.structure.io.IoCore;
+import org.janusgraph.core.JanusGraph;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.AssetType;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_NAME_QUALIFIED_NAME;
 
 public class GraphBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
-    private Graph graph;
-    private GraphTraversalSource g;
-    private Map<Integer,String> relationships = new HashMap<>();
+    private JanusGraph janusGraph;
+    private OMRSAuditLog auditLog;
 
     public GraphBuilder() {
-        this.graph = TinkerGraph.open();
-        this.g = graph.traversal();
-
-        this.relationships.put(0,"AttributeForSchema");
-        this.relationships.put(1,"SchemaAttributeType");
-        this.relationships.put(2,"AttributeForSchema");
-        this.relationships.put(3,"AssetSchemaType");
-        this.relationships.put(4,"DataContentForDataSet");
-    }
-
-
-    public void addAsset(AssetContext event) {
-        Term term = event.getAssets().get(0);
-        AssetElement database = event.getAssets().get(0).getElements().get(0);
-        Connection connection = database.getConnections().get(0);
-
-        //TODO Open Metadata format should not be used in graph, e.g. column/table types should be properties instead. TBD.
-        List<Vertex> vertices = new ArrayList<>();
-        vertices.add(addVertex(term));
-
-        createNodes(term,database,vertices);
-
-    }
-
-    /**
-     * Connection is part of the event json
-     * @param connection
-     */
-    private void addConnection(Connection connection) {
-        String GUID = connection.getGuid();
-        String qualifiedName = connection.getQualifiedName();
-
-        Vertex v1 = g.addV(GUID).next();
-        v1.property(QUALIFIED_NAME, qualifiedName);
-    }
-
-    private Vertex addVertex(Element assetElement) {
-        String GUID = assetElement.getGuid();
-        String type = assetElement.getType();
-        String qualifiedName = assetElement.getQualifiedName();
-
-        Vertex v1 = g.addV(GUID).next();
-        v1.property(QUALIFIED_NAME, qualifiedName);
-        v1.property(TYPE, type);
-        return v1;
-    }
-
-    private void addEdge(String relationship, Vertex v1, Vertex v2) {
-        v1.addEdge(relationship, v2);
-    }
-
-
-    public void exportGraph() {
-        File file = new File(GRAPHML);
-
-        FileOutputStream fos;
 
         try {
-            fos = new FileOutputStream(file, true);
-            try {
-                GraphMLWriter.build().create().writeGraph(fos, graph);
+           janusGraph = open();
+        }         catch (RepositoryErrorException e) {
+            log.error("{} Could not open graph database", "GraphBuilder constructor");
+        }
+    }
 
-                log.info("Graph saved to lineageGraph.graphml");
-            } catch (IOException e) {
-                e.printStackTrace();
+
+    public void addAsset(RelationshipEvent event) {
+
+
+        GlossaryTerm glossaryTerm = event.getGlossaryTerm();
+        Element technicalTerm = event.getAssetContext().getBaseAsset();
+
+        List<String> edgesLabels = new ArrayList<>();
+        if(technicalTerm.getType().equals(RELATIONAL_TABLE)){
+            edgesLabels = Arrays.asList(SEMANTIC_ASSIGNMENT,ATTRIBUTE_FOR_SCHEMA,SCHEMA_ATTRIBUTE_TYPE,ATTRIBUTE_FOR_SCHEMA);
+        }
+
+        if(technicalTerm.getType().equals(RELATIONAL_COLUMN)){
+            edgesLabels = Arrays.asList(SEMANTIC_ASSIGNMENT,ATTRIBUTE_FOR_SCHEMA,SCHEMA_ATTRIBUTE_TYPE,
+                    ATTRIBUTE_FOR_SCHEMA,SCHEMA_ATTRIBUTE_TYPE,ATTRIBUTE_FOR_SCHEMA);
+        }
+
+        Map<String, Element> context = event.getAssetContext().getContext();
+        context.put(technicalTerm.getType(),technicalTerm);
+
+        createGlossaryVertex(glossaryTerm);
+        createElementVertex(context);
+        createEdges(context,glossaryTerm,edgesLabels);
+
+    }
+
+    public void removeSemanticRelationship(DeletePurgedRelationshipEvent event){
+        GraphTraversalSource g = janusGraph.traversal();
+
+        try {
+            boolean edgeExists = g.V().has(event.getGlossaryTerm().getType(), "veguid", event.getGlossaryTerm().getGuid())
+                    .bothE()
+                    .where(g.V().has(event.getEntityTypeDef(), "veguid", event.getEntityGuid())).hasNext();
+
+            if(edgeExists){
+
+              g.V().has(event.getGlossaryTerm().getType(), "veguid", event.getGlossaryTerm().getGuid())
+                        .outE(SEMANTIC_ASSIGNMENT)
+                        .where(g.V().has(event.getEntityTypeDef(), "veguid", event.getEntityGuid())).next().remove();
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            g.tx().commit();
+        }catch (Exception e){
+            log.error("Error occurred during deletion of the semantic assignment");
+            g.tx().rollback();
         }
     }
 
-    private void createNodes(Term term, AssetElement database,  List<Vertex> vertices){
-        List<Element> elements ;
-        switch (term.getType()){
-            case "RelationalColumn":
-                elements = createElements(AssetType.RELATIONAL_COLUMN.getElementesContained(),database);
-                createGraph(AssetType.RELATIONAL_COLUMN.getIndexForRelationships(),elements,vertices);
-                break;
-            case "RelationalTable":
-                 elements = createElements(AssetType.RELATIONAL_COLUMN.getElementesContained(),database);
-                 createGraph(AssetType.RELATIONAL_TABLE.getIndexForRelationships(),elements,vertices);
-                break;
+    public void exportGraph(){
+
+        try {
+            janusGraph.io(IoCore.graphml()).writeGraph("lineage.graphml");
+        } catch (IOException e) {
+           log.error(e.getMessage());
+        }
+    }
+
+    private void createGlossaryVertex(GlossaryTerm term){
+        GraphTraversalSource g = janusGraph.traversal();
+
+        Iterator<Vertex> vertexIt = g.V().hasLabel(term.getType()).has(PROPERTY_KEY_ENTITY_GUID, term.getGuid());
+        if (!vertexIt.hasNext()) {
+
+
+            Vertex v = g.addV(term.getType()).next();
+            v.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, term.getQualifiedName());
+            v.property(PROPERTY_KEY_ENTITY_GUID, term.getGuid());
+            v.property(PROPERTY_KEY_ENTITY_NAME, term.getDisplayName());
+            g.tx().commit();
+        } else
+            {
+                log.info("{} createVertex found existing vertex {}", "createVertex", vertexIt.next());
+                g.tx().rollback();
+            }
+
+    }
+    private void createElementVertex(Map<String,Element> context) {
+        GraphTraversalSource g = janusGraph.traversal();
+
+        for (Map.Entry<String, Element> entry : context.entrySet()) {
+            String key = entry.getKey();
+            Element value = entry.getValue();
+
+            Iterator<Vertex> vertexIt = g.V().hasLabel(key).has(PROPERTY_KEY_ENTITY_GUID, value.getGuid());
+            if (!vertexIt.hasNext()) {
+
+
+                Vertex v = g.addV(key).next();
+                v.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, value.getQualifiedName());
+                v.property(PROPERTY_KEY_ENTITY_GUID, value.getGuid());
+                v.property(PROPERTY_KEY_ENTITY_NAME, value.getProperties().get("displayName"));
+
+                g.tx().commit();
+            } else {
+
+                log.info("{} createVertex found existing vertex {}", "createElementVertex", vertexIt.next());
+                g.tx().rollback();
+            }
 
         }
+    }
+
+    private void createEdges(Map<String, Element> context, GlossaryTerm glossaryTerm,List<String> edgeLabels) {
+        GraphTraversalSource g = janusGraph.traversal();
+
+        final List<String> order = Arrays.asList(GLOSSARY_TERM,RELATIONAL_COLUMN,RELATIONAL_TABLE_TYPE,RELATIONAL_TABLE,RELATIONAL_DB_SCHEMA_TYPE,DEPLOYED_DB_SCHEMA_TYPE,DATABASE);
+        List<Element> elementsByRelationship = new ArrayList<>((context.values()));
+        elementsByRelationship.add(glossaryTerm);
+
+        Collections.sort(elementsByRelationship,Comparator.comparing(
+                (Element e)-> order.indexOf(e.getType())).thenComparing(Element::getType));
+
+        for (int i = 0;i < elementsByRelationship.size()-1; i++) {
+
+            String relationship = edgeLabels.get(i);
+                boolean edge = g.V().has(elementsByRelationship.get(i).getType(), "veguid", elementsByRelationship.get(i).getGuid()).bothE(relationship)
+                        .where(g.V().has(elementsByRelationship.get(i + 1).getType(), "veguid", elementsByRelationship.get(i + 1).getGuid())).hasNext();
+
+                if(!edge){
+
+                 Vertex from = g.V().has(elementsByRelationship.get(i).getType(),"veguid", elementsByRelationship.get(i).getGuid()).next();
+                 Vertex to = g.V().has(elementsByRelationship.get(i + 1).getType(),"veguid", elementsByRelationship.get(i + 1).getGuid()).next();
+
+                 from.addEdge(relationship,to);
+                }
+
+        }
+        g.tx().commit();
 
     }
 
-    private List<Element> createElements(int assetTypeCode, AssetElement database){
-        List<Element> elements = new ArrayList<>();
 
-        for(int i = 0; i < assetTypeCode ; i++){
-            Element element = database.getContext().get(i);
-            elements.add(element);
-        }
-        elements.add(database);
-        return elements;
-    }
 
-    private void createGraph(int index, List<Element> elements,  List<Vertex>  vertices){
-
-        //add nodes
-        for(int i = 0; i < elements.size(); i++){
-            vertices.add(addVertex(elements.get(i)));
-        }
-
-        //add edges
-        for(int i = index ; i < vertices.size()-1; i++){
-            addEdge(relationships.get(i)
-                    ,vertices.get(i+1),vertices.get(i));
-
-        }
-    }
 
 }

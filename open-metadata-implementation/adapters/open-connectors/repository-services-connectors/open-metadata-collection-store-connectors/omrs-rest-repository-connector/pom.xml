@@ -36,5 +36,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+         </dependency>
+
+     </dependencies>
+
 </project>

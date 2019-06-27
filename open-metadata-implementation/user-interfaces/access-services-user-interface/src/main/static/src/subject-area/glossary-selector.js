@@ -1,18 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import '../../node_modules/@polymer/paper-input/paper-input.js';
-import '../../node_modules/@polymer/paper-material/paper-material.js';
-import '../../node_modules/@polymer/iron-form/iron-form.js';
-import '../../node_modules/@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../node_modules/@polymer/paper-styles/paper-styles.js';
-import '../../node_modules/@polymer/paper-input/paper-input-behavior.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-material/paper-material.js';
+import '@polymer/iron-form/iron-form.js';
+import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/paper-input/paper-input-behavior.js';
+import '@vaadin/vaadin-grid/vaadin-grid.js';
+import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
+import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 
-import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polymer-element.js";
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
 
@@ -24,30 +24,41 @@ class GlossarySelector extends PolymerElement {
           display: block;
           padding: 10px 20px;
         }
+         form  { display: table;      }
+                p     { display: table-row;  }
+                label { display: table-cell; }
+                input { display: table-cell; }
+                a     { display: table-cell; }
       </style>
        <token-ajax id="addGlossaryAjaxId" last-response="{{lastAddGlossaryResp}}" ></token-ajax>
-       <token-ajax id="getGlossariesAjaxId" last-response="{{lastGetGlossariesResp}}"></token-ajax>
-
-       <paper-dropdown-menu label="Glossaries" id="glossary-selector" selected="[[selectedGlossary]]" attr-for-selected="name">
+        <token-ajax id="getGlossariesAjaxId" last-response="{{lastGetGlossariesResp}}" ></token-ajax>
+       <paper-dropdown-menu label="Glossaries"
+                            id="glossary-selector"
+                            selected="[[selectedGlossary]]"
+                            attr-for-selected="name"
+                            on-iron-select="_itemSelected">
                       <paper-listbox slot="dropdown-content" selected="1">
-                        <template is="dom-repeat" items="[[glossaries]]">
-                          <paper-item>[[item.name]]</paper-item>
-                        </template>
+                             <template is="dom-repeat" items="[[glossaries]]">
+                                 <paper-item guid=[[item.systemAttributes.guid]]>[[item.name]]</paper-item>
+                             </template>
                       </paper-listbox>
        </paper-dropdown-menu>
        <vaadin-button on-click="onGlossaryDialogOpen">+</vaadin-button>
        <paper-dialog id="createGlossaryDialog">
 
                <form is="iron-form" id="createGlossaryForm">
+                  <p>
                   <label for="glossaryName">Name</label>
                   <input is="paper-input" id="glossaryName" type="text" name="name"> <br>
-
+                  </p>
+                   <p>
                   <label for="glossaryQualifiedName">Qualified Name</label>
                   <input is="paper-input" id="glossaryQualifiedName" type="text" name="qname"><br>
-
+                  </p>
+                   <p>
                   <label for="glossaryDescription">Description</label>
                   <input is="paper-input" id="glossaryDescription" type="text" name="description"><br>
-
+                  </p>
                   <div class="buttons">
                       <paper-button  dialog-dismiss>Cancel</paper-button>
                       <paper-button on-tap="_onGlossaryDialogCreate">Create</paper-button>
@@ -66,13 +77,14 @@ class GlossarySelector extends PolymerElement {
          // Observer called  when this property changes
         observer: '_addGlossaryRespChanged'
       },
+ //  get glossary response
+      lastGetGlossaryResp: {
+        type: Object,
+         // Observer called  when this property changes
+        observer: '_getGlossaryRespChanged'
+      },
       //  get glossaries response
       lastGetGlossariesResp: {
-        type: Object,
-        notify: true
-      },
-       //  selected glossary
-      selectedGlossary: {
         type: Object,
         notify: true
       },
@@ -81,7 +93,12 @@ class GlossarySelector extends PolymerElement {
         type: Array,
         computed: 'computeGlossaries(lastGetGlossariesResp)',
         notify: true
-      }
+      },
+      glossaryMap: {
+              type: Array,
+              computed: 'computeGlossaryMap(glossaries)',
+              notify: true
+            }
         };
     }
     ready(){
@@ -103,6 +120,23 @@ class GlossarySelector extends PolymerElement {
          alert('Glossary name required');
      }
   }
+  /**
+   * driven when an item is selected. Issue a custom event to pass up the selected item.
+   */
+  _itemSelected(e) {
+      var selectedItem = e.target.selectedItem;
+      if (selectedItem) {
+        console.log("selected: " + selectedItem.innerText + ",guid is " + selectedItem.guid);
+        var selectedGlossary = this.glossaryMap[selectedItem.guid];
+        this.dispatchEvent(new CustomEvent('glossarySelectionEvent', {
+                         bubbles: true,  // bubble up
+                         composed: true, // allow the event to go through shadow dom boundaries
+                         detail: selectedGlossary}));
+
+
+      }
+  }
+
  /**
    * Issue the create rest Ajax call to add a glossary to the server
    */
@@ -123,10 +157,11 @@ class GlossarySelector extends PolymerElement {
         this.$.addGlossaryAjaxId.url = "/api/subject-area/glossaries";
         this.$.addGlossaryAjaxId._go();
   }
+
   /*
    * After an add glossary - get the glossaries again so the drop down will be up tp date.
    */
-  _addGlossaryRespChanged(oldValue,newValue) {
+  _addGlossaryRespChanged(newValue,oldValue) {
       if (newValue.relatedHTTPCode == 200) {
            this.getGlossaries();
            // close the dialog - a glossary was successfully created
@@ -136,10 +171,11 @@ class GlossarySelector extends PolymerElement {
                // this is an error that the omas code generated with message and user action.
                alert('Error occurred: ' +newValue.exceptionErrorMessage + ',user action: ' + newValue.exceptionUserAction);
            } else {
-               alert('Error occurred resp :' +  newValue);
+               alert('Good resp :' +  newValue);
           }
       }
   }
+
  /**
   * Issue get glossaries Ajax rest call to the server
   */
@@ -158,6 +194,17 @@ class GlossarySelector extends PolymerElement {
            return null;
         }
   }
+    computeGlossaryMap(glossaries) {
+          var map = null;
+          if (glossaries) {
+             map = {};
+             for (var i = 0; i < glossaries.length; i++) {
+               map[glossaries[i].systemAttributes.guid] = glossaries[i];
+             }
+             return map;
+          }
+          return map;
+    }
 
 }
 

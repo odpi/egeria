@@ -21,7 +21,8 @@ public class RelationshipEvent extends AssetLineageEvent {
 
     private GlossaryTerm glossaryTerm;
     private String typeDefName;
-    private AssetContext assetContext;
+    private String typeDefGUID;
+    private ConvertedAssetContext assetContext;
 
     public GlossaryTerm getGlossaryTerm() {
         return glossaryTerm;
@@ -39,11 +40,19 @@ public class RelationshipEvent extends AssetLineageEvent {
         this.typeDefName = typeDefName;
     }
 
-    public AssetContext getAssetContext() {
+    public String getTypeDefGUID() {
+        return typeDefGUID;
+    }
+
+    public void setTypeDefGUID(String typeDefGUID) {
+        this.typeDefGUID = typeDefGUID;
+    }
+
+    public ConvertedAssetContext getAssetContext() {
         return assetContext;
     }
 
-    public void setAssetContext(AssetContext assetContext) {
+    public void setAssetContext(ConvertedAssetContext assetContext) {
         this.assetContext = assetContext;
     }
 }
