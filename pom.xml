@@ -158,71 +158,1289 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-utils</artifactId>
-                <version>3.2.0</version>
+                <groupId>backport-util-concurrent</groupId>
+                <artifactId>backport-util-concurrent</artifactId>
+                <scope>compile</scope>
+                <version>3.1</version>
             </dependency>
-            <dependency>
-                <groupId>org.codehaus.plexus</groupId>
-                <artifactId>plexus-archiver</artifactId>
-                <version>4.1.0</version>
-	    </dependency>
+
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
+                <scope>compile</scope>
                 <version>1.2.3</version>
-	        </dependency>
-	        <dependency>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <scope>compile</scope>
+                <version>2.9.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <scope>compile</scope>
+                <version>2.9.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <scope>compile</scope>
+                <version>2.9.9</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <scope>compile</scope>
+                <version>1.4.196</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ibm.gaiandb</groupId>
+                <artifactId>gaian</artifactId>
+                <scope>provided</scope>
+                <version>2.1.8</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <scope>compile</scope>
+                <version>3.2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <scope>compile</scope>
+                <version>2.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt</artifactId>
+                <scope>compile</scope>
+                <version>0.6.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-core</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-spi</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-spring-web</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
+                <scope>compile</scope>
+                <version>2.2</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <scope>compile</scope>
+                <version>2.0.1.Final</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <scope>test</scope>
+                <version>4.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <scope>compile</scope>
+                <version>1.2.17</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <scope>compile</scope>
+                <version>3.8.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.derby</groupId>
+                <artifactId>derby</artifactId>
+                <scope>provided</scope>
+                <version>10.8.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.hadoop</groupId>
+                <artifactId>hadoop-common</artifactId>
+                <scope>compile</scope>
+                <version>2.9.2</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-clients</artifactId>
+                <scope>compile</scope>
                 <version>2.1.1</version>
             </dependency>
+
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-core</artifactId>
-                <version>${spring-web.version}</version>
+                <groupId>org.apache.ranger</groupId>
+                <artifactId>ranger-plugins-common</artifactId>
+                <scope>compile</scope>
+                <version>1.2.0</version>
             </dependency>
+
             <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-ldap</artifactId>
-                <version>${spring-security.version}</version>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>gremlin-core</artifactId>
+                <scope>compile</scope>
+                <version>3.3.3</version>
             </dependency>
+
             <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
-                <version>${spring-web.version}</version>
+                <groupId>org.apache.tomcat.embed</groupId>
+                <artifactId>tomcat-embed-core</artifactId>
+                <scope>compile</scope>
+                <version>9.0.16</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.codehaus.plexus</groupId>
+                <artifactId>plexus-utils</artifactId>
+                <scope>compile</scope>
+                <version>3.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-berkeleyje</artifactId>
+                <scope>compile</scope>
+                <version>0.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-core</artifactId>
+                <scope>compile</scope>
+                <version>0.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-lucene</artifactId>
+                <scope>compile</scope>
+                <version>0.3.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <scope>test</scope>
+                <version>5.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-engine</artifactId>
+                <scope>test</scope>
+                <version>5.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-runner</artifactId>
+                <scope>test</scope>
+                <version>1.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.junit.platform</groupId>
+                <artifactId>junit-platform-suite-api</artifactId>
+                <scope>test</scope>
+                <version>1.2.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <scope>test</scope>
+                <version>2.23.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-inline</artifactId>
+                <scope>test</scope>
+                <version>2.23.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-junit-jupiter</artifactId>
+                <scope>test</scope>
+                <version>2.23.4</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-catalog-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-consumer-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-lineage-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-owner-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-owner-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-owner-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>asset-owner-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-console-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>audit-log-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cohort-registry-file-store-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>community-profile-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>community-profile-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>community-profile-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>community-profile-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>configuration-file-store-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>connector-configuration-factory</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-engine-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-privacy-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-privacy-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-process-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-process-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-science-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-science-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>dev-ops-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>dev-ops-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-architecture-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-architecture-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-services-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ffdc-services</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-view-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-view-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>glossary-view-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-engine-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-program-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-program-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-program-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>governance-program-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>graph-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>http-helper</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>information-view-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>information-view-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>information-view-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>information-view-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>inmemory-open-metadata-topic-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>inmemory-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>it-infrastructure-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>it-infrastructure-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>kafka-open-metadata-topic-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>metadata-security</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>multi-tenant</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ocf-metadata-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ocf-metadata-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ocf-metadata-handlers</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ocf-metadata-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ocf-metadata-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>odf-metadata-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>odf-metadata-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>odf-metadata-handlers</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>omrs-rest-repository-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-connector-framework</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-discovery-framework</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-services-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-archive-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-conformance-suite-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-conformance-suite-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-conformance-suite-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-types-test-generator</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>platform-services-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>platform-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>platform-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>project-management-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>project-management-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ranger-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-handler</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-apis</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-implementation</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>rest-client-connectors-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>rest-client-factory</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-officer-tag-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>security-sync-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>software-developer-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>software-developer-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>spring-rest-client-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-action-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-action-spring</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>structured-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-client</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>subject-area-spring</artifactId>
+                <scope>runtime</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>view-generator-connectors</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>virtualization-services-api</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>virtualization-services-server</artifactId>
+                <scope>compile</scope>
+                <version>1.1-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <scope>compile</scope>
+                <version>1.7.25</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter</artifactId>
-                <version>${spring-boot.version}</version>
+                <artifactId>spring-boot-autoconfigure</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
             </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-security</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
+
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-commons</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-jpa</artifactId>
+                <scope>compile</scope>
+                <version>2.1.3.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <scope>compile</scope>
+                <version>5.1.4.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-core</artifactId>
+                <scope>compile</scope>
+                <version>5.1.4.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-ldap</artifactId>
+                <scope>compile</scope>
+                <version>5.1.4.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <scope>compile</scope>
+                <version>5.1.5.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-beans</artifactId>
+                <scope>compile</scope>
+                <version>5.1.5.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <scope>compile</scope>
+                <version>5.1.5.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-core</artifactId>
+                <scope>compile</scope>
+                <version>5.1.5.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <scope>compile</scope>
+                <version>5.1.5.RELEASE</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <scope>test</scope>
+                <version>6.14.3</version>
+            </dependency>
+
         </dependencies>
+
     </dependencyManagement>
-
-
-
-
 
     <distributionManagement>
         <snapshotRepository>
