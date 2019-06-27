@@ -378,14 +378,14 @@ public class DataEngineRESTServices {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
             PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-            List<String> portGuids = createPortImplementations(userId, serverName, portImplementations);
+            List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
 
-            portGuids.addAll(createPortAliases(userId, portAliases, portHandler));
+            portGUIDs.addAll(createPortAliases(userId, portAliases, portHandler));
 
             String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
                     latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
-            for (String portGUID : portGuids) {
+            for (String portGUID : portGUIDs) {
                 processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
             }
 
@@ -495,15 +495,14 @@ public class DataEngineRESTServices {
                                                                                                  InvalidParameterException,
                                                                                                  PropertyServerException,
                                                                                                  UserNotAuthorizedException {
-        if (CollectionUtils.isEmpty(portImplementations)) {
-            return new ArrayList<>();
-        }
 
         List<String> portImplementationGUIDs = new ArrayList<>();
-        for (PortImplementation portImplementation : portImplementations) {
-            portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
-        }
 
+        if (CollectionUtils.isNotEmpty(portImplementations)) {
+            for (PortImplementation portImplementation : portImplementations) {
+                portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
+            }
+        }
         return portImplementationGUIDs;
     }
 
@@ -511,16 +510,14 @@ public class DataEngineRESTServices {
                                                                                                                 InvalidParameterException,
                                                                                                                 PropertyServerException,
                                                                                                                 UserNotAuthorizedException {
-        if (CollectionUtils.isEmpty(portAliases)) {
-            return new ArrayList<>();
-        }
-
         List<String> portAliasGUIDs = new ArrayList<>();
-        for (PortAlias portAlias : portAliases) {
-            portAliasGUIDs.add(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
-        }
 
+        if (CollectionUtils.isNotEmpty(portAliases)) {
+            for (PortAlias portAlias : portAliases) {
+                portAliasGUIDs.add(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                        portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
+            }
+        }
         return portAliasGUIDs;
     }
 
