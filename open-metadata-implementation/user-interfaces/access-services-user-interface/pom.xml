@@ -233,7 +233,7 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
-            <version>${spring-web.version}</version>
+            <version>${spring-security.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.persistence</groupId>
