@@ -25,7 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * DataEngineSchemaTypeHandler manages schema types objects from the property server. It runs server-side in the
+ * DataEngine OMAS and creates and retrieves schema type entities through the OMRSRepositoryConnector.
+ */
 public class DataEngineSchemaTypeHandler {
     private static final String TYPE_SUFFIX = "_type";
     private static final String SEPARATOR = "::";
@@ -62,7 +65,24 @@ public class DataEngineSchemaTypeHandler {
                 repositoryHelper);
     }
 
-
+    /**
+     * Create the schema type entity, with the corresponding schema attributes and relationships
+     *
+     * @param userId           the name of the calling user
+     * @param qualifiedName    the qualifiedName name of the schema type
+     * @param displayName      the display name of the schema type
+     * @param author           the author of the schema type
+     * @param encodingStandard the encoding for the schema type
+     * @param usage            the usage for the schema type
+     * @param versionNumber    the version number for the schema type
+     * @param columnList       the list of columns for the schema type.
+     *
+     * @return unique identifier of the schema type in the repository
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
                                    String encodingStandard, String usage, String versionNumber,
                                    List<Column> columnList) throws InvalidParameterException,
@@ -99,9 +119,45 @@ public class DataEngineSchemaTypeHandler {
         return newSchemaTypeGUID;
     }
 
+    /**
+     * Create LineageMapping relationship between two schema attribute types
+     *
+     * @param userId                             the name of the calling user
+     * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute
+     * @param targetSchemaAttributeQualifiedName the qualified name of the target schema attribute
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void addLineageMappingRelationship(String userId, String sourceSchemaAttributeQualifiedName,
+                                              String targetSchemaAttributeQualifiedName) throws
+                                                                                         InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException {
+        final String methodName = "addLineageMappingRelationship";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(sourceSchemaAttributeQualifiedName,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(targetSchemaAttributeQualifiedName,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+
+        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
+        String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
+
+        SchemaType sourceSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID,
+                methodName);
+        SchemaType targetSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, targetSchemaAttributeGUID,
+                methodName);
+
+        repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
+                sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
+    }
+
     private String findSchemaAttribute(String userId, String qualifiedName) throws
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException {
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException {
         final String methodName = "findSchemaAttribute";
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
@@ -187,30 +243,5 @@ public class DataEngineSchemaTypeHandler {
         schemaType.setVersionNumber(versionNumber);
 
         return schemaType;
-    }
-
-    public void addLineageMappingRelationship(String userId, String sourceSchemaAttributeQualifiedName,
-                                              String targetSchemaAttributeQualifiedName) throws
-                                                                                         InvalidParameterException,
-                                                                                         UserNotAuthorizedException,
-                                                                                         PropertyServerException {
-        final String methodName = "addLineageMappingRelationship";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(sourceSchemaAttributeQualifiedName,
-                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateGUID(targetSchemaAttributeQualifiedName,
-                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
-
-        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
-        String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
-
-        SchemaType sourceSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID,
-                methodName);
-        SchemaType targetSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, targetSchemaAttributeGUID,
-                methodName);
-
-        repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
-                sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
     }
 }

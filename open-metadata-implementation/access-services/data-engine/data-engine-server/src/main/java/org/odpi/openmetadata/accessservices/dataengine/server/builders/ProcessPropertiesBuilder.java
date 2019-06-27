@@ -12,23 +12,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.List;
 import java.util.Map;
 
+/**
+ * ProcessPropertiesBuilder is able to build the properties for an Process entity.
+ */
 public class ProcessPropertiesBuilder extends AssetBuilder {
     private String processDisplayName;
     private String formula;
-
-    public ProcessPropertiesBuilder(String qualifiedName, String displayName, OMRSRepositoryHelper repositoryHelper,
-                                    String serviceName, String serverName) {
-        super(qualifiedName, displayName, repositoryHelper, serviceName, serverName);
-    }
-
-
-    public ProcessPropertiesBuilder(String qualifiedName, String displayName, String processDisplayName,
-                                    String formula, OMRSRepositoryHelper repositoryHelper, String serviceName,
-                                    String serverName) {
-        super(qualifiedName, displayName, repositoryHelper, serviceName, serverName);
-        this.processDisplayName = processDisplayName;
-        this.formula = formula;
-    }
 
     public ProcessPropertiesBuilder(String qualifiedName, String displayName, String processDisplayName,
                                     String description, String owner, OwnerType ownerType, List<String> zoneMembership,
@@ -41,18 +30,27 @@ public class ProcessPropertiesBuilder extends AssetBuilder {
         this.formula = formula;
     }
 
+    /**
+     * Return the supplied bean properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     *
+     * @return InstanceProperties object
+     *
+     * @throws InvalidParameterException there is a problem with the properties
+     */
     @Override
     public InstanceProperties getInstanceProperties(String methodName) throws InvalidParameterException {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
         if (processDisplayName != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    ProcessPropertiesMapper.DISPLAY_NAME, processDisplayName, methodName);
+                    ProcessPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, processDisplayName, methodName);
         }
 
         if (formula != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    ProcessPropertiesMapper.FORMULA, formula, methodName);
+                    ProcessPropertiesMapper.FORMULA_PROPERTY_NAME, formula, methodName);
         }
         return properties;
     }

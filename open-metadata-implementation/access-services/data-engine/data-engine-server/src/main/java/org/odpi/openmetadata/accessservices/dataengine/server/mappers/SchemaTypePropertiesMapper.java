@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.mappers;
 
+/**
+ * SchemaTypePropertiesMapper provides property name mapping for SchemaTypes and their relationships.
+ */
 public class SchemaTypePropertiesMapper {
     public static final String LINEAGE_MAPPINGS_TYPE_GUID = "GGQmRWnY-aKYh-Yzsa-UoAi-1DsFzGTLqjJk";
 

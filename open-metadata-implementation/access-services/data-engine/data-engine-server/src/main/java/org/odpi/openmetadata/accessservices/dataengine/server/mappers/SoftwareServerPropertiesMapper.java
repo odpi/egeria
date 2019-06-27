@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.mappers;
 
 /**
- * SoftwareServerPropertiesMapper provides property name mapping for Software Servers.
- * <p>
- * Specifically, a single engine is represented as an SoftwareServerCapabilityRequestBody entity.
+ * SoftwareServerPropertiesMapper provides property name mapping for Software Servers. Specifically, a single engine
+ * is represented as an SoftwareServerCapabilityRequestBody entity.
  */
 public class SoftwareServerPropertiesMapper {
     public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";

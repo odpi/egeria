@@ -28,7 +28,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the process handler for the access service.
+     * Retrieve the process handler for the access service
      *
      * @param userId               calling user
      * @param serverName           name of the server tied to the request
@@ -55,7 +55,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the registration handler for the access service.
+     * Retrieve the registration handler for the access service
      *
      * @param userId     calling user
      * @param serverName name of the server tied to the request
@@ -82,7 +82,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the registration handler for the access service.
+     * Retrieve the data engine schema type handler for the access service
      *
      * @param userId               calling user
      * @param serverName           name of the server tied to the request
@@ -110,7 +110,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
     }
 
     /**
-     * Retrieve the process handler for the access service.
+     * Retrieve the port handler for the access service
      *
      * @param userId               calling user
      * @param serverName           name of the server tied to the request
