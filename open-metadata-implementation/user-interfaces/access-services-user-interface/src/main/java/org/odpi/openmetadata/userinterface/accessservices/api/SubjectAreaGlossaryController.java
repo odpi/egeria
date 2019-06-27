@@ -246,6 +246,9 @@ public class SubjectAreaGlossaryController extends SecureController
         SubjectAreaOMASAPIResponse response=null;
         try {
             Glossary updatedGlossary;
+            if (isReplace == null){
+                isReplace = false;
+            }
             if (isReplace) {
                 updatedGlossary = this.subjectAreaGlossary.replaceGlossary(serverName, userId, guid, glossary);
             } else {
