@@ -96,19 +96,19 @@ abstract public class EntityDetailMapper {
                         }
                     } else if (!mapPrimitiveToNode(node, propertyName, actualValue)) {
                         // there are properties we are not aware of, as they have been added by a subtype, put them in the extraAttributes
-                        if (null==node.getExtraAttributes())  {
-                            node.setExtraAttributes(new HashMap<String, Object>());
+                        if (null==node.getAdditionalProperties())  {
+                            node.setAdditionalProperties(new HashMap<String, String>());
                         }
-                        node.getExtraAttributes().put(propertyName, actualValue);
+                        node.getAdditionalProperties().put(propertyName, (String)actualValue);
                     }
                     break;
                 case ENUM:
                     EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
                     if (!mapEnumToNode(node, propertyName,enumPropertyValue)) {
-                        if (null==node.getExtraAttributes())  {
-                            node.setExtraAttributes(new HashMap<String, Object>());
+                        if (null==node.getAdditionalProperties())  {
+                            node.setAdditionalProperties(new HashMap<String, String>());
                         }
-                        node.getExtraAttributes().put(propertyName, enumPropertyValue);
+                        node.getAdditionalProperties().put(propertyName, enumPropertyValue.valueAsString());
                     }
 
                     break;
@@ -123,15 +123,15 @@ abstract public class EntityDetailMapper {
                         while (iter.hasNext()) {
                             String mapkey = (String) iter.next();
                             PrimitivePropertyValue primitivePropertyMapValue = (PrimitivePropertyValue) instancePropertyForMap.getPropertyValue(mapkey);
-                            String mapvalue = (String) primitivePropertyMapValue.getPrimitiveValue();
+                            String mapvalue =  primitivePropertyMapValue.getPrimitiveValue().toString();
                             actualMap.put(mapkey, mapvalue);
                         }
                         node.setAdditionalProperties(actualMap);
                     } if (!mapMapToNode(node, propertyName, instancePropertyForMap)) {
-                        if (null==node.getExtraAttributes())  {
-                            node.setExtraAttributes(new HashMap<String, Object>());
+                        if (null==node.getAdditionalProperties())  {
+                            node.setAdditionalProperties(new HashMap<String, String>());
                         }
-                        node.getExtraAttributes().put(propertyName,mapPropertyValue);
+                        node.getAdditionalProperties().put(propertyName,mapPropertyValue.valueAsString());
                     }
                     break;
                 case ARRAY:
@@ -228,13 +228,12 @@ abstract public class EntityDetailMapper {
         if (omasClassifications!= null && omasClassifications.size()>0) {
             ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> omrsClassifications = new ArrayList<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification>();
             for (org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification : omasClassifications) {
-                SystemAttributes systemAttributes = omasClassification.getSystemAttributes();
-                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = new org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification();
-                SubjectAreaUtils.populateSystemAttributesForInstanceAuditHeader(systemAttributes, omrsClassification);
-                // copy over the classification name
-                omrsClassification.setName(omasClassification.getClassificationName());
-                // copy over the classification properties
-                omrsClassification.setProperties( omasClassification.obtainInstanceProperties());
+
+                ClassificationFactory classificationFactory = new ClassificationFactory(omrsapiHelper);
+                org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification omrsClassification = classificationFactory.getOMRSClassification(omasClassification);
+                //classificationFactory.getOMASClassification(omrsClassificationName,omrsClassification);
+
+
                 omrsClassifications.add(omrsClassification);
             }
             entityDetail.setClassifications(omrsClassifications);
@@ -307,7 +306,6 @@ abstract public class EntityDetailMapper {
         omrsEntityDetail.setType(instanceType);
 
         // map the classifications
-
 
         List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> omasClassifications = node.getClassifications();
 
