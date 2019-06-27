@@ -253,6 +253,9 @@ public class SubjectAreaTermController  extends SecureController
         SubjectAreaOMASAPIResponse response=null;
         try {
             Term updatedTerm;
+            if (isReplace == null){
+                isReplace = false;
+            }
             if (isReplace) {
                 updatedTerm = this.subjectAreaTerm.replaceTerm(serverName, userId, guid, term);
             } else {
