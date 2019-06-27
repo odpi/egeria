@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -21,13 +22,21 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_LABELS;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_PROPERTIES;
@@ -105,6 +114,53 @@ class SecurityOfficerInstanceHandler {
 
         OMRSRepositoryHelper omrsRepositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
         return builder.buildSchemaElement(entityDetail, omrsRepositoryHelper);
+    }
+
+    List<SecurityClassification> getAvailableSecurityTags(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, ClassificationErrorException, PagingErrorException, PropertyErrorException {
+        OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
+
+        String entityTypeGuid = getSchemaElementTypeGUID(metadataCollection, userId);
+        if (entityTypeGuid == null) {
+            return Collections.emptyList();
+        }
+
+        List<EntityDetail> entitiesWithSecurityTagsAssigned = findEntitiesWithSecurityTagsAssigned(userId, metadataCollection, entityTypeGuid);
+
+        Set<SecurityClassification> classificationSet = new HashSet<>();
+        OMRSRepositoryHelper omrsRepositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
+
+        for (EntityDetail entityDetail : entitiesWithSecurityTagsAssigned) {
+            for (Classification classification : entityDetail.getClassifications()) {
+                if (classification.getName().equals(SECURITY_TAGS)) {
+                    SecurityClassification securityClassification = builder.buildSecurityTag(classification, omrsRepositoryHelper);
+                    classificationSet.add(securityClassification);
+                }
+            }
+        }
+
+        return new ArrayList<>(classificationSet);
+    }
+
+    private List<EntityDetail> findEntitiesWithSecurityTagsAssigned(String userId, OMRSMetadataCollection metadataCollection, String entityTypeGuid) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException {
+        return metadataCollection.findEntitiesByClassification(userId,
+                entityTypeGuid,
+                SECURITY_TAGS,
+                null,
+                null,
+                0,
+                null,
+                null,
+                null,
+                null,
+                0);
+    }
+
+    private String getSchemaElementTypeGUID(OMRSMetadataCollection metadataCollection, String userId) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException {
+        TypeDef typeDefByName = metadataCollection.getTypeDefByName(userId, SCHEMA_ELEMENT);
+        if (typeDefByName != null) {
+            return typeDefByName.getGUID();
+        }
+        return null;
     }
 
     private InstanceProperties getInstanceProperties(String serverName, SecurityClassification securityTagLevel) throws PropertyServerException {
