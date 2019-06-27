@@ -8,4 +8,8 @@ public class Constants {
     public static final String SECURITY_TAGS = "SecurityTags";
     public static final String SECURITY_LABELS = "securityLabels";
     public static final String SECURITY_PROPERTIES = "securityProperties";
+    public static final String SCHEMA_ELEMENT = "SchemaElement";
+
+    private Constants() {
+    }
 }
