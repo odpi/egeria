@@ -462,21 +462,19 @@ public class SchemaTypeHandler
                     if (schemaAttributeGUID == null)
                     {
                         schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
+
+                        repositoryHandler.createRelationship(userId,
+                                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                                schemaTypeGUID,
+                                schemaAttributeGUID,
+                                null,
+                                methodName);
                     }
                     else
                     {
                         updateSchemaAttribute(userId, schemaAttributeGUID, schemaAttribute);
                     }
 
-                    if (schemaAttributeGUID != null)
-                    {
-                        repositoryHandler.createRelationship(userId,
-                                                             SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                                                             schemaTypeGUID,
-                                                             schemaAttributeGUID,
-                                                             null,
-                                                             methodName);
-                    }
                 }
             }
         }
@@ -535,8 +533,8 @@ public class SchemaTypeHandler
                                                                                   qualifiedName,
                                                                                   qualifiedNameParameter,
                                                                                   builder.getQualifiedNameInstanceProperties(methodName),
-                                                                                  SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
-                                                                                  SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                                  SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                                  SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                                   methodName);
         if (existingSchemaType != null)
         {
@@ -549,8 +547,8 @@ public class SchemaTypeHandler
                                                                          qualifiedName,
                                                                          qualifiedNameParameter,
                                                                          builder.getNameInstanceProperties(methodName),
-                                                                         SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
-                                                                         SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                                         SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                                                         SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
                                                                          methodName);
 
             if (existingSchemaType != null)
@@ -586,7 +584,7 @@ public class SchemaTypeHandler
     {
         if (schemaAttribute != null)
         {
-            return this.findSchemaType(userId,
+            return this.findSchemaAttribute(userId,
                                        schemaAttribute.getGUID(),
                                        schemaAttribute.getQualifiedName(),
                                        null,
