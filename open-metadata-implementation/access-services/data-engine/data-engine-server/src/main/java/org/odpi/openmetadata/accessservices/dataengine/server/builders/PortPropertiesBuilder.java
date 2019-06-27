@@ -9,16 +9,25 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+
+/**
+ * PortPropertiesBuilder is able to build the properties for an Port entity.
+ */
 public class PortPropertiesBuilder extends ReferenceableBuilder {
 
     private String displayName;
     private PortType portType;
 
-    PortPropertiesBuilder(String qualifiedName, OMRSRepositoryHelper repositoryHelper, String serviceName,
-                          String serverName) {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-    }
-
+    /**
+     * Constructor
+     *
+     * @param qualifiedName    qualified name
+     * @param displayName      display name
+     * @param portType         port type
+     * @param repositoryHelper helper methods
+     * @param serviceName      name of this OMAS
+     * @param serverName       name of local server
+     */
     public PortPropertiesBuilder(String qualifiedName, String displayName, PortType portType,
                                  OMRSRepositoryHelper repositoryHelper, String serviceName, String serverName) {
         super(qualifiedName, repositoryHelper, serviceName, serverName);
@@ -26,6 +35,15 @@ public class PortPropertiesBuilder extends ReferenceableBuilder {
         this.portType = portType;
     }
 
+    /**
+     * Return the supplied bean properties in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     *
+     * @return InstanceProperties object
+     *
+     * @throws InvalidParameterException there is a problem with the properties
+     */
     public InstanceProperties getInstanceProperties(String methodName) throws InvalidParameterException {
         InstanceProperties properties = super.getInstanceProperties(methodName);
 
@@ -42,7 +60,7 @@ public class PortPropertiesBuilder extends ReferenceableBuilder {
     }
 
     private InstanceProperties addPortTypeProperty(PortType portType, InstanceProperties properties) {
-        return repositoryHelper.addEnumPropertyToInstance(serviceName, properties, PortPropertiesMapper.PORT_TYPE,
+        return repositoryHelper.addEnumPropertyToInstance(serviceName, properties, PortPropertiesMapper.PORT_TYPE_PROPERTY_NAME,
                 portType.getOrdinal(), portType.getName(), portType.getDescription(), "addPortTypeProperty");
     }
 }

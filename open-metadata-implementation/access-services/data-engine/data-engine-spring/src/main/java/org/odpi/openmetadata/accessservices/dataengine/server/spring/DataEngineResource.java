@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The DataEngineResource provides the server-side implementation of the Data Engine Open Metadata Assess Service
- * (OMAS). This interface facilitates the creation of processes and input/output relationships between the processes
- * and the data sets.
+ * (OMAS). This interface facilitates the creation of processes, ports and schema types, with all the needed
+ * relationships.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
@@ -36,6 +36,15 @@ public class DataEngineResource {
         restAPI = new DataEngineRESTServices();
     }
 
+    /**
+     * Create a software server capability entity
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the entity
+     *
+     * @return unique identifier of the created process
+     */
     @PostMapping(path = "/software-server-capability")
     public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
@@ -44,16 +53,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Return the properties from a discovery engine definition.
+     * Return the unique identifier from a software server capability definition.
      *
-     * @param serverName    name of the service to route the request to.
-     * @param userId        identifier of calling user.
-     * @param qualifiedName unique identifier (guid) of the discovery engine definition.
+     * @param serverName    name of server instance to call
+     * @param userId        identifier of calling user
+     * @param qualifiedName qualified name of the software server capability
      *
-     * @return properties from the discovery engine definition or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the discovery engine definition.
+     * @return unique identified of the software server
      */
     @GetMapping(path = "/software-server-capability/{qualifiedName}")
     public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
@@ -80,13 +86,13 @@ public class DataEngineResource {
 
 
     /**
-     * Create the Port entity
+     * Create the PortImplementation entity
      *
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
-     * @param portImplementationRequestBody properties of the port
+     * @param portImplementationRequestBody properties of the port implementation
      *
-     * @return unique identifier of the created process
+     * @return unique identifier of the created port implementation
      */
     @PostMapping(path = "/port-implementations")
     public GUIDResponse createPortImplementation(@PathVariable("userId") String userId,
@@ -97,13 +103,13 @@ public class DataEngineResource {
 
 
     /**
-     * Create the Port entity
+     * Create the PortAlias entity
      *
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
-     * @param portAliasRequestBody properties of the port
+     * @param portAliasRequestBody properties of the port alias
      *
-     * @return unique identifier of the created process
+     * @return unique identifier of the created port alias
      */
     @PostMapping(path = "/port-aliases")
     public GUIDResponse createPortAlias(@PathVariable("userId") String userId,
@@ -113,12 +119,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Create the Port entity
+     * Create the Port Alias entity with a PortDelegation relationship to another Port Alias
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
+     * @param serverName    name of server instance to call
+     * @param userId        the name of the calling user
+     * @param portAliasGUID the unique identifier of the existing port alias
      *
-     * @return unique identifier of the created process
+     * @return unique identifier of the created port alias
      */
     @PostMapping(path = "/port-aliases/of-port-alias/{portAliasGUID}")
     public GUIDResponse createPortAliasOfPortAlias(@PathVariable("userId") String userId,
@@ -129,12 +136,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Create the Port entity
+     * Create the Port Implementation entity with a PortDelegation relationship to another Port Alias
      *
-     * @param serverName name of server instance to call
-     * @param userId     the name of the calling user
+     * @param serverName    name of server instance to call
+     * @param userId        the name of the calling user
+     * @param portAliasGUID the unique identifier of the existing port alias
      *
-     * @return unique identifier of the created process
+     * @return unique identifier of the created port implementation
      */
     @PostMapping(path = "/port-implementations/of-port-alias/{portAliasGUID}")
     public GUIDResponse createPortImplementationOfPortAlias(@PathVariable("userId") String userId,
@@ -146,13 +154,13 @@ public class DataEngineResource {
     }
 
     /**
-     * Create the Process entity with all the needed relationships
+     * Create the Process entity with ports, schema types and all needed relationships
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user
      * @param processRequestBody properties of the process
      *
-     * @return unique identifier of the created entity
+     * @return unique identifier of the created process
      */
     @PostMapping(path = "/processes")
     public GUIDResponse createProcess(@PathVariable("userId") String userId,
@@ -167,7 +175,7 @@ public class DataEngineResource {
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
      * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port guids
+     * @param portListRequestBody list of port unique identifiers
      *
      * @return unique identifier of the updated process
      */
@@ -180,11 +188,11 @@ public class DataEngineResource {
     }
 
     /**
-     * Create the Process entity with all the needed relationships
+     * Add LineageMapping relationships
      *
      * @param serverName                 name of server instance to call
      * @param userId                     the name of the calling user
-     * @param lineageMappingsRequestBody properties of the process
+     * @param lineageMappingsRequestBody properties of the mappings
      *
      * @return unique identifier of the created entity
      */

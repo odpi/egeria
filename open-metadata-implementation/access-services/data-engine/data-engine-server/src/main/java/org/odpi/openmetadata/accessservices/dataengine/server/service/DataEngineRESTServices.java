@@ -35,7 +35,8 @@ import java.util.List;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
- * (OMAS). This service provide the functionality to create processes, ports and wire relationships.
+ * (OMAS). This service provide the functionality to create processes, ports with schema types and corresponding
+ * relationships.
  */
 public class DataEngineRESTServices {
 
@@ -51,6 +52,15 @@ public class DataEngineRESTServices {
     public DataEngineRESTServices() {
     }
 
+    /**
+     * Create the software server capability entity
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the server
+     *
+     * @return the unique identifier (guid) of the created server
+     */
     public GUIDResponse createSoftwareServer(String serverName, String userId,
                                              SoftwareServerCapabilityRequestBody requestBody) {
         final String methodName = "createSoftwareServer";
@@ -85,16 +95,13 @@ public class DataEngineRESTServices {
 
 
     /**
-     * Return the properties from a discovery engine definition.
+     * Get the unique identifier from a software server capability definition
      *
-     * @param serverName    name of the service to route the request to.
-     * @param userId        identifier of calling user.
-     * @param qualifiedName unique identifier (guid) of the discovery engine definition.
+     * @param serverName    name of the service to route the request to
+     * @param userId        identifier of calling user
+     * @param qualifiedName qualified name of the server
      *
-     * @return properties from the discovery engine definition or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UserNotAuthorizedException user not authorized to issue this request or
-     * PropertyServerException problem storing the discovery engine definition.
+     * @return the unique identifier from a software server capability definition
      */
     public GUIDResponse getSoftwareServerByQualifiedName(String serverName, String userId, String qualifiedName) {
         final String methodName = "getSoftwareServerByQualifiedName";
@@ -122,6 +129,15 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Create the Port Implementation with a PortSchema relationship
+     *
+     * @param serverName            name of server instance to call
+     * @param userId                the name of the calling user
+     * @param schemaTypeRequestBody properties of the schema type
+     *
+     * @return the unique identifier (guid) of the created schema type
+     */
     public GUIDResponse createSchemaType(String userId, String serverName,
                                          SchemaTypeRequestBody schemaTypeRequestBody) {
         final String methodName = "createSchemaType";
@@ -153,7 +169,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the port with a PortSchema relationship
+     * Create the Port Implementation with a PortSchema relationship
      *
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
@@ -194,7 +210,7 @@ public class DataEngineRESTServices {
 
 
     /**
-     * Create the port with a PortSchema relationship
+     * Create the Port Alias with a PortDelegation relationship
      *
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
@@ -234,11 +250,12 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the port with a PortSchema relationship
+     * Create the Port Alias with a PortDelegation relationship to a Port Alias
      *
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
      * @param portAliasRequestBody properties of the port
+     * @param portAliasGUID        the unique identifier of the port alias
      *
      * @return the unique identifier (guid) of the created port
      */
@@ -280,11 +297,12 @@ public class DataEngineRESTServices {
 
 
     /**
-     * Create the port with a PortSchema relationship
+     * Create the Port Implementation with a PortDelegation relationship to a Port Alias
      *
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
      * @param portImplementationRequestBody properties of the port
+     * @param portAliasGUID                 the unique identifier of the port alias
      *
      * @return the unique identifier (guid) of the created port
      */
@@ -365,9 +383,9 @@ public class DataEngineRESTServices {
             portGuids.addAll(createPortAliases(userId, portAliases, portHandler));
 
             String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
-                     latestChange, zoneMembership, displayName, formula, owner, ownerType);
+                    latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
-            for(String portGUID : portGuids) {
+            for (String portGUID : portGuids) {
                 processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
             }
 
@@ -392,47 +410,12 @@ public class DataEngineRESTServices {
         return response;
     }
 
-
-    private List<String> createPortImplementations(String userId, String serverName,
-                                                   List<PortImplementation> portImplementations) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException {
-        if (CollectionUtils.isEmpty(portImplementations)) {
-            return Collections.emptyList();
-        }
-
-        List<String> portImplementationGUIDs = new ArrayList<>();
-        for (PortImplementation portImplementation : portImplementations) {
-            portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
-        }
-
-        return portImplementationGUIDs;
-    }
-
-    private List<String> createPortAliases(String userId, List<PortAlias> portAliases, PortHandler portHandler) throws
-                                                                                                                InvalidParameterException,
-                                                                                                                PropertyServerException,
-                                                                                                                UserNotAuthorizedException {
-        if (CollectionUtils.isEmpty(portAliases)) {
-            return Collections.emptyList();
-        }
-
-        List<String> portAliasGUIDs = new ArrayList<>();
-        for (PortAlias portAlias : portAliases) {
-            portAliasGUIDs.add(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
-        }
-
-        return portAliasGUIDs;
-    }
-
     /**
      * Create ProcessPort relationships for an existing Process
      *
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
-     * @param portListRequestBody guids of ports and process
+     * @param portListRequestBody guids of ports
      *
      * @return the unique identifier (guid) of the updated process entity
      */
@@ -470,6 +453,15 @@ public class DataEngineRESTServices {
         return response;
     }
 
+    /**
+     * Create LineageMappings relationships between schema types
+     *
+     * @param userId                     the name of the calling user
+     * @param serverName                 ame of server instance to call
+     * @param lineageMappingsRequestBody list of lineage mappings
+     *
+     * @return void response
+     */
     public VoidResponse addLineageMappings(String userId, String serverName,
                                            LineageMappingsRequestBody lineageMappingsRequestBody) {
         final String methodName = "addLineageMappings";
@@ -496,6 +488,40 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
+    }
+
+    private List<String> createPortImplementations(String userId, String serverName,
+                                                   List<PortImplementation> portImplementations) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException {
+        if (CollectionUtils.isEmpty(portImplementations)) {
+            return new ArrayList<>();
+        }
+
+        List<String> portImplementationGUIDs = new ArrayList<>();
+        for (PortImplementation portImplementation : portImplementations) {
+            portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
+        }
+
+        return portImplementationGUIDs;
+    }
+
+    private List<String> createPortAliases(String userId, List<PortAlias> portAliases, PortHandler portHandler) throws
+                                                                                                                InvalidParameterException,
+                                                                                                                PropertyServerException,
+                                                                                                                UserNotAuthorizedException {
+        if (CollectionUtils.isEmpty(portAliases)) {
+            return new ArrayList<>();
+        }
+
+        List<String> portAliasGUIDs = new ArrayList<>();
+        for (PortAlias portAlias : portAliases) {
+            portAliasGUIDs.add(portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
+                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo()));
+        }
+
+        return portAliasGUIDs;
     }
 
     private void createLineageMapping(String userId, String serverName, LineageMapping lineageMapping) throws

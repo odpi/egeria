@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * ProcessHandler manages Process objects from the property server.  It runs server-side in the DataEngine OMAS
- * and creates process entities with input/output relationships through the OMRSRepositoryConnector.
+ * and creates process entities and relationships through the OMRSRepositoryConnector.
  */
 public class ProcessHandler {
     private String serviceName;
@@ -28,10 +28,13 @@ public class ProcessHandler {
     private InvalidParameterHandler invalidParameterHandler;
 
     /**
-     * Construct the process handler with a link to the property server's connector, a link to the metadata collection
-     * and this access service's official name.
+     * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName name of this service
+     * @param serviceName             name of this service
+     * @param serverName              name of the local server
+     * @param invalidParameterHandler handler for managing parameter errors
+     * @param repositoryHandler       manages calls to the repository services
+     * @param repositoryHelper        provides utilities for manipulating the repository services objects
      */
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
@@ -47,15 +50,22 @@ public class ProcessHandler {
      * Create the process
      *
      * @param userId         the name of the calling user
+     * @param qualifiedName  the qualifiedName name of the process
      * @param processName    the name of the process
      * @param description    the description of the process
-     * @param latestChange   the description for the latest change done for the asset
+     * @param latestChange   the description for the latest change done for the process
      * @param zoneMembership the list of zones of the process
      * @param displayName    the display name of the process
-     * @param qualifiedName  the qualifiedName name of the process
+     * @param formula        the formula for the process
+     * @param owner          the name of the owner for this process
+     * @param ownerType      the type of the owner for this process
      *
-     * @return the guid of the created process
-     **/
+     * @return unique identifier of the process in the repository
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
     public String createProcess(String userId, String qualifiedName, String processName, String description,
                                 String latestChange, List<String> zoneMembership, String displayName, String formula,
                                 String owner, OwnerType ownerType) throws
@@ -65,7 +75,7 @@ public class ProcessHandler {
 
         final String methodName = "createProcess";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,

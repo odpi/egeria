@@ -14,45 +14,12 @@ import java.util.Map;
 
 public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
 
-    private String guid;
     private String name;
     private String description;
     private String type;
     private String version;
     private String source;
     private String patchLevel;
-
-    /**
-     * Constructor when only the qualified name is known.
-     *
-     * @param qualifiedName    unique name
-     * @param repositoryHelper helper methods
-     * @param serviceName      name of this OMAS
-     * @param serverName       name of local server
-     */
-    protected SoftwareServerPropertiesBuilder(String qualifiedName, OMRSRepositoryHelper repositoryHelper,
-                                              String serviceName, String serverName) {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-    }
-
-    /**
-     * Constructor when basic properties are known.
-     *
-     * @param qualifiedName    unique name
-     * @param repositoryHelper helper methods
-     * @param name             display name of the data engine engine
-     * @param description      description of discovery engine
-     * @param serviceName      name of this OMAS
-     * @param serverName       name of local server
-     */
-    public SoftwareServerPropertiesBuilder(String qualifiedName, String name, String description,
-                                           OMRSRepositoryHelper repositoryHelper, String serviceName,
-                                           String serverName) {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.name = name;
-        this.description = description;
-    }
 
     /**
      * Constructor supporting all properties.
