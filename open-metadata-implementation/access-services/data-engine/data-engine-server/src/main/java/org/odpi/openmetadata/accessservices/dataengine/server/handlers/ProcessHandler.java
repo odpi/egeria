@@ -21,11 +21,11 @@ import java.util.List;
  * and creates process entities and relationships through the OMRSRepositoryConnector.
  */
 public class ProcessHandler {
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
+    private final String serviceName;
+    private final String serverName;
+    private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -74,6 +74,7 @@ public class ProcessHandler {
                                                                    PropertyServerException {
 
         final String methodName = "createProcess";
+
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 

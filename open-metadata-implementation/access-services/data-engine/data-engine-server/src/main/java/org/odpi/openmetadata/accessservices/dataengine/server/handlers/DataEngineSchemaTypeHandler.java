@@ -36,12 +36,11 @@ public class DataEngineSchemaTypeHandler {
     private static final String OPEN_BRACKET = "(";
     private static final String CLOSE_BRACKET = ")";
 
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
-    private SchemaTypeHandler schemaTypeHandler;
+    private final String serviceName;
+    private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
+    private final SchemaTypeHandler schemaTypeHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -56,7 +55,6 @@ public class DataEngineSchemaTypeHandler {
                                        InvalidParameterHandler invalidParameterHandler,
                                        RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
         this.serviceName = serviceName;
-        this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
@@ -104,19 +102,28 @@ public class DataEngineSchemaTypeHandler {
         String newSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaType,
                 new ArrayList<>(newSchemaAttributes.keySet()), methodName);
 
-        //TODO update SchemaTypeHandler to save attributes along with the type schema types and
-        // SchemaAttributeType relationship
+        //TODO update SchemaTypeHandler to save attributes along with the attribute schema types and
+        // SchemaAttributeType relationships
+        saveAttributeSchemaTypes(userId, newSchemaAttributes);
+
+        return newSchemaTypeGUID;
+    }
+
+    private void saveAttributeSchemaTypes(String userId, Map<SchemaAttribute, SchemaType> newSchemaAttributes) throws
+                                                                                                               InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException {
+        final String methodName = "saveAttributeSchemaTypes";
+
         for (SchemaAttribute schemaAttribute : newSchemaAttributes.keySet()) {
-            String schemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaAttributes.get(schemaAttribute),
-                    null, methodName);
+            String attributeSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
+                    newSchemaAttributes.get(schemaAttribute), null, methodName);
 
             String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName());
 
             repositoryHandler.createRelationship(userId, SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                    schemaAttributeGUID, schemaTypeGUID, null, methodName);
+                    schemaAttributeGUID, attributeSchemaTypeGUID, null, methodName);
         }
-
-        return newSchemaTypeGUID;
     }
 
     /**
@@ -209,12 +216,14 @@ public class DataEngineSchemaTypeHandler {
     private SchemaType createTabularColumnType(Column column) throws
                                                               org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         final String methodName = "createTabularColumnType";
+
         PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
                 SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME);
 
-        String displayName = column.getDisplayName() + TYPE_SUFFIX;
+        String displayName = column.getDisplayName();
         invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
                 methodName);
+        displayName += TYPE_SUFFIX;
 
         schemaType.setDisplayName(displayName);
         schemaType.setQualifiedName(buildPrimitiveSchemaTypeQualifiedName(column.getQualifiedName(),

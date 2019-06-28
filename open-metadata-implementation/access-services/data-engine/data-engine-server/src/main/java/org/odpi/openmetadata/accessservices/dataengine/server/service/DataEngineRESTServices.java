@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -250,99 +249,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the Port Alias with a PortDelegation relationship to a Port Alias
-     *
-     * @param serverName           name of server instance to call
-     * @param userId               the name of the calling user
-     * @param portAliasRequestBody properties of the port
-     * @param portAliasGUID        the unique identifier of the port alias
-     *
-     * @return the unique identifier (guid) of the created port
-     */
-    public GUIDResponse createPortAliasOfPortAlias(String userId, String serverName,
-                                                   PortAliasRequestBody portAliasRequestBody, String portAliasGUID) {
-        final String methodName = "createPortAliasOfPortAliasGUID";
-
-        log.debug("Calling method: {}", methodName);
-
-        if (portAliasRequestBody == null) {
-            return null;
-        }
-
-        GUIDResponse response = new GUIDResponse();
-
-        try {
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-            PortAlias portAlias = portAliasRequestBody.getPort();
-
-            String newPortAliasGUID = portHandler.createPortAliasWithDelegation(userId, portAlias.getQualifiedName(),
-                    portAlias.getDisplayName(), portAlias.getPortType(), portAlias.getDelegatesTo());
-
-            portHandler.addPortDelegationRelationship(userId, portAliasGUID, newPortAliasGUID);
-
-            response.setGUID(newPortAliasGUID);
-
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Create the Port Implementation with a PortDelegation relationship to a Port Alias
-     *
-     * @param serverName                    name of server instance to call
-     * @param userId                        the name of the calling user
-     * @param portImplementationRequestBody properties of the port
-     * @param portAliasGUID                 the unique identifier of the port alias
-     *
-     * @return the unique identifier (guid) of the created port
-     */
-    public GUIDResponse createPortImplementationOfPortAlias(String userId, String serverName,
-                                                            PortImplementationRequestBody portImplementationRequestBody,
-                                                            String portAliasGUID) {
-        final String methodName = "createPortImplementationOfPortAlias";
-
-        log.debug("Calling method: {}", methodName);
-
-        if (portImplementationRequestBody == null) {
-            return null;
-        }
-
-        GUIDResponse response = new GUIDResponse();
-
-        try {
-            String portImplementationGUID = createPortImplementationWithSchemaType(userId, serverName,
-                    portImplementationRequestBody.getPortImplementation());
-
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-            portHandler.addPortDelegationRelationship(userId, portAliasGUID, portImplementationGUID);
-
-            response.setGUID(portImplementationGUID);
-
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
-        }
-
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
-
-        return response;
-    }
-
-    /**
-     * Create the process with ports and wires
+     * Create the process with ports, schema types and lineage mappings
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user
@@ -375,12 +282,11 @@ public class DataEngineRESTServices {
         GUIDResponse response = new GUIDResponse();
 
         try {
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
-            PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
-
             List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
 
-            portGUIDs.addAll(createPortAliases(userId, portAliases, portHandler));
+            portGUIDs.addAll(createPortAliases(userId, portAliases, serverName));
+
+            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
             String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
                     latestChange, zoneMembership, displayName, formula, owner, ownerType);
@@ -389,11 +295,7 @@ public class DataEngineRESTServices {
                 processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
             }
 
-            if (CollectionUtils.isNotEmpty(lineageMappings)) {
-                for (LineageMapping lineageMapping : lineageMappings) {
-                    createLineageMapping(userId, serverName, lineageMapping);
-                }
-            }
+            createLineageMappings(userId, serverName, lineageMappings);
 
             response.setGUID(processGuid);
 
@@ -448,7 +350,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
     }
@@ -474,9 +376,7 @@ public class DataEngineRESTServices {
 
         VoidResponse response = new VoidResponse();
         try {
-            for (LineageMapping lineageMapping : lineageMappingsRequestBody.getLineageMappings()) {
-                createLineageMapping(userId, serverName, lineageMapping);
-            }
+            createLineageMappings(userId, serverName, lineageMappingsRequestBody.getLineageMappings());
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -485,7 +385,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
     }
@@ -500,16 +400,23 @@ public class DataEngineRESTServices {
 
         if (CollectionUtils.isNotEmpty(portImplementations)) {
             for (PortImplementation portImplementation : portImplementations) {
-                portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName, portImplementation));
+                portImplementationGUIDs.add(createPortImplementationWithSchemaType(userId, serverName,
+                        portImplementation));
             }
         }
         return portImplementationGUIDs;
     }
 
-    private List<String> createPortAliases(String userId, List<PortAlias> portAliases, PortHandler portHandler) throws
-                                                                                                                InvalidParameterException,
-                                                                                                                PropertyServerException,
-                                                                                                                UserNotAuthorizedException {
+    private List<String> createPortAliases(String userId, List<PortAlias> portAliases, String serverName) throws
+                                                                                                          InvalidParameterException,
+                                                                                                          PropertyServerException,
+                                                                                                          UserNotAuthorizedException {
+        final String methodName = "createPortAliases";
+
+        log.debug("Calling method: {}", methodName);
+
+        PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
+
         List<String> portAliasGUIDs = new ArrayList<>();
 
         if (CollectionUtils.isNotEmpty(portAliases)) {
@@ -521,19 +428,25 @@ public class DataEngineRESTServices {
         return portAliasGUIDs;
     }
 
-    private void createLineageMapping(String userId, String serverName, LineageMapping lineageMapping) throws
-                                                                                                       InvalidParameterException,
-                                                                                                       UserNotAuthorizedException,
-                                                                                                       PropertyServerException {
-        final String methodName = "createLineageMapping";
+    private void createLineageMappings(String userId, String serverName, List<LineageMapping> lineageMappings) throws
+                                                                                                               InvalidParameterException,
+                                                                                                               UserNotAuthorizedException,
+                                                                                                               PropertyServerException {
+        final String methodName = "createLineageMappings";
 
         log.debug("Calling method: {}", methodName);
+
+        if (CollectionUtils.isEmpty(lineageMappings)) {
+            return;
+        }
 
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceColumn(),
-                lineageMapping.getTargetColumn());
+        for (LineageMapping lineageMapping : lineageMappings) {
+            dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceColumn(),
+                    lineageMapping.getTargetColumn());
+        }
     }
 
     private String createSchemaType(String userId, String serverName, SchemaType schemaType) throws

@@ -23,11 +23,11 @@ import org.springframework.util.StringUtils;
  * and creates port entities with wire relationships through the OMRSRepositoryConnector.
  */
 public class PortHandler {
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
+    private final String serviceName;
+    private final String serverName;
+    private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -148,7 +148,7 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addPortDelegationRelationship(String userId, String firstPortGUID, String secondPortGUID) throws
+    private void addPortDelegationRelationship(String userId, String firstPortGUID, String secondPortGUID) throws
                                                                                                           InvalidParameterException,
                                                                                                           UserNotAuthorizedException,
                                                                                                           PropertyServerException {

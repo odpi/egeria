@@ -16,8 +16,8 @@ import java.util.Map;
  * ProcessPropertiesBuilder is able to build the properties for an Process entity.
  */
 public class ProcessPropertiesBuilder extends AssetBuilder {
-    private String processDisplayName;
-    private String formula;
+    private final String processDisplayName;
+    private final String formula;
 
     public ProcessPropertiesBuilder(String qualifiedName, String displayName, String processDisplayName,
                                     String description, String owner, OwnerType ownerType, List<String> zoneMembership,

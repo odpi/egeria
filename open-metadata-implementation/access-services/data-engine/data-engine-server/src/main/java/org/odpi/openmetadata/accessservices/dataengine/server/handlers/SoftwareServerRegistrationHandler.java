@@ -19,11 +19,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * OMRSRepositoryConnector.
  */
 public class SoftwareServerRegistrationHandler {
-    private String serviceName;
-    private String serverName;
-    private RepositoryHandler repositoryHandler;
-    private OMRSRepositoryHelper repositoryHelper;
-    private InvalidParameterHandler invalidParameterHandler;
+    private final String serviceName;
+    private final String serverName;
+    private final RepositoryHandler repositoryHandler;
+    private final OMRSRepositoryHelper repositoryHelper;
+    private final InvalidParameterHandler invalidParameterHandler;
 
 
     /**

@@ -571,7 +571,7 @@ public class SchemaTypeHandler
             return this.findSchemaAttribute(userId,
                                        schemaAttribute.getGUID(),
                                        schemaAttribute.getQualifiedName(),
-                                       null,
+                                       schemaAttribute.getAttributeName(),
                                        methodName);
         }
 
