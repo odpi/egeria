@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -31,11 +32,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.ATTRIBUTE_FOR_SCHEMA;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ATTRIBUTE_TYPE;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_LABELS;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
@@ -59,13 +62,40 @@ class SecurityOfficerInstanceHandler {
         SecurityOfficerRegistration.registerAccessService();
     }
 
+    SecurityClassification getSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+        OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
+
+        EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, schemaElementId);
+        List<Classification> classifications = entityDetail.getClassifications();
+        Optional<Classification> securityTag = classifications.stream().filter(classification -> isSecurityTag(classification.getName())).findAny();
+
+        OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
+        return securityTag.map(classification -> builder.buildSecurityTag(classification, repositoryHelper)).orElse(null);
+
+    }
+
+    List<SchemaElementEntity> updateSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) throws PropertyServerException, RepositoryErrorException, ClassificationErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, EntityProxyOnlyException, TypeDefNotKnownException, TypeErrorException, PagingErrorException {
+        OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
+
+        InstanceProperties instanceProperties = getInstanceProperties(serverName, securityClassification);
+        EntityDetail schemaElement = metadataCollection.getEntityDetail(userId, schemaElementId);
+
+        List<SchemaElementEntity> result = new ArrayList<>();
+        SchemaElementEntity schemaElementEntity = updateSecurityTagsClassificationForEntity(serverName, userId, metadataCollection, instanceProperties, schemaElement);
+        result.add(schemaElementEntity);
+
+        updateColumns(serverName, userId, metadataCollection, instanceProperties, schemaElement, result);
+
+        return result;
+    }
+
     /**
      * Return the repository connector for this server.
      *
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException {
+    private OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException {
         SecurityOfficerServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
@@ -85,31 +115,76 @@ class SecurityOfficerInstanceHandler {
         }
     }
 
-
-    SecurityClassification getSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
-        OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
-
-        EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, schemaElementId);
-        List<Classification> classifications = entityDetail.getClassifications();
-        Optional<Classification> securityTag = classifications.stream().filter(classification -> classification.getName().equals(SECURITY_TAGS)).findAny();
-
-        OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
-        return securityTag.map(classification -> builder.buildSecurityTag(classification, repositoryHelper)).orElse(null);
-
+    private void updateColumns(String serverName, String userId, OMRSMetadataCollection metadataCollection, InstanceProperties instanceProperties, EntityDetail schemaElement, List<SchemaElementEntity> result) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, PagingErrorException, EntityNotKnownException, FunctionNotSupportedException, PropertyErrorException, ClassificationErrorException, PropertyServerException {
+        if (isRelationalTable(schemaElement.getType().getTypeDefName())) {
+            List<EntityDetail> columns = getColumns(metadataCollection, userId, schemaElement);
+            for (EntityDetail column : columns) {
+                SchemaElementEntity columnUpdated = updateSecurityTagsClassificationForEntity(serverName, userId, metadataCollection, instanceProperties, column);
+                result.add(columnUpdated);
+            }
+        }
     }
 
-    SchemaElementEntity updateSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) throws PropertyServerException, RepositoryErrorException, ClassificationErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, EntityProxyOnlyException {
-        OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
+    private List<EntityDetail> getColumns(OMRSMetadataCollection metadataCollection, String userId, EntityDetail schemaElement) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, PagingErrorException, EntityNotKnownException, FunctionNotSupportedException, PropertyErrorException {
+        List<Relationship> tableTypeRelationship = getRelationshipsByType(metadataCollection, userId, schemaElement.getGUID(), SCHEMA_ATTRIBUTE_TYPE);
 
-        InstanceProperties instanceProperties = getInstanceProperties(serverName, securityClassification);
-        EntityDetail schemaElement = metadataCollection.getEntityDetail(userId, schemaElementId);
+        if (tableTypeRelationship != null && tableTypeRelationship.size() == 1) {
+            EntityDetail tableType = getEntity(userId, metadataCollection, schemaElement.getGUID(), tableTypeRelationship.get(0));
+            if (tableType == null) {
+                return Collections.emptyList();
+            }
+            List<Relationship> columnsRelationships = getRelationshipsByType(metadataCollection, userId, tableType.getGUID(), ATTRIBUTE_FOR_SCHEMA);
 
+            return columnsRelationships.stream().map(columnsRelationship -> getEntity(userId, metadataCollection, tableType.getGUID(), columnsRelationship)).collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
+
+    private List<Relationship> getRelationshipsByType(OMRSMetadataCollection metadataCollection, String userId, String entityGUID, String type) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, EntityNotKnownException, FunctionNotSupportedException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        String schemaAttributeTypeGuid = getTypeGUID(metadataCollection, userId, type);
+        return getRelationships(userId, metadataCollection, schemaAttributeTypeGuid, entityGUID);
+    }
+
+    private EntityDetail getEntity(String userId, OMRSMetadataCollection metadataCollection, String knownId, Relationship relationship) {
+        String tableTypeGuid = relationship.getEntityTwoProxy().getGUID().equals(knownId) ?
+                relationship.getEntityOneProxy().getGUID() : relationship.getEntityTwoProxy().getGUID();
+        try {
+            return metadataCollection.getEntityDetail(userId, tableTypeGuid);
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+            //logger
+        }
+        return null;
+    }
+
+    private List<Relationship> getRelationships(String userId, OMRSMetadataCollection metadataCollection, String relationshipTypeGUID, String entityGuid) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+
+        return metadataCollection.getRelationshipsForEntity(userId,
+                entityGuid,
+                relationshipTypeGUID,
+                0,
+                null,
+                null,
+                null,
+                null,
+                0);
+    }
+
+    private boolean isRelationalTable(String typeDefName) {
+        return typeDefName.equals(RELATIONAL_TABLE);
+    }
+
+    private boolean isSecurityTag(String name) {
+        return SECURITY_TAGS.equals(name);
+    }
+
+    private SchemaElementEntity updateSecurityTagsClassificationForEntity(String serverName, String userId, OMRSMetadataCollection metadataCollection, InstanceProperties instanceProperties,
+                                                                          EntityDetail schemaElement) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException, FunctionNotSupportedException, PropertyServerException {
         EntityDetail entityDetail;
         if (schemaElement.getClassifications() != null && !schemaElement.getClassifications().isEmpty()) {
-            entityDetail = metadataCollection.updateEntityClassification(userId, schemaElementId, SECURITY_TAGS, instanceProperties);
+            entityDetail = metadataCollection.updateEntityClassification(userId, schemaElement.getGUID(), SECURITY_TAGS, instanceProperties);
 
         } else {
-            entityDetail = metadataCollection.classifyEntity(userId, schemaElementId, SECURITY_TAGS, instanceProperties);
+            entityDetail = metadataCollection.classifyEntity(userId, schemaElement.getGUID(), SECURITY_TAGS, instanceProperties);
         }
 
         OMRSRepositoryHelper omrsRepositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
@@ -119,26 +194,16 @@ class SecurityOfficerInstanceHandler {
     List<SecurityClassification> getAvailableSecurityTags(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, ClassificationErrorException, PagingErrorException, PropertyErrorException {
         OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
 
-        String entityTypeGuid = getSchemaElementTypeGUID(metadataCollection, userId);
+        String entityTypeGuid = getTypeGUID(metadataCollection, userId, SCHEMA_ELEMENT);
         if (entityTypeGuid == null) {
             return Collections.emptyList();
         }
 
         List<EntityDetail> entitiesWithSecurityTagsAssigned = findEntitiesWithSecurityTagsAssigned(userId, metadataCollection, entityTypeGuid);
 
-        Set<SecurityClassification> classificationSet = new HashSet<>();
         OMRSRepositoryHelper omrsRepositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
 
-        for (EntityDetail entityDetail : entitiesWithSecurityTagsAssigned) {
-            for (Classification classification : entityDetail.getClassifications()) {
-                if (classification.getName().equals(SECURITY_TAGS)) {
-                    SecurityClassification securityClassification = builder.buildSecurityTag(classification, omrsRepositoryHelper);
-                    classificationSet.add(securityClassification);
-                }
-            }
-        }
-
-        return new ArrayList<>(classificationSet);
+        return entitiesWithSecurityTagsAssigned.stream().flatMap(entityDetail -> entityDetail.getClassifications().stream()).filter(classification -> isSecurityTag(classification.getName())).map(classification -> builder.buildSecurityTag(classification, omrsRepositoryHelper)).distinct().collect(Collectors.toList());
     }
 
     private List<EntityDetail> findEntitiesWithSecurityTagsAssigned(String userId, OMRSMetadataCollection metadataCollection, String entityTypeGuid) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException {
@@ -155,8 +220,8 @@ class SecurityOfficerInstanceHandler {
                 0);
     }
 
-    private String getSchemaElementTypeGUID(OMRSMetadataCollection metadataCollection, String userId) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException {
-        TypeDef typeDefByName = metadataCollection.getTypeDefByName(userId, SCHEMA_ELEMENT);
+    private String getTypeGUID(OMRSMetadataCollection metadataCollection, String userId, String typeName) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException {
+        TypeDef typeDefByName = metadataCollection.getTypeDefByName(userId, typeName);
         if (typeDefByName != null) {
             return typeDefByName.getGUID();
         }
