@@ -4,9 +4,9 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-material/paper-material.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-import './spinner.js';
+import '../../spinner.js';
+import '../../token-ajax.js';
 import './property-widget.js';
-import './token-ajax.js';
 
 import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
@@ -98,6 +98,11 @@ class PropertyPane extends PolymerElement {
               type: String,
               notify: true
             },
+            pluralName: {
+              type: String,
+              notify: true,
+               computed: 'computePluralName(name)',
+                        },
             artifact: {
               type: Object,
               notify: true,
@@ -128,24 +133,24 @@ class PropertyPane extends PolymerElement {
          console.log("subject-area-view property changed, guid =" + item.guid + ",value="+item.value);
          //kick off the rest call to do the update.
          var body = {};
-          // TODO remove Glossary hard coding
-         body.class = "Glossary";
-          // TODO remove Glossary hard coding
-         body.nodeType =  "Glossary";
+          // aasume the name wee are passed is the json file name, the class and nodetype
+         body.class = this.name;
+         body.nodeType =  this.name;
          body[item.name] = item.value;
          var sa = {};
          sa.guid=  item.guid;
          body.systemAttributes = sa;
          this.$.updatePropertiesAjax.body = body;
-          // TODO remove glossaries hard coding
-         this.$.updatePropertiesAjax.url = "/api/subject-area/glossaries/"+ item.guid;
+         this.$.updatePropertiesAjax.url = "/api/" +this.component + "/" + this.pluralName + "/"+ item.guid;
          this.$.updatePropertiesAjax._go();
     }
     _handlePropertyUpdated(updateResponse) {
          //  update the artifact to force a redraw.
-         // TODO remove glossary hard coding
-         if (updateResponse.glossary) {
-             this.artifact = updateResponse.glossary;
+         // assume that the response key is the lower cased version of the name.
+         var responseKey = this.name.toLowerCase()
+
+         if (updateResponse[responseKey]) {
+             this.artifact = updateResponse[responseKey];
          }
     }
 
@@ -191,6 +196,19 @@ class PropertyPane extends PolymerElement {
             }
         }
         return valuedProps;
+    }
+    /**
+     * create a lower case plural version of the name for use in rest calls. Rest calls are assumed to use plurals to represent the resource in the url.
+     */
+    computePluralName(singular) {
+        var plural;
+        if (singular.endsWith('y')) {
+            // remove y and add ie
+            plural = singular.substring(0,singular.length-1) +"ie";
+            plural = plural.toLowerCase();
+        }
+        plural = plural + 's';
+        return plural;
     }
 
  /**
