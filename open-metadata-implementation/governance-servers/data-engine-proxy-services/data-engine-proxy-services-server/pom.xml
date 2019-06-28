@@ -24,31 +24,26 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-proxy-connector</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
