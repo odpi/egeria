@@ -15,8 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class PortPropertiesBuilder extends ReferenceableBuilder {
 
-    private String displayName;
-    private PortType portType;
+    private final String displayName;
+    private final PortType portType;
 
     /**
      * Constructor

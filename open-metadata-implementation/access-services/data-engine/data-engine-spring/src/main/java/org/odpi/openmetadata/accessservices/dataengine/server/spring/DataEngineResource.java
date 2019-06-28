@@ -119,41 +119,6 @@ public class DataEngineResource {
     }
 
     /**
-     * Create the Port Alias entity with a PortDelegation relationship to another Port Alias
-     *
-     * @param serverName    name of server instance to call
-     * @param userId        the name of the calling user
-     * @param portAliasGUID the unique identifier of the existing port alias
-     *
-     * @return unique identifier of the created port alias
-     */
-    @PostMapping(path = "/port-aliases/of-port-alias/{portAliasGUID}")
-    public GUIDResponse createPortAliasOfPortAlias(@PathVariable("userId") String userId,
-                                                   @PathVariable("serverName") String serverName,
-                                                   @PathVariable("portAliasGUID") String portAliasGUID,
-                                                   @RequestBody PortAliasRequestBody portAliasRequestBody) {
-        return restAPI.createPortAliasOfPortAlias(userId, serverName, portAliasRequestBody, portAliasGUID);
-    }
-
-    /**
-     * Create the Port Implementation entity with a PortDelegation relationship to another Port Alias
-     *
-     * @param serverName    name of server instance to call
-     * @param userId        the name of the calling user
-     * @param portAliasGUID the unique identifier of the existing port alias
-     *
-     * @return unique identifier of the created port implementation
-     */
-    @PostMapping(path = "/port-implementations/of-port-alias/{portAliasGUID}")
-    public GUIDResponse createPortImplementationOfPortAlias(@PathVariable("userId") String userId,
-                                                            @PathVariable("serverName") String serverName,
-                                                            @PathVariable("portAliasGUID") String portAliasGUID,
-                                                            @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
-        return restAPI.createPortImplementationOfPortAlias(userId, serverName, portImplementationRequestBody,
-                portAliasGUID);
-    }
-
-    /**
      * Create the Process entity with ports, schema types and all needed relationships
      *
      * @param serverName         name of server instance to call

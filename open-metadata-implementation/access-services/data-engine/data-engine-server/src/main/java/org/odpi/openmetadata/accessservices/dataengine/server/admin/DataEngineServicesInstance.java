@@ -12,7 +12,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ import java.util.List;
  * It is also responsible for registering itself in the instance map.
  */
 class DataEngineServicesInstance extends OCFOMASServiceInstance {
-    private static AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
+    private static final AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
 
     private ProcessHandler processHandler;
     private SoftwareServerRegistrationHandler softwareServerRegistrationHandler;

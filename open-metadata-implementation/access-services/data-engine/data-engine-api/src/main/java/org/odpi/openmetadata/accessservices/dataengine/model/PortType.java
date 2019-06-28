@@ -90,7 +90,10 @@ public enum PortType implements Serializable {
      */
     @Override
     public String toString() {
-        return "GovernanceDomain : " + name;
-    }
-}
+        return "PortType{" +
+                "ordinal=" + ordinal +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }}
 

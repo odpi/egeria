@@ -14,12 +14,12 @@ import java.util.Map;
 
 public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
 
-    private String name;
-    private String description;
-    private String type;
-    private String version;
-    private String source;
-    private String patchLevel;
+    private final String name;
+    private final String description;
+    private final String type;
+    private final String version;
+    private final String source;
+    private final String patchLevel;
 
     /**
      * Constructor supporting all properties.
