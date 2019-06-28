@@ -22,7 +22,7 @@
 
     <artifactId>open-lineage-services-server</artifactId>
     <properties>
-        <janusgraph.version>0.3.0</janusgraph.version>
+        <janusgraph.version>0.3.1</janusgraph.version>
         <tinkerpop.version>3.3.3</tinkerpop.version>
     </properties>
     <dependencies>
