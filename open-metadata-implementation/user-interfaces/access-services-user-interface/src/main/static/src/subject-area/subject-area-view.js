@@ -26,7 +26,7 @@ import "@vaadin/vaadin-button/vaadin-button.js";
 import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
-import '../property-pane.js';
+import './property-pane/property-pane.js';
 import './glossary-selector.js';
 import './project-selector.js';
 /**
@@ -51,7 +51,7 @@ class SubjectAreaView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
          <p>
          <project-selector id='projectSelector'></project-selector>
          <p>
-         <property-pane id="selected-artifact" name="glossary" artifact="{{selectedGlossary}}" component="subjectarea"></property-pane>
+         <property-pane id="selected-artifact" name="Glossary" artifact="{{selectedGlossary}}" component="subject-area"></property-pane>
        </div>
   `;
    }
@@ -75,7 +75,7 @@ class SubjectAreaView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
   attached() {
         this.loadResources(
                // The specified file only contains the flattened translations for that language:
-               "locales/subjectarea/" + this.language + ".json",  //e.g. for es {"hi": "hola"}
+               "locales/subject-area/" + this.language + ".json",  //e.g. for es {"hi": "hola"}
                this.language,               // unflatten -> {"es": {"hi": "hola"}}
                true                // merge so existing resources won't be clobbered
              );
