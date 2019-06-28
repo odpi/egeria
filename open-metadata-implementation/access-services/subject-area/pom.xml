@@ -22,7 +22,6 @@
     </description>
 
     <artifactId>subject-area</artifactId>
-    <version>1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>subject-area-api</module>

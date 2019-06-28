@@ -18,14 +18,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-officer-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
