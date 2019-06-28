@@ -63,6 +63,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
 </project>
