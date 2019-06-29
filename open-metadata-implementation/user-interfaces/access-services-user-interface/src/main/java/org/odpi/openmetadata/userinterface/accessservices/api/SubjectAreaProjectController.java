@@ -244,6 +244,9 @@ public class SubjectAreaProjectController extends SecureController
         SubjectAreaOMASAPIResponse response=null;
         try {
             Project updatedProject;
+            if (isReplace == null){
+                isReplace = false;
+            }
             if (isReplace) {
                 updatedProject = this.subjectAreaProject.replaceProject(serverName, userId, guid, project);
             } else {
