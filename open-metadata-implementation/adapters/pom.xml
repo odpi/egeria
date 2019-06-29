@@ -37,23 +37,6 @@
 
         <!-- File I/O processing -->
 
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>${commons-io.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-            <version>${commons-collections.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <version>${maven-antrun.version}</version>
-        </dependency>
     </dependencies>
 
     <!-- The following steps obtain the required Gaian libraries by retrieving, unpacking the distribution and installing into the local maven repo -->

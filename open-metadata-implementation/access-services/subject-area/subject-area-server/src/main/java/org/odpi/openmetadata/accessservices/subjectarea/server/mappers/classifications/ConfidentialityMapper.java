@@ -42,19 +42,14 @@ public class ConfidentialityMapper extends ClassificationMapper{
         stringValue = repositoryHelper.getStringProperty(omrsapiHelper.getServiceName(),"notes",omrsClassificationProperties,"");
         confidentiality.setNotes(stringValue);
 
-        Integer intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidentiality",omrsClassificationProperties,"");
+        Integer intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"confidence",omrsClassificationProperties,"");
         confidentiality.setConfidence(intValue);
+        intValue  = repositoryHelper.getIntProperty(omrsapiHelper.getServiceName(),"level",omrsClassificationProperties,"");
+        confidentiality.setLevel(intValue);
 
         // map enums
         Map<String, InstancePropertyValue> instancePropertyMap = omrsClassificationProperties.getInstanceProperties();
-        InstancePropertyValue instancePropertyValue = instancePropertyMap.get("level");
-        if (instancePropertyValue!=null) {
-            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
-            ConfidentialityLevel level = ConfidentialityLevel.valueOf(enumPropertyValue.getSymbolicName());
-            confidentiality.setLevel(level);
-        }
-
-        instancePropertyValue = instancePropertyMap.get("status");
+        InstancePropertyValue instancePropertyValue = instancePropertyMap.get("status");
         if (instancePropertyValue!=null) {
             EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
             GovernanceClassificationStatus status = GovernanceClassificationStatus.valueOf(enumPropertyValue.getSymbolicName());
@@ -90,19 +85,15 @@ public class ConfidentialityMapper extends ClassificationMapper{
         }
 
         if (confidentiality.getConfidence()!=null) {
-            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-            primitivePropertyValue.setPrimitiveValue(confidentiality.getConfidence());
-            instanceProperties.setProperty("confidentiality", primitivePropertyValue);
+            repositoryHelper.addIntPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"confidence",confidentiality.getConfidence(),"updateOMRSAttributes");
         }
         if (confidentiality.getLevel()!=null) {
-            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
-            enumPropertyValue.setOrdinal(confidentiality.getLevel().getOrdinal());
-            instanceProperties.setProperty("level",enumPropertyValue);
+            repositoryHelper.addIntPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"level",confidentiality.getLevel(),"updateOMRSAttributes");
         }
         if (confidentiality.getStatus()!=null) {
             EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
             enumPropertyValue.setOrdinal(confidentiality.getStatus().getOrdinal());
+            enumPropertyValue.setSymbolicName(confidentiality.getStatus().getName());
             instanceProperties.setProperty("status",enumPropertyValue);
         }
 

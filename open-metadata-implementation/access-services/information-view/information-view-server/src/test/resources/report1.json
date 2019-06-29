@@ -1,6 +1,6 @@
 {
   "class": "ReportRequestBody",
-  "registrationGuid": "registration-guid",
+  "registrationQualifiedName": "registration-qualified-name",
   "report": {
     "sources": [{
       "@id": "0",
