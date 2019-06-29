@@ -4,20 +4,15 @@ package org.odpi.openmetadata.governanceservers.openlineage.performanceTesting;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.structure.io.IoCore;
-import org.janusgraph.core.JanusGraph;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.janusGraph;
-import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
 
 public class TestGraphGenerator {
 
@@ -40,14 +35,14 @@ public class TestGraphGenerator {
     }
 
     private void setProperties() {
-        this.numberGlossaryTerms = 0;
-        this.numberFlows = 2;
+        this.numberGlossaryTerms = 3;
+        this.numberFlows = 1;
         this.processesPerFlow = 2;
-        this.columnsPerTable = 2;
+        this.columnsPerTable = 3;
 
         this.tablesPerFlow = processesPerFlow + 1;
-        this.numberProcesses = numberFlows * processesPerFlow;
         this.numberTables = numberFlows * tablesPerFlow;
+        this.numberProcesses = numberFlows * processesPerFlow;
 
         nodes.add("table");
         nodes.add("column");
