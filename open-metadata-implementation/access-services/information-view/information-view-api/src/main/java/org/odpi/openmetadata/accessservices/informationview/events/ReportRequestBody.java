@@ -18,6 +18,7 @@ public class ReportRequestBody extends InformationViewHeader {
 
     private DeployedReport report;
     private String registrationGuid;
+    private String registrationQualifiedName;
 
     public DeployedReport getReport() {
         return report;
@@ -35,11 +36,21 @@ public class ReportRequestBody extends InformationViewHeader {
         this.registrationGuid = registrationGuid;
     }
 
+
+    public String getRegistrationQualifiedName() {
+        return registrationQualifiedName;
+    }
+
+    public void setRegistrationQualifiedName(String registrationQualifiedName) {
+        this.registrationQualifiedName = registrationQualifiedName;
+    }
+
     @Override
     public String toString() {
         return "{" +
                 "report=" + report +
                 ", registrationGuid='" + registrationGuid + '\'' +
+                ", registrationQualifiedName='" + registrationQualifiedName + '\'' +
                 '}';
     }
 }

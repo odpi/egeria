@@ -16,21 +16,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class GlossaryViewAdmin extends AccessServiceAdmin {
 
     private OMRSAuditLog auditLog;
-    private GlossaryViewServicesInstance instance;
+    private GlossaryViewServiceInstance instance;
+    private String serverName;
 
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector         connector for receiving OMRS Events from the cohorts
-     * @param repositoryConnector                  connector for querying the cohort repositories
-     * @param auditLog                             audit log component for logging messages.
-     * @param serverUserName                       user id to use on OMRS calls where there is no end user.
+     * @param accessServiceConfig           specific configuration properties for this access service.
+     * @param enterpriseOMRSTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector           connector for querying the cohort repositories
+     * @param auditLog                      audit log component for logging messages.
+     * @param serverUserName                user id to use on OMRS calls where there is no end user.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
-                           OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector repositoryConnector,
-                           OMRSAuditLog auditLog, String serverUserName) {
+    public void initialize(AccessServiceConfig accessServiceConfig, OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverUserName) {
         final String actionDescription = "initialize Glossary View OMAS";
         this.auditLog = auditLog;
 
@@ -41,8 +41,8 @@ public class GlossaryViewAdmin extends AccessServiceAdmin {
                     auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            instance = new GlossaryViewServicesInstance(repositoryConnector);
-            String serverName = instance.getServerName();
+            instance = new GlossaryViewServiceInstance(repositoryConnector, auditLog);
+            serverName = instance.getServerName();
 
             auditCode = GlossaryViewAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
@@ -72,7 +72,7 @@ public class GlossaryViewAdmin extends AccessServiceAdmin {
             GlossaryViewAuditCode auditCode = GlossaryViewAuditCode.SERVICE_SHUTDOWN;
 
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
+                    auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
     }

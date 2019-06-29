@@ -1,18 +1,18 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-import '../../node_modules/@polymer/paper-input/paper-input.js';
-import '../../node_modules/@polymer/paper-material/paper-material.js';
-import '../../node_modules/@polymer/iron-form/iron-form.js';
-import '../../node_modules/@polymer/iron-a11y-keys/iron-a11y-keys.js';
-import '../../node_modules/@polymer/paper-button/paper-button.js';
-import '../../node_modules/@polymer/paper-styles/paper-styles.js';
-import '../../node_modules/@polymer/paper-input/paper-input-behavior.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
-import '../../node_modules/@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
+import '@polymer/paper-input/paper-input.js';
+import '@polymer/paper-material/paper-material.js';
+import '@polymer/iron-form/iron-form.js';
+import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
+import '@polymer/paper-button/paper-button.js';
+import '@polymer/paper-styles/paper-styles.js';
+import '@polymer/paper-input/paper-input-behavior.js';
+import '@vaadin/vaadin-grid/vaadin-grid.js';
+import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
+import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 
-import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polymer-element.js";
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
 

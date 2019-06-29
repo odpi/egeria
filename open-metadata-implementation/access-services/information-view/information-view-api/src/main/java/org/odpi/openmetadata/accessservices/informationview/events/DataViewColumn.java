@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -21,7 +23,7 @@ public class DataViewColumn extends DataViewElement {
     private String dataType;
     private String hidden;
     private String columnGuid;
-    private String businessTermGuid;
+    private List<String> businessTermGuids;
     private DataViewSource dataViewSource;
 
     public String getRegularAggregate() {
@@ -73,12 +75,12 @@ public class DataViewColumn extends DataViewElement {
         this.columnGuid = columnGuid;
     }
 
-    public String getBusinessTermGuid() {
-        return businessTermGuid;
+    public List<String> getBusinessTermGuids() {
+        return businessTermGuids;
     }
 
-    public void setBusinessTermGuid(String businessTermGuid) {
-        this.businessTermGuid = businessTermGuid;
+    public void setBusinessTermGuids(List<String> businessTermGuids) {
+        this.businessTermGuids = businessTermGuids;
     }
 
     public DataViewSource getDataViewSource() {
@@ -99,7 +101,7 @@ public class DataViewColumn extends DataViewElement {
                 ", dataType='" + dataType + '\'' +
                 ", hidden='" + hidden + '\'' +
                 ", columnGuid='" + columnGuid + '\'' +
-                ", businessTermGuid='" + businessTermGuid + '\'' +
+                ", businessTermGuids='" + businessTermGuids + '\'' +
                 ", dataViewSource=" + dataViewSource +
                 '}';
     }
