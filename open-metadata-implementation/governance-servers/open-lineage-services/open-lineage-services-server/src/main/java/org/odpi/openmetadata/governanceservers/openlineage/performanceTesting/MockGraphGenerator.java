@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.janusGraph;
+import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
 
 public class TestGraphGenerator {
 
@@ -65,7 +65,7 @@ public class TestGraphGenerator {
         List<Vertex> glossaryNodes = new ArrayList<>();
         List<List<Vertex>> tableNodes = new ArrayList<>();
 
-        GraphTraversalSource g = janusGraph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         for (int i = 0; i < numberGlossaryTerms; i++)
             glossaryNodes.add(g.addV("Glossary term").next());
