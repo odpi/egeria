@@ -3,9 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.TestGraphGenerator;
+import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 
@@ -37,11 +36,11 @@ class OpenLineageInstanceHandler
                 errorCode.getUserAction());
     }
 
-    public TestGraphGenerator testGraphGenerator(String serverName) throws PropertyServerException {
+    public MockGraphGenerator testGraphGenerator(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getTestGraphGenerator();
+            return instance.getMockGraphGenerator();
         } else {
             final String methodName = "queryHandler";
             throwError(serverName, methodName);

@@ -81,7 +81,7 @@ omag.server.*.config
 *.graphml
 
 # Ignore Lineage repository
-egeria-lineage-repository/
+egeria-lineage-repositories/**
 
 # Ignore local graph repo
 egeria-graph-repository/**

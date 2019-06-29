@@ -12,12 +12,13 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
+import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mockGraph;
 
-public class TestGraphGenerator {
+public class MockGraphGenerator {
 
-    private static final Logger log = LoggerFactory.getLogger(TestGraphGenerator.class);
+    private static final Logger log = LoggerFactory.getLogger(MockGraphGenerator.class);
 
+    private boolean simpleGraph;
     private int numberGlossaryTerms;
     private int numberTables;
     private int processesPerFlow;
@@ -30,11 +31,14 @@ public class TestGraphGenerator {
     private List<String> properties = new ArrayList<>();
 
 
-    public TestGraphGenerator() {
+    public MockGraphGenerator() {
         setProperties();
     }
 
     private void setProperties() {
+
+        this.simpleGraph = true;
+
         this.numberGlossaryTerms = 3;
         this.numberFlows = 1;
         this.processesPerFlow = 2;
@@ -55,9 +59,20 @@ public class TestGraphGenerator {
     }
 
     public void generate() {
-        if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
+        if(simpleGraph){
+            GraphTraversalSource g = mockGraph.traversal();
+            Vertex v1 = g.addV("node1").next();
+            Vertex v2 = g.addV("node2").next();
+            Vertex v3 = g.addV("node3").next();
+            Vertex v4 = g.addV("node4").next();
+            v1.addEdge("edge1to2", v2);
+            v3.addEdge("edge3to4", v4);
+            g.tx().commit();
+        }
+        else if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
             generateVerbose();
         }
+
     }
 
     private void generateVerbose() {
@@ -65,7 +80,7 @@ public class TestGraphGenerator {
         List<Vertex> glossaryNodes = new ArrayList<>();
         List<List<Vertex>> tableNodes = new ArrayList<>();
 
-        GraphTraversalSource g = mainGraph.traversal();
+        GraphTraversalSource g = mockGraph.traversal();
 
         for (int i = 0; i < numberGlossaryTerms; i++)
             glossaryNodes.add(g.addV("Glossary term").next());
