@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.eventprocessors;
+package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
@@ -23,7 +23,7 @@ public class GraphFactory {
 
     public static JanusGraph openMainGraph() throws RepositoryErrorException {
         final String storagePath = "./egeria-lineage-repositories/main/berkeley";
-        final String indexPath = "./egeria-lineage-repository/main/searchindex";
+        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
 
         return getJanusGraph(storagePath, indexPath);
     }
