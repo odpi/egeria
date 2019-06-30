@@ -23,11 +23,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelationshipCreateRequest extends OMRSAPIRequest
 {
-    private String             relationshipTypeGUID = null;
-    private InstanceProperties initialProperties = null;
-    private String             entityOneGUID = null;
-    private String             entityTwoGUID = null;
-    private InstanceStatus     initialStatus = null;
+    private String             relationshipTypeGUID   = null;
+    private InstanceProperties initialProperties      = null;
+    private String             entityOneGUID          = null;
+    private String             entityTwoGUID          = null;
+    private InstanceStatus     initialStatus          = null;
+    private String             metadataCollectionId   = null;
+    private String             metadataCollectionName = null;
 
 
     /**
@@ -51,6 +53,8 @@ public class RelationshipCreateRequest extends OMRSAPIRequest
         if (template != null)
         {
             this.relationshipTypeGUID = template.getRelationshipTypeGUID();
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.metadataCollectionName = template.getMetadataCollectionName();
             this.initialProperties = template.getInitialProperties();
             this.entityOneGUID = template.getEntityOneGUID();
             this.entityTwoGUID = template.getEntityTwoGUID();
@@ -177,6 +181,51 @@ public class RelationshipCreateRequest extends OMRSAPIRequest
 
 
     /**
+     * Return the metadata collection id for this new relationship
+     *
+     * @return guid
+     */
+    public String getMetadataCollectionId()
+    {
+        return metadataCollectionId;
+    }
+
+
+    /**
+     * Set up the metadata collection id for this new relationship.
+     * This field is optional for addRelationship and mandatory for addExternalRelationship.
+     *
+     * @param metadataCollectionId guid
+     */
+    public void setMetadataCollectionId(String metadataCollectionId)
+    {
+        this.metadataCollectionId = metadataCollectionId;
+    }
+
+
+    /**
+     * Return the name of the metadata collection for this new relationship.
+     *
+     * @return name
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
+     * Set up the name of the metadata collection for this new relationship.
+     *
+     * @param metadataCollectionName name
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -189,7 +238,9 @@ public class RelationshipCreateRequest extends OMRSAPIRequest
                 ", initialProperties=" + initialProperties +
                 ", entityOneGUID='" + entityOneGUID + '\'' +
                 ", entityTwoGUID='" + entityTwoGUID + '\'' +
-                ", initialStatus=" + initialStatus +
+                ", initialStatus=" + initialStatus + '\'' +
+                ", metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
                 '}';
     }
 
@@ -207,18 +258,20 @@ public class RelationshipCreateRequest extends OMRSAPIRequest
         {
             return true;
         }
-        if (!(objectToCompare instanceof RelationshipCreateRequest))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        RelationshipCreateRequest
-                that = (RelationshipCreateRequest) objectToCompare;
+        RelationshipCreateRequest that = (RelationshipCreateRequest) objectToCompare;
         return Objects.equals(getRelationshipTypeGUID(), that.getRelationshipTypeGUID()) &&
                 Objects.equals(getInitialProperties(), that.getInitialProperties()) &&
                 Objects.equals(getEntityOneGUID(), that.getEntityOneGUID()) &&
                 Objects.equals(getEntityTwoGUID(), that.getEntityTwoGUID()) &&
-                getInitialStatus() == that.getInitialStatus();
+                getInitialStatus() == that.getInitialStatus() &&
+                Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName());
     }
+
 
 
     /**
@@ -229,11 +282,7 @@ public class RelationshipCreateRequest extends OMRSAPIRequest
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getRelationshipTypeGUID(),
-                            getInitialProperties(),
-                            getEntityOneGUID(),
-                            getEntityTwoGUID(),
-                            getInitialStatus());
+        return Objects.hash(getRelationshipTypeGUID(), getInitialProperties(), getEntityOneGUID(), getEntityTwoGUID(),
+                            getInitialStatus(), getMetadataCollectionId(), getMetadataCollectionName());
     }
 }

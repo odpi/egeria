@@ -57,6 +57,37 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    public List<TypeDef>  getActiveTypeDefs()
+    {
+        final String methodName = "getActiveTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getActiveTypeDefs();
+    }
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    public List<AttributeTypeDef>  getActiveAttributeTypeDefs()
+    {
+        final String methodName = "getActiveAttributeTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getActiveAttributeTypeDefs();
+    }
+
+
+
+    /**
      * Return the list of typedefs known by the local repository.
      *
      * @return TypeDef gallery
@@ -108,25 +139,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         validateRepositoryContentManager(methodName);
 
         return repositoryContentManager.getAttributeTypeDefByName(sourceName, attributeTypeDefName);
-    }
-
-
-    /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param typeDefName unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    public TypeDefGallery getActiveTypesByWildCardName(String sourceName,
-                                                       String typeDefName)
-    {
-        final String methodName = "getActiveTypesByWildCardName";
-
-        validateRepositoryContentManager(methodName);
-
-        return repositoryContentManager.getActiveTypesByWildCardName(sourceName, typeDefName);
     }
 
 
@@ -637,88 +649,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         return repositoryContentManager.isTypeOf(sourceName, actualTypeName, expectedTypeName);
     }
 
-
-    /**
-     * Match the supplied external standard identifiers against the active types for this repository.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param standard name of the standard, null means any.
-     * @param organization name of the organization, null means any.
-     * @param identifier identifier of the element in the standard, null means any.
-     * @param methodName method receiving the call
-     * @return list of typeDefs
-     */
-    public  List<TypeDef> getMatchingActiveTypes(String sourceName,
-                                                 String standard,
-                                                 String organization,
-                                                 String identifier,
-                                                 String methodName)
-    {
-        List<TypeDef>  matchingTypes = new ArrayList<>();
-        TypeDefGallery typeDefGallery = this.getActiveTypeDefGallery();
-
-        if (typeDefGallery != null)
-        {
-            for (TypeDef activeTypeDef : typeDefGallery.getTypeDefs())
-            {
-                /*
-                 * Extract all of the external standards mappings from the TypeDef.  They are located in the TypeDef
-                 * itself and in the TypeDefAttributes.
-                 */
-                List<ExternalStandardMapping>  externalStandardMappings = new ArrayList<>();
-
-                if (activeTypeDef.getExternalStandardMappings() != null)
-                {
-                    externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
-                }
-
-                List<TypeDefAttribute>  typeDefAttributes = activeTypeDef.getPropertiesDefinition();
-
-                if (typeDefAttributes != null)
-                {
-                    for (TypeDefAttribute  typeDefAttribute : typeDefAttributes)
-                    {
-                        if ((typeDefAttribute != null) && (typeDefAttribute.getExternalStandardMappings() != null))
-                        {
-                            externalStandardMappings.addAll(activeTypeDef.getExternalStandardMappings());
-                        }
-                    }
-                }
-
-                /*
-                 * Look for matching standards
-                 */
-                for (ExternalStandardMapping externalStandardMapping : externalStandardMappings)
-                {
-                    String activeTypeDefStandardName = externalStandardMapping.getStandardName();
-                    String activeTypeDefStandardOrgName = externalStandardMapping.getStandardOrganization();
-                    String activeTypeDefStandardIdentifier = externalStandardMapping.getStandardTypeName();
-
-                    if ((activeTypeDefStandardName != null) && (activeTypeDefStandardName.equals(standard)))
-                    {
-                        matchingTypes.add(activeTypeDef);
-                    }
-                    else if ((activeTypeDefStandardOrgName != null) && (activeTypeDefStandardOrgName.equals(organization)))
-                    {
-                        matchingTypes.add(activeTypeDef);
-                    }
-                    else if ((activeTypeDefStandardIdentifier != null) && (activeTypeDefStandardIdentifier.equals(identifier)))
-                    {
-                        matchingTypes.add(activeTypeDef);
-                    }
-                }
-            }
-        }
-
-        if (matchingTypes.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return matchingTypes;
-        }
-    }
 
     /**
      * Remember the metadata collection name for this metadata collection Id. If the metadata collection id

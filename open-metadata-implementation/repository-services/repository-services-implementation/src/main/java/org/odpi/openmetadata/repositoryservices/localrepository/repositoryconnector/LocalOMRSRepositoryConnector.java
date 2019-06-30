@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventMapperConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -32,7 +31,7 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implements OMRSLocalRepository
 {
     private static final String   repositoryEventMapperName = "LocalRepositoryEventMapper";
-    private static final String   repositoryName            = "LocalRepository";
+    private static final String   defaultRepositoryName     = "LocalRepository";
 
     /*
      * The repository content manager is the TypeDefManager for the Local OMRS Metadata Collection,
@@ -42,11 +41,11 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     private OMRSTypeDefEventProcessor           incomingTypeDefEventProcessor;
     private OMRSInstanceEventProcessor          incomingInstanceEventProcessor   = null;
     private OMRSInstanceRetrievalEventProcessor instanceRetrievalEventProcessor  = null;
-    private OMRSRepositoryEventProcessor        outboundRepositoryEventProcessor = null;
     private OMRSRepositoryEventManager          outboundRepositoryEventManager;
     private OMRSRepositoryEventExchangeRule     saveExchangeRule;
     private OMRSRepositoryConnector             realLocalConnector;
     private OMRSRepositoryEventMapperConnector  realEventMapper;
+    private boolean                             produceEventsForRealConnector = true;
 
 
     /**
@@ -67,6 +66,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     {
         this.realLocalConnector = realLocalConnector;
         this.realEventMapper = realEventMapper;
+        this.repositoryName = defaultRepositoryName;
 
         this.outboundRepositoryEventManager = outboundRepositoryEventManager;
         this.saveExchangeRule = saveExchangeRule;
@@ -99,15 +99,9 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
             realEventMapper.initialize(repositoryEventMapperName,
                                        realLocalConnector);
             realEventMapper.setRepositoryEventProcessor(outboundRepositoryEventManager);
+            produceEventsForRealConnector = false;
         }
-        else
-        {
-            /*
-             * When outboundRepositoryEventProcessor is not null then the local metadata collection creates events.
-             * Otherwise it assumes the event mapper will produce events.
-             */
-            this.outboundRepositoryEventProcessor = outboundRepositoryEventManager;
-        }
+
     }
 
 
@@ -333,8 +327,11 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
     public void setAuditLog(OMRSAuditLog auditLog)
     {
         super.setAuditLog(auditLog);
+
         if (realLocalConnector != null)
+        {
             realLocalConnector.setAuditLog(auditLog);
+        }
     }
 
     /**
@@ -360,19 +357,6 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
 
         try
         {
-            LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
-                                            = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
-                                                                                  super.serverName,
-                                                                                  realLocalConnector,
-                                                                                  super.repositoryHelper,
-                                                                                  super.repositoryValidator,
-                                                                                  saveExchangeRule,
-                                                                                  outboundRepositoryEventProcessor,
-                                                                                  auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
-
-            this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
-            this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
-
             /*
              * Initialize the metadata collection only once the connector is properly set up.
              */
@@ -385,14 +369,28 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
                                                                  this.getLocalServerType(),
                                                                  this.getOrganizationName(),
                                                                  realLocalConnector.getMetadataCollection(),
-                                                                 outboundRepositoryEventProcessor,
+                                                                 outboundRepositoryEventManager,
+                                                                 produceEventsForRealConnector,
                                                                  typeDefManager);
+
+            LocalOMRSInstanceEventProcessor  localOMRSInstanceEventProcessor
+                    = new LocalOMRSInstanceEventProcessor(metadataCollectionId,
+                                                          super.serverName,
+                                                          this,
+                                                          super.repositoryHelper,
+                                                          super.repositoryValidator,
+                                                          saveExchangeRule,
+                                                          outboundRepositoryEventManager,
+                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.INSTANCE_EVENT_PROCESSOR));
+
+            this.incomingInstanceEventProcessor = localOMRSInstanceEventProcessor;
+            this.instanceRetrievalEventProcessor = localOMRSInstanceEventProcessor;
         }
         catch (Throwable   error)
         {
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
             String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(realLocalConnector.getRepositoryName());
+                                       + errorCode.getFormattedErrorMessage(repositoryName);
 
             throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),
@@ -518,7 +516,7 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
      *
      * @return OMRSInstanceEventProcessor for the local repository.
      */
-    public OMRSInstanceRetrievalEventProcessor getIncomingInstanceRetrievealEventProcessor()
+    public OMRSInstanceRetrievalEventProcessor getIncomingInstanceRetrievalEventProcessor()
     {
         return instanceRetrievalEventProcessor;
     }

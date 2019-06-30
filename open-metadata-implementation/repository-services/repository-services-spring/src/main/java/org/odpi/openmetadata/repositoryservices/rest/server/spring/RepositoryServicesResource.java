@@ -1481,6 +1481,43 @@ public class RepositoryServicesResource
     }
 
 
+
+    /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody parameters for the new entity
+     * @return EntityDetailResponse:
+     * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entity/external")
+
+    public EntityDetailResponse addExternalEntity(@PathVariable String               serverName,
+                                                  @PathVariable String               userId,
+                                                  @RequestBody  EntityCreateRequest  requestBody)
+    {
+        return restAPI.addExternalEntity(serverName, userId, requestBody);
+    }
+
+
     /**
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.
@@ -1798,6 +1835,40 @@ public class RepositoryServicesResource
                                                 @RequestBody  RelationshipCreateRequest createRequestParameters)
     {
         return restAPI.addRelationship(serverName, userId, createRequestParameters);
+    }
+
+
+    /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param createRequestParameters parameters used to fill out the new relationship
+     * @return RelationshipResponse:
+     * Relationship structure with the new header, requested entities and properties or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityNotKnownException one of the requested entities is not known in the metadata collection or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationship/external")
+
+    public RelationshipResponse addExternalRelationship(@PathVariable String                    serverName,
+                                                        @PathVariable String                    userId,
+                                                        @RequestBody  RelationshipCreateRequest createRequestParameters)
+    {
+        return restAPI.addExternalRelationship(serverName, userId, createRequestParameters);
     }
 
 
