@@ -22,11 +22,27 @@ import java.util.Map;
 public interface OMRSRepositoryHelper
 {
     /**
-     * Return the list of typedefs active in the local repository.
+     * Return the list of typeDefs and attributeTypeDefs active in the local repository.
      *
      * @return TypeDef gallery
      */
     TypeDefGallery getActiveTypeDefGallery();
+
+
+    /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getActiveTypeDefs();
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getActiveAttributeTypeDefs();
 
 
     /**
@@ -62,17 +78,6 @@ public interface OMRSRepositoryHelper
     AttributeTypeDef getAttributeTypeDefByName(String sourceName,
                                                String attributeTypeDefName);
 
-
-    /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName   source of the request (used for logging)
-     * @param typeDefName  unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    TypeDefGallery getActiveTypesByWildCardName(String sourceName,
-                                                String typeDefName);
 
 
     /**
@@ -188,23 +193,6 @@ public interface OMRSRepositoryHelper
     TypeDef applyPatch(String       sourceName,
                        TypeDef      originalTypeDef,
                        TypeDefPatch typeDefPatch) throws PatchErrorException, InvalidParameterException;
-
-
-    /**
-     * Validate that the type's name is not null.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param standard name of the standard, null means any.
-     * @param organization name of the organization, null means any.
-     * @param identifier identifier of the element in the standard, null means any.
-     * @param methodName method receiving the call
-     * @return list of typeDefs
-     */
-    List<TypeDef> getMatchingActiveTypes(String sourceName,
-                                         String standard,
-                                         String organization,
-                                         String identifier,
-                                         String methodName);
 
 
     /**

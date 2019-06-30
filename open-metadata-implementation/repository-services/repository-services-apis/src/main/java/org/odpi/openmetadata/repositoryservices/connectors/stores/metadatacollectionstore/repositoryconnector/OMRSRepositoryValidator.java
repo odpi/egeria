@@ -299,11 +299,11 @@ public interface OMRSRepositoryValidator
      * @param sourceName  name of source of request.
      * @param userId  userId passed on call to this metadata collection.
      * @param methodName  name of method requesting the validation.
-     * @throws UserNotAuthorizedException the userId is invalid
+     * @throws InvalidParameterException the userId is invalid
      */
     void validateUserId(String sourceName,
                         String userId,
-                        String methodName) throws UserNotAuthorizedException;
+                        String methodName) throws InvalidParameterException;
 
 
     /**
@@ -698,12 +698,13 @@ public interface OMRSRepositoryValidator
      * @param parameterName  name of the parameter that passed the guid.
      * @param classificationName  unique name for a classification type
      * @param methodName  method receiving the call
-     * @throws InvalidParameterException  classification name is null
+     * @return type definition for the classification
+     * @throws InvalidParameterException  classification name is null or invalid
      */
-    void validateClassificationName(String sourceName,
-                                    String parameterName,
-                                    String classificationName,
-                                    String methodName) throws InvalidParameterException;
+    TypeDef validateClassificationName(String sourceName,
+                                       String parameterName,
+                                       String classificationName,
+                                       String methodName) throws InvalidParameterException;
 
 
     /**
