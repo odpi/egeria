@@ -205,10 +205,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @throws InvalidParameterException the userId is null
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGallery getAllTypes(String userId) throws RepositoryErrorException,
+    public TypeDefGallery getAllTypes(String userId) throws InvalidParameterException,
+                                                            RepositoryErrorException,
                                                             UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
@@ -218,8 +220,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                restURLRoot + urlTemplate,
                                                                                userId);
 
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
 
         return this.getTypeDefGalleryFromRESTResult(restResult);
     }
@@ -2274,6 +2277,82 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
 
     /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param initialClassifications initial list of classifications for the new entity null means no classifications.
+     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetail addExternalEntity(String                userId,
+                                          String                entityTypeGUID,
+                                          String                externalSourceGUID,
+                                          String                externalSourceName,
+                                          InstanceProperties    initialProperties,
+                                          List<Classification>  initialClassifications,
+                                          InstanceStatus        initialStatus) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      ClassificationErrorException,
+                                                                                      StatusNotSupportedException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String  methodName = "addExternalEntity";
+
+        final String urlTemplate = "users/{0}/instances/entity/external";
+
+        EntityCreateRequest requestBody = new EntityCreateRequest();
+
+        requestBody.setEntityTypeGUID(entityTypeGUID);
+        requestBody.setMetadataCollectionId(externalSourceGUID);
+        requestBody.setMetadataCollectionName(externalSourceName);
+        requestBody.setInitialClassifications(initialClassifications);
+        requestBody.setInitialProperties(initialProperties);
+        requestBody.setInitialStatus(initialStatus);
+
+        EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowStatusNotSupportedException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntity();
+    }
+
+
+    /**
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.
      *
@@ -2774,6 +2853,82 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         RelationshipCreateRequest request = new RelationshipCreateRequest();
         request.setRelationshipTypeGUID(relationshipTypeGUID);
+        request.setInitialProperties(initialProperties);
+        request.setEntityOneGUID(entityOneGUID);
+        request.setEntityTwoGUID(entityTwoGUID);
+        request.setInitialStatus(initialStatus);
+
+        RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
+                                                                            restURLRoot + urlTemplate,
+                                                                            request,
+                                                                            userId);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowStatusNotSupportedException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getRelationship();
+    }
+
+
+    /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status; typically DRAFT, PREPARED or ACTIVE.
+     * @return Relationship structure with the new header, requested entities and properties.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Relationship addExternalRelationship(String               userId,
+                                                String               relationshipTypeGUID,
+                                                String               externalSourceGUID,
+                                                String               externalSourceName,
+                                                InstanceProperties   initialProperties,
+                                                String               entityOneGUID,
+                                                String               entityTwoGUID,
+                                                InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           TypeErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           StatusNotSupportedException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
+    {
+        final String  methodName = "addExternalRelationship";
+
+        final String urlTemplate = "users/{0}/instances/relationship/external";
+
+        RelationshipCreateRequest request = new RelationshipCreateRequest();
+        request.setRelationshipTypeGUID(relationshipTypeGUID);
+        request.setMetadataCollectionId(externalSourceGUID);
+        request.setMetadataCollectionName(externalSourceGUID);
         request.setInitialProperties(initialProperties);
         request.setEntityOneGUID(entityOneGUID);
         request.setEntityTwoGUID(entityTwoGUID);

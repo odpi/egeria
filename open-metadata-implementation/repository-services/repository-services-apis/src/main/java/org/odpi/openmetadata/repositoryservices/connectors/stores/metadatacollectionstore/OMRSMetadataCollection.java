@@ -71,7 +71,7 @@ public abstract class OMRSMetadataCollection
     protected OMRSRepositoryConnector parentConnector        = null;                   /* Initialized in constructor */
     protected String                  repositoryName         = defaultRepositoryName;  /* Initialized in constructor */
 
-    protected OMRSMetadataSecurity securityVerifier = new OMRSMetadataSecurity();
+    protected OMRSMetadataSecurity    securityVerifier       = new OMRSMetadataSecurity();
 
     /**
      * Constructor to save the metadata collection id.
@@ -219,6 +219,26 @@ public abstract class OMRSMetadataCollection
     }
 
 
+    /**
+     * Verify that the repository is valid, active and there is a userId present.
+     *
+     * @param userId calling user
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException userId is invalid
+     * @throws RepositoryErrorException repository is not valid or active
+     */
+    protected void basicRequestValidation(String         userId,
+                                          String         methodName) throws InvalidParameterException,
+                                                                            RepositoryErrorException
+    {
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+    }
+
+
     /* ======================================================================
      * Group 1: Confirm the identity of the metadata repository being called.
      */
@@ -250,10 +270,12 @@ public abstract class OMRSMetadataCollection
      *
      * @param userId  unique identifier for requesting user.
      * @return TypeDefGallery  List of different categories of type definitions.
+     * @throws InvalidParameterException the userId is null
      * @throws RepositoryErrorException  there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException  the userId is not permitted to perform this operation.
      */
-    public abstract TypeDefGallery getAllTypes(String  userId) throws RepositoryErrorException,
+    public abstract TypeDefGallery getAllTypes(String  userId) throws InvalidParameterException,
+                                                                      RepositoryErrorException,
                                                                       UserNotAuthorizedException;
 
 
@@ -812,7 +834,7 @@ public abstract class OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
-     * @throws PropertyErrorException the sequencing property is not valid for the attached classifications.
+     * @throws PropertyErrorException the sequencing property is not valid for the retrieved relationships.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
@@ -1333,6 +1355,68 @@ public abstract class OMRSMetadataCollection
 
 
     /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param initialClassifications initial list of classifications for the new entity null means no classifications.
+     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetail addExternalEntity(String               userId,
+                                          String               entityTypeGUID,
+                                          String               externalSourceGUID,
+                                          String               externalSourceName,
+                                          InstanceProperties   initialProperties,
+                                          List<Classification> initialClassifications,
+                                          InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     TypeErrorException,
+                                                                                     PropertyErrorException,
+                                                                                     ClassificationErrorException,
+                                                                                     StatusNotSupportedException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
+    {
+        final String  methodName = "addExternalEntity";
+
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 this.getClass().getName(),
+                                                                                                 repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+    }
+
+
+    /**
      * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
      * repositories.
      *
@@ -1626,6 +1710,69 @@ public abstract class OMRSMetadataCollection
                                                                                             FunctionNotSupportedException;
 
 
+
+    /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status; typically DRAFT, PREPARED or ACTIVE.
+     * @return Relationship structure with the new header, requested entities and properties.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Relationship addExternalRelationship(String               userId,
+                                                String               relationshipTypeGUID,
+                                                String               externalSourceGUID,
+                                                String               externalSourceName,
+                                                InstanceProperties   initialProperties,
+                                                String               entityOneGUID,
+                                                String               entityTwoGUID,
+                                                InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           TypeErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           StatusNotSupportedException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
+    {
+        final String  methodName = "addExternalRelationship";
+
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 this.getClass().getName(),
+                                                                                                 repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
+    }
+
+
     /**
      * Update the status of a specific relationship.
      *
@@ -1876,7 +2023,12 @@ public abstract class OMRSMetadataCollection
                                                                                            FunctionNotSupportedException,
                                                                                            UserNotAuthorizedException
     {
-        EntityDetail updatedEntity = this.reHomeEntity(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId, newHomeMetadataCollectionId);
+        EntityDetail updatedEntity = this.reHomeEntity(userId,
+                                                       entityGUID,
+                                                       typeDefGUID,
+                                                       typeDefName,
+                                                       homeMetadataCollectionId,
+                                                       newHomeMetadataCollectionId);
 
         if (updatedEntity != null)
         {
@@ -2031,7 +2183,12 @@ public abstract class OMRSMetadataCollection
                                                                                           FunctionNotSupportedException,
                                                                                           UserNotAuthorizedException
     {
-        Relationship updatedRelationship = this.reHomeRelationship(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId, newHomeMetadataCollectionId);
+        Relationship updatedRelationship = this.reHomeRelationship(userId,
+                                                                   relationshipGUID,
+                                                                   typeDefGUID,
+                                                                   typeDefName,
+                                                                   homeMetadataCollectionId,
+                                                                   newHomeMetadataCollectionId);
 
         if (updatedRelationship != null)
         {
@@ -2257,7 +2414,7 @@ public abstract class OMRSMetadataCollection
 
 
     /**
-     * The local repository has requested that the repository that hosts the home metadata collection for the
+     * The local server has requested that the repository that hosts the home metadata collection for the
      * specified relationship sends out the details of this relationship so the local repository can create a
      * reference copy.
      *
