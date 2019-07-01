@@ -26,13 +26,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-engine-server</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-engine-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
