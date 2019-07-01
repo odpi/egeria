@@ -128,6 +128,7 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
      *
      * @return ConnectedAssetProperties   connected asset properties
      * @throws PropertyServerException indicates a problem retrieving properties from a metadata repository
+     * @throws UserNotAuthorizedException authorization error
      */
     public ConnectedAssetProperties getConnectedAssetProperties() throws PropertyServerException, UserNotAuthorizedException
     {

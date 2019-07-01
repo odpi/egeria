@@ -59,6 +59,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      *
      * @param topicName name of the topic to listen on.
      * @param localServerId identifier to enable receiver to identify that an event came from this server.
+     * @param config additional properties
      * @param kafkaConsumerProperties properties for the consumer.
      * @param connector connector holding the inbound listeners.
      * @param auditLog  audit log for this component.

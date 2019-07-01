@@ -36,6 +36,10 @@ public enum StarRating implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param starRatingCode ordinal
+     * @param starRatingSymbol short name
+     * @param starRatingDescription longer explanation
      */
     StarRating(int     starRatingCode, String   starRatingSymbol, String   starRatingDescription)
     {

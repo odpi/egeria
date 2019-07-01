@@ -127,7 +127,8 @@ public class TypeDefChangeRequest extends OMRSAPIRequest
         {
             return false;
         }
-        TypeDefChangeRequest that = (TypeDefChangeRequest) objectToCompare;
+        TypeDefChangeRequest
+                that = (TypeDefChangeRequest) objectToCompare;
         return Objects.equals(getCurrentTypeDef(), that.getCurrentTypeDef()) &&
                 Objects.equals(getNewTypeDef(), that.getNewTypeDef());
     }
