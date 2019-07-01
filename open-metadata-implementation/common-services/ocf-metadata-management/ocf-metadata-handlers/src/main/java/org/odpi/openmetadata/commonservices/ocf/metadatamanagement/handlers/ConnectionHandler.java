@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -34,6 +35,8 @@ public class ConnectionHandler
     private RepositoryHandler       repositoryHandler;
     private EndpointHandler         endpointHandler;
     private ConnectorTypeHandler    connectorTypeHandler;
+
+    private OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
 
     /**
@@ -68,6 +71,25 @@ public class ConnectionHandler
                                                              invalidParameterHandler,
                                                              repositoryHandler,
                                                              repositoryHelper);
+    }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
     }
 
 
@@ -107,6 +129,8 @@ public class ConnectionHandler
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the feedback is attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
      * @return list of connections
      * @throws InvalidParameterException  the input properties are invalid
@@ -733,6 +757,7 @@ public class ConnectionHandler
      *
      * @param userId  String - userId of user making request.
      * @param name  this may be the qualifiedName or displayName of the connection.
+     * @param methodName calling method
      *
      * @return Connection retrieved from property server
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -740,11 +765,11 @@ public class ConnectionHandler
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public Connection getConnectionByName(String   userId,
-                                          String   name) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                          String   name,
+                                          String   methodName) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
     {
-        final  String   methodName = "getConnectionByName";
         final  String   nameParameter = "name";
 
         invalidParameterHandler.validateName(name, nameParameter, methodName);

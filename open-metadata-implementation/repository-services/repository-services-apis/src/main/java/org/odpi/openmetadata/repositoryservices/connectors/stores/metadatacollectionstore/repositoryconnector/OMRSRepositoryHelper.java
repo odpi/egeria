@@ -8,7 +8,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * OMRSRepositoryHelper provides methods to repository connectors and repository event mappers to help
@@ -20,11 +22,27 @@ import java.util.*;
 public interface OMRSRepositoryHelper
 {
     /**
-     * Return the list of typedefs active in the local repository.
+     * Return the list of typeDefs and attributeTypeDefs active in the local repository.
      *
      * @return TypeDef gallery
      */
     TypeDefGallery getActiveTypeDefGallery();
+
+
+    /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getActiveTypeDefs();
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getActiveAttributeTypeDefs();
 
 
     /**
@@ -60,17 +78,6 @@ public interface OMRSRepositoryHelper
     AttributeTypeDef getAttributeTypeDefByName(String sourceName,
                                                String attributeTypeDefName);
 
-
-    /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName   source of the request (used for logging)
-     * @param typeDefName  unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    TypeDefGallery getActiveTypesByWildCardName(String sourceName,
-                                                String typeDefName);
 
 
     /**
@@ -153,9 +160,9 @@ public interface OMRSRepositoryHelper
      * @param expectedTypeName name of the expected type
      * @return boolean if they match (a null in either results in false)
      */
-    boolean  isTypeOf(String   sourceName,
-                      String   actualTypeName,
-                      String   expectedTypeName);
+    boolean  isTypeOf(String sourceName,
+                      String actualTypeName,
+                      String expectedTypeName);
 
 
     /**
@@ -189,31 +196,14 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Validate that the type's name is not null.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param standard name of the standard, null means any.
-     * @param organization name of the organization, null means any.
-     * @param identifier identifier of the element in the standard, null means any.
-     * @param methodName method receiving the call
-     * @return list of typeDefs
-     */
-    List<TypeDef> getMatchingActiveTypes(String sourceName,
-                                         String standard,
-                                         String organization,
-                                         String identifier,
-                                         String methodName);
-
-
-    /**
      * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
      * is null, it is ignored.
      *
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.
      * @param metadataCollectionName display name for the metadata collection (can be null).
      */
-    void registerMetadataCollection(String    metadataCollectionId,
-                                    String    metadataCollectionName);
+    void registerMetadataCollection(String metadataCollectionId,
+                                    String metadataCollectionName);
 
 
     /**
@@ -222,7 +212,7 @@ public interface OMRSRepositoryHelper
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.
      * @return display name
      */
-    String getMetadataCollectionName(String    metadataCollectionId);
+    String getMetadataCollectionName(String metadataCollectionId);
 
 
     /**
@@ -487,7 +477,7 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Return a filled out entity.
+     * Return a filled out entity proxy.
      *
      * @param sourceName            source of the request (used for logging)
      * @param metadataCollectionId  unique identifier for the home metadata collection
@@ -496,16 +486,16 @@ public interface OMRSRepositoryHelper
      * @param typeName              name of the type
      * @param properties            properties for the entity
      * @param classifications       list of classifications for the entity
-     * @return                      an entity that is filled out
+     * @return  an entity proxy that is filled out
      * @throws TypeErrorException   the type name is not recognized as an entity type
      */
-    EntityProxy getNewEntityProxy(String                    sourceName,
-                                  String                    metadataCollectionId,
-                                  InstanceProvenanceType    provenanceType,
-                                  String                    userName,
-                                  String                    typeName,
-                                  InstanceProperties        properties,
-                                  List<Classification>      classifications) throws TypeErrorException;
+    EntityProxy getNewEntityProxy(String                 sourceName,
+                                  String                 metadataCollectionId,
+                                  InstanceProvenanceType provenanceType,
+                                  String                 userName,
+                                  String                 typeName,
+                                  InstanceProperties     properties,
+                                  List<Classification>   classifications) throws TypeErrorException;
 
     /**
      * Return boolean true if entity is linked by this relationship.
@@ -641,7 +631,7 @@ public interface OMRSRepositoryHelper
      * @param instanceProperties packed properties
      * @return properties stored in Java map
      */
-    Map<String, Object> getInstancePropertiesAsMap(InstanceProperties    instanceProperties);
+    Map<String, Object> getInstancePropertiesAsMap(InstanceProperties instanceProperties);
 
 
     /**
@@ -918,11 +908,11 @@ public interface OMRSRepositoryHelper
      * @param methodName calling method name
      * @return instance properties object.
      */
-    InstanceProperties addStringArrayPropertyToInstance(String              sourceName,
-                                                        InstanceProperties  properties,
-                                                        String              propertyName,
-                                                        List<String>        arrayValues,
-                                                        String              methodName);
+    InstanceProperties addStringArrayPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        List<String>       arrayValues,
+                                                        String             methodName);
 
 
     /**
@@ -973,6 +963,7 @@ public interface OMRSRepositoryHelper
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
+     * @throws InvalidParameterException invalid property value
      */
     InstanceProperties addPropertyMapToInstance(String              sourceName,
                                                 InstanceProperties  properties,
@@ -992,6 +983,7 @@ public interface OMRSRepositoryHelper
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
+     * @throws InvalidParameterException invalid property value
      */
     InstanceProperties addStringPropertyMapToInstance(String              sourceName,
                                                       InstanceProperties  properties,
@@ -1008,9 +1000,11 @@ public interface OMRSRepositoryHelper
      *
      * @param instance instance to read
      * @return String type name
+     * @throws RepositoryErrorException unable to locate type
+     * @throws InvalidParameterException invalid property value
      */
-    String   getTypeName(InstanceAuditHeader      instance) throws RepositoryErrorException,
-                                                                   InvalidParameterException;
+    String   getTypeName(InstanceAuditHeader instance) throws RepositoryErrorException,
+                                                              InvalidParameterException;
 
 
     /**
@@ -1019,7 +1013,7 @@ public interface OMRSRepositoryHelper
      * @param relationship relationship to parse
      * @return String unique identifier
      */
-    String  getEnd1EntityGUID(Relationship   relationship);
+    String  getEnd1EntityGUID(Relationship relationship);
 
 
     /**
@@ -1028,7 +1022,7 @@ public interface OMRSRepositoryHelper
      * @param relationship relationship to parse
      * @return String unique identifier
      */
-    String  getEnd2EntityGUID(Relationship   relationship);
+    String  getEnd2EntityGUID(Relationship relationship);
 
     /**
      * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
@@ -1047,12 +1041,12 @@ public interface OMRSRepositoryHelper
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      */
-    List<EntityDetail>  formatEntityResults(List<EntityDetail>   fullResults,
-                                            int                  fromElement,
-                                            String               sequencingProperty,
-                                            SequencingOrder      sequencingOrder,
-                                            int                  pageSize) throws PagingErrorException,
-                                                                                  PropertyErrorException;
+    List<EntityDetail>  formatEntityResults(List<EntityDetail> fullResults,
+                                            int                fromElement,
+                                            String             sequencingProperty,
+                                            SequencingOrder    sequencingOrder,
+                                            int                pageSize) throws PagingErrorException,
+                                                                                PropertyErrorException;
 
 
     /**
@@ -1072,10 +1066,10 @@ public interface OMRSRepositoryHelper
      *                                  relationship.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
      */
-     List<Relationship>  formatRelationshipResults(List<Relationship>   fullResults,
-                                                   int                  fromElement,
-                                                   String               sequencingProperty,
-                                                   SequencingOrder      sequencingOrder,
-                                                   int                  pageSize) throws PagingErrorException,
-                                                                                         PropertyErrorException;
+     List<Relationship>  formatRelationshipResults(List<Relationship> fullResults,
+                                                   int                fromElement,
+                                                   String             sequencingProperty,
+                                                   SequencingOrder    sequencingOrder,
+                                                   int                pageSize) throws PagingErrorException,
+                                                                                       PropertyErrorException;
 }

@@ -638,6 +638,7 @@ public class ConnectorConfigurationFactory
      *
      * @param serverName name of the repository proxy server where the event mapper will run
      * @param connectorProviderClassName  java class name of the connector provider for the event mapper
+     * @param configurationProperties additional properties for event mapper
      * @param eventSource  name of the event source used by the event mapper
      * @return Connection object
      */

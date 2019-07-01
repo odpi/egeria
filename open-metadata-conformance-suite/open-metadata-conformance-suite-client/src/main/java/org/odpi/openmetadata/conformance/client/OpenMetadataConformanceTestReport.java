@@ -34,6 +34,7 @@ public class OpenMetadataConformanceTestReport
      * @param serverName name of server to test.
      * @param serverURLRoot location of server to test.
      * @param testClientUserId userId for test
+     * @throws RESTConfigurationException unable to configure the REST client
      */
     private OpenMetadataConformanceTestReport(String    serverName,
                                               String    serverURLRoot,
@@ -53,6 +54,8 @@ public class OpenMetadataConformanceTestReport
      * @param serverName name of server to test.
      * @param serverURLRoot location of server to test.
      * @param testClientUserId userId for test
+     * @param testClientPassword password for userId
+     * @throws RESTConfigurationException unable to configure the REST client
      */
     private OpenMetadataConformanceTestReport(String    serverName,
                                               String    serverURLRoot,

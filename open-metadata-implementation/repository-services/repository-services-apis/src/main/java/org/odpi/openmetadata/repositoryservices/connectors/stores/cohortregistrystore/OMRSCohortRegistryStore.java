@@ -56,7 +56,7 @@ public interface OMRSCohortRegistryStore
      *
      * @param remoteRegistration details of a remote repository in the metadata repository cohort.
      */
-    void saveRemoteRegistration(MemberRegistration  remoteRegistration);
+    void saveRemoteRegistration(MemberRegistration remoteRegistration);
 
 
     /**
@@ -74,7 +74,7 @@ public interface OMRSCohortRegistryStore
      * @param metadataCollectionId unique identifier for the repository's metadata collection.
      * @return MemberRegistration object containing details of the remote metadata repository.
      */
-    MemberRegistration retrieveRemoteRegistration(String    metadataCollectionId);
+    MemberRegistration retrieveRemoteRegistration(String metadataCollectionId);
 
 
     /**
@@ -82,7 +82,7 @@ public interface OMRSCohortRegistryStore
      *
      * @param metadataCollectionId unique identifier for the repository's metadata collection
      */
-    void removeRemoteRegistration(String    metadataCollectionId);
+    void removeRemoteRegistration(String metadataCollectionId);
 
 
     /**

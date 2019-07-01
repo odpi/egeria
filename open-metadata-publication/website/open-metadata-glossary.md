@@ -7,8 +7,8 @@
 
 * [Access Services (OMAS)](../../open-metadata-implementation/access-services)
   * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
-  * [Asset Consumer](../../open-metadata-implementation/access-services/asset-consumer)
-  * [Asset Owner](../../open-metadata-implementation/access-services/asset-owner)
+  * [Asset Consumer OMAS](../../open-metadata-implementation/access-services/asset-consumer)
+  * [Asset Owner OMAS](../../open-metadata-implementation/access-services/asset-owner)
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
@@ -285,6 +285,7 @@
   * [stewardship-action](../../open-metadata-implementation/access-services/stewardship-action)
   * [subject-area](../../open-metadata-implementation/access-services/subject-area)
   * [user-interfaces](../../open-metadata-implementation/user-interfaces)
+* [Platform Services](../../open-metadata-implementation/platform-services)
 * [Project Management OMAS](../../open-metadata-implementation/access-services/project-management)
 * [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 

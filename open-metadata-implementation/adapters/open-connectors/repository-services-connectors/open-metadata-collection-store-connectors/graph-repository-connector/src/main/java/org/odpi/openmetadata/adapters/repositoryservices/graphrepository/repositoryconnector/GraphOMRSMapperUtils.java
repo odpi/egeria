@@ -47,13 +47,7 @@ public class GraphOMRSMapperUtils {
                 instanceProvenanceType = InstanceProvenanceType.DEREGISTERED_REPOSITORY;
                 break;
             case 5:
-                instanceProvenanceType = InstanceProvenanceType.DATA_PLATFORM;
-                break;
-            case 6:
-                instanceProvenanceType = InstanceProvenanceType.EXTERNAL_ENGINE;
-                break;
-            case 7:
-                instanceProvenanceType = InstanceProvenanceType.EXTERNAL_TOOL;
+                instanceProvenanceType = InstanceProvenanceType.EXTERNAL_SOURCE;
                 break;
             default:
                 instanceProvenanceType = InstanceProvenanceType.UNKNOWN;

@@ -28,6 +28,7 @@ import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineP
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -212,12 +213,6 @@ public class OMAGServerOperationalServices
                 this.deactivateTemporarily(userId, serverName);
             }
 
-
-            /*
-             * Set up the security for the server using the config
-             */
-            platformInstanceMap.startUpServerInstance(serverName, configuration.getServerSecurityConnection());
-
             /*
              * The instance saves the operational services objects for this server instance so they can be retrieved
              * in response to subsequent REST calls for the server
@@ -258,6 +253,25 @@ public class OMAGServerOperationalServices
              */
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
             operationalRepositoryServices.initialize(repositoryServicesConfig);
+
+
+            /*
+             * Set up the server instance - ensure it is active and the security has been set up correctly.
+             */
+            OpenMetadataServerSecurityVerifier securityVerifier =
+                        platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
+                                                                  serverName,
+                                                                  operationalRepositoryServices.getAuditLog(CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
+                                                                  configuration.getServerSecurityConnection());
+
+            /*
+             * Pass the resulting security verify to the repository services.  It will be set up in the local
+             * repository (if there is a local repository in this server).
+             */
+            operationalRepositoryServices.setSecurityVerifier(securityVerifier);
 
             /*
              * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
@@ -598,9 +612,13 @@ public class OMAGServerOperationalServices
     /**
      * Shutdown any running services for a specific server instance.
      *
+     * @param userId calling user
      * @param serverName name of this server
+     * @param methodName calling method
      * @param instance a list of the running services
      * @param permanentDeactivation should the server be permanently disconnected
+     * @throws InvalidParameterException one of the services detected an invalid parameter
+     * @throws PropertyServerException one of the services had problems shutting down
      */
     private void deactivateRunningServiceInstances(String                          userId,
                                                    String                          serverName,

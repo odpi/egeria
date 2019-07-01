@@ -6,6 +6,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 
 import java.util.Objects;
 
@@ -70,7 +71,6 @@ public class TypeDefSummary extends TypeDefLink
         if (template != null)
         {
             this.category = template.getCategory();
-            this.guid = template.getGUID();
             this.versionName = template.getVersionName();
             this.version = template.getVersion();
         }
