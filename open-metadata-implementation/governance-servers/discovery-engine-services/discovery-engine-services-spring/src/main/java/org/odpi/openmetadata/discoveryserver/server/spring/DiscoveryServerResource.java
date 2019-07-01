@@ -57,6 +57,7 @@ public class DiscoveryServerResource
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      *
      * @return discovery report or
@@ -79,6 +80,7 @@ public class DiscoveryServerResource
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
@@ -110,6 +112,7 @@ public class DiscoveryServerResource
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -142,6 +145,7 @@ public class DiscoveryServerResource
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object or

@@ -46,7 +46,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>metadata-security</artifactId>
+            <artifactId>metadata-security-server</artifactId>
         </dependency>
 
         <dependency>

@@ -37,6 +37,8 @@ public class Community extends ReferenceableHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public Community(Community template)
     {

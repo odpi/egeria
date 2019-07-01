@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.servic
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.securityofficer.server.admin.publisher.SecurityOfficerPublisher;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -17,17 +18,23 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class SecurityOfficerServicesInstance {
     private OMRSRepositoryConnector repositoryConnector;
     private OMRSMetadataCollection metadataCollection;
+    private SecurityOfficerPublisher securityOfficerPublisher;
     private String serverName;
 
 
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param repositoryConnector      link to the repository responsible for servicing the REST calls.
+     * @param securityOfficerPublisher
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public SecurityOfficerServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException {
+    public SecurityOfficerServicesInstance(OMRSRepositoryConnector repositoryConnector, SecurityOfficerPublisher securityOfficerPublisher) throws NewInstanceException {
         final String methodName = "new ServiceInstance";
+
+        if (securityOfficerPublisher != null) {
+            this.securityOfficerPublisher = securityOfficerPublisher;
+        }
 
         if (repositoryConnector != null) {
             try {
@@ -111,6 +118,14 @@ public class SecurityOfficerServicesInstance {
         }
     }
 
+    /**
+     * Return the Security Officer Output Publisher
+     *
+     * @return SecurityOfficerPublisher - this instance is able to publish events of the Security Officer Output Topic
+     */
+    SecurityOfficerPublisher getSecurityOfficerPublisher() {
+        return securityOfficerPublisher;
+    }
 
     /**
      * Unregister this instance from the instance map.

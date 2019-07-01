@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class ConnectedAssetNotes extends AssetNotes
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -31,6 +32,7 @@ public class ConnectedAssetNotes extends AssetNotes
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -41,17 +43,19 @@ public class ConnectedAssetNotes extends AssetNotes
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetNotes(String                 serverName,
+    ConnectedAssetNotes(String                 serviceName,
+                        String                 serverName,
                         String                 userId,
                         String                 omasServerURL,
                         String                 noteLogGUID,
                         ConnectedAssetUniverse parentAsset,
                         int                    totalElementCount,
                         int                    maxCacheSize,
-                        OCFRESTClient restClient)
+                        OCFRESTClient          restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
@@ -73,6 +77,7 @@ public class ConnectedAssetNotes extends AssetNotes
 
         if (template != null)
         {
+            this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
@@ -121,7 +126,7 @@ public class ConnectedAssetNotes extends AssetNotes
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetNotes.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/note-logs/{2}/notes?elementStart={3}&maxElements={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/note-logs/{3}/notes?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
@@ -130,6 +135,7 @@ public class ConnectedAssetNotes extends AssetNotes
             NotesResponse restResult = restClient.callNotesGetRESTCall(methodName,
                                                                        omasServerURL + urlTemplate,
                                                                        serverName,
+                                                                       serviceName,
                                                                        userId,
                                                                        noteLogGUID,
                                                                        cacheStartPointer,

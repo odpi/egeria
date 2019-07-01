@@ -91,6 +91,8 @@ public class LicenseHandler
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the feedback is attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
      * @return list of licenses or null if none found
      * @throws InvalidParameterException  the input properties are invalid

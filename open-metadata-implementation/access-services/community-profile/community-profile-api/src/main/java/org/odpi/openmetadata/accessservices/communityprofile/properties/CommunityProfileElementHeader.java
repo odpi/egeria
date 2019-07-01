@@ -193,7 +193,7 @@ public abstract class CommunityProfileElementHeader implements Serializable
      * Set up the license for the metadata element set up by the origin.
      * Null means unrestricted.
      *
-     * @param originLicense
+     * @param originLicense optional license
      */
     public void setOriginLicense(String originLicense)
     {
