@@ -1757,7 +1757,7 @@
                         <exclude>**/.classpath</exclude>
                         <exclude>**/.project</exclude>
                         <exclude>**/.settings/**</exclude>
-                        <exclude>egeria-graph-repository/**</exclude>
+                        <exclude>egeria-graph-repositories/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
