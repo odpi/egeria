@@ -105,7 +105,6 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * Group 1: Confirm the identity of the metadata repository being called.
      */
 
-
     /**
      * Returns the identifier of the metadata repository.  This is the identifier used to register the
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
@@ -126,6 +125,94 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             restResult = restClient.callGetRESTCallNoParams(methodName,
                                                             MetadataCollectionIdResponse.class,
                                                             restURLRoot + urlTemplate);
+        }
+        catch (Throwable error)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     repositoryName,
+                                                                                                     error.getClass().getSimpleName(),
+                                                                                                     error.getMessage());
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
+        }
+
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        String remoteMetadataCollectionId = null;
+
+        if (restResult != null)
+        {
+            remoteMetadataCollectionId = restResult.getMetadataCollectionId();
+        }
+
+        if (remoteMetadataCollectionId != null)
+        {
+            if (remoteMetadataCollectionId.equals(super.metadataCollectionId))
+            {
+                return remoteMetadataCollectionId;
+            }
+            else
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(repositoryName,
+                                                             remoteMetadataCollectionId,
+                                                             super.metadataCollectionId);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+        }
+        else
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(repositoryName,
+                                                         super.metadataCollectionId);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+    }
+
+
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @return String metadata collection id.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     */
+    public String getMetadataCollectionId(String   userId) throws RepositoryErrorException
+    {
+        final String methodName  = "getMetadataCollectionId";
+        final String urlTemplate = "users/{0}/metadata-collection-id";
+
+        MetadataCollectionIdResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    MetadataCollectionIdResponse.class,
+                                                    restURLRoot + urlTemplate,
+                                                    userId);
         }
         catch (Throwable error)
         {
