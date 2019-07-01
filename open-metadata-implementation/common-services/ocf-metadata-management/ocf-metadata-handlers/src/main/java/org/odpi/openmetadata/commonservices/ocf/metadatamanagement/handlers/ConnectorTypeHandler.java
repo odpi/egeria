@@ -188,6 +188,7 @@ public class ConnectorTypeHandler
      * Update a stored connectorType.
      *
      * @param userId userId
+     * @param existingConnectorTypeGUID unique identifier for a connector type
      * @param connectorType new connectorType values
      *
      * @return unique identifier of the connectorType in the repository.

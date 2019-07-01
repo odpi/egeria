@@ -190,7 +190,8 @@ public class OMRSAPIPagedFindRequest extends OMRSAPIFindRequest
         {
             return false;
         }
-        OMRSAPIPagedFindRequest that = (OMRSAPIPagedFindRequest) objectToCompare;
+        OMRSAPIPagedFindRequest
+                that = (OMRSAPIPagedFindRequest) objectToCompare;
         return getOffset() == that.getOffset() &&
                 getPageSize() == that.getPageSize() &&
                 Objects.equals(getSequencingProperty(), that.getSequencingProperty()) &&

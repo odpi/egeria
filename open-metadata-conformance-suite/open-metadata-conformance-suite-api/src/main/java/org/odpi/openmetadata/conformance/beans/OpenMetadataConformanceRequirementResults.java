@@ -64,6 +64,8 @@ public class OpenMetadataConformanceRequirementResults implements Serializable
 
     /**
      * Copy/clone constructor used in JSON exchange
+     *
+     * @param template object to copy
      */
     public OpenMetadataConformanceRequirementResults(OpenMetadataConformanceRequirementResults  template)
     {

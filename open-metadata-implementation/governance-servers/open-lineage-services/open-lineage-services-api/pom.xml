@@ -21,12 +21,19 @@
         Provides the definitions that make up the APIs used by external components when communicating
         with the open lineage.
     </description>
+
     <dependencies>
+
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <artifactId>open-lineage-services-api</artifactId>

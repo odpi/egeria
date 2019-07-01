@@ -30,23 +30,4 @@
 
     <artifactId>repository-services</artifactId>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <!-- Test framework -->
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
-
 </project>

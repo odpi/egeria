@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 /**
  * OMRSRepositoryConnectors are used by OMRS to retrieve metadata from metadata repositories.  Each implementation
@@ -19,7 +19,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param repositoryHelper helper object for building TypeDefs and metadata instances.
      */
-    void setRepositoryHelper(OMRSRepositoryHelper   repositoryHelper);
+    void setRepositoryHelper(OMRSRepositoryHelper repositoryHelper);
 
 
     /**
@@ -27,7 +27,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param repositoryValidator validator object to check the validity of TypeDefs and metadata instances.
      */
-    void setRepositoryValidator(OMRSRepositoryValidator  repositoryValidator);
+    void setRepositoryValidator(OMRSRepositoryValidator repositoryValidator);
 
 
     /**
@@ -43,7 +43,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param repositoryName String name
      */
-    void  setRepositoryName(String      repositoryName);
+    void  setRepositoryName(String repositoryName);
 
 
     /**
@@ -59,7 +59,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param serverName String name
      */
-    void  setServerName(String      serverName);
+    void  setServerName(String serverName);
 
 
     /**
@@ -127,7 +127,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param maxPageSize maximum number of elements that can be retrieved on a request.
      */
-    void setMaxPageSize(int    maxPageSize);
+    void setMaxPageSize(int maxPageSize);
 
 
     /**
@@ -143,7 +143,7 @@ public interface OMRSMetadataCollectionManager
      *
      * @param metadataCollectionId String unique Id
      */
-    void setMetadataCollectionId(String         metadataCollectionId);
+    void setMetadataCollectionId(String metadataCollectionId);
 
 
     /**

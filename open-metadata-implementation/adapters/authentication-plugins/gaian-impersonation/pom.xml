@@ -36,13 +36,11 @@
         <dependency>
             <groupId>com.ibm.gaiandb</groupId>
             <artifactId>gaian</artifactId>
-	    <version>${gaian.version}</version>
-	    <scope>provided</scope>
+	        <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.derby</groupId>
             <artifactId>derby</artifactId>
-            <version>${derby.version}</version>
 	    <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -52,7 +50,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-		<version>${maven-shade.version}</version>
                 <executions>
                     <execution>
                         <id>assemble</id>

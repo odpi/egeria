@@ -69,7 +69,7 @@ public class TestSupportedClassificationLifecycle extends RepositoryConformanceT
     {
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
-        EntityDetail testEntity = addEntityToRepository(testTypeName, metadataCollection, testEntityDef);
+        EntityDetail testEntity = addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, testEntityDef);
 
         assertCondition((testEntity.getClassifications() == null),
                         assertion1,
