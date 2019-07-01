@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssetProperties
 {
+    private String        serviceName;
     private String        serverName;
     private String        userId = null;
     private String        omasServerURL = null;
@@ -46,20 +47,23 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
     /**
      * Typical constructor.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
      * @param assetGUID  String   unique id for connected asset.
      * @param restClient client to call REST API
      */
-    public ConnectedAssetRelatedAssetProperties(String               serverName,
+    public ConnectedAssetRelatedAssetProperties(String               serviceName,
+                                                String               serverName,
                                                 String               userId,
                                                 String               omasServerURL,
                                                 String               assetGUID,
-                                                OCFRESTClient restClient)
+                                                OCFRESTClient        restClient)
     {
         super();
 
+        this.serviceName   = serviceName;
         this.serverName    = serverName;
         this.userId        = userId;
         this.omasServerURL = omasServerURL;
@@ -79,6 +83,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         if (template != null)
         {
+            this.serviceName   = template.serviceName;
             this.serverName    = template.serverName;
             this.userId        = template.userId;
             this.omasServerURL = template.omasServerURL;
@@ -105,7 +110,12 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         try
         {
-            assetProperties = new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID, restClient);
+            assetProperties = new ConnectedAssetUniverse(serviceName,
+                                                         serverName,
+                                                         omasServerURL,
+                                                         userId,
+                                                         assetGUID,
+                                                         restClient);
         }
         catch (UserNotAuthorizedException  error)
         {

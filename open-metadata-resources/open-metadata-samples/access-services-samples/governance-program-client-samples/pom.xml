@@ -22,11 +22,30 @@
     </description>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-program-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-program-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

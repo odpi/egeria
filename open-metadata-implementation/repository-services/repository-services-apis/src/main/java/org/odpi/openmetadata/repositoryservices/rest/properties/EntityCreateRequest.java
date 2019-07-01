@@ -28,6 +28,8 @@ public class EntityCreateRequest extends OMRSAPIRequest
     private InstanceProperties   initialProperties      = null;
     private List<Classification> initialClassifications = null;
     private InstanceStatus       initialStatus          = null;
+    private String               metadataCollectionId   = null;
+    private String               metadataCollectionName = null;
 
 
     /**
@@ -51,6 +53,8 @@ public class EntityCreateRequest extends OMRSAPIRequest
         if (template != null)
         {
             this.entityTypeGUID = template.getEntityTypeGUID();
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.metadataCollectionName = template.getMetadataCollectionName();
             this.initialProperties = template.getInitialProperties();
             this.initialClassifications = template.getInitialClassifications();
             this.initialStatus = template.getInitialStatus();
@@ -165,6 +169,51 @@ public class EntityCreateRequest extends OMRSAPIRequest
 
 
     /**
+     * Return the metadata collection id for this new entity
+     *
+     * @return guid
+     */
+    public String getMetadataCollectionId()
+    {
+        return metadataCollectionId;
+    }
+
+
+    /**
+     * Set up the metadata collection id for this new entity.
+     * This field is optional for addEntity and mandatory for addExternalEntity.
+     *
+     * @param metadataCollectionId guid
+     */
+    public void setMetadataCollectionId(String metadataCollectionId)
+    {
+        this.metadataCollectionId = metadataCollectionId;
+    }
+
+
+    /**
+     * Return the name of the metadata collection for this new relationship.
+     *
+     * @return name
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
+     * Set up the name of the metadata collection for this new relationship.
+     *
+     * @param metadataCollectionName name
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -176,7 +225,9 @@ public class EntityCreateRequest extends OMRSAPIRequest
                 "entityTypeGUID='" + entityTypeGUID + '\'' +
                 ", initialProperties=" + initialProperties +
                 ", initialClassifications=" + initialClassifications +
-                ", initialStatus=" + initialStatus +
+                ", initialStatus=" + initialStatus + '\'' +
+                ", metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
                 '}';
     }
 
@@ -202,7 +253,9 @@ public class EntityCreateRequest extends OMRSAPIRequest
         return Objects.equals(getEntityTypeGUID(), that.getEntityTypeGUID()) &&
                 Objects.equals(getInitialProperties(), that.getInitialProperties()) &&
                 Objects.equals(getInitialClassifications(), that.getInitialClassifications()) &&
-                getInitialStatus() == that.getInitialStatus();
+                getInitialStatus() == that.getInitialStatus() &&
+                Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName());
     }
 
 

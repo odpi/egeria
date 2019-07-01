@@ -88,7 +88,7 @@ public class TestOMRSArchiveBuilder
             oMRSArchiveBuilder.addEntityDef(entityDefA);
             assertTrue(false);
         } catch (OMRSLogicErrorException e) {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-010"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-010"));
         }
     }
     @Test
@@ -107,7 +107,7 @@ public class TestOMRSArchiveBuilder
             oMRSArchiveBuilder.addClassificationDef(classificationDef);
             assertTrue(false);
         } catch (OMRSLogicErrorException e) {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-011"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-011"));
         }
     }
     @Test
@@ -161,7 +161,7 @@ public class TestOMRSArchiveBuilder
             oMRSArchiveBuilder.addRelationshipDef(relationshipDef);
             assertTrue(false);
         } catch (OMRSLogicErrorException e) {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-009"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-009"));
         }
     }
 
@@ -188,7 +188,7 @@ public class TestOMRSArchiveBuilder
             oMRSArchiveBuilder.addRelationshipDef(relationshipDef2);
             assertTrue(false);
         } catch (OMRSLogicErrorException e) {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-008"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-008"));
         }
     }
 
@@ -228,7 +228,7 @@ public class TestOMRSArchiveBuilder
             assertTrue(false);
         } catch (OMRSLogicErrorException e)
         {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-007"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-007"));
         }
     }
 
@@ -256,7 +256,7 @@ public class TestOMRSArchiveBuilder
             assertTrue(false);
         } catch (OMRSLogicErrorException e)
         {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-007"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-007"));
         }
     }
     @Test
@@ -284,7 +284,7 @@ public class TestOMRSArchiveBuilder
             assertTrue(false);
         } catch (OMRSLogicErrorException e)
         {
-            assertTrue(e.getMessage().contains("OMRS-ARCHIVEBUILDER-400-008"));
+            assertTrue(e.getMessage().contains("OMRS-ARCHIVE-BUILDER-400-008"));
         }
     }
 

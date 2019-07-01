@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -16,19 +17,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 
@@ -38,14 +33,14 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 
 /**
  * The GraphOMRSMetadataCollection provides a local open metadata repository that uses a graph store as its
  * persistence layer.
  */
-public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
+public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectionBase
+{
 
     private static final Logger log = LoggerFactory.getLogger(GraphOMRSMetadataCollection.class);
 
@@ -102,20 +97,14 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             throws
             InvalidParameterException,
             RepositoryErrorException,
+            TypeDefConflictException,
             InvalidTypeDefException,
             UserNotAuthorizedException
     {
-        final String methodName = "verifyTypeDef";
-        final String typeDefParameterName = "typeDef";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
+        super.verifyTypeDef(userId, typeDef);
 
         TypeDefCategory typeDefCategory = typeDef.getCategory();
         switch (typeDefCategory) {
@@ -133,795 +122,8 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 break;
         }
 
-
-
         return true;
     }
-
-    // verifyAttributeTypeDef will always return true because all knowledge of types is delegated to the RCM.
-    public boolean verifyAttributeTypeDef(String           userId,
-                                          AttributeTypeDef attributeTypeDef)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            InvalidTypeDefException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "verifyAttributeTypeDef";
-        final String typeDefParameterName = "attributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        return true;
-    }
-
-    // getAttributeTypeDef will always delegate to the RCM.
-    public TypeDef getTypeDefByName(String userId,
-                                    String name)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "getTypeDefByName";
-        final String nameParameterName = "name";
-
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-
-        return repositoryHelper.getTypeDefByName(repositoryName, name);
-    }
-
-    // getAttributeTypeDef will always delegate to the RCM.
-    public AttributeTypeDef getAttributeTypeDefByName(String userId,
-                                                      String name)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "getAttributeTypeDefByName";
-        final String nameParameterName = "name";
-
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-
-        return repositoryHelper.getAttributeTypeDefByName(repositoryName, name);
-    }
-
-    // getTypeDef will always delegate to the RCM.
-    public TypeDef getTypeDefByGUID(String userId,
-                                    String guid)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "getTypeDefByGUID";
-        final String guidParameterName = "guid";
-
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-
-        /*
-         * Perform operation
-         */
-        try {
-            return repositoryHelper.getTypeDef(repositoryName, guidParameterName, guid, methodName);
-        }
-        catch (TypeErrorException e) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-    }
-
-    // getAttributeTypeDef will always delegate to the RCM.
-    public AttributeTypeDef getAttributeTypeDefByGUID(String userId,
-                                                      String guid)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "getAttributeTypeDefByGUID";
-        final String guidParameterName = "guid";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-
-        /*
-         * Perform operation
-         */
-
-        try {
-            return repositoryHelper.getAttributeTypeDef(repositoryName, guid, methodName);
-        }
-        catch (TypeErrorException e) {
-            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NOT_KNOWN;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-    }
-
-    // findTypeDefsByCategory will always delegate to the RCM.
-    public List<TypeDef> findTypeDefsByCategory(String userId,
-                                                TypeDefCategory category)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "findTypeDefsByCategory";
-        final String categoryParameterName = "category";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
-
-        /*
-         * Perform operation
-         */
-
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypes = activeTypes.getTypeDefs();
-        if (allTypes == null)
-            return null;
-
-        List<TypeDef> typesForCategory = new ArrayList<>();
-
-        if (!allTypes.isEmpty()) {
-            for (TypeDef typeDef : allTypes) {
-                if (typeDef != null) {
-                    if (typeDef.getCategory() == category) {
-                        typesForCategory.add(typeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesForCategory.isEmpty()) {
-            typesForCategory = null;
-        }
-
-        return typesForCategory;
-
-    }
-
-    // findAttributeTypeDefsByCategory will always delegate to the RCM.
-    public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String userId,
-                                                                  AttributeTypeDefCategory category)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "findAttributeTypeDefsByCategory";
-        final String categoryParameterName = "category";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<AttributeTypeDef> allAttributeTypes = activeTypes.getAttributeTypeDefs();
-        if (allAttributeTypes == null)
-            return null;
-        List<AttributeTypeDef> typesForCategory = new ArrayList<>();
-
-        if (!allAttributeTypes.isEmpty()) {
-            for (AttributeTypeDef attributeTypeDef : allAttributeTypes) {
-                if (attributeTypeDef != null) {
-                    if (attributeTypeDef.getCategory() == category) {
-                        typesForCategory.add(attributeTypeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesForCategory.isEmpty()) {
-            typesForCategory = null;
-        }
-
-        return typesForCategory;
-    }
-
-
-    // addTypeDef - not expected but support anyway
-    public void addTypeDef(String  userId,
-                           TypeDef newTypeDef)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "addTypeDef";
-        final String typeDefParameterName = "newTypeDef";
-
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        String typeDefName = newTypeDef.getName();
-        TypeDef existingTypeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
-        // Expecting to find type in RCM...
-
-        if (existingTypeDef != null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ALREADY_DEFINED;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(newTypeDef.getName(),
-                    newTypeDef.getGUID(),
-                    repositoryName);
-
-            throw new TypeDefKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        } else {
-            // Cannot add a type def to this metadataCollection
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(newTypeDef.getName(),
-                    newTypeDef.getGUID(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-    }
-
-    // deleteTypeDef - not expected but support anyway
-    public void deleteTypeDef(String userId,
-                              String obsoleteTypeDefGUID,
-                              String obsoleteTypeDefName)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "deleteTypeDef";
-        final String guidParameterName = "obsoleteTypeDefGUID";
-        final String nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                obsoleteTypeDefGUID,
-                obsoleteTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // Cannot delete a type def via this metadataCollection
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        String errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(obsoleteTypeDefName,
-                obsoleteTypeDefGUID,
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-
-    }
-
-
-    // findTypeDefsByProperty
-    public List<TypeDef> findTypeDefsByProperty(String userId,
-                                                TypeDefProperties matchCriteria)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "findTypeDefsByProperty";
-        final String matchCriteriaParameterName = "matchCriteria";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName, matchCriteriaParameterName, matchCriteria, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypes = activeTypes.getTypeDefs();
-        if (allTypes == null)
-            return null;
-
-        List<TypeDef> typesMatchProperties = new ArrayList<>();
-        Set<String> propertyNames = matchCriteria.getTypeDefProperties().keySet();
-
-        if (!allTypes.isEmpty()) {
-            for (TypeDef typeDef : allTypes) {
-                if (typeDef != null) {
-                    List<TypeDefAttribute> typeDefAttributes = typeDef.getPropertiesDefinition();
-                    boolean allPropertiesMatch = true;
-
-                    for (String propertyName : propertyNames) {
-                        boolean thisPropertyMatches = false;
-
-                        if (propertyName != null) {
-                            for (TypeDefAttribute attribute : typeDefAttributes) {
-                                if (attribute != null) {
-                                    if (propertyName.equals(attribute.getAttributeName())) {
-                                        thisPropertyMatches = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (!thisPropertyMatches) {
-                                allPropertiesMatch = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (allPropertiesMatch) {
-                        typesMatchProperties.add(typeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesMatchProperties.isEmpty()) {
-            typesMatchProperties = null;
-        }
-
-        return typesMatchProperties;
-    }
-
-
-    // findTypesByExternalID
-    public List<TypeDef> findTypesByExternalID(String userId,
-                                               String standard,
-                                               String organization,
-                                               String identifier)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "findTypesByExternalID";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateExternalId(repositoryName, standard, organization, identifier, methodName);
-
-        /*
-         * Perform operation
-         */
-        return repositoryHelper.getMatchingActiveTypes(repositoryName, standard, organization, identifier, methodName);
-    }
-
-
-    // searchForTypeDefs
-    public List<TypeDef> searchForTypeDefs(String userId,
-                                           String searchCriteria)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "searchForTypeDefs";
-        final String searchCriteriaParameterName = "searchCriteria";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateSearchCriteria(repositoryName, searchCriteriaParameterName, searchCriteria, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDefGallery activeTypes = repositoryHelper.getActiveTypeDefGallery();
-        List<TypeDef> allTypes = activeTypes.getTypeDefs();
-        if (allTypes == null)
-            return null;
-
-        List<TypeDef> matchedTypeDefs = new ArrayList<>();
-
-        for (TypeDef typeDef : allTypes) {
-            if (typeDef != null) {
-                if (typeDef.getName().matches(searchCriteria)) {
-                    matchedTypeDefs.add(typeDef);
-                }
-            }
-        }
-
-        if (matchedTypeDefs.isEmpty()) {
-            matchedTypeDefs = null;
-        }
-
-        return matchedTypeDefs;
-    }
-
-
-    // addAttributeTypeDef - not expected but support anyway
-    public void addAttributeTypeDef(String userId,
-                                    AttributeTypeDef newAttributeTypeDef)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "addAttributeTypeDef";
-        final String typeDefParameterName = "newAttributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        String typeDefName = newAttributeTypeDef.getName();
-        AttributeTypeDef existingAttributeTypeDef = repositoryHelper.getAttributeTypeDefByName(repositoryName, typeDefName);
-        // Expecting to find type in RCM...
-
-        if (existingAttributeTypeDef != null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ALREADY_DEFINED;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(newAttributeTypeDef.getName(),
-                    newAttributeTypeDef.getGUID(),
-                    repositoryName);
-
-            throw new TypeDefKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        } else {
-            // Cannot add a type def to this metadataCollection
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(newAttributeTypeDef.getName(),
-                    newAttributeTypeDef.getGUID(),
-                    repositoryName);
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-
-    }
-
-    // updateTypeDef - not expected but support anyway
-    public TypeDef updateTypeDef(String userId,
-                                 TypeDefPatch typeDefPatch)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            PatchErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "updateTypeDef";
-        final String typeDefParameterName = "typeDefPatch";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefPatch(repositoryName, typeDefPatch, methodName);
-
-        /*
-         * Perform operation
-         */
-        // Cannot add a type def to this metadataCollection
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        String errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(typeDefPatch.getTypeName(),
-                typeDefPatch.getTypeDefGUID(),
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-
-    }
-
-    // deleteAttributeTypeDef - not expected but support anyway
-    public void deleteAttributeTypeDef(String userId,
-                                       String obsoleteTypeDefGUID,
-                                       String obsoleteTypeDefName)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "deleteAttributeTypeDef";
-        final String guidParameterName = "obsoleteTypeDefGUID";
-        final String nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                obsoleteTypeDefGUID,
-                obsoleteTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // Cannot delete a type def via this metadataCollection
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        String errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(obsoleteTypeDefName,
-                obsoleteTypeDefGUID,
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
-
-
-    // reidentifyTypeDef - not expected but support anyway
-    public TypeDef reIdentifyTypeDef(String userId,
-                                     String originalTypeDefGUID,
-                                     String originalTypeDefName,
-                                     String newTypeDefGUID,
-                                     String newTypeDefName)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "reIdentifyTypeDef";
-        final String originalGUIDParameterName = "originalTypeDefGUID";
-        final String originalNameParameterName = "originalTypeDefName";
-        final String newGUIDParameterName = "newTypeDefGUID";
-        final String newNameParameterName = "newTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                originalGUIDParameterName,
-                originalNameParameterName,
-                originalTypeDefGUID,
-                originalTypeDefName,
-                methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                newGUIDParameterName,
-                newNameParameterName,
-                newTypeDefGUID,
-                newTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // Cannot reidentify a type def via this metadataCollection
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        String errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(originalTypeDefName,
-                originalTypeDefGUID,
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-
-    }
-
-
-    // reidentifyAttributeTypeDef - not expected but support anyway
-    public AttributeTypeDef reIdentifyAttributeTypeDef(String userId,
-                                                       String originalAttributeTypeDefGUID,
-                                                       String originalAttributeTypeDefName,
-                                                       String newAttributeTypeDefGUID,
-                                                       String newAttributeTypeDefName)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "reIdentifyAttributeTypeDef";
-        final String originalGUIDParameterName = "originalAttributeTypeDefGUID";
-        final String originalNameParameterName = "originalAttributeTypeDefName";
-        final String newGUIDParameterName = "newAttributeTypeDefGUID";
-        final String newNameParameterName = "newAttributeTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                originalGUIDParameterName,
-                originalNameParameterName,
-                originalAttributeTypeDefGUID,
-                originalAttributeTypeDefName,
-                methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                newGUIDParameterName,
-                newNameParameterName,
-                newAttributeTypeDefGUID,
-                newAttributeTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // Cannot reidentify an attribute type def via this metadataCollection
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-        String errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(originalAttributeTypeDefName,
-                originalAttributeTypeDefGUID,
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
-
-
-
 
 
     public EntityDetail addEntity(String                userId,
@@ -1170,11 +372,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Validate parameters
          */
         TypeDef typeDef = super.addRelationshipParameterValidation(userId,
-                relationshipTypeGUID,
-                initialProperties,
-                entityOneGUID,
-                entityTwoGUID,
-                initialStatus);
+                                                                   relationshipTypeGUID,
+                                                                   initialProperties,
+                                                                   entityOneGUID,
+                                                                   entityTwoGUID,
+                                                                   initialStatus,
+                                                                   methodName);
 
 
         /*
@@ -1625,11 +828,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName  = "purgeEntity";
+        final String  parameterName  = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedEntityGUID, methodName);
+        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedEntityGUID, parameterName, methodName);
 
         /*
          * Locate entity - only interested in a non-proxy entity
@@ -1724,11 +928,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName = "purgeRelationship";
+        final String  parameterName  = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship
@@ -1894,18 +1099,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         if (asOfTime != null) {
             log.error("{} does not support asOfTime searches", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
 
@@ -2751,11 +1945,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String methodName = "deleteEntity";
+        final String parameterName  = "obsoleteEntityGUID";
 
         /*
          * Validate parameters
          */
-        super.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteEntityGUID, parameterName, methodName);
 
         /*
          * Locate Entity. Doesn't matter if it is a proxy or not, so try both
@@ -2909,11 +2104,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName = "deleteRelationship";
+        final String  parameterName = "obsoleteRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship
@@ -2993,26 +2189,21 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             EntityNotKnownException,
             UserNotAuthorizedException
     {
-        final String methodName = "reIdentifyEntity";
-        final String guidParameterName = "typeDefGUID";
-        final String nameParameterName = "typeDefName";
-        final String instanceParameterName = "deletedRelationshipGUID";
+        final String  methodName = "reIdentifyEntity";
+        final String  instanceParameterName = "entityGUID";
+        final String  newInstanceParameterName = "newEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        parentConnector.validateRepositoryIsActive(methodName);
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, instanceParameterName, newEntityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
+        this.reIdentifyInstanceParameterValidation(userId,
+                                                   typeDefGUID,
+                                                   typeDefName,
+                                                   entityGUID,
+                                                   instanceParameterName,
+                                                   newEntityGUID,
+                                                   newInstanceParameterName,
+                                                   methodName);
 
         /*
          * Locate entity
@@ -3069,28 +2260,19 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String methodName                = "reHomeEntity";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
         final String entityParameterName       = "entityGUID";
-        final String homeParameterName         = "homeMetadataCollectionId";
-        final String newHomeParameterName      = "newHomeMetadataCollectionId";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, newHomeParameterName, newHomeMetadataCollectionId, methodName);
+        super.reHomeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                typeDefGUID,
+                                                typeDefName,
+                                                homeMetadataCollectionId,
+                                                newHomeMetadataCollectionId,
+                                                methodName);
 
         /*
          * Locate entity
@@ -3155,12 +2337,13 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
-
+        super.reTypeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                TypeDefCategory.ENTITY_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
         /*
          * Locate entity
          */
@@ -3231,27 +2414,21 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             RelationshipNotKnownException,
             UserNotAuthorizedException
     {
-        final String methodName                   = "reIdentifyRelationship";
-        final String guidParameterName            = "typeDefGUID";
-        final String nameParameterName            = "typeDefName";
-        final String relationshipParameterName    = "relationshipGUID";
-        final String newRelationshipParameterName = "newHomeMetadataCollectionId";
+        final String  methodName = "reIdentifyRelationship";
+        final String  instanceParameterName = "relationshipGUID";
+        final String  newInstanceParameterName = "newRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateGUID(repositoryName, newRelationshipParameterName, newRelationshipGUID, methodName);
+        super.reIdentifyInstanceParameterValidation(userId,
+                                                    typeDefGUID,
+                                                    typeDefName,
+                                                    relationshipGUID,
+                                                    instanceParameterName,
+                                                    newRelationshipGUID,
+                                                    newInstanceParameterName,
+                                                    methodName);
 
         /*
          * Locate relationship
@@ -3296,13 +2473,13 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, currentTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
-        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, newTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
+        super.reTypeInstanceParameterValidation(userId,
+                                                relationshipGUID,
+                                                relationshipParameterName,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
 
         /*
          * Locate relationship
@@ -3353,30 +2530,20 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             RelationshipNotKnownException,
             UserNotAuthorizedException
     {
-
-        final String  methodName               = "reHomeRelationship";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
+        final String methodName                = "reHomeRelationship";
         final String relationshipParameterName = "relationshipGUID";
-        final String homeParameterName         = "homeMetadataCollectionId";
-        final String newHomeParameterName      = "newHomeMetadataCollectionId";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, newHomeParameterName, newHomeMetadataCollectionId, methodName);
+        super.reHomeInstanceParameterValidation(userId,
+                                                relationshipGUID,
+                                                relationshipParameterName,
+                                                typeDefGUID,
+                                                typeDefName,
+                                                homeMetadataCollectionId,
+                                                newHomeMetadataCollectionId,
+                                                methodName);
 
         /*
          * Locate relationship
@@ -3419,7 +2586,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validate parameters
          */
-        super.updateEntityClassificationParameterValidation(userId, entityGUID, classificationName, properties);
+        super.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
 
         /*
          * Locate entity
@@ -3494,17 +2661,11 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
+        super.saveReferenceInstanceParameterValidation(userId, entity, instanceParameterName, methodName);
 
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateReferenceInstanceHeader(repositoryName,
-                metadataCollectionId,
-                instanceParameterName,
-                entity,
-                methodName);
-
-
+        /*
+         * Save entity
+         */
         graphStore.saveEntityReferenceCopyToStore(entity);
 
     }
@@ -3527,25 +2688,20 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String methodName                = "purgeEntityReferenceCopy";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
         final String entityParameterName       = "entityGUID";
         final String homeParameterName         = "homeMetadataCollectionId";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+        super.manageReferenceInstanceParameterValidation(userId,
+                                                         entityGUID,
+                                                         typeDefGUID,
+                                                         typeDefName,
+                                                         entityParameterName,
+                                                         homeMetadataCollectionId,
+                                                         homeParameterName,
+                                                         methodName);
 
         EntityDetail entity = null;
         try {
@@ -3565,58 +2721,14 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         }
 
-
         if (entity != null)
         {
             graphStore.removeEntityFromStore(entityGUID);
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportEntityNotKnown(entityGUID, methodName);
         }
-    }
-
-
-
-
-    public void refreshEntityReferenceCopy(String   userId,
-                                           String   entityGUID,
-                                           String   typeDefGUID,
-                                           String   typeDefName,
-                                           String   homeMetadataCollectionId)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            HomeEntityException,
-            UserNotAuthorizedException
-    {
-        final String methodName                = "refreshEntityReferenceCopy";
-
-        /*
-         * This method should be handled by the local repository connector since this repository connector
-         * does not have event handling powers (no event mapper)
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
 
@@ -3639,16 +2751,12 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateReferenceInstanceHeader(repositoryName,
-                metadataCollectionId,
-                instanceParameterName,
-                relationship,
-                methodName);
+        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
 
+        /*
+         * Save relationship
+         */
         graphStore.saveRelationshipReferenceCopyToStore(relationship);
     }
 
@@ -3666,67 +2774,27 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String methodName                = "purgeRelationshipReferenceCopy";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
         final String relationshipParameterName = "relationshipGUID";
         final String homeParameterName         = "homeMetadataCollectionId";
+
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-
+        this.manageReferenceInstanceParameterValidation(userId,
+                                                        relationshipGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        relationshipParameterName,
+                                                        homeMetadataCollectionId,
+                                                        homeParameterName,
+                                                        methodName);
 
         /*
          * Purge relationship
          */
         graphStore.removeRelationshipFromStore(relationshipGUID);
     }
-
-
-
-    public void refreshRelationshipReferenceCopy(String userId,
-                                                 String   relationshipGUID,
-                                                 String   typeDefGUID,
-                                                 String   typeDefName,
-                                                 String   homeMetadataCollectionId)
-            throws
-            InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            HomeRelationshipException,
-            UserNotAuthorizedException
-    {
-        final String methodName = "refreshRelationshipReferenceCopy";
-
-        /*
-         * This method should be handled by the local repository connector since this repository connector
-         * does not have event handling powers (no event mapper)
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
-    }
-
 
 
     // getEntityNeighborhood
@@ -3796,18 +2864,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Not supported
             log.error("{} does not support asOfTime parameter", methodName);
 
-            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
-
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+            super.reportUnsupportedOptionalFunction(methodName);
         }
 
         /*

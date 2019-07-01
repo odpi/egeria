@@ -40,6 +40,8 @@ public abstract class ActorHeader extends ReferenceableHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public ActorHeader(ActorHeader template)
     {
@@ -84,7 +86,7 @@ public abstract class ActorHeader extends ReferenceableHeader
     /**
      * Set up the contact details for the person or team.
      *
-     * @param contactDetails
+     * @param contactDetails list of contact methods
      */
     public void setContactDetails(List<ContactMethod> contactDetails)
     {

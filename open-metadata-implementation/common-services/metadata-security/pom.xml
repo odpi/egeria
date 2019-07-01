@@ -14,21 +14,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Metadata security connectors</name>
+    <name>Open Metadata Security</name>
     <description>
-        Interfaces for connectors that support fine-grained security for open metadata and governance.
+        Plugin points for the server and the connectors to support fine-grained metadata security
+        authorization checks.
     </description>
 
     <artifactId>metadata-security</artifactId>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-    </dependencies>
+    <packaging>pom</packaging>
+    <modules>
+        <module>metadata-security-apis</module>
+        <module>metadata-security-connectors</module>
+        <module>metadata-security-server</module>
+    </modules>
 
 </project>

@@ -152,7 +152,8 @@ public class TypeDefReIdentifyRequest extends OMRSAPIRequest
         {
             return false;
         }
-        TypeDefReIdentifyRequest that = (TypeDefReIdentifyRequest) objectToCompare;
+        TypeDefReIdentifyRequest
+                that = (TypeDefReIdentifyRequest) objectToCompare;
         return Objects.equals(getOriginalTypeDefName(), that.getOriginalTypeDefName()) &&
                Objects.equals(getNewTypeDefGUID(), that.getNewTypeDefGUID()) &&
                 Objects.equals(getNewTypeDefName(), that.getNewTypeDefName());

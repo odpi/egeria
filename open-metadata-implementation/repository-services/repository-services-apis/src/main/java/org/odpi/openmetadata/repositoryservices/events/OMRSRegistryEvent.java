@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1RegistrySection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 

@@ -109,7 +109,8 @@ public class OMRSAPIHistoricalFindRequest extends OMRSAPIFindRequest
         {
             return false;
         }
-        OMRSAPIHistoricalFindRequest that = (OMRSAPIHistoricalFindRequest) objectToCompare;
+        OMRSAPIHistoricalFindRequest
+                that = (OMRSAPIHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

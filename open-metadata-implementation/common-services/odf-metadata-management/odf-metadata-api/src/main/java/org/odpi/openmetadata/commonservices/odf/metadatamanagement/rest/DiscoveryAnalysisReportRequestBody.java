@@ -32,7 +32,6 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     protected Date                   creationDate           = null;
     protected Map<String, String>    analysisParameters     = null;
     protected DiscoveryRequestStatus discoveryRequestStatus = null;
-    protected String                 assetGUID              = null;
     protected String                 discoveryEngineGUID    = null;
     protected String                 discoveryServiceGUID   = null;
 
@@ -61,7 +60,6 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
             creationDate = template.getCreationDate();
             analysisParameters = template.getAnalysisParameters();
             discoveryRequestStatus = template.getDiscoveryRequestStatus();
-            assetGUID = template.getAssetGUID();
             discoveryEngineGUID = template.getDiscoveryEngineGUID();
             discoveryServiceGUID = template.getDiscoveryServiceGUID();
         }
@@ -179,28 +177,6 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
 
 
     /**
-     * Return the unique identifier of the asset that was analyzed.
-     *
-     * @return unique identifier (guid)
-     */
-    public String getAssetGUID()
-    {
-        return assetGUID;
-    }
-
-
-    /**
-     * Set up the unique identifier of the asset that was analyzed.
-     *
-     * @param assetGUID unique identifier (guid)
-     */
-    public void setAssetGUID(String assetGUID)
-    {
-        this.assetGUID = assetGUID;
-    }
-
-
-    /**
      * Return the unique identifier of the discovery engine that ran the discovery service.
      *
      * @return unique identifier (guid)
@@ -258,7 +234,6 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
                 ", creationDate=" + creationDate +
                 ", analysisParameters=" + analysisParameters +
                 ", discoveryRequestStatus=" + discoveryRequestStatus +
-                ", assetGUID='" + assetGUID + '\'' +
                 ", discoveryEngineGUID='" + discoveryEngineGUID + '\'' +
                 ", discoveryServiceGUID='" + discoveryServiceGUID + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
@@ -298,7 +273,6 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
                 Objects.equals(getCreationDate(), that.getCreationDate()) &&
                 Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
                 Objects.equals(getDiscoveryRequestStatus(), that.getDiscoveryRequestStatus()) &&
-                Objects.equals(getAssetGUID(), that.getAssetGUID()) &&
                 Objects.equals(getDiscoveryEngineGUID(), that.getDiscoveryEngineGUID()) &&
                 Objects.equals(getDiscoveryServiceGUID(), that.getDiscoveryServiceGUID());
     }
@@ -314,7 +288,7 @@ public class DiscoveryAnalysisReportRequestBody extends ReferenceableRequestBody
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCreationDate(),
-                            getAnalysisParameters(), getDiscoveryRequestStatus(), getAssetGUID(), getDiscoveryEngineGUID(),
+                            getAnalysisParameters(), getDiscoveryRequestStatus(), getDiscoveryEngineGUID(),
                             getDiscoveryServiceGUID());
     }
 }

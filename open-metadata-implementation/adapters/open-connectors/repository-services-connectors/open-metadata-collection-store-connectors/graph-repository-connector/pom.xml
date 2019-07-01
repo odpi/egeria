@@ -30,18 +30,62 @@
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
-            <version>${janus.version}</version>
         </dependency>
+
+        <!-- berkeley & lucene aren't compile dependencies, so need exception for maven dependency plugin -->
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-berkeleyje</artifactId>
-            <version>${janus.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-lucene</artifactId>
-            <version>${janus.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
+         </dependency>
+
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <!-- Runtime dependencies for janusgraph-->
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-berkeleyje:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-lucene:*</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

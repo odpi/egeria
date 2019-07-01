@@ -28,4 +28,10 @@
         <module>subject-area-client-samples</module>
     </modules>
 
+    <dependencies>
+
+
+
+    </dependencies>
+
 </project>

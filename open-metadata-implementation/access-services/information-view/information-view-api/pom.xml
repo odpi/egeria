@@ -23,4 +23,17 @@
 
     <artifactId>information-view-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+</dependencies>
+
 </project>

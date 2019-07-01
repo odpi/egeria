@@ -149,7 +149,6 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
 
             List<TestSupportedEntityLifecycle>           entityTestCases                 = new ArrayList<>();
             List<TestSupportedRelationshipLifecycle>     relationshipTestCases           = new ArrayList<>();
-            List<TestClassificationHasSupportedEntities> classificationEntitiesTestCases = new ArrayList<>();
             List<TestSupportedClassificationLifecycle>   classificationTestCases         = new ArrayList<>();
 
             Map<String, EntityDef>  entityDefs         = testFindTypeDefsByCategory.getEntityDefs();
@@ -284,7 +283,7 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                     }
                     Thread.sleep(1000);
                 }
-                catch(InterruptedException  wakeUp)
+                catch (InterruptedException  wakeUp)
                 {
                     /*
                      * Test again.

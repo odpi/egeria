@@ -124,7 +124,7 @@ class ProjectSelector extends PolymerElement {
   /*
    * After an add project - get the projects again so the drop down will be up tp date.
    */
-  _addProjectRespChanged(oldValue,newValue) {
+  _addProjectRespChanged(newValue,oldValue) {
       if (newValue.relatedHTTPCode == 200) {
            this.getProjects();
            // close the dialog - a project was successfully created

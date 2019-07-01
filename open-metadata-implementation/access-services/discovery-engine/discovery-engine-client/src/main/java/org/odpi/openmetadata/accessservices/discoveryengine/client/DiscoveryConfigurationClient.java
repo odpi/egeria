@@ -8,7 +8,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -26,9 +26,9 @@ import java.util.Map;
 
 public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
 {
-    private String              serverName;               /* Initialized in constructor */
-    private String              serverPlatformURLRoot;    /* Initialized in constructor */
-    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
+    private String        serverName;               /* Initialized in constructor */
+    private String        serverPlatformURLRoot;    /* Initialized in constructor */
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -52,7 +52,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformURLRoot);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot);
     }
 
 
@@ -78,7 +78,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
 
         this.serverName = serverName;
         this.serverPlatformURLRoot = serverPlatformURLRoot;
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformURLRoot, userId, password);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -94,7 +94,7 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      */
     public DiscoveryConfigurationClient(String                  serverName,
                                         String                  serverPlatformURLRoot,
-                                        DiscoveryRESTClient     restClient,
+                                        ODFRESTClient restClient,
                                         int                     maxPageSize) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
