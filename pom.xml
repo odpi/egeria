@@ -19,7 +19,7 @@
     <artifactId>egeria</artifactId>
     <version>1.1-SNAPSHOT</version>
 
-    <url>https://odpi.github.io/Egeria</url>
+    <url>https://odpi.github.io/egeria</url>
 
     <!-- The Apache license is used for code and the creative commons license is used for documentation -->
 
@@ -41,7 +41,7 @@
 
     <scm>
         <connection>scm:git:git://github.com/odpi/egeria.git</connection>
-        <developerConnection>scm:git:ssh://github.com:odpi/egeria.git</developerConnection>
+        <developerConnection>scm:git:ssh://github.com/odpi/egeria.git</developerConnection>
         <url>http://github.com/odpi/egeria/tree/master</url>
     </scm>
 
@@ -55,8 +55,9 @@
     <mailingLists>
         <mailingList>
             <name>odpi-egeria</name>
-            <subscribe>https://lists.odpi.org/g/odpi-project-egeria</subscribe>
+            <subscribe>odpi-project-egeria+subscribe@lists.odpi.org</subscribe>
             <unsubscribe>odpi-project-egeria+unsubscribe@lists.odpi.org</unsubscribe>
+            <archive>https://lists.odpi.org/g/odpi-project-egeria</archive>
             <post>odpi-project-egeria@lists.odpi.org</post>
         </mailingList>
     </mailingLists>
@@ -82,6 +83,16 @@
                 <role>maintainer</role>
             </roles>
             <organization>ING</organization>
+        </developer>
+        <developer>
+            <id>planetf1</id>
+            <name>Nigel Jones</name>
+            <email>nigel.l.jones+git@gmail.com</email>
+            <timezone>Europe/London</timezone>
+            <roles>
+                <role>maintainer</role>
+            </roles>
+            <organization>IBM Corporation</organization>
         </developer>
     </developers>
 
