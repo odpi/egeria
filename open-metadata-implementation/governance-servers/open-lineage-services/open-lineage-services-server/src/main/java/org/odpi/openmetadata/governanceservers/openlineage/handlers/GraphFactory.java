@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.eventprocessors;
+package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
@@ -21,12 +21,36 @@ public class GraphFactory {
     private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
 
 
-    public static JanusGraph open() throws RepositoryErrorException {
+    public static JanusGraph openMainGraph() throws RepositoryErrorException {
+        final String storagePath = "./egeria-lineage-repositories/main/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
 
+        return getJanusGraph(storagePath, indexPath);
+    }
+
+    public static JanusGraph openBufferGraph() throws RepositoryErrorException {
+        final String storagePath = "./egeria-lineage-repositories/buffer/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/buffer/searchindex";
+
+        return getJanusGraph(storagePath, indexPath);
+    }
+
+    public static JanusGraph openHistoryGraph() throws RepositoryErrorException {
+        final String storagePath = "./egeria-lineage-repositories/history/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/history/searchindex";
+
+        return getJanusGraph(storagePath, indexPath);
+    }
+
+    public static JanusGraph openMockGraph() throws RepositoryErrorException {
+        final String storagePath = "./egeria-lineage-repositories/mock/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/mock/searchindex";
+
+        return getJanusGraph(storagePath, indexPath);
+    }
+
+    private static JanusGraph getJanusGraph(String storagePath, String indexPath) throws RepositoryErrorException {
         JanusGraph janusGraph;
-        final String storagePath = "./egeria-lineage-repository/berkeley";
-        final String indexPath = "./egeria-lineage-repository/searchindex";
-
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend", "berkeleyje").
                 set("storage.directory", storagePath).
@@ -50,7 +74,6 @@ public class GraphFactory {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-
 
 
         try {
