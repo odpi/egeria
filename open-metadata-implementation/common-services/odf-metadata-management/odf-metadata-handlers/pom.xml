@@ -25,8 +25,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-api</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>repository-handler</artifactId>
         </dependency>
 
         <dependency>
@@ -38,13 +37,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-handler</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
         </dependency>
         
     </dependencies>

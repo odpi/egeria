@@ -28,7 +28,12 @@ public enum SecurityOfficerErrorCode {
     SERVICE_NOT_INITIALIZED(503, "OMAS-SECURITY-OFFICER-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+
+    PUBLISH_EVENT_EXCEPTION(500, "OMAS-SECURITY-OFFICER-001 ",
+            "Event {0} could not be published: {1}",
+            "The system is unable to process the request.",
+            "Verify the topic configuration.");
 
     private int httpErrorCode;
     private String errorMessageId;

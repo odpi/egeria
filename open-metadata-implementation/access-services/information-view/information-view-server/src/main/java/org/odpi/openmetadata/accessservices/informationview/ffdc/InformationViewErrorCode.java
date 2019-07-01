@@ -106,9 +106,21 @@ public enum InformationViewErrorCode {
                             "The system is unable to process the request.",
                             "Check the error message for more details."),
     ILLEGAL_UPDATE_EXCEPTION(403, "OMAS-INFORMATION-VIEW-024",
-                "Illegal update for entity: {0}",
-                "The system will not process the request.",
-                  "This entity is owned by another tool.");
+                            "Illegal update for entity: {0}",
+                            "The system will not process the request.",
+                              "This entity is owned by another tool."),
+    NO_REGISTRATION_DETAILS_PROVIDED(403, "OMAS-INFORMATION-VIEW-025",
+                            "No registration details were provided in the request",
+                            "The system will not process the request.",
+                            "The request should contain guid or qualifiedName of the external tool registration."),
+    DELETE_ENTITY_EXCEPTION("OMAS-INFORMATION-VIEW-026",
+                            "Entity matching criteria [{0}={1}] could not be deleted. Error: {2}",
+                            "The system is unable to process the request.",
+                            "Verify the topic event."),
+    DELETE_RELATIONSHIP_EXCEPTION("OMAS-INFORMATION-VIEW-027",
+                            "Relationship {0} of type {1} could not be deleted. Error: {2}",
+                            "The system is unable to process the request.",
+                            "Verify the topic event.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;

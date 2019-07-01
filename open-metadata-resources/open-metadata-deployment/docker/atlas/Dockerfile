@@ -55,11 +55,11 @@ FROM openjdk:8-jdk-alpine
 
 LABEL org.label-schema.schema-version = "1.0"
 LABEL org.label-schema.vendor = "ODPi"
-LABEL org.label-schema.name = "apache-atlas"
-LABEL org.label-schema.description = "Apache Atlas image to support ODPi Egeria demonstrations."
+LABEL org.label-schema.name = "apache-atlas-fork"
+LABEL org.label-schema.description = "Apache Atlas image with an embedded ODPi Egeria OMRS Server."
 LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
 LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
-LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas"
+LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas-fork"
 LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 
 RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade

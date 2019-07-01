@@ -34,5 +34,7 @@
         <module>server-chassis</module>
         <module>user-interfaces</module>
     </modules>
+    <dependencies>
 
+    </dependencies>
 </project>

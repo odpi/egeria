@@ -9,16 +9,11 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.ContextBuilder;
-import org.odpi.openmetadata.accessservices.governanceengine.server.util.PropertyUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -30,20 +25,21 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DISPLAY_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.QUALIFIED_NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_LABELS;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_PROPERTIES;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_TAG;
 
 /**
  * ConnectionHandler retrieves Connection objects from the property handlers.  It runs handlers-side in the AssetConsumer
@@ -51,11 +47,9 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
  */
 public class GovernedAssetHandler {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernedAssetHandler.class);
     private OMRSMetadataCollection metadataCollection;
-
+    private OMRSRepositoryConnector repositoryConnector;
     private Map<String, String> knownTypeDefs = new HashMap<>();
-    private Set<String> governedClassifications = setGovernedClassifications();
     private ContextBuilder contextBuilder = new ContextBuilder();
 
     /**
@@ -70,6 +64,7 @@ public class GovernedAssetHandler {
 
         if (repositoryConnector != null) {
             try {
+                this.repositoryConnector = repositoryConnector;
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
             } catch (RepositoryErrorException e) {
                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NO_METADATA_COLLECTION;
@@ -90,36 +85,26 @@ public class GovernedAssetHandler {
     /**
      * Returns the list of governed assets with associated tags
      *
-     * @param userId         - String - userId of user making request.
-     * @param classification - classifications to start query from .
-     * @param type           - types to start query from.
+     * @param userId - String - userId of user making request.
+     * @param type   - types to start query from.
      * @return List of Governed Access
      */
     public List<GovernedAsset> getGovernedAssets(String userId,
-                                                 List<String> classification,
                                                  List<String> type) throws InvalidParameterException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {
         final String methodName = "getGovernedAssets";
         GovernanceEngineValidator.validateUserId(userId, methodName);
 
-        if (classification == null) {
-            List<String> classificationTypeDef = getClassificationsDef(userId);
-            if (classificationTypeDef != null) {
-                classification = new ArrayList<>(classificationTypeDef);
-            }
-        }
+        List<EntityDetail> response = new ArrayList<>();
 
-        List<GovernedAsset> response = new ArrayList<>();
         if (type == null) {
-            return addToAssetListByType(null, classification, userId);
+            response = getEntitiesByClassification(userId, null);
         } else {
             for (String searchedType : type) {
-                List<GovernedAsset> assetsByType = addToAssetListByType(searchedType, classification, userId);
-                if (assetsByType != null) {
-                    response.addAll(assetsByType);
-                }
+                String typeGUID = getTypeGuidFromTypeName(userId, searchedType);
+                response.addAll(getEntitiesByClassification(userId, typeGUID));
             }
         }
-        return response;
+        return getGovernedAssets(response);
     }
 
     /**
@@ -142,12 +127,8 @@ public class GovernedAssetHandler {
         if (entityDetail == null) {
             return null;
         }
-        GovernedAsset governedAsset = getGovernedAsset(entityDetail);
 
-        if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
-            governedAsset.setAssignedGovernanceClassification(getGovernanceClassifications(entityDetail.getClassifications()));
-        }
-        return governedAsset;
+        return getGovernedAsset(entityDetail);
     }
 
 
@@ -165,75 +146,22 @@ public class GovernedAssetHandler {
         return false;
     }
 
-    public GovernanceClassification getGovernanceClassifications(List<Classification> allClassifications) {
+    public boolean isSchemaElement(EntityDetail entityDetail) {
+        return entityDetail.getType().getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
+    }
+
+    private GovernanceClassification getGovernanceClassification(List<Classification> allClassifications) {
         Optional<Classification> classification = filterGovernedClassification(allClassifications);
 
         return classification.map(this::getGovernanceClassification).orElse(null);
+
     }
 
-    private Set<String> setGovernedClassifications() {
-        Set<String> classifications = new HashSet<>(4);
-        classifications.add(CONFIDENTIALITY);
-        classifications.add(CONFIDENCE);
-        classifications.add(CRITICALITY);
-        classifications.add(RETENTION);
-        return classifications;
-    }
-
-    private List<GovernedAsset> addToAssetListByType(String type, List<String> classification, String userId) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {
-        if (classification == null) {
-            return Collections.emptyList();
-        }
-
-        List<GovernedAsset> response = new ArrayList<>();
-        for (String searchedClassifications : classification) {
-            List<GovernedAsset> assetsToReturn = addToAssetListByClassification(type, searchedClassifications, userId);
-            response.addAll(assetsToReturn);
-        }
-
-        return response;
-    }
-
-    private List<String> getClassificationsDef(String userId) throws RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, UserNotAuthorizedException {
-        List<TypeDef> classificationsDef = metadataCollection.findTypeDefsByCategory(userId, TypeDefCategory.CLASSIFICATION_DEF);
-        return classificationsDef.stream().map(TypeDefLink::getName).collect(Collectors.toList());
-    }
-
-    private List<GovernedAsset> addToAssetListByClassification(String type, String classification, String userId) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {
-        String typeGuid = null;
-        if (type != null) {
-            typeGuid = getTypeGuidFromTypeName(type, userId);
-        }
-
-
-        List<EntityDetail> entities = getEntitiesByClassification(classification, userId, typeGuid);
-        List<GovernedAsset> assetsToReturn = new ArrayList<>();
-
-        if (entities != null) {
-            for (EntityDetail entity : entities) {
-                GovernedAsset entry = existingGovernedAsset(assetsToReturn, entity);
-
-                if (entry == null) {
-                    entry = getGovernedAsset(entity);
-                    assetsToReturn.add(entry);
-                }
-
-                addClassificationInfoToEntry(entry, entity);
-            }
-        }
-        return assetsToReturn;
-    }
-
-    private GovernedAsset existingGovernedAsset(List<GovernedAsset> assetsToReturn, EntityDetail entity) {
-        Optional<GovernedAsset> asset = assetsToReturn.stream().filter(s -> entity.getGUID().equals(s.getGuid())).findFirst();
-        return asset.orElse(null);
-    }
-
-    private List<EntityDetail> getEntitiesByClassification(String classification, String userId, String typeGuid) throws ClassificationErrorException, UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+    private List<EntityDetail> getEntitiesByClassification(String userId, String typeGuid) throws ClassificationErrorException, UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
         return metadataCollection.findEntitiesByClassification(userId,
                 typeGuid,
-                classification,
+                SECURITY_TAG,
                 null,
                 null,
                 0,
@@ -244,57 +172,41 @@ public class GovernedAssetHandler {
                 0);
     }
 
-
-    private void addClassificationInfoToEntry(GovernedAsset entry, EntityDetail governedAsset) {
-
-        GovernanceClassification usageList = entry.getAssignedGovernanceClassification();
-        if (usageList != null) {
-            log.info("this governed asset contains a classification");
-            return;
-        }
-
-        final Optional<Classification> classification = filterGovernedClassification(governedAsset.getClassifications());
-
-        if (!classification.isPresent()) {
-            return;
-        }
-
-        entry.setAssignedGovernanceClassification(getGovernanceClassification(classification.get()));
-    }
-
     private GovernanceClassification getGovernanceClassification(Classification classification) {
         GovernanceClassification governanceClassification = new GovernanceClassification();
 
         governanceClassification.setName(classification.getName());
-        Map<String, String> attributes = getInstanceProperties(classification);
-        governanceClassification.setAttributes(attributes);
+        InstanceProperties properties = classification.getProperties();
+        if (properties != null) {
+            String methodName = "getInstanceProperties";
+            List<String> securityLabels = repositoryConnector.getRepositoryHelper().getStringArrayProperty(GOVERNANCE_ENGINE, SECURITY_LABELS, properties, methodName);
+            governanceClassification.setSecurityLabels(securityLabels);
+
+            Map<String, String> securityProperties = repositoryConnector.getRepositoryHelper().getStringMapFromProperty(GOVERNANCE_ENGINE, SECURITY_PROPERTIES, properties, methodName);
+            governanceClassification.setSecurityProperties(securityProperties);
+        }
+
 
         return governanceClassification;
     }
 
-    private Map<String, String> getInstanceProperties(Classification classification) {
-        Map<String, String> attributes = new HashMap<>();
-
-        InstanceProperties properties = classification.getProperties();
-        if (properties != null) {
-            Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-            if (instanceProperties != null) {
-                instanceProperties.forEach((key, value) -> attributes.put(key, PropertyUtils.getStringForPropertyValue(value)));
-            }
-        }
-        return attributes;
-    }
 
     private Optional<Classification> filterGovernedClassification(List<Classification> classifications) {
-        return classifications.stream()
-                .filter(c -> isGovernedClassification(c.getType().getTypeDefName()))
-                .findAny();
+        return classifications.stream().filter(c -> isGovernedClassification(c.getType().getTypeDefName())).findAny();
     }
 
     private boolean isGovernedClassification(String classificationName) {
-        return governedClassifications.contains(classificationName);
+        return SECURITY_TAG.equals(classificationName);
     }
 
+    private List<GovernedAsset> getGovernedAssets(List<EntityDetail> entityDetails) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
+        List<GovernedAsset> governedAssets = new ArrayList<>(entityDetails.size());
+
+        for (EntityDetail entityDetail : entityDetails) {
+            governedAssets.add(getGovernedAsset(entityDetail));
+        }
+        return governedAssets;
+    }
 
     public GovernedAsset getGovernedAsset(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         GovernedAsset governedAsset = new GovernedAsset();
@@ -302,14 +214,17 @@ public class GovernedAssetHandler {
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
         governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-
         governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
-        governedAsset.setContext(buildDatabaseContext(entity));
+        governedAsset.setContext(buildContext(entity));
+
+        if (entity.getClassifications() != null && !entity.getClassifications().isEmpty()) {
+            governedAsset.setAssignedGovernanceClassification(getGovernanceClassification(entity.getClassifications()));
+        }
 
         return governedAsset;
     }
 
-    private Context buildDatabaseContext(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
+    private Context buildContext(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         switch (entity.getType().getTypeDefName()) {
             case RELATIONAL_COLUMN:
                 return contextBuilder.buildContextForColumn(metadataCollection, entity.getGUID());
@@ -321,12 +236,12 @@ public class GovernedAssetHandler {
     }
 
     private String getTypeGuidFromTypeName(String typeName, String userId) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
-        if (knownTypeDefs.containsKey(typeName)) {
-            return knownTypeDefs.get(typeName);
-        } else {
+        if (!knownTypeDefs.containsKey(typeName)) {
             final String typeDefGuid = metadataCollection.getTypeDefByName(userId, typeName).getGUID();
             knownTypeDefs.put(typeName, typeDefGuid);
             return typeDefGuid;
+        } else {
+            return knownTypeDefs.get(typeName);
         }
     }
 
@@ -345,5 +260,4 @@ public class GovernedAssetHandler {
     private EntityDetail getEntityDetailById(String userId, String assetGuid) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
         return metadataCollection.getEntityDetail(userId, assetGuid);
     }
-
 }

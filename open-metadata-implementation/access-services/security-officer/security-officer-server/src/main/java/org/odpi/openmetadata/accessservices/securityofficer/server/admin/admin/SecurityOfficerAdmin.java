@@ -58,7 +58,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin {
             this.serverName = instance.getServerName();
 
             OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector, securityOfficerOutputTopic);
+            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector, securityOfficerOutputTopic, auditLog);
 
             SecurityOfficerPublisher securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor);
 

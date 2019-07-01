@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class IncorrectModelException extends InformationViewUncheckedExceptionBase {
+public class IncorrectModelException extends InformationViewExceptionBase {
 
 
     public IncorrectModelException(String className, String errorMessage, String systemAction, String userAction,

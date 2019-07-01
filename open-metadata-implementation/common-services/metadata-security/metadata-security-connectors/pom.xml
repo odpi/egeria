@@ -14,7 +14,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Metadata security connectors</name>
+    <name>Metadata Security Connectors</name>
     <description>
         Interfaces for connectors that support fine-grained security for open metadata and governance.
     </description>
@@ -25,16 +25,23 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ffdc-services</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>metadata-security-apis</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

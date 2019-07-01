@@ -30,16 +30,7 @@
 
     <dependencies>
 
-        <!-- Including this dependency defines the log4J library used by the sample clients. -->
-        <!-- Adding any of the modules below this pom file in the servers will cause a -->
-        <!-- multiple SLF4J bindings failure in the start up of the server.  -->
-        <!-- See https://www.slf4j.org/codes.html#multiple_bindings  -->
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
 
     </dependencies>
 

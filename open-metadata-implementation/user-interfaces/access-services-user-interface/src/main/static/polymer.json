@@ -2,7 +2,9 @@
   "entrypoint": "index.html",
   "shell": "src/my-app.js",
   "sources": [
-    "images/**/*"
+    "images/**/*",
+    "locales/**/*",
+    "properties/**/*"
   ],
   "extraDependencies": [
     "manifest.json",
@@ -12,10 +14,8 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
   ],
   "builds": [
-
     {
       "name": "dev"
-
     }
   ],
   "moduleResolution": "node",

@@ -27,14 +27,22 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-api</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>odf-metadata-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-services-server</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
 
