@@ -37,7 +37,6 @@ import java.util.List;
  * This server is responsible for locating and managing the asset owner's definitions exchanged with this client.
  */
 public class AssetOwnerRESTServices
-
 {
     private static AssetOwnerInstanceHandler   instanceHandler     = new AssetOwnerInstanceHandler();
 
@@ -52,6 +51,7 @@ public class AssetOwnerRESTServices
     public AssetOwnerRESTServices()
     {
     }
+
 
     /*
      * ==============================================
@@ -785,6 +785,63 @@ public class AssetOwnerRESTServices
      * AssetReviewInterface
      * ==============================================
      */
+
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of Asset summaries or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetsResponse getAssetsByName(String   serverName,
+                                          String   userId,
+                                          String   name,
+                                          int      startFrom,
+                                          int      pageSize)
+    {
+        final String methodName    = "getAssetsByName";
+
+        log.debug("Calling method: " + methodName);
+
+        AssetsResponse response = new AssetsResponse();
+        OMRSAuditLog   auditLog = null;
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
 
 
     /**
