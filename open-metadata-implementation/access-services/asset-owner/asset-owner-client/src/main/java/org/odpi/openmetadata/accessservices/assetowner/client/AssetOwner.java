@@ -615,6 +615,50 @@ public class AssetOwner extends ConnectedAssetClientBase implements AssetOnboard
 
 
     /**
+     * Return a list of assets with the requested name.
+     *
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of unique identifiers of assets with matching name.
+     *
+     * @throws InvalidParameterException the name is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<Asset> getAssetsByName(String   userId,
+                                       String   name,
+                                       int      startFrom,
+                                       int      pageSize) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException
+    {
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
+        final String   methodName = "getAssetsByName";
+        final String   nameParameter = "name";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
+        AssetsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
+                                                                      serverPlatformRootURL + urlTemplate,
+                                                                      name,
+                                                                      serverName,
+                                                                      userId,
+                                                                      startFrom,
+                                                                      pageSize);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getAssets();
+    }
+
+
+
+    /**
      * Return the basic attributes of an asset.
      *
      * @param userId calling user

@@ -352,6 +352,31 @@ public class AssetOwnerResource
      */
 
 
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param name name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of Asset summaries or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
+
+    public AssetsResponse getAssetsByName(@PathVariable String   serverName,
+                                          @PathVariable String   userId,
+                                          @RequestParam int      startFrom,
+                                          @RequestParam int      pageSize,
+                                          @RequestBody  String   name)
+    {
+        return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
+    }
+
 
     /**
      * Return the discovery analysis reports about the asset.
