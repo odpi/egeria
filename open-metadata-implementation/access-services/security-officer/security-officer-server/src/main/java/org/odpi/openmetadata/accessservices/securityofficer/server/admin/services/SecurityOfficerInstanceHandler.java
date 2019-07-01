@@ -259,7 +259,7 @@ class SecurityOfficerInstanceHandler {
 
         event.setSchemaElementEntity(result);
         event.setPreviousClassification(getSecurityClassification(serverName, schemaElement.getClassifications()));
-        event.setEventType(SecurityOfficerEventType.UPDATED_SECURITY_TAGS);
+        event.setEventType(SecurityOfficerEventType.UPDATED_SECURITY_ASSIGNMENT);
 
         return event;
     }
