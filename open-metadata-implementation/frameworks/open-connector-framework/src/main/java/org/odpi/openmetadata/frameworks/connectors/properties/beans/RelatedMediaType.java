@@ -41,6 +41,10 @@ public enum RelatedMediaType implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param mediaTypeCode ordinal
+     * @param mediaTypeName short name
+     * @param mediaTypeDescription longer explanation
      */
     RelatedMediaType(int     mediaTypeCode, String   mediaTypeName, String    mediaTypeDescription)
     {

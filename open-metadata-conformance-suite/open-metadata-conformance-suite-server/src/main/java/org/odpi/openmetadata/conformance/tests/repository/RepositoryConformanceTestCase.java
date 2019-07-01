@@ -188,7 +188,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param typeName name of the type being tested
      * @param rootTestCaseId base test case Id
      * @param testCaseName name of the test case
-     * @return typeName (or "<null>" if null so messages are displayed properly.)
+     * @return typeName (or "null" if null so messages are displayed properly.)
      */
     protected  String updateTestIdByType(String   typeName,
                                          String   rootTestCaseId,
@@ -356,11 +356,14 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
         return properties;
     }
 
+
     /**
      * Return instance properties for the properties defined in the TypeDef and all of its supertypes
      *
+     * @param userId calling user
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
      */
     protected InstanceProperties  getAllPropertiesForInstance(String userId, TypeDef typeDef) throws Exception
     {
@@ -403,11 +406,13 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     /**
      * Return instance properties for only the mandatory properties defined in the TypeDef and all of its supertypes
      *
+     * @param userId calling user
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
      */
-    protected InstanceProperties  getMinPropertiesForInstance(String userId, TypeDef typeDef) throws Exception {
-
+    protected InstanceProperties  getMinPropertiesForInstance(String userId, TypeDef typeDef) throws Exception
+    {
         /*
          * Recursively gather all the TypeDefAttributes for the supertype hierarchy...
          */
@@ -453,6 +458,7 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
      * @param userId   the userId of the caller, needed for retrieving type definitions
      * @param typeDef  the definition of the type
      * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
      */
     protected List<TypeDefAttribute> getPropertiesForTypeDef(String userId, TypeDef typeDef) throws Exception
     {

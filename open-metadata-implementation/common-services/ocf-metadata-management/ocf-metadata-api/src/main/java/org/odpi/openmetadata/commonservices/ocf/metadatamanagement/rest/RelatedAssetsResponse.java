@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,14 +19,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RelatedAssetsResponse is the response structure used on the OMAS REST API calls that return a
- * list of RelatedAsset objects as a response.
+ * list of AssetRelatedAsset objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class RelatedAssetsResponse extends PagedResponse
 {
-    private List<Asset> responseObjects = null;
+    private List<RelatedAsset> responseObjects = null;
 
 
     /**
@@ -58,7 +59,7 @@ public class RelatedAssetsResponse extends PagedResponse
      *
      * @return list of response objects
      */
-    public List<Asset> getList()
+    public List<RelatedAsset> getList()
     {
         if (responseObjects == null)
         {
@@ -80,7 +81,7 @@ public class RelatedAssetsResponse extends PagedResponse
      *
      * @param responseObjects list of response objects
      */
-    public void setList(List<Asset> responseObjects)
+    public void setList(List<RelatedAsset> responseObjects)
     {
         this.responseObjects = responseObjects;
     }

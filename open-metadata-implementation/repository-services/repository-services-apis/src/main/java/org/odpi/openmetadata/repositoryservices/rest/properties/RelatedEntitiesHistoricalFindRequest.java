@@ -109,7 +109,8 @@ public class RelatedEntitiesHistoricalFindRequest extends RelatedEntitiesFindReq
         {
             return false;
         }
-        RelatedEntitiesHistoricalFindRequest that = (RelatedEntitiesHistoricalFindRequest) objectToCompare;
+        RelatedEntitiesHistoricalFindRequest
+                that = (RelatedEntitiesHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

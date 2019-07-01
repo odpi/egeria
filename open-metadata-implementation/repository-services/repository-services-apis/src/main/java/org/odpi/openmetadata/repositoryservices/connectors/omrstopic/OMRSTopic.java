@@ -7,7 +7,6 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 
 /**
  * OMRSTopic defines the interface to the messaging Topic for OMRS Events.
@@ -20,7 +19,7 @@ public interface OMRSTopic
      *
      * @param eventProtocolVersion version enum
      */
-    void setEventProtocolLevel(OMRSEventProtocolVersion   eventProtocolVersion);
+    void setEventProtocolLevel(OMRSEventProtocolVersion eventProtocolVersion);
 
 
     /**
@@ -29,7 +28,7 @@ public interface OMRSTopic
      *
      * @param newListener object implementing the OMRSTopicListener interface
      */
-    void registerListener(OMRSTopicListener  newListener);
+    void registerListener(OMRSTopicListener newListener);
 
 
     /**

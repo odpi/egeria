@@ -26,6 +26,7 @@ public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
      *
      * @param communityProfileOutTopic  connection to the out topic
      * @param karmaPointPlateauThreshold level at which karma point achievements result in an event
+     * @param repositoryConnector  access to the repository
      * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component

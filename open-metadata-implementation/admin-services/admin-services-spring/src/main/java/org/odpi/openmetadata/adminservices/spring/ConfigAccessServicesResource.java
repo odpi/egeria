@@ -74,7 +74,7 @@ public class ConfigAccessServicesResource
     @RequestMapping(method = RequestMethod.POST, path = "/access-services/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String                    userId,
                                                 @PathVariable String                    serverName,
-                                                @RequestBody List<AccessServiceConfig> accessServicesConfig)
+                                                @RequestBody  List<AccessServiceConfig> accessServicesConfig)
     {
         return adminAPI.setAccessServicesConfig(userId, serverName, accessServicesConfig);
     }
@@ -96,7 +96,7 @@ public class ConfigAccessServicesResource
     @RequestMapping(method = RequestMethod.POST, path = "/enterprise-access/configuration")
     public VoidResponse setEnterpriseAccessConfig(@PathVariable String                 userId,
                                                   @PathVariable String                 serverName,
-                                                  @RequestBody EnterpriseAccessConfig enterpriseAccessConfig)
+                                                  @RequestBody  EnterpriseAccessConfig enterpriseAccessConfig)
     {
         return adminAPI.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
     }
