@@ -223,7 +223,25 @@ public class OMRSRepositoryRESTServices
      * @return String metadata collection id.
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
+    @Deprecated
     public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName)
+    {
+        return this.getMetadataCollectionId(serverName, anonymousUserId);
+    }
+
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId calling user
+     * @return String metadata collection id.
+     * or RepositoryErrorException there is a problem communicating with the metadata repository.
+     */
+    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName,
+                                                                String     userId)
     {
         final  String   methodName = "getMetadataCollectionId";
 
@@ -233,9 +251,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(null, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
 
-            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId());
+            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId(userId));
         }
         catch (InvalidParameterException  error)
         {

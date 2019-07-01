@@ -97,18 +97,18 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     /* ======================================================================
      * Group 1: Confirm the identity of the metadata repository being called.
      */
-    
-    
+
 
     /**
      * Returns the identifier of the metadata repository.  This is the identifier used to register the
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
      *
+     * @param userId calling user
      * @return String  metadata collection id.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
-    public String      getMetadataCollectionId() throws RepositoryErrorException
+    public String      getMetadataCollectionId(String   userId) throws RepositoryErrorException
     {
         final String methodName = "getMetadataCollectionId";
 
