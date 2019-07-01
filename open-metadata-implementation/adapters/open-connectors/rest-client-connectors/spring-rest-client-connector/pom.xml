@@ -23,9 +23,18 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>rest-client-connectors-api</artifactId>
-            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <dependency>
@@ -33,13 +42,11 @@
             <artifactId>spring-web</artifactId>
         </dependency>
 
-        <!-- JSON processing -->
-
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>${jackson.version}</version>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-utils</artifactId>
         </dependency>
+        <!-- JSON processing -->
 
     </dependencies>
 

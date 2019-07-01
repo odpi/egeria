@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.util.Date;
 import java.util.List;
@@ -95,6 +96,31 @@ public interface SubjectAreaProject
             FunctionNotSupportedException,
             UnexpectedResponseException,
             MetadataServerUncontactableException;
+    /*
+     * Get the terms in this project.
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the Project to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @return the terms that are in the requested Project
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    List<Term> getProjectTerms( String serverName,
+                                      String userId,
+                                      String guid,
+                                      Date asOfTime
+
+    ) throws InvalidParameterException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException, MetadataServerUncontactableException;
     /**
      * Find Project
      *

@@ -26,14 +26,17 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-services-api</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>admin-services-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
     </dependencies>

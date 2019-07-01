@@ -6,12 +6,14 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportSubmitException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -51,24 +53,23 @@ public class ReportHandler {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
             }
-            URL url = new URL(payload.getReportUrl());
-            String networkAddress = url.getHost();
-            if (url.getPort() > 0) {
-                networkAddress = networkAddress + ":" + url.getPort();
-            }
+            SoftwareServerCapabilitySource softwareServerCapabilitySource =
+                    reportCreator.retrieveSoftwareServerCapability(payload.getRegistrationGuid(),
+                    payload.getRegistrationQualifiedName());
+            payload.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
+            payload.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
 
-            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("",Constants.DEPLOYED_REPORT,networkAddress + BasicOperation.SEPARATOR + payload.getId());
+            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT, payload.getRegistrationQualifiedName() + BasicOperation.SEPARATOR + payload.getReport().getId());
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
-                    .withStringProperty(Constants.NAME, payload.getReportName())
-                    .withStringProperty(Constants.AUTHOR, payload.getAuthor())
-                    .withStringProperty(Constants.ID, payload.getId())
-                    .withStringProperty(Constants.URL, payload.getReportUrl())
-                    .withStringProperty(Constants.LAST_MODIFIER, payload.getLastModifier())
-                    .withDateProperty(Constants.LAST_MODIFIED_TIME, payload.getLastModifiedTime())
-                    .withDateProperty(Constants.CREATE_TIME, payload.getCreatedTime())
+                    .withStringProperty(Constants.NAME, payload.getReport().getReportName())
+                    .withStringProperty(Constants.AUTHOR, payload.getReport().getAuthor())
+                    .withStringProperty(Constants.ID, payload.getReport().getId())
+                    .withStringProperty(Constants.URL, payload.getReport().getReportUrl())
+                    .withStringProperty(Constants.LAST_MODIFIER, payload.getReport().getLastModifier())
+                    .withDateProperty(Constants.LAST_MODIFIED_TIME, payload.getReport().getLastModifiedTime())
+                    .withDateProperty(Constants.CREATE_TIME, payload.getReport().getCreatedTime())
                     .build();
-
 
             OMEntityWrapper reportWrapper = omEntityDao.saveEntityReferenceCopy(payload.getRegistrationGuid(),
                                                                                 Constants.DEPLOYED_REPORT,
@@ -77,14 +78,13 @@ public class ReportHandler {
                                                                                 true,
                                                                                 true);
 
-
             if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
                 reportCreator.createReport(payload, reportWrapper.getEntityDetail());
             } else {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
 
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),
@@ -92,10 +92,8 @@ public class ReportHandler {
                     REPORT_SUBMIT_EXCEPTION.getUserAction(),
                     REPORT_SUBMIT_EXCEPTION.getSystemAction(),
                     e,
-                    payload.getReportName());
+                    payload.getReport().getReportName());
         }
-
     }
-
 
 }

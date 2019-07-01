@@ -4,22 +4,15 @@ package org.odpi.openmetadata.commonservices.odf.metadatamanagement.handlers;
 
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.StatusRequestBody;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryAnalysisReport;
-import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * AnnotationHandler manages the storage and retrieval of metadata relating to annotations

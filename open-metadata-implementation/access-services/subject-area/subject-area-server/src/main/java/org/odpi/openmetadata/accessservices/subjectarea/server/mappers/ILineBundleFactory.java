@@ -101,12 +101,17 @@ public class ILineBundleFactory
                     new TermISATypeOFRelationshipMapper(omrsapiHelper),
                     bundleName,
                     "TermISATypeOFRelationship");
-        }    else if (bundleName.equals(Translation.class.getName()))
-        {
+        }    else if (bundleName.equals(Translation.class.getName())) {
             bundle = new LineBundle(
                     new TranslationMapper(omrsapiHelper),
                     bundleName,
                     "Translation");
+        }    else if (bundleName.equals(ProjectScopeRelationship.class.getName()))
+        {
+            bundle = new LineBundle(
+                    new ProjectScopeMapper(omrsapiHelper),
+                    bundleName,
+                    "ProjectScope");
         } else if (bundleName.equals(UsedInContext.class.getName()))
         {
             bundle = new LineBundle(

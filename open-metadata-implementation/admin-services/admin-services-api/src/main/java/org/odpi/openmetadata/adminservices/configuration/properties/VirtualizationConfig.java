@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,11 +25,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VirtualizationConfig extends AdminServicesConfigHeader
 {
-    private String     virtualizationProvider = null;
-    private String     ivInTopicName          = null;
-    private Connection ivInTopic              = null;
-    private String     ivOutTopicName         = null;
-    private Connection ivOutTopic             = null;
+    private String              virtualizationProvider           = null;
+    private String              ivInTopicName                    = null;
+    private Connection          ivInTopic                        = null;
+    private String              ivOutTopicName                   = null;
+    private Connection          ivOutTopic                       = null;
+    private Connection          virtualizationSolutionConnection = null;
+    private Map<String, Object> virtualizationSolutionConfig     = null;
 
 
     /**
@@ -44,15 +47,15 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
      *
      * @param template object to copy
      */
-    public VirtualizationConfig(VirtualizationConfig template)
-    {
-        if (template != null)
-        {
-            this.virtualizationProvider = template.virtualizationProvider;
-            this.ivInTopicName          = template.ivInTopicName;
-            this.ivInTopic              = template.ivInTopic;
-            this.ivOutTopicName         = template.ivOutTopicName;
-            this.ivOutTopic             = template.ivOutTopic;
+    public VirtualizationConfig(VirtualizationConfig template) {
+        if (template != null) {
+            this.virtualizationProvider           = template.virtualizationProvider;
+            this.ivInTopicName                    = template.ivInTopicName;
+            this.ivInTopic                        = template.ivInTopic;
+            this.ivOutTopicName                   = template.ivOutTopicName;
+            this.ivOutTopic                       = template.ivOutTopic;
+            this.virtualizationSolutionConnection = template.virtualizationSolutionConnection;
+            this.virtualizationSolutionConfig     = template.virtualizationSolutionConfig;
         }
     }
 
@@ -150,40 +153,55 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
         this.ivOutTopic = ivOutTopic;
     }
 
-
     /**
-     * Validate that an object is equal depending on their stored values.
-     *
-     * @param objectToCompare object
-     * @return boolean result
+     * Provide the connection of the virtualization solution
+     * @return Connection virtualizationSolutionConnection
      */
-    @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass())
-        {
-            return false;
-        }
-        VirtualizationConfig that = (VirtualizationConfig) objectToCompare;
-        return  Objects.equals(getIvInTopicName(), that.getIvInTopicName())&&
-                Objects.equals(getIvInTopic(), that.getIvInTopic()) &&
-                Objects.equals(getIvOutTopicName(), that.getIvOutTopicName()) &&
-                Objects.equals(getVirtualizationProvider(), that.getVirtualizationProvider());
+    public Connection getVirtualizationSolutionConnection() {
+        return virtualizationSolutionConnection;
     }
 
+    /**
+     * Set the connection of the information view out topic
+     * @param virtualizationSolutionConnection Connection
+     */
+    public void setVirtualizationSolutionConnection(Connection virtualizationSolutionConnection)
+    {
+        this.virtualizationSolutionConnection = virtualizationSolutionConnection;
+    }
 
     /**
-     * Return a hash code based on the values of this object.
-     *
-     * @return in hash code
+     * Provide the connection of the virtualization configuration
+     * @return virtualizationSolutionConfig
      */
+    public Map<String, Object> getVirtualizationSolutionConfig() {
+        return virtualizationSolutionConfig;
+    }
+
+    /**
+     * Set the connection of the virtualization configuration
+     * @param virtualizationSolutionConfig Config
+     */
+    public void setVirtualizationSolutionConfig(Map<String, Object> virtualizationSolutionConfig) {
+        this.virtualizationSolutionConfig = virtualizationSolutionConfig;
+    }
+
     @Override
-    public int hashCode(){
-        return  Objects.hash(getIvInTopic(), getIvInTopicName(), getIvOutTopic(), getIvOutTopicName(),
-                             /*getVirtualizationConnection(),*/ getVirtualizationProvider());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof VirtualizationConfig)) return false;
+        VirtualizationConfig that = (VirtualizationConfig) o;
+        return Objects.equals(getVirtualizationProvider(), that.getVirtualizationProvider()) &&
+                Objects.equals(getIvInTopicName(), that.getIvInTopicName()) &&
+                Objects.equals(getIvInTopic(), that.getIvInTopic()) &&
+                Objects.equals(getIvOutTopicName(), that.getIvOutTopicName()) &&
+                Objects.equals(getIvOutTopic(), that.getIvOutTopic()) &&
+                Objects.equals(getVirtualizationSolutionConnection(), that.getVirtualizationSolutionConnection()) &&
+                Objects.equals(getVirtualizationSolutionConfig(), that.getVirtualizationSolutionConfig());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getVirtualizationProvider(), getIvInTopicName(), getIvInTopic(), getIvOutTopicName(), getIvOutTopic(), getVirtualizationSolutionConnection(), getVirtualizationSolutionConfig());
     }
 }

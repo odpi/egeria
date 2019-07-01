@@ -1,73 +1,77 @@
 {
   "class": "ReportRequestBody",
-  "registrationGuid": "registration-guid",
-  "sources": [{
-    "@id": "0",
-    "class": "TableSource",
-    "name": "EMPLOYEE",
-    "schemaName": "HR",
-    "databaseSource":{
-      "class": "DatabaseSource",
-      "name": "XE",
-      "endpointSource":{
-        "class": "EndpointSource",
-        "networkAddress": "host",
-        "protocol": "",
-        "additionalProperties": {
-          "type": "live/import"
+  "registrationQualifiedName": "registration-qualified-name",
+  "report": {
+    "sources": [{
+      "@id": "0",
+      "class": "TableSource",
+      "name": "EMPLOYEE",
+      "schemaName": "HR",
+      "databaseSource":{
+        "class": "DatabaseSource",
+        "name": "XE",
+        "endpointSource":{
+          "class": "EndpointSource",
+          "networkAddress": "host",
+          "protocol": "",
+          "additionalProperties": {
+            "type": "live/import"
+          }
         }
       }
     }
-  }
-  ],
-  "id": "report_number_35",
-  "createdTime": 1538988150715,
-  "author": "John Martin",
-  "reportName": "Employee35",
-  "reportPath": "/reports/employee35.xml",
-  "reportUrl": "http://powerbi-server/reports/rep35",
-  "lastModifier": "John Martin",
-  "lastModifiedTime": 1538988150715,
-  "reportElements": [{
-    "class": "ReportSection",
-    "name": "section1",
-    "elements": [{
+    ],
+    "id": "report_number_35",
+    "createdTime": 1538988150715,
+    "author": "John Martin",
+    "reportName": "Employee35",
+    "reportPath": "/reports/employee35.xml",
+    "reportUrl": "http://powerbi-server/reports/rep35",
+    "lastModifier": "John Martin",
+    "lastModifiedTime": 1538988150715,
+    "reportElements": [{
       "class": "ReportSection",
-      "name": "section1.1",
+      "name": "section1",
       "elements": [{
-        "class": "ReportColumn",
-        "name": "Full Name",
-        "formula": "concat",
-        "sources": [{
-          "class": "DatabaseColumnSource",
-          "tableSource": "0",
-          "name": "FNAME"
-        }, {
-          "class": "DatabaseColumnSource",
-          "tableSource": "0",
-          "name": "LNAME"
-        }
-        ],
-        "businessTerm": {
-          "name": "Patient Full Name",
-          "glossaryCategory": {
-            "name": "Coco Pharmaceuticals"
+        "class": "ReportSection",
+        "name": "section1.1",
+        "elements": [{
+          "class": "ReportColumn",
+          "name": "Full Name",
+          "formula": "concat",
+          "sources": [{
+            "class": "DatabaseColumnSource",
+            "tableSource": "0",
+            "name": "FNAME"
+          }, {
+            "class": "DatabaseColumnSource",
+            "tableSource": "0",
+            "name": "LNAME"
           }
-        }
-      }, {
-        "class": "ReportColumn",
-        "name": "Role of the employee",
-        "formula": "upper",
-        "sources": [{
-          "class": "DatabaseColumnSource",
-          "tableSource": "0",
-          "name": "ROLE"
+          ],
+          "businessTerm": {
+            "name": "Patient Full Name",
+            "glossaryCategory": {
+              "name": "Coco Pharmaceuticals"
+            }
+          }
+        }, {
+          "class": "ReportColumn",
+          "name": "Role of the employee",
+          "formula": "upper",
+          "sources": [{
+            "class": "DatabaseColumnSource",
+            "tableSource": "0",
+            "name": "ROLE"
+          }
+          ]
         }
         ]
       }
       ]
     }
     ]
+
+
   }
-  ]
 }

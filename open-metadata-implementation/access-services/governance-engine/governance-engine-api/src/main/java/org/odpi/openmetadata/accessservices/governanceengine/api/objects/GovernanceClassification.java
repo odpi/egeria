@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,21 +19,37 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernanceClassification extends GovernanceClassificationBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Map<String, String> attributes;
+    private List<String> securityLabels;
+    private Map<String, String> securityProperties;
 
     /**
-     * @return attributeValues - key/value pairs for additional objects of Classification
+     * @return list of the security labels assigned with a Security Tag
      */
-    public Map<String, String> getAttributes() {
-        return attributes;
+    public List<String> getSecurityLabels() {
+        return securityLabels;
     }
 
     /**
-     * @param attributes - key/value pairs for additional objects of Classification
+     * Set up the security labels
+     *
+     * @param securityLabels security labels for Security Tag classification
      */
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
+    public void setSecurityLabels(List<String> securityLabels) {
+        this.securityLabels = securityLabels;
     }
 
+    /**
+     * @return attributeValues - key/value pairs for security properties of Classification
+     */
+    public Map<String, String> getSecurityProperties() {
+        return securityProperties;
+    }
+
+    /**
+     * @param securityProperties - key/value pairs for security properties of Classification
+     */
+    public void setSecurityProperties(Map<String, String> securityProperties) {
+        this.securityProperties = securityProperties;
+    }
 }
 

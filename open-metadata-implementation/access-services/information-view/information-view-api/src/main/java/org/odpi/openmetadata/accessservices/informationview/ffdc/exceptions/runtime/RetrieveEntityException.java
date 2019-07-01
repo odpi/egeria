@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime;
 
-public class RetrieveEntityException extends InformationViewUncheckedExceptionBase{
+public class RetrieveEntityException extends InformationViewExceptionBase {
 
     public RetrieveEntityException(String className, String errorMessage, String systemAction, String userAction,
                                    Throwable caughtError) {
