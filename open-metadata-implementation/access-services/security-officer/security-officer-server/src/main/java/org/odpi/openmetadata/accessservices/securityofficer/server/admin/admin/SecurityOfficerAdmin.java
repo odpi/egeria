@@ -54,13 +54,12 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin {
 
         try {
             this.auditLog = auditLog;
-            this.instance = new SecurityOfficerServicesInstance(enterpriseOMRSRepositoryConnector);
-            this.serverName = instance.getServerName();
-
             OpenMetadataTopicConnector securityOfficerOutputTopic = initializeSecurityOfficerTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector, securityOfficerOutputTopic, auditLog);
+            SecurityOfficerEventProcessor securityOfficerEventProcessor = new SecurityOfficerEventProcessor(enterpriseOMRSRepositoryConnector);
 
-            SecurityOfficerPublisher securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor);
+            SecurityOfficerPublisher securityOfficerPublisher = new SecurityOfficerPublisher(securityOfficerEventProcessor, securityOfficerOutputTopic, auditLog);
+            this.instance = new SecurityOfficerServicesInstance(enterpriseOMRSRepositoryConnector, securityOfficerPublisher);
+            this.serverName = instance.getServerName();
 
             if (enterpriseOMRSTopicConnector != null) {
                 auditCode = SecurityOfficerAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
