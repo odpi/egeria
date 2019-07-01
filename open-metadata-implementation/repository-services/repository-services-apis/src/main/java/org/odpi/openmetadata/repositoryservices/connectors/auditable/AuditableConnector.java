@@ -15,5 +15,5 @@ public interface AuditableConnector
      *
      * @param auditLog audit log object
      */
-    void setAuditLog(OMRSAuditLog   auditLog);
+    void setAuditLog(OMRSAuditLog auditLog);
 }

@@ -116,6 +116,7 @@ public interface AssetConsumerFeedbackInterface
      * Adds a comment to another comment.
      *
      * @param userId        userId of user making request.
+     * @param assetGUID    unique identifier for the asset at the head of this comment chain.
      * @param commentGUID   unique identifier for an existing comment.  Used to add a reply to a comment.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -128,6 +129,7 @@ public interface AssetConsumerFeedbackInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     String addCommentReply(String      userId,
+                           String      assetGUID,
                            String      commentGUID,
                            CommentType commentType,
                            String      commentText,
@@ -140,6 +142,7 @@ public interface AssetConsumerFeedbackInterface
      * Update an existing comment.
      *
      * @param userId        userId of user making request.
+     * @param assetGUID    unique identifier for the asset at the head of this comment chain.
      * @param commentGUID   unique identifier for the comment to change.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -150,6 +153,7 @@ public interface AssetConsumerFeedbackInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     void   updateComment(String      userId,
+                         String      assetGUID,
                          String      commentGUID,
                          CommentType commentType,
                          String      commentText,
@@ -162,6 +166,7 @@ public interface AssetConsumerFeedbackInterface
      * Removes a comment added to the asset by this user.
      *
      * @param userId       userId of user making request.
+     * @param assetGUID    unique identifier for the asset at the head of this comment chain.
      * @param commentGUID  unique identifier for the comment object.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -169,6 +174,7 @@ public interface AssetConsumerFeedbackInterface
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     void removeComment(String     userId,
+                       String     assetGUID,
                        String     commentGUID) throws InvalidParameterException,
                                                       PropertyServerException,
                                                       UserNotAuthorizedException;

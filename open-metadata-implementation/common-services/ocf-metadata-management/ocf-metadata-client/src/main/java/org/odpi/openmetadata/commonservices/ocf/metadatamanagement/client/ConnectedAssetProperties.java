@@ -33,6 +33,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
  */
 public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties
 {
+    private String               serviceName;
     private String               remoteServerName;
     private String               userId              = null;
     private String               localServerUserId   = null;
@@ -49,6 +50,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     /**
      * Constructor with no security used on the HTTP request.
      *
+     * @param serviceName calling service
      * @param remoteServerName  name of the server.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
@@ -56,7 +58,8 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
      */
-    public ConnectedAssetProperties(String               remoteServerName,
+    public ConnectedAssetProperties(String               serviceName,
+                                    String               remoteServerName,
                                     String               userId,
                                     String               omasServerURL,
                                     String               connectorInstanceId,
@@ -65,6 +68,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     {
         super();
 
+        this.serviceName         = serviceName;
         this.remoteServerName    = remoteServerName;
         this.userId              = userId;
         this.omasServerURL       = omasServerURL;
@@ -77,6 +81,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     /**
      * Constructor with userId and password embedded in the HTTP request.
      *
+     * @param serviceName calling service
      * @param remoteServerName  name of the server to call.
      * @param localServerUserId userId to use on the rest call.
      * @param localServerPassword password to use on the rest call.
@@ -86,7 +91,8 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
      */
-    public ConnectedAssetProperties(String               remoteServerName,
+    public ConnectedAssetProperties(String               serviceName,
+                                    String               remoteServerName,
                                     String               localServerUserId,
                                     String               localServerPassword,
                                     String               userId,
@@ -97,6 +103,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     {
         super();
 
+        this.serviceName         = serviceName;
         this.remoteServerName    = remoteServerName;
         this.localServerUserId   = localServerUserId;
         this.localServerPassword = localServerPassword;
@@ -119,6 +126,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         if (template != null)
         {
+            this.serviceName         = template.serviceName;
             this.remoteServerName    = template.remoteServerName;
             this.localServerUserId   = template.localServerUserId;
             this.localServerPassword = template.localServerPassword;
@@ -152,11 +160,23 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
         {
             if ((localServerUserId != null) && (localServerPassword != null))
             {
-                assetProperties = new ConnectedAssetUniverse(remoteServerName, localServerUserId, localServerPassword, omasServerURL, userId, assetGUID, connection.getGUID());
+                assetProperties = new ConnectedAssetUniverse(serviceName,
+                                                             remoteServerName,
+                                                             localServerUserId,
+                                                             localServerPassword,
+                                                             omasServerURL,
+                                                             userId,
+                                                             assetGUID,
+                                                             connection.getGUID());
             }
             else
             {
-                assetProperties = new ConnectedAssetUniverse(remoteServerName, omasServerURL, userId, assetGUID, connection.getGUID());
+                assetProperties = new ConnectedAssetUniverse(serviceName,
+                                                             remoteServerName,
+                                                             omasServerURL,
+                                                             userId,
+                                                             assetGUID,
+                                                             connection.getGUID());
             }
         }
         catch (UserNotAuthorizedException  error)
@@ -181,7 +201,8 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     public String toString()
     {
         return "ConnectedAssetProperties{" +
-                "remoteServerName='" + remoteServerName + '\'' +
+                "serviceName='" + serviceName + '\'' +
+                ", remoteServerName='" + remoteServerName + '\'' +
                 ", userId='" + userId + '\'' +
                 ", localServerUserId='" + localServerUserId + '\'' +
                 ", omasServerURL='" + omasServerURL + '\'' +

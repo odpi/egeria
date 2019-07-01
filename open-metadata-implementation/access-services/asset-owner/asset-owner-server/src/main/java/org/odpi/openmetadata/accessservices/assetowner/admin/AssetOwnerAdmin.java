@@ -70,8 +70,13 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
                                                                                accessServiceConfig.getAccessServiceName(),
                                                                                auditLog);
 
+            List<String>           defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                           accessServiceConfig.getAccessServiceName(),
+                                                                           auditLog);
+
             this.instance = new AssetOwnerServicesInstance(repositoryConnector,
                                                            supportedZones,
+                                                           defaultZones,
                                                            auditLog);
             this.serverName = instance.getServerName();
 

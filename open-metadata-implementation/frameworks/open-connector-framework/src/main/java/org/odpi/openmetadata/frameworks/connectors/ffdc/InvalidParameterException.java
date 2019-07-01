@@ -140,6 +140,7 @@ public class InvalidParameterException extends OCFCheckedExceptionBase
      * This is the copy/clone constructor used for creating an exception.
      *
      * @param template   object to copy
+     * @param parameterName name of invalid parameter
      */
     public InvalidParameterException(OCFCheckedExceptionBase template,
                                      String                  parameterName)

@@ -39,7 +39,7 @@ public class EntityDetailResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public EntityDetailResponse(EntityDetailResponse   template)
+    public EntityDetailResponse(EntityDetailResponse template)
     {
         super(template);
 
@@ -120,7 +120,8 @@ public class EntityDetailResponse extends OMRSAPIResponse
         {
             return false;
         }
-        EntityDetailResponse that = (EntityDetailResponse) objectToCompare;
+        EntityDetailResponse
+                that = (EntityDetailResponse) objectToCompare;
         return Objects.equals(getEntity(), that.getEntity());
     }
 

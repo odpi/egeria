@@ -49,6 +49,8 @@ public abstract class ReferenceableHeader extends CommonHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public ReferenceableHeader(ReferenceableHeader   template)
     {

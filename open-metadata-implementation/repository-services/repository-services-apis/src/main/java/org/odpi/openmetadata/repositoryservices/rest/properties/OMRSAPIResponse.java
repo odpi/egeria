@@ -255,7 +255,8 @@ public abstract class OMRSAPIResponse implements Serializable
         {
             return false;
         }
-        OMRSAPIResponse that = (OMRSAPIResponse) objectToCompare;
+        OMRSAPIResponse
+                that = (OMRSAPIResponse) objectToCompare;
         return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
                 Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
                 Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&

@@ -82,7 +82,7 @@ public class ConfigStewardshipServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @return
+     * @return void response
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "")
 

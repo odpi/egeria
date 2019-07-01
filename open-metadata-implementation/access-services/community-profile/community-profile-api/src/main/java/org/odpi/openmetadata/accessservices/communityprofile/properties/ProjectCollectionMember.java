@@ -37,6 +37,8 @@ public class ProjectCollectionMember extends CollectionMemberHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public ProjectCollectionMember(ProjectCollectionMember template)
     {

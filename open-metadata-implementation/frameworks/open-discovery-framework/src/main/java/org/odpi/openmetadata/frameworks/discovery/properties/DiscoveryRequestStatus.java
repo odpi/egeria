@@ -34,6 +34,10 @@ public enum DiscoveryRequestStatus implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param statusCode ordinal
+     * @param statusName short name
+     * @param statusDescription longer explanation
      */
     DiscoveryRequestStatus(int     statusCode, String   statusName, String   statusDescription)
     {
