@@ -32,13 +32,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-server</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>

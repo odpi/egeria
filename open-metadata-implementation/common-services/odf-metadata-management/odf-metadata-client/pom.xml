@@ -26,13 +26,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
