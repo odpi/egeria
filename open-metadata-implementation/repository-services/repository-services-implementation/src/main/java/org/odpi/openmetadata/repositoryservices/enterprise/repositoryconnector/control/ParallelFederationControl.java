@@ -21,15 +21,17 @@ public class ParallelFederationControl extends FederationControlBase
     /**
      * Constructor for a federated query
      *
+     * @param userId calling user
      * @param cohortConnectors list of connectors to call
      * @param methodName calling method
      */
-    public ParallelFederationControl(List<OMRSRepositoryConnector> cohortConnectors,
+    public ParallelFederationControl(String                        userId,
+                                     List<OMRSRepositoryConnector> cohortConnectors,
                                      String                        methodName)
     {
-        super(cohortConnectors, methodName);
+        super(userId, cohortConnectors, methodName);
 
-        sequentialFederationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        sequentialFederationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
     }
 
 

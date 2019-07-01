@@ -128,9 +128,9 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
             auditLog.logRecord(methodName,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(instanceEventOriginator.getMetadataCollectionId(),
-                                                                instanceEvent.toString()),
-                               null,
+                               auditCode.getFormattedLogMessage(instanceEventType.getName(),
+                                                                instanceEventOriginator.toString()),
+                               instanceEvent.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 

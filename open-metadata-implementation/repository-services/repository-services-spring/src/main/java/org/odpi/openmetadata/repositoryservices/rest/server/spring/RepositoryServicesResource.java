@@ -84,6 +84,8 @@ public class RepositoryServicesResource
      * metadata repository with the metadata repository cohort.  It is also the identifier used to
      * identify the home repository of a metadata instance.
      *
+     * This method has been deprecated as it does not work on a server that has security enabled.
+     *
      * @param serverName unique identifier for requested server.
      * @return String metadata collection id.
      * or RepositoryErrorException if there is a problem communicating with the metadata repository.
@@ -93,6 +95,25 @@ public class RepositoryServicesResource
     public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName)
     {
         return restAPI.getMetadataCollectionId(serverName);
+    }
+
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId calling user
+     * @return String metadata collection id.
+     * or RepositoryErrorException if there is a problem communicating with the metadata repository.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/metadata-collection-id")
+
+    public MetadataCollectionIdResponse getMetadataCollectionId(@PathVariable String   serverName,
+                                                                @PathVariable String   userId)
+    {
+        return restAPI.getMetadataCollectionId(serverName, userId);
     }
 
 

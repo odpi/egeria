@@ -23,6 +23,7 @@ import java.util.List;
  */
 public abstract class FederationControlBase implements FederationControl
 {
+    protected String                            userId;
     protected List<OMRSRepositoryConnector>     cohortConnectors;
     protected String                            methodName;
 
@@ -30,12 +31,15 @@ public abstract class FederationControlBase implements FederationControl
     /**
      * Constructor for a federated query
      *
+     * @param userId calling user
      * @param cohortConnectors list of connectors to call
      * @param methodName calling method
      */
-    public FederationControlBase(List<OMRSRepositoryConnector>     cohortConnectors,
+    public FederationControlBase(String                            userId,
+                                 List<OMRSRepositoryConnector>     cohortConnectors,
                                  String                            methodName)
     {
+        this.userId = userId;
         this.cohortConnectors = cohortConnectors;
         this.methodName = methodName;
     }

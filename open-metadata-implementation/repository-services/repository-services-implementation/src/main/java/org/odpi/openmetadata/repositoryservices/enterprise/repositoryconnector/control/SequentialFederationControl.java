@@ -19,13 +19,15 @@ public class SequentialFederationControl extends FederationControlBase
     /**
      * Constructor for a sequential federated query controller
      *
+     * @param userId calling user
      * @param cohortConnectors list of connectors to call
      * @param methodName calling method
      */
-    public SequentialFederationControl(List<OMRSRepositoryConnector> cohortConnectors,
-                                       String                            methodName)
+    public SequentialFederationControl(String                        userId,
+                                       List<OMRSRepositoryConnector> cohortConnectors,
+                                       String                        methodName)
     {
-        super(cohortConnectors, methodName);
+        super(userId, cohortConnectors, methodName);
     }
 
 
@@ -94,6 +96,6 @@ public class SequentialFederationControl extends FederationControlBase
                                                errorCode.getUserAction());
         }
 
-        return cohortMetadataCollection.getMetadataCollectionId();
+        return cohortMetadataCollection.getMetadataCollectionId(super.userId);
     }
 }

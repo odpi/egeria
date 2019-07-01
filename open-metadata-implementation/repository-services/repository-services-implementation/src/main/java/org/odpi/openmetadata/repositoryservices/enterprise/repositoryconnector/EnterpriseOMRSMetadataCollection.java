@@ -134,7 +134,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         GetAllTypesExecutor executor = new GetAllTypesExecutor(userId,
                                                                methodName,
                                                                localMetadataCollectionId,
@@ -658,7 +658,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         VerifyTypeDefExecutor executor = new VerifyTypeDefExecutor(userId, typeDef, methodName);
 
         /*
@@ -710,7 +710,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl              federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl              federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         VerifyAttributeTypeDefExecutor executor          = new VerifyAttributeTypeDefExecutor(userId, attributeTypeDef, methodName);
 
         /*
@@ -873,7 +873,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, false, methodName);
 
         /*
@@ -921,7 +921,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetEntitySummaryExecutor executor   = new GetEntitySummaryExecutor(userId, guid, methodName);
 
         /*
@@ -970,7 +970,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, true, methodName);
 
         /*
@@ -1024,7 +1024,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetEntityExecutor executor          = new GetEntityExecutor(userId, guid, asOfTime, methodName);
 
         /*
@@ -1109,7 +1109,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                 federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                 federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         GetRelationshipsForEntityExecutor executor          = new GetRelationshipsForEntityExecutor(userId,
                                                                                                     entityGUID,
                                                                                                     relationshipTypeGUID,
@@ -1212,7 +1212,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                 federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                 federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindEntitiesByPropertyExecutor    executor          = new FindEntitiesByPropertyExecutor(userId,
                                                                                                  entityTypeGUID,
                                                                                                  matchProperties,
@@ -1321,7 +1321,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                       federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                       federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindEntitiesByClassificationExecutor    executor          = new FindEntitiesByClassificationExecutor(userId,
                                                                                                              entityTypeGUID,
                                                                                                              classificationName,
@@ -1425,7 +1425,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                   federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindEntitiesByPropertyValueExecutor executor          = new FindEntitiesByPropertyValueExecutor(userId,
                                                                                                         entityTypeGUID,
                                                                                                         searchCriteria,
@@ -1483,7 +1483,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetRelationshipExecutor executor    = new GetRelationshipExecutor(userId, guid, false, methodName);
 
         /*
@@ -1531,7 +1531,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetRelationshipExecutor executor    = new GetRelationshipExecutor(userId, guid, true, methodName);
 
         /*
@@ -1583,7 +1583,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         GetRelationshipExecutor executor    = new GetRelationshipExecutor(userId, guid, asOfTime, methodName);
 
         /*
@@ -1673,7 +1673,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                   federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindRelationshipsByPropertyExecutor executor          = new FindRelationshipsByPropertyExecutor(userId,
                                                                                                         relationshipTypeGUID,
                                                                                                         matchProperties,
@@ -1773,7 +1773,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                   federationControl = new ParallelFederationControl(cohortConnectors, methodName);
+        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindRelationshipsByPropertyValueExecutor executor          = new FindRelationshipsByPropertyValueExecutor(userId,
                                                                                                                   relationshipTypeGUID,
                                                                                                                   searchCriteria,
@@ -2361,7 +2361,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         AddEntityExecutor executor = new AddEntityExecutor(userId,
                                                            entityTypeGUID,
                                                            initialProperties,
@@ -2442,7 +2442,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         AddEntityExecutor executor = new AddEntityExecutor(userId,
                                                            entityTypeGUID,
                                                            externalSourceGUID,
@@ -2733,7 +2733,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         PurgeEntityExecutor executor = new PurgeEntityExecutor(userId,
                                                                typeDefGUID,
                                                                typeDefName,
@@ -2789,7 +2789,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         RestoreEntityExecutor executor = new RestoreEntityExecutor(userId,
                                                                    deletedEntityGUID,
                                                                    methodName);
@@ -3050,7 +3050,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         AddRelationshipExecutor executor = new AddRelationshipExecutor(userId,
                                                                        relationshipTypeGUID,
                                                                        initialProperties,
@@ -3140,7 +3140,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         AddRelationshipExecutor executor = new AddRelationshipExecutor(userId,
                                                                        relationshipTypeGUID,
                                                                        externalSourceGUID,
@@ -3419,7 +3419,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         PurgeRelationshipExecutor executor = new PurgeRelationshipExecutor(userId,
                                                                            typeDefGUID,
                                                                            typeDefName,
@@ -3476,7 +3476,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl federationControl = new SequentialFederationControl(cohortConnectors, methodName);
+        FederationControl federationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
         RestoreRelationshipExecutor executor = new RestoreRelationshipExecutor(userId,
                                                                                deletedRelationshipGUID,
                                                                                methodName);
