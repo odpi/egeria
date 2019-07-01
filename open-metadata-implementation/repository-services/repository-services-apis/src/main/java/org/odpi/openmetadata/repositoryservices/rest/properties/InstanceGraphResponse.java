@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +42,7 @@ public class InstanceGraphResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public InstanceGraphResponse(InstanceGraphResponse   template)
+    public InstanceGraphResponse(InstanceGraphResponse template)
     {
         super(template);
 
@@ -177,7 +176,8 @@ public class InstanceGraphResponse extends OMRSAPIResponse
         {
             return false;
         }
-        InstanceGraphResponse that = (InstanceGraphResponse) objectToCompare;
+        InstanceGraphResponse
+                that = (InstanceGraphResponse) objectToCompare;
         return Objects.equals(getEntityElementList(), that.getEntityElementList()) &&
                 Objects.equals(getRelationshipElementList(), that.getRelationshipElementList());
     }

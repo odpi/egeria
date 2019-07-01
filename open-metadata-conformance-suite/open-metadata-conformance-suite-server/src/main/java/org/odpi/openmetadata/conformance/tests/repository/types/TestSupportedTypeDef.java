@@ -76,6 +76,9 @@ public class TestSupportedTypeDef extends RepositoryConformanceTestCase
      *
      * @param workPad place for parameters and results
      * @param typeDef type to test
+     * @param source source of test case execution request
+     * @param defaultProfileId most of the results will be recorded in this profile
+     * @param defaultRequirementId most of the results will be recorded under this requirement
      */
     public TestSupportedTypeDef(RepositoryConformanceWorkPad workPad,
                                 TypeDef                      typeDef,

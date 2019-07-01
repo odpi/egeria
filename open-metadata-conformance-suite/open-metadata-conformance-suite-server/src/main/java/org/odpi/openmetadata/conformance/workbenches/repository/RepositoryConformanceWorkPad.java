@@ -382,7 +382,8 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
     /**
      * Set up the connector to the local repository.
      *
-     * @param localRepositoryConnector
+     * @param localRepositoryConnector access to the local repository (updated to generate events for the
+     *                                 technology under test to respond to)
      */
     public synchronized void setLocalRepositoryConnector(OMRSRepositoryConnector localRepositoryConnector)
     {

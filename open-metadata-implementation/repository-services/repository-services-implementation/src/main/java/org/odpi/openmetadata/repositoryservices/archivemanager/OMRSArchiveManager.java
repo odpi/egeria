@@ -184,6 +184,8 @@ public class OMRSArchiveManager
      * exists).
      *
      * @param archiveContent open metadata archive to process
+     * @param typeDefProcessor processor of type definitions found in the archive
+     * @param instanceProcessor processor of instances found in the archive
      */
     private void processOpenMetadataArchive(OpenMetadataArchive                   archiveContent,
                                             OMRSTypeDefEventProcessorInterface    typeDefProcessor,
@@ -256,6 +258,7 @@ public class OMRSArchiveManager
      *
      * @param archiveProperties properties of the archive used for logging
      * @param archiveTypeStore TypeStore from the archive
+     * @param typeDefProcessor processor of type definitions found in the archive
      * @return type count
      */
     private int  processTypeDefStore(OpenMetadataArchiveProperties          archiveProperties,

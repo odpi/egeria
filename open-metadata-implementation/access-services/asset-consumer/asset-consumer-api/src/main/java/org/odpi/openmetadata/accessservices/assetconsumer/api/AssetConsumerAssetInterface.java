@@ -6,7 +6,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 import java.util.List;
 
@@ -65,7 +64,7 @@ public interface AssetConsumerAssetInterface
      * @param assetToken     token used to find the Asset - may be a name or GUID
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     *                 *
+     *
      * @return a list of unique identifiers for the matching assets
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.

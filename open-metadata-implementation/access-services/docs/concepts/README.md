@@ -19,6 +19,7 @@ appear in specific access services.
 * [Configuration Properties](configuration-properties)
 * [External Links and References](attachments/external-references.md)
 * [Comments](feedback/comments.md)
+* [Governance Zones](governance-zones)
 * [GUID](guid.md)
 * [Engine](server-capabilities/engine.md)
 * [Feedback](feedback)
@@ -40,7 +41,7 @@ appear in specific access services.
 * [User Roles](user-roles)
 * [Users](users)
 * [User Identity (UserId)](users/user-identity.md)
-* [Zones](configuration-properties)
+* [Zones](governance-zones)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

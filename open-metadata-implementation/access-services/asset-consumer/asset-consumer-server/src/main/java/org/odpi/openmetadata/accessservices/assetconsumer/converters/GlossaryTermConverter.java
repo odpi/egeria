@@ -62,7 +62,7 @@ public class GlossaryTermConverter extends ReferenceableConverter
     /**
      * Request the bean is extracted from the repository objects
      *
-     * @return output bean
+     * @param bean  output bean
      */
     protected void updateBean(GlossaryTerm bean)
     {

@@ -35,6 +35,8 @@ open-metadata-implementation/access-services/security-officer @mandy-chessell
 open-metadata-implementation/access-services/governance-program @mandy-chessell
 open-metadata-implementation/access-services/governance-engine @planetf1
 open-metadata-implementation/access-services/subject-area @davidradl
+open-metadata-implementation/access-services/asset-lineage @GuyAckermans @DimitriosMaimaris
+open-metadata-implementation/governance-servers/open-lineage-services @GuyAckermans @DimitriosMaimaris
 
 open-metadata-implementation/repository-services @mandy-chessell
 

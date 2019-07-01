@@ -44,4 +44,23 @@ public class RepositoryErrorException extends OMRSCheckedExceptionBase
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtException);
     }
+
+
+    /**
+     * This constructor is used when an unexpected exception has been caught that needs to be wrapped in a
+     * RepositoryErrorException in order to add the essential details about the error, where it occurred and
+     * how to fix it.
+     *
+     * @param unexpectedException the exception/error that caused this exception to be raised
+     */
+    public RepositoryErrorException(OMRSCheckedExceptionBase  unexpectedException)
+    {
+        super(unexpectedException.getReportedHTTPCode(),
+              unexpectedException.getReportingClassName(),
+              unexpectedException.getReportingActionDescription(),
+              unexpectedException.getErrorMessage(),
+              unexpectedException.getReportedSystemAction(),
+              unexpectedException.getReportedUserAction(),
+              unexpectedException);
+    }
 }

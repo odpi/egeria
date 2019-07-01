@@ -21,7 +21,7 @@ public interface OMRSConnectionConsumer
      * @param remoteServerType type of the remote server.
      * @param owningOrganizationName name of the organization the owns the remote server.
      * @param metadataCollectionId Unique identifier for the metadata collection
-     * @param metadataCollectionId Display name for the metadata collection
+     * @param metadataCollectionName Display name for the metadata collection
      * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
