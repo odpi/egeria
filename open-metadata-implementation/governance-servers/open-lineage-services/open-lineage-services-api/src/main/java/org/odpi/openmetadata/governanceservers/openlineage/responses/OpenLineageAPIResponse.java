@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         ({
           @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
         })
-public class OpenLineageOMASAPIResponse {
+public class OpenLineageAPIResponse {
 
     private int                  relatedHTTPCode = 200;
     private String               exceptionClassName = null;
@@ -78,7 +78,7 @@ public class OpenLineageOMASAPIResponse {
 
     @Override
     public String toString() {
-        return "OpenLineageOMASAPIResponse{" +
+        return "OpenLineageAPIResponse{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
