@@ -6,14 +6,9 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * QueryAccumulatorBase acts as a base class to the accumulators that need to visit each repository and
@@ -31,9 +26,9 @@ public class QueryInstanceAccumulatorBase extends QueryAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    QueryInstanceAccumulatorBase(String                  localMetadataCollectionId,
-                                 OMRSAuditLog            auditLog,
-                                 OMRSRepositoryValidator repositoryValidator)
+    QueryInstanceAccumulatorBase(String                            localMetadataCollectionId,
+                                 OMRSAuditLog                      auditLog,
+                                 OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }
@@ -51,10 +46,7 @@ public class QueryInstanceAccumulatorBase extends QueryAccumulatorBase
     {
         if (currentSavedEntity != null)
         {
-            if (currentSavedEntity.getVersion() >= incomingEntity.getVersion())
-            {
-                return true;
-            }
+            return (incomingEntity.getVersion() <= currentSavedEntity.getVersion());
         }
 
         return false;
@@ -80,11 +72,6 @@ public class QueryInstanceAccumulatorBase extends QueryAccumulatorBase
      */
     boolean notLocal(String   instanceGUID)
     {
-        if (locallyStoredInstancesGUIDs.contains(instanceGUID))
-        {
-            return false;
-        }
-
-        return true;
+        return ! (locallyStoredInstancesGUIDs.contains(instanceGUID));
     }
 }
