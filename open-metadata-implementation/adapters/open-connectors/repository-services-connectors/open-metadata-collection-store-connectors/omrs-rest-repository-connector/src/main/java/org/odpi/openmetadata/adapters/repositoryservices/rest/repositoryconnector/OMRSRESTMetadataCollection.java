@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The OMRSRESTMetadataCollection represents a remote metadata repository that supports the OMRS REST API.
@@ -4908,20 +4909,57 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param methodName name of the method called
      * @param restResult response from the rest call.  This generated in the remote server.
      * @throws InvalidParameterException encoded exception from the server
+     * @throws RepositoryErrorException invalid parameter is "serverName"
      */
     private void detectAndThrowInvalidParameterException(String          methodName,
-                                                         OMRSAPIResponse restResult) throws InvalidParameterException
+                                                         OMRSAPIResponse restResult) throws InvalidParameterException,
+                                                                                            RepositoryErrorException
     {
-        final String   exceptionClassName = InvalidParameterException.class.getName();
+        final String exceptionClassName = InvalidParameterException.class.getName();
+        final String propertyName = "parameterName";
+        final String serverName = "serverName";
+
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                restResult.getExceptionErrorMessage(),
-                                                restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+            String parameterName = null;
+
+            Map<String, Object>   exceptionProperties = restResult.getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  nameObject = exceptionProperties.get(propertyName);
+
+                if (nameObject != null)
+                {
+                    parameterName = (String)nameObject;
+                }
+            }
+
+            if (serverName.equals(parameterName))
+            {
+                /*
+                 * If the platform is up but the server is not running on the platform the response is
+                 * InvalidParameterException because the serverName is invalid - so this is turned into
+                 * a RepositoryErrorException as if the whole platform is missing.
+                 */
+                throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction());
+            }
+            else
+            {
+                throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction(),
+                                                    parameterName);
+            }
         }
     }
 
