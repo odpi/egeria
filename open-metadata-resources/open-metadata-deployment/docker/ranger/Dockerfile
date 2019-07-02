@@ -18,6 +18,7 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Ranger and build it
+ADD https://api.github.com/repos/apache/ranger/git/refs/heads/$branch version.json
 RUN git clone http://github.com/apache/ranger.git -b ${branch}
 
 # Remove -DskipTests if unit tests are to be included - build the code...
