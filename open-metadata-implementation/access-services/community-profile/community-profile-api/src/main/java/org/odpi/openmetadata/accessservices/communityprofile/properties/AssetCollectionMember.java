@@ -38,6 +38,8 @@ public class AssetCollectionMember extends CollectionMemberHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public AssetCollectionMember(AssetCollectionMember template)
     {

@@ -31,7 +31,7 @@ public interface OMRSAuditLogStore
      * @return requested audit log record
      * @throws InvalidParameterException indicates that the logRecordId parameter is invalid.
      */
-    OMRSAuditLogRecord  getAuditLogRecord(String     logRecordId) throws InvalidParameterException;
+    OMRSAuditLogRecord  getAuditLogRecord(String logRecordId) throws InvalidParameterException;
 
 
     /**
@@ -46,10 +46,10 @@ public interface OMRSAuditLogStore
      * @throws InvalidParameterException indicates that the start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
-    List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date    startDate,
-                                                           Date    endDate,
-                                                           int     offset,
-                                                           int     maximumRecords) throws InvalidParameterException,
+    List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date startDate,
+                                                           Date endDate,
+                                                           int offset,
+                                                           int maximumRecords) throws InvalidParameterException,
                                                                                           PagingErrorException;
 
     /**
@@ -65,11 +65,11 @@ public interface OMRSAuditLogStore
      * @throws InvalidParameterException indicates that the severity, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
-    List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String   severity,
-                                                          Date     startDate,
-                                                          Date     endDate,
-                                                          int      offset,
-                                                          int      maximumRecords) throws InvalidParameterException,
+    List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String severity,
+                                                          Date startDate,
+                                                          Date endDate,
+                                                          int offset,
+                                                          int maximumRecords) throws InvalidParameterException,
                                                                                           PagingErrorException;
 
     /**
@@ -85,10 +85,10 @@ public interface OMRSAuditLogStore
      * @throws InvalidParameterException indicates that the component, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
-    List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String   component,
-                                                           Date     startDate,
-                                                           Date     endDate,
-                                                           int      offset,
-                                                           int      maximumRecords) throws InvalidParameterException,
+    List<OMRSAuditLogRecord> getAuditLogRecordsByComponent(String component,
+                                                           Date startDate,
+                                                           Date endDate,
+                                                           int offset,
+                                                           int maximumRecords) throws InvalidParameterException,
                                                                                            PagingErrorException;
 }

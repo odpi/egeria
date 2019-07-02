@@ -7,7 +7,8 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.servic
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementResponse;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementListResponse;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.ExceptionHandler;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -15,8 +16,11 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownExc
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 /**
@@ -41,13 +45,25 @@ public class SecurityOfficerService {
         return response;
     }
 
-    public SecurityOfficerOMASAPIResponse updateSecurityTag(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) {
-        SecurityOfficerSchemaElementResponse response = new SecurityOfficerSchemaElementResponse();
+    public SecurityOfficerSecurityTagListResponse getSecurityTags(String serverName, String userId) {
+        SecurityOfficerSecurityTagListResponse response = new SecurityOfficerSecurityTagListResponse();
+        try {
+            response.setSecurityTags(instanceHandler.getAvailableSecurityTags(serverName, userId));
+        } catch (RepositoryErrorException | InvalidParameterException | PropertyErrorException | PagingErrorException | ClassificationErrorException | FunctionNotSupportedException | TypeErrorException | UserNotAuthorizedException | TypeDefNotKnownException e) {
+            exceptionHandler.captureOMRSException(response, e);
+        } catch (PropertyServerException e) {
+            exceptionHandler.captureCheckedException(response, e, e.getClass().getName());
+        }
+        return response;
+    }
+
+    public SecurityOfficerSchemaElementListResponse updateSecurityTag(String serverName, String userId, String schemaElementId, SecurityClassification securityClassification) {
+        SecurityOfficerSchemaElementListResponse response = new SecurityOfficerSchemaElementListResponse();
 
         try {
-            response.setSchemaElementEntity(instanceHandler.updateSecurityTagBySchemaElementId(serverName, userId, schemaElementId, securityClassification));
+            response.setSchemaElementEntityList(instanceHandler.updateSecurityTagBySchemaElementId(serverName, userId, schemaElementId, securityClassification));
         } catch (UserNotAuthorizedException | RepositoryErrorException | ClassificationErrorException | EntityProxyOnlyException
-                | PropertyErrorException | InvalidParameterException | FunctionNotSupportedException | EntityNotKnownException e) {
+                | PropertyErrorException | InvalidParameterException | FunctionNotSupportedException | EntityNotKnownException | TypeDefNotKnownException | TypeErrorException | PagingErrorException e) {
             exceptionHandler.captureOMRSException(response, e);
         } catch (PropertyServerException e) {
             exceptionHandler.captureCheckedException(response, e, e.getClass().getName());
@@ -55,4 +71,5 @@ public class SecurityOfficerService {
 
         return response;
     }
+
 }

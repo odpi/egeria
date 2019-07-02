@@ -1,0 +1,52 @@
+[
+ {
+  "label": "Global unique identifier (guid)",
+  "name": "guid",
+  "type": "string",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Status",
+  "name": "status",
+  "type": "string",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Created by",
+  "name":"createdBy",
+  "type": "string",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Updated by",
+  "name": "updatedBy",
+  "type": "string",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Create time",
+  "name": "createTime",
+  "type": "date",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Update time",
+  "name": "updateTime",
+  "type": "date",
+  "url":"aaa",
+  "readonly": true
+ },
+ {
+  "label": "Version",
+  "name": "version",
+  "type": "string",
+  "url": "bbb",
+  "readonly": true
+ }
+]
+

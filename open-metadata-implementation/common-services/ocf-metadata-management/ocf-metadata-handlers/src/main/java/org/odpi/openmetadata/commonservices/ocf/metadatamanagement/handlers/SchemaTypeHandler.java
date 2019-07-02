@@ -142,12 +142,12 @@ public class SchemaTypeHandler
                                                                         PropertyServerException,
                                                                         UserNotAuthorizedException
     {
-        return this.getSchemaTypeForAnchor(userId,
-                                           anchorGUID,
-                                           AssetMapper.ASSET_TYPE_NAME,
-                                           AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
-                                           AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
-                                           methodName);
+            return this.getSchemaTypeForAnchor(userId,
+                                               anchorGUID,
+                                               AssetMapper.ASSET_TYPE_NAME,
+                                               AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_GUID,
+                                               AssetMapper.ASSET_TO_SCHEMA_TYPE_TYPE_NAME,
+                                               methodName);
     }
 
 

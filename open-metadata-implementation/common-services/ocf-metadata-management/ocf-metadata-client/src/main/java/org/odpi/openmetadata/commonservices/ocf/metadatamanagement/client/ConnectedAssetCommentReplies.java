@@ -21,6 +21,7 @@ import java.util.List;
  */
 public class ConnectedAssetCommentReplies extends AssetCommentReplies
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -34,6 +35,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -44,17 +46,19 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetCommentReplies(String                 serverName,
+    ConnectedAssetCommentReplies(String                 serviceName,
+                                 String                 serverName,
                                  String                 userId,
                                  String                 omasServerURL,
                                  String                 rootCommentGUID,
                                  ConnectedAssetUniverse parentAsset,
                                  int                    totalElementCount,
                                  int                    maxCacheSize,
-                                 OCFRESTClient restClient)
+                                 OCFRESTClient          restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
@@ -77,6 +81,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
 
         if (template != null)
         {
+            this.serviceName     = template.serviceName;
             this.serverName      = template.serverName;
             this.userId          = template.userId;
             this.omasServerURL   = template.omasServerURL;
@@ -126,7 +131,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetCommentReplies.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}/comments?elementStart={3}&maxElements={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/comments?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
@@ -135,6 +140,7 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
             CommentsResponse restResult = restClient.callCommentsGetRESTCall(methodName,
                                                                              omasServerURL + urlTemplate,
                                                                              serverName,
+                                                                             serviceName,
                                                                              userId,
                                                                              rootCommentGUID,
                                                                              cacheStartPointer,
@@ -162,7 +168,8 @@ public class ConnectedAssetCommentReplies extends AssetCommentReplies
 
                         if (commentResponse.getReplyCount() > 0)
                         {
-                            commentReplies = new ConnectedAssetCommentReplies(serverName,
+                            commentReplies = new ConnectedAssetCommentReplies(serviceName,
+                                                                              serverName,
                                                                               userId,
                                                                               omasServerURL,
                                                                               bean.getGUID(),

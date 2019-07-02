@@ -23,15 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VirtualizationConfig extends AdminServicesConfigHeader {
-
-    private String virtualizationProvider                     = null;
-    private String ivInTopicName                              = null;
-    private Connection ivInTopic                              = null;
-    private String ivOutTopicName                             = null;
-    private Connection ivOutTopic                             = null;
-    private Connection virtualizationSolutionConnection       = null;
-    private Map<String, Object> virtualizationSolutionConfig  = null;
+public class VirtualizationConfig extends AdminServicesConfigHeader
+{
+    private String              virtualizationProvider           = null;
+    private String              ivInTopicName                    = null;
+    private Connection          ivInTopic                        = null;
+    private String              ivOutTopicName                   = null;
+    private Connection          ivOutTopic                       = null;
+    private Connection          virtualizationSolutionConnection = null;
+    private Map<String, Object> virtualizationSolutionConfig     = null;
 
 
     /**
@@ -41,10 +41,11 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
         super();
     }
 
+
     /**
      * Copy data from template
      *
-     * @param template
+     * @param template object to copy
      */
     public VirtualizationConfig(VirtualizationConfig template) {
         if (template != null) {
@@ -61,22 +62,28 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
 
     /**
      * Provide the name of virtualization provider
+     *
      * @return String virtualizationProvider
      */
     public String getVirtualizationProvider() {
         return virtualizationProvider;
     }
 
+
     /**
      * Set the name of virtualization provider
-     * @param virtualizationProvider
+     *
+     * @param virtualizationProvider provider
      */
-    public void setVirtualizationProvider(String virtualizationProvider) {
+    public void setVirtualizationProvider(String virtualizationProvider)
+    {
         this.virtualizationProvider = virtualizationProvider;
     }
 
+
     /**
      * Provide the name of the information view in topic
+     *
      * @return String ivInTopicName
      */
     public String getIvInTopicName() {
@@ -92,6 +99,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
         this.ivInTopicName = ivInTopicName;
     }
 
+
     /**
      * Provide the connection of the information view in topic
      * @return Connection ivInTopic
@@ -100,6 +108,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
         return ivInTopic;
     }
 
+
     /**
      * Set the connection of the information view in topic
      * @param ivInTopic Connection
@@ -107,6 +116,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
     public void setIvInTopic(Connection ivInTopic) {
         this.ivInTopic = ivInTopic;
     }
+
 
     /**
      * Provide the name of the information view out topic
@@ -125,6 +135,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
         this.ivOutTopicName = ivOutTopicName;
     }
 
+
     /**
      * Provide the connection of the information view out topic
      * @return Connection ivOutTopic
@@ -132,6 +143,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
     public Connection getIvOutTopic() {
         return ivOutTopic;
     }
+
 
     /**
      * Set the connection of the information view out topic
@@ -153,7 +165,8 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
      * Set the connection of the information view out topic
      * @param virtualizationSolutionConnection Connection
      */
-    public void setVirtualizationSolutionConnection(Connection virtualizationSolutionConnection) {
+    public void setVirtualizationSolutionConnection(Connection virtualizationSolutionConnection)
+    {
         this.virtualizationSolutionConnection = virtualizationSolutionConnection;
     }
 

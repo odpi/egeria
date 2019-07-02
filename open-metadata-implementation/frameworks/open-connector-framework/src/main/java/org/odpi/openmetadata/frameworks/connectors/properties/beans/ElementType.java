@@ -19,14 +19,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ElementType extends PropertyBase
 {
-    protected String        elementTypeId                   = null;
-    protected String        elementTypeName                 = null;
-    protected long          elementTypeVersion              = 0;
-    protected String        elementTypeDescription          = null;
-    protected String        elementSourceServer             = null;
-    protected ElementOrigin elementOrigin                   = ElementOrigin.CONFIGURATION;;
-    protected String        elementHomeMetadataCollectionId = null;
-    protected String        elementLicense                  = null;
+    protected String        elementTypeId                     = null;
+    protected String        elementTypeName                   = null;
+    protected long          elementTypeVersion                = 0;
+    protected String        elementTypeDescription            = null;
+    protected String        elementSourceServer               = null;
+    protected ElementOrigin elementOrigin                     = ElementOrigin.CONFIGURATION;
+    protected String        elementHomeMetadataCollectionId   = null;
+    protected String        elementHomeMetadataCollectionName = null;
+    protected String        elementLicense                    = null;
 
 
     /**
@@ -56,6 +57,7 @@ public class ElementType extends PropertyBase
             elementSourceServer = templateType.getElementSourceServer();
             elementOrigin = templateType.getElementOrigin();
             elementHomeMetadataCollectionId = templateType.getElementHomeMetadataCollectionId();
+            elementHomeMetadataCollectionName = templateType.getElementHomeMetadataCollectionName();
             elementLicense = templateType.getElementLicense();
         }
     }
@@ -128,6 +130,7 @@ public class ElementType extends PropertyBase
 
 
     /**
+     * Set up a short description of this element's type.
      *
      * @param elementTypeDescription set up the description for this element's type
      */
@@ -149,7 +152,7 @@ public class ElementType extends PropertyBase
 
 
     /**
-     * the URL of the server where the element was retrieved from.  Typically this is
+     * Set up the URL of the server where the element was retrieved from.  Typically this is
      * a server where the OMAS interfaces are activated.  If no URL is known for the server then null is returned.
      *
      * @param elementSourceServer URL of the server
@@ -205,7 +208,7 @@ public class ElementType extends PropertyBase
 
 
     /**
-     * Set up the OMRS identifier for the metadata collection that is managed by the repository
+     * Set up the unique identifier for the metadata collection that is managed by the repository
      * where the element originates (its home repository).
      *
      * @param elementHomeMetadataCollectionId String unique identifier for the home metadata repository
@@ -213,6 +216,28 @@ public class ElementType extends PropertyBase
     public void setElementHomeMetadataCollectionId(String elementHomeMetadataCollectionId)
     {
         this.elementHomeMetadataCollectionId = elementHomeMetadataCollectionId;
+    }
+
+
+    /**
+     * Return the name of the metadata collection that this asset belongs to.
+     *
+     * @return name string
+     */
+    public String getElementHomeMetadataCollectionName()
+    {
+        return elementHomeMetadataCollectionName;
+    }
+
+
+    /**
+     * Set up the name of the metadata collection that this asset belongs to.
+     *
+     * @param elementHomeMetadataCollectionName name string
+     */
+    public void setElementHomeMetadataCollectionName(String elementHomeMetadataCollectionName)
+    {
+        this.elementHomeMetadataCollectionName = elementHomeMetadataCollectionName;
     }
 
 
@@ -254,6 +279,7 @@ public class ElementType extends PropertyBase
                 ", elementSourceServer='" + elementSourceServer + '\'' +
                 ", elementOrigin=" + elementOrigin +
                 ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
+                ", elementHomeMetadataCollectionName='" + elementHomeMetadataCollectionName + '\'' +
                 ", elementLicense='" + elementLicense + '\'' +
                 '}';
     }
@@ -284,6 +310,7 @@ public class ElementType extends PropertyBase
                 Objects.equals(getElementSourceServer(), that.getElementSourceServer()) &&
                 getElementOrigin() == that.getElementOrigin() &&
                 Objects.equals(getElementHomeMetadataCollectionId(), that.getElementHomeMetadataCollectionId()) &&
+                Objects.equals(getElementHomeMetadataCollectionName(), that.getElementHomeMetadataCollectionName()) &&
                 Objects.equals(getElementLicense(), that.getElementLicense());
     }
 
