@@ -162,6 +162,25 @@ public class UserNotAuthorizedException extends OMRSCheckedExceptionBase
 
 
     /**
+     * Constructor to translate an OCF exception into an Open Metadata Repository Services (OMRS) exception
+     *
+     * @param caughtError OCF exception
+     */
+    public UserNotAuthorizedException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException  caughtError)
+    {
+        super(caughtError.getReportedHTTPCode(),
+              caughtError.getReportingClassName(),
+              caughtError.getReportingActionDescription(),
+              caughtError.getErrorMessage(),
+              caughtError.getReportedSystemAction(),
+              caughtError.getReportedUserAction(),
+              caughtError);
+
+        this.userId = caughtError.getUserId();
+    }
+
+
+    /**
      * Return the userId passed on the request.
      *
      * @return string user id

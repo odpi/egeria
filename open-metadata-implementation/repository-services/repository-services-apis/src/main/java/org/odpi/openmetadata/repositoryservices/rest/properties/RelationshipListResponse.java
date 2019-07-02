@@ -40,7 +40,7 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
      *
      * @param template object to copy
      */
-    public RelationshipListResponse(RelationshipListResponse   template)
+    public RelationshipListResponse(RelationshipListResponse template)
     {
         super(template);
 
@@ -135,7 +135,8 @@ public class RelationshipListResponse extends OMRSAPIPagedResponse
         {
             return false;
         }
-        RelationshipListResponse that = (RelationshipListResponse) objectToCompare;
+        RelationshipListResponse
+                that = (RelationshipListResponse) objectToCompare;
         return Objects.equals(getRelationships(), that.getRelationships());
     }
 

@@ -113,7 +113,8 @@ public class TypeLimitedHistoricalFindRequest extends TypeLimitedFindRequest
         {
             return false;
         }
-        TypeLimitedHistoricalFindRequest that = (TypeLimitedHistoricalFindRequest) objectToCompare;
+        TypeLimitedHistoricalFindRequest
+                that = (TypeLimitedHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

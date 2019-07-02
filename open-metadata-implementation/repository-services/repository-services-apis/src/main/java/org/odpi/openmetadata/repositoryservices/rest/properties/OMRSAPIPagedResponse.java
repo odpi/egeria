@@ -168,7 +168,8 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
         {
             return false;
         }
-        OMRSAPIPagedResponse that = (OMRSAPIPagedResponse) objectToCompare;
+        OMRSAPIPagedResponse
+                that = (OMRSAPIPagedResponse) objectToCompare;
         return getOffset() == that.getOffset() &&
                 getPageSize() == that.getPageSize() &&
                 Objects.equals(getNextPageURL(), that.getNextPageURL());

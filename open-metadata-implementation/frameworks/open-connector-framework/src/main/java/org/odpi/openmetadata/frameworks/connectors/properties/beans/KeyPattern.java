@@ -37,6 +37,10 @@ public enum KeyPattern implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param keyPatternCode ordinal
+     * @param keyPatternName short name
+     * @param keyPatternDescription longer explanation
      */
     KeyPattern(int     keyPatternCode, String   keyPatternName, String   keyPatternDescription)
     {

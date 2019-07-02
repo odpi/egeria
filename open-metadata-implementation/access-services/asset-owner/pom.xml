@@ -31,8 +31,4 @@
         <module>asset-owner-spring</module>
     </modules>
 
-    <!-- Asset Owner consumes OCF Connected Asset -->
-    <dependencies>
-    </dependencies>
-
 </project>

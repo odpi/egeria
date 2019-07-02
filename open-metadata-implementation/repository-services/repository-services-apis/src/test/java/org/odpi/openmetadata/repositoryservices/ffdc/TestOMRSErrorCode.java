@@ -1,4 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.repositoryservices.ffdc;
 
 import org.testng.annotations.Test;
@@ -12,7 +14,7 @@ public class TestOMRSErrorCode
 {
     private OMRSErrorCode  getTestObject()
     {
-        return OMRSErrorCode.NULL_METADATA_COLLECTION;
+        return OMRSErrorCode.NO_LOCAL_REPOSITORY;
     }
 
 
@@ -20,14 +22,13 @@ public class TestOMRSErrorCode
     {
         OMRSErrorCode  testObject = this.getTestObject();
 
-        assertTrue("OMRS-REPOSITORY-400-025 ".equals(testObject.getErrorMessageId()));
-        assertTrue(400 == (testObject.getHTTPErrorCode()));
-        assertTrue("Open metadata repository for server DummyId has not initialized correctly because it has a null metadata collection.".equals(testObject.getFormattedErrorMessage("DummyId")));
-        assertTrue("Open metadata repository for server {0} has not initialized correctly because it has a null metadata collection.".equals(testObject.getUnformattedErrorMessage()));
-        assertTrue("The system is unable to process requests for this repository.".equals(testObject.getSystemAction()));
-        assertTrue("Verify that the repository connector is correctly configured in the OMAG server.".equals(testObject.getUserAction()));
+        assertTrue("OMRS-REST-API-503-001 ".equals(testObject.getErrorMessageId()));
+        assertTrue(503 == (testObject.getHTTPErrorCode()));
+        assertTrue("There is no local repository to support REST API call DummyId".equals(testObject.getFormattedErrorMessage("DummyId")));
+        assertTrue("There is no local repository to support REST API call {0}".equals(testObject.getUnformattedErrorMessage()));
+        assertTrue("The server has received a call on its open metadata repository REST API services but is unable to process it because the local repository is not active.  This may be because the open metadata services have not been activated.".equals(testObject.getSystemAction()));
+        assertTrue("Ensure that the open metadata services have been activated in the server. If they are active and the server is supposed to have a local repository, correct the server's configuration document to include a local repository and activate the open metadata services.".equals(testObject.getUserAction()));
     }
-
 
     /**
      * Test that toString is overridden.

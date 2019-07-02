@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.spring;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.services.SecurityOfficerService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +33,16 @@ public class SecurityOfficerOMASResource {
         return service.getSecurityTagByAssetId(serverName, userId, schemaElementId);
     }
 
+    /**
+     * Returns the security tags available
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId     String - userId of user making request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/security-tag", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SecurityOfficerSecurityTagListResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId) {
+        return service.getSecurityTags(serverName, userId);
+    }
 
     /**
      * Save or update the security tag for the given schema element

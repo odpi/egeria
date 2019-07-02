@@ -467,10 +467,11 @@ public class RepositoryErrorHandler
 
 
     /**
-     * Throw an exception if no relationships are returned when not expected.
+     * Throw an exception if it is not possible to update an entity.
      *
      * @param entityTypeGUID  unique identifier for the entity's type
      * @param entityTypeName  name of the entity's type
+     * @param properties properties
      * @param methodName  name of the method making the call
      *
      * @throws PropertyServerException unexpected response from property server
@@ -485,6 +486,42 @@ public class RepositoryErrorHandler
                                                                                                                    serverName,
                                                                                                                    entityTypeName,
                                                                                                                    entityTypeGUID,
+                                                                                                                   properties.toString());
+
+        throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                                          this.getClass().getName(),
+                                          methodName,
+                                          errorMessage,
+                                          errorCode.getSystemAction(),
+                                          errorCode.getUserAction());
+
+    }
+
+
+
+    /**
+     * Throw an exception if it is not possible to update an entity.
+     *
+     * @param entityGUID unique identifier of entity
+     * @param classificationTypeGUID  unique identifier for the classification's type
+     * @param classificationTypeName  name of the classification's type
+     * @param properties properties
+     * @param methodName  name of the method making the call
+     *
+     * @throws PropertyServerException unexpected response from property server
+     */
+    public void handleNoEntityForClassification(String             entityGUID,
+                                                String             classificationTypeGUID,
+                                                String             classificationTypeName,
+                                                InstanceProperties properties,
+                                                String             methodName) throws PropertyServerException
+    {
+        RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.NULL_ENTITY_RETURNED_FOR_CLASSIFICATION;
+        String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                                   serverName,
+                                                                                                                   entityGUID,
+                                                                                                                   classificationTypeName,
+                                                                                                                   classificationTypeGUID,
                                                                                                                    properties.toString());
 
         throw new PropertyServerException(errorCode.getHTTPErrorCode(),

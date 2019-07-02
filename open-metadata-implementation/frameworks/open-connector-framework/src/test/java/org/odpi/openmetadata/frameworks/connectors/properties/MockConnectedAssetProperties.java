@@ -65,9 +65,9 @@ public class MockConnectedAssetProperties extends ConnectedAssetProperties
                                                                  likes,
                                                                  ratings,
                                                                  comments);
-        AssetLocations knownLocations = new MockAssetLocations(null, 15, 50);
-        AssetLineage   lineage        = new AssetLineage();
-        RelatedAssets  relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage       lineage        = new AssetLineage();
+        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         super.assetProperties    = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
