@@ -41,7 +41,7 @@ public class TypeDefGalleryResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public TypeDefGalleryResponse(TypeDefGalleryResponse   template)
+    public TypeDefGalleryResponse(TypeDefGalleryResponse template)
     {
         super(template);
 
@@ -175,7 +175,8 @@ public class TypeDefGalleryResponse extends OMRSAPIResponse
         {
             return false;
         }
-        TypeDefGalleryResponse that = (TypeDefGalleryResponse) objectToCompare;
+        TypeDefGalleryResponse
+                that = (TypeDefGalleryResponse) objectToCompare;
         return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs()) &&
                 Objects.equals(getTypeDefs(), that.getTypeDefs());
     }

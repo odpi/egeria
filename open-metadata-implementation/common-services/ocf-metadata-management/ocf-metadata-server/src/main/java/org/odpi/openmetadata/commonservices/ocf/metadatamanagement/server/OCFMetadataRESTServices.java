@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -38,13 +39,186 @@ public class OCFMetadataRESTServices
 
 
     /**
+     * Returns the connection object corresponding to the supplied connection GUID.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId userId of user making request.
+     * @param guid  the unique id for the connection within the property server.
+     *
+     * @return connection object or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the metadata repository or
+     * PropertyServerException - there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public ConnectionResponse getConnectionByGUID(String     serverName,
+                                                  String     serviceURLName,
+                                                  String     userId,
+                                                  String     guid)
+    {
+        final String        methodName = "getConnectionByGUID";
+
+        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+
+        ConnectionResponse  response = new ConnectionResponse();
+        OMRSAuditLog        auditLog = null;
+
+        try
+        {
+            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(connectionHandler.getConnection(userId, guid));
+        }
+        catch (InvalidParameterException  error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Returns the unique identifier for the asset connected to the connection.
+     *
+     * @param serverName name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId the userId of the requesting user.
+     * @param connectionGUID  uniqueId for the connection.
+     *
+     * @return unique identifier of asset or
+     * InvalidParameterException - one of the parameters is null or invalid or
+     * PropertyServerException - there is a problem retrieving the connected asset properties from the property server or
+     * UnrecognizedConnectionGUIDException - the supplied GUID is not recognized by the property server or
+     * NoConnectedAssetException - there is no asset associated with this connection or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GUIDResponse getAssetForConnectionGUID(String   serverName,
+                                                  String   serviceURLName,
+                                                  String   userId,
+                                                  String   connectionGUID)
+    {
+        final String        methodName = "getAssetForConnectionGUID";
+
+        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+
+        GUIDResponse  response = new GUIDResponse();
+        OMRSAuditLog  auditLog = null;
+
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setGUID(handler.getAssetForConnection(userId, connectionGUID));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Returns the connection corresponding to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public ConnectionResponse getConnectionForAsset(String   serverName,
+                                                    String   serviceURLName,
+                                                    String   userId,
+                                                    String   assetGUID)
+    {
+        final String        methodName = "getConnectionForAsset";
+
+        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
+
+        ConnectionResponse  response = new ConnectionResponse();
+        OMRSAuditLog        auditLog = null;
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
+        }
+        catch (InvalidParameterException  error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Returns the basic information about the asset.  The connection guid allows the short description for the
      * asset to be filled out.
      *
      * @param serverName  name of the server.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      * @param connectionGUID  unique id for connection used to access asset.
+     * @param methodName calling method
      *
      * @return a bean with the basic properties about the asset or
      * InvalidParameterException - the asset GUID is null or invalid or
@@ -54,28 +228,35 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private AssetResponse getAssetResponse(String   serverName,
+                                           String   serviceURLName,
                                            String   userId,
                                            String   assetGUID,
                                            String   connectionGUID,
                                            String   methodName)
     {
-        log.debug("Calling method: " + methodName + " for server " + serverName);
+        log.debug("Calling method: " + methodName + " from service " + serviceURLName + " for server " + serverName);
 
         AssetResponse response = new AssetResponse();
         OMRSAuditLog  auditLog = null;
 
         try
         {
+            List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
+
             AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (connectionGUID != null)
             {
-                response.setAsset(assetHandler.getAsset(userId, assetGUID, connectionGUID));
+                response.setAsset(assetHandler.getAsset(userId, supportedZones, assetGUID, connectionGUID, methodName));
             }
             else
             {
-                response.setAsset(assetHandler.getAsset(userId, assetGUID));
+                response.setAsset(assetHandler.getAsset(userId,
+                                                        supportedZones,
+                                                        assetGUID,
+                                                        instanceHandler.getServiceName(),
+                                                        methodName));
             }
             response.setCertificationCount(assetHandler.getCertificationCount(userId, assetGUID, methodName));
             response.setCommentCount(assetHandler.getCommentCount(userId, assetGUID, methodName));
@@ -120,6 +301,7 @@ public class OCFMetadataRESTServices
      * asset to be filled out.
      *
      * @param serverName  name of the server.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      * @param connectionGUID  unique id for connection used to access asset.
@@ -132,13 +314,14 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public AssetResponse getConnectedAssetSummary(String   serverName,
+                                                  String   serviceURLName,
                                                   String   userId,
                                                   String   assetGUID,
                                                   String   connectionGUID)
     {
         final String methodName = "getConnectedAssetSummary";
 
-        return this.getAssetResponse(serverName, userId, assetGUID, connectionGUID, methodName);
+        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, connectionGUID, methodName);
     }
 
 
@@ -146,6 +329,7 @@ public class OCFMetadataRESTServices
      * Returns the basic information about the asset.
      *
      * @param serverName String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId     String   userId of user making request.
      * @param assetGUID  String   unique id for asset.
      *
@@ -156,12 +340,13 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public AssetResponse getAssetSummary(String   serverName,
+                                         String   serviceURLName,
                                          String   userId,
                                          String   assetGUID)
     {
         final String        methodName = "getAssetSummary";
 
-        return this.getAssetResponse(serverName, userId, assetGUID, null, methodName);
+        return this.getAssetResponse(serverName, serviceURLName, userId, assetGUID, null, methodName);
     }
 
 
@@ -169,6 +354,7 @@ public class OCFMetadataRESTServices
      * Returns the list of certifications for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -180,6 +366,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public CertificationsResponse getCertifications(String  serverName,
+                                                    String  serviceURLName,
                                                     String  userId,
                                                     String  assetGUID,
                                                     int     elementStart,
@@ -226,6 +413,7 @@ public class OCFMetadataRESTServices
      * Returns the list of comments for the requested anchor.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param anchorGUID    String   unique id for anchor object.
      * @param elementStart int      starting position for fist returned element.
@@ -238,6 +426,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     private CommentsResponse getAttachedComments(String  serverName,
+                                                 String  serviceURLName,
                                                  String  userId,
                                                  String  anchorGUID,
                                                  int     elementStart,
@@ -309,6 +498,7 @@ public class OCFMetadataRESTServices
      * Returns the list of comments for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -320,6 +510,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public CommentsResponse getComments(String  serverName,
+                                        String  serviceURLName,
                                         String  userId,
                                         String  assetGUID,
                                         int     elementStart,
@@ -327,7 +518,7 @@ public class OCFMetadataRESTServices
     {
         final String methodName = "getComments";
 
-        return getAttachedComments(serverName, userId, assetGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements, methodName);
     }
 
 
@@ -335,6 +526,7 @@ public class OCFMetadataRESTServices
      * Returns the list of replies to a comment.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param commentGUID  String   unique id for root comment.
      * @param elementStart int      starting position for fist returned element.
@@ -346,6 +538,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public CommentsResponse getCommentReplies(String  serverName,
+                                              String  serviceURLName,
                                               String  userId,
                                               String  commentGUID,
                                               int     elementStart,
@@ -353,7 +546,7 @@ public class OCFMetadataRESTServices
     {
         final String        methodName = "getCommentReplies";
 
-        return getAttachedComments(serverName, userId, commentGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName, serviceURLName, userId, commentGUID, elementStart, maxElements, methodName);
     }
 
 
@@ -361,6 +554,7 @@ public class OCFMetadataRESTServices
      * Returns the list of connections for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -372,6 +566,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public ConnectionsResponse getConnections(String  serverName,
+                                              String  serviceURLName,
                                               String  userId,
                                               String  assetGUID,
                                               int     elementStart,
@@ -418,6 +613,7 @@ public class OCFMetadataRESTServices
      * Returns the list of external identifiers for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -429,6 +625,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public ExternalIdentifiersResponse getExternalIdentifiers(String  serverName,
+                                                              String  serviceURLName,
                                                               String  userId,
                                                               String  assetGUID,
                                                               int     elementStart,
@@ -475,6 +672,7 @@ public class OCFMetadataRESTServices
      * Returns the list of external references for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -486,6 +684,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public ExternalReferencesResponse getExternalReferences(String  serverName,
+                                                            String  serviceURLName,
                                                             String  userId,
                                                             String  assetGUID,
                                                             int     elementStart,
@@ -532,6 +731,7 @@ public class OCFMetadataRESTServices
      * Returns the list of informal tags for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -543,6 +743,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public InformalTagsResponse getInformalTags(String  serverName,
+                                                String  serviceURLName,
                                                 String  userId,
                                                 String  assetGUID,
                                                 int     elementStart,
@@ -589,6 +790,7 @@ public class OCFMetadataRESTServices
      * Returns the list of licenses for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -600,6 +802,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public LicensesResponse getLicenses(String  serverName,
+                                        String  serviceURLName,
                                         String  userId,
                                         String  assetGUID,
                                         int     elementStart,
@@ -646,6 +849,7 @@ public class OCFMetadataRESTServices
      * Returns the list of likes for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -657,6 +861,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public LikesResponse getLikes(String  serverName,
+                                  String  serviceURLName,
                                   String  userId,
                                   String  assetGUID,
                                   int     elementStart,
@@ -703,6 +908,7 @@ public class OCFMetadataRESTServices
      * Returns the list of known locations for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -714,6 +920,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public LocationsResponse getKnownLocations(String  serverName,
+                                               String  serviceURLName,
                                                String  userId,
                                                String  assetGUID,
                                                int     elementStart,
@@ -760,6 +967,7 @@ public class OCFMetadataRESTServices
      * Returns the list of note logs for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -771,6 +979,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public NoteLogsResponse getNoteLogs(String  serverName,
+                                        String  serviceURLName,
                                         String  userId,
                                         String  assetGUID,
                                         int     elementStart,
@@ -842,6 +1051,7 @@ public class OCFMetadataRESTServices
      * Returns the list of notes for a note log.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param noteLogGUID  String   unique id for the note log.
      * @param elementStart int      starting position for fist returned element.
@@ -853,6 +1063,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public NotesResponse getNotes(String  serverName,
+                                  String  serviceURLName,
                                   String  userId,
                                   String  noteLogGUID,
                                   int     elementStart,
@@ -899,6 +1110,7 @@ public class OCFMetadataRESTServices
      * Returns the list of ratings for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -910,6 +1122,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public RatingsResponse getRatings(String  serverName,
+                                      String  serviceURLName,
                                       String  userId,
                                       String  assetGUID,
                                       int     elementStart,
@@ -956,6 +1169,7 @@ public class OCFMetadataRESTServices
      * Returns the list of related assets for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -967,6 +1181,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public RelatedAssetsResponse getRelatedAssets(String  serverName,
+                                                  String  serviceURLName,
                                                   String  userId,
                                                   String  assetGUID,
                                                   int     elementStart,
@@ -1013,9 +1228,10 @@ public class OCFMetadataRESTServices
      * Returns the list of related media references for the asset.
      *
      * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId          String   userId of user making request.
+     * @param assetGUID       String   unique id for asset.
+     * @param elementStart   int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
      *
      * @return a list of related media references or
@@ -1024,6 +1240,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     public RelatedMediaReferencesResponse getRelatedMediaReferences(String  serverName,
+                                                                    String  serviceURLName,
                                                                     String  userId,
                                                                     String  assetGUID,
                                                                     int     elementStart,
@@ -1070,6 +1287,7 @@ public class OCFMetadataRESTServices
      * Returns a list of schema attributes for a schema type.
      *
      * @param serverName     String   name of server instance to call.
+     * @param serviceURLName String   name of the service that created the connector that issued this request.
      * @param userId         String   userId of user making request.
      * @param schemaTypeGUID String   unique id for containing schema type.
      * @param elementStart   int      starting position for fist returned element.
@@ -1081,6 +1299,7 @@ public class OCFMetadataRESTServices
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
    public SchemaAttributesResponse getSchemaAttributes(String  serverName,
+                                                       String  serviceURLName,
                                                        String  userId,
                                                        String  schemaTypeGUID,
                                                        int     elementStart,

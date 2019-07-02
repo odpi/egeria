@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
+import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
 
@@ -53,5 +55,48 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
                                                           PropertyServerException
     {
         return discoveryEngineClient.getConnectionForAsset(userId, assetGUID);
+    }
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection.
+     *
+     * @param userId       userId of user making request.
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return Connector   connector instance
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    public Connector getConnectorByConnection(String     userId,
+                                              Connection connection) throws InvalidParameterException,
+                                                                            ConnectionCheckedException,
+                                                                            ConnectorCheckedException
+    {
+        return discoveryEngineClient.getConnectorForConnection(userId, connection);
+    }
+
+
+    /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
+     *
+     * @return a comprehensive collection of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
+        return discoveryEngineClient.getAssetProperties(userId, assetGUID);
     }
 }

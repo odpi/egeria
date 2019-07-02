@@ -20,6 +20,8 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
 
     /**
      * Constructor
+     *
+     * @param serviceName name of this service for error logging
      */
     public OMRSRepositoryServicesInstanceHandler(String   serviceName)
     {

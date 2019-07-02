@@ -154,6 +154,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
     /**
      * Create or update the profile for the requesting user.
      *
+     * @param userId calling user
      * @param qualifiedName personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
      * @param knownName known name or nickname of the individual.
@@ -167,15 +168,15 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void setUpMyProfile(String              userId,
-                                String              qualifiedName,
-                                String              fullName,
-                                String              knownName,
-                                String              jobTitle,
-                                String              jobRoleDescription,
-                                Map<String, Object> profileProperties,
-                                Map<String, String> additionalProperties) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException
+                               String              qualifiedName,
+                               String              fullName,
+                               String              knownName,
+                               String              jobTitle,
+                               String              jobRoleDescription,
+                               Map<String, Object> profileProperties,
+                               Map<String, String> additionalProperties) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         final String   methodName = "updateMyProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile";
@@ -195,6 +196,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         requestBody.setJobTitle(jobTitle);
         requestBody.setJobRoleDescription(jobRoleDescription);
         requestBody.setAdditionalProperties(additionalProperties);
+        requestBody.setProfileProperties(profileProperties);
 
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,

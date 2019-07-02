@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 
 /**
  * OMAGServerServiceInstance represents an instance of a service in an OMAG Server.
@@ -19,6 +20,7 @@ public abstract class OMAGServerServiceInstance
 
     private OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
+    protected OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
     /**
      * Default constructor
@@ -53,6 +55,26 @@ public abstract class OMAGServerServiceInstance
             platformInstanceMap.addServiceInstanceToPlatform(serverName, serviceName, this);
         }
     }
+
+
+    /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            this.securityVerifier = securityVerifier;
+        }
+    }
+
 
 
     /**

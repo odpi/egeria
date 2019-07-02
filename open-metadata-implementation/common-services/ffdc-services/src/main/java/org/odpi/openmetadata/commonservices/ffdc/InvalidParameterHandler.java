@@ -4,6 +4,8 @@ package org.odpi.openmetadata.commonservices.ffdc;
 
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
 
@@ -38,6 +40,7 @@ public class InvalidParameterHandler
      * used in OMAG Clients or OMAG Servers that call other OMAG Servers.
      *
      * @param omagServerPlatformURL url of the server
+     * @param serverName requested server
      * @param methodName  name of the method making the call.
      *
      * @throws InvalidParameterException the server URL or server name are not set
@@ -381,5 +384,125 @@ public class InvalidParameterHandler
                                                 errorCode.getUserAction(),
                                                 parameterName);
         }
+    }
+
+
+    /**
+     * Throw an exception if the supplied type name is not recognized not of the correct subclass
+     *
+     * @param typeName name of type
+     * @param superTypeName name of expected supertype
+     * @param serviceName calling service
+     * @param methodName calling method
+     * @param repositoryHelper helper class that can return information about type
+     *
+     * @return unique identifier (guid) of typeName
+     * @throws InvalidParameterException the type name is not correct
+     */
+    public String validateTypeName(String                typeName,
+                                   String                superTypeName,
+                                   String                serviceName,
+                                   String                methodName,
+                                   OMRSRepositoryHelper  repositoryHelper) throws InvalidParameterException
+
+    {
+        final String parameterName = "typeName";
+
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(serviceName, typeName);
+
+        if (typeDef == null)
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.UNRECOGNIZED_TYPE_NAME;
+            String              errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(typeName, methodName, serviceName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                parameterName);
+        }
+
+
+        if (! repositoryHelper.isTypeOf(serviceName, typeName, superTypeName))
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.BAD_SUB_TYPE_NAME;
+            String              errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(typeName, methodName, serviceName, superTypeName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                parameterName);
+        }
+
+        return typeDef.getGUID();
+    }
+
+
+    /**
+     * Compare the supported zones with the zones stored in the asset.  If the asset is not in
+     * one of the supported zones then throw an exception. Otherwise return ok.
+     * Null values in either returns ok.
+     *
+     * Note the error message implies that the asset does not exist.  This is because the consequence
+     * of not being in the supported zone is that the asset is invisible - just like it does not exist.
+     *
+     * @param assetGUID unique identifier of the asset
+     * @param parameterName name of the parameter that passed the asset guid
+     * @param assetZones list of zone names from the asset
+     * @param supportedZones list of zone names supported by the service
+     * @param serviceName calling service
+     * @param methodName calling method
+     *
+     * @throws InvalidParameterException the asset is not in the supported zone.
+     */
+    public void  validateAssetInSupportedZone(String        assetGUID,
+                                              String        parameterName,
+                                              List<String>  assetZones,
+                                              List<String>  supportedZones,
+                                              String        serviceName,
+                                              String        methodName) throws InvalidParameterException
+    {
+        if ((supportedZones == null) || (supportedZones.isEmpty()))
+        {
+            return;
+        }
+
+        if ((assetZones == null) || (assetZones.isEmpty()))
+        {
+            return;
+        }
+
+        for (String    assetZoneName : assetZones)
+        {
+            if (assetZoneName != null)
+            {
+                for (String  supportedZoneName : supportedZones)
+                {
+                    if (assetZoneName.equals(supportedZoneName))
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NOT_IN_THE_ZONE;
+        String              errorMessage = errorCode.getErrorMessageId()
+                                         + errorCode.getFormattedErrorMessage(assetGUID, serviceName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            parameterName);
     }
 }

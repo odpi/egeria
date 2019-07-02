@@ -23,7 +23,8 @@ import java.util.Map;
 
 
 /**
- * AssetOnboardingRESTServices provides the server-side implementation of the Asset Owner OMAS AssetOnboardingInterface.
+ * AssetOnboardingRESTServices provides the server-side implementation of the Asset Owner OMAS AssetOnboardingInterface
+ * for specialized assets.
  */
 public class AssetOnboardingRESTServices
 {
@@ -70,8 +71,8 @@ public class AssetOnboardingRESTServices
             if (requestBody != null)
             {
                 AssetHandler  assetHandler  = instanceHandler.getAssetHandler(userId, serverName, methodName);
-                Asset         asset         = assetHandler.createEmptyAsset(AssetMapper.CSV_FILE_TYPE_GUID,
-                                                                            AssetMapper.CSV_FILE_TYPE_NAME);
+                Asset         asset         = assetHandler.createEmptyAsset(AssetMapper.CSV_FILE_TYPE_NAME,
+                                                                            methodName);
 
                 auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
@@ -115,14 +116,15 @@ public class AssetOnboardingRESTServices
                 extendedProperties.put(AssetMapper.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter);
                 asset.setExtendedProperties(extendedProperties);
 
-                response.setGUID(assetHandler.saveAsset(userId,
+                response.setGUID(assetHandler.addAsset(userId,
                                                         asset,
                                                         schemaType,
                                                         schemaAttributes,
                                                         getStructuredFileConnection(requestBody.getFullPath(),
                                                                                     requestBody.getColumnHeaders(),
                                                                                     delimiterCharacter,
-                                                                                    quoteCharacter)));
+                                                                                    quoteCharacter),
+                                                        methodName));
             }
         }
         catch (InvalidParameterException error)
@@ -161,6 +163,8 @@ public class AssetOnboardingRESTServices
      *
      * @param fileName name of the file to connect to
      * @param columnHeaders boolean parameter defining if the column headers are included in the file
+     * @param delimiterCharacter character used between the columns
+     * @param quoteCharacter character used to group text that includes the delimiter character
      * @return connection object
      */
     private Connection getStructuredFileConnection(String            fileName,

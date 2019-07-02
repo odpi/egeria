@@ -39,7 +39,7 @@ public class AttributeTypeDefListResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public AttributeTypeDefListResponse(AttributeTypeDefListResponse   template)
+    public AttributeTypeDefListResponse(AttributeTypeDefListResponse template)
     {
         super(template);
 
@@ -131,7 +131,8 @@ public class AttributeTypeDefListResponse extends OMRSAPIResponse
         {
             return false;
         }
-        AttributeTypeDefListResponse that = (AttributeTypeDefListResponse) objectToCompare;
+        AttributeTypeDefListResponse
+                that = (AttributeTypeDefListResponse) objectToCompare;
         return Objects.equals(getAttributeTypeDefs(), that.getAttributeTypeDefs());
     }
 

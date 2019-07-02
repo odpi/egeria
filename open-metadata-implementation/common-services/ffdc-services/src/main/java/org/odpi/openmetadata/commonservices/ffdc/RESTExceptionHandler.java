@@ -56,7 +56,6 @@ public class RESTExceptionHandler
     }
 
 
-
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
@@ -230,9 +229,9 @@ public class RESTExceptionHandler
      * @param error returned response.
      * @param exceptionClassName  class name of the exception to recreate
      */
-    public  void captureCheckedException(FFDCResponseBase        response,
-                                         OCFCheckedExceptionBase error,
-                                         String                  exceptionClassName)
+    private  void captureCheckedException(FFDCResponseBase        response,
+                                          OCFCheckedExceptionBase error,
+                                          String                  exceptionClassName)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
@@ -250,10 +249,10 @@ public class RESTExceptionHandler
      * @param exceptionClassName  class name of the exception to recreate
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
-    public  void captureCheckedException(FFDCResponseBase             response,
-                                         OCFCheckedExceptionBase      error,
-                                         String                       exceptionClassName,
-                                         Map<String, Object>          exceptionProperties)
+    private  void captureCheckedException(FFDCResponseBase             response,
+                                          OCFCheckedExceptionBase      error,
+                                          String                       exceptionClassName,
+                                          Map<String, Object>          exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
@@ -348,11 +347,11 @@ public class RESTExceptionHandler
             Map<String, Object>  exceptionProperties = new HashMap<>();
 
             exceptionProperties.put("parameterName", parameterName);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+            captureCheckedException(response, error, InvalidParameterException.class.getName(), exceptionProperties);
         }
         else
         {
-            captureCheckedException(response, error, error.getClass().getName());
+            captureCheckedException(response, error, InvalidParameterException.class.getName());
         }
     }
 
