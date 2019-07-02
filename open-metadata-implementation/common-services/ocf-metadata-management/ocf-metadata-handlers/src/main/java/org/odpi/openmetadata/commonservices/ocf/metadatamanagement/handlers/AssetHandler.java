@@ -901,7 +901,6 @@ public class AssetHandler
                                                                  serviceName,
                                                                  methodName);
 
-
             Asset               updatedAsset  = new Asset(assetBean);
             InstanceProperties  properties    = null;
             Map<String, Object> propertiesMap = new HashMap<>();
@@ -1621,13 +1620,12 @@ public class AssetHandler
                     Asset           asset = converter.getAssetBean();
                     try
                     {
-                        invalidParameterHandler.validateAssetInSupportedZone(entity.getGUID(),
-                                                                             nameParameterName,
-                                                                             asset.getZoneMembership(),
-                                                                             supportedZones,
-                                                                             serviceName,
-                                                                             methodName);
-                        results.add(asset);
+                        results.add(validatedVisibleAsset(userId,
+                                                          supportedZones,
+                                                          nameParameterName,
+                                                          asset,
+                                                          serviceName,
+                                                          methodName));
                     }
                     catch (Throwable error)
                     {
@@ -1718,6 +1716,50 @@ public class AssetHandler
                                                            UserNotAuthorizedException
     {
         return commentHandler.countAttachedComments(userId, anchorGUID, methodName);
+    }
+
+
+    /**
+     * Return the comments attached to an anchor entity.
+     *
+     * @param userId     calling user
+     * @param supportedZones  list of zones if different from the default set in the handler
+     * @param assetGUID identifier for the asset that this comment is chained from
+     * @param anchorGUID identifier for the entity that the feedback is attached to - ie this asset or a
+     *                   comment chained off of this asset
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<Comment>  getAssetComments(String        userId,
+                                           List<String>  supportedZones,
+                                           String        assetGUID,
+                                           String        anchorGUID,
+                                           String        serviceName,
+                                           int           startingFrom,
+                                           int           pageSize,
+                                           String        methodName) throws InvalidParameterException,
+                                                                            PropertyServerException,
+                                                                            UserNotAuthorizedException
+    {
+        /*
+         * This verifies that the asset exists and the caller has access to it.
+         */
+        getAsset(userId, supportedZones, assetGUID, serviceName, methodName);
+
+        return commentHandler.getComments(userId,
+                                          anchorGUID,
+                                          AssetMapper.ASSET_TYPE_NAME,
+                                          serviceName,
+                                          startingFrom,
+                                          pageSize,
+                                          methodName);
     }
 
 
