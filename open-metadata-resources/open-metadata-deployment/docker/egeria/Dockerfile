@@ -7,6 +7,7 @@ ARG branch
 ARG pr
 ENV branch ${branch:-master}
 WORKDIR /root/
+ADD https://api.github.com/repos/odpi/egeria/git/refs/heads/$branch version.json
 RUN git clone http://github.com/odpi/egeria.git -b ${branch}
 WORKDIR /root/egeria/
 # Add Pull request if specified (requires git-extras package)
