@@ -1722,6 +1722,8 @@
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
+                                <requireSameVersions/>
+                                <reactorModuleConvergence/>
                             </rules>
                         </configuration>
                     </execution>
