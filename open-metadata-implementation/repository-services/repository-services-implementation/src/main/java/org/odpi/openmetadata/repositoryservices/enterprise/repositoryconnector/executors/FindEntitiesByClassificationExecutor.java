@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.EntityAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -56,21 +57,21 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
      * @param repositoryValidator validator for resulting relationships
      * @param methodName calling method
      */
-    public FindEntitiesByClassificationExecutor(String                    userId,
-                                                String                    entityTypeGUID,
-                                                String                    classificationName,
-                                                InstanceProperties        matchClassificationProperties,
-                                                MatchCriteria             matchCriteria,
-                                                int                       fromEntityElement,
-                                                List<InstanceStatus>      limitResultsByStatus,
-                                                Date                      asOfTime,
-                                                String                    sequencingProperty,
-                                                SequencingOrder           sequencingOrder,
-                                                int                       pageSize,
-                                                String                    localMetadataCollectionId,
-                                                OMRSAuditLog              auditLog,
-                                                OMRSRepositoryValidator   repositoryValidator,
-                                                String                    methodName)
+    public FindEntitiesByClassificationExecutor(String                            userId,
+                                                String                            entityTypeGUID,
+                                                String                            classificationName,
+                                                InstanceProperties                matchClassificationProperties,
+                                                MatchCriteria                     matchCriteria,
+                                                int                               fromEntityElement,
+                                                List<InstanceStatus>              limitResultsByStatus,
+                                                Date                              asOfTime,
+                                                String                            sequencingProperty,
+                                                SequencingOrder                   sequencingOrder,
+                                                int                               pageSize,
+                                                String                            localMetadataCollectionId,
+                                                OMRSAuditLog                      auditLog,
+                                                OMRSRepositoryValidator           repositoryValidator,
+                                                String                            methodName)
     {
         this(userId,
              entityTypeGUID,
@@ -244,6 +245,7 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
     /**
      * Return the results or exception.
      *
+     * @param repositoryConnector enterprise connector
      * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
@@ -257,17 +259,17 @@ public class FindEntitiesByClassificationExecutor extends PageableRepositoryExec
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<EntityDetail> getResults() throws InvalidParameterException,
-                                                  TypeErrorException,
-                                                  RepositoryErrorException,
-                                                  PropertyErrorException,
-                                                  PagingErrorException,
-                                                  FunctionNotSupportedException,
-                                                  UserNotAuthorizedException
+    public List<EntityDetail> getResults(EnterpriseOMRSRepositoryConnector repositoryConnector) throws InvalidParameterException,
+                                                                                                       TypeErrorException,
+                                                                                                       RepositoryErrorException,
+                                                                                                       PropertyErrorException,
+                                                                                                       PagingErrorException,
+                                                                                                       FunctionNotSupportedException,
+                                                                                                       UserNotAuthorizedException
     {
         if (accumulator.resultsReturned())
         {
-            return accumulator.getResults();
+            return accumulator.getResults(repositoryConnector);
         }
 
         handleCommonPagingRequestExceptions();
