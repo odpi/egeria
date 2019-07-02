@@ -33,7 +33,9 @@ service:
   nodeport:
     egeria: 30080
     atlas: 31000
+    atlas_kafka: 31092
     ibmigc: 32446
+    ibmigc_kafka: 32092
     igcproxy: 30081
     gaian: 30414
     postgresql: 30432
@@ -64,6 +66,9 @@ ui:
 
 atlas:
   enabled: true
+  user: admin
+  password: admin
+  proxyserver: apacheatlas
 
 gaian:
   enabled: true
@@ -125,7 +130,7 @@ image:
     name: omrsmonitor-egeriavdc
 
   atlas:
-    name: apache-atlas-fork
+    name: apache-atlas
 
   gaian:
     name: gaian-egeriavdc
