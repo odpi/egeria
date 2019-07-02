@@ -19,6 +19,7 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Atlas and build it into /root/atlas-bin.
+ADD https://api.github.com/repos/grahamwallis/atlas/git/refs/heads/master version.json
 RUN git clone https://github.com/grahamwallis/atlas -b master
 
 WORKDIR /root/atlas
