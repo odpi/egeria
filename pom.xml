@@ -1721,6 +1721,7 @@
                                     <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
                                     </message>
                                 </requireJavaVersion>
+                                <banDuplicatePomDependencyVersions/>
                             </rules>
                         </configuration>
                     </execution>
