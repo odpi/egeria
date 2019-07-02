@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -19,9 +20,11 @@ import static org.testng.Assert.assertTrue;
  */
 public class RelatedAssetsResponseTest
 {
-    private Map<String, Object> exceptionProperties = new HashMap<>();
-    private List<Asset>         responseList        = new ArrayList<>();
-    private Asset               responseObject      = new Asset();
+    private Map<String, Object> exceptionProperties  = new HashMap<>();
+    private List<RelatedAsset>  responseList         = new ArrayList<>();
+    private RelatedAsset        responseObject       = new RelatedAsset();
+    private Asset               responseAsset        = new Asset();
+    private String              responseRelationship = "TestRelationship";
 
 
     /**
@@ -29,7 +32,9 @@ public class RelatedAssetsResponseTest
      */
     public RelatedAssetsResponseTest()
     {
-        responseObject.setGUID("TestGUID");
+        responseAsset.setGUID("TestGUID");
+        responseObject.setRelatedAsset(responseAsset);
+        responseObject.setTypeName(responseRelationship);
         responseList.add(responseObject);
     }
 

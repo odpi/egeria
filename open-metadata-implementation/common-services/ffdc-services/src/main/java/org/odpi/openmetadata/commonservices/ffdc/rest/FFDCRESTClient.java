@@ -214,6 +214,7 @@ public class FFDCRESTClient
     /**
      * Issue a GET REST call that returns a response object.
      *
+     * @param <T> return type
      * @param methodName  name of the method being called.
      * @param returnClass class of the response object.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -241,6 +242,7 @@ public class FFDCRESTClient
     /**
      * Issue a GET REST call that returns a response object.
      *
+     * @param <T> return type
      * @param methodName  name of the method being called.
      * @param returnClass class of the response object.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
@@ -271,6 +273,7 @@ public class FFDCRESTClient
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
      * complex parameters.
      *
+     * @param <T> return type
      * @param methodName  name of the method being called.
      * @param returnClass class of the response object.
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
@@ -301,6 +304,7 @@ public class FFDCRESTClient
      * Issue a POST REST call that returns a response object.  This is typically a create, update, or find with
      * complex parameters.
      *
+     * @param <T> return type
      * @param methodName  name of the method being called.
      * @param returnClass class of the response object.
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.

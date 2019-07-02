@@ -27,6 +27,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      *                                 is rejected.
      * @param localServerURL URL of the local server
      * @param serviceName name of this service
+     * @param auditLog logging destination
      */
     public OMRSRepositoryServicesInstance(String                       localServerName,
                                           LocalOMRSRepositoryConnector localRepositoryConnector,

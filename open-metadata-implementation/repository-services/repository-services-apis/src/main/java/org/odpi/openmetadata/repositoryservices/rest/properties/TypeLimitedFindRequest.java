@@ -117,7 +117,8 @@ public class TypeLimitedFindRequest extends OMRSAPIPagedFindRequest
         {
             return false;
         }
-        TypeLimitedFindRequest that = (TypeLimitedFindRequest) objectToCompare;
+        TypeLimitedFindRequest
+                that = (TypeLimitedFindRequest) objectToCompare;
         return Objects.equals(getTypeGUID(), that.getTypeGUID());
     }
 

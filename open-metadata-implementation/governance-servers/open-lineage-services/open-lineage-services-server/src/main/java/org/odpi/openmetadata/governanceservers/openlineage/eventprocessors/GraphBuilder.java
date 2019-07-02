@@ -5,13 +5,10 @@ package org.odpi.openmetadata.governanceservers.openlineage.eventprocessors;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
-import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +16,7 @@ import java.io.IOException;
 import java.util.*;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
-import static org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphFactory.open;
+import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_NAME_QUALIFIED_NAME;
@@ -27,22 +24,12 @@ import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphCons
 public class GraphBuilder {
 
     private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
-    private JanusGraph janusGraph;
-    private OMRSAuditLog auditLog;
+
 
     public GraphBuilder() {
-
-        try {
-           janusGraph = open();
-        }         catch (RepositoryErrorException e) {
-            log.error("{} Could not open graph database", "GraphBuilder constructor");
-        }
     }
 
-
     public void addAsset(RelationshipEvent event) {
-
-
         GlossaryTerm glossaryTerm = event.getGlossaryTerm();
         Element technicalTerm = event.getAssetContext().getBaseAsset();
 
@@ -66,7 +53,7 @@ public class GraphBuilder {
     }
 
     public void removeSemanticRelationship(DeletePurgedRelationshipEvent event){
-        GraphTraversalSource g = janusGraph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         try {
             boolean edgeExists = g.V().has(event.getGlossaryTerm().getType(), "veguid", event.getGlossaryTerm().getGuid())
@@ -86,17 +73,9 @@ public class GraphBuilder {
         }
     }
 
-    public void exportGraph(){
-
-        try {
-            janusGraph.io(IoCore.graphml()).writeGraph("lineage.graphml");
-        } catch (IOException e) {
-           log.error(e.getMessage());
-        }
-    }
 
     private void createGlossaryVertex(GlossaryTerm term){
-        GraphTraversalSource g = janusGraph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         Iterator<Vertex> vertexIt = g.V().hasLabel(term.getType()).has(PROPERTY_KEY_ENTITY_GUID, term.getGuid());
         if (!vertexIt.hasNext()) {
@@ -115,7 +94,7 @@ public class GraphBuilder {
 
     }
     private void createElementVertex(Map<String,Element> context) {
-        GraphTraversalSource g = janusGraph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         for (Map.Entry<String, Element> entry : context.entrySet()) {
             String key = entry.getKey();
@@ -123,7 +102,6 @@ public class GraphBuilder {
 
             Iterator<Vertex> vertexIt = g.V().hasLabel(key).has(PROPERTY_KEY_ENTITY_GUID, value.getGuid());
             if (!vertexIt.hasNext()) {
-
 
                 Vertex v = g.addV(key).next();
                 v.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, value.getQualifiedName());
@@ -141,7 +119,7 @@ public class GraphBuilder {
     }
 
     private void createEdges(Map<String, Element> context, GlossaryTerm glossaryTerm,List<String> edgeLabels) {
-        GraphTraversalSource g = janusGraph.traversal();
+        GraphTraversalSource g = mainGraph.traversal();
 
         final List<String> order = Arrays.asList(GLOSSARY_TERM,RELATIONAL_COLUMN,RELATIONAL_TABLE_TYPE,RELATIONAL_TABLE,RELATIONAL_DB_SCHEMA_TYPE,DEPLOYED_DB_SCHEMA_TYPE,DATABASE);
         List<Element> elementsByRelationship = new ArrayList<>((context.values()));

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
 
 import org.apache.log4j.varia.NullAppender;
-import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
+import org.odpi.openmetadata.accessservices.assetowner.client.CSVFileAssetOwner;
 
 /**
  * CreateCSVFileAssetSample creates a simple asset definition in the open metadata repositories for
@@ -45,7 +45,7 @@ public class CreateCSVFileAssetSample
     {
         try
         {
-            AssetOwner client = new AssetOwner(serverName, serverURLRoot);
+            CSVFileAssetOwner client = new CSVFileAssetOwner(serverName, serverURLRoot);
 
             client.addCSVFileToCatalog(clientUserId,
                                        fileName,

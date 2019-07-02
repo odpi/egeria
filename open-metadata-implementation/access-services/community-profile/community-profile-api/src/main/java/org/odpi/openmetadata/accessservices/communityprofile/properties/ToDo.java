@@ -85,7 +85,7 @@ public class ToDo extends ReferenceableHeader
     /**
      * Set up how important this is.
      *
-     * @param priority
+     * @param priority integer
      */
     public void setPriority(int priority)
     {

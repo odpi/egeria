@@ -57,6 +57,7 @@ public class OMRSAuditLog
     /**
      * Constructor used to create the root audit log for OMRS
      *
+     * @param destination  new logging destination
      * @param reportingComponent information about the component that will use this instance of the audit log.
      */
     public OMRSAuditLog(OMRSAuditLogDestination destination,
@@ -77,11 +78,12 @@ public class OMRSAuditLog
      * @param componentName display name for the component.
      * @param componentDescription description of the component.
      * @param componentWikiURL link to more information.
+     * @return new logging destination
      */
-    public OMRSAuditLog  createNewAuditLog(int                     componentId,
-                                           String                  componentName,
-                                           String                  componentDescription,
-                                           String                  componentWikiURL)
+    public OMRSAuditLog  createNewAuditLog(int    componentId,
+                                           String componentName,
+                                           String componentDescription,
+                                           String componentWikiURL)
     {
         return new OMRSAuditLog(destination,
                                 componentId,
@@ -95,6 +97,7 @@ public class OMRSAuditLog
      * Constructor used to create the root audit log for OMRS
      *
      * @param reportingComponent information about the component that will use this instance of the audit log.
+     * @return new logging destination
      */
     public OMRSAuditLog  createNewAuditLog(OMRSAuditingComponent reportingComponent)
     {

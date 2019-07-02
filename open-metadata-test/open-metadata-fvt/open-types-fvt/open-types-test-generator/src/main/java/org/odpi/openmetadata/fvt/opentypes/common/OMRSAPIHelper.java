@@ -90,7 +90,7 @@ public class OMRSAPIHelper {
     public OMRSAPIHelper() {
     }
     // types
-    public TypeDefGallery callGetAllTypes(String userId) throws RepositoryErrorException, UserNotAuthorizedException
+    public TypeDefGallery callGetAllTypes(String userId) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException
 
 
     {

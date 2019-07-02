@@ -35,6 +35,10 @@ public enum CommentType implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param ordinal identifier
+     * @param name short name
+     * @param description longer description
      */
     CommentType(int ordinal, String name, String description)
     {

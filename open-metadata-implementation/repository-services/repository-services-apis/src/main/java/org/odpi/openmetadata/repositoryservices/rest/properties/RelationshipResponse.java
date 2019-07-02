@@ -38,7 +38,7 @@ public class RelationshipResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public RelationshipResponse(RelationshipResponse  template)
+    public RelationshipResponse(RelationshipResponse template)
     {
         super(template);
 
@@ -112,7 +112,8 @@ public class RelationshipResponse extends OMRSAPIResponse
         {
             return false;
         }
-        RelationshipResponse that = (RelationshipResponse) objectToCompare;
+        RelationshipResponse
+                that = (RelationshipResponse) objectToCompare;
         return Objects.equals(getRelationship(), that.getRelationship());
     }
 

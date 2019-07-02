@@ -37,7 +37,7 @@ public class EntitySummaryResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public EntitySummaryResponse(EntitySummaryResponse   template)
+    public EntitySummaryResponse(EntitySummaryResponse template)
     {
         super(template);
 
@@ -118,7 +118,8 @@ public class EntitySummaryResponse extends OMRSAPIResponse
         {
             return false;
         }
-        EntitySummaryResponse that = (EntitySummaryResponse) objectToCompare;
+        EntitySummaryResponse
+                that = (EntitySummaryResponse) objectToCompare;
         return Objects.equals(getEntity(), that.getEntity());
     }
 
