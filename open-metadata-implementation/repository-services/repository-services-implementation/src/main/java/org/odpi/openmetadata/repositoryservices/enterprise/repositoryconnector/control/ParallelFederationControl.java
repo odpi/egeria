@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.control;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.executors.RepositoryExecutor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -13,10 +14,9 @@ import java.util.List;
  */
 public class ParallelFederationControl extends FederationControlBase
 {
-    // todo at this point the parallel federation control uses the sequential federation control since the
+    // todo at this point the parallel federation control uses a sequential since the
     // todo worker threads are not implemented.
 
-    private SequentialFederationControl sequentialFederationControl;
 
     /**
      * Constructor for a federated query
@@ -31,7 +31,6 @@ public class ParallelFederationControl extends FederationControlBase
     {
         super(userId, cohortConnectors, methodName);
 
-        sequentialFederationControl = new SequentialFederationControl(userId, cohortConnectors, methodName);
     }
 
 
@@ -44,6 +43,19 @@ public class ParallelFederationControl extends FederationControlBase
      */
     public void executeCommand(RepositoryExecutor executor) throws RepositoryErrorException
     {
-        sequentialFederationControl.executeCommand(executor);
+        if (super.cohortConnectors != null)
+        {
+            for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
+            {
+                if (cohortConnector != null)
+                {
+                    OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
+
+                    String metadataCollectionId = this.validateMetadataCollection(metadataCollection, methodName);
+
+                    executor.issueRequestToRepository(metadataCollectionId, metadataCollection);
+                }
+            }
+        }
     }
 }

@@ -1131,7 +1131,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -1236,7 +1236,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -1345,7 +1345,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -1448,7 +1448,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -1696,7 +1696,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -1773,7 +1773,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
 
-        FederationControl                   federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
+        FederationControl                        federationControl = new ParallelFederationControl(userId, cohortConnectors, methodName);
         FindRelationshipsByPropertyValueExecutor executor          = new FindRelationshipsByPropertyValueExecutor(userId,
                                                                                                                   relationshipTypeGUID,
                                                                                                                   searchCriteria,
@@ -1795,7 +1795,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         federationControl.executeCommand(executor);
 
-        return executor.getResults();
+        return executor.getResults(enterpriseParentConnector);
     }
 
 
@@ -3827,9 +3827,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             List<EntityDetail>         processedResults;
 
-            processedResults = enterpriseParentConnector.processRetrievedEntities(metadataCollectionId, results);
-
-            for (EntityDetail returnedEntity : processedResults)
+            for (EntityDetail returnedEntity : results)
             {
                 combinedResults = this.addUniqueEntity(combinedResults,
                                                        returnedEntity,
@@ -3894,9 +3892,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             List<Relationship>         processedResults;
 
-            processedResults = enterpriseParentConnector.processRetrievedRelationships(metadataCollectionId, results);
-
-            for (Relationship returnedRelationship : processedResults)
+            for (Relationship returnedRelationship : results)
             {
                 combinedResults = this.addUniqueRelationship(combinedResults,
                                                              returnedRelationship,
