@@ -2,121 +2,136 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.dataengine.rest.*;
-import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
-import org.springframework.web.bind.annotation.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The DataEngineResource provides the server-side implementation of the Data Engine Open Metadata Assess Service
- * (OMAS). This interface facilitates the creation of processes and input/output relationships between the processes
- * and the data sets.
+ * (OMAS). This interface facilitates the creation of processes, ports and schema types, with all the needed
+ * relationships.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/data-engine/users/{userId}")
 public class DataEngineResource {
-    private DataEngineRestServices restAPI;
+    private DataEngineRESTServices restAPI;
 
     /**
      * Default Constructor
      */
     public DataEngineResource() {
-        restAPI = new DataEngineRestServices();
+        restAPI = new DataEngineRESTServices();
     }
 
     /**
-     * Create the Process entity with all the needed relationships
+     * Create a software server capability entity
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties of the entity
+     *
+     * @return unique identifier of the created process
+     */
+    @PostMapping(path = "/software-server-capability")
+    public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
+                                                       @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
+        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+    }
+
+    /**
+     * Return the unique identifier from a software server capability definition.
+     *
+     * @param serverName    name of server instance to call
+     * @param userId        identifier of calling user
+     * @param qualifiedName qualified name of the software server capability
+     *
+     * @return unique identified of the software server
+     */
+    @GetMapping(path = "/software-server-capability/{qualifiedName}")
+    public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
+                                                                   @PathVariable String userId,
+                                                                   @PathVariable String qualifiedName) {
+        return restAPI.getSoftwareServerByQualifiedName(serverName, userId, qualifiedName);
+    }
+
+    /**
+     * Create a SchemaType entity with all the needed relationships
+     *
+     * @param serverName  name of server instance to call
+     * @param userId      the name of the calling user
+     * @param requestBody properties for the schema type
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/schema-types")
+    public GUIDResponse createSchemaType(@PathVariable("userId") String userId,
+                                         @PathVariable("serverName") String serverName,
+                                         @RequestBody SchemaTypeRequestBody requestBody) {
+        return restAPI.createSchemaType(userId, serverName, requestBody);
+    }
+
+
+    /**
+     * Create the PortImplementation entity
+     *
+     * @param serverName                    name of server instance to call
+     * @param userId                        the name of the calling user
+     * @param portImplementationRequestBody properties of the port implementation
+     *
+     * @return unique identifier of the created port implementation
+     */
+    @PostMapping(path = "/port-implementations")
+    public GUIDResponse createPortImplementation(@PathVariable("userId") String userId,
+                                                 @PathVariable("serverName") String serverName,
+                                                 @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
+        return restAPI.createPortImplementation(userId, serverName, portImplementationRequestBody);
+    }
+
+
+    /**
+     * Create the PortAlias entity
+     *
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
+     * @param portAliasRequestBody properties of the port alias
+     *
+     * @return unique identifier of the created port alias
+     */
+    @PostMapping(path = "/port-aliases")
+    public GUIDResponse createPortAlias(@PathVariable("userId") String userId,
+                                        @PathVariable("serverName") String serverName,
+                                        @RequestBody PortAliasRequestBody portAliasRequestBody) {
+        return restAPI.createPortAlias(userId, serverName, portAliasRequestBody);
+    }
+
+    /**
+     * Create the Process entity with ports, schema types and all needed relationships
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user
      * @param processRequestBody properties of the process
      *
-     * @return unique identifier of the created entity
+     * @return unique identifier of the created process
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/processes")
+    @PostMapping(path = "/processes")
     public GUIDResponse createProcess(@PathVariable("userId") String userId,
                                       @PathVariable("serverName") String serverName,
                                       @RequestBody ProcessRequestBody processRequestBody) {
         return restAPI.createProcess(userId, serverName, processRequestBody);
-    }
-
-    /**
-     * Create the Process entity with all the needed relationships using an array of existing ports
-     *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
-     * @param processRequestBody properties of the process
-     *
-     * @return unique identifier of the created entity
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/processes/by-ports")
-    public GUIDResponse createProcessWithPorts(@PathVariable("userId") String userId,
-                                               @PathVariable("serverName") String serverName,
-                                               @RequestBody ProcessRequestBody processRequestBody) {
-        return restAPI.createProcess(userId, serverName, processRequestBody);
-    }
-
-    /**
-     * Create the Process entity with all the needed relationships using an array of existing deployed apis
-     *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
-     * @param processRequestBody properties of the process
-     *
-     * @return unique identifier of the created entity
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/processes/by-deployed-apis")
-    public GUIDResponse createProcessWithDeployedApis(@PathVariable("userId") String userId,
-                                                      @PathVariable("serverName") String serverName,
-                                                      @RequestBody ProcessRequestBody processRequestBody) {
-        return restAPI.createProcess(userId, serverName, processRequestBody);
-    }
-
-    /**
-     * Create the Process entity with all the needed relationships using an array of existing assets
-     *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
-     * @param processRequestBody properties of the process
-     *
-     * @return unique identifier of the created entity
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/processes/by-assets")
-    public GUIDResponse createProcessWithAssets(@PathVariable("userId") String userId,
-                                                @PathVariable("serverName") String serverName,
-                                                @RequestBody ProcessRequestBody processRequestBody) {
-        return restAPI.createProcess(userId, serverName, processRequestBody);
-    }
-
-    /**
-     * Create the DeployedAPI entity
-     *
-     * @param serverName             name of server instance to call
-     * @param userId                 the name of the calling user
-     * @param deployedAPIRequestBody properties of the deployed api
-     *
-     * @return unique identifier of the created entity
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/deployed-apis")
-    public GUIDResponse createDeployedAPI(@PathVariable("userId") String userId,
-                                          @PathVariable("serverName") String serverName,
-                                          @RequestBody DeployedAPIRequestBody deployedAPIRequestBody) {
-        return restAPI.createDeployedAPI(userId, serverName, deployedAPIRequestBody);
-    }
-
-    /**
-     * Create the Port entity
-     *
-     * @param serverName      name of server instance to call
-     * @param userId          the name of the calling user
-     * @param portRequestBody properties of the port
-     *
-     * @return unique identifier of the created process
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/ports")
-    public GUIDResponse createPort(@PathVariable("userId") String userId,
-                                   @PathVariable("serverName") String serverName,
-                                   @RequestBody PortRequestBody portRequestBody) {
-        return restAPI.createPort(userId, serverName, portRequestBody);
     }
 
     /**
@@ -125,15 +140,31 @@ public class DataEngineResource {
      * @param serverName          name of server instance to call
      * @param userId              the name of the calling user
      * @param processGuid         the guid of the process
-     * @param portListRequestBody list of port guids
+     * @param portListRequestBody list of port unique identifiers
      *
      * @return unique identifier of the updated process
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/processes/{processGuid}/ports")
+    @PostMapping(path = "/processes/{processGuid}/ports")
     public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
                                           @PathVariable("serverName") String serverName,
                                           @PathVariable("processGuid") String processGuid,
                                           @RequestBody PortListRequestBody portListRequestBody) {
         return restAPI.addPortsToProcess(userId, serverName, processGuid, portListRequestBody);
+    }
+
+    /**
+     * Add LineageMapping relationships
+     *
+     * @param serverName                 name of server instance to call
+     * @param userId                     the name of the calling user
+     * @param lineageMappingsRequestBody properties of the mappings
+     *
+     * @return unique identifier of the created entity
+     */
+    @PostMapping(path = "/lineage-mappings")
+    public VoidResponse addLineageMappings(@PathVariable("userId") String userId,
+                                           @PathVariable("serverName") String serverName,
+                                           @RequestBody LineageMappingsRequestBody lineageMappingsRequestBody) {
+        return restAPI.addLineageMappings(userId, serverName, lineageMappingsRequestBody);
     }
 }
