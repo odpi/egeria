@@ -42,6 +42,8 @@ public class DiscoveryServiceProperties extends Asset
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public DiscoveryServiceProperties(DiscoveryServiceProperties  template)
     {

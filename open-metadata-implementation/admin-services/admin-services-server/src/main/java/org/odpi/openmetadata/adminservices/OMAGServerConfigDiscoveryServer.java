@@ -263,7 +263,7 @@ public class OMAGServerConfigDiscoveryServer
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @return
+     * @return void response
      */
     public VoidResponse deleteService(String userId, String serverName)
     {

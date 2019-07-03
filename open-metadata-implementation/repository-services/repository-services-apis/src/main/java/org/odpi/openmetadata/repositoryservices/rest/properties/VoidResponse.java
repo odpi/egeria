@@ -32,7 +32,7 @@ public class VoidResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public VoidResponse(VoidResponse   template)
+    public VoidResponse(VoidResponse template)
     {
         super(template);
     }

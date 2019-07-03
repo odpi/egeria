@@ -38,11 +38,11 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
+              supportedZones,
+              null,
               auditLog);
 
         final String methodName = "new ServiceInstance";
-
-        super.supportedZones = supportedZones;
 
         if (repositoryHandler != null)
         {

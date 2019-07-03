@@ -17,8 +17,6 @@ import java.util.*;
 class InMemoryOMRSMetadataStore
 {
     private String                                 repositoryName           = null;
-    private volatile Map<String, TypeDef>          typeDefStore             = new HashMap<>();
-    private volatile Map<String, AttributeTypeDef> attributeTypeDefStore    = new HashMap<>();
     private volatile Map<String, EntityDetail>     entityStore              = new HashMap<>();
     private volatile Map<String, EntityProxy>      entityProxyStore         = new HashMap<>();
     private volatile List<EntityDetail>            entityHistoryStore       = new ArrayList<>();
@@ -42,74 +40,6 @@ class InMemoryOMRSMetadataStore
     protected void  setRepositoryName(String    repositoryName)
     {
         this.repositoryName = repositoryName;
-    }
-
-
-    /**
-     * Return a list of all of the defined AttributeTypeDefs.
-     *
-     * @return list of attribute type definitions
-     */
-    protected synchronized List<AttributeTypeDef> getAttributeTypeDefs()
-    {
-        return new ArrayList<>(attributeTypeDefStore.values());
-    }
-
-
-    /**
-     * Return the AttributeTypeDef identified by the supplied guid.
-     *
-     * @param guid - unique identifier for the AttributeTypeDef
-     * @return attribute type definition
-     */
-    protected synchronized AttributeTypeDef   getAttributeTypeDef(String  guid)
-    {
-        return attributeTypeDefStore.get(guid);
-    }
-
-
-    /**
-     * Add an AttributeDefType to the store.
-     *
-     * @param attributeTypeDef - type to add
-     */
-    synchronized void  putAttributeTypeDef(AttributeTypeDef   attributeTypeDef)
-    {
-        attributeTypeDefStore.put(attributeTypeDef.getGUID(), attributeTypeDef);
-    }
-
-
-    /**
-     * Return a list of all of the defined TypeDefs.
-     *
-     * @return list of type definitions
-     */
-    protected synchronized List<TypeDef>  getTypeDefs()
-    {
-        return new ArrayList<>(typeDefStore.values());
-    }
-
-
-    /**
-     * Return the type definition identified by the guid.
-     *
-     * @param guid - unique identifier for type definition
-     * @return type definition
-     */
-    protected synchronized TypeDef   getTypeDef(String guid)
-    {
-        return typeDefStore.get(guid);
-    }
-
-
-    /**
-     * Add a type definition (TypeDef) to the store.
-     *
-     * @param typeDef - type definition
-     */
-    synchronized void  putTypeDef(TypeDef   typeDef)
-    {
-        typeDefStore.put(typeDef.getGUID(), typeDef);
     }
 
 

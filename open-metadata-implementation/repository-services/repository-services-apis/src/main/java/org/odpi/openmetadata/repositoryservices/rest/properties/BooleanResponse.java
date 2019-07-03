@@ -37,7 +37,7 @@ public class BooleanResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public BooleanResponse(BooleanResponse  template)
+    public BooleanResponse(BooleanResponse template)
     {
         super(template);
 
@@ -111,7 +111,8 @@ public class BooleanResponse extends OMRSAPIResponse
         {
             return false;
         }
-        BooleanResponse that = (BooleanResponse) objectToCompare;
+        BooleanResponse
+                that = (BooleanResponse) objectToCompare;
         return isFlag() == that.isFlag();
     }
 

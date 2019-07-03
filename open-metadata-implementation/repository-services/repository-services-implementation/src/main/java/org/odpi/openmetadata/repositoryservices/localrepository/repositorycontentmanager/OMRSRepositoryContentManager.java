@@ -1077,6 +1077,42 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getActiveTypeDefs()
+    {
+        List<TypeDef> results = null;
+
+        if (! activeTypeDefGUIDs.isEmpty())
+        {
+            results = new ArrayList<>(activeTypeDefGUIDs.values());
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getActiveAttributeTypeDefs()
+    {
+        List<AttributeTypeDef> results = null;
+
+        if (! activeAttributeTypeDefGUIDs.isEmpty())
+        {
+            results = new ArrayList<>(activeAttributeTypeDefGUIDs.values());
+        }
+
+        return results;
+    }
+
+
+    /**
      * Return the TypeDef identified by the name supplied by the caller.  This is used in the connectors when
      * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
@@ -1107,76 +1143,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         return knownAttributeTypeDefNames.get(attributeTypeDefName);
     }
 
-
-    /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param typeDefName unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    public TypeDefGallery getActiveTypesByWildCardName (String    sourceName,
-                                                        String    typeDefName)
-    {
-        if (typeDefName != null)
-        {
-            Collection<TypeDef>   typeDefs       = activeTypeDefNames.values();
-
-            List<TypeDef>         matchedTypeDefs = new ArrayList<>();
-            for (TypeDef typeDef : typeDefs)
-            {
-                if (typeDef != null)
-                {
-                    if (typeDef.getName().matches(typeDefName))
-                    {
-                        matchedTypeDefs.add(typeDef);
-                    }
-                }
-            }
-
-            Collection<AttributeTypeDef>   attributeTypeDefs        = activeAttributeTypeDefNames.values();
-            List<AttributeTypeDef>         matchedAttributeTypeDefs = new ArrayList<>();
-
-            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
-            {
-                if (attributeTypeDef != null)
-                {
-                    if (attributeTypeDef.getName().matches(typeDefName))
-                    {
-                        matchedAttributeTypeDefs.add(attributeTypeDef);
-                    }
-                }
-            }
-
-            if ((! matchedTypeDefs.isEmpty()) || (! matchedAttributeTypeDefs.isEmpty()))
-            {
-                TypeDefGallery        typeDefGallery = new TypeDefGallery();
-
-                if (! matchedTypeDefs.isEmpty())
-                {
-                    typeDefGallery.setTypeDefs(matchedTypeDefs);
-                }
-                else
-                {
-                    typeDefGallery.setTypeDefs(null);
-                }
-
-                if (! matchedAttributeTypeDefs.isEmpty())
-                {
-                    typeDefGallery.setAttributeTypeDefs(matchedAttributeTypeDefs);
-                }
-                else
-                {
-                    typeDefGallery.setAttributeTypeDefs(null);
-                }
-
-                return typeDefGallery;
-            }
-        }
-
-        return null;
-    }
 
 
     /**
@@ -1690,7 +1656,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param typeName unique name of the TypeDef
      * @return boolean result
      */
-    public boolean validTypeId(String          sourceName,
+    public boolean validTypeId(String sourceName,
                                String typeGUID,
                                String typeName)
     {
@@ -2254,7 +2220,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 this.cacheTypeDef(sourceName, typeDef, false);
             }
         }
-        catch (TypeDefNotSupportedException fixedTypeSystemResponse)
+        catch (TypeDefNotSupportedException  fixedTypeSystemResponse)
         {
             /*
              * Adds information about the type to the repository content manager for
