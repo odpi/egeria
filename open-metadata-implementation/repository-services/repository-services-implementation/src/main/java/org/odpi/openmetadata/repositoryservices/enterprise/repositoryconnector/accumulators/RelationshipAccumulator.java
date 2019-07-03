@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,9 +31,9 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    public RelationshipAccumulator(String                  localMetadataCollectionId,
-                                   OMRSAuditLog            auditLog,
-                                   OMRSRepositoryValidator repositoryValidator)
+    public RelationshipAccumulator(String                            localMetadataCollectionId,
+                                   OMRSAuditLog                      auditLog,
+                                   OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }
@@ -107,24 +108,14 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Return a flag indicating whether at least one of the repositories produced a valid answer.
-     *
-     * @return true if a request succeeded.
-     */
-    public boolean resultsReturned()
-    {
-        return (! accumulatedRelationships.isEmpty());
-    }
-
-
-    /**
      * Extract the results - this will the a unique list of relationships selected from the instances
      * supplied to this accumulator.  It should be called once all of the executors have completed processing
      * their request(s).
      *
+     * @param repositoryConnector enterprise connector
      * @return list of relationships
      */
-    public synchronized List<Relationship>  getResults()
+    public synchronized List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
         if (accumulatedRelationships.isEmpty())
         {
@@ -132,6 +123,7 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
         }
         else
         {
+            this.makeRefreshRecommendations(repositoryConnector);
             return new ArrayList<>(accumulatedRelationships.values());
         }
     }
@@ -148,48 +140,35 @@ public class RelationshipAccumulator extends QueryInstanceAccumulatorBase
      *
      * This call should be made once all processing has stopped.
      *
-     * @return list of relationships
+     * @param repositoryConnector enterprise connector
      */
-    public synchronized List<Relationship>  getRefreshRecommendations()
+    private  void  makeRefreshRecommendations(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
-        List<Relationship>  relationships = new ArrayList<>(accumulatedRelationships.values());
-        List<Relationship>  nonLocalRelationships = new ArrayList<>();
-
         /*
          * Either no local repository or nothing accumulated so nothing to return
          */
-        if ((localMetadataCollectionId == null) || (relationships.isEmpty()))
+        if ((localMetadataCollectionId == null) || (accumulatedRelationships.isEmpty()))
         {
-            return null;
+            return;
         }
 
         /*
-         * Remove all relationships that came from the local repository
+         * Ignore all entities that came from the local repository
          */
-        for (Relationship accumulatedRelationship : relationships)
+        for (Relationship accumulatedRelationship : accumulatedRelationships.values())
         {
             if (accumulatedRelationship != null)
             {
-                String  relationshipGUID = accumulatedRelationship.getGUID();
+                String  entityGUID = accumulatedRelationship.getGUID();
 
-                if (relationshipGUID != null)
+                if (entityGUID != null)
                 {
-                    if (this.notLocal(relationshipGUID))
+                    if (super.notLocal(entityGUID))
                     {
-                        nonLocalRelationships.add(accumulatedRelationship);
+                        repositoryConnector.requestRefreshOfRelationship(accumulatedRelationship);
                     }
                 }
             }
         }
-
-        /*
-         * Return null or the non-local relationships
-         */
-        if (nonLocalRelationships.isEmpty())
-        {
-            return null;
-        }
-
-        return nonLocalRelationships;
     }
 }
