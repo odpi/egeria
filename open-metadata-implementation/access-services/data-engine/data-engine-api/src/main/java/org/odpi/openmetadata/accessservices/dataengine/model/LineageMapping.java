@@ -15,30 +15,30 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LineageMapping {
-    private String sourceColumn;
-    private String targetColumn;
+    private String sourceAttribute;
+    private String targetAttribute;
 
-    public String getSourceColumn() {
-        return sourceColumn;
+    public String getSourceAttribute() {
+        return sourceAttribute;
     }
 
-    public void setSourceColumn(String sourceColumn) {
-        this.sourceColumn = sourceColumn;
+    public void setSourceAttribute(String sourceAttribute) {
+        this.sourceAttribute = sourceAttribute;
     }
 
-    public String getTargetColumn() {
-        return targetColumn;
+    public String getTargetAttribute() {
+        return targetAttribute;
     }
 
-    public void setTargetColumn(String targetColumn) {
-        this.targetColumn = targetColumn;
+    public void setTargetAttribute(String targetAttribute) {
+        this.targetAttribute = targetAttribute;
     }
 
     @Override
     public String toString() {
         return "LineageMapping{" +
-                "sourceColumn='" + sourceColumn + '\'' +
-                ", targetColumn='" + targetColumn + '\'' +
+                "sourceAttribute='" + sourceAttribute + '\'' +
+                ", targetAttribute='" + targetAttribute + '\'' +
                 '}';
     }
 
@@ -47,12 +47,12 @@ public class LineageMapping {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LineageMapping that = (LineageMapping) o;
-        return Objects.equals(sourceColumn, that.sourceColumn) &&
-                Objects.equals(targetColumn, that.targetColumn);
+        return Objects.equals(sourceAttribute, that.sourceAttribute) &&
+                Objects.equals(targetAttribute, that.targetAttribute);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sourceColumn, targetColumn);
+        return Objects.hash(sourceAttribute, targetAttribute);
     }
 }

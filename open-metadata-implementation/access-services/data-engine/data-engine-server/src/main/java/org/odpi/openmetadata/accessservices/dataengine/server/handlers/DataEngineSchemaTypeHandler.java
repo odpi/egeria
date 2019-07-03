@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.Column;
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -73,7 +73,7 @@ public class DataEngineSchemaTypeHandler {
      * @param encodingStandard the encoding for the schema type
      * @param usage            the usage for the schema type
      * @param versionNumber    the version number for the schema type
-     * @param columnList       the list of columns for the schema type.
+     * @param attributeList       the list of attributes for the schema type.
      *
      * @return unique identifier of the schema type in the repository
      *
@@ -83,9 +83,9 @@ public class DataEngineSchemaTypeHandler {
      */
     public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
                                    String encodingStandard, String usage, String versionNumber,
-                                   List<Column> columnList) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException {
+                                   List<Attribute> attributeList) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException {
         final String methodName = "createSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -97,7 +97,7 @@ public class DataEngineSchemaTypeHandler {
         SchemaType newSchemaType = createTabularSchemaType(qualifiedName, displayName, author, encodingStandard,
                 usage, versionNumber);
 
-        Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(columnList);
+        Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(attributeList);
 
         String newSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaType,
                 new ArrayList<>(newSchemaAttributes.keySet()), methodName);
@@ -182,17 +182,17 @@ public class DataEngineSchemaTypeHandler {
         return retrievedEntity.getGUID();
     }
 
-    private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Column> columnList) throws
+    private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Attribute> attributeList) throws
                                                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         final String methodName = "createSchemaAttributes";
 
         Map<SchemaAttribute, SchemaType> schemaAttributes = new HashMap<>();
 
-        for (Column column : columnList) {
+        for (Attribute attribute : attributeList) {
             SchemaAttribute schemaAttribute = schemaTypeHandler.getEmptySchemaAttribute();
 
-            String qualifiedName = column.getQualifiedName();
-            String displayName = column.getDisplayName();
+            String qualifiedName = attribute.getQualifiedName();
+            String displayName = attribute.getDisplayName();
 
             invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                     methodName);
@@ -201,11 +201,11 @@ public class DataEngineSchemaTypeHandler {
 
             schemaAttribute.setQualifiedName(qualifiedName);
             schemaAttribute.setAttributeName(displayName);
-            schemaAttribute.setCardinality(column.getCardinality());
-            schemaAttribute.setElementPosition(column.getElementPosition());
-            schemaAttribute.setDefaultValueOverride(column.getDefaultValueOverride());
+            schemaAttribute.setCardinality(attribute.getCardinality());
+            schemaAttribute.setElementPosition(attribute.getElementPosition());
+            schemaAttribute.setDefaultValueOverride(attribute.getDefaultValueOverride());
 
-            SchemaType tabularColumnType = createTabularColumnType(column);
+            SchemaType tabularColumnType = createTabularColumnType(attribute);
 
             schemaAttributes.put(schemaAttribute, tabularColumnType);
         }
@@ -213,23 +213,23 @@ public class DataEngineSchemaTypeHandler {
         return schemaAttributes;
     }
 
-    private SchemaType createTabularColumnType(Column column) throws
+    private SchemaType createTabularColumnType(Attribute attribute) throws
                                                               org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         final String methodName = "createTabularColumnType";
 
         PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
                 SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_GUID, SchemaElementMapper.TABULAR_COLUMN_TYPE_TYPE_NAME);
 
-        String displayName = column.getDisplayName();
+        String displayName = attribute.getDisplayName();
         invalidParameterHandler.validateName(displayName, SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
                 methodName);
         displayName += TYPE_SUFFIX;
 
         schemaType.setDisplayName(displayName);
-        schemaType.setQualifiedName(buildPrimitiveSchemaTypeQualifiedName(column.getQualifiedName(),
-                column.getDisplayName()));
-        schemaType.setDataType(column.getDataType());
-        schemaType.setDefaultValue(column.getDefaultValue());
+        schemaType.setQualifiedName(buildPrimitiveSchemaTypeQualifiedName(attribute.getQualifiedName(),
+                attribute.getDisplayName()));
+        schemaType.setDataType(attribute.getDataType());
+        schemaType.setDefaultValue(attribute.getDefaultValue());
 
         return schemaType;
     }
