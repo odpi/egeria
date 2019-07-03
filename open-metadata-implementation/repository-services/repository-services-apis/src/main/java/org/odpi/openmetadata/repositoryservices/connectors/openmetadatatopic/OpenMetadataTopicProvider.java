@@ -3,10 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

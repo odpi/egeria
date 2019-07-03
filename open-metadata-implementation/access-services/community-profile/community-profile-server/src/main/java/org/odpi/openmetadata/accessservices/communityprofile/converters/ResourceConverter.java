@@ -19,10 +19,11 @@ public class ResourceConverter extends CommonHeaderConverter
     private static final Logger log = LoggerFactory.getLogger(ResourceConverter.class);
 
     /**
-     * Constructor captures the initial content
+     * Constructor captures the initial content.
      *
      * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
+     * @param componentName component associated with the resource
      */
     ResourceConverter(EntityDetail         entity,
                       OMRSRepositoryHelper repositoryHelper,

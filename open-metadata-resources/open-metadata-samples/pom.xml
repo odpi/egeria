@@ -24,11 +24,8 @@
 
     <packaging>pom</packaging>
     <modules>
-             <module>access-services-samples</module>
+        <module>access-services-samples</module>
+        <module>open-metadata-security-samples</module>
     </modules>
-
-    <dependencies>
-
-    </dependencies>
 
 </project>

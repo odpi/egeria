@@ -33,6 +33,10 @@ public enum TypeDefCategory implements Serializable
 
     /**
      * Constructor to set up a single instances of the enum.
+     *
+     * @param typeCode ordinal
+     * @param typeName short description
+     * @param typeDescription longer explanation
      */
     TypeDefCategory(int     typeCode, String   typeName, String   typeDescription)
     {

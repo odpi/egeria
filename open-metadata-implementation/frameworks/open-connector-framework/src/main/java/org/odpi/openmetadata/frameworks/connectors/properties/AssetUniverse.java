@@ -30,7 +30,7 @@ public class AssetUniverse extends AssetDetail
     protected AssetFeedback      feedback       = null;
     protected AssetLocations     knownLocations = null;
     protected AssetLineage       lineage        = null;
-    protected RelatedAssets      relatedAssets  = null;
+    protected AssetRelatedAssets relatedAssets  = null;
 
 
     /**
@@ -59,7 +59,7 @@ public class AssetUniverse extends AssetDetail
      * @param feedback Feedback object to query the feedback.
      * @param knownLocations Locations list
      * @param lineage lineage object to query the origin of the asset.
-     * @param relatedAssets RelatedAssets list
+     * @param relatedAssets AssetRelatedAssets list
      */
     public AssetUniverse(Asset                       assetBean,
                          AssetExternalIdentifiers    externalIdentifiers,
@@ -74,7 +74,7 @@ public class AssetUniverse extends AssetDetail
                          AssetFeedback               feedback,
                          AssetLocations              knownLocations,
                          AssetLineage                lineage,
-                         RelatedAssets               relatedAssets)
+                         AssetRelatedAssets relatedAssets)
     {
         super(assetBean,
               externalIdentifiers,
@@ -110,11 +110,11 @@ public class AssetUniverse extends AssetDetail
              * Create the top-level property objects for this new asset using the values from the template.
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
-            AssetSchemaType  templateSchema        = template.getSchema();
-            AssetFeedback    templateFeedback      = template.getFeedback();
-            AssetLocations   templateLocations     = template.getKnownLocations();
-            AssetLineage     templateLineage       = template.getLineage();
-            RelatedAssets    templateRelatedAssets = template.getRelatedAssets();
+            AssetSchemaType    templateSchema        = template.getSchema();
+            AssetFeedback      templateFeedback      = template.getFeedback();
+            AssetLocations     templateLocations     = template.getKnownLocations();
+            AssetLineage       templateLineage       = template.getLineage();
+            AssetRelatedAssets templateRelatedAssets = template.getRelatedAssets();
 
             if (templateSchema != null)
             {
@@ -246,9 +246,9 @@ public class AssetUniverse extends AssetDetail
     /**
      * Return the list of assets related to this asset.
      *
-     * @return RelatedAssets list
+     * @return AssetRelatedAssets list
      */
-    public RelatedAssets getRelatedAssets()
+    public AssetRelatedAssets getRelatedAssets()
     {
         if (relatedAssets == null)
         {

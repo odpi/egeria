@@ -40,6 +40,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param errorMessage   description of error
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
+     * @param relatedProperties properties providing more information about the error
      */
     public PropertyServerException(int                 httpCode,
                                    String              className,
@@ -63,7 +64,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
-     * */
+     */
     public PropertyServerException(int       httpCode,
                                    String    className,
                                    String    actionDescription,
@@ -86,6 +87,7 @@ public class PropertyServerException extends org.odpi.openmetadata.frameworks.co
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
+     * @param relatedProperties properties providing more information about the error
      */
     public PropertyServerException(int                  httpCode,
                                    String               className,

@@ -34,6 +34,8 @@ public class CommunityProfileEvent extends CommunityProfileEventHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public CommunityProfileEvent(CommunityProfileEvent  template)
     {
@@ -44,6 +46,7 @@ public class CommunityProfileEvent extends CommunityProfileEventHeader
             this.eventType = template.getEventType();
         }
     }
+
 
     /**
      * Return the type of event.

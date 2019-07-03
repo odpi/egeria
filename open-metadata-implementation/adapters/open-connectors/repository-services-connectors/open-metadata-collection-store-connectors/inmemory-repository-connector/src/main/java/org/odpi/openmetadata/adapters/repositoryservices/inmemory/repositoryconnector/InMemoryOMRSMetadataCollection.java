@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSDynamicTypeMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -18,7 +18,7 @@ import java.util.*;
  * The InMemoryOMRSMetadataCollection represents a metadata repository that supports an in-memory repository.
  * Requests to this metadata collection work with the hashmaps used to manage metadata types and instances.
  */
-public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
+public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollectionBase
 {
     private InMemoryOMRSMetadataStore         repositoryStore = new InMemoryOMRSMetadataStore();
 
@@ -42,1160 +42,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
-        super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId, true);
+        super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
 
         /*
          * Set up the repository name in the repository store
          */
         this.repositoryStore.setRepositoryName(repositoryName);
-    }
-
-
-    /**
-     * Returns all of the TypeDefs for a specific category.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of TypeDef to return.
-     * @return TypeDefs list.
-     * @throws InvalidParameterException the TypeDefCategory is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<TypeDef> findTypeDefsByCategory(String          userId,
-                                                TypeDefCategory category) throws InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 UserNotAuthorizedException
-    {
-        final String methodName            = "findTypeDefsByCategory";
-        final String categoryParameterName = "category";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
-
-        /*
-         * Perform operation
-         */
-        List<TypeDef> allTypes         = repositoryStore.getTypeDefs();
-        List<TypeDef> typesForCategory = new ArrayList<>();
-
-        if (! allTypes.isEmpty())
-        {
-            for (TypeDef typeDef : allTypes)
-            {
-                if (typeDef != null)
-                {
-                    if (typeDef.getCategory() == category)
-                    {
-                        typesForCategory.add(typeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesForCategory.isEmpty())
-        {
-            typesForCategory = null;
-        }
-
-        return typesForCategory;
-    }
-
-
-    /**
-     * Returns all of the AttributeTypeDefs for a specific category.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param category enum value for the category of an AttributeTypeDef to return.
-     * @return TypeDefs list.
-     * @throws InvalidParameterException the TypeDefCategory is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String                   userId,
-                                                                  AttributeTypeDefCategory category) throws InvalidParameterException,
-                                                                                                            RepositoryErrorException,
-                                                                                                            UserNotAuthorizedException
-    {
-        final String methodName            = "findAttributeTypeDefsByCategory";
-        final String categoryParameterName = "category";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
-
-        /*
-         * Perform operation
-         */
-        List<AttributeTypeDef> allTypes         = repositoryStore.getAttributeTypeDefs();
-        List<AttributeTypeDef> typesForCategory = new ArrayList<>();
-
-        if (! allTypes.isEmpty())
-        {
-            for (AttributeTypeDef attributeTypeDef : allTypes)
-            {
-                if (attributeTypeDef != null)
-                {
-                    if (attributeTypeDef.getCategory() == category)
-                    {
-                        typesForCategory.add(attributeTypeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesForCategory.isEmpty())
-        {
-            typesForCategory = null;
-        }
-
-        return typesForCategory;
-    }
-
-
-    /**
-     * Return the TypeDefs that have the properties matching the supplied match criteria.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param matchCriteria TypeDefProperties - a list of property names.
-     * @return TypeDefs list.
-     * @throws InvalidParameterException the matchCriteria is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<TypeDef> findTypeDefsByProperty(String            userId,
-                                                TypeDefProperties matchCriteria) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        UserNotAuthorizedException
-    {
-        final String  methodName                 = "findTypeDefsByProperty";
-        final String  matchCriteriaParameterName = "matchCriteria";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName, matchCriteriaParameterName, matchCriteria, methodName);
-
-        /*
-         * Perform operation
-         */
-        List<TypeDef> allTypes             = repositoryStore.getTypeDefs();
-        List<TypeDef> typesMatchProperties = new ArrayList<>();
-        Set<String>   propertyNames        = matchCriteria.getTypeDefProperties().keySet();
-
-        if (! allTypes.isEmpty())
-        {
-            for (TypeDef typeDef : allTypes)
-            {
-                if (typeDef != null)
-                {
-                    List<TypeDefAttribute>  typeDefAttributes = typeDef.getPropertiesDefinition();
-                    boolean                 allPropertiesMatch = true;
-
-                    for (String propertyName : propertyNames)
-                    {
-                        boolean  thisPropertyMatches = false;
-
-                        if (propertyName != null)
-                        {
-                            for (TypeDefAttribute  attribute : typeDefAttributes)
-                            {
-                                if (attribute != null)
-                                {
-                                    if (propertyName.equals(attribute.getAttributeName()))
-                                    {
-                                        thisPropertyMatches = true;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            if (! thisPropertyMatches)
-                            {
-                                allPropertiesMatch = false;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (allPropertiesMatch)
-                    {
-                        typesMatchProperties.add(typeDef);
-                    }
-                }
-            }
-        }
-
-        if (typesMatchProperties.isEmpty())
-        {
-            typesMatchProperties = null;
-        }
-
-        return typesMatchProperties;
-    }
-
-
-    /**
-     * Return the types that are linked to the elements from the specified standard.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param standard name of the standard - null means any.
-     * @param organization name of the organization - null means any.
-     * @param identifier identifier of the element in the standard - null means any.
-     * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
-     * describing the TypeDef's category and properties.
-     * @throws InvalidParameterException all attributes of the external id are null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<TypeDef> findTypesByExternalID(String    userId,
-                                               String    standard,
-                                               String    organization,
-                                               String    identifier) throws InvalidParameterException,
-                                                                            RepositoryErrorException,
-                                                                            UserNotAuthorizedException
-    {
-        final String                       methodName = "findTypesByExternalID";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateExternalId(repositoryName, standard, organization, identifier, methodName);
-
-        /*
-         * Perform operation
-         */
-        return repositoryHelper.getMatchingActiveTypes(repositoryName, standard, organization, identifier, methodName);
-    }
-
-
-    /**
-     * Return the TypeDefs that match the search criteria.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param searchCriteria String - search criteria.
-     * @return TypeDefs list - each entry in the list contains a typedef.  This is is a structure
-     * describing the TypeDef's category and properties.
-     * @throws InvalidParameterException the searchCriteria is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public List<TypeDef> searchForTypeDefs(String userId,
-                                           String searchCriteria) throws InvalidParameterException,
-                                                                         RepositoryErrorException,
-                                                                         UserNotAuthorizedException
-    {
-        final String methodName                  = "searchForTypeDefs";
-        final String searchCriteriaParameterName = "searchCriteria";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateSearchCriteria(repositoryName, searchCriteriaParameterName, searchCriteria, methodName);
-
-        /*
-         * Perform operation
-         */
-        List<TypeDef>          matchedTypeDefs   = new ArrayList<>();
-
-        for (TypeDef  typeDef : repositoryStore.getTypeDefs())
-        {
-            if (typeDef != null)
-            {
-                if (typeDef.getName().matches(searchCriteria))
-                {
-                    matchedTypeDefs.add(typeDef);
-                }
-            }
-        }
-
-        if (matchedTypeDefs.isEmpty())
-        {
-            matchedTypeDefs = null;
-        }
-
-        return matchedTypeDefs;
-    }
-
-
-    /**
-     * Return the TypeDef identified by the GUID.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param guid String unique id of the TypeDef.
-     * @return TypeDef structure describing its category and properties.
-     * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDef getTypeDefByGUID(String    userId,
-                                    String    guid) throws InvalidParameterException,
-                                                           RepositoryErrorException,
-                                                           TypeDefNotKnownException,
-                                                           UserNotAuthorizedException
-    {
-        final String methodName        = "getTypeDefByGUID";
-        final String guidParameterName = "guid";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef             matchedTypeDef = repositoryStore.getTypeDef(guid);
-
-        if (matchedTypeDef != null)
-        {
-            return matchedTypeDef;
-        }
-
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(guid, guidParameterName, methodName, repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-
-    }
-
-
-    /**
-     * Return the AttributeTypeDef identified by the GUID.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param guid String unique id of the TypeDef
-     * @return TypeDef structure describing its category and properties.
-     * @throws InvalidParameterException the guid is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  AttributeTypeDef getAttributeTypeDefByGUID(String    userId,
-                                                       String    guid) throws InvalidParameterException,
-                                                                              RepositoryErrorException,
-                                                                              TypeDefNotKnownException,
-                                                                              UserNotAuthorizedException
-    {
-        final String methodName        = "getAttributeTypeDefByGUID";
-        final String guidParameterName = "guid";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-
-        /*
-         * Perform operation
-         */
-        AttributeTypeDef             matchedAttributeTypeDef = repositoryStore.getAttributeTypeDef(guid);
-
-        if (matchedAttributeTypeDef != null)
-        {
-            return matchedAttributeTypeDef;
-        }
-
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(guid, guidParameterName, methodName, repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-    }
-
-
-    /**
-     * Return the TypeDef identified by the unique name.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param name String name of the TypeDef.
-     * @return TypeDef structure describing its category and properties.
-     * @throws InvalidParameterException the name is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDef getTypeDefByName(String    userId,
-                                    String    name) throws InvalidParameterException,
-                                                           RepositoryErrorException,
-                                                           TypeDefNotKnownException,
-                                                           UserNotAuthorizedException
-    {
-        final String  methodName = "getTypeDefByName";
-        final String  nameParameterName = "name";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-        for (TypeDef  typeDef : repositoryStore.getTypeDefs())
-        {
-            if (name.equals(typeDef.getName()))
-            {
-                return typeDef;
-            }
-        }
-
-        OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(name, methodName, repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-    }
-
-
-    /**
-     * Return the AttributeTypeDef identified by the unique name.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param name String name of the TypeDef.
-     * @return TypeDef structure describing its category and properties.
-     * @throws InvalidParameterException the name is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  AttributeTypeDef getAttributeTypeDefByName(String    userId,
-                                                       String    name) throws InvalidParameterException,
-                                                                              RepositoryErrorException,
-                                                                              TypeDefNotKnownException,
-                                                                              UserNotAuthorizedException
-    {
-        final String  methodName = "getAttributeTypeDefByName";
-        final String  nameParameterName = "name";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-        for (AttributeTypeDef  attributeTypeDef : repositoryStore.getAttributeTypeDefs())
-        {
-            if (name.equals(attributeTypeDef.getName()))
-            {
-                return attributeTypeDef;
-            }
-        }
-
-        OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN;
-
-        String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(name, methodName, repositoryName);
-
-        throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-    }
-
-
-    /**
-     * Create a definition of a new TypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void addTypeDef(String       userId,
-                           TypeDef      newTypeDef) throws InvalidParameterException,
-                                                           RepositoryErrorException,
-                                                           TypeDefKnownException,
-                                                           TypeDefConflictException,
-                                                           InvalidTypeDefException,
-                                                           UserNotAuthorizedException
-    {
-        final String  methodName = "addTypeDef";
-        final String  typeDefParameterName = "newTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef  existingTypeDef = repositoryStore.getTypeDef(newTypeDef.getGUID());
-
-        if (existingTypeDef != null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ALREADY_DEFINED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(newTypeDef.getName(),
-                                                                            newTypeDef.getGUID(),
-                                                                            repositoryName);
-
-            throw new TypeDefKnownException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
-        }
-
-        repositoryStore.putTypeDef(newTypeDef);
-    }
-
-
-    /**
-     * Create a definition of a new AttributeTypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  void addAttributeTypeDef(String             userId,
-                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
-                                                                                    RepositoryErrorException,
-                                                                                    TypeDefKnownException,
-                                                                                    TypeDefConflictException,
-                                                                                    InvalidTypeDefException,
-                                                                                    UserNotAuthorizedException
-    {
-        final String  methodName           = "addAttributeTypeDef";
-        final String  typeDefParameterName = "newAttributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        AttributeTypeDef  existingTypeDef = repositoryStore.getAttributeTypeDef(newAttributeTypeDef.getGUID());
-
-        if (existingTypeDef != null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ALREADY_DEFINED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(newAttributeTypeDef.getName(),
-                                                                            newAttributeTypeDef.getGUID(),
-                                                                            repositoryName);
-
-            throw new TypeDefKnownException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
-        }
-
-        repositoryStore.putAttributeTypeDef(newAttributeTypeDef);
-    }
-
-
-    /**
-     * Verify that a definition of a TypeDef is either new - or matches the definition already stored.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param typeDef TypeDef structure describing the TypeDef to test.
-     * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
-     * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public boolean verifyTypeDef(String       userId,
-                                 TypeDef      typeDef) throws InvalidParameterException,
-                                                              RepositoryErrorException,
-                                                              TypeDefConflictException,
-                                                              InvalidTypeDefException,
-                                                              UserNotAuthorizedException
-    {
-        final String  methodName           = "verifyTypeDef";
-        final String  typeDefParameterName = "typeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef  existingTypeDef = repositoryStore.getTypeDef(typeDef.getGUID());
-
-        if (existingTypeDef == null)
-        {
-            return false;
-        }
-        else if ((existingTypeDef.getName().equals(typeDef.getName())) &&
-                 (existingTypeDef.getVersion() == typeDef.getVersion()) &&
-                 (existingTypeDef.getVersionName().equals(typeDef.getVersionName())) &&
-                 (existingTypeDef.getCreateTime().equals(typeDef.getCreateTime())))
-        {
-            return true;
-        }
-        else
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.VERIFY_CONFLICT_DETECTED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(typeDef.getGUID(),
-                                                                            typeDef.getName(),
-                                                                            repositoryName);
-
-            throw new TypeDefConflictException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Verify that a definition of an AttributeTypeDef is either new - or matches the definition already stored.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
-     * @return boolean - true means the TypeDef matches the local definition - false means the TypeDef is not known.
-     * @throws InvalidParameterException the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  boolean verifyAttributeTypeDef(String            userId,
-                                           AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
-                                                                                      RepositoryErrorException,
-                                                                                      TypeDefConflictException,
-                                                                                      InvalidTypeDefException,
-                                                                                      UserNotAuthorizedException
-    {
-        final String  methodName           = "verifyAttributeTypeDef";
-        final String  typeDefParameterName = "attributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        AttributeTypeDef  existingAttributeTypeDef = repositoryStore.getAttributeTypeDef(attributeTypeDef.getGUID());
-
-        if (existingAttributeTypeDef == null)
-        {
-            return false;
-        }
-        else if (attributeTypeDef.equals(existingAttributeTypeDef))
-        {
-            return true;
-        }
-        else
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.VERIFY_CONFLICT_DETECTED;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(attributeTypeDef.getGUID(),
-                                                                            attributeTypeDef.getName(),
-                                                                            repositoryName);
-
-            throw new TypeDefConflictException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-    }
-
-
-    /**
-     * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
-     * are safe to make to the TypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param typeDefPatch TypeDef patch describing change to TypeDef.
-     * @return updated TypeDef
-     * @throws InvalidParameterException the TypeDefPatch is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
-     *                               with the stored TypeDef.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDef updateTypeDef(String       userId,
-                                 TypeDefPatch typeDefPatch) throws InvalidParameterException,
-                                                                   RepositoryErrorException,
-                                                                   TypeDefNotKnownException,
-                                                                   PatchErrorException,
-                                                                   UserNotAuthorizedException
-    {
-        final String  methodName           = "updateTypeDef";
-        final String  typeDefParameterName = "typeDefPatch";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefPatch(repositoryName, typeDefPatch, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef  existingTypeDef = repositoryStore.getTypeDef(typeDefPatch.getTypeDefGUID());
-
-        if (existingTypeDef == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(typeDefPatch.getTypeDefGUID(),
-                                                                            typeDefParameterName,
-                                                                            methodName,
-                                                                            repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction());
-        }
-
-        TypeDef  updatedTypeDef = repositoryHelper.applyPatch(repositoryName, existingTypeDef, typeDefPatch);
-
-        repositoryStore.putTypeDef(updatedTypeDef);
-
-        return updatedTypeDef;
-    }
-
-
-    /**
-     * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
-     * instances of this TypeDef have been purged from the metadata collection.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
-     * @param obsoleteTypeDefName String unique name for the TypeDef.
-     * @throws InvalidParameterException the one of TypeDef identifiers is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
-     *                                 the metadata collection.  These instances need to be purged before the
-     *                                 TypeDef can be deleted.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void deleteTypeDef(String    userId,
-                              String    obsoleteTypeDefGUID,
-                              String    obsoleteTypeDefName) throws InvalidParameterException,
-                                                                    RepositoryErrorException,
-                                                                    TypeDefNotKnownException,
-                                                                    TypeDefInUseException,
-                                                                    UserNotAuthorizedException
-    {
-        final String    methodName        = "deleteTypeDef";
-        final String    guidParameterName = "obsoleteTypeDefGUID";
-        final String    nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               obsoleteTypeDefGUID,
-                                               obsoleteTypeDefName,
-                                               methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef typeDef = repositoryStore.getTypeDef(obsoleteTypeDefGUID);
-
-        if (typeDef == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(obsoleteTypeDefGUID,
-                                                                            guidParameterName,
-                                                                            methodName,
-                                                                            repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-
-        OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_IN_USE;
-        String        errorMessage = errorCode.getErrorMessageId()
-                                   + errorCode.getFormattedErrorMessage(obsoleteTypeDefName,
-                                                                        obsoleteTypeDefGUID,
-                                                                        repositoryName);
-
-        throw new TypeDefInUseException(errorCode.getHTTPErrorCode(),
-                                        this.getClass().getName(),
-                                        methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction());
-    }
-
-
-    /**
-     * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
-     * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
-     * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
-     * @throws InvalidParameterException the one of AttributeTypeDef identifiers is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
-     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
-     *                                 the metadata collection.  These instances need to be purged before the
-     *                                 AttributeTypeDef can be deleted.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void deleteAttributeTypeDef(String    userId,
-                                       String    obsoleteTypeDefGUID,
-                                       String    obsoleteTypeDefName) throws InvalidParameterException,
-                                                                             RepositoryErrorException,
-                                                                             TypeDefNotKnownException,
-                                                                             TypeDefInUseException,
-                                                                             UserNotAuthorizedException
-    {
-        final String    methodName        = "deleteAttributeTypeDef";
-        final String    guidParameterName = "obsoleteTypeDefGUID";
-        final String    nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDefIds(repositoryName,
-                                                        guidParameterName,
-                                                        nameParameterName,
-                                                        obsoleteTypeDefGUID,
-                                                        obsoleteTypeDefName,
-                                                        methodName);
-
-        /*
-         * Perform operation
-         */
-        AttributeTypeDef  attributeTypeDef = repositoryStore.getAttributeTypeDef(obsoleteTypeDefGUID);
-
-        if (attributeTypeDef == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(obsoleteTypeDefGUID,
-                                                                            guidParameterName,
-                                                                            methodName,
-                                                                            repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-
-        OMRSErrorCode errorCode    = OMRSErrorCode.ATTRIBUTE_TYPEDEF_IN_USE;
-        String        errorMessage = errorCode.getErrorMessageId()
-                                   + errorCode.getFormattedErrorMessage(obsoleteTypeDefName,
-                                                                        obsoleteTypeDefGUID,
-                                                                        repositoryName);
-
-        throw new TypeDefInUseException(errorCode.getHTTPErrorCode(),
-                                        this.getClass().getName(),
-                                        methodName,
-                                        errorMessage,
-                                        errorCode.getSystemAction(),
-                                        errorCode.getUserAction());
-    }
-
-
-    /**
-     * Change the guid or name of an existing TypeDef to a new value.  This is used if two different
-     * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
-     * the open metadata protocol has provision for this.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param originalTypeDefGUID the original guid of the TypeDef.
-     * @param originalTypeDefName the original name of the TypeDef.
-     * @param newTypeDefGUID the new identifier for the TypeDef.
-     * @param newTypeDefName new name for this TypeDef.
-     * @return typeDef - new values for this TypeDef, including the new guid/name.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeDefNotKnownException the TypeDef identified by the original guid/name is not found
-     *                                    in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  TypeDef reIdentifyTypeDef(String     userId,
-                                      String     originalTypeDefGUID,
-                                      String     originalTypeDefName,
-                                      String     newTypeDefGUID,
-                                      String     newTypeDefName) throws InvalidParameterException,
-                                                                        RepositoryErrorException,
-                                                                        TypeDefNotKnownException,
-                                                                        UserNotAuthorizedException
-    {
-        final String    methodName                = "reIdentifyTypeDef";
-        final String    originalGUIDParameterName = "originalTypeDefGUID";
-        final String    originalNameParameterName = "originalTypeDefName";
-        final String    newGUIDParameterName      = "newTypeDefGUID";
-        final String    newNameParameterName      = "newTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               originalGUIDParameterName,
-                                               originalNameParameterName,
-                                               originalTypeDefGUID,
-                                               originalTypeDefName,
-                                               methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               newGUIDParameterName,
-                                               newNameParameterName,
-                                               newTypeDefGUID,
-                                               newTypeDefName,
-                                               methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDef  existingTypeDef = repositoryStore.getTypeDef(originalTypeDefGUID);
-
-        if (existingTypeDef == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(originalTypeDefGUID,
-                                                                            originalGUIDParameterName,
-                                                                            methodName,
-                                                                            repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-
-        existingTypeDef.setGUID(newTypeDefGUID);
-        existingTypeDef.setName(newTypeDefName);
-
-        existingTypeDef.setVersion(existingTypeDef.getVersion() + 1);
-
-        repositoryStore.putTypeDef(existingTypeDef);
-
-        return existingTypeDef;
-    }
-
-
-    /**
-     * Change the guid or name of an existing TypeDef to a new value.  This is used if two different
-     * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
-     * the open metadata protocol has provision for this.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
-     * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
-     * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
-     * @param newAttributeTypeDefName new name for this AttributeTypeDef.
-     * @return attributeTypeDef - new values for this AttributeTypeDef, including the new guid/name.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws TypeDefNotKnownException the AttributeTypeDef identified by the original guid/name is not
-     *                                    found in the metadata collection.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  AttributeTypeDef reIdentifyAttributeTypeDef(String     userId,
-                                                        String     originalAttributeTypeDefGUID,
-                                                        String     originalAttributeTypeDefName,
-                                                        String     newAttributeTypeDefGUID,
-                                                        String     newAttributeTypeDefName) throws InvalidParameterException,
-                                                                                                   RepositoryErrorException,
-                                                                                                   TypeDefNotKnownException,
-                                                                                                   UserNotAuthorizedException
-    {
-        final String    methodName                = "reIdentifyAttributeTypeDef";
-        final String    originalGUIDParameterName = "originalAttributeTypeDefGUID";
-        final String    originalNameParameterName = "originalAttributeTypeDefName";
-        final String    newGUIDParameterName      = "newAttributeTypeDefGUID";
-        final String    newNameParameterName      = "newAttributeTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               originalGUIDParameterName,
-                                               originalNameParameterName,
-                                               originalAttributeTypeDefGUID,
-                                               originalAttributeTypeDefName,
-                                               methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               newGUIDParameterName,
-                                               newNameParameterName,
-                                               newAttributeTypeDefGUID,
-                                               newAttributeTypeDefName,
-                                               methodName);
-
-        /*
-         * Perform operation
-         */
-        AttributeTypeDef  existingAttributeTypeDef = repositoryStore.getAttributeTypeDef(originalAttributeTypeDefGUID);
-
-        if (existingAttributeTypeDef == null)
-        {
-            OMRSErrorCode errorCode    = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(originalAttributeTypeDefName,
-                                                                            originalAttributeTypeDefGUID,
-                                                                            repositoryName);
-
-            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
-        }
-
-        existingAttributeTypeDef.setGUID(newAttributeTypeDefGUID);
-        existingAttributeTypeDef.setName(newAttributeTypeDefName);
-
-        existingAttributeTypeDef.setVersion(existingAttributeTypeDef.getVersion() + 1);
-
-        repositoryStore.putAttributeTypeDef(existingAttributeTypeDef);
-
-        return existingAttributeTypeDef;
     }
 
 
@@ -1313,18 +165,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
             if (entityProxy != null)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                                repositoryName,
-                                                                                                                guidParameterName,
-                                                                                                                methodName);
-
-                throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                reportEntityProxyOnly(guid, guidParameterName, methodName);
             }
         }
 
@@ -1376,18 +217,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
             if (entityProxy != null)
             {
-                OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
-                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                                repositoryName,
-                                                                                                                guidParameterName,
-                                                                                                                methodName);
-
-                throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
-                                                   this.getClass().getName(),
-                                                   methodName,
-                                                   errorMessage,
-                                                   errorCode.getSystemAction(),
-                                                   errorCode.getUserAction());
+                reportEntityProxyOnly(guid, guidParameterName, methodName);
             }
         }
 
@@ -2001,7 +831,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                              sequencingOrder,
                                                              pageSize);
 
-        this.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        repositoryValidator.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
 
         /*
          * Perform operation
@@ -2195,7 +1025,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             for (String guid : entityTypeGUIDs)
             {
-                this.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
+                repositoryValidator.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
             }
         }
 
@@ -2203,7 +1033,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             for (String guid : relationshipTypeGUIDs)
             {
-                this.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
+                repositoryValidator.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
             }
         }
 
@@ -2280,6 +1110,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                    StatusNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
+        final String methodName = "addEntity";
+
         /*
          * Validate parameters
          */
@@ -2287,7 +1119,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                              entityTypeGUID,
                                                              initialProperties,
                                                              initialClassifications,
-                                                             initialStatus);
+                                                             initialStatus,
+                                                             methodName);
 
         /*
          * Validation complete - ok to create new instance
@@ -2393,9 +1226,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
-        String entityTypeGUID = entity.getType().getTypeDefGUID();
-
-        TypeDef  typeDef = repositoryStore.getTypeDef(entityTypeGUID);
+        TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
 
         repositoryValidator.validateNewStatus(repositoryName, statusParameterName, newStatus, typeDef, methodName);
 
@@ -2462,9 +1293,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
-        String entityTypeGUID = entity.getType().getTypeDefGUID();
-
-        TypeDef  typeDef = repositoryStore.getTypeDef(entityTypeGUID);
+        TypeDef typeDef = super.getTypeDefForInstance(entity, methodName);
 
         repositoryValidator.validateNewPropertiesForType(repositoryName,
                                                          propertiesParameterName,
@@ -2513,11 +1342,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     UserNotAuthorizedException
     {
         final String  methodName = "undoEntityUpdate";
+        final String  parameterName = "entityGUID";
 
         /*
          * Validate parameters
          */
-        super.manageInstanceParameterValidation(userId, entityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, entityGUID, parameterName, methodName);
 
         /*
          * Validation complete - ok to restore entity
@@ -2563,12 +1393,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                             EntityNotKnownException,
                                                                             UserNotAuthorizedException
     {
-        final String  methodName               = "deleteEntity";
+        final String methodName    = "deleteEntity";
+        final String parameterName = "obsoleteEntityGUID";
 
         /*
          * Validate parameters
          */
-        super.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteEntityGUID, parameterName, methodName);
 
         /*
          * Locate Entity
@@ -2671,12 +1502,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                 EntityNotDeletedException,
                                                                 UserNotAuthorizedException
     {
-        final String  methodName               = "purgeEntity";
+        final String methodName    = "purgeEntity";
+        final String parameterName = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedEntityGUID, methodName);
+        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedEntityGUID, parameterName, methodName);
 
         /*
          * Locate entity
@@ -3007,7 +1839,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        super.updateEntityClassificationParameterValidation(userId, entityGUID, classificationName, properties);
+        super.classifyEntityParameterValidation(userId, entityGUID, classificationName, properties, methodName);
 
         /*
          * Locate entity
@@ -3095,7 +1927,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                    initialProperties,
                                                                    entityOneGUID,
                                                                    entityTwoGUID,
-                                                                   initialStatus);
+                                                                   initialStatus,
+                                                                   methodName);
 
 
         /*
@@ -3197,9 +2030,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
-        String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
-
-        TypeDef  typeDef = repositoryStore.getTypeDef(relationshipTypeGUID);
+        TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
 
         repositoryValidator.validateNewStatus(repositoryName,
                                               statusParameterName,
@@ -3262,15 +2093,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         String relationshipTypeGUID = relationship.getType().getTypeDefGUID();
 
-        TypeDef  typeDef = repositoryStore.getTypeDef(relationshipTypeGUID);
+        TypeDef typeDef = super.getTypeDefForInstance(relationship, methodName);
 
         repositoryValidator.validateNewPropertiesForType(repositoryName,
                                                          propertiesParameterName,
                                                          typeDef,
                                                          properties,
                                                          methodName);
-
-
 
         /*
          * Validation complete - ok to make changes
@@ -3305,11 +2134,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                 UserNotAuthorizedException
     {
         final String  methodName = "undoRelationshipUpdate";
+        final String  parameterName = "relationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.manageInstanceParameterValidation(userId, relationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, relationshipGUID, parameterName, methodName);
 
         /*
          * Restore previous version
@@ -3348,11 +2178,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       UserNotAuthorizedException
     {
         final String  methodName = "deleteRelationship";
+        final String  parameterName = "obsoleteRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship
@@ -3404,12 +2235,18 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                             RelationshipNotDeletedException,
                                                                             UserNotAuthorizedException
     {
-        final String  methodName = "purgeRelationship";
+        final String  methodName    = "purgeRelationship";
+        final String  parameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId,
+                                               typeDefGUID,
+                                               typeDefName,
+                                               deletedRelationshipGUID,
+                                               parameterName,
+                                               methodName);
 
         /*
          * Locate relationship
@@ -3454,12 +2291,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       RelationshipNotDeletedException,
                                                                                       UserNotAuthorizedException
     {
-        final String  methodName = "restoreRelationship";
+        final String  methodName    = "restoreRelationship";
+        final String  parameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship
@@ -3514,25 +2352,20 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                           UserNotAuthorizedException
     {
         final String  methodName = "reIdentifyEntity";
-        final String  guidParameterName = "typeDefGUID";
-        final String  nameParameterName = "typeDefName";
-        final String  instanceParameterName = "deletedRelationshipGUID";
+        final String  instanceParameterName = "entityGUID";
+        final String  newInstanceParameterName = "newEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        parentConnector.validateRepositoryIsActive(methodName);
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, instanceParameterName, newEntityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
+        this.reIdentifyInstanceParameterValidation(userId,
+                                                   typeDefGUID,
+                                                   typeDefName,
+                                                   entityGUID,
+                                                   instanceParameterName,
+                                                   newEntityGUID,
+                                                   newInstanceParameterName,
+                                                   methodName);
 
         /*
          * Locate entity
@@ -3604,11 +2437,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
+        super.reTypeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                TypeDefCategory.ENTITY_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
 
         /*
          * Locate entity
@@ -3689,29 +2524,20 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                           EntityNotKnownException,
                                                                                           UserNotAuthorizedException
     {
-        final String methodName                = "reHomeEntity";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
-        final String entityParameterName       = "entityGUID";
-        final String homeParameterName         = "homeMetadataCollectionId";
-        final String newHomeParameterName      = "newHomeMetadataCollectionId";
+        final String methodName          = "reHomeEntity";
+        final String entityParameterName = "entityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, newHomeParameterName, newHomeMetadataCollectionId, methodName);
+        super.reHomeInstanceParameterValidation(userId,
+                                                entityGUID,
+                                                entityParameterName,
+                                                typeDefGUID,
+                                                typeDefName,
+                                                homeMetadataCollectionId,
+                                                newHomeMetadataCollectionId,
+                                                methodName);
 
         /*
          * Locate entity
@@ -3772,27 +2598,21 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       RelationshipNotKnownException,
                                                                                       UserNotAuthorizedException
     {
-        final String methodName                   = "reIdentifyRelationship";
-        final String guidParameterName            = "typeDefGUID";
-        final String nameParameterName            = "typeDefName";
-        final String relationshipParameterName    = "relationshipGUID";
-        final String newRelationshipParameterName = "newHomeMetadataCollectionId";
+        final String  methodName = "reIdentifyRelationship";
+        final String  instanceParameterName = "relationshipGUID";
+        final String  newInstanceParameterName = "newRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateGUID(repositoryName, newRelationshipParameterName, newRelationshipGUID, methodName);
+        this.reIdentifyInstanceParameterValidation(userId,
+                                                   typeDefGUID,
+                                                   typeDefName,
+                                                   relationshipGUID,
+                                                   instanceParameterName,
+                                                   newRelationshipGUID,
+                                                   newInstanceParameterName,
+                                                   methodName);
 
         /*
          * Locate relationship
@@ -3853,14 +2673,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, currentTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
-        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, newTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
-
+        super.reTypeInstanceParameterValidation(userId,
+                                                relationshipGUID,
+                                                relationshipParameterName,
+                                                TypeDefCategory.RELATIONSHIP_DEF,
+                                                currentTypeDefSummary,
+                                                newTypeDefSummary,
+                                                methodName);
         /*
          * Locate relationship
          */
@@ -4056,26 +2875,24 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                    UserNotAuthorizedException
     {
         final String methodName                = "purgeEntityReferenceCopy";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
         final String entityParameterName       = "entityGUID";
         final String homeParameterName         = "homeMetadataCollectionId";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
+        this.manageReferenceInstanceParameterValidation(userId,
+                                                        entityGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        entityParameterName,
+                                                        homeMetadataCollectionId,
+                                                        homeParameterName,
+                                                        methodName);
 
-        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-
+        /*
+         * Remove entity
+         */
         EntityDetail  entity = repositoryStore.getEntity(entityGUID);
         if (entity != null)
         {
@@ -4084,66 +2901,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         }
         else
         {
-            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
-                                                                                                            methodName,
-                                                                                                            repositoryName);
-
-            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+            super.reportEntityNotKnown(entityGUID, methodName);
         }
-    }
-
-
-    /**
-     * The local repository has requested that the repository that hosts the home metadata collection for the
-     * specified entity sends out the details of this entity so the local repository can create a reference copy.
-     *
-     * @param userId  unique identifier for requesting server.
-     * @param entityGUID  unique identifier of requested entity.
-     * @param typeDefGUID  unique identifier of requested entity's TypeDef.
-     * @param typeDefName  unique name of requested entity's TypeDef.
-     * @param homeMetadataCollectionId  identifier of the metadata collection that is the home to this entity.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
-     *                               copy would be invalid.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void refreshEntityReferenceCopy(String   userId,
-                                           String   entityGUID,
-                                           String   typeDefGUID,
-                                           String   typeDefName,
-                                           String   homeMetadataCollectionId) throws InvalidParameterException,
-                                                                                     RepositoryErrorException,
-                                                                                     EntityNotKnownException,
-                                                                                     HomeEntityException,
-                                                                                     UserNotAuthorizedException
-    {
-        final String methodName                = "refreshEntityReferenceCopy";
-
-        /*
-         * This method should be handled by the local repository connector since this repository connector
-         * does not have event handling powers (no event mapper)
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
     }
 
 
@@ -4185,14 +2944,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
+        super.saveReferenceInstanceParameterValidation(userId, relationship, instanceParameterName, methodName);
 
-        repositoryValidator.validateReferenceInstanceHeader(repositoryName,
-                                                            metadataCollectionId,
-                                                            instanceParameterName,
-                                                            relationship,
-                                                            methodName);
 
         repositoryStore.addEntityProxyToStore(relationship.getEntityOneProxy());
         repositoryStore.addEntityProxyToStore(relationship.getEntityTwoProxy());
@@ -4229,111 +2982,33 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                          UserNotAuthorizedException
     {
         final String methodName                = "purgeRelationshipReferenceCopy";
-        final String guidParameterName         = "typeDefGUID";
-        final String nameParameterName         = "typeDefName";
         final String relationshipParameterName = "relationshipGUID";
         final String homeParameterName         = "homeMetadataCollectionId";
+
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
-
+        this.manageReferenceInstanceParameterValidation(userId,
+                                                        relationshipGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        relationshipParameterName,
+                                                        homeMetadataCollectionId,
+                                                        homeParameterName,
+                                                        methodName);
 
         /*
          * Purge relationship
          */
-        repositoryStore.removeReferenceRelationshipFromStore(relationshipGUID);
-    }
-
-
-    /**
-     * The local repository has requested that the repository that hosts the home metadata collection for the
-     * specified relationship sends out the details of this relationship so the local repository can create a
-     * reference copy.
-     *
-     * @param userId unique identifier for requesting server.
-     * @param relationshipGUID unique identifier of the relationship.
-     * @param typeDefGUID the guid of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param typeDefName the name of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws RelationshipNotKnownException the relationship identifier is not recognized.
-     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
-     *                                     copy would be invalid.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void refreshRelationshipReferenceCopy(String userId,
-                                                 String   relationshipGUID,
-                                                 String   typeDefGUID,
-                                                 String   typeDefName,
-                                                 String   homeMetadataCollectionId) throws InvalidParameterException,
-                                                                                           RepositoryErrorException,
-                                                                                           RelationshipNotKnownException,
-                                                                                           HomeRelationshipException,
-                                                                                           UserNotAuthorizedException
-    {
-        final String methodName                = "refreshRelationshipReferenceCopy";
-
-        /*
-         * This method should be handled by the local repository connector since this repository connector
-         * does not have event handling powers (no event mapper)
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
-    }
-
-    /**
-     * Validate that type's identifier is not null.
-     *
-     * @param sourceName source of the request (used for logging)
-     * @param guidParameterName name of the parameter that passed the guid.
-     * @param guid unique identifier for a type or an instance passed on the request
-     * @param methodName method receiving the call
-     * @throws TypeErrorException no guid provided
-     */
-    public  void validateTypeGUID(String sourceName,
-                                  String guidParameterName,
-                                  String guid,
-                                  String methodName) throws TypeErrorException
-    {
-        if  (guid != null)
+        Relationship  relationship = repositoryStore.getRelationship(relationshipGUID);
+        if (relationship != null)
         {
-            if (repositoryStore.getTypeDef(guid) == null)
-            {
-                OMRSErrorCode errorCode    = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
-                String        errorMessage = errorCode.getErrorMessageId()
-                                           + errorCode.getFormattedErrorMessage(guid, guidParameterName, methodName, sourceName);
-
-                throw new TypeErrorException(errorCode.getHTTPErrorCode(),
-                                             this.getClass().getName(),
-                                             methodName,
-                                             errorMessage,
-                                             errorCode.getSystemAction(),
-                                             errorCode.getUserAction());
-            }
+            repositoryStore.removeReferenceRelationshipFromStore(relationshipGUID);
+        }
+        else
+        {
+            super.reportRelationshipNotKnown(relationshipGUID, methodName);
         }
     }
 }

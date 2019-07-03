@@ -67,6 +67,8 @@ class ElementHeaderConverter
 
     /**
      * Extract the properties from the entity.
+     *
+     * @param bean output bean
      */
     void updateBean(ElementHeader bean)
     {

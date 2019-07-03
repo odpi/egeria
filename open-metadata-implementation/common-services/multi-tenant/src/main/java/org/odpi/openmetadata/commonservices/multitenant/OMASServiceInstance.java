@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -93,7 +94,6 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
 
         }
     }
-
 
 
     /**

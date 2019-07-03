@@ -98,7 +98,8 @@ public class AttributeTypeDefCategoryFindRequest extends OMRSAPIRequest
         {
             return false;
         }
-        AttributeTypeDefCategoryFindRequest that = (AttributeTypeDefCategoryFindRequest) objectToCompare;
+        AttributeTypeDefCategoryFindRequest
+                that = (AttributeTypeDefCategoryFindRequest) objectToCompare;
         return getCategory() == that.getCategory();
     }
 

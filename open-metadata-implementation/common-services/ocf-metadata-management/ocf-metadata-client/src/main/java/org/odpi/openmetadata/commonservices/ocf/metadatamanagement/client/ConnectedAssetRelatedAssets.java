@@ -6,10 +6,10 @@ import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.RelatedAssetsResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor;
-import org.odpi.openmetadata.frameworks.connectors.properties.RelatedAsset;
-import org.odpi.openmetadata.frameworks.connectors.properties.RelatedAssets;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedAsset;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetRelatedAssets;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.RelatedAsset;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,9 @@ import java.util.List;
  * Its role is to query the property servers (metadata repository cohort) to extract external identifiers
  * related to the connected asset.
  */
-public class ConnectedAssetRelatedAssets extends RelatedAssets
+public class ConnectedAssetRelatedAssets extends AssetRelatedAssets
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -35,6 +36,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -45,7 +47,8 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetRelatedAssets(String                 serverName,
+    ConnectedAssetRelatedAssets(String                 serviceName,
+                                String                 serverName,
                                 String                 userId,
                                 String                 omasServerURL,
                                 String                 assetGUID,
@@ -56,6 +59,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
@@ -77,6 +81,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
 
         if (template != null)
         {
+            this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
@@ -93,7 +98,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
      * @param parentAsset descriptor of parent asset
      * @return new cloned object.
      */
-    protected  RelatedAssets cloneIterator(AssetDescriptor parentAsset)
+    protected AssetRelatedAssets cloneIterator(AssetDescriptor parentAsset)
     {
         return new ConnectedAssetRelatedAssets(connectedAsset, this);
     }
@@ -109,7 +114,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
      */
     protected  AssetPropertyBase cloneElement(AssetDescriptor  parentAsset, AssetPropertyBase template)
     {
-        return new RelatedAsset(parentAsset, (RelatedAsset)template);
+        return new AssetRelatedAsset(parentAsset, (AssetRelatedAsset)template);
     }
 
 
@@ -124,8 +129,8 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
     protected  List<AssetPropertyBase> getCachedList(int  cacheStartPointer,
                                                      int  maximumSize) throws PropertyServerException
     {
-        final String   methodName = "RelatedAssets.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}/related-assets?elementStart={3}&maxElements={4}";
+        final String   methodName = "AssetRelatedAssets.getCachedList";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/related-assets?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -133,6 +138,8 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
         {
             RelatedAssetsResponse restResult = restClient.callRelatedAssetsGetRESTCall(methodName,
                                                                                        omasServerURL + urlTemplate,
+                                                                                       serverName,
+                                                                                       serviceName,
                                                                                        userId,
                                                                                        assetGUID,
                                                                                        cacheStartPointer,
@@ -142,7 +149,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
             restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-            List<Asset>  beans = restResult.getList();
+            List<RelatedAsset> beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))
             {
                 return null;
@@ -151,15 +158,20 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
             {
                 List<AssetPropertyBase>   resultList = new ArrayList<>();
 
-                for (Asset  bean : beans)
+                for (RelatedAsset  bean : beans)
                 {
                     if (bean != null)
                     {
-                        resultList.add(new RelatedAsset(connectedAsset, bean, new ConnectedAssetRelatedAssetProperties(serverName,
-                                                                                                                       userId,
-                                                                                                                       omasServerURL,
-                                                                                                                       assetGUID,
-                                                                                                                       restClient)));
+                        resultList.add(new AssetRelatedAsset(connectedAsset,
+                                                             bean.getRelatedAsset(),
+                                                             bean.getTypeName(),
+                                                             bean.getAttributeName(),
+                                                             new ConnectedAssetRelatedAssetProperties(serviceName,
+                                                                                                      serverName,
+                                                                                                      userId,
+                                                                                                      omasServerURL,
+                                                                                                      assetGUID,
+                                                                                                      restClient)));
                     }
                 }
 
