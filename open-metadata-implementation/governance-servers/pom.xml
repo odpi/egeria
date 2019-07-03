@@ -31,6 +31,7 @@
         <module>stewardship-services</module>
         <module>virtualization-services</module>
         <module>security-officer-services</module>
+        <module>data-engine-proxy-services</module>
     </modules>
 
 </project>
