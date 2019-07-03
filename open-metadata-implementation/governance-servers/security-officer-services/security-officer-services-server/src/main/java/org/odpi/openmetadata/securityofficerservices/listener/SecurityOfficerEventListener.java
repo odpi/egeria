@@ -6,8 +6,8 @@
 package org.odpi.openmetadata.securityofficerservices.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerNewTagEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.securityofficerservices.processor.SecurityOfficerEventProcessor;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public class SecurityOfficerEventListener implements OpenMetadataTopicListener {
         log.info("[Security Officer Server] Event Received");
 
         try {
-            SecurityOfficerEvent event = objectMapper.readValue(receivedEvent, SecurityOfficerEvent.class);
+            SecurityOfficerNewTagEvent event = objectMapper.readValue(receivedEvent, SecurityOfficerNewTagEvent.class);
             if (event.getEventType() == SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT) {
                 securityOfficerEventProcessor.processNewAssignment(event.getSchemaElementEntity());
             } else {

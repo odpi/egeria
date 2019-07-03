@@ -4,15 +4,14 @@
  */
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor;
 
-import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerNewTagEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.handler.SecurityOfficerHandler;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Builder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,15 +33,14 @@ public class SecurityOfficerEventProcessor {
         }
     }
 
-    public SecurityOfficerEvent processSemanticAssignmentForSchemaElement(Relationship relationship) {
-        SecurityOfficerEvent securityOfficerEvent = new SecurityOfficerEvent();
+    public SecurityOfficerNewTagEvent processSemanticAssignmentForSchemaElement(Relationship relationship) {
+        SecurityOfficerNewTagEvent securityOfficerEvent = new SecurityOfficerNewTagEvent();
 
         securityOfficerEvent.setEventType(SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT);
 
         EntityDetail glossaryTermDetails = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityTwoProxy().getGUID());
         EntityDetail schemaElement = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityOneProxy().getGUID());
-        OMRSRepositoryHelper omrsRepositoryHelper = omrsRepositoryConnector.getRepositoryHelper();
-        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTermDetails, omrsRepositoryHelper));
+        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTermDetails));
 
         return securityOfficerEvent;
     }
