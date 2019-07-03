@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.OMRSInstanceRetrievalEventProcessor;
@@ -226,8 +225,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return repository connector
      * @throws RepositoryErrorException home metadata collection is null
      */
-    OMRSRepositoryConnector  getHomeConnector(InstanceHeader instance,
-                                              String         methodName) throws RepositoryErrorException
+    private OMRSRepositoryConnector  getHomeConnector(InstanceHeader instance,
+                                                      String         methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -332,152 +331,37 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
+     * Request the refresh of this instance.
      *
-     * @param sourceMetadataCollectionId unique identifier for the home collection
-     * @param entity the retrieved entity.
-     * @return Validated and processed entity.
+     * @param entity retrieved instance
      */
-    EntitySummary processRetrievedEntitySummary(String        sourceMetadataCollectionId,
-                                                EntitySummary entity)
+    public void requestRefreshOfEntity(EntityDetail   entity)
     {
-        EntitySummary   processedEntity = new EntitySummary(entity);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedEntity.getMetadataCollectionId() == null)
+        if ((localEventProcessor != null) && (entity != null))
         {
-            processedEntity.setMetadataCollectionId(metadataCollectionId);
-        }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedEntitySummary(localMetadataCollectionId,
-                                                                   sourceMetadataCollectionId,
-                                                                   processedEntity);
-        }
-
-        return processedEntity;
-    }
-
-
-    /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
-     *
-     * @param sourceMetadataCollectionId unique identifier for the home collection
-     * @param entity the retrieved entity.
-     * @return Validated and processed entity.
-     */
-    EntityDetail processRetrievedEntityDetail(String        sourceMetadataCollectionId,
-                                              EntityDetail  entity)
-    {
-        EntityDetail   processedEntity = new EntityDetail(entity);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedEntity.getMetadataCollectionId() == null)
-        {
-            processedEntity.setMetadataCollectionId(metadataCollectionId);
-        }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedEntityDetail(localMetadataCollectionId,
-                                                                  sourceMetadataCollectionId,
-                                                                  processedEntity);
-        }
-
-        return processedEntity;
-    }
-
-
-    /**
-     * Pass a list of entities that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entities the retrieved relationships
-     * @return the validated and processed relationships
-     */
-    List<EntityDetail> processRetrievedEntities(String              sourceMetadataCollectionId,
-                                                List<EntityDetail>  entities)
-    {
-        List<EntityDetail> processedEntities = new ArrayList<>();
-
-        for (EntityDetail  entity : entities)
-        {
-            EntityDetail   processedEntity = this.processRetrievedEntityDetail(sourceMetadataCollectionId, entity);
-
-            if (processedEntity != null)
+            if (! localMetadataCollectionId.equals(entity.getMetadataCollectionId()))
             {
-                processedEntities.add(processedEntity);
+                localEventProcessor.processRetrievedEntitySummary(repositoryName,
+                                                                  localMetadataCollectionId,
+                                                                  entity);
             }
         }
-
-        return processedEntities;
     }
 
 
     /**
-     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
+     * Request the refresh of this instance.
      *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationship the retrieved relationship
-     * @return the validated and processed relationship
+     * @param relationship retrieved instance
      */
-    Relationship processRetrievedRelationship(String         sourceMetadataCollectionId,
-                                              Relationship   relationship)
+    public void requestRefreshOfRelationship(Relationship   relationship)
     {
-        Relationship   processedRelationship = new Relationship(relationship);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedRelationship.getMetadataCollectionId() == null)
+        if ((localEventProcessor != null) && (relationship != null))
         {
-            processedRelationship.setMetadataCollectionId(metadataCollectionId);
+            localEventProcessor.processRetrievedRelationship(repositoryName,
+                                                             localMetadataCollectionId,
+                                                             relationship);
         }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedRelationship(localMetadataCollectionId,
-                                                                  sourceMetadataCollectionId,
-                                                                  processedRelationship);
-        }
-
-        return processedRelationship;
-    }
-
-
-    /**
-     * Pass a list of relationships that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationships        the list of retrieved relationships
-     * @return the validated and processed relationships
-     */
-    List<Relationship> processRetrievedRelationships(String             sourceMetadataCollectionId,
-                                                     List<Relationship> relationships)
-    {
-        List<Relationship> processedRelationships = new ArrayList<>();
-
-        for (Relationship  relationship : relationships)
-        {
-            Relationship processedRelationship = this.processRetrievedRelationship(sourceMetadataCollectionId, relationship);
-
-            if (processedRelationship != null)
-            {
-                processedRelationships.add(processedRelationship);
-            }
-        }
-
-        return processedRelationships;
     }
 
 
