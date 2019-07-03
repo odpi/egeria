@@ -77,7 +77,7 @@ public class SchemaElementMapper
     public static final String CARDINALITY_PROPERTY_NAME                = "cardinality";          /* from SchemaAttribute entity */
     public static final String DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME     = "defaultValueOverride"; /* from SchemaAttribute entity */
 
-    public static final String ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID = "SchemaAttributeType";  /* from Area 5 */
+    public static final String ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID = "2d955049-e59b-45dd-8e62-cde1add59f9e";  /* from Area 5 */
     public static final String ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME = "SchemaAttributeType";
     /* End1 = SchemaAttribute; End 2 = SchemaType */
 
