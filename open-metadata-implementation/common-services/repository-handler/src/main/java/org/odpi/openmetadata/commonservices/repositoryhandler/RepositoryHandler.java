@@ -128,7 +128,7 @@ public class RepositoryHandler
 
 
     /**
-     * Create a new entity in the open metadata repository.
+     * Create a new entity in the open metadata repository with the ACTIVE instance status.
      *
      * @param userId calling user
      * @param entityTypeGUID type of entity to create
@@ -154,6 +154,59 @@ public class RepositoryHandler
                                                                   properties,
                                                                   null,
                                                                   InstanceStatus.ACTIVE);
+
+            if (newEntity != null)
+            {
+                return newEntity.getGUID();
+            }
+
+            errorHandler.handleNoEntity(entityTypeGUID,
+                                        entityTypeName,
+                                        properties,
+                                        methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Create a new entity in the open metadata repository with the ACTIVE instance status.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param instanceStatus initial status (needs ot be valid for type.
+     * @param methodName name of calling method
+     *
+     * @return unique identifier of new entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  createEntity(String                  userId,
+                                String                  entityTypeGUID,
+                                String                  entityTypeName,
+                                InstanceProperties      properties,
+                                InstanceStatus          instanceStatus,
+                                String                  methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        try
+        {
+            EntityDetail newEntity = metadataCollection.addEntity(userId,
+                                                                  entityTypeGUID,
+                                                                  properties,
+                                                                  null,
+                                                                  instanceStatus);
 
             if (newEntity != null)
             {
@@ -714,6 +767,38 @@ public class RepositoryHandler
         {
             return results;
         }
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param requiredEnd  entityProxy from relationship
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail getEntityForRelationship(String                 userId,
+                                                 EntityProxy            requiredEnd,
+                                                 String                 methodName) throws UserNotAuthorizedException,
+                                                                                           PropertyServerException
+    {
+        try
+        {
+            return metadataCollection.getEntityDetail(userId, requiredEnd.getGUID());
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
     }
 
 

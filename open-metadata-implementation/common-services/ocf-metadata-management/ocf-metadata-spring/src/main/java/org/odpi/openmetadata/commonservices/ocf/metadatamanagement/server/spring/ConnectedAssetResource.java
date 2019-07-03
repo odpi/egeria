@@ -202,14 +202,14 @@ public class ConnectedAssetResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments")
 
-    public CommentsResponse getComments(@PathVariable String  serverName,
-                                        @PathVariable String  serviceURLName,
-                                        @PathVariable String  userId,
-                                        @PathVariable String  assetGUID,
-                                        @RequestParam int     elementStart,
-                                        @RequestParam int     maxElements)
+    public CommentsResponse getAssetComments(@PathVariable String  serverName,
+                                             @PathVariable String  serviceURLName,
+                                             @PathVariable String  userId,
+                                             @PathVariable String  assetGUID,
+                                             @RequestParam int     elementStart,
+                                             @RequestParam int     maxElements)
     {
-        return restAPI.getComments(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getAssetComments(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -229,16 +229,17 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/comments/{commentGUID}/replies")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
-    public CommentsResponse getCommentReplies(@PathVariable String  serverName,
-                                              @PathVariable String  serviceURLName,
-                                              @PathVariable String  userId,
-                                              @PathVariable String  commentGUID,
-                                              @RequestParam int     elementStart,
-                                              @RequestParam int     maxElements)
+    public CommentsResponse getAssetCommentReplies(@PathVariable String  serverName,
+                                                   @PathVariable String  serviceURLName,
+                                                   @PathVariable String  userId,
+                                                   @PathVariable String  assetGUID,
+                                                   @PathVariable String  commentGUID,
+                                                   @RequestParam int     elementStart,
+                                                   @RequestParam int     maxElements)
     {
-        return restAPI.getCommentReplies(serverName, serviceURLName, userId, commentGUID, elementStart, maxElements);
+        return restAPI.getAssetCommentReplies(serverName, serviceURLName, userId, assetGUID, commentGUID, elementStart, maxElements);
     }
 
 
