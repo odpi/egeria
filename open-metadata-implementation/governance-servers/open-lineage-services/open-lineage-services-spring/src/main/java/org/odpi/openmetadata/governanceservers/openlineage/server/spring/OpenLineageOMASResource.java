@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageOMASAPIResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageAPIResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,9 +14,32 @@ public class OpenLineageOMASResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
 
-    @GetMapping(path = "/export")
-    public OpenLineageOMASAPIResponse exportGraph(@PathVariable("userId") String userId,
-                                                   @PathVariable("serverName") String serverName) {
-        return restAPI.exportGraph(serverName, userId);
+    @GetMapping(path = "/dump/{graph}")
+    public OpenLineageAPIResponse dumpGraph(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @PathVariable("graph") String graph) {
+        return restAPI.dumpGraph(serverName, userId, graph);
     }
+    
+    @GetMapping(path = "/export/{graph}")
+    public OpenLineageAPIResponse exportGraph(@PathVariable("userId") String userId,
+                                              @PathVariable("serverName") String serverName,
+                                              @PathVariable("graph") String graph) {
+        return restAPI.exportGraph(serverName, userId, graph);
+    }
+
+    @GetMapping(path = "/generate-mock-graph")
+    public OpenLineageAPIResponse generateGraph(@PathVariable("userId") String userId,
+                                                @PathVariable("serverName") String serverName) {
+        return restAPI.generateGraph(serverName, userId);
+    }
+
+    @GetMapping(path = "/initial-graph/{lineageType}/{guid}")
+    public OpenLineageAPIResponse initialGraph(@PathVariable("userId") String userId,
+                                               @PathVariable("serverName") String serverName,
+                                               @PathVariable("lineageType") String lineageType,
+                                               @PathVariable("guid") String guid) {
+        return restAPI.initialGraph(serverName, userId, lineageType, guid);
+    }
+
 }

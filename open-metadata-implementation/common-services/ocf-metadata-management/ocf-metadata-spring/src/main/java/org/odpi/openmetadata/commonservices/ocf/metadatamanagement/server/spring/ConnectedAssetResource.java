@@ -3,16 +3,17 @@
 
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.spring;
 
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server.OCFMetadataRESTServices;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * The ConnectedAssetResource is the server-side implementation of the REST services neede to
+ * The ConnectedAssetResource is the server-side implementation of the REST services needed to
  * populate the Open Connector Framework (OCF) Connected Asset Properties.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/common-services/ocf/connected-asset/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/common-services/{serviceURLName}/connected-asset/users/{userId}")
 public class ConnectedAssetResource
 {
     private OCFMetadataRESTServices restAPI = new OCFMetadataRESTServices();
@@ -26,13 +27,90 @@ public class ConnectedAssetResource
 
 
     /**
+     * Returns the connection object corresponding to the supplied connection GUID.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param serviceURLName name of the service that created the connector that issued this request.
+     * @param userId userId of user making request.
+     * @param guid  the unique id for the connection within the property server.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/connections/{guid}")
+
+    public ConnectionResponse getConnectionByGUID(@PathVariable String     serverName,
+                                                  @PathVariable String     serviceURLName,
+                                                  @PathVariable String     userId,
+                                                  @PathVariable String     guid)
+    {
+        return restAPI.getConnectionByGUID(serverName, serviceURLName, userId, guid);
+    }
+
+
+    /**
+     * Returns the connection corresponding to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param serviceURLName name of the service that created the connector that issued this request.
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
+
+    public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
+                                                    @PathVariable String   serviceURLName,
+                                                    @PathVariable String   userId,
+                                                    @PathVariable String   assetGUID)
+    {
+        return restAPI.getConnectionForAsset(serverName, serviceURLName, userId, assetGUID);
+    }
+
+
+    /**
+     * Returns the unique identifier for the asset connected to the connection identified by the supplied guid.
+     *
+     * @param serverName     String name of the server instances for this request.
+     * @param serviceURLName String name of the service that created the connector that issued this request.
+     * @param userId         String the userId of the requesting user.
+     * @param connectionGUID  uniqueId for the connection.
+     *
+     * @return unique identifier of asset or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
+     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
+     * NoConnectedAssetException there is no asset associated with this connection or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection/{connectionGUID}")
+
+    public GUIDResponse getAssetForConnectionGUID(@PathVariable String   serverName,
+                                                  @PathVariable String   serviceURLName,
+                                                  @PathVariable String   userId,
+                                                  @PathVariable String   connectionGUID)
+    {
+        return restAPI.getAssetForConnectionGUID(serverName, serviceURLName, userId, connectionGUID);
+    }
+
+
+    /**
      * Returns the basic information about the asset.  The connection guid allows the short description for the
      * asset to be filled out.
      *
-     * @param serverName  name of the server.
-     * @param userId     String   userId of user making request.
-     * @param assetGUID  String   unique id for asset.
-     * @param connectionGUID  unique id for connection used to access asset.
+     * @param serverName      String   name of the server.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId          String   userId of user making request.
+     * @param assetGUID       String   unique id for asset.
+     * @param connectionGUID  unique   id for connection used to access asset.
      *
      * @return a bean with the basic properties about the asset or
      * InvalidParameterException - the asset GUID is null or invalid or
@@ -44,20 +122,22 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/via-connection/{connectionGUID}")
 
     public AssetResponse getConnectedAssetSummary(@PathVariable String   serverName,
+                                                  @PathVariable String   serviceURLName,
                                                   @PathVariable String   userId,
                                                   @PathVariable String   assetGUID,
                                                   @PathVariable String   connectionGUID)
     {
-        return restAPI.getConnectedAssetSummary(serverName, userId, assetGUID, connectionGUID);
+        return restAPI.getConnectedAssetSummary(serverName, serviceURLName, userId, assetGUID, connectionGUID);
     }
 
 
     /**
      * Returns the basic information about the asset.
      *
-     * @param serverName String   name of server instance to call.
-     * @param userId     String   userId of user making request.
-     * @param assetGUID  String   unique id for asset.
+     * @param serverName  String   name of server instance to call.
+     * @param serviceURLName String   name of the service that created the connector that issued this request.
+     * @param userId      String   userId of user making request.
+     * @param assetGUID   String   unique id for asset.
      * @return a bean with the basic properties about the asset or
      * InvalidParameterException - the userId is null or invalid or
      * UnrecognizedAssetGUIDException - the GUID is null or invalid or
@@ -67,10 +147,11 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}")
 
     public AssetResponse getAssetSummary(@PathVariable String   serverName,
+                                         @PathVariable String   serviceURLName,
                                          @PathVariable String   userId,
                                          @PathVariable String   assetGUID)
     {
-        return restAPI.getAssetSummary(serverName, userId, assetGUID);
+        return restAPI.getAssetSummary(serverName, serviceURLName, userId, assetGUID);
     }
 
 
@@ -78,6 +159,7 @@ public class ConnectedAssetResource
      * Returns the list of certifications for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -92,12 +174,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/certifications")
 
     public CertificationsResponse getCertifications(@PathVariable String  serverName,
+                                                    @PathVariable String  serviceURLName,
                                                     @PathVariable String  userId,
                                                     @PathVariable String  assetGUID,
                                                     @RequestParam int     elementStart,
                                                     @RequestParam int     maxElements)
     {
-        return restAPI.getCertifications(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getCertifications(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -105,6 +188,7 @@ public class ConnectedAssetResource
      * Returns the list of comments for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -118,13 +202,14 @@ public class ConnectedAssetResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments")
 
-    public CommentsResponse getComments(@PathVariable String  serverName,
-                                        @PathVariable String  userId,
-                                        @PathVariable String  assetGUID,
-                                        @RequestParam int     elementStart,
-                                        @RequestParam int     maxElements)
+    public CommentsResponse getAssetComments(@PathVariable String  serverName,
+                                             @PathVariable String  serviceURLName,
+                                             @PathVariable String  userId,
+                                             @PathVariable String  assetGUID,
+                                             @RequestParam int     elementStart,
+                                             @RequestParam int     maxElements)
     {
-        return restAPI.getComments(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getAssetComments(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -132,6 +217,7 @@ public class ConnectedAssetResource
      * Returns the list of comments for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param commentGUID  String   unique id for the root comment.
      * @param elementStart int      starting position for fist returned element.
@@ -143,15 +229,17 @@ public class ConnectedAssetResource
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/comments/{commentGUID}/replies")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
-    public CommentsResponse getCommentReplies(@PathVariable String  serverName,
-                                              @PathVariable String  userId,
-                                              @PathVariable String  commentGUID,
-                                              @RequestParam int     elementStart,
-                                              @RequestParam int     maxElements)
+    public CommentsResponse getAssetCommentReplies(@PathVariable String  serverName,
+                                                   @PathVariable String  serviceURLName,
+                                                   @PathVariable String  userId,
+                                                   @PathVariable String  assetGUID,
+                                                   @PathVariable String  commentGUID,
+                                                   @RequestParam int     elementStart,
+                                                   @RequestParam int     maxElements)
     {
-        return restAPI.getCommentReplies(serverName, userId, commentGUID, elementStart, maxElements);
+        return restAPI.getAssetCommentReplies(serverName, serviceURLName, userId, assetGUID, commentGUID, elementStart, maxElements);
     }
 
 
@@ -159,6 +247,7 @@ public class ConnectedAssetResource
      * Returns the list of connections for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -173,12 +262,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connections")
 
     public ConnectionsResponse getConnections(@PathVariable String  serverName,
+                                              @PathVariable String  serviceURLName,
                                               @PathVariable String  userId,
                                               @PathVariable String  assetGUID,
                                               @RequestParam int     elementStart,
                                               @RequestParam int     maxElements)
     {
-        return restAPI.getConnections(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getConnections(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -186,6 +276,7 @@ public class ConnectedAssetResource
      * Returns the list of external identifiers for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -200,12 +291,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-identifiers")
 
     public ExternalIdentifiersResponse getExternalIdentifiers(@PathVariable String  serverName,
+                                                              @PathVariable String  serviceURLName,
                                                               @PathVariable String  userId,
                                                               @PathVariable String  assetGUID,
                                                               @RequestParam int     elementStart,
                                                               @RequestParam int     maxElements)
     {
-        return restAPI.getExternalIdentifiers(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getExternalIdentifiers(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -213,6 +305,7 @@ public class ConnectedAssetResource
      * Returns the list of external references for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -227,12 +320,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/external-references")
 
     public ExternalReferencesResponse getExternalReferences(@PathVariable String  serverName,
+                                                            @PathVariable String  serviceURLName,
                                                             @PathVariable String  userId,
                                                             @PathVariable String  assetGUID,
                                                             @RequestParam int     elementStart,
                                                             @RequestParam int     maxElements)
     {
-        return restAPI.getExternalReferences(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getExternalReferences(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -240,6 +334,7 @@ public class ConnectedAssetResource
      * Returns the list of informal tags for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -254,12 +349,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/informal-tags")
 
     public InformalTagsResponse getInformalTags(@PathVariable String  serverName,
+                                                @PathVariable String  serviceURLName,
                                                 @PathVariable String  userId,
                                                 @PathVariable String  assetGUID,
                                                 @RequestParam int     elementStart,
                                                 @RequestParam int     maxElements)
     {
-        return restAPI.getInformalTags(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getInformalTags(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -267,6 +363,7 @@ public class ConnectedAssetResource
      * Returns the list of licenses for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -281,12 +378,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/licenses")
 
     public LicensesResponse getLicenses(@PathVariable String  serverName,
+                                        @PathVariable String  serviceURLName,
                                         @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getLicenses(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getLicenses(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -294,6 +392,7 @@ public class ConnectedAssetResource
      * Returns the list of likes for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -308,12 +407,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/likes")
 
     public LikesResponse getLikes(@PathVariable String  serverName,
+                                  @PathVariable String  serviceURLName,
                                   @PathVariable String  userId,
                                   @PathVariable String  assetGUID,
                                   @RequestParam int     elementStart,
                                   @RequestParam int     maxElements)
     {
-        return restAPI.getLikes(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getLikes(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -321,6 +421,7 @@ public class ConnectedAssetResource
      * Returns the list of known locations for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -335,12 +436,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/known-locations")
 
     public LocationsResponse getKnownLocations(@PathVariable String  serverName,
+                                               @PathVariable String  serviceURLName,
                                                @PathVariable String  userId,
                                                @PathVariable String  assetGUID,
                                                @RequestParam int     elementStart,
                                                @RequestParam int     maxElements)
     {
-        return restAPI.getKnownLocations(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getKnownLocations(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -348,6 +450,7 @@ public class ConnectedAssetResource
      * Returns the list of note logs for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -362,12 +465,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/note-logs")
 
     public NoteLogsResponse getNoteLogs(@PathVariable String  serverName,
+                                        @PathVariable String  serviceURLName,
                                         @PathVariable String  userId,
                                         @PathVariable String  assetGUID,
                                         @RequestParam int     elementStart,
                                         @RequestParam int     maxElements)
     {
-        return restAPI.getNoteLogs(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getNoteLogs(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -375,6 +479,7 @@ public class ConnectedAssetResource
      * Returns the list of notes for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param noteLogGUID  String   unique id for note log.
      * @param elementStart int      starting position for fist returned element.
@@ -389,12 +494,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/note-log/{noteLogGUID}/notes")
 
     public NotesResponse getNotes(@PathVariable String  serverName,
+                                  @PathVariable String  serviceURLName,
                                   @PathVariable String  userId,
                                   @PathVariable String  noteLogGUID,
                                   @RequestParam int     elementStart,
                                   @RequestParam int     maxElements)
     {
-        return restAPI.getNotes(serverName, userId, noteLogGUID, elementStart, maxElements);
+        return restAPI.getNotes(serverName, serviceURLName, userId, noteLogGUID, elementStart, maxElements);
     }
 
 
@@ -402,6 +508,7 @@ public class ConnectedAssetResource
      * Returns the list of ratings for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -416,12 +523,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/ratings")
 
     public RatingsResponse getRatings(@PathVariable String  serverName,
+                                      @PathVariable String  serviceURLName,
                                       @PathVariable String  userId,
                                       @PathVariable String  assetGUID,
                                       @RequestParam int     elementStart,
                                       @RequestParam int     maxElements)
     {
-        return restAPI.getRatings(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRatings(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -429,6 +537,7 @@ public class ConnectedAssetResource
      * Returns the list of related assets for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -443,12 +552,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-assets")
 
     public RelatedAssetsResponse getRelatedAssets(@PathVariable String  serverName,
+                                                  @PathVariable String  serviceURLName,
                                                   @PathVariable String  userId,
                                                   @PathVariable String  assetGUID,
                                                   @RequestParam int     elementStart,
                                                   @RequestParam int     maxElements)
     {
-        return restAPI.getRelatedAssets(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRelatedAssets(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -456,6 +566,7 @@ public class ConnectedAssetResource
      * Returns the list of related media references for the asset.
      *
      * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
      * @param assetGUID    String   unique id for asset.
      * @param elementStart int      starting position for fist returned element.
@@ -470,12 +581,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/related-media-references")
 
     public RelatedMediaReferencesResponse getRelatedMediaReferences(@PathVariable String  serverName,
+                                                                    @PathVariable String  serviceURLName,
                                                                     @PathVariable String  userId,
                                                                     @PathVariable String  assetGUID,
                                                                     @RequestParam int     elementStart,
                                                                     @RequestParam int     maxElements)
     {
-        return restAPI.getRelatedMediaReferences(serverName, userId, assetGUID, elementStart, maxElements);
+        return restAPI.getRelatedMediaReferences(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements);
     }
 
 
@@ -483,6 +595,7 @@ public class ConnectedAssetResource
      * Returns a list of schema attributes for a schema type.
      *
      * @param serverName     String   name of server instance to call.
+     * @param serviceURLName    String   name of the service that created the connector that issued this request.
      * @param userId         String   userId of user making request.
      * @param schemaTypeGUID String   unique id for containing schema type.
      * @param elementStart   int      starting position for fist returned element.
@@ -497,12 +610,13 @@ public class ConnectedAssetResource
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{schemaTypeGUID}/schema-attributes")
 
     public SchemaAttributesResponse getSchemaAttributes(@PathVariable String  serverName,
+                                                        @PathVariable String  serviceURLName,
                                                         @PathVariable String  userId,
                                                         @PathVariable String  schemaTypeGUID,
                                                         @RequestParam int     elementStart,
                                                         @RequestParam int     maxElements)
     {
-        return restAPI.getSchemaAttributes(serverName, userId, schemaTypeGUID, elementStart, maxElements);
+        return restAPI.getSchemaAttributes(serverName, serviceURLName, userId, schemaTypeGUID, elementStart, maxElements);
     }
 
 }

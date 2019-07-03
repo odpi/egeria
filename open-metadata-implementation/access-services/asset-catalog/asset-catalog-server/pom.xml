@@ -26,19 +26,16 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>

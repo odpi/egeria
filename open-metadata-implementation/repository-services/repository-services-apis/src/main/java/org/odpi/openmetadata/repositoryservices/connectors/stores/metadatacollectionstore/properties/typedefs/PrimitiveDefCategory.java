@@ -49,6 +49,7 @@ public enum PrimitiveDefCategory implements Serializable
      * @param code int code for enum
      * @param name String name of the primitive type
      * @param javaClassName String name of the class that stores the primitive attribute.
+     * @param guid unique identifier of the primitive type
      */
     PrimitiveDefCategory(int   code, String name, String javaClassName, String guid)
     {

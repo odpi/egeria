@@ -24,7 +24,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OMRSRepositoryRESTServices provides the server-side support for the OMRS Repository REST Services API.
@@ -122,6 +124,7 @@ public class OMRSRepositoryRESTServices
     {
         new OMRSRepositoryServicesInstanceHandler(serviceName).removeInstance(localServerName);
     }
+
 
     /**
      * Return the URL for the requested instance.
@@ -222,7 +225,25 @@ public class OMRSRepositoryRESTServices
      * @return String metadata collection id.
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
+    @Deprecated
     public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName)
+    {
+        return this.getMetadataCollectionId(serverName, anonymousUserId);
+    }
+
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId calling user
+     * @return String metadata collection id.
+     * or RepositoryErrorException there is a problem communicating with the metadata repository.
+     */
+    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName,
+                                                                String     userId)
     {
         final  String   methodName = "getMetadataCollectionId";
 
@@ -232,9 +253,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(null, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
 
-            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId());
+            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId(userId));
         }
         catch (InvalidParameterException  error)
         {
@@ -274,6 +295,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
+     * InvalidParameterException the uerId is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -1479,7 +1501,7 @@ public class OMRSRepositoryRESTServices
     public  TypeDefResponse reIdentifyTypeDef(String                    serverName,
                                               String                    userId,
                                               String                    originalTypeDefGUID,
-                                              TypeDefReIdentifyRequest  requestParameters)
+                                              TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
 
@@ -2428,7 +2450,7 @@ public class OMRSRepositoryRESTServices
     public  EntityListResponse findEntitiesByClassification(String                    serverName,
                                                             String                    userId,
                                                             String                    classificationName,
-                                                            PropertyMatchFindRequest  findRequestParameters)
+                                                            PropertyMatchFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByClassification";
 
@@ -3000,6 +3022,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a requested relationship.
      *
+     * @param serverName name of the active server
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -3634,11 +3657,11 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getLinkingEntities(String                    serverName,
-                                                     String                    userId,
-                                                     String                    startEntityGUID,
-                                                     String                    endEntityGUID,
-                                                     OMRSAPIFindRequest        findRequestParameters)
+    public InstanceGraphResponse getLinkingEntities(String                    serverName,
+                                                    String                    userId,
+                                                    String                    startEntityGUID,
+                                                    String                    endEntityGUID,
+                                                    OMRSAPIFindRequest        findRequestParameters)
     {
         final  String   methodName = "getLinkingEntities";
 
@@ -4298,9 +4321,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse addEntity(String                serverName,
-                                          String                userId,
-                                          EntityCreateRequest   requestBody)
+    public EntityDetailResponse addEntity(String              serverName,
+                                          String              userId,
+                                          EntityCreateRequest requestBody)
     {
         final  String   methodName = "addEntity";
 
@@ -4330,6 +4353,114 @@ public class OMRSRepositoryRESTServices
                                                                  initialProperties,
                                                                  initialClassifications,
                                                                  initialStatus));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (StatusNotSupportedException error)
+        {
+            captureStatusNotSupportedException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (ClassificationErrorException error)
+        {
+            captureClassificationErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody parameters for the new entity
+     * @return EntityDetailResponse:
+     * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetailResponse addExternalEntity(String              serverName,
+                                                  String              userId,
+                                                  EntityCreateRequest requestBody)
+    {
+        final  String   methodName = "addExternalEntity";
+
+        log.debug("Calling method: " + methodName);
+
+        String                     entityTypeGUID = null;
+        String                     externalSourceGUID = null;
+        String                     externalSourceName = null;
+        InstanceProperties         initialProperties = null;
+        List<Classification>       initialClassifications = null;
+        InstanceStatus             initialStatus = null;
+
+        EntityDetailResponse response = new EntityDetailResponse();
+
+        if (requestBody != null)
+        {
+            entityTypeGUID = requestBody.getEntityTypeGUID();
+            externalSourceGUID = requestBody.getMetadataCollectionId();
+            externalSourceName = requestBody.getMetadataCollectionName();
+            initialProperties = requestBody.getInitialProperties();
+            initialClassifications = requestBody.getInitialClassifications();
+            initialStatus = requestBody.getInitialStatus();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+
+            response.setEntity(localMetadataCollection.addExternalEntity(userId,
+                                                                         entityTypeGUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         initialProperties,
+                                                                         initialClassifications,
+                                                                         initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5198,6 +5329,115 @@ public class OMRSRepositoryRESTServices
 
 
     /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param createRequestParameters parameters used to fill out the new relationship
+     * @return RelationshipResponse:
+     * Relationship structure with the new header, requested entities and properties or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityNotKnownException one of the requested entities is not known in the metadata collection or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public RelationshipResponse addExternalRelationship(String                     serverName,
+                                                        String                     userId,
+                                                        RelationshipCreateRequest  createRequestParameters)
+    {
+        final  String   methodName = "addExternalRelationship";
+
+        log.debug("Calling method: " + methodName);
+
+        String             relationshipTypeGUID = null;
+        String             externalSourceGUID = null;
+        String             externalSourceName = null;
+        InstanceProperties initialProperties = null;
+        String             entityOneGUID = null;
+        String             entityTwoGUID = null;
+        InstanceStatus     initialStatus = null;
+
+        RelationshipResponse response = new RelationshipResponse();
+
+        if (createRequestParameters != null)
+        {
+            relationshipTypeGUID = createRequestParameters.getRelationshipTypeGUID();
+            externalSourceGUID = createRequestParameters.getMetadataCollectionId();
+            externalSourceName = createRequestParameters.getMetadataCollectionName();
+            initialProperties = createRequestParameters.getInitialProperties();
+            entityOneGUID = createRequestParameters.getEntityOneGUID();
+            entityTwoGUID = createRequestParameters.getEntityTwoGUID();
+            initialStatus = createRequestParameters.getInitialStatus();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+
+            response.setRelationship(localMetadataCollection.addExternalRelationship(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     externalSourceGUID,
+                                                                                     externalSourceName,
+                                                                                     initialProperties,
+                                                                                     entityOneGUID,
+                                                                                     entityTwoGUID,
+                                                                                     initialStatus));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (StatusNotSupportedException error)
+        {
+            captureStatusNotSupportedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Update the status of a specific relationship.
      *
      * @param serverName unique identifier for requested server.
@@ -5425,7 +5665,7 @@ public class OMRSRepositoryRESTServices
     public RelationshipResponse deleteRelationship(String                        serverName,
                                                    String                        userId,
                                                    String                        obsoleteRelationshipGUID,
-                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
+                                                   TypeDefValidationForRequest typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
 
@@ -6695,7 +6935,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
-     * @param instances instances to save or
+     * @param instances instances to save
+     * @return void response or
      * InvalidParameterException the relationship is null or
      * RepositoryErrorException  there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -6892,7 +7133,20 @@ public class OMRSRepositoryRESTServices
      */
     private void captureInvalidParameterException(OMRSAPIResponse response, InvalidParameterException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        final String propertyName = "parameterName";
+
+        if (error.getParameterName() == null)
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+        else
+        {
+            Map<String, Object> exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put(propertyName, error.getParameterName());
+
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
     }
 
 
@@ -7260,11 +7514,28 @@ public class OMRSRepositoryRESTServices
                                          OMRSCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {
+        this.captureCheckedException(response, error, exceptionClassName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response REST Response
+     * @param error returned response.
+     * @param exceptionClassName class name of the exception to recreate
+     */
+    private void captureCheckedException(OMRSAPIResponse          response,
+                                         OMRSCheckedExceptionBase error,
+                                         String                   exceptionClassName,
+                                         Map<String, Object>      exceptionProperties)
+    {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
         response.setExceptionErrorMessage(error.getErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionProperties(exceptionProperties);
     }
 
 
@@ -7273,10 +7544,14 @@ public class OMRSRepositoryRESTServices
      *
      * @param methodName calling method
      * @param serverName name of the server
+     * @param userId calling user
      * @param requestURLTemplate template of the request URL
      * @param requestBody requestBody to include
      * @param parameters parameters to include in the url
      * @return formatted string
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws RepositoryErrorException the service name is not know - indicating a logic error
      */
     private String  formatNextPageURL(String    methodName,
                                       String    serverName,
@@ -7306,6 +7581,10 @@ public class OMRSRepositoryRESTServices
                 }
                 catch (Throwable  exc)
                 {
+                    /*
+                     * No further action is taken because the URL is a "nice to have" and do not want to
+                     * fail the entire request.
+                     */
                     log.debug("Unable to format return URL; exception is: " + exc.getMessage());
                 }
             }

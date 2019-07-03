@@ -20,6 +20,8 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
 
     /**
      * Constructor
+     *
+     * @param serviceName name of this service for error logging
      */
     public OMRSRepositoryServicesInstanceHandler(String   serviceName)
     {
@@ -65,7 +67,8 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
                                                                                                         error.getReportingActionDescription(),
                                                                                                         error.getErrorMessage(),
                                                                                                         error.getReportedSystemAction(),
-                                                                                                        error.getReportedUserAction());
+                                                                                                        error.getReportedUserAction(),
+                                                                                                        error.getParameterName());
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException error)
         {

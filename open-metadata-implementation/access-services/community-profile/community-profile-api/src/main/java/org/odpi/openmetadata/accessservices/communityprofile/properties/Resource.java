@@ -35,6 +35,8 @@ public class Resource extends CommonHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public Resource(Resource template)
     {

@@ -117,7 +117,8 @@ public class EntityPropertyHistoricalFindRequest extends EntityPropertyFindReque
         {
             return false;
         }
-        EntityPropertyHistoricalFindRequest that = (EntityPropertyHistoricalFindRequest) objectToCompare;
+        EntityPropertyHistoricalFindRequest
+                that = (EntityPropertyHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

@@ -255,6 +255,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
 
     /**
      * Returns the size of the send buffer
+     *
+     * @return int
      */
     private synchronized int getSendBufferSize()
     {

@@ -43,6 +43,8 @@ public abstract class NoteLogHeader extends ReferenceableHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public NoteLogHeader(NoteLogHeader template)
     {

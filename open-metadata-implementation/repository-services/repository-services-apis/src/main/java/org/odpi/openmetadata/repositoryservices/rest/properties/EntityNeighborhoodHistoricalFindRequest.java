@@ -110,7 +110,8 @@ public class EntityNeighborhoodHistoricalFindRequest extends EntityNeighborhoodF
         {
             return false;
         }
-        EntityNeighborhoodHistoricalFindRequest that = (EntityNeighborhoodHistoricalFindRequest) objectToCompare;
+        EntityNeighborhoodHistoricalFindRequest
+                that = (EntityNeighborhoodHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

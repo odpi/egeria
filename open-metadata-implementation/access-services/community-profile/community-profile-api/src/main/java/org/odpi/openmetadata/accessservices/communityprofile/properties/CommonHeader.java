@@ -47,6 +47,8 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public CommonHeader(CommonHeader template)
     {

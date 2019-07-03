@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.rest.properties;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.Objects;
 
@@ -103,7 +105,8 @@ public class MetadataCollectionIdRequest extends OMRSAPIRequest
         {
             return false;
         }
-        MetadataCollectionIdRequest that = (MetadataCollectionIdRequest) objectToCompare;
+        MetadataCollectionIdRequest
+                that = (MetadataCollectionIdRequest) objectToCompare;
         return metadataCollectionId.equals(that.metadataCollectionId);
     }
 
