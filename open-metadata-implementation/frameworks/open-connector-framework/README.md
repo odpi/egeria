@@ -28,7 +28,7 @@ It is particularly useful for data science tools where these properties can help
 
 * OCF connectors are not limited to representing Assets as they are physically implemented.
 An OCF connector can represent a simplified logical (virtual) data resource that is designed for the needs of a specific application or tool.
-This type of connector delegates the requests it receives to to one or more physical data resources.  
+This type of connector delegates the requests it receives to one or more physical data resources.  
 
 Organizations benefit from advocating the use of OCF connectors for their systems because the OCF
 connectors provide a consistent approach to governance enforcement and audit logging.

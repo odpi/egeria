@@ -103,7 +103,8 @@ public class TypeDefDeleteRequest extends OMRSAPIRequest
         {
             return false;
         }
-        TypeDefDeleteRequest that = (TypeDefDeleteRequest) objectToCompare;
+        TypeDefDeleteRequest
+                that = (TypeDefDeleteRequest) objectToCompare;
         return Objects.equals(getObsoleteTypeDefName(), that.getObsoleteTypeDefName());
     }
 

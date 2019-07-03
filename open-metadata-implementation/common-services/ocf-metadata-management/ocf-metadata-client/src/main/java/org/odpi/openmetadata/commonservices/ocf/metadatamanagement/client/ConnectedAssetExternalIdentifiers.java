@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -35,6 +36,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -45,17 +47,19 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetExternalIdentifiers(String                 serverName,
+    ConnectedAssetExternalIdentifiers(String                 serviceName,
+                                      String                 serverName,
                                       String                 userId,
                                       String                 omasServerURL,
                                       String                 assetGUID,
                                       ConnectedAssetUniverse parentAsset,
                                       int                    totalElementCount,
                                       int                    maxCacheSize,
-                                      OCFRESTClient restClient)
+                                      OCFRESTClient          restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
@@ -77,6 +81,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 
         if (template != null)
         {
+            this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
@@ -125,7 +130,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetExternalIdentifiers.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}/external-identifiers?elementStart={3}&maxElements={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/external-identifiers?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
@@ -134,6 +139,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
             ExternalIdentifiersResponse restResult = restClient.callExternalIdentifiersGetRESTCall(methodName,
                                                                                                    omasServerURL + urlTemplate,
                                                                                                    serverName,
+                                                                                                   serviceName,
                                                                                                    userId,
                                                                                                    assetGUID,
                                                                                                    cacheStartPointer,

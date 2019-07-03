@@ -68,7 +68,8 @@ public class UserNotAuthorizedException extends org.odpi.openmetadata.frameworks
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
-     * */
+     * @param userId calling user
+     */
     public UserNotAuthorizedException(int       httpCode,
                                       String    className,
                                       String    actionDescription,
@@ -92,6 +93,7 @@ public class UserNotAuthorizedException extends org.odpi.openmetadata.frameworks
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
+     * @param userId calling user
      * @param relatedProperties  arbitrary properties that may help with diagnosing the problem.
      */
     public UserNotAuthorizedException(int                  httpCode,

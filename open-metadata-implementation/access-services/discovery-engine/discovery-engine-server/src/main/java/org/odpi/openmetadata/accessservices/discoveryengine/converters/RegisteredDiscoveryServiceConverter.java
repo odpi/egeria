@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryEnginePropertiesMapper;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.mappers.DiscoveryEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
@@ -23,6 +23,7 @@ public class RegisteredDiscoveryServiceConverter extends ReferenceableConverter
      * Constructor captures the repository content needed to create the endpoint object.
      *
      * @param discoveryServiceProperties properties to convert
+     * @param relationship relationship for asset types
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
      */

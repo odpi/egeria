@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -92,6 +93,12 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           supportedZones,
                                                           defaultZones);
 
+
+        if (securityVerifier != null)
+        {
+            assetHandler.setSecurityVerifier(securityVerifier);
+            connectionHandler.setSecurityVerifier(securityVerifier);
+        }
     }
 
 
@@ -109,6 +116,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
     {
         this(serviceName, repositoryConnector, null, null, auditLog);
     }
+
 
     /**
      * Return the handler for managing asset objects.

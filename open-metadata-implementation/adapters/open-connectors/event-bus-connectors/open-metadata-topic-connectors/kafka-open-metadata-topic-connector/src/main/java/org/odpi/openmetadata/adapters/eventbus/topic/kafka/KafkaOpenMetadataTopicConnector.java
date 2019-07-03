@@ -310,7 +310,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     /**
      * Gets the number of events that have not been processed yet.
      * 
-     * @return
+     * @return int
      */
     public int getNumberOfUnprocessedEvents() {
     	return incomingEventsList.size();

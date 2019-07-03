@@ -16,7 +16,7 @@ The actual tests are run by an **open metadata conformance workbench** within th
 Each workbench focuses on testing a specific type of technology.
 Today there are 2 workbenches:
 * **[Platform Workbench](platform-workbench)** - which tests the REST API of an
-[Open Metadata and Governance (OMAG) Server Platform](../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/omag-server-platform.md)
+[Open Metadata and Governance (OMAG) Server Platform](../../open-metadata-implementation/admin-services/docs/concepts/omag-server-platform.md)
 
 * **[Repository Workbench](repository-workbench)** - which tests both the repository services 
 [REST API](../../open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md)

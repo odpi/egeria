@@ -41,5 +41,5 @@ public interface OpenMetadataArchiveStore
      *
      * @param archiveContents  OpenMetadataArchive object
      */
-    void setArchiveContents(OpenMetadataArchive   archiveContents);
+    void setArchiveContents(OpenMetadataArchive archiveContents);
 }

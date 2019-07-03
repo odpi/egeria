@@ -6,15 +6,15 @@ import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * OMAGServerExceptionHandler provides common error handling routines for the admin services
  */
-class OMAGServerExceptionHandler
+class OMAGServerExceptionHandler extends RESTExceptionHandler
 {
     /**
      * Default constructor
@@ -101,18 +101,6 @@ class OMAGServerExceptionHandler
      * @param error returned response.
      */
     void captureInvalidParameterException(FFDCResponseBase response, OMAGInvalidParameterException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    void captureInvalidParameterException(FFDCResponseBase response, InvalidParameterException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }

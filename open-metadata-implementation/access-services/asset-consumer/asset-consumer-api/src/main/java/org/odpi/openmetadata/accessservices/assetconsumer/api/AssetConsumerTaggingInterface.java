@@ -56,7 +56,7 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
-     * Updates the description of an existing tag (either private of public).
+     * Updates the description of an existing tag (either private or public).
      *
      * @param userId          userId of user making request.
      * @param tagGUID         unique identifier for the tag.

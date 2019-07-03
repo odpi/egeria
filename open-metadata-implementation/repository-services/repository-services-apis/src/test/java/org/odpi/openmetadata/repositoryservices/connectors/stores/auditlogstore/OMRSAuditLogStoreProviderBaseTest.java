@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.MockOpenMetadataArchiveStoreProvider;
 import org.testng.annotations.Test;
 
 /**

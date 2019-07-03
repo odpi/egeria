@@ -22,7 +22,12 @@ public class ConformanceServicesInstance
     private List<OpenMetadataConformanceWorkbench> runningWorkbenches; /* Initialized in constructor */
 
     /**
-     * Default constructor
+     * Constructor
+     *
+     * @param workPad work pad to collect results in
+     * @param runningWorkbenches workbenches to run tests
+     * @param auditLog logging destination
+     * @param conformanceSuiteConfig configuration to set up the conformance suite
      */
     public ConformanceServicesInstance(TechnologyUnderTestWorkPad             workPad,
                                        List<OpenMetadataConformanceWorkbench> runningWorkbenches,
