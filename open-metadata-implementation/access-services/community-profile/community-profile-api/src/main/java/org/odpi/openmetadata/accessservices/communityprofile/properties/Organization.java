@@ -31,6 +31,8 @@ public class Organization extends Team
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public Organization(Organization template)
     {

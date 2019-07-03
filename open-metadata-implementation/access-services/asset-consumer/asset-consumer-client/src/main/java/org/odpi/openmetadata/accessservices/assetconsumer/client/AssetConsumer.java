@@ -3,21 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.api.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
-import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetProperties;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetUniverse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.ConnectedAssetClientBase;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
@@ -43,21 +38,16 @@ import java.util.List;
  * Finally, Asset Consumer OMAS supports the ability to add audit log records to the local server's audit log
  * about an asset.
  */
-public class AssetConsumer implements AssetConsumerAssetInterface,
-                                      AssetConsumerConnectorFactoryInterface,
-                                      AssetConsumerFeedbackInterface,
-                                      AssetConsumerGlossaryInterface,
-                                      AssetConsumerLoggingInterface,
-                                      AssetConsumerTaggingInterface
+public class AssetConsumer extends ConnectedAssetClientBase implements AssetConsumerAssetInterface,
+                                                                       AssetConsumerConnectorFactoryInterface,
+                                                                       AssetConsumerFeedbackInterface,
+                                                                       AssetConsumerGlossaryInterface,
+                                                                       AssetConsumerLoggingInterface,
+                                                                       AssetConsumerTaggingInterface
 {
-    private String     serverName;               /* Initialized in constructor */
-    private String     serverPlatformRootURL;    /* Initialized in constructor */
-    private RESTClient restClient;               /* Initialized in constructor */
+    private AssetConsumerRESTClient restClient;               /* Initialized in constructor */
 
-    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-    private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
-
+    private static final String  serviceURLName = "asset-consumer";
 
     /**
      * Create a new client with no authentication embedded in the HTTP request.
@@ -69,13 +59,9 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     public AssetConsumer(String serverName,
                          String serverPlatformRootURL) throws InvalidParameterException
     {
-        final String   methodName = "AssetConsumer client constructor";
+        super(serverName, serverPlatformRootURL);
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new RESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -90,16 +76,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws InvalidParameterException null URL or server name
      */
     public AssetConsumer(String     serverName,
-                         String serverPlatformRootURL,
+                         String     serverPlatformRootURL,
                          String     userId,
                          String     password) throws InvalidParameterException
     {
-        final String   methodName = "AssetConsumer client constructor with security";
+        super(serverName, serverPlatformRootURL);
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
-        this.restClient = new RESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new AssetConsumerRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -129,22 +112,11 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     {
         final String   methodName = "getAssetForConnection";
         final String   guidParameter = "connectionGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-connection/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        GUIDResponse restResult = restClient.callGUIDGetRESTCall(methodName,
-                                                                 serverPlatformRootURL + urlTemplate,
-                                                                 serverName,
-                                                                 userId,
-                                                                 connectionGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
+        return super.getAssetForConnection(restClient, serviceURLName, userId, connectionGUID);
     }
 
 
@@ -187,37 +159,23 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
 
     /**
-     * Return a list of assets with the requested name.
+     * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId calling user
-     * @param guid unique identifier of asset
-     * @param methodName calling method
+     * @param userId         userId of user making request.
+     * @param assetGUID      unique identifier for asset.
      *
-     * @return Asset bean
+     * @return a comprehensive collection of properties about the asset.
      *
-     * @throws InvalidParameterException the name is invalid
-     * @throws PropertyServerException there is a problem access in the property server
-     * @throws UserNotAuthorizedException the user does not have access to the properties
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private Asset getAssetByGUID(String   userId,
-                                 String   guid,
-                                 String   methodName) throws InvalidParameterException,
-                                                             PropertyServerException,
-                                                             UserNotAuthorizedException
+    public AssetUniverse getAssetProperties(String userId,
+                                            String assetGUID) throws InvalidParameterException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
     {
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}";
-
-        AssetResponse restResult = restClient.callAssetGetRESTCall(methodName,
-                                                                   serverPlatformRootURL + urlTemplate,
-                                                                   serverName,
-                                                                   userId,
-                                                                   guid);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getAsset();
+        return super.getAssetProperties(serviceURLName, userId, assetGUID);
     }
 
 
@@ -244,13 +202,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
 
-        AssetsResponse restResult = restClient.callAssetsGetRESTCall(methodName,
+        AssetsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
                                                                      serverPlatformRootURL + urlTemplate,
+                                                                     name,
                                                                      serverName,
                                                                      userId,
-                                                                     name,
                                                                      startFrom,
                                                                      pageSize);
 
@@ -367,7 +325,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
         try
         {
-            asset = this.getAssetByGUID(userId, assetToken, methodName);
+            asset = this.getAssetSummary(restClient, serviceURLName, userId, assetToken, methodName);
         }
         catch (Throwable error)
         {
@@ -387,147 +345,11 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     }
 
 
-    /**
-     * Returns a comprehensive collection of properties about the requested asset.
-     *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
-     * @return a comprehensive collection of properties about the asset.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
-    {
-        final String   methodName = "getAssetProperties";
-        final String   guidParameter = "assetGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
-
-        try
-        {
-            /*
-             * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
-             * Open Connector Framework (OCF).
-             */
-            return new ConnectedAssetUniverse(serverName, serverPlatformRootURL, userId, assetGUID);
-        }
-        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException error)
-        {
-            throw error;
-        }
-        catch (Throwable error)
-        {
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.NO_ASSET_PROPERTIES;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
-    }
-
-
     /*
      * ===============================================
      * AssetConsumerConnectorFactoryInterface
      * ===============================================
      */
-
-    /**
-     * Use the Open Connector Framework (OCF) to create a connector using the supplied connection.
-     *
-     * @param requestedConnection  connection describing the required connector.
-     * @param methodName  name of the calling method.
-     *
-     * @return a new connector.
-     *
-     * @throws ConnectionCheckedException  there are issues with the values in the connection
-     * @throws ConnectorCheckedException the connector had an operational issue accessing the asset.
-     */
-    private Connector  getConnectorForConnection(String          userId,
-                                                 Connection      requestedConnection,
-                                                 String          methodName) throws ConnectionCheckedException,
-                                                                                    ConnectorCheckedException
-    {
-        ConnectorBroker connectorBroker = new ConnectorBroker();
-
-        /*
-         * Pass the connection to the ConnectorBroker to create the connector instance.
-         * Again, exceptions from this process are returned directly to the caller.
-         */
-        Connector newConnector = connectorBroker.getConnector(requestedConnection);
-
-        /*
-         * If no exception is thrown by getConnector, we should have a connector instance.
-         */
-        if (newConnector == null)
-        {
-            /*
-             * This is probably some sort of logic error since the connector should have been returned.
-             * Whatever the cause, the process can not proceed without a connector.
-             */
-            AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.NULL_CONNECTOR_RETURNED;
-            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                null);
-        }
-
-        try
-        {
-            String  assetGUID = this.getAssetForConnection(userId, requestedConnection.getGUID());
-
-            /*
-             * If the connector is successfully created, set up the Connected Asset Properties for the connector.
-             * The properties should be retrieved from the open metadata repositories, so use an OMAS implementation
-             * of the ConnectedAssetProperties object.
-             */
-            ConnectedAssetProperties connectedAssetProperties = new ConnectedAssetProperties(serverName,
-                                                                                             userId,
-                                                                                             serverPlatformRootURL,
-                                                                                             newConnector.getConnectorInstanceId(),
-                                                                                             newConnector.getConnection(),
-                                                                                             assetGUID);
-
-            /*
-             * Pass the new connected asset properties to the connector
-             */
-            newConnector.initializeConnectedAssetProperties(connectedAssetProperties);
-        }
-        catch (Throwable  error)
-        {
-            /*
-             * Ignore error - connectedAssetProperties is left at null.
-             */
-        }
-
-        /*
-         * At this stage, the asset properties are not retrieved from the server.  This does not happen until the caller
-         * issues a connector.getConnectedAssetProperties.  This causes the connectedAssetProperties.refresh() call
-         * to be made, which contacts the OMAS server and retrieves the asset properties.
-         *
-         * Delaying the population of the connected asset properties ensures the latest values are returned to the
-         * caller (consider a long running connection).  Alternatively, these properties may not ever be used by the
-         * caller so retrieving the properties at this point would be unnecessary.
-         */
-
-        return newConnector;
-    }
 
 
     /**
@@ -592,44 +414,11 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(connectionName, nameParameter, methodName);
 
-        return this.getConnectorForConnection(userId,
+        return this.getConnectorForConnection(restClient,
+                                              serviceURLName,
+                                              userId,
                                               this.getConnectionByName(userId, connectionName),
                                               methodName);
-    }
-
-
-
-    /**
-     * Returns the connection corresponding to the supplied asset GUID.
-     *
-     * @param userId       userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
-     *
-     * @return Connector   connector instance.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private Connection getConnectionForAsset(String userId,
-                                             String assetGUID) throws InvalidParameterException,
-                                                                      PropertyServerException,
-                                                                      UserNotAuthorizedException
-    {
-        final String   methodName = "getConnectionForAsset";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/connection";
-
-        ConnectionResponse restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                             serverPlatformRootURL + urlTemplate,
-                                                                             serverName,
-                                                                             userId,
-                                                                             assetGUID);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getConnection();
     }
 
 
@@ -661,43 +450,11 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
 
-        return this.getConnectorForConnection(userId,
-                                              this.getConnectionForAsset(userId, assetGUID),
+        return this.getConnectorForConnection(restClient,
+                                              serviceURLName,
+                                              userId,
+                                              this.getConnectionForAsset(restClient, serviceURLName, userId, assetGUID),
                                               methodName);
-    }
-
-
-    /**
-     * Returns the connection corresponding to the supplied connection GUID.
-     *
-     * @param userId userId of user making request.
-     * @param guid   the unique id for the connection within the metadata repository.
-     *
-     * @return connection instance.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private Connection getConnectionByGUID(String     userId,
-                                           String     guid) throws InvalidParameterException,
-                                                                   PropertyServerException,
-                                                                   UserNotAuthorizedException
-    {
-        final String   methodName  = "getConnectionByGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/connections/{2}";
-
-        ConnectionResponse   restResult = restClient.callConnectionGetRESTCall(methodName,
-                                                                               serverPlatformRootURL + urlTemplate,
-                                                                               serverName,
-                                                                               userId,
-                                                                               guid);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getConnection();
     }
 
 
@@ -729,8 +486,10 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(connectionGUID, guidParameter, methodName);
 
-        return this.getConnectorForConnection(userId,
-                                              this.getConnectionByGUID(userId, connectionGUID),
+        return this.getConnectorForConnection(restClient,
+                                              serviceURLName,
+                                              userId,
+                                              super.getConnectionByGUID(restClient, serviceURLName, userId, connectionGUID),
                                               methodName);
     }
 
@@ -748,7 +507,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
-    public Connector  getConnectorByConnection(String userId,
+    public Connector  getConnectorByConnection(String     userId,
                                                Connection connection) throws InvalidParameterException,
                                                                              ConnectionCheckedException,
                                                                              ConnectorCheckedException
@@ -757,7 +516,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        return this.getConnectorForConnection(userId, connection, methodName);
+        return this.getConnectorForConnection(restClient, serviceURLName, userId, connection, methodName);
     }
 
 
@@ -985,6 +744,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * Adds a comment to another comment.
      *
      * @param userId        userId of user making request.
+     * @param assetGUID     String - unique id of asset that this chain of comments is linked.
      * @param commentGUID   unique identifier for an existing comment.  Used to add a reply to a comment.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -997,6 +757,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public String addCommentReply(String      userId,
+                                  String      assetGUID,
                                   String      commentGUID,
                                   CommentType commentType,
                                   String      commentText,
@@ -1035,6 +796,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * Update an existing comment.
      *
      * @param userId        userId of user making request.
+     * @param assetGUID    unique identifier for the asset that the comment is attached to (directly or indirectly).
      * @param commentGUID   unique identifier for the comment to change.
      * @param commentType   type of comment enum.
      * @param commentText   the text of the comment.
@@ -1045,6 +807,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public void   updateComment(String      userId,
+                                String      assetGUID,
                                 String      commentGUID,
                                 CommentType commentType,
                                 String      commentText,
@@ -1053,10 +816,12 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                              UserNotAuthorizedException
     {
         final String   methodName  = "updateComment";
+        final String   assetGUIDParameter = "assetGUID";
         final String   commentGUIDParameter = "commentGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/update";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/update";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
         CommentRequestBody  requestBody = new CommentRequestBody();
@@ -1069,6 +834,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId,
+                                                                  assetGUID,
                                                                   commentGUID);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -1081,6 +847,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * Removes a comment added to the asset by this user.
      *
      * @param userId       userId of user making request.
+     * @param assetGUID  unique identifier for the asset object.
      * @param commentGUID  unique identifier for the comment object.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -1088,23 +855,27 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
     public void removeComment(String     userId,
+                              String     assetGUID,
                               String     commentGUID) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
         final  String  methodName = "removeComment";
-        final  String  guidParameter = "commentGUID";
+        final  String  assetGUIDParameter = "assetGUID";
+        final  String  commentGUIDParameter = "commentGUID";
 
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/delete";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/{2}/comments/{3}/delete";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(commentGUID, guidParameter, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(commentGUID, commentGUIDParameter, methodName);
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   serverPlatformRootURL + urlTemplate,
                                                                   nullRequestBody,
                                                                   serverName,
                                                                   userId,
+                                                                  assetGUID,
                                                                   commentGUID);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -1127,7 +898,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @param userId userId of the user making the request.
      * @param guid unique identifier of the glossary term.
      *
-     * @return meaning response object
+     * @return properties that describe the meaning
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1166,7 +937,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
-     * @return meaning list response or
+     * @return list of glossary terms that contain the properties that describe the term and its meaning.
      * @throws InvalidParameterException the userId is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -1271,7 +1042,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     /**
      * Creates a new informal tag and returns the unique identifier for it.
      *
-     * @param urlTemplate      string template for the URL.
+     * @param isPublic         Flg to indicate whether the tag is a public or private tag.
      * @param methodName       name of calling method.
      * @param userId           userId of user making request.
      * @param tagName          name of the tag.
@@ -1284,17 +1055,20 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private String createTag(String urlTemplate,
+    private String createTag(boolean isPublic,
                              String methodName,
                              String userId,
                              String tagName,
                              String tagDescription) throws InvalidParameterException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags";
+
         invalidParameterHandler.validateUserId(userId, methodName);
 
         TagRequestBody  tagRequestBody = new TagRequestBody();
+        tagRequestBody.setPublic(isPublic);
         tagRequestBody.setTagName(tagName);
         tagRequestBody.setTagDescription(tagDescription);
 
@@ -1333,9 +1107,8 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                 UserNotAuthorizedException
     {
         final String   methodName = "createPublicTag";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/public";
 
-        return this.createTag(urlTemplate, methodName, userId, tagName, tagDescription);
+        return this.createTag(true, methodName, userId, tagName, tagDescription);
     }
 
 
@@ -1360,14 +1133,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                  UserNotAuthorizedException
     {
         final String   methodName = "createPrivateTag";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private";
 
-        return this.createTag(urlTemplate, methodName, userId, tagName, tagDescription);
+        return this.createTag(false, methodName, userId, tagName, tagDescription);
     }
 
 
     /**
-     * Updates the description of an existing tag (either private of public).
+     * Updates the description of an existing tag (either private or public).
      *
      * @param userId          userId of user making request.
      * @param tagGUID         unique identifier for the tag.
@@ -1409,7 +1181,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to assets are lost.
+     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
      *
      * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
@@ -1502,19 +1274,19 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                    UserNotAuthorizedException
     {
         final String   methodName = "getTagsByName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name/{2}?startFrom={3}&pageSize={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name?startFrom={2}&pageSize={3}";
         final String   nameParameter = "tag";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(tag, nameParameter, methodName);
 
-        TagsResponse restResult = restClient.callTagListGetRESTCall(methodName,
-                                                                    serverPlatformRootURL + urlTemplate,
-                                                                    serverName,
-                                                                    userId,
-                                                                    tag,
-                                                                    startFrom,
-                                                                    pageSize);
+        TagsResponse restResult = restClient.callTagListPostRESTCall(methodName,
+                                                                     serverPlatformRootURL + urlTemplate,
+                                                                     tag,
+                                                                     serverName,
+                                                                     userId,
+                                                                     startFrom,
+                                                                     pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

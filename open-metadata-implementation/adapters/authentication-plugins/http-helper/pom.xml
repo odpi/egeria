@@ -15,6 +15,11 @@
 
     <artifactId>http-helper</artifactId>
 
+    <name>HTTP Helper</name>
+    <description>
+        A plug-in for managing Transport Level Security (TLS) in the server.
+    </description>
+
     <dependencies>
 
         <dependency>

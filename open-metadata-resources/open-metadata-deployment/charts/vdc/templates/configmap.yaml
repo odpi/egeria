@@ -31,6 +31,10 @@ data:
 
   {{ if .Values.atlas.enabled }}
   ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
+  ATLAS_SERVER: {{ .Values.atlas.proxyserver }}
+  ATLAS_USER: {{ .Values.atlas.user }}
+  ATLAS_PASS: {{ .Values.atlas.password }}
+  ATLAS_KAFKA_ENDPOINT: {{ include "myapp.fullname" . }}-atlas-service:9027
   {{ end }}
 
   {{ if or .Values.postgresql.enabled .Values.ranger.enabled }}

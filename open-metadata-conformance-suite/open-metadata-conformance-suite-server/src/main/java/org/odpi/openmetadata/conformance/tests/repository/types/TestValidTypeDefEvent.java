@@ -77,6 +77,8 @@ public class TestValidTypeDefEvent extends RepositoryConformanceTestCase
      * Typical constructor sets up superclass and discovered information needed for tests
      *
      * @param workPad place for parameters and results
+     * @param eventIdentifier event counter to keep test case ids unique
+     * @param event incoming event that triggered the test case
      */
     public TestValidTypeDefEvent(RepositoryConformanceWorkPad workPad,
                                  int                          eventIdentifier,

@@ -32,6 +32,8 @@ public enum PlatformConformanceProfileRequirement implements Serializable
      * @param name String name for the enum, used for message content.
      * @param description String default description for the enum, used when there is not natural
      *                             language resource bundle available.
+     * @param documentationURL link to more information
+     * @param profile parent profile.
      */
     PlatformConformanceProfileRequirement(int                           ordinal,
                                           String                        name,

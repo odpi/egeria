@@ -22,6 +22,7 @@ public class UserNotAuthorizedException extends ConformanceSuiteCheckedException
      * @param errorMessage   description of error
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
+     * @param userId calling user
      */
     public UserNotAuthorizedException(int    httpCode,
                                       String className,
@@ -47,7 +48,8 @@ public class UserNotAuthorizedException extends ConformanceSuiteCheckedException
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
-     * */
+     * @param userId calling user
+     */
     public UserNotAuthorizedException(int       httpCode,
                                       String    className,
                                       String    actionDescription,

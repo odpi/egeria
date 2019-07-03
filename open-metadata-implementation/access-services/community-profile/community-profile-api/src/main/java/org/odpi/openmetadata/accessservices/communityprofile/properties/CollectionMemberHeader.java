@@ -42,6 +42,8 @@ public class CollectionMemberHeader extends ReferenceableHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public CollectionMemberHeader(CollectionMemberHeader template)
     {

@@ -27,6 +27,8 @@ public class SchemaAttributeConverter extends ReferenceableConverter
      *
      * @param mainEntity properties to convert
      * @param attributeType schema type for the attribute
+     * @param externalAttributeType attribute type for a link
+     * @param attributeRelationships links to other attributes
      * @param repositoryHelper helper object to parse entity/relationship objects
      * @param serviceName name of this component
      */

@@ -192,7 +192,8 @@ public class EntityNeighborhoodFindRequest extends OMRSAPIFindRequest
         {
             return false;
         }
-        EntityNeighborhoodFindRequest that = (EntityNeighborhoodFindRequest) objectToCompare;
+        EntityNeighborhoodFindRequest
+                that = (EntityNeighborhoodFindRequest) objectToCompare;
         return Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) &&
                 Objects.equals(getLimitResultsByClassification(), that.getLimitResultsByClassification()) &&
                 Objects.equals(getRelationshipTypeGUIDs(), that.getRelationshipTypeGUIDs());

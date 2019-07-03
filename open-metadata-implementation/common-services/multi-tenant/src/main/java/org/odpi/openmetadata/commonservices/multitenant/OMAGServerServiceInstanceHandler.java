@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 
 /**
  * OMAGServerServiceInstanceHandler retrieves information from the instance map for
@@ -13,7 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedExc
  */
 public abstract class OMAGServerServiceInstanceHandler
 {
-    private  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    protected  OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     protected String serviceName;
 
@@ -53,6 +54,23 @@ public abstract class OMAGServerServiceInstanceHandler
                                   String    serverName) throws UserNotAuthorizedException
     {
         return platformInstanceMap.isServerActive(userId, serverName);
+    }
+
+
+    /**
+     * Return the security verifier for the server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return OpenMetadataServerSecurityVerifier object - never null
+     * @throws InvalidParameterException the server name is not known
+     */
+    public OpenMetadataServerSecurityVerifier getServerSecurityVerifier(String    userId,
+                                                                        String    serverName) throws InvalidParameterException
+
+    {
+        return platformInstanceMap.getServerSecurityVerifier(userId, serverName);
     }
 
 

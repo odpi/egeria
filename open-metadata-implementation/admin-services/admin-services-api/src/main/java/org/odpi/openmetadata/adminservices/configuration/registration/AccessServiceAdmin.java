@@ -63,6 +63,7 @@ public abstract class AccessServiceAdmin
      * Extract the supported zones property from the access services option.
      *
      * @param accessServiceOptions options passed to the access service.
+     * @param accessServiceName name of calling service
      * @param auditLog audit log for error messages
      * @return null or list of zone names
      * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
@@ -132,6 +133,7 @@ public abstract class AccessServiceAdmin
      * Extract the default zones property from the access services option.
      *
      * @param accessServiceOptions options passed to the access service.
+     * @param accessServiceName name of calling service
      * @param auditLog audit log for error messages
      * @return null or list of zone names
      * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
@@ -202,6 +204,7 @@ public abstract class AccessServiceAdmin
      * Extract the karma point plateau property from the access services option.
      *
      * @param accessServiceOptions options passed to the access service.
+     * @param accessServiceName name of calling service
      * @param auditLog audit log for error messages
      * @return null or list of zone names
      * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
@@ -338,7 +341,7 @@ public abstract class AccessServiceAdmin
      * @param omrsTopicListener listener to register
      * @param auditLog audit log to record messages
      *
-     * @throws OMAGConfigurationErrorException
+     * @throws OMAGConfigurationErrorException problem with topic connection
      */
     protected void registerWithEnterpriseTopic(String              accessServiceName,
                                                String              serverName,
