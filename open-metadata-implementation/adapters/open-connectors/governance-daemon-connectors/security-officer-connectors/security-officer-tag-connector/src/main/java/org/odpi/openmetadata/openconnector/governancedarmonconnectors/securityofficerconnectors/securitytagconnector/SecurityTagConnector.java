@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class SecurityTagConnector extends ConnectorBase implements SecurityOfficerConnector {
 
     private static final String CONFIDENTIALITY = "Confidentiality";
+    private static final String LEVEL = "level";
 
     @Override
     public SecurityClassification resolveSecurityClassification(SchemaElementEntity schemaElementEntity) {
@@ -78,8 +79,8 @@ public class SecurityTagConnector extends ConnectorBase implements SecurityOffic
 
     private Integer getLevelOfClassification(Map<String, String> properties) {
 
-        if (properties.containsKey("level")) {
-            String level = properties.get("level");
+        if (properties.containsKey(LEVEL)) {
+            String level = properties.get(LEVEL);
             return Integer.valueOf(level);
         }
 
@@ -107,7 +108,7 @@ public class SecurityTagConnector extends ConnectorBase implements SecurityOffic
     private Map<String, Object> getSecurityProperties(Map<String, String> properties) {
         Map<String, Object> securityProperties = new HashMap<>();
         properties.forEach((key, value) -> {
-            if (!key.equals("level") && !value.isEmpty()) {
+            if (!key.equals(LEVEL) && !value.isEmpty()) {
                 securityProperties.put(key, value);
             }
         });

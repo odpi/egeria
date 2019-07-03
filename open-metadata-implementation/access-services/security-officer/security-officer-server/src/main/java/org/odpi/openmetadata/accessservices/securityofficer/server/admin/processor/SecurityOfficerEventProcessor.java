@@ -20,12 +20,9 @@ public class SecurityOfficerEventProcessor {
     private static final String SECURITY_OFFICER_OMAS = "SecurityOfficerOMAS";
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerEventProcessor.class);
     private SecurityOfficerHandler securityOfficerHandler;
-    private OMRSRepositoryConnector omrsRepositoryConnector;
     private Builder builder = new Builder();
 
     public SecurityOfficerEventProcessor(OMRSRepositoryConnector enterpriseOMRSRepositoryConnector) {
-        omrsRepositoryConnector = enterpriseOMRSRepositoryConnector;
-
         try {
             securityOfficerHandler = new SecurityOfficerHandler(enterpriseOMRSRepositoryConnector);
         } catch (MetadataServerException e) {
