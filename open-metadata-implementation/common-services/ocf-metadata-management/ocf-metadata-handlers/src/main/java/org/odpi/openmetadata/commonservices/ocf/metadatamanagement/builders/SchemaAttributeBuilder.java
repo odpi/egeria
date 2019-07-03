@@ -110,7 +110,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.AUTHOR_PROPERTY_NAME,
+                                                                      SchemaElementMapper.CARDINALITY_PROPERTY_NAME,
                                                                       cardinality,
                                                                       methodName);
         }
@@ -119,7 +119,7 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
-                                                                      SchemaElementMapper.USAGE_PROPERTY_NAME,
+                                                                      SchemaElementMapper.DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME,
                                                                       defaultValueOverride,
                                                                       methodName);
         }
@@ -149,4 +149,17 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         return properties;
     }
+
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
+    {
+        return super.getNameInstanceProperties(methodName);
+    }
+
 }

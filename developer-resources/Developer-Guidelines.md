@@ -5,8 +5,8 @@
 
 Egeria provides technology for an open standard that seeks to improve the processing and
 protection of data across organizations.  For its developers, this carries the benefit that
-their work receives high recognition, but also additional responsibilities to ensure its 
-wide applicability and longevity.   
+their work receives high recognition, but also additional responsibilities to ensure its
+wide applicability and longevity.
 
 For example, Egeria seeks a broad audience - from developers to adopting vendors to consuming users.
 Building this audience and allowing the community to scale requires clarity in the way
@@ -18,7 +18,7 @@ As such, these guidelines exist to remind us of these broader responsibilities.
 
 ## License text in files
 
-All files for Egeria should have a license included.  We are using the Apache 2.0 license, 
+All files for Egeria should have a license included.  We are using the Apache 2.0 license,
 which protects our code whilst still allowing commercial exploitation of the code.  There is
 an example of the license text at the top of this file.  The following files in the
 **License-Example-Files** directory have the correct
@@ -92,18 +92,10 @@ the new library, how it is to be used and links to more information.
 They should then present their recommendation to the community and
 and if agreed by the community, store the guide in the developer resources.
 
-Once in place, the dependency should be maintained across the smallest
-number of modules - particularly when it may impact consuming technologies.
+Once in place, the dependency should be maintained across the smallest appropriate
+number of modules, and should be consistent throughout. - particularly when it may impact consuming technologies.
 
-For example:
-* Jackson is used to convert between Java POJOs and JSON.  It is used throughout the
-open metadata code base and so its dependency is located in the top level pom file.
-* Spring provides annotations for REST APIs.  Again it is used in many of the modules.
-However, care is made to push this dependency to small leaf-node modules since
-the Spring libraries may interfere with other RESTful frameworks.
-
-Optimising the dependency structure is something that will evolve as we gain more
-experience with other embedding technologies.
+For more on how dependencies are managed in the codebase refer to [Dependency Management](./Dependency-Management.md).
 
 ## Coding style and layout
 
