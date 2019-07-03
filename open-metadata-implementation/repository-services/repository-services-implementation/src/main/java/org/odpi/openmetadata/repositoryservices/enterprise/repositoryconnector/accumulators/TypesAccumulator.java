@@ -30,9 +30,9 @@ public class TypesAccumulator extends QueryAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    public TypesAccumulator(String                  localMetadataCollectionId,
-                            OMRSAuditLog            auditLog,
-                            OMRSRepositoryValidator repositoryValidator)
+    public TypesAccumulator(String                            localMetadataCollectionId,
+                            OMRSAuditLog                      auditLog,
+                            OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }

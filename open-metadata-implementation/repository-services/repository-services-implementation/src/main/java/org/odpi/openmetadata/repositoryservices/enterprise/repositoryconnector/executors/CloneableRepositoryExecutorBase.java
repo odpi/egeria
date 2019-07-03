@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.a
  * CloneableRepositoryExecutorBase provides a base class for executors that can be cloned and run in
  * parallel so the call to each repository runs in a different thread.
  */
-public abstract class CloneableRepositoryExecutorBase extends RepositoryExecutorBase implements CloneableRepositoryExecutor
+abstract class CloneableRepositoryExecutorBase extends RepositoryExecutorBase implements CloneableRepositoryExecutor
 {
     CloneableRepositoryExecutorBase(String               userId,
                                     String               methodName,

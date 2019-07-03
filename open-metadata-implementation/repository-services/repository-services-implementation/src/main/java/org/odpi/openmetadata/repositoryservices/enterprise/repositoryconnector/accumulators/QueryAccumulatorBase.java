@@ -20,8 +20,9 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     protected OMRSAuditLog            auditLog;
     protected OMRSRepositoryValidator repositoryValidator;
 
-    private int                       resultsRequired = 0;
-    private Map<String, Integer>      resultsContributed = new HashMap<>();
+    private int                  responsesRequired  = 0;
+    private Map<String, Integer> resultsContributed = new HashMap<>();
+    private boolean              resultsReturned = false;
 
 
     /**
@@ -32,10 +33,12 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    QueryAccumulatorBase(String                  localMetadataCollectionId,
-                         OMRSAuditLog            auditLog,
-                         OMRSRepositoryValidator repositoryValidator)
+    QueryAccumulatorBase(String                            localMetadataCollectionId,
+                         OMRSAuditLog                      auditLog,
+                         OMRSRepositoryValidator           repositoryValidator)
     {
+        super();
+
         this.localMetadataCollectionId = localMetadataCollectionId;
         this.auditLog = auditLog;
         this.repositoryValidator = repositoryValidator;
@@ -51,7 +54,18 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      */
     public synchronized boolean areResultsComplete()
     {
-        return (resultsRequired == resultsContributed.size());
+        return (responsesRequired == resultsContributed.size());
+    }
+
+
+    /**
+     * Return a flag indicating whether at least one of the repositories produced a valid answer.
+     *
+     * @return true if a request succeeded.
+     */
+    public boolean resultsReturned()
+    {
+        return (resultsReturned);
     }
 
 
@@ -61,7 +75,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      */
     public synchronized void registerExecutor()
     {
-        resultsRequired++;
+        responsesRequired++;
     }
 
 
@@ -74,6 +88,21 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
      */
     synchronized void setResultsReturned(String      metadataCollectionId,
                                          int         numberOfElements)
+    {
+        setRequestReturned(metadataCollectionId, numberOfElements);
+        resultsReturned = true;
+    }
+
+
+    /**
+     * This records the completion of the request to a single repository.
+     *
+     * @param metadataCollectionId identifier of repository's metadata collection
+     * @param numberOfElements number of elements (zero could mean nothing was found or an exception was returned.
+     *                         Exceptions are recorded by the superclass.
+     */
+    private void setRequestReturned(String      metadataCollectionId,
+                                    int         numberOfElements)
     {
         resultsContributed.put(metadataCollectionId, numberOfElements);
     }
@@ -89,7 +118,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                          metadataCollectionId,
                                               ClassificationErrorException    exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         classificationErrorException = exception;
     }
 
@@ -103,7 +132,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               EntityNotKnownException    exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         entityNotKnownException = exception;
     }
 
@@ -118,7 +147,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                           metadataCollectionId,
                                               FunctionNotSupportedException    exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         functionNotSupportedException = exception;
     }
 
@@ -132,7 +161,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               InvalidParameterException  exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         invalidParameterException = exception;
     }
 
@@ -146,7 +175,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               PagingErrorException     exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         pagingErrorException = exception;
     }
 
@@ -160,7 +189,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               PropertyErrorException     exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         propertyErrorException = exception;
     }
 
@@ -174,7 +203,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                        metadataCollectionId,
                                               RelationshipNotKnownException exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         relationshipNotKnownException = exception;
     }
 
@@ -188,7 +217,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               RepositoryErrorException   exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         repositoryErrorException = exception;
     }
 
@@ -202,7 +231,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String               metadataCollectionId,
                                               TypeErrorException   exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         typeErrorException = exception;
     }
 
@@ -216,7 +245,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureException(String                     metadataCollectionId,
                                               UserNotAuthorizedException exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         userNotAuthorizedException = exception;
     }
 
@@ -230,7 +259,7 @@ public class QueryAccumulatorBase extends ExceptionAccumulatorBase
     public synchronized void captureGenericException(String     metadataCollectionId,
                                                      Throwable  exception)
     {
-        setResultsReturned(metadataCollectionId, 0);
+        setRequestReturned(metadataCollectionId, 0);
         anotherException = exception;
     }
 }
