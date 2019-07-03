@@ -58,20 +58,24 @@ public class MockGraphGenerator {
     }
 
     public void generate() {
-        if(simpleGraph){
-            GraphTraversalSource g = mockGraph.traversal();
-            Vertex v1 = g.addV("node1").next();
-            Vertex v2 = g.addV("node2").next();
-            Vertex v3 = g.addV("node3").next();
-            Vertex v4 = g.addV("node4").next();
-            v1.addEdge("edge1to2", v2);
-            v3.addEdge("edge3to4", v4);
-            g.tx().commit();
+        try {
+            if (simpleGraph) {
+                GraphTraversalSource g = mockGraph.traversal();
+                Vertex v1 = g.addV("node1").next();
+                Vertex v2 = g.addV("node2").next();
+                Vertex v3 = g.addV("node3").next();
+                Vertex v4 = g.addV("node4").next();
+                v1.addEdge("edge1to2", v2);
+                v3.addEdge("edge3to4", v4);
+                g.tx().commit();
+            } else if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
+                generateVerbose();
+            }
+            log.info("Generated mock graph");
         }
-        else if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
-            generateVerbose();
+        catch (Exception e){
+            log.error(e.getMessage());
         }
-
     }
 
     private void generateVerbose() {
