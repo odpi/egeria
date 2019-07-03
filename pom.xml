@@ -1724,10 +1724,7 @@
                                 <banDuplicatePomDependencyVersions/>
                                 <requireSameVersions/>
                                 <reactorModuleConvergence/>
-<<<<<<< HEAD
                                 <requireUpperBoundDeps/>
-=======
->>>>>>> 94c3b8aa62e883c4422c95dd16077a8edcaa0418
                             </rules>
                         </configuration>
                     </execution>
