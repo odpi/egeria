@@ -52,15 +52,6 @@ public class Builder {
         return getSecurityClassification(glossaryTerm, schemaElementEntity, omrsRepositoryHelper);
     }
 
-    private SchemaElementEntity getSecurityClassification(EntityDetail entityDetail, SchemaElementEntity schemaElementEntity, OMRSRepositoryHelper omrsRepositoryHelper) {
-        if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
-            Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
-            securityTag.ifPresent(classification -> schemaElementEntity.setSecurityClassification(buildSecurityTag(classification, omrsRepositoryHelper)));
-        }
-
-        return schemaElementEntity;
-    }
-
     public SecurityClassification buildSecurityTag(Classification classification, OMRSRepositoryHelper repositoryHelper) {
         SecurityClassification securityClassification = new SecurityClassification();
 
@@ -74,6 +65,15 @@ public class Builder {
         }
 
         return securityClassification;
+    }
+
+    private SchemaElementEntity getSecurityClassification(EntityDetail entityDetail, SchemaElementEntity schemaElementEntity, OMRSRepositoryHelper omrsRepositoryHelper) {
+        if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
+            Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
+            securityTag.ifPresent(classification -> schemaElementEntity.setSecurityClassification(buildSecurityTag(classification, omrsRepositoryHelper)));
+        }
+
+        return schemaElementEntity;
     }
 
     private Optional<Classification> getSecurityTag(List<Classification> classifications) {

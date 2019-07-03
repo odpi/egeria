@@ -53,6 +53,16 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-api</artifactId>
+        </dependency>
+
     </dependencies>
 
     <artifactId>asset-owner-api</artifactId>

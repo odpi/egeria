@@ -219,6 +219,35 @@ public enum OMRSAuditCode
                       "The event manager is fully initialized and distributing buffered events that describe type definitions",
                       "No action is required.  This is part of the normal operation of the server."),
 
+    BAD_REAL_LOCAL_REPOSITORY_CONNECTOR("OMRS-AUDIT-0034",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The connector to the local repository failed with a {0} exception and the following error message: {1}",
+                             "The server fails to start.",
+                             "Correct the configuration to ensure that the local repository local connection is valid."),
+
+    BAD_REAL_LOCAL_EVENT_MAPPER("OMRS-AUDIT-0035",
+                             OMRSAuditLogRecordSeverity.EXCEPTION,
+                             "The connector to the local repository's event mapper failed with a {0} exception and the following error message: {1}",
+                             "The server fails to start.",
+                             "Correct the configuration to ensure that the local repository's event mapper connection is valid."),
+
+    BAD_ARCHIVE_STORE("OMRS-AUDIT-0036",
+                                OMRSAuditLogRecordSeverity.EXCEPTION,
+                                "The connector to the local repository archive store failed with a {0} exception and the following error message: {1}",
+                                "The server fails to start.",
+                                "Correct the configuration to ensure that the local repository's archive store connection is valid."),
+
+    BAD_AUDIT_LOG_DESTINATION("OMRS-AUDIT-0037",
+                      OMRSAuditLogRecordSeverity.EXCEPTION,
+                      "The connector to the local repository audit log destination failed with a {0} exception and the following error message: {1}",
+                      "The server fails to start.",
+                      "Correct the configuration to ensure that the local repository's audit log destination connection is valid."),
+
+    BAD_TOPIC_CONNECTION("OMRS-AUDIT-0038",
+                              OMRSAuditLogRecordSeverity.EXCEPTION,
+                              "The connector to the {0} topic failed with a {1} exception and the following error message: {2}",
+                              "The server fails to start.",
+                              "Correct the configuration to ensure that the cohort's topic connection is valid."),
 
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
@@ -483,6 +512,52 @@ public enum OMRSAuditCode
                       "It is necessary to update the TypeDef to remove the conflict before the local server will " +
                                    "exchange metadata with the remote server."),
 
+    DUPLICATE_INSTANCES_FOR_GUID("OMRS-AUDIT-0206",
+                           OMRSAuditLogRecordSeverity.ACTION,
+                                 "Server {0} that hosts metadata collection {1} has detected that there are two different instances with the same guid of {2}: the instance from {3} has a type of {4} has a provenance type of " +
+                                         "{5} and the other instance from metadata collection {6} has a type of {7} - the instance in metadata collection {6} should have its guid changed.  The accompanying error message is : {8}",
+                           "The notification of this error is distributed around the cohort.  " +
+                                         "Reference copies of the instance targeted to change its identity are automatically deleted in anticipation of this change. " +
+                                         "The server targeted to repair its instance will make a single attempt to update its guid.  " +
+                                         "If this is successful, the updated instance will be distributed to other cohort members.",
+                           "Monitor for further messages.  If the automatic corrective action fails it may be necessary to update " +
+                                         "the guid of the instance in the other repository using the appropriate reIdentifyEntity() or reIdentifyRelationship() " +
+                                         "methods or delete and recreate one of the instances. Either of these changes will distribute the instance to the rest of the cohort."),
+
+    INSTANCE_SUCCESSFULLY_REIDENTIFIED("OMRS-AUDIT-0207",
+                                 OMRSAuditLogRecordSeverity.INFO,
+                                 "Server {0} that hosts metadata collection {1} has changed the unique identifier (guid) of an instance of type {2} from {3} to {4}",
+                                 "The updated instance will be distributed to other cohort members.",
+                                 "No action is required."),
+
+    UNABLE_TO_RE_IDENTIFY_INSTANCE("OMRS-AUDIT-0208",
+                                 OMRSAuditLogRecordSeverity.ACTION,
+                                 "Server {0} that hosts metadata collection {1} was unable to change the unique identifier (guid) of an instance of type {2} from {3}.  The exception was {4} with error message {5}",
+                                 "The server returns an exception to the caller.",
+                                 "Review the audit log for previous error messages.  This failed action may have been an attempt to correct a detected conflict."),
+
+    INSTANCES_WITH_CONFLICTING_TYPES("OMRS-AUDIT-0209",
+                                   OMRSAuditLogRecordSeverity.ACTION,
+                                     "Server {0} that hosts metadata collection {1} has detected that the version of the type being used" +
+                                             "by instance with the unique identifier (guid) of {2} has regressed; the type that this server is using locally is {3} and the" +
+                                             "type from the instance from metadata collection {4} is {5}; the two versions need to be reconciled. The accompanying error message is: {6}",
+                                   "The server removes its reference copy of the instance and awaits an updated version.",
+                                   "Review the message and decide which instance is correct and update the version of the instance in error."),
+
+    LOCAL_INSTANCE_WITH_CONFLICTING_TYPES("OMRS-AUDIT-0210",
+                                     OMRSAuditLogRecordSeverity.ACTION,
+                                     "Server {0} that hosts metadata collection {1} has detected that the version of the type being used" +
+                                             "by the local instance with the unique identifier (guid) of {2} has regressed; the type that the reporting server is using locally is {3} and the" +
+                                             "type from the instance from this metadata collection {4} is {5}; the two versions need to be reconciled. The accompanying error message is: {6}",
+                                     "The server awaits an updated version.",
+                                     "Review the message and decide which instance is correct and update the version of the instance in error."),
+
+    UNABLE_TO_REMOVE_REFERENCE_COPY("OMRS-AUDIT-0211",
+                                   OMRSAuditLogRecordSeverity.ERROR,
+                                   "Server {0} that hosts metadata collection {1} was unable to remove the reference copy of an instance of type {2} with unique identifier (guid) of {3}.  The exception was {4} with error message: {5}",
+                                   "The server returns an exception to the caller.",
+                                   "Review the audit log for previous error messages.  This failed action may have been an attempt to correct a detected conflict."),
+
     NEW_TYPE_ADDED("OMRS-AUDIT-0301",
                       OMRSAuditLogRecordSeverity.INFO,
                       "The local server has added a new type called {0} with a unique identifier of {1} and a version number of {2} from {3}",
@@ -516,7 +591,7 @@ public enum OMRSAuditCode
                                      "Then investigate the source of the type and any other errors."),
 
     PROCESS_UNKNOWN_EVENT("OMRS-AUDIT-8001",
-                      OMRSAuditLogRecordSeverity.EVENT,
+                      OMRSAuditLogRecordSeverity.ERROR,
                       "Received unknown event: {0}",
                       "The local server has received an unknown event from another member of the metadata repository " +
                                   "cohort and is unable to process it. " +
@@ -524,6 +599,36 @@ public enum OMRSAuditCode
                                   "is using a more advanced version of the protocol. " +
                                   "The local server should continue to operate correctly.",
                       "Verify that the event is a new event type introduced after this server was written."),
+
+    PROCESS_INSTANCE_TYPE_CONFLICT("OMRS-AUDIT-8002",
+                          OMRSAuditLogRecordSeverity.ACTION,
+                          "A later version of the instance {0} from server {1} and metadata collection {2} is using a older version of the type {3}.  Previous type header was {4}, new type header is {5}",
+                          "The local server has received an event from another member of the open metadata repository cohort containing suspicious information.  The local server has enacted conflict processing.",
+                          "Validate and correct the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+
+    NEW_HOME_INFORMATION("OMRS-AUDIT-8003",
+                                   OMRSAuditLogRecordSeverity.ACTION,
+                                   "Version {0} of the instance {1} from server {2} has a new metadata collection id of {3}.  Its original metadata collection id was {4}",
+                                   "The local server has received an event from another member of the open metadata repository cohort containing different header information .",
+                                   "Validate and correct the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+
+    NEW_TYPE_INFORMATION("OMRS-AUDIT-8004",
+                                   OMRSAuditLogRecordSeverity.ACTION,
+                                   "Version {0} of the instance {1} from server {2} and metadata collection {3} has a new type of {4} ({5}).  Previous type was {6} ({7})",
+                                   "The local server has received an event from another member of the open metadata repository cohort containing suspicious information.  The local server has enacted conflict processing.",
+                                   "Validate and correct the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+
+    PROCESS_INSTANCE_GUID_CONFLICT("OMRS-AUDIT-8005",
+                                   OMRSAuditLogRecordSeverity.ACTION,
+                                   "An instance of type {0} ({1}) from server {2} and metadata collection {3} is using the same guid {4} as a stored instance of type {5} ({6})",
+                                   "The local server has received an event from another member of the open metadata repository cohort that suggests that two different entities have the same unique identifier (guid).",
+                                   "Validate and correct the guid of the instance in the originator.  Monitor events from all members of the cohort to ensure all copies are corrected."),
+
+    PROCESS_INCOMING_EVENT("OMRS-AUDIT-8006",
+                           OMRSAuditLogRecordSeverity.EVENT,
+                           "Processing event of type {0} from: {1}",
+                           "The local server has processed an event from another member of the metadata repository.",
+                           "No action required.  This message is for information only."),
 
     NULL_OMRS_EVENT_RECEIVED("OMRS-AUDIT-9002",
                       OMRSAuditLogRecordSeverity.EXCEPTION,

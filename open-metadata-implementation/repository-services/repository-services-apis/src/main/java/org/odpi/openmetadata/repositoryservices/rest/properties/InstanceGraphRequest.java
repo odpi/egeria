@@ -169,7 +169,8 @@ public class InstanceGraphRequest extends OMRSAPIRequest
         {
             return false;
         }
-        InstanceGraphRequest that = (InstanceGraphRequest) objectToCompare;
+        InstanceGraphRequest
+                that = (InstanceGraphRequest) objectToCompare;
         return Objects.equals(getEntityElementList(), that.getEntityElementList()) &&
                 Objects.equals(getRelationshipElementList(), that.getRelationshipElementList());
     }

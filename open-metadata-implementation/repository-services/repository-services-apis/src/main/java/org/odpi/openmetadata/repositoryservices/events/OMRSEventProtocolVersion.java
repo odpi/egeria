@@ -31,6 +31,10 @@ public enum OMRSEventProtocolVersion implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param ordinal index number
+     * @param name short name
+     * @param description longer explanation
      */
     OMRSEventProtocolVersion(int ordinal, String name, String description)
     {

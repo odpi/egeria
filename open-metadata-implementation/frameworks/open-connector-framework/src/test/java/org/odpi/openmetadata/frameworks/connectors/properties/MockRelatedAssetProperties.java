@@ -37,7 +37,7 @@ public class MockRelatedAssetProperties extends RelatedAssetProperties
      * @param connectedAsset original top-level asset
      * @param relatedAsset asset to extract the full set of properties.
      */
-    public MockRelatedAssetProperties(AssetDescriptor connectedAsset, RelatedAsset relatedAsset)
+    public MockRelatedAssetProperties(AssetDescriptor connectedAsset, AssetRelatedAsset relatedAsset)
     {
         super(connectedAsset, relatedAsset);
     }
@@ -72,9 +72,9 @@ public class MockRelatedAssetProperties extends RelatedAssetProperties
                                                                  likes,
                                                                  ratings,
                                                                  comments);
-        AssetLocations knownLocations = new MockAssetLocations(null, 15, 50);
-        AssetLineage   lineage        = new AssetLineage();
-        RelatedAssets  relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage       lineage        = new AssetLineage();
+        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         super.assetProperties    = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,

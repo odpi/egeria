@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.events;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1TypeDefSection;
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1TypeDefSection;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OMRSTypeDefEvent provides the wrapper for an event that relates to a type definition (TypeDef).

@@ -49,6 +49,7 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
      * @param componentName  name of component
      * @param supportedZones list of zones covered by this instance of the access service.
      * @param auditLog log for errors and information messages
+     * @throws OMAGConfigurationErrorException problems creating the connector for the outTopic
      */
     public AssetConsumerOMRSTopicListener(Connection              assetConsumerOutTopic,
                                           OMRSRepositoryHelper    repositoryHelper,
@@ -156,6 +157,7 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
      * if the Asset is within the supported zones.
      *
      * @param entity  entity object that has just been created.
+     * @param originalEntity original entity
      */
     private void processUpdatedEntity(EntityDetail entity,
                                       EntityDetail originalEntity)
