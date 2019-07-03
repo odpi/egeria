@@ -17,7 +17,6 @@ public class MockGraphGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(MockGraphGenerator.class);
 
-    private boolean simpleGraph;
     private int numberGlossaryTerms;
     private int numberTables;
     private int processesPerFlow;
