@@ -86,6 +86,8 @@ public class RelatedMediaHandler
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the identifier is attached to
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
      *
      * @return list of retrieved objects or null if none found

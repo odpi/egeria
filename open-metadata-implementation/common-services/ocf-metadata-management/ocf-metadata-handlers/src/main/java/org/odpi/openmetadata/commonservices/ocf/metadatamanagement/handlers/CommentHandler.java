@@ -4,6 +4,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.CommentBuilder;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.CommentConverter;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
@@ -13,8 +14,11 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,10 +89,14 @@ public class CommentHandler
 
 
     /**
-     * Return the comments attached to an anchor entity.
+     * Return the comments attached to an anchor entity. (No special security checking is required).
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the feedback is attached to
+     * @param anchorGUIDTypeName name of the type of the anchor entity
+     * @param serviceName calling service name
+     * @param startingFrom where to start from in the list
+     * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -99,14 +107,54 @@ public class CommentHandler
      */
     public List<Comment>  getComments(String   userId,
                                       String   anchorGUID,
+                                      String   anchorGUIDTypeName,
+                                      String   serviceName,
                                       int      startingFrom,
                                       int      pageSize,
                                       String   methodName) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
-        // todo
-        return null;
+        List<Relationship>  attachedComments = repositoryHandler.getPagedRelationshipsByType(userId,
+                                                                                            anchorGUID,
+                                                                                            anchorGUIDTypeName,
+                                                                                            CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                                                                            CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                                            startingFrom,
+                                                                                            pageSize,
+                                                                                            methodName);
+
+        if ((attachedComments == null) || (attachedComments.isEmpty()))
+        {
+            return null;
+        }
+
+        List<Comment>  results = new ArrayList<>();
+
+        for (Relationship  relationship : attachedComments)
+        {
+            if (relationship != null)
+            {
+                EntityDetail entity = repositoryHandler.getEntityForRelationship(userId,
+                                                                                 relationship.getEntityTwoProxy(),
+                                                                                 methodName);
+                CommentConverter converter = new CommentConverter(entity,
+                                                                  relationship,
+                                                                  repositoryHelper,
+                                                                  serviceName);
+
+                results.add(converter.getBean());
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 
 
@@ -235,6 +283,8 @@ public class CommentHandler
 
         return commentGUID;
     }
+
+
     /**
      * Update an existing comment.
      *

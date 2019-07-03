@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage;
  */
 public class ConnectedAssetLineage extends AssetLineage
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -23,6 +24,7 @@ public class ConnectedAssetLineage extends AssetLineage
      * Typical constructor creates an AssetLineage object primed with information to retrieve an asset's lineage
      * information.
      *
+     * @param serviceName calling service
      * @param serverName name of server to use on server calls.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -32,16 +34,18 @@ public class ConnectedAssetLineage extends AssetLineage
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetLineage(String                 serverName,
+    ConnectedAssetLineage(String                 serviceName,
+                          String                 serverName,
                           String                 userId,
                           String                 omasServerURL,
                           String                 assetGUID,
                           ConnectedAssetUniverse parentAsset,
                           int                    maxCacheSize,
-                          OCFRESTClient restClient)
+                          OCFRESTClient          restClient)
     {
         super(parentAsset);
 
+        this.serviceName    = serviceName;
         this.serverName     = serverName;
         this.userId         = userId;
         this.omasServerURL  = omasServerURL;
@@ -64,6 +68,7 @@ public class ConnectedAssetLineage extends AssetLineage
 
         if (template != null)
         {
+            this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;

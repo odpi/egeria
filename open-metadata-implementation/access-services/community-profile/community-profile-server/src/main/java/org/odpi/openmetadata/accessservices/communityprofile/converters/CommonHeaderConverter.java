@@ -47,6 +47,8 @@ public class CommonHeaderConverter extends CommunityProfileElementConverter
 
     /**
      * Extract the properties from the entity.
+     *
+     * @param bean output bean
      */
     void updateBean(CommonHeader  bean)
     {

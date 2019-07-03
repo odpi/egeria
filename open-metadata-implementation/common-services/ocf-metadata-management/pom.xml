@@ -32,8 +32,4 @@
         <module>ocf-metadata-spring</module>
     </modules>
 
-    <dependencies>
-
-    </dependencies>
-
 </project>

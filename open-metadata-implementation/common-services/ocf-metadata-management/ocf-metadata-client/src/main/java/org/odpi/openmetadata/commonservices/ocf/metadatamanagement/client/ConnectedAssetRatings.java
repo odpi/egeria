@@ -23,6 +23,7 @@ import java.util.List;
  */
 public class ConnectedAssetRatings extends AssetRatings
 {
+    private String                 serviceName;
     private String                 serverName;
     private String                 userId;
     private String                 omasServerURL;
@@ -35,6 +36,7 @@ public class ConnectedAssetRatings extends AssetRatings
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -45,17 +47,19 @@ public class ConnectedAssetRatings extends AssetRatings
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetRatings(String                 serverName,
+    ConnectedAssetRatings(String                 serviceName,
+                          String                 serverName,
                           String                 userId,
                           String                 omasServerURL,
                           String                 assetGUID,
                           ConnectedAssetUniverse parentAsset,
                           int                    totalElementCount,
                           int                    maxCacheSize,
-                          OCFRESTClient restClient)
+                          OCFRESTClient          restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
+        this.serviceName     = serviceName;
         this.serverName      = serverName;
         this.userId          = userId;
         this.omasServerURL   = omasServerURL;
@@ -77,6 +81,7 @@ public class ConnectedAssetRatings extends AssetRatings
 
         if (template != null)
         {
+            this.serviceName    = template.serviceName;
             this.serverName     = template.serverName;
             this.userId         = template.userId;
             this.omasServerURL  = template.omasServerURL;
@@ -125,7 +130,7 @@ public class ConnectedAssetRatings extends AssetRatings
                                                      int  maximumSize) throws PropertyServerException
     {
         final String   methodName = "AssetRatings.getCachedList";
-        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/ocf/connected-asset/users/{1}/assets/{2}/ratings?elementStart={3}&maxElements={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/ratings?elementStart={4}&maxElements={5}";
 
         RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
 
@@ -133,6 +138,8 @@ public class ConnectedAssetRatings extends AssetRatings
         {
             RatingsResponse restResult = restClient.callRatingsGetRESTCall(methodName,
                                                                            omasServerURL + urlTemplate,
+                                                                           serverName,
+                                                                           serviceName,
                                                                            userId,
                                                                            assetGUID,
                                                                            cacheStartPointer,
