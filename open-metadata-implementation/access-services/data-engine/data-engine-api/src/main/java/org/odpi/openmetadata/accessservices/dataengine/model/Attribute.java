@@ -12,14 +12,10 @@ import java.util.Objects;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * The Column object contains the name and the type of the column where a RelationshipColumn asset can be find in a
- * database.
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Column implements Serializable {
+public class Attribute implements Serializable {
     private static final long serialVersionUID = 1L;
     private String qualifiedName;
     private String displayName;
@@ -88,7 +84,7 @@ public class Column implements Serializable {
 
     @Override
     public String toString() {
-        return "Column{" +
+        return "Attribute{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", cardinality='" + cardinality + '\'' +
@@ -103,14 +99,14 @@ public class Column implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Column column = (Column) o;
-        return elementPosition == column.elementPosition &&
-                Objects.equals(qualifiedName, column.qualifiedName) &&
-                Objects.equals(displayName, column.displayName) &&
-                Objects.equals(cardinality, column.cardinality) &&
-                Objects.equals(defaultValueOverride, column.defaultValueOverride) &&
-                Objects.equals(dataType, column.dataType) &&
-                Objects.equals(defaultValue, column.defaultValue);
+        Attribute attribute = (Attribute) o;
+        return elementPosition == attribute.elementPosition &&
+                Objects.equals(qualifiedName, attribute.qualifiedName) &&
+                Objects.equals(displayName, attribute.displayName) &&
+                Objects.equals(cardinality, attribute.cardinality) &&
+                Objects.equals(defaultValueOverride, attribute.defaultValueOverride) &&
+                Objects.equals(dataType, attribute.dataType) &&
+                Objects.equals(defaultValue, attribute.defaultValue);
     }
 
     @Override

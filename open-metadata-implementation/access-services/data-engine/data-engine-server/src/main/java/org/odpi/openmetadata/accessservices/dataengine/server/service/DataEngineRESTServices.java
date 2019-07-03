@@ -444,8 +444,8 @@ public class DataEngineRESTServices {
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
         for (LineageMapping lineageMapping : lineageMappings) {
-            dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceColumn(),
-                    lineageMapping.getTargetColumn());
+            dataEngineSchemaTypeHandler.addLineageMappingRelationship(userId, lineageMapping.getSourceAttribute(),
+                    lineageMapping.getTargetAttribute());
         }
     }
 
@@ -462,7 +462,7 @@ public class DataEngineRESTServices {
 
         return dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
                 schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
-                schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getColumnList());
+                schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getAttributeList());
     }
 
     private String createPortImplementationWithSchemaType(String userId, String serverName,
