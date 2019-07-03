@@ -5,7 +5,9 @@ package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
+import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
+import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,12 +23,20 @@ public class QueryHandler {
     private static final Logger log = LoggerFactory.getLogger(QueryHandler.class);
 
     public String getInitialGraph(String lineageType, String guid) {
+
+        OutputStream out = new ByteArrayOutputStream();
         String response = "";
         switch (lineageType) {
             case "ultimate-source":
-                GraphTraversalSource g = mainGraph.traversal();
+                GraphTraversalSource g = mockGraph.traversal();
                 Vertex v = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).in("Included in").next();
                 response = v.property("qualifiedName").value().toString();
+                try {
+                    GraphSONWriter.build().create().writeGraph(out, g.getGraph());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                response = out.toString();
                 break;
         }
         return response;
@@ -34,7 +44,7 @@ public class QueryHandler {
 
     public void dumpGraph(String graph) {
         try {
-            switch (graph){
+            switch (graph) {
                 case "main":
                     mainGraph.io(IoCore.graphml()).writeGraph("graphMain.graphml");
                     break;
@@ -56,19 +66,21 @@ public class QueryHandler {
 
     public String exportGraph(String graph) {
         OutputStream out = new ByteArrayOutputStream();
+        GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
+        GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).create();
         try {
-            switch (graph){
+            switch (graph) {
                 case "main":
-                    GraphSONWriter.build().create().writeGraph(out, mainGraph);
+                    writer.writeGraph(out, mainGraph);
                     break;
                 case "buffer":
-                    GraphSONWriter.build().create().writeGraph(out, bufferGraph);
+                    writer.writeGraph(out, bufferGraph);
                     break;
                 case "history":
-                    GraphSONWriter.build().create().writeGraph(out, historyGraph);
+                    writer.writeGraph(out, historyGraph);
                     break;
                 case "mock":
-                    GraphSONWriter.build().create().writeGraph(out, mockGraph);
+                    writer.writeGraph(out, mockGraph);
                     break;
             }
         } catch (IOException e) {
@@ -76,4 +88,5 @@ public class QueryHandler {
         }
         return out.toString();
     }
+
 }
