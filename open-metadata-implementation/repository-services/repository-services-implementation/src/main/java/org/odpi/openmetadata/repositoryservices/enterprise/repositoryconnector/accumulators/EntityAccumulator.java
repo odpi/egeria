@@ -6,6 +6,7 @@ package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +32,9 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
      * @param auditLog audit log provides destination for log messages
      * @param repositoryValidator validator provides common validation routines
      */
-    public EntityAccumulator(String                  localMetadataCollectionId,
-                             OMRSAuditLog            auditLog,
-                             OMRSRepositoryValidator repositoryValidator)
+    public EntityAccumulator(String                            localMetadataCollectionId,
+                             OMRSAuditLog                      auditLog,
+                             OMRSRepositoryValidator           repositoryValidator)
     {
         super(localMetadataCollectionId, auditLog, repositoryValidator);
     }
@@ -108,24 +109,14 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
 
 
     /**
-     * Return a flag indicating whether at least one of the repositories produced a valid answer.
-     *
-     * @return true if a request succeeded.
-     */
-    public boolean resultsReturned()
-    {
-        return (! accumulatedEntities.isEmpty());
-    }
-
-
-    /**
      * Extract the results - this will the a unique list of entities selected from the instances
      * supplied to this accumulator.  It should be called once all of the executors have completed processing
      * their request(s).
      *
+     * @param repositoryConnector enterprise connector
      * @return list of entities
      */
-    public synchronized List<EntityDetail>  getResults()
+    public synchronized List<EntityDetail>  getResults(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
         if (accumulatedEntities.isEmpty())
         {
@@ -133,6 +124,7 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
         }
         else
         {
+            this.makeRefreshRecommendations(repositoryConnector);
             return new ArrayList<>(accumulatedEntities.values());
         }
     }
@@ -149,25 +141,22 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
      *
      * This call should be made once all processing has stopped.
      *
-     * @return list of entities
+     * @param repositoryConnector enterprise connector
      */
-    public synchronized List<EntityDetail>  getRefreshRecommendations()
+    private  void  makeRefreshRecommendations(EnterpriseOMRSRepositoryConnector repositoryConnector)
     {
-        List<EntityDetail>  entities = new ArrayList<>(accumulatedEntities.values());
-        List<EntityDetail>  nonLocalEntities = new ArrayList<>();
-
         /*
          * Either no local repository or nothing accumulated so nothing to return
          */
-        if ((localMetadataCollectionId == null) || (entities.isEmpty()))
+        if ((localMetadataCollectionId == null) || (accumulatedEntities.isEmpty()))
         {
-            return null;
+            return;
         }
 
         /*
-         * Remove all entities that came from the local repository
+         * Ignore all entities that came from the local repository
          */
-        for (EntityDetail accumulatedEntity : entities)
+        for (EntityDetail accumulatedEntity : accumulatedEntities.values())
         {
             if (accumulatedEntity != null)
             {
@@ -175,22 +164,12 @@ public class EntityAccumulator extends QueryInstanceAccumulatorBase
 
                 if (entityGUID != null)
                 {
-                    if (this.notLocal(entityGUID))
+                    if (super.notLocal(entityGUID))
                     {
-                        nonLocalEntities.add(accumulatedEntity);
+                        repositoryConnector.requestRefreshOfEntity(accumulatedEntity);
                     }
                 }
             }
         }
-
-        /*
-         * Return null or the non-local entities
-         */
-        if (nonLocalEntities.isEmpty())
-        {
-            return null;
-        }
-
-        return nonLocalEntities;
     }
 }
