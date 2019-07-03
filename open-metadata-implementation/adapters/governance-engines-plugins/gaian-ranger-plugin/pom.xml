@@ -118,6 +118,47 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- This plugin overrides the default rules (which are more strict for the rest of the project) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules combine.self="override">>
+                                <requireMavenVersion>
+                                    <version>[3.5.0,)</version>
+                                    <message>** MAVEN VERSION ERROR ** Maven 3.5.0 or above is required. See
+                                        https://maven.apache.org/install.html
+                                    </message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <level>ERROR</level>
+                                    <version>[1.8,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
+                                    </message>
+                                </requireJavaVersion>
+                                <requireJavaVersion>
+                                    <level>WARN</level>
+                                    <version>(,1.9]</version>
+                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
+                                    </message>
+                                </requireJavaVersion>
+                                <banDuplicatePomDependencyVersions/>
+                                <requireSameVersions/>
+                                <reactorModuleConvergence/>
+                                <!-- Disable this check for gaian ranger plugin, fails with the complex dependency tree -->
+                                <!--requireUpperBoundDeps/-->
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
 
         <!-- for the plugin we need to exclude the config files that users need to edit from the jar -->
