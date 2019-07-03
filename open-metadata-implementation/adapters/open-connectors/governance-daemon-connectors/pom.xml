@@ -28,6 +28,7 @@
         <module>view-generator-connectors</module>
         <module>security-sync-connectors</module>
         <module>security-officer-connectors</module>
+        <module>data-engine-connectors</module>
     </modules>
 
 

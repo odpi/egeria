@@ -49,11 +49,11 @@ public enum DataEngineAuditCode {
             "Review the error message and any other reported failures to determine the cause of the problem. " +
                     " Once this is resolved, restart the server.");
 
-    private String logMessageId;
-    private OMRSAuditLogRecordSeverity severity;
-    private String logMessage;
-    private String systemAction;
-    private String userAction;
+    private final String logMessageId;
+    private final OMRSAuditLogRecordSeverity severity;
+    private final String logMessage;
+    private final String systemAction;
+    private final String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineAuditCode.class);
 
