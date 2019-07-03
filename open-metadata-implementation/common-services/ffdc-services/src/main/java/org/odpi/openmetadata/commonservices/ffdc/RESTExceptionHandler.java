@@ -71,9 +71,9 @@ public class RESTExceptionHandler
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            String paramName = null;
+            String parameterName = null;
 
-            Map<String, Object>   exceptionProperties = restResult. getExceptionProperties();
+            Map<String, Object>   exceptionProperties = restResult.getExceptionProperties();
 
             if (exceptionProperties != null)
             {
@@ -81,7 +81,7 @@ public class RESTExceptionHandler
 
                 if (nameObject != null)
                 {
-                    paramName = (String)nameObject;
+                    parameterName = (String)nameObject;
                 }
             }
             throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
@@ -90,7 +90,7 @@ public class RESTExceptionHandler
                                                 restResult.getExceptionErrorMessage(),
                                                 restResult.getExceptionSystemAction(),
                                                 restResult.getExceptionUserAction(),
-                                                paramName);
+                                                parameterName);
         }
     }
 
