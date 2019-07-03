@@ -29,7 +29,7 @@ running `mvn dependency:tree` is a useful way to understand what dependencies (d
 ```
 This declaration only means that IF a dependency is used, these are the defaults to use - most critically including version, though scope is a useful default to add too - for example if the dependency is only for tests.
 
-* Add the dependency to the `<dependency>`` section of your POM:
+* Add the dependency to the `<dependency>` section of your POM:
 ```
         <dependency>
             <groupId>org.apache.kafka</groupId>
