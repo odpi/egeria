@@ -24,7 +24,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OMRSRepositoryRESTServices provides the server-side support for the OMRS Repository REST Services API.
@@ -7131,7 +7133,20 @@ public class OMRSRepositoryRESTServices
      */
     private void captureInvalidParameterException(OMRSAPIResponse response, InvalidParameterException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        final String propertyName = "parameterName";
+
+        if (error.getParameterName() == null)
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+        else
+        {
+            Map<String, Object> exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put(propertyName, error.getParameterName());
+
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
     }
 
 
@@ -7499,11 +7514,28 @@ public class OMRSRepositoryRESTServices
                                          OMRSCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {
+        this.captureCheckedException(response, error, exceptionClassName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response REST Response
+     * @param error returned response.
+     * @param exceptionClassName class name of the exception to recreate
+     */
+    private void captureCheckedException(OMRSAPIResponse          response,
+                                         OMRSCheckedExceptionBase error,
+                                         String                   exceptionClassName,
+                                         Map<String, Object>      exceptionProperties)
+    {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
         response.setExceptionErrorMessage(error.getErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionProperties(exceptionProperties);
     }
 
 

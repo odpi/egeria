@@ -67,7 +67,8 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
                                                                                                         error.getReportingActionDescription(),
                                                                                                         error.getErrorMessage(),
                                                                                                         error.getReportedSystemAction(),
-                                                                                                        error.getReportedUserAction());
+                                                                                                        error.getReportedUserAction(),
+                                                                                                        error.getParameterName());
         }
         catch (org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException error)
         {
