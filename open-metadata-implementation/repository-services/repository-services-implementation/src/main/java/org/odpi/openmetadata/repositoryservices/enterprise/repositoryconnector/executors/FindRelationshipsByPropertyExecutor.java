@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.accumulators.RelationshipAccumulator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
@@ -236,6 +237,7 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
     /**
      * Return the results of the combined requests.
      *
+     * @param repositoryConnector enterprise connector
      * @return a list of relationships.  Null means no matching relationships.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -248,17 +250,17 @@ public class FindRelationshipsByPropertyExecutor extends PageableRepositoryExecu
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public List<Relationship>  getResults() throws InvalidParameterException,
-                                                   TypeErrorException,
-                                                   RepositoryErrorException,
-                                                   PropertyErrorException,
-                                                   PagingErrorException,
-                                                   FunctionNotSupportedException,
-                                                   UserNotAuthorizedException
+    public List<Relationship>  getResults(EnterpriseOMRSRepositoryConnector  repositoryConnector) throws InvalidParameterException,
+                                                                                                         TypeErrorException,
+                                                                                                         RepositoryErrorException,
+                                                                                                         PropertyErrorException,
+                                                                                                         PagingErrorException,
+                                                                                                         FunctionNotSupportedException,
+                                                                                                         UserNotAuthorizedException
     {
         if (accumulator.resultsReturned())
         {
-            return accumulator.getResults();
+            return accumulator.getResults(repositoryConnector);
         }
 
         handleCommonPagingRequestExceptions();

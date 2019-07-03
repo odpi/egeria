@@ -248,14 +248,19 @@ public class OCFMetadataRESTServices
 
             if (connectionGUID != null)
             {
-                response.setAsset(assetHandler.getAsset(userId, supportedZones, assetGUID, connectionGUID, methodName));
+                response.setAsset(assetHandler.getAsset(userId,
+                                                        supportedZones,
+                                                        assetGUID,
+                                                        connectionGUID,
+                                                        instanceHandler.getServiceName(serviceURLName),
+                                                        methodName));
             }
             else
             {
                 response.setAsset(assetHandler.getAsset(userId,
                                                         supportedZones,
                                                         assetGUID,
-                                                        instanceHandler.getServiceName(),
+                                                        instanceHandler.getServiceName(serviceURLName),
                                                         methodName));
             }
             response.setCertificationCount(assetHandler.getCertificationCount(userId, assetGUID, methodName));
@@ -415,6 +420,7 @@ public class OCFMetadataRESTServices
      * @param serverName   String   name of server instance to call.
      * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
+     * @param assetGUID    String   unique id for asset.
      * @param anchorGUID    String   unique id for anchor object.
      * @param elementStart int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
@@ -428,6 +434,7 @@ public class OCFMetadataRESTServices
     private CommentsResponse getAttachedComments(String  serverName,
                                                  String  serviceURLName,
                                                  String  userId,
+                                                 String  assetGUID,
                                                  String  anchorGUID,
                                                  int     elementStart,
                                                  int     maxElements,
@@ -440,10 +447,17 @@ public class OCFMetadataRESTServices
 
         try
         {
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            AssetHandler  handler = instanceHandler.getAssetHandler(userId,serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            List<Comment>         attachedComments = handler.getComments(userId, anchorGUID, elementStart, maxElements, methodName);
+            List<Comment>  attachedComments = handler.getAssetComments(userId,
+                                                                       instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
+                                                                       assetGUID,
+                                                                       anchorGUID,
+                                                                       instanceHandler.getServiceName(serviceURLName),
+                                                                       elementStart,
+                                                                       maxElements,
+                                                                       methodName);
             List<CommentResponse> results          = new ArrayList<>();
 
             if (attachedComments != null)
@@ -455,7 +469,7 @@ public class OCFMetadataRESTServices
                         CommentResponse commentResponse = new CommentResponse();
 
                         commentResponse.setComment(comment);
-                        commentResponse.setReplyCount(handler.countAttachedComments(userId, comment.getGUID(), methodName));
+                        commentResponse.setReplyCount(handler.getCommentCount(userId, comment.getGUID(), methodName));
 
                         results.add(commentResponse);
                     }
@@ -509,16 +523,16 @@ public class OCFMetadataRESTServices
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public CommentsResponse getComments(String  serverName,
-                                        String  serviceURLName,
-                                        String  userId,
-                                        String  assetGUID,
-                                        int     elementStart,
-                                        int     maxElements)
+    public CommentsResponse getAssetComments(String  serverName,
+                                             String  serviceURLName,
+                                             String  userId,
+                                             String  assetGUID,
+                                             int     elementStart,
+                                             int     maxElements)
     {
-        final String methodName = "getComments";
+        final String methodName = "getAssetComments";
 
-        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, assetGUID, elementStart, maxElements, methodName);
     }
 
 
@@ -528,6 +542,7 @@ public class OCFMetadataRESTServices
      * @param serverName   String   name of server instance to call.
      * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
+     * @param assetGUID    String   unique id for asset.
      * @param commentGUID  String   unique id for root comment.
      * @param elementStart int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
@@ -537,16 +552,17 @@ public class OCFMetadataRESTServices
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public CommentsResponse getCommentReplies(String  serverName,
-                                              String  serviceURLName,
-                                              String  userId,
-                                              String  commentGUID,
-                                              int     elementStart,
-                                              int     maxElements)
+    public CommentsResponse getAssetCommentReplies(String  serverName,
+                                                   String  serviceURLName,
+                                                   String  userId,
+                                                   String  assetGUID,
+                                                   String  commentGUID,
+                                                   int     elementStart,
+                                                   int     maxElements)
     {
-        final String        methodName = "getCommentReplies";
+        final String        methodName = "getAssetCommentReplies";
 
-        return getAttachedComments(serverName, serviceURLName, userId, commentGUID, elementStart, maxElements, methodName);
+        return getAttachedComments(serverName, serviceURLName, userId, assetGUID, commentGUID, elementStart, maxElements, methodName);
     }
 
 

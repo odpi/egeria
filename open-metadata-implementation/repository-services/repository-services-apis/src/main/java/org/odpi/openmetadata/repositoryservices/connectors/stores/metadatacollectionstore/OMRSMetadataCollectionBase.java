@@ -4605,14 +4605,14 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
     /**
      * Retrieve an entity proxy
-     * @param userId
-     * @param entityGUID
-     * @param methodName
-     * @return
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws EntityNotKnownException
-     * @throws UserNotAuthorizedException
+     * @param userId calling user
+     * @param entityGUID entity guid
+     * @param methodName calling method
+     * @return entity proxy
+     * @throws InvalidParameterException one of the parameters is null
+     * @throws RepositoryErrorException there is a problem communicating with the remote repository
+     * @throws EntityNotKnownException the guid is not recognised
+     * @throws UserNotAuthorizedException the calling user can not access this entity.
      */
     protected  EntityProxy getEntityProxy(String   userId,
                                           String   entityGUID,
