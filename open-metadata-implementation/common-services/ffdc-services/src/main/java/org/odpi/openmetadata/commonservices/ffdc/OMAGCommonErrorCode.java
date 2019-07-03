@@ -113,6 +113,21 @@ public enum OMAGCommonErrorCode
                     "The system is unable to process the request.",
                     "Update the caller to provide the request body."),
 
+    UNRECOGNIZED_TYPE_NAME(400, "OMAG-COMMON-400-018 ",
+                    "The type name {0} passed on method {1} of service {2} is not recognized",
+                    "The system is unable to process the request.",
+                    "Update the caller to provide a correct type name."),
+
+    BAD_SUB_TYPE_NAME(400, "OMAG-COMMON-400-019 ",
+                    "The type name {0} passed on method {1} of service {2} is not a sub-type of {3}",
+                    "The system is unable to process the request.",
+                    "Update the caller to provide a correct type name."),
+
+    NOT_IN_THE_ZONE(400, "OMAG-COMMON-400-020 ",
+                      "Asset {0} is not recognized by the {1} service",
+                      "The system is unable to process the request.",
+                      "Update the caller to provide a correct asset identifier."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",
                                  "The request fails.",

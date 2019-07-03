@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -39,5 +40,19 @@ public class SecurityClassification implements Serializable {
 
     public void setSecurityProperties(Map<String, Object> securityProperties) {
         this.securityProperties = securityProperties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SecurityClassification that = (SecurityClassification) o;
+        return securityLabels.equals(that.securityLabels) &&
+                Objects.equals(securityProperties, that.securityProperties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(securityLabels, securityProperties);
     }
 }

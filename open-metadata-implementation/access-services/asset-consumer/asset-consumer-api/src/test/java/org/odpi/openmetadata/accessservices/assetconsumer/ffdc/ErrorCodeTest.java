@@ -67,37 +67,13 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        /*
-        testSingleErrorCodeValues(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NO_ASSET_PROPERTIES);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.TOO_MANY_CONNECTIONS);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_TEXT);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NEGATIVE_START_FROM);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.EMPTY_PAGE_SIZE);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.SERVER_NOT_AVAILABLE);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NO_METADATA_COLLECTION);
+
+        testSingleErrorCodeValues(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION);
         testSingleErrorCodeValues(AssetConsumerErrorCode.CONNECTION_NOT_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.PROXY_CONNECTION_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.ASSET_NOT_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.MULTIPLE_ASSETS_FOUND);
         testSingleErrorCodeValues(AssetConsumerErrorCode.UNKNOWN_ASSET);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_CONNECTION_RETURNED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_CONNECTOR_RETURNED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_END2_RETURNED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.EXCEPTION_RESPONSE_FROM_API);
-        */
     }
 
 
@@ -113,7 +89,7 @@ public class ErrorCodeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(AssetConsumerErrorCode.CLIENT_SIDE_REST_API_ERROR);
+            jsonString = objectMapper.writeValueAsString(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION);
         }
         catch (Throwable  exc)
         {
@@ -122,7 +98,7 @@ public class ErrorCodeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, AssetConsumerErrorCode.class) == AssetConsumerErrorCode.CLIENT_SIDE_REST_API_ERROR);
+            assertTrue(objectMapper.readValue(jsonString, AssetConsumerErrorCode.class) == AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION);
         }
         catch (Throwable  exc)
         {
@@ -136,7 +112,7 @@ public class ErrorCodeTest
      */
     @Test public void testToString()
     {
-        assertTrue(AssetConsumerErrorCode.OMRS_NOT_INITIALIZED.toString().contains("AssetConsumerErrorCode"));
+        assertTrue(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.toString().contains("AssetConsumerErrorCode"));
     }
 
 
@@ -145,8 +121,8 @@ public class ErrorCodeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED.equals(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED));
-        assertFalse(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED.equals(AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED));
+        assertTrue(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.equals(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION));
+        assertFalse(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.equals(AssetConsumerErrorCode.UNKNOWN_ASSET));
     }
 
 
@@ -155,7 +131,7 @@ public class ErrorCodeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode() == AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode());
-        assertFalse(AssetConsumerErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode() == AssetConsumerErrorCode.SERVICE_NOT_INITIALIZED.hashCode());
+        assertTrue(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.hashCode() == AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.hashCode());
+        assertFalse(AssetConsumerErrorCode.BAD_OUT_TOPIC_CONNECTION.hashCode() == AssetConsumerErrorCode.UNKNOWN_ASSET.hashCode());
     }
 }

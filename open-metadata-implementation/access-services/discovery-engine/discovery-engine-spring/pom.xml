@@ -39,6 +39,11 @@
             <artifactId>discovery-engine-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-discovery-framework</artifactId>
+        </dependency>
+
         <!-- Spring for REST APIs -->
 
         <dependency>

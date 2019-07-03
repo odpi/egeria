@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.admin;
 
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
-import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -31,7 +31,6 @@ import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEv
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
@@ -508,6 +507,8 @@ public class OMRSOperationalServices
      * OMRS repository connectors.
      *
      * @param enterpriseAccessConfig enterprise access configuration from the OMAG server
+     * @param maxPageSize maximum number of results that can be returned
+     * @param repositoryContentManager type knowledge base and other utilities
      * @return initialized OMRSEnterpriseConnectorManager object
      */
     private OMRSEnterpriseConnectorManager initializeEnterpriseConnectorManager(EnterpriseAccessConfig        enterpriseAccessConfig,
@@ -706,6 +707,27 @@ public class OMRSOperationalServices
 
 
     /**
+     * Set up a new security verifier (the handler runs with a default verifier until this
+     * method is called).
+     *
+     * The security verifier provides authorization checks for access and maintenance
+     * changes to open metadata.  Authorization checks are enabled through the
+     * OpenMetadataServerSecurityConnector.
+     *
+     * @param securityVerifier new security verifier
+     */
+    public void setSecurityVerifier(OpenMetadataServerSecurityVerifier securityVerifier)
+    {
+        if (securityVerifier != null)
+        {
+            if (localRepositoryConnector != null)
+            {
+                this.localRepositoryConnector.setSecurityVerifier(securityVerifier);
+            }
+        }
+    }
+
+    /**
      * Add an open metadata archive to the local repository.
      *
      * @param openMetadataArchiveConnection connection to the archive
@@ -857,7 +879,16 @@ public class OMRSOperationalServices
              */
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_AUDIT_LOG_STORE;
             String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(localServerName);
+                                + errorCode.getFormattedErrorMessage(localServerName);
+
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_AUDIT_LOG_DESTINATION;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -903,6 +934,15 @@ public class OMRSOperationalServices
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String        errorMessage = errorCode.getErrorMessageId()
                                        + errorCode.getFormattedErrorMessage(sourceName);
+
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_TOPIC_CONNECTION;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(sourceName, error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -953,13 +993,22 @@ public class OMRSOperationalServices
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(localServerName);
 
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction(),
-                                           error);
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_ARCHIVE_STORE;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
+            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
         }
     }
 
@@ -1010,6 +1059,15 @@ public class OMRSOperationalServices
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_EVENT_MAPPER;
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(localServerName);
+
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_REAL_LOCAL_EVENT_MAPPER;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
@@ -1074,13 +1132,21 @@ public class OMRSOperationalServices
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(connectionName);
 
-            throw new OMRSRuntimeException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction(),
-                                           error);
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_REAL_LOCAL_REPOSITORY_CONNECTOR;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(error.getClass().getName(), error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
+            throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName, errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
         }
     }
 }

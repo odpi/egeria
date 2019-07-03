@@ -75,6 +75,8 @@ public class GovernanceOfficerHandler
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper helper used by the converters
      * @param repositoryHandler handler for calling the repository services
+     * @param personalProfileHandler handler to manage personal profiles
+     * @param externalReferencesHandler handler to manage external references
      */
     public GovernanceOfficerHandler(String                       serviceName,
                                     String                       serverName,
@@ -761,6 +763,7 @@ public class GovernanceOfficerHandler
      *
      * @param userId the name of the calling user.
      * @return list of governance officer objects
+     * @throws InvalidParameterException the userId is null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
@@ -812,6 +815,7 @@ public class GovernanceOfficerHandler
      *
      * @param userId the name of the calling user.
      * @return list of governance officer objects
+     * @throws InvalidParameterException the userId is null.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
@@ -1010,6 +1014,7 @@ public class GovernanceOfficerHandler
      * @param userId the name of the calling user.
      * @param governanceOfficerGUID unique identifier (guid) of the governance officer.
      * @param profileGUID unique identifier for the profile.
+     * @param endDate date at which the current incumbent leaves the position
      * @throws InvalidParameterException the profile is not linked to this governance officer.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.

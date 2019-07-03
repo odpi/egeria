@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.OMRSInstanceRetrievalEventProcessor;
@@ -11,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -60,7 +57,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @param connectorManager provides notifications as repositories register and unregister with the
      *                         cohorts.
      */
-    public EnterpriseOMRSRepositoryConnector(OMRSConnectorManager connectorManager)
+    EnterpriseOMRSRepositoryConnector(OMRSConnectorManager connectorManager)
     {
         super();
 
@@ -102,8 +99,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
                                                                             super.serverName,
                                                                             repositoryHelper,
                                                                             repositoryValidator,
-                                                                            metadataCollectionId);
-
+                                                                            metadataCollectionId,
+                                                                            localMetadataCollectionId,
+                                                                            auditLog);
         }
     }
 
@@ -189,6 +187,37 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
+     * Returns the metadata collection to the repository where the supplied instance can be updated, ie its home repository.
+     *
+     * @param instance instance to test
+     * @param methodName name of method making the request (used for logging)
+     * @return repository connector
+     * @throws RepositoryErrorException home metadata collection is null
+     */
+    OMRSMetadataCollection  getHomeMetadataCollection(InstanceHeader instance,
+                                                      String         methodName) throws RepositoryErrorException
+    {
+        OMRSRepositoryConnector repositoryConnector = this.getHomeConnector(instance, methodName);
+
+        if (repositoryConnector != null)
+        {
+            return repositoryConnector.getMetadataCollection();
+        }
+
+        OMRSErrorCode  errorCode = OMRSErrorCode.NO_HOME_FOR_INSTANCE;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 instance.getGUID(),
+                                                                                                 instance.getMetadataCollectionId());
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                           this.getClass().getName(),
+                                           methodName,
+                                           errorMessage,
+                                           errorCode.getSystemAction(),
+                                           errorCode.getUserAction());
+    }
+
+    /**
      * Returns the connector to the repository where the supplied instance can be updated, ie its home repository.
      *
      * @param instance instance to test
@@ -196,8 +225,8 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return repository connector
      * @throws RepositoryErrorException home metadata collection is null
      */
-    protected OMRSRepositoryConnector  getHomeConnector(InstanceHeader instance,
-                                                        String         methodName) throws RepositoryErrorException
+    private OMRSRepositoryConnector  getHomeConnector(InstanceHeader instance,
+                                                      String         methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -205,7 +234,12 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
         String  instanceMetadataCollectionId = instance.getMetadataCollectionId();
 
-        if (instanceMetadataCollectionId.equals(localMetadataCollectionId))
+        if (localMetadataCollectionId.equals(instanceMetadataCollectionId))
+        {
+            return localConnector;
+        }
+
+        if (localMetadataCollectionId.equals(instance.getReplicatedBy()))
         {
             return localConnector;
         }
@@ -214,14 +248,34 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         {
             if (remoteCohortConnector != null)
             {
-                if (instanceMetadataCollectionId.equals(remoteCohortConnector.getMetadataCollectionId()))
+                String remoteMetadataCollectionId = remoteCohortConnector.getMetadataCollectionId();
+
+                if (remoteMetadataCollectionId != null)
                 {
-                    return remoteCohortConnector.getConnector();
+                    if (remoteMetadataCollectionId.equals(instanceMetadataCollectionId))
+                    {
+                        return remoteCohortConnector.getConnector();
+                    }
+
+                    if (remoteMetadataCollectionId.equals(instance.getReplicatedBy()))
+                    {
+                        return remoteCohortConnector.getConnector();
+                    }
                 }
             }
         }
 
-        return null;
+        OMRSErrorCode  errorCode = OMRSErrorCode.NO_HOME_FOR_INSTANCE;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 instance.getGUID(),
+                                                                                                 instanceMetadataCollectionId);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                           this.getClass().getName(),
+                                           methodName,
+                                           errorMessage,
+                                           errorCode.getSystemAction(),
+                                           errorCode.getUserAction());
     }
 
 
@@ -235,7 +289,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
      * @return OMRSRepositoryConnector List
      * @throws RepositoryErrorException the enterprise services are not available
      */
-    protected List<OMRSRepositoryConnector> getCohortConnectors(String     methodName) throws RepositoryErrorException
+    List<OMRSRepositoryConnector> getCohortConnectors(String     methodName) throws RepositoryErrorException
     {
         this.validateRepositoryIsActive(methodName);
 
@@ -277,150 +331,37 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
+     * Request the refresh of this instance.
      *
-     * @param entity the retrieved entity.
-     * @return Validated and processed entity.
+     * @param entity retrieved instance
      */
-    EntitySummary processRetrievedEntitySummary(String        sourceMetadataCollectionId,
-                                                EntitySummary entity)
+    public void requestRefreshOfEntity(EntityDetail   entity)
     {
-        EntitySummary   processedEntity = new EntitySummary(entity);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedEntity.getMetadataCollectionId() == null)
+        if ((localEventProcessor != null) && (entity != null))
         {
-            processedEntity.setMetadataCollectionId(metadataCollectionId);
-        }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedEntitySummary(localMetadataCollectionId,
-                                                                   sourceMetadataCollectionId,
-                                                                   processedEntity);
-        }
-
-        return processedEntity;
-    }
-
-
-    /**
-     * Pass an entity that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
-     *
-     * @param entity the retrieved entity.
-     * @return Validated and processed entity.
-     */
-    EntityDetail processRetrievedEntityDetail(String        sourceMetadataCollectionId,
-                                              EntityDetail  entity)
-    {
-        EntityDetail   processedEntity = new EntityDetail(entity);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedEntity.getMetadataCollectionId() == null)
-        {
-            processedEntity.setMetadataCollectionId(metadataCollectionId);
-        }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedEntityDetail(localMetadataCollectionId,
-                                                                  sourceMetadataCollectionId,
-                                                                  processedEntity);
-        }
-
-        return processedEntity;
-    }
-
-
-    /**
-     * Pass a list of entities that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param entities the retrieved relationships
-     * @return the validated and processed relationships
-     */
-    List<EntityDetail> processRetrievedEntities(String              sourceMetadataCollectionId,
-                                                List<EntityDetail>  entities)
-    {
-        List<EntityDetail> processedEntities = new ArrayList<>();
-
-        for (EntityDetail  entity : entities)
-        {
-            EntityDetail   processedEntity = this.processRetrievedEntityDetail(sourceMetadataCollectionId, entity);
-
-            if (processedEntity != null)
+            if (! localMetadataCollectionId.equals(entity.getMetadataCollectionId()))
             {
-                processedEntities.add(processedEntity);
+                localEventProcessor.processRetrievedEntitySummary(repositoryName,
+                                                                  localMetadataCollectionId,
+                                                                  entity);
             }
         }
-
-        return processedEntities;
     }
 
 
     /**
-     * Pass a relationship that has been retrieved from a remote open metadata repository so it can be validated and
-     * (if the rules permit) cached in the local repository.
+     * Request the refresh of this instance.
      *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationship the retrieved relationship
-     * @return the validated and processed relationship
+     * @param relationship retrieved instance
      */
-    public Relationship processRetrievedRelationship(String         sourceMetadataCollectionId,
-                                                     Relationship   relationship)
+    public void requestRefreshOfRelationship(Relationship   relationship)
     {
-        Relationship   processedRelationship = new Relationship(relationship);
-
-        /*
-         * Ensure the metadata collection is set up correctly.
-         */
-        if (processedRelationship.getMetadataCollectionId() == null)
+        if ((localEventProcessor != null) && (relationship != null))
         {
-            processedRelationship.setMetadataCollectionId(metadataCollectionId);
+            localEventProcessor.processRetrievedRelationship(repositoryName,
+                                                             localMetadataCollectionId,
+                                                             relationship);
         }
-
-        if (this.localEventProcessor != null)
-        {
-            this.localEventProcessor.processRetrievedRelationship(localMetadataCollectionId,
-                                                                  sourceMetadataCollectionId,
-                                                                  processedRelationship);
-        }
-
-        return processedRelationship;
-    }
-
-
-    /**
-     * Pass a list of relationships that have been retrieved from a remote open metadata repository so they can be
-     * validated and (if the rules permit) cached in the local repository.
-     *
-     * @param sourceMetadataCollectionId unique identifier for the metadata from the remote repository
-     * @param relationships        the list of retrieved relationships
-     * @return the validated and processed relationships
-     */
-    public List<Relationship> processRetrievedRelationships(String             sourceMetadataCollectionId,
-                                                            List<Relationship> relationships)
-    {
-        List<Relationship> processedRelationships = new ArrayList<>();
-
-        for (Relationship  relationship : relationships)
-        {
-            Relationship processedRelationship = this.processRetrievedRelationship(sourceMetadataCollectionId, relationship);
-
-            if (processedRelationship != null)
-            {
-                processedRelationships.add(processedRelationship);
-            }
-        }
-
-        return processedRelationships;
     }
 
 
@@ -438,7 +379,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
         if (localConnector != null)
         {
-            this.localEventProcessor = localConnector.getIncomingInstanceRetrievealEventProcessor();
+            this.localEventProcessor = localConnector.getIncomingInstanceRetrievalEventProcessor();
         }
     }
 
@@ -574,7 +515,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
          * @param metadataCollectionId unique identifier for the metadata collection accessed through the connector
          * @param connector connector for the repository
          */
-        public FederatedConnector(String metadataCollectionId, OMRSRepositoryConnector connector)
+        FederatedConnector(String metadataCollectionId, OMRSRepositoryConnector connector)
         {
             this.metadataCollectionId = metadataCollectionId;
             this.connector = connector;

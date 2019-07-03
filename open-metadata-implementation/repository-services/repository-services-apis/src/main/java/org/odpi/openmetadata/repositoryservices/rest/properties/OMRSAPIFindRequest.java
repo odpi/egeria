@@ -5,8 +5,8 @@ package org.odpi.openmetadata.repositoryservices.rest.properties;
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
-import java.io.Serializable;
-import java.util.*;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -118,7 +118,8 @@ public class OMRSAPIFindRequest extends OMRSAPIRequest
         {
             return false;
         }
-        OMRSAPIFindRequest that = (OMRSAPIFindRequest) objectToCompare;
+        OMRSAPIFindRequest
+                that = (OMRSAPIFindRequest) objectToCompare;
         return Objects.equals(getLimitResultsByStatus(), that.getLimitResultsByStatus());
     }
 
