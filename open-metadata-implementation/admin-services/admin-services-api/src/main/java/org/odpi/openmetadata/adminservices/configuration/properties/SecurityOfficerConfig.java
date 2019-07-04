@@ -26,14 +26,14 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
     private int securityOfficerServiceCode = 0;
     private String securityOfficerServiceName;
     private String securityOfficerServiceDescription;
-    private String     securityOfficerServerWiki;
+    private String securityOfficerServerWiki;
 
     private String accessServiceRootURL;
     private String accessServiceServerName;
 
-    private String     securityOfficerServerInTopicName;
+    private String securityOfficerServerInTopicName;
     private Connection securityOfficerServerInTopic;
-    private String     securityOfficerServerOutTopicName;
+    private String securityOfficerServerOutTopicName;
     private Connection securityOfficerServerOutTopic;
 
     /**
