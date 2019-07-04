@@ -9,11 +9,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,7 +25,7 @@ class DataEngineResourceTest {
     private static final String SERVER_NAME = "serverName";
 
     @Mock
-    private DataEngineRestServices dataEngineRestServices;
+    private DataEngineRESTServices dataEngineRestServices;
 
     @InjectMocks
     private DataEngineResource dataEngineResource;
@@ -38,43 +37,15 @@ class DataEngineResourceTest {
 
         verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
     }
-    @Test
-    void testCreateProcessWithPorts() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithPorts(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
-    @Test
-    void testCreateProcessWithDeployedApis() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
-    @Test
-    void testCreateProcessWithAssets() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
 
     @Test
     void testCreatePort() {
-        PortRequestBody portRequestBody = new PortRequestBody();
-        dataEngineResource.createPort(USER, SERVER_NAME, portRequestBody);
+        PortImplementationRequestBody portImplementationRequestBody = new PortImplementationRequestBody();
+        dataEngineResource.createPortImplementation(USER, SERVER_NAME, portImplementationRequestBody);
 
-        verify(dataEngineRestServices, times(1)).createPort(USER, SERVER_NAME, portRequestBody);
+        verify(dataEngineRestServices, times(1)).createPortImplementation(USER, SERVER_NAME, portImplementationRequestBody);
     }
 
-    @Test
-    void testCreateDeployedAPI() {
-        DeployedAPIRequestBody deployedAPIRequestBody = new DeployedAPIRequestBody();
-        dataEngineResource.createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
-    }
 
     @Test
     void testAddPortsToProcess() {
