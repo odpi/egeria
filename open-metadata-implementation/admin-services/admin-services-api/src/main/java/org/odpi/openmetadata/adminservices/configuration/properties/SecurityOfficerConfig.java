@@ -23,18 +23,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecurityOfficerConfig extends AdminServicesConfigHeader {
 
-    private int securityOfficerServiceCode = 0;
-    private String securityOfficerServiceName;
-    private String securityOfficerServiceDescription;
-    private String securityOfficerServerWiki;
+    private int         securityOfficerServiceCode = 0;
+    private String      securityOfficerServiceName;
+    private String      securityOfficerServiceDescription;
+    private String      securityOfficerServerWiki;
 
-    private String accessServiceRootURL;
-    private String accessServiceServerName;
+    private String      accessServiceRootURL;
+    private String      accessServiceServerName;
 
-    private String securityOfficerServerInTopicName;
-    private Connection securityOfficerServerInTopic;
-    private String securityOfficerServerOutTopicName;
-    private Connection securityOfficerServerOutTopic;
+    private String      securityOfficerServerInTopicName;
+    private Connection  securityOfficerServerInTopic;
+    private String      securityOfficerServerOutTopicName;
+    private Connection  securityOfficerServerOutTopic;
 
     /**
      * Default constructor

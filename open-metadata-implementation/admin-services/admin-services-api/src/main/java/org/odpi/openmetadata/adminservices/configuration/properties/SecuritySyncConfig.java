@@ -20,24 +20,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecuritySyncConfig extends AdminServicesConfigHeader {
-    private int securitySyncServiceCode = 0;
-    private String securitySyncServiceName;
-    private String securitySyncServerDescription;
-    private String securitySyncServiceWiki;
+    private int         securitySyncServiceCode = 0;
+    private String      securitySyncServiceName;
+    private String      securitySyncServerDescription;
+    private String      securitySyncServiceWiki;
 
-    private String accessServiceRootURL;
-    private String accessServiceServerName;
+    private String      accessServiceRootURL;
+    private String      accessServiceServerName;
 
-    private String securityServerURL;
-    private String securitySyncServerType;
-    private String securitySyncServerAuthorization;
-    private String securitySyncTagServiceName;
-    private Connection securitySyncServerConnection;
+    private String      securityServerURL;
+    private String      securitySyncServerType;
+    private String      securitySyncServerAuthorization;
+    private String      securitySyncTagServiceName;
+    private Connection  securitySyncServerConnection;
 
-    private String securitySyncInTopicName;
-    private Connection securitySyncInTopic;
-    private String securitySyncOutTopicName;
-    private Connection securitySyncOutTopic;
+    private String      securitySyncInTopicName;
+    private Connection  securitySyncInTopic;
+    private String      securitySyncOutTopicName;
+    private Connection  securitySyncOutTopic;
 
     /**
      * Default constructor
