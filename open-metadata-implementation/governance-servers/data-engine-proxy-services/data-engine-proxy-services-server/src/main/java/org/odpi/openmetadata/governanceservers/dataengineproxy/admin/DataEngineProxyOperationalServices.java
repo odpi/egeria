@@ -91,6 +91,15 @@ public class DataEngineProxyOperationalServices {
                 }
             }
 
+            // Start the connector
+            if (dataEngineProxyConnector != null) {
+                try {
+                    dataEngineProxyConnector.start();
+                } catch (ConnectorCheckedException e) {
+                    log.error("Error in starting the Data Engine Proxy connector.", e);
+                }
+            }
+
         }
 
         if (dataEngineProxyConnector != null && dataEngineProxyConnector.isActive()) {
@@ -98,7 +107,7 @@ public class DataEngineProxyOperationalServices {
             auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getFormattedLogMessage(localServerName),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
@@ -122,7 +131,7 @@ public class DataEngineProxyOperationalServices {
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getFormattedLogMessage(localServerName),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
