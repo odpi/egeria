@@ -23,21 +23,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecurityOfficerConfig extends AdminServicesConfigHeader {
 
-    private int        securityOfficerServerId = 0;
-    private String     securityOfficerServerName;
-    private String     securityOfficerServerDescription;
+    private int securityOfficerServiceCode = 0;
+    private String securityOfficerServiceName;
+    private String securityOfficerServiceDescription;
     private String     securityOfficerServerWiki;
 
-    private String     securityOfficerOMASURL;
-    private String     securityOfficerOMASServerName;
-    private String     securityOfficerOMASUsername;
-    private Connection securityOfficerConnection;
+    private String accessServiceRootURL;
+    private String accessServiceServerName;
 
     private String     securityOfficerServerInTopicName;
     private Connection securityOfficerServerInTopic;
     private String     securityOfficerServerOutTopicName;
     private Connection securityOfficerServerOutTopic;
-
 
     /**
      * Default constructor
@@ -51,17 +48,17 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      *
      * @return the code number for Security Officer Server component
      */
-    public int getSecurityOfficerServerId() {
-        return securityOfficerServerId;
+    public int getSecurityOfficerServiceCode() {
+        return securityOfficerServiceCode;
     }
 
     /**
      * Set up the code number (ordinal) for the Security Officer Server
      *
-     * @param securityOfficerServerId int ordinal
+     * @param securityOfficerServiceCode int ordinal
      */
-    public void setSecurityOfficerServerId(int securityOfficerServerId) {
-        this.securityOfficerServerId = securityOfficerServerId;
+    public void setSecurityOfficerServiceCode(int securityOfficerServiceCode) {
+        this.securityOfficerServiceCode = securityOfficerServiceCode;
     }
 
     /**
@@ -69,17 +66,17 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      *
      * @return the name of the security Officer Server
      */
-    public String getSecurityOfficerServerName() {
-        return securityOfficerServerName;
+    public String getSecurityOfficerServiceName() {
+        return securityOfficerServiceName;
     }
 
     /**
      * Set up the name of the Security Officer Server Name
      *
-     * @param securityOfficerServerName server name
+     * @param securityOfficerServiceName server name
      */
-    public void setSecurityOfficerServerName(String securityOfficerServerName) {
-        this.securityOfficerServerName = securityOfficerServerName;
+    public void setSecurityOfficerServiceName(String securityOfficerServiceName) {
+        this.securityOfficerServiceName = securityOfficerServiceName;
     }
 
     /**
@@ -123,68 +120,32 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      *
      * @return String URL
      */
-    public String getSecurityOfficerOMASURL() {
-        return securityOfficerOMASURL;
+    public String getAccessServiceRootURL() {
+        return accessServiceRootURL;
     }
 
     /**
      * Set up the URL for the Security Officer OMAS connected
-     * @param securityOfficerOMASURL ULR for the Security Officer OMAS instance
+     * @param accessServiceRootURL ULR for the Security Officer OMAS instance
      */
-    public void setSecurityOfficerOMASURL(String securityOfficerOMASURL) {
-        this.securityOfficerOMASURL = securityOfficerOMASURL;
+    public void setAccessServiceRootURL(String accessServiceRootURL) {
+        this.accessServiceRootURL = accessServiceRootURL;
     }
 
     /**
      * Return the name of the server where Security Officer OMAS is running
      * @return the server name
      */
-    public String getSecurityOfficerOMASServerName() {
-        return securityOfficerOMASServerName;
+    public String getAccessServiceServerName() {
+        return accessServiceServerName;
     }
 
     /**
      * Set up the name of the server where the instance of the Security Officer OMAS is running
-     * @param securityOfficerOMASServerName name of the server for Security Officer OMAS
+     * @param accessServiceServerName name of the server for Security Officer OMAS
      */
-    public void setSecurityOfficerOMASServerName(String securityOfficerOMASServerName) {
-        this.securityOfficerOMASServerName = securityOfficerOMASServerName;
-    }
-
-    /**
-     *  Returns the username used to connect to the instance of Security Officer OMAS
-     * @return username
-     */
-    public String getSecurityOfficerOMASUsername() {
-        return securityOfficerOMASUsername;
-    }
-
-    /**
-     * Set up the username for connected instance of Security Officer OMAS
-     * @param securityOfficerOMASUsername username of the Security Officer OMAS
-     */
-    public void setSecurityOfficerOMASUsername(String securityOfficerOMASUsername) {
-        this.securityOfficerOMASUsername = securityOfficerOMASUsername;
-    }
-
-
-    /**
-     * Return the OCF Connection for the topic used to pass requests to Security Officer Connector.
-     * The default values are constructed from the Security Officer Server Name.
-     *
-     * @return Connection for Securituy Officer OMAS
-     */
-    public Connection getSecurityOfficerConnection() {
-        return securityOfficerConnection;
-    }
-
-    /**
-     * Set up the OCF Connection used to pass requests to this Security Officer Connector.
-     *
-     * @param securityOfficerConnection Connection for the Security Officer Connector
-     */
-    public void setSecurityOfficerConnection(Connection securityOfficerConnection) {
-        this.securityOfficerConnection = securityOfficerConnection;
+    public void setAccessServiceServerName(String accessServiceServerName) {
+        this.accessServiceServerName = accessServiceServerName;
     }
 
     /**
@@ -264,14 +225,12 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
     @Override
     public String toString() {
         return "SecurityOfficerConfig{" +
-                "securityOfficerServerId=" + securityOfficerServerId +
-                ", securityOfficerServerName='" + securityOfficerServerName + '\'' +
-                ", securityOfficerServerDescription='" + securityOfficerServerDescription + '\'' +
+                "securityOfficerServiceCode=" + securityOfficerServiceCode +
+                ", securityOfficerServiceName='" + securityOfficerServiceName + '\'' +
+                ", securityOfficerServiceDescription='" + securityOfficerServiceDescription + '\'' +
                 ", securityOfficerServerWiki='" + securityOfficerServerWiki + '\'' +
-                ", securityOfficerOMASURL='" + securityOfficerOMASURL + '\'' +
-                ", securityOfficerConnection='" + securityOfficerConnection + '\'' +
-                ", securityOfficerOMASUsername='" + securityOfficerOMASUsername + '\'' +
-                ", securityOfficerOMASServerName='" + securityOfficerOMASServerName + '\'' +
+                ", accessServiceRootURL='" + accessServiceRootURL + '\'' +
+                ", accessServiceServerName='" + accessServiceServerName + '\'' +
                 ", securityOfficerServerInTopicName='" + securityOfficerServerInTopicName + '\'' +
                 ", securityOfficerServerInTopic=" + securityOfficerServerInTopic +
                 ", securityOfficerServerOutTopicName='" + securityOfficerServerOutTopicName + '\'' +
@@ -290,14 +249,12 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SecurityOfficerConfig that = (SecurityOfficerConfig) o;
-        return securityOfficerServerId == that.securityOfficerServerId &&
-                Objects.equals(securityOfficerServerName, that.securityOfficerServerName) &&
-                Objects.equals(securityOfficerServerDescription, that.securityOfficerServerDescription) &&
+        return securityOfficerServiceCode == that.securityOfficerServiceCode &&
+                Objects.equals(securityOfficerServiceName, that.securityOfficerServiceName) &&
+                Objects.equals(securityOfficerServiceDescription, that.securityOfficerServiceDescription) &&
                 Objects.equals(securityOfficerServerWiki, that.securityOfficerServerWiki) &&
-                Objects.equals(securityOfficerOMASURL, that.securityOfficerOMASURL) &&
-                Objects.equals(securityOfficerOMASUsername, that.securityOfficerOMASUsername) &&
-                Objects.equals(securityOfficerConnection, that.securityOfficerConnection) &&
-                Objects.equals(securityOfficerOMASServerName, that.securityOfficerOMASServerName) &&
+                Objects.equals(accessServiceRootURL, that.accessServiceRootURL) &&
+                Objects.equals(accessServiceServerName, that.accessServiceServerName) &&
                 Objects.equals(securityOfficerServerInTopicName, that.securityOfficerServerInTopicName) &&
                 Objects.equals(securityOfficerServerInTopic, that.securityOfficerServerInTopic) &&
                 Objects.equals(securityOfficerServerOutTopicName, that.securityOfficerServerOutTopicName) &&
@@ -311,8 +268,8 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(securityOfficerServerId, securityOfficerServerName, securityOfficerServerDescription, securityOfficerServerWiki,
-                securityOfficerOMASURL, securityOfficerOMASUsername, securityOfficerOMASServerName, securityOfficerConnection,
-                securityOfficerServerInTopicName, securityOfficerServerInTopic, securityOfficerServerOutTopicName, securityOfficerServerOutTopic);
+        return Objects.hash(securityOfficerServiceCode, securityOfficerServiceName, securityOfficerServiceDescription,
+                securityOfficerServerWiki, accessServiceRootURL, accessServiceServerName, securityOfficerServerInTopicName,
+                securityOfficerServerInTopic, securityOfficerServerOutTopicName, securityOfficerServerOutTopic);
     }
 }

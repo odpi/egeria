@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
@@ -73,7 +74,7 @@ public class OMAGServerSecurityOfficerService
                                 eventBusConfig.getConfigurationProperties()));
             }
 
-            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerOutTopicName() != null) {
+            if (securityOfficerConfig != null) {
                 securityOfficerConfig.setSecurityOfficerServerOutTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                 eventBusConfig.getConnectorProvider(),
@@ -81,19 +82,6 @@ public class OMAGServerSecurityOfficerService
                                 getOutputTopicName(securityOfficerConfig.getSecurityOfficerServerOutTopicName()),
                                 serverConfig.getLocalServerId(),
                                 eventBusConfig.getConfigurationProperties()));
-            }
-
-            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerOMASURL() != null
-                    && securityOfficerConfig.getSecurityOfficerOMASUsername() != null
-                    && securityOfficerConfig.getSecurityOfficerOMASServerName() != null){
-                Map<String, Object> additionalProperties = new HashMap<>();
-                additionalProperties.put("username", securityOfficerConfig.getSecurityOfficerOMASUsername());
-                additionalProperties.put("serverName", securityOfficerConfig.getSecurityOfficerOMASServerName());
-
-                securityOfficerConfig.setSecurityOfficerConnection(
-                        connectorConfigurationFactory.getSecurityOfficerServerConnection(serverName,
-                                securityOfficerConfig.getSecurityOfficerOMASURL(),
-                                additionalProperties));
             }
 
             serverConfig.setSecurityOfficerConfig(securityOfficerConfig);
@@ -111,9 +99,12 @@ public class OMAGServerSecurityOfficerService
         return response;
     }
 
-    private String getOutputTopicName(String securityServerType)
-    {
-        return outputTopic + securityServerType + defaultOutTopic;
+    private String getOutputTopicName(String securityServerType) {
+        if (securityServerType != null) {
+            return outputTopic + securityServerType + defaultOutTopic;
+        }
+
+        return outputTopic + "SecurityOfficerServer" + defaultInTopicName;
     }
 
     public VoidResponse enableSecurityOfficerService(String userId, String serverName)
