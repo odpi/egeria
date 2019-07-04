@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ranger-connector</artifactId>
+
     <dependencies>
 
         <dependency>
@@ -49,7 +50,11 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-collections4</artifactId>
+        </dependency>
 
+    </dependencies>
 
 </project>
