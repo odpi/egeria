@@ -88,6 +88,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-implementation</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
