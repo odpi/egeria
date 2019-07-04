@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.registration;
 
+import org.apache.commons.lang.StringUtils;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
@@ -42,6 +43,16 @@ public class RegistrationHandler {
     public SoftwareServerCapabilitySource registerTool(RegistrationRequestBody requestBody) {
 
         SoftwareServerCapabilitySource softwareServerCapability = requestBody.getSoftwareServerCapability();
+        if(StringUtils.isEmpty(softwareServerCapability.getQualifiedName())){
+            throw new RegistrationException(
+                    InformationViewErrorCode.REGISTRATION_EXCEPTION.getHttpErrorCode(),
+                    RegistrationHandler.class.getName(),
+                    InformationViewErrorCode.REGISTRATION_EXCEPTION.getFormattedErrorMessage("No qualified name was provided. This is mandatory."),
+                    InformationViewErrorCode.REGISTRATION_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.REGISTRATION_EXCEPTION.getUserAction(),
+                    null);
+        }
+
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
