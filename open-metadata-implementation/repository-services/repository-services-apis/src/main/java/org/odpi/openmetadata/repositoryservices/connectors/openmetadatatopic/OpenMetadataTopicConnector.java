@@ -136,11 +136,10 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      */
     private void distributeEvent(String event)
     {
-        for (OpenMetadataTopicListener  topicListener : topicListeners)
-        {
+        topicListeners.parallelStream().forEach((listener) -> {
             try
             {
-                topicListener.processEvent(event);
+                listener.processEvent(event);
             }
             catch (Throwable  error)
             {
@@ -148,14 +147,14 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
                 OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
                 auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(event, error.toString()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(event, error.toString()),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
             }
-        }
+        });
     }
 
 
