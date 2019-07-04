@@ -104,10 +104,10 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return createRangerServiceResource(serviceResource);
     }
 
-    private RangerServiceResource createRangerServiceResource(RangerServiceResource serviceResource) {
+    private RangerServiceResource createRangerServiceResource(RangerServiceResource resource) {
         String createAssociation = getRangerURL(SERVICE_TAGS_RESOURCES);
 
-        String body = getBody(serviceResource);
+        String body = getBody(resource);
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
 
@@ -115,7 +115,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to create the resource");
+            log.debug("Unable to create the resource {}", resource);
         }
         return null;
     }
@@ -189,7 +189,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<ResourceTagMapper> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, ResourceTagMapper.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to create the association between tag and resource");
+            log.debug("Unable to create the association between tag {} and resource {}", tagGUID, resourceGUID);
         }
         return null;
     }
@@ -198,14 +198,24 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     public void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper) {
         String deleteAssociationURL = getRangerURL(TAG_RESOURCE_ASSOCIATION, resourceTagMapper.getId());
 
-        doDelete(deleteAssociationURL);
+        Boolean isDeleted = doDelete(deleteAssociationURL);
+        if (isDeleted) {
+            log.debug("The association with id {} between tag {} and resource {} has been removed", resourceTagMapper.getId(), resourceTagMapper.getTagId(), resourceTagMapper.getResourceId());
+        } else {
+            log.debug("Unable to delete the association with id = {} between tag {} and resource {}", resourceTagMapper.getId(), resourceTagMapper.getTagId(), resourceTagMapper.getResourceId());
+        }
     }
 
     private void deleteAssociationResourceToSecurityTagBasedOnIds(String resourceGUID, String tagGUID) {
         String rangerBaseURL = connection.getEndpoint().getAddress();
         String deleteURLByGUIDs = MessageFormat.format(SERVICE_TAGS_MAP_TAG_GUID_RESOURCE_GUI, rangerBaseURL, tagGUID, resourceGUID);
 
-        doDelete(deleteURLByGUIDs);
+        Boolean isDeleted = doDelete(deleteURLByGUIDs);
+        if (isDeleted) {
+            log.debug("The association between tag {} and resoure {} has been deleted", tagGUID, resourceGUID);
+        } else {
+            log.debug("Unable to delete the association between tag {} and resource {}", tagGUID, resourceGUID);
+        }
     }
 
     private RangerTagDef createRangerTagDef() {
@@ -237,7 +247,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             restTemplate.exchange(createTagURL, HttpMethod.POST, entity, RangerTag.class);
             return rangerTag;
         } catch (HttpStatusCodeException exception) {
-            log.debug("Unable to create a security tag");
+            log.debug("Unable to create a security tag {}", rangerTag);
         }
         return rangerTag;
     }
@@ -416,18 +426,18 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         for (Map.Entry<String, Set<String>> tags : tagToResource.entrySet()) {
             Set<String> existingTags = existingMapping.get(tags.getKey());
-            if(existingTags == null) {
-                newMappings.put(tags.getKey(),new ArrayList<>(tags.getValue()));
+            if (existingTags == null) {
+                newMappings.put(tags.getKey(), new ArrayList<>(tags.getValue()));
                 continue;
             }
 
             Collection<String> newlyAdded = CollectionUtils.subtract(tags.getValue(), existingTags);
-            if(!newlyAdded.isEmpty()) {
+            if (!newlyAdded.isEmpty()) {
                 newMappings.put(tags.getKey(), (List<String>) newlyAdded);
             }
 
             Collection<String> outdatedTags = CollectionUtils.subtract(existingTags, tags.getValue());
-            if(!outdatedTags.isEmpty()) {
+            if (!outdatedTags.isEmpty()) {
                 outdatedMapping.put(tags.getKey(), (List<String>) outdatedTags);
             }
         }
@@ -491,7 +501,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return headers;
     }
 
-    private void doDelete(String deleteAssociationURL) {
+    private Boolean doDelete(String deleteAssociationURL) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
         headers.add("X-HTTP-Method-Override", "DELETE");
@@ -500,8 +510,10 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         try {
             restTemplate.exchange(deleteAssociationURL, HttpMethod.DELETE, entity, Void.class);
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to doDelete the association between a tag and a resource");
+            log.debug("Unable to doDelete the association between tag and resource");
+            return false;
         }
+        return true;
     }
 
     @Override
