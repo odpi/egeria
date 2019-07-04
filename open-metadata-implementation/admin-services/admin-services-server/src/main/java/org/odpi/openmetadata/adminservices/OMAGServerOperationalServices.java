@@ -4,16 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
@@ -33,6 +24,7 @@ import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalSe
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
@@ -163,6 +155,7 @@ public class OMAGServerOperationalServices
             SecurityOfficerConfig     securityOfficerConfig     = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
+            DataEngineProxyConfig     dataEngineProxyConfig     = configuration.getDataEngineProxyConfig();
 
             if ((repositoryServicesConfig == null) &&
                     (accessServiceConfigList == null) &&
@@ -172,7 +165,8 @@ public class OMAGServerOperationalServices
                     (securitySyncConfig == null) &&
                     (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
-                    (virtualizationConfig == null))
+                    (virtualizationConfig == null) &&
+                    (dataEngineProxyConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -544,6 +538,29 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName());
             }
 
+            /*
+             * Initialize the Data Engine Proxy Services.
+             */
+            if (dataEngineProxyConfig != null)
+            {
+                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                        configuration.getLocalServerType(),
+                        configuration.getOrganizationName(),
+                        configuration.getLocalServerUserId(),
+                        configuration.getLocalServerURL());
+
+                instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
+                operationalDataEngineProxyServices.initialize(
+                        dataEngineProxyConfig,
+                        operationalRepositoryServices.getAuditLog(
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceWiki())
+                );
+
+                activatedServiceList.add(GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
+            }
 
             /*
              * Initialize the Stewardship Services.  This is a governance daemon for running automated stewardship actions.

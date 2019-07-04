@@ -596,10 +596,18 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "displayName";
         final String attribute1Description     = "Display name of the process";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "formula";
+        final String attribute2Description     = "Formula for the process";
+        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -10181,7 +10189,7 @@ public class OpenMetadataTypesArchive
      */
     private EnumDef getPortTypeEnum()
     {
-        final String guid            = "HSGybLtU-c1fr-PAO3-SmYj-AJX6fKIpLVNS";
+        final String guid            = "b57Fbce7-42ac-71D1-D6a6-9f62Cb7C6dc3";
         final String name            = "PortType";
         final String description     = "Descriptor for a port that indicates its type.";
         final String descriptionGUID = null;
@@ -10261,7 +10269,7 @@ public class OpenMetadataTypesArchive
         /*
          * Build the Entity
          */
-        final String guid            = "4253ee4F-AUBw-PA91-AwA3-rP3ZEsUgii6w";
+        final String guid            = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";
         final String name            = "Port";
         final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
@@ -10285,9 +10293,19 @@ public class OpenMetadataTypesArchive
         final String attribute1Description     = "Display name of the port";
         final String attribute1DescriptionGUID = null;
 
+        final String attribute2Name            = "portType";
+        final String attribute2Description     = "Type of port";
+        final String attribute2DescriptionGUID = null;
+
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getEnumTypeDefAttribute("PortType",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -10305,9 +10323,9 @@ public class OpenMetadataTypesArchive
         /*
          * Build the Entity
          */
-        final String guid            = "BgehpbcK-M5NI-KQ4R-ElaX-cmzumvM0AW8k";
+        final String guid            = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";
         final String name            = "PortAlias";
-        final String description     = "Entity that describes the interaction point a process and a schema type.";
+        final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
@@ -10330,38 +10348,18 @@ public class OpenMetadataTypesArchive
         /*
          * Build the Entity
          */
-        final String guid            = "hy9is7dx-xQF9-wGFb-dkP6-ddyd362NBp68";
+        final String guid            = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";
         final String name            = "PortImplementation";
-        final String description     = "Entity that describes the interaction point between two assets.";
+        final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
         final String superTypeName   = "Port";
 
 
-        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
-                                                                name,
-                                                                this.archiveBuilder.getEntityDef(superTypeName),
-                                                                description,
-                                                                descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Type of port";
-        final String attribute1DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("PortType",
-                                                        attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
-        properties.add(property);
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
     /**
@@ -10372,7 +10370,7 @@ public class OpenMetadataTypesArchive
         /*
          * Build the relationship
          */
-        final String guid            = "UzK6vHfH-JC46-vXYi-qKZE-v0bbM58nQGPX";
+        final String guid            = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";
         final String name            = "PortDelegation";
         final String description     = "A relationship between a more granular and a more abstract port";
         final String descriptionGUID = null;
@@ -10392,10 +10390,10 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "Port";
-        final String                     end1AttributeName            = "delegatingTo";
+        final String                     end1AttributeName            = "delegatingFrom";
         final String                     end1AttributeDescription     = "Higher level Port";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -10408,10 +10406,10 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "delegatingFrom";
+        final String                     end2AttributeName            = "delegatingTo";
         final String                     end2AttributeDescription     = "Lower level port";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
@@ -10433,7 +10431,7 @@ public class OpenMetadataTypesArchive
         /*
          * Build the relationship
          */
-        final String guid            = "77cJwOaQ-RpBN-4EJk-YInj-zFZ6FCEjsaBR";
+        final String guid            = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";
         final String name            = "ProcessPort";
         final String description     = "A link between a port and the process used by the port";
         final String descriptionGUID = null;
@@ -20813,7 +20811,7 @@ public class OpenMetadataTypesArchive
         /*
          * Build the relationship
          */
-        final String guid            = "dsdPJ7OO-yYyG-cRvY-wOoK-oaVNIAIxo2MP";
+        final String guid            = "B216fA00-8281-F9CC-9911-Ae6377f2b457";
         final String name            = "PortSchema";
         final String description     = "A link between a Port and a SchemaType";
         final String descriptionGUID = null;
@@ -20874,7 +20872,7 @@ public class OpenMetadataTypesArchive
         /*
          * Build the relationship
          */
-        final String guid            = "GGQmRWnY-aKYh-Yzsa-UoAi-1DsFzGTLqjJk";
+        final String guid            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
         final String name            = "LineageMapping";
         final String description     = "A link between two schema types.";
         final String descriptionGUID = null;
