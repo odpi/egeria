@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.informationview.events;
 import com.fasterxml.jackson.annotation.*;
 
 
+import javax.validation.constraints.NotBlank;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -19,11 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataViewColumn.class, name = "DataViewColumn"),
         @JsonSubTypes.Type(value = DataViewTable.class, name = "DataViewTable")})
-@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
 @JsonIdentityReference
 public class DataViewElement {
 
+    @NotBlank
     private String id;
+    @NotBlank
     private String name;
     private String nativeClass;
     private String comment;

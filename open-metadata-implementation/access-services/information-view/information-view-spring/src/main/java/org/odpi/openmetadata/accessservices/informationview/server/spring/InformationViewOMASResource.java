@@ -8,11 +8,17 @@ import org.odpi.openmetadata.accessservices.informationview.events.RegistrationR
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewRestServices;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
 
 
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/")
+@Validated
 public class InformationViewOMASResource {
 
     private final InformationViewRestServices restAPI = new InformationViewRestServices();
@@ -32,7 +38,7 @@ public class InformationViewOMASResource {
     @PostMapping(path = "/report")
     public InformationViewOMASAPIResponse submitReport(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody ReportRequestBody requestBody) {
+                                                       @RequestBody @Valid ReportRequestBody requestBody) {
         return restAPI.submitReport(serverName, userId, requestBody);
     }
 
@@ -48,7 +54,7 @@ public class InformationViewOMASResource {
     @PostMapping(path = "/dataview")
     public InformationViewOMASAPIResponse submitDataView(@PathVariable("serverName") String serverName,
                                                          @PathVariable("userId") String userId,
-                                                         @RequestBody DataViewRequestBody requestBody) {
+                                                         @RequestBody @Valid DataViewRequestBody requestBody) {
         return restAPI.submitDataView(serverName, userId, requestBody);
     }
 
@@ -65,8 +71,10 @@ public class InformationViewOMASResource {
     @GetMapping(path = "/databases")
     public InformationViewOMASAPIResponse retrieveDatabases(@PathVariable("serverName") String serverName,
                                                             @PathVariable("userId") String userId,
-                                                            @RequestParam int startFrom,
-                                                            @RequestParam int pageSize) {
+                                                            @PositiveOrZero(message = "startFrom should be a positive number")
+                                                            @RequestParam Integer startFrom,
+                                                            @PositiveOrZero(message = "pageSize should be a positive number")
+                                                            @RequestParam Integer pageSize) {
         return restAPI.getDatabases(serverName, userId, startFrom, pageSize);
     }
 
@@ -84,8 +92,11 @@ public class InformationViewOMASResource {
     @GetMapping(path = "databases/{database}/tables")
     public InformationViewOMASAPIResponse retrieveTablesForDatabase(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
+                                                                    @NotBlank(message = "guid of the database should not be blank")
                                                                     @PathVariable("database") String databaseGuid,
+                                                                    @PositiveOrZero(message = "startFrom should be a positive number")
                                                                     @RequestParam int startFrom,
+                                                                    @PositiveOrZero(message = "pageSize should be a positive number")
                                                                     @RequestParam int pageSize) {
         return restAPI.getTablesForDatabase(serverName, userId, databaseGuid, startFrom, pageSize);
     }
@@ -102,6 +113,7 @@ public class InformationViewOMASResource {
     @GetMapping(path = "tables/{table}")
     public InformationViewOMASAPIResponse retrieveTableContext(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
+                                                               @NotBlank(message = "guid of the table should not be blank")
                                                                @PathVariable("table") String tableGuid) {
         return restAPI.getTableContext(serverName, userId, tableGuid);
     }
@@ -119,9 +131,12 @@ public class InformationViewOMASResource {
     @GetMapping(path = "tables/{table}/columns")
     public InformationViewOMASAPIResponse retrieveTableColumns(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
+                                                               @NotBlank(message = "guid of the table should not be blank")
                                                                @PathVariable("table") String tableGuid,
-                                                               @RequestParam int startFrom,
-                                                               @RequestParam int pageSize) {
+                                                               @PositiveOrZero(message = "startFrom should be a positive number")
+                                                               @RequestParam Integer startFrom,
+                                                               @PositiveOrZero(message = "pageSize should be a positive number")
+                                                               @RequestParam Integer pageSize) {
         return restAPI.getTableColumns(serverName, userId, tableGuid, startFrom, pageSize);
     }
 
@@ -160,14 +175,13 @@ public class InformationViewOMASResource {
      *
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
-     * @param registrationGuid guid of SoftwareServerCapability entity associated to the external tool
      * @param reportId - id of the report to retrieve
      * @return response containing the report metadata representation or the error in case of failure to retrieve it
      */
     @GetMapping(path = "/report")
     public InformationViewOMASAPIResponse retrieveReport(@PathVariable("serverName") String serverName,
                                                          @PathVariable("userId") String userId,
-                                                         @RequestParam String registrationGuid,
+                                                         @NotBlank(message = "report id should not be blank")
                                                          @RequestParam String reportId) {
         return restAPI.retrieveReport(serverName, userId, reportId);
     }
@@ -177,15 +191,14 @@ public class InformationViewOMASResource {
      *
      * @param serverName  unique identifier for requested server.
      * @param userId      the unique identifier for the user
-     * @param registrationGuid guid of SoftwareServerCapability entity associated to the external tool
      * @param dataViewId id of the data view
      * @return response containing the data view metadata representation or the error in case of failure to retrieve it
      */
     @GetMapping(path = "/dataview")
     public InformationViewOMASAPIResponse retrieveDataView(@PathVariable("serverName") String serverName,
-                                                         @PathVariable("userId") String userId,
-                                                         @RequestParam String registrationGuid,
-                                                         @RequestParam String dataViewId) {
+                                                           @PathVariable("userId") String userId,
+                                                           @NotBlank(message = "data view id should not be blank")
+                                                           @RequestParam String dataViewId) {
         return restAPI.retrieveDataView(serverName, userId, dataViewId);
     }
 
