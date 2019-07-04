@@ -87,17 +87,17 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      *
      * @return String description
      */
-    public String getSecurityOfficerServerDescription() {
-        return securityOfficerServerDescription;
+    public String getSecurityOfficerServiceDescription() {
+        return securityOfficerServiceDescription;
     }
 
     /**
      * Set up the short description of the Security Officer Server Component.  The default value is in English but this can be changed.
      *
-     * @param  securityOfficerServerDescription String securityOfficerServerDescription
+     * @param  securityOfficerServiceDescription String securityOfficerServiceDescription
      */
-    public void setSecurityOfficerServerDescription(String securityOfficerServerDescription) {
-        this.securityOfficerServerDescription = securityOfficerServerDescription;
+    public void setSecurityOfficerServiceDescription(String securityOfficerServiceDescription) {
+        this.securityOfficerServiceDescription = securityOfficerServiceDescription;
     }
 
     /**

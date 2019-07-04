@@ -14,9 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class OMAGServerSecurityOfficerService
@@ -50,13 +48,18 @@ public class OMAGServerSecurityOfficerService
             }
 
             if (securityOfficerConfig == null) {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for security Officer services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for Security Officer Service.");
             } else {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for security Officer services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for Security Officer Service.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+            securityOfficerConfig.setSecurityOfficerServiceCode(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceCode());
+            securityOfficerConfig.setSecurityOfficerServiceName(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName());
+            securityOfficerConfig.setSecurityOfficerServiceDescription(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceDescription());
+            securityOfficerConfig.setSecurityOfficerServerWiki(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceWiki());
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
             if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerInTopicName() != null) {
