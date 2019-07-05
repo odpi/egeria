@@ -1,0 +1,231 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.dataengine.client;
+
+import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+
+import java.util.List;
+
+/**
+ * The Data Engine Open Metadata Access Service (OMAS) provides an interface for data engine tools to create
+ * processes with ports, schemas and relationships. See interface definition for more explanation.
+ */
+public class DataEngineImpl implements DataEngineClient {
+
+    private String serverName;
+    private String serverPlatformRootURL;
+
+    private OCFRESTClient restClient;
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
+
+    private static final String qualifiedNameParameter = "qualifiedName";
+
+    /**
+     * Create a new client that passes userId and password in each HTTP request.  This is the
+     * userId/password of the calling server.  The end user's userId is sent on each request.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param userId                caller's userId embedded in all HTTP requests
+     * @param password              caller's userId embedded in all HTTP requests
+     *
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DataEngineImpl(String serverName, String serverPlatformRootURL, String userId, String password) throws
+                                                                                                           InvalidParameterException {
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+
+        this.restClient = new OCFRESTClient(serverName, serverPlatformRootURL, userId, password);
+    }
+
+    @Override
+    public String createProcess(String userId, String qualifiedName, String processName, String description,
+                                String latestChange, List<String> zoneMembership, String displayName, String formula,
+                                String owner, OwnerType ownerType, List<PortImplementation> portImplementations,
+                                List<PortAlias> portAliases, List<LineageMapping> lineageMappings) throws
+                                                                                                   PropertyServerException,
+                                                                                                   InvalidParameterException,
+                                                                                                   UserNotAuthorizedException {
+        final String methodName = "createProcess";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/processes";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setProcess(new Process(qualifiedName, processName, description, latestChange, zoneMembership,
+                displayName, formula, owner, ownerType, portImplementations, portAliases, lineageMappings));
+
+        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public String createSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
+                                                 String type, String version, String patchLevel, String source) throws
+                                                                                                                InvalidParameterException,
+                                                                                                                UserNotAuthorizedException,
+                                                                                                                PropertyServerException {
+
+        final String methodName = "createSoftwareServerCapability";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "software-server-capabilities";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+        requestBody.setSoftwareServerCapability(new SoftwareServerCapability(qualifiedName, name, description, type,
+                version, patchLevel, source));
+
+        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
+                                   String encodingStandard, String usage, String versionNumber,
+                                   List<Attribute> attributeList) throws InvalidParameterException,
+                                                                         PropertyServerException,
+                                                                         UserNotAuthorizedException {
+        final String methodName = "createSoftwareServerCapability";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "schema-types";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        requestBody.setSchemaType(new SchemaType(qualifiedName, displayName, author, usage, encodingStandard,
+                versionNumber, attributeList));
+
+        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public String createPortImplementation(String userId, String qualifiedName, String displayName, PortType portType,
+                                           SchemaType schemaType) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException {
+        final String methodName = "createPortImplementation";
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "port-implementations";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
+        requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType));
+
+        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public String createPortAlias(String userId, String qualifiedName, String displayName, PortType portType,
+                                  String delegatesTo) throws InvalidParameterException,
+                                                             UserNotAuthorizedException,
+                                                             PropertyServerException {
+        final String methodName = "createPortAlias";
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "port-aliases";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+
+        PortAliasRequestBody requestBody = new PortAliasRequestBody();
+        requestBody.setPort(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
+
+        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public void addLineageMappings(String userId, List<LineageMapping> lineageMappings) throws
+                                                                                        InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException {
+        final String methodName = "addLineageMappings";
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "lineage-mappings";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
+        requestBody.setLineageMappings(lineageMappings);
+
+        callVoidPostRESTCall(userId, methodName, urlTemplate, requestBody);
+    }
+
+    @Override
+    public void addPortsToProcess(String userId, List<String> portGUIDs, String processGUID) throws
+                                                                                             InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException {
+        final String methodName = "addPortsToProcess";
+
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
+                "/processes/{2}/ports";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        PortListRequestBody requestBody = new PortListRequestBody();
+        requestBody.setPorts(portGUIDs);
+
+        callVoidPostRESTCall(userId, methodName, urlTemplate, requestBody, processGUID);
+    }
+
+    private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate,
+                                      DataEngineOMASAPIRequestBody requestBody, Object... params) throws
+                                                                                                  PropertyServerException,
+                                                                                                  InvalidParameterException,
+                                                                                                  UserNotAuthorizedException {
+        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL
+                + urlTemplate, requestBody, serverName, userId, params);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    }
+
+    private String callGUIDPostRESTCall(String userId, String methodName, String urlTemplate,
+                                        DataEngineOMASAPIRequestBody requestBody, Object... params) throws
+                                                                                                    PropertyServerException,
+                                                                                                    InvalidParameterException,
+                                                                                                    UserNotAuthorizedException {
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getGUID();
+    }
+}
