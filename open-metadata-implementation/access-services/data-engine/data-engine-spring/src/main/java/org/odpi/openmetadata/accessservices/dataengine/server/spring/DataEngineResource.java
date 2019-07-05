@@ -45,7 +45,7 @@ public class DataEngineResource {
      *
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/software-server-capability")
+    @PostMapping(path = "/software-server-capabilities")
     public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
@@ -61,7 +61,7 @@ public class DataEngineResource {
      *
      * @return unique identified of the software server
      */
-    @GetMapping(path = "/software-server-capability/{qualifiedName}")
+    @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
     public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
                                                                    @PathVariable String userId,
                                                                    @PathVariable String qualifiedName) {
