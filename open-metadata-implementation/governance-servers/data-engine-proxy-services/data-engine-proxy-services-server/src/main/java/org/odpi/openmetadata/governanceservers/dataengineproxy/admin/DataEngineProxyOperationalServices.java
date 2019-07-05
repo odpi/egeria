@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -73,9 +75,9 @@ public class DataEngineProxyOperationalServices {
             Connection dataEngineProxy = dataEngineProxyConfig.getDataEngineProxyConnection();
             if (dataEngineProxy != null) {
                 log.info("Found connection: " + dataEngineProxy);
-                DataEngineConnectorProvider proxyProvider = new DataEngineConnectorProvider();
                 try {
-                    dataEngineProxyConnector = (DataEngineConnectorBase) proxyProvider.getConnector(dataEngineProxy);
+                    ConnectorBroker connectorBroker = new ConnectorBroker();
+                    dataEngineProxyConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineProxy);
                 } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                     log.error("Unable to initialize connector.", e);
                     auditCode = DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION;
@@ -89,6 +91,15 @@ public class DataEngineProxyOperationalServices {
                 }
             }
 
+            // Start the connector
+            if (dataEngineProxyConnector != null) {
+                try {
+                    dataEngineProxyConnector.start();
+                } catch (ConnectorCheckedException e) {
+                    log.error("Error in starting the Data Engine Proxy connector.", e);
+                }
+            }
+
         }
 
         if (dataEngineProxyConnector != null && dataEngineProxyConnector.isActive()) {
@@ -96,7 +107,7 @@ public class DataEngineProxyOperationalServices {
             auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getFormattedLogMessage(localServerName),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
@@ -120,7 +131,7 @@ public class DataEngineProxyOperationalServices {
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
+                    auditCode.getFormattedLogMessage(localServerName),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
