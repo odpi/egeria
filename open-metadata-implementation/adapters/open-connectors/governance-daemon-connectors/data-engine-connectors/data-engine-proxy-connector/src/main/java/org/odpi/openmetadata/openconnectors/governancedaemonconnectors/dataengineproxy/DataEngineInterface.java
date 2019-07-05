@@ -7,17 +7,53 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengi
 
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 
 import java.util.List;
 
 public interface DataEngineInterface {
 
     /**
+     * Register the provided SoftwareServiceCapbility as a Data Engine.
+     *
+     * @param dataEngine
+     * @param userId
+     * @return String - the GUID of the registered Data Engine
+     */
+    String registerDataEngine(SoftwareServerCapability dataEngine, String userId);
+
+    /**
+     * Register the provided SoftwareServiceCapbility as a Data Engine.
+     *
+     * @param dataEngine
+     * @return String - the GUID of the registered Data Engine
+     */
+    String registerDataEngine(SoftwareServerCapability dataEngine);
+
+    /**
      * Send the provided process to the Data Engine OMAS.
      *
      * @param process
+     * @param userId
+     * @return String - the GUID of the process that was created
      */
-    void sendProcess(Process process);
+    String sendProcess(Process process, String userId);
+
+    /**
+     * Send the provided process to the Data Engine OMAS.
+     *
+     * @param process
+     * @return String - the GUID of the process that was created
+     */
+    String sendProcess(Process process);
+
+    /**
+     * Send the provided list of LineageMappings to the Data Engine OMAS.
+     *
+     * @param lineageMappingList
+     * @param userId
+     */
+    void sendLineageMappings(List<LineageMapping> lineageMappingList, String userId);
 
     /**
      * Send the provided list of LineageMappings to the Data Engine OMAS.
