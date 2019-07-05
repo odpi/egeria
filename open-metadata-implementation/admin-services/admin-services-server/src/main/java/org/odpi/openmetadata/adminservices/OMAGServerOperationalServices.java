@@ -547,6 +547,7 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerType(),
                         configuration.getOrganizationName(),
                         configuration.getLocalServerUserId(),
+                        configuration.getLocalServerPassword(),
                         configuration.getLocalServerURL());
 
                 instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
