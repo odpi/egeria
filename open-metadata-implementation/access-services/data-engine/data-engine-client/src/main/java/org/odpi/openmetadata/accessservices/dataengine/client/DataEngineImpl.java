@@ -35,6 +35,21 @@ import java.util.List;
  * processes with ports, schemas and relationships. See interface definition for more explanation.
  */
 public class DataEngineImpl implements DataEngineClient {
+    private static final String QUALIFIED_NAME_PARAMETER = "qualifiedName";
+    private static final String PROCESS_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/processes";
+    private static final String SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/software-server-capabilities";
+    private static final String SCHEMA_TYPE_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/schema-types";
+    private static final String PORT_IMPLEMENTATION_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/port-implementations";
+    private static final String PORT_ALIAS_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/port-aliases";
+    private static final String LINEAGE_MAPPINGS_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/lineage-mappings";
+    private static final String PORTS_TO_PROCESS_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
+            "/data-engine/users/{1}/processes/{2}/ports";
 
     private String serverName;
     private String serverPlatformRootURL;
@@ -42,8 +57,6 @@ public class DataEngineImpl implements DataEngineClient {
     private OCFRESTClient restClient;
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
-
-    private static final String qualifiedNameParameter = "qualifiedName";
 
     /**
      * Create a new client that passes userId and password in each HTTP request.  This is the
@@ -74,16 +87,29 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                                    InvalidParameterException,
                                                                                                    UserNotAuthorizedException {
         final String methodName = "createProcess";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/processes";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         ProcessRequestBody requestBody = new ProcessRequestBody();
         requestBody.setProcess(new Process(qualifiedName, processName, description, latestChange, zoneMembership,
                 displayName, formula, owner, ownerType, portImplementations, portAliases, lineageMappings));
 
-        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createProcess(String userId, Process process) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException {
+        final String methodName = "createProcess";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        ProcessRequestBody requestBody = new ProcessRequestBody();
+        requestBody.setProcess(process);
+
+        return callGUIDPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -94,17 +120,30 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                                                 PropertyServerException {
 
         final String methodName = "createSoftwareServerCapability";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "software-server-capabilities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
         requestBody.setSoftwareServerCapability(new SoftwareServerCapability(qualifiedName, name, description, type,
                 version, patchLevel, source));
 
-        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
+                                                                                                                   InvalidParameterException,
+                                                                                                                   UserNotAuthorizedException,
+                                                                                                                   PropertyServerException {
+        final String methodName = "createSoftwareServerCapability";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+        requestBody.setSoftwareServerCapability(softwareServerCapability);
+
+        return callGUIDPostRESTCall(userId, methodName, SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -114,17 +153,29 @@ public class DataEngineImpl implements DataEngineClient {
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException {
         final String methodName = "createSoftwareServerCapability";
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "schema-types";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(new SchemaType(qualifiedName, displayName, author, usage, encodingStandard,
                 versionNumber, attributeList));
 
-        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException {
+        final String methodName = "createSoftwareServerCapability";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        requestBody.setSchemaType(schemaType);
+
+        return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -134,16 +185,28 @@ public class DataEngineImpl implements DataEngineClient {
                                                                          PropertyServerException {
         final String methodName = "createPortImplementation";
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "port-implementations";
-
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType));
 
-        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createPortImplementation(String userId, PortImplementation portImplementation) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 UserNotAuthorizedException,
+                                                                                                 PropertyServerException {
+        final String methodName = "createPortImplementation";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
+        requestBody.setPortImplementation(portImplementation);
+
+        return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -153,16 +216,27 @@ public class DataEngineImpl implements DataEngineClient {
                                                              PropertyServerException {
         final String methodName = "createPortAlias";
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "port-aliases";
-
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPort(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
 
-        return callGUIDPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createPortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException {
+        final String methodName = "createPortAlias";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        PortAliasRequestBody requestBody = new PortAliasRequestBody();
+        requestBody.setPort(portAlias);
+
+        return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -172,15 +246,12 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                         PropertyServerException {
         final String methodName = "addLineageMappings";
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "lineage-mappings";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(lineageMappings);
 
-        callVoidPostRESTCall(userId, methodName, urlTemplate, requestBody);
+        callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -190,15 +261,12 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                              PropertyServerException {
         final String methodName = "addPortsToProcess";
 
-        final String urlTemplate = "/servers/{0}/open-metadata/access-services/data-engine/users/{1}/" +
-                "/processes/{2}/ports";
-
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PortListRequestBody requestBody = new PortListRequestBody();
         requestBody.setPorts(portGUIDs);
 
-        callVoidPostRESTCall(userId, methodName, urlTemplate, requestBody, processGUID);
+        callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);
     }
 
     private void callVoidPostRESTCall(String userId, String methodName, String urlTemplate,
