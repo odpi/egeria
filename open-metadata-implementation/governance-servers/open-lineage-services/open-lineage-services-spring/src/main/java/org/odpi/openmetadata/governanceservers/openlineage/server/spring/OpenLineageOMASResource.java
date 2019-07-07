@@ -22,7 +22,7 @@ public class OpenLineageOMASResource {
     }
     
     @GetMapping(path = "/export/{graph}")
-    public OpenLineageAPIResponse exportGraph(@PathVariable("userId") String userId,
+    public String exportGraph(@PathVariable("userId") String userId,
                                               @PathVariable("serverName") String serverName,
                                               @PathVariable("graph") String graph) {
         return restAPI.exportGraph(serverName, userId, graph);
@@ -35,7 +35,7 @@ public class OpenLineageOMASResource {
     }
 
     @GetMapping(path = "/initial-graph/{lineageType}/{guid}")
-    public OpenLineageAPIResponse initialGraph(@PathVariable("userId") String userId,
+    public String initialGraph(@PathVariable("userId") String userId,
                                                @PathVariable("serverName") String serverName,
                                                @PathVariable("lineageType") String lineageType,
                                                @PathVariable("guid") String guid) {
