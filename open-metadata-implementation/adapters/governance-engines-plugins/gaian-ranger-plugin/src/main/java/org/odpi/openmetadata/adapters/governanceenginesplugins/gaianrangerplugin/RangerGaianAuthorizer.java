@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin;
 
 import com.ibm.gaiandb.Logger;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
@@ -17,7 +17,13 @@ import org.apache.ranger.plugin.service.RangerBasePlugin;
 import java.util.List;
 import java.util.Set;
 
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.*;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_APP_ID;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SERVICE_TYPE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.NULL_MASK_TYPE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SCHEMA_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.TABLE_RESOURCE;
 
 public class RangerGaianAuthorizer implements GaianAuthorizer {
 

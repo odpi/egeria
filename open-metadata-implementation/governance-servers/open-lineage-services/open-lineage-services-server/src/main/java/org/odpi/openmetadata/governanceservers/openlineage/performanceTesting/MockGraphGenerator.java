@@ -10,15 +10,13 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mockGraph;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
 
 public class MockGraphGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(MockGraphGenerator.class);
 
-    private boolean simpleGraph;
     private int numberGlossaryTerms;
     private int numberTables;
     private int processesPerFlow;
@@ -36,8 +34,6 @@ public class MockGraphGenerator {
     }
 
     private void setProperties() {
-
-        this.simpleGraph = true;
 
         this.numberGlossaryTerms = 3;
         this.numberFlows = 1;
@@ -59,20 +55,15 @@ public class MockGraphGenerator {
     }
 
     public void generate() {
-        if(simpleGraph){
-            GraphTraversalSource g = mockGraph.traversal();
-            Vertex v1 = g.addV("node1").next();
-            Vertex v2 = g.addV("node2").next();
-            Vertex v3 = g.addV("node3").next();
-            Vertex v4 = g.addV("node4").next();
-            v1.addEdge("edge1to2", v2);
-            v3.addEdge("edge3to4", v4);
-            g.tx().commit();
+        try {
+            if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
+                generateVerbose();
+            }
+            log.info("Generated mock graph");
         }
-        else if (nodes.contains("table") && nodes.contains("column") && nodes.contains("glossaryTerm")) {
-            generateVerbose();
+        catch (Exception e){
+            log.error(e.getMessage());
         }
-
     }
 
     private void generateVerbose() {
