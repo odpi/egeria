@@ -1,4 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
 import org.slf4j.Logger;
@@ -463,6 +465,56 @@ public enum OMRSAuditCode
                                         "However, it may be the result of an earlier issue with the " +
                                         "local cohort registry store.",
                       "Verify that there are no issues with writing to the cohort registry store."),
+
+    DUPLICATE_REGISTERED_MC_ID("OMRS-AUDIT-0119",
+                                OMRSAuditLogRecordSeverity.ACTION,
+                                "Metadata collection id {0} is being used by server {1} and server {2}",
+                                "The local server has detected a duplicate record in its cohort registry store.",
+                                "Verify that this is caused by the rename of a server."),
+
+    NULL_REGISTERED_MC_ID("OMRS-AUDIT-0120",
+                               OMRSAuditLogRecordSeverity.ACTION,
+                               "Server {0} has registered with a null metadata collection id",
+                               "The local server has detected an invalid record in its cohort registry store.",
+                               "Correct the configuration of the named server so that it has a valid metadata collection id."),
+
+    DUPLICATE_REGISTERED_SERVER_NAME("OMRS-AUDIT-0121",
+                               OMRSAuditLogRecordSeverity.ACTION,
+                               "Server name {0} is being used by metadata collection {1} and metadata collection {2}",
+                               "The local server has detected a duplicate record in its cohort registry store.",
+                               "This suggests that a server has been restarted with a different metadata collection id."),
+
+    NULL_REGISTERED_SERVER_NAME("OMRS-AUDIT-0122",
+                          OMRSAuditLogRecordSeverity.ACTION,
+                          "The server using metadata collection id {0} has registered with a null server name",
+                          "The local server has detected an suspicious record in its cohort registry store.",
+                          "Correct the configuration of the named server so that it has a valid server name."),
+
+
+    DUPLICATE_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0123",
+                                     OMRSAuditLogRecordSeverity.ACTION,
+                                     "Server name {0} with metadata collection id {1} is using the same server address of {2} as server name {3} with metadata collection id {4}",
+                                     "The local server has detected a duplicate record in its cohort registry store.",
+                                     "This suggests that a server has been restarted with a different metadata collection id."),
+
+    NULL_REGISTERED_SERVER_ADDR("OMRS-AUDIT-0124",
+                                OMRSAuditLogRecordSeverity.ACTION,
+                                "The server name {0} using metadata collection id {1} has registered with a null server address",
+                                "The local server has detected an suspicious record in its cohort registry store.",
+                                "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
+
+    NULL_REGISTERED_SERVER_CONNECTION("OMRS-AUDIT-0125",
+                                OMRSAuditLogRecordSeverity.ACTION,
+                                "The server name {0} using metadata collection id {1} has registered with a null server connection",
+                                "The local server has detected an suspicious record in its cohort registry store.",
+                                "Correct the configuration of one of the named server so that it has a unique server address.  Otherwise one of the server will not be called during federated queries issued by the enterprise repository services."),
+
+    NULL_REGISTERED_MEMBER("OMRS-AUDIT-0126",
+                                      OMRSAuditLogRecordSeverity.ACTION,
+                                      "A null member record has been stored in the cohort registry store",
+                                      "The local server has detected an suspicious record in its cohort registry store.",
+                                      "This is likely to be a logic error.  Gather information "),
+
 
     INCOMING_CONFLICTING_TYPEDEFS("OMRS-AUDIT-0201",
                       OMRSAuditLogRecordSeverity.ACTION,
