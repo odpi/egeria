@@ -23,6 +23,15 @@ public class Port implements Serializable {
     @JsonProperty("type")
     private PortType portType;
 
+    Port(String displayName, String qualifiedName, PortType portType) {
+        this.displayName = displayName;
+        this.qualifiedName = qualifiedName;
+        this.portType = portType;
+    }
+
+    Port() {
+    }
+
     public String getDisplayName() {
         return displayName;
     }
