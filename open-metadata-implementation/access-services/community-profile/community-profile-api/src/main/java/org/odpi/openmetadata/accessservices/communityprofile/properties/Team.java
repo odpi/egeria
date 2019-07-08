@@ -40,6 +40,8 @@ public class Team extends TeamSummary
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public Team(Team   template)
     {

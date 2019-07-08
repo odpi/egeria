@@ -72,6 +72,7 @@ public class PersonalProfileHandler
     /**
      * Create an instance properties object for a personal profile of an individual.
      *
+     * @param methodName calling method
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @param fullName full name of the person.
      * @param knownName known name or nickname of the individual.

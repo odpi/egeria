@@ -24,18 +24,6 @@
     <artifactId>stewardship-services-spring</artifactId>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-services-api</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>stewardship-services-server</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
     </dependencies>
 
 </project>

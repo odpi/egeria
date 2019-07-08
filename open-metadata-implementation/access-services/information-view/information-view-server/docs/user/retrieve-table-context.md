@@ -7,7 +7,7 @@ Retrieve table context: host, database name, schema name, table name, list of co
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/table/{{table-guid}}
+POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/tables/{{table-guid}}
 
 {
     "class": "TableContextResponse",

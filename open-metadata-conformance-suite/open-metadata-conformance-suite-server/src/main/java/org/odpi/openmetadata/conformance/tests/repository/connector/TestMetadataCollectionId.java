@@ -77,7 +77,7 @@ public class TestMetadataCollectionId extends RepositoryConformanceTestCase
                         defaultRequirementId);
 
         OMRSMetadataCollection  metadataCollection     = super.getMetadataCollection();
-        String                  mcMetadataCollectionId = metadataCollection.getMetadataCollectionId();
+        String                  mcMetadataCollectionId = metadataCollection.getMetadataCollectionId(workPad.getLocalServerUserId());
 
         verifyCondition((mcMetadataCollectionId != null),
                         assertion3,

@@ -114,7 +114,8 @@ public class EntityPropertyFindRequest extends PropertyMatchFindRequest
         {
             return false;
         }
-        EntityPropertyFindRequest that = (EntityPropertyFindRequest) objectToCompare;
+        EntityPropertyFindRequest
+                that = (EntityPropertyFindRequest) objectToCompare;
         return Objects.equals(getLimitResultsByClassification(), that.getLimitResultsByClassification());
     }
 

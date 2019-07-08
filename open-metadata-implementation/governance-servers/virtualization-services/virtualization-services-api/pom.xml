@@ -16,28 +16,35 @@
 
     <artifactId>virtualization-services-api</artifactId>
     <dependencies>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>view-generator-connectors</artifactId>
-            <version>1.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-api</artifactId>
-            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

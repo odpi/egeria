@@ -22,51 +22,60 @@
 
     <artifactId>open-lineage-services-server</artifactId>
     <properties>
-        <janusgraph.version>0.3.0</janusgraph.version>
+        <janusgraph.version>0.3.1</janusgraph.version>
         <tinkerpop.version>3.3.3</tinkerpop.version>
     </properties>
     <dependencies>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>graph-repository-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-core</artifactId>
-            <version>${janusgraph.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-server</artifactId>
-            <version>${tinkerpop.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-berkeleyje</artifactId>
-            <version>${janusgraph.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-lucene</artifactId>
-            <version>${janusgraph.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>gremlin-core</artifactId>
         </dependency>
 
     </dependencies>

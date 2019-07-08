@@ -39,7 +39,7 @@ public class RegistrationHandler {
     }
 
 
-    public EntityDetail registerTool(RegistrationRequestBody requestBody) {
+    public SoftwareServerCapabilitySource registerTool(RegistrationRequestBody requestBody) {
 
         SoftwareServerCapabilitySource softwareServerCapability = requestBody.getSoftwareServerCapability();
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
@@ -61,7 +61,8 @@ public class RegistrationHandler {
                     null,
                     true,
                     true);
-            return registration.getEntityDetail();
+
+            return buildSoftwareServerCapabilitySource(registration.getEntityDetail());
         } catch (InvalidParameterException | StatusNotSupportedException | PropertyErrorException | EntityNotKnownException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
             throw new RegistrationException(
                     InformationViewErrorCode.REGISTRATION_EXCEPTION.getHttpErrorCode(),
@@ -75,10 +76,13 @@ public class RegistrationHandler {
 
 
 
-    public EntityDetail lookupSoftwareServerCapability(RegistrationRequestBody requestBody) {
+    public SoftwareServerCapabilitySource lookupSoftwareServerCapability(RegistrationRequestBody requestBody) {
 
         try {
-            return lookup.lookupEntity(requestBody.getSoftwareServerCapability());
+            EntityDetail entity = lookup.lookupEntity(requestBody.getSoftwareServerCapability());
+            SoftwareServerCapabilitySource source = buildSoftwareServerCapabilitySource(entity);
+            return source;
+
         } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
             throw new RetrieveEntityException(RegistrationHandler.class.getName(),
                     InformationViewErrorCode.GET_ENTITY_EXCEPTION.getFormattedErrorMessage(e.getMessage()),
@@ -86,6 +90,18 @@ public class RegistrationHandler {
                     InformationViewErrorCode.GET_ENTITY_EXCEPTION.getUserAction(),
                     null);
         }
+    }
+
+    private SoftwareServerCapabilitySource buildSoftwareServerCapabilitySource(EntityDetail entity) {
+        SoftwareServerCapabilitySource source = new SoftwareServerCapabilitySource();
+        source.setName(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entity.getProperties(),  ""));
+        source.setQualifiedName(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, entity.getProperties(),  ""));
+        source.setVersion(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.VERSION, entity.getProperties(),  ""));
+        source.setPatchLevel(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.PATCH_LEVEL, entity.getProperties(),  ""));
+        source.setType(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.TYPE, entity.getProperties(),  ""));
+        source.setDescription(repositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DESCRIPTION, entity.getProperties(),  ""));
+        source.setGuid(entity.getGUID());
+        return source;
     }
 
 

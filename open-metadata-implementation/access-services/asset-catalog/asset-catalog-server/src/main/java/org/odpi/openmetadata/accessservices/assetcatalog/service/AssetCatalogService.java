@@ -410,7 +410,7 @@ public class AssetCatalogService {
                 errorCode.getUserAction());
     }
 
-    private void setMetadataRepositoryDetails(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException {
+    private void setMetadataRepositoryDetails(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException {
         metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
         allTypes = metadataCollectionForSearch.getAllTypes(userId);
         this.serverName = serverName;
