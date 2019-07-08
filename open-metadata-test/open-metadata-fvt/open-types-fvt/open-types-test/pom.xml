@@ -21,39 +21,23 @@
     <artifactId>open-types-test</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-types-test-generator</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <scope>compile</scope>
+            <version>${logback.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -61,7 +45,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -82,10 +65,9 @@
 
             <build>
                 <plugins>
-                    <plugin>
+                    <!--plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>exec-maven-plugin</artifactId>
-                        <version>1.6.0</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -94,6 +76,39 @@
                                 <phase>generate-sources</phase>
                                 <configuration>
                                     <mainClass>org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator</mainClass>
+                                    <includePluginDependencies>false</includePluginDependencies>
+                                    <systemProperties>
+                                        <systemProperty>
+                                            <key>org.slf4j.simpleLogger.defaultLogLevel</key>
+                                            <value>debug</value>
+                                        </systemProperty>
+                                    </systemProperties>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin -->
+
+                    <plugin>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate</id>
+                                <phase>generate-sources</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                                <configuration>
+                                    <target>
+                                        <!-- Need to create ant property to pass from maven to ant task -->
+                                        <property name="antDirectory" value="${project.basedir}/../../../../"/>
+                                        <echo message="Directory is: ${antDirectory}"/>
+                                        <java classname="org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator" fork="true" failonerror="true" dir="${antDirectory}">
+                                            <classpath>
+                                                <path refid="maven.compile.classpath"/>
+                                                <path refid="maven.plugin.classpath"/>
+                                            </classpath>
+                                        </java>
+                                    </target>
                                 </configuration>
                             </execution>
                         </executions>
@@ -101,18 +116,36 @@
 
                     <plugin>
                         <artifactId>maven-clean-plugin</artifactId>
-                        <version>${maven-clean-plugin.version}</version>
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>${basedir}/src/main/java/org/odpi/openmetadata/fvt/open-types</directory>
+                                    <directory>${basedir}/src/main/java/org/odpi/openmetadata/fvt/opentypes</directory>
                                 </fileset>
                                 <fileset>
-                                    <directory>${basedir}/src/test/java/org/odpi/openmetadata/fvt/open-types</directory>
+                                    <directory>${basedir}/src/test/java/org/odpi/openmetadata/fvt/opentypes</directory>
                                 </fileset>
                             </filesets>
                         </configuration>
                     </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-dependency-plugin</artifactId>
+                                <executions>
+                                    <execution>
+                                    <id>analyze</id>
+                                    <goals>
+                                        <goal>analyze-only</goal>
+                                    </goals>
+                                    <configuration>
+                                        <ignoredUnusedDeclaredDependencies combine.children="append">
+                                            <!-- Code generator is a hidden dependency via antrun, so need to declare here -->
+                                            <ignoredUnusedDeclaredDependency>org.odpi.egeria:open-types-test-generator:*</ignoredUnusedDeclaredDependency>
+                                        </ignoredUnusedDeclaredDependencies>
+                                  </configuration>
+                                </execution>
+                            </executions>
+                        </plugin>
                 </plugins>
             </build>
         </profile>
