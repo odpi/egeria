@@ -73,7 +73,7 @@ public class DataEngineSchemaTypeHandler {
      * @param encodingStandard the encoding for the schema type
      * @param usage            the usage for the schema type
      * @param versionNumber    the version number for the schema type
-     * @param attributeList       the list of attributes for the schema type.
+     * @param attributeList    the list of attributes for the schema type.
      *
      * @return unique identifier of the schema type in the repository
      *
@@ -183,7 +183,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Attribute> attributeList) throws
-                                                                                             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                                                   org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         final String methodName = "createSchemaAttributes";
 
         Map<SchemaAttribute, SchemaType> schemaAttributes = new HashMap<>();
@@ -214,7 +214,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     private SchemaType createTabularColumnType(Attribute attribute) throws
-                                                              org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                    org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         final String methodName = "createTabularColumnType";
 
         PrimitiveSchemaType schemaType = schemaTypeHandler.getEmptyPrimitiveSchemaType(
