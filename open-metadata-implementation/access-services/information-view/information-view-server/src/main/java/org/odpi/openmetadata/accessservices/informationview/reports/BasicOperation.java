@@ -5,8 +5,10 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -25,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDe
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
@@ -38,6 +41,7 @@ import static org.odpi.openmetadata.accessservices.informationview.ffdc.Exceptio
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwDeleteRelationshipException;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwEntityNotFoundException;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwNoRegistrationDetailsProvided;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwSourceNotFoundException;
 
 public abstract class BasicOperation {
 
@@ -46,11 +50,13 @@ public abstract class BasicOperation {
     protected final OMRSAuditLog auditLog;
     protected final OMRSRepositoryHelper helper;
     public static final String SEPARATOR = "::";
+    protected final EntityReferenceResolver entityReferenceResolver;
 
-    public BasicOperation(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+    public BasicOperation(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.helper = helper;
+        this.entityReferenceResolver = new EntityReferenceResolver(lookupHelper, omEntityDao);
     }
 
     /**
@@ -230,4 +236,67 @@ public abstract class BasicOperation {
         }
     }
 
+
+    /**
+     * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms and the entity representing the column
+     * @param  businessTerms list of business terms
+     * @param derivedColumnEntity entity describing the derived column
+     */
+    public void addSemanticAssignments(List<BusinessTerm> businessTerms, EntityDetail derivedColumnEntity){
+        if(businessTerms != null && !businessTerms.isEmpty()) {
+            businessTerms.stream().forEach(bt -> {
+                addSemanticAssignment(bt, derivedColumnEntity);
+            });
+        }
+    }
+
+    public void addSemanticAssignment(BusinessTerm bt, EntityDetail derivedColumnEntity)  {
+        String businessTermGuid;
+        try {
+            businessTermGuid = entityReferenceResolver.getBusinessTermGuid(bt);
+            if (!StringUtils.isEmpty(businessTermGuid)) {
+                omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+                        derivedColumnEntity.getGUID(),
+                        businessTermGuid,
+                        new InstanceProperties());
+            }
+        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
+            InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+            throw new AddRelationshipException(errorCode.getHttpErrorCode(), ReportUpdater.class.getName(),
+                    errorCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, e.getMessage()),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
+        }
+    }
+
+
+
+
+    /**
+     *
+     * @param sources list of sources describing the report column
+     * @param derivedColumnEntity entity describing the derived column
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     */
+    public void addQueryTargets(List<Source> sources, EntityDetail derivedColumnEntity) {
+        for (Source source : sources) {
+            String sourceColumnGUID = entityReferenceResolver.getSourceGuid(source);
+            if (!StringUtils.isEmpty(sourceColumnGUID)) {
+                log.debug("source {} for entity {} found.", source, derivedColumnEntity.getGUID());
+                addQueryTarget(derivedColumnEntity.getGUID(), sourceColumnGUID, "");
+            } else {
+                throwSourceNotFoundException(source, null, ReportBasicOperation.class.getName());
+            }
+        }
+    }
 }

@@ -8,7 +8,8 @@ import org.odpi.openmetadata.accessservices.informationview.events.DataView;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewSource;
-import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
+import org.odpi.openmetadata.accessservices.informationview.events.DataViewModel;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.DataViewLookup;
@@ -34,7 +35,6 @@ import java.util.stream.Collectors;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveRelationshipException;
 
 public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
-
 
     private DataViewLookup dataViewLookup;
 
@@ -116,34 +116,41 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
      */
     DataViewElement buildElement(EntityDetail entityDetail) {
 
-        if(entityDetail.getType().getTypeDefName().equals(Constants.SCHEMA_ATTRIBUTE)){
-            DataViewTable dataViewElement = new DataViewTable();
-            dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
+        String methodName = "buildElement";
+        if (entityDetail.getType().getTypeDefName().equals(Constants.SCHEMA_ATTRIBUTE)) {
+            DataViewModel dataViewElement = new DataViewModel();
+            dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
+                    Constants.NAME, entityDetail.getProperties(), methodName));
             try {
-                List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,  entityDetail.getGUID());
-                if(schemaType != null && !schemaType.isEmpty()) {
+                List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,
+                        entityDetail.getGUID());
+                if (schemaType != null && !schemaType.isEmpty()) {
                     dataViewElement.setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
             } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-                throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e, DataViewContextBuilder.class.getName());
+                throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e,
+                        DataViewContextBuilder.class.getName());
             }
             return dataViewElement;
-        }else{
+        } else {
             DataViewColumn dataViewElement = new DataViewColumn();
-            dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
-            dataViewElement.setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, entityDetail.getProperties(), "buildElement"));
-            dataViewElement.setComment(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.COMMENT, entityDetail.getProperties(), "buildElement"));
-             dataViewElement.setRegularAggregate(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), "buildElement"));
+            dataViewElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
+                    Constants.NAME, entityDetail.getProperties(), methodName));
+            dataViewElement.setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
+                    Constants.USAGE, entityDetail.getProperties(), methodName));
+            dataViewElement.setComment(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
+                    Constants.COMMENT, entityDetail.getProperties(), methodName));
+            dataViewElement.setRegularAggregate(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.AGGREGATING_FUNCTION, entityDetail.getProperties(), methodName));
             List<BusinessTerm> businessTerms = getAssignedBusinessTerms(entityDetail.getGUID());
-            if(businessTerms != null && !businessTerms.isEmpty()) {
-                dataViewElement.setBusinessTermGuids(businessTerms.stream().map(bt -> bt.getGuid()).collect(Collectors.toList()));
+            if (businessTerms != null && !businessTerms.isEmpty()) {
+                dataViewElement.setBusinessTerms(businessTerms);
             }
-            dataViewElement.setDataViewSource(getSources(entityDetail.getGUID()));
+            dataViewElement.setSources(getSources(entityDetail.getGUID()));
             return dataViewElement;
         }
     }
 
-    private DataViewSource getSources(String guid) {
+    private List<Source> getSources(String guid) {
         return null;
     }
 

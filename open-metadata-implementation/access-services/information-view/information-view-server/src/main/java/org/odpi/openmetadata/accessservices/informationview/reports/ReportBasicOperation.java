@@ -42,11 +42,9 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
     private static final Logger log = LoggerFactory.getLogger(ReportBasicOperation.class);
 
-    protected final EntityReferenceResolver entityReferenceResolver;
+    public ReportBasicOperation(OMEntityDao omEntityDao,LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao,lookupHelper, helper, auditLog);
 
-    public ReportBasicOperation(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        super(omEntityDao, helper, auditLog);
-        this.entityReferenceResolver = new EntityReferenceResolver(lookupHelper, omEntityDao);
     }
 
 
@@ -202,70 +200,6 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
     private String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
         return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
-    }
-
-
-
-
-    /**
-     *
-     * @param sources list of sources describing the report column
-     * @param derivedColumnEntity entity describing the derived column
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     */
-    private void addQueryTargets(List<Source> sources, EntityDetail derivedColumnEntity) {
-        for (Source source : sources) {
-            String sourceColumnGUID = entityReferenceResolver.getSourceGuid(source);
-            if (!StringUtils.isEmpty(sourceColumnGUID)) {
-                log.debug("source {} for entity {} found.", source, derivedColumnEntity.getGUID());
-                addQueryTarget(derivedColumnEntity.getGUID(), sourceColumnGUID, "");
-            } else {
-                throwSourceNotFoundException(source, null, ReportBasicOperation.class.getName());
-            }
-        }
-    }
-
-
-    /**
-     * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms and the entity representing the column
-     * @param  businessTerms list of business terms
-     * @param derivedColumnEntity entity describing the derived column
-     */
-    private void addSemanticAssignments(List<BusinessTerm> businessTerms, EntityDetail derivedColumnEntity){
-        if(businessTerms != null && !businessTerms.isEmpty()) {
-            businessTerms.stream().forEach(bt -> {
-                addSemanticAssignment(bt, derivedColumnEntity);
-            });
-        }
-    }
-
-    private void addSemanticAssignment(BusinessTerm bt, EntityDetail derivedColumnEntity)  {
-        String businessTermGuid;
-        try {
-            businessTermGuid = entityReferenceResolver.getBusinessTermGuid(bt);
-            if (!StringUtils.isEmpty(businessTermGuid)) {
-                omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                        derivedColumnEntity.getGUID(),
-                        businessTermGuid,
-                        new InstanceProperties());
-            }
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
-            InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
-            throw new AddRelationshipException(errorCode.getHttpErrorCode(), ReportUpdater.class.getName(),
-                    errorCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, e.getMessage()),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e);
-        }
     }
 
 
