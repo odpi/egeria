@@ -36,6 +36,27 @@
         </dependency>
 
         <dependency>
+              <groupId>org.odpi.egeria</groupId>
+              <artifactId>repository-services-apis</artifactId>
+              <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+               <groupId>org.odpi.egeria</groupId>
+               <artifactId>repository-services-implementation</artifactId>
+               <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+               <groupId>com.fasterxml.jackson.core</groupId>
+               <artifactId>jackson-annotations</artifactId>
+               <version>2.9.9</version>
+         </dependency>
+         <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.26</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
