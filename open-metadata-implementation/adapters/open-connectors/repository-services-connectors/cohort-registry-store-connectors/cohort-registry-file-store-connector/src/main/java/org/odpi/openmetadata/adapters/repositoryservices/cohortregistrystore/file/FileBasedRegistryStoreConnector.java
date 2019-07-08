@@ -3,13 +3,13 @@
 package org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.OMRSCohortRegistryStoreConnectorBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.CohortMembership;
@@ -19,7 +19,9 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -69,41 +71,13 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
 
     /**
-     * Returns the index of the requested member in the members array list.  If the member is not found, the index
-     * returned is the size of the array.
-     *
-     * @param metadataCollectionId - id of the member to find.
-     * @param members - list of members
-     * @return int index pointing to the location of the member (or the size of the array if the member is not found).
-     */
-    private int findRemoteRegistration(String   metadataCollectionId, List<MemberRegistration>   members)
-    {
-        int   indexOfNewMember = members.size();
-
-        for (int i=0; i<members.size(); i++)
-        {
-            String memberId = members.get(i).getMetadataCollectionId();
-
-            if (metadataCollectionId.equals(memberId))
-            {
-                log.debug("Found existing registration for " + metadataCollectionId + " at position " + i);
-                return i;
-            }
-        }
-
-        log.debug("New registration for " + metadataCollectionId + " - will save at position " + indexOfNewMember);
-        return indexOfNewMember;
-    }
-
-
-    /**
      * Save the local registration to the cohort registry store.  This provides details of the local repository's
      * registration with the metadata repository cohort.
      * Any previous local registration information is overwritten.
      *
      * @param localRegistration - details of the local repository's registration with the metadata cohort.
      */
-    public void saveLocalRegistration(MemberRegistration localRegistration)
+    public synchronized void saveLocalRegistration(MemberRegistration localRegistration)
     {
         if (localRegistration != null)
         {
@@ -142,7 +116,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * @return MemberRegistration object containing details for the local repository's registration with the
      * metadata cohort (may be null if no registration has taken place).
      */
-    public MemberRegistration retrieveLocalRegistration()
+    public synchronized MemberRegistration retrieveLocalRegistration()
     {
         CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
 
@@ -176,7 +150,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * There is a side-effect that all of the remote registrations are removed to since the local repository is
      * no longer a member of this cohort.
      */
-    public void removeLocalRegistration()
+    public synchronized void removeLocalRegistration()
     {
         log.debug("Removing local repository from  cohort registry store.");
 
@@ -189,14 +163,41 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
 
     /**
+     * Return the remote members from the store as a map from metadata collection id to member registration.
+     * Any value of the remote member may change from registration to registration except the
+     * metadata collection id.
+     *
+     * @param remoteMembersList values from the store
+     * @return remote member map
+     */
+    private Map<String, MemberRegistration> getRemoteMemberMap(List<MemberRegistration> remoteMembersList)
+    {
+        Map<String, MemberRegistration>  remoteMemberMap = new HashMap<>();
+
+        if ((remoteMembersList != null) && (! remoteMembersList.isEmpty()))
+        {
+            for (MemberRegistration remoteMember : remoteMembersList)
+            {
+                if ((remoteMember != null) && (remoteMember.getMetadataCollectionId() != null))
+                {
+                    remoteMemberMap.put(remoteMember.getMetadataCollectionId(), remoteMember);
+                }
+            }
+        }
+
+        return remoteMemberMap;
+    }
+
+
+    /**
      * Save details of a remote registration.  This contains details of one of the other repositories in the
      * metadata repository cohort.
      *
      * @param remoteRegistration - details of a remote repository in the metadata repository cohort.
      */
-    public void saveRemoteRegistration(MemberRegistration  remoteRegistration)
+    public synchronized void saveRemoteRegistration(MemberRegistration  remoteRegistration)
     {
-        if (remoteRegistration != null)
+        if ((remoteRegistration != null) && (remoteRegistration.getMetadataCollectionId() != null))
         {
             /*
              * Retrieve the current properties from the file is necessary.
@@ -206,25 +207,16 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             /*
              * It is possible that the remote repository already has an entry in the cohort registry and if this is
              * the case, it will be overwritten.  Otherwise the new remote properties are added.
+             * The map is used to ensure duplicates can not be stored.
              */
-            List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
+            Map<String, MemberRegistration>  remoteMemberMap = this.getRemoteMemberMap(registryStoreProperties.getRemoteRegistrations());
 
-            if (remotePropertiesList == null)
-            {
-                remotePropertiesList = new ArrayList<>();
-            }
+            /*
+             * Now add the new member to the map.  This will overwrite any previous registration.
+             */
+            remoteMemberMap.put(remoteRegistration.getMetadataCollectionId(), remoteRegistration);
 
-            int index = findRemoteRegistration(remoteRegistration.getMetadataCollectionId(), remotePropertiesList);
-
-            if (index < remotePropertiesList.size())
-            {
-                remotePropertiesList.set(index, remoteRegistration);
-            }
-            else
-            {
-                remotePropertiesList.add(remoteRegistration);
-            }
-            registryStoreProperties.setRemoteRegistrations(remotePropertiesList);
+            registryStoreProperties.setRemoteRegistrations(new ArrayList<>(remoteMemberMap.values()));
 
             /*
              * Write out the new cohort registry content.
@@ -256,39 +248,24 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     /**
      * Return a list of all of the remote metadata repositories registered in the metadata repository cohort.
      *
-     * @return Remote registrations iterator
+     * @return Remote registrations list
      */
-    public List<MemberRegistration> retrieveRemoteRegistrations()
+    public synchronized List<MemberRegistration> retrieveRemoteRegistrations()
     {
-        List<MemberRegistration>    remoteRegistrations = null;
-
         /*
          * Ensure the current properties are retrieved from the registry.
          */
         CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
+        Map<String, MemberRegistration>  remoteMemberMap = this.getRemoteMemberMap(registryStoreProperties.getRemoteRegistrations());
 
-        /*
-         * Copy the remote member properties into a registration iterator for return.
-         */
-        List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
-        List<MemberRegistration> remoteRegistrationArray = new ArrayList<>();
-
-        if (remotePropertiesList != null)
+        if (remoteMemberMap.isEmpty())
         {
-            for (MemberRegistration remoteRegistration : remotePropertiesList)
-            {
-                MemberRegistration   member = new MemberRegistration(remoteRegistration);
-
-                remoteRegistrationArray.add(member);
-            }
+            return null;
         }
-
-        if (remoteRegistrationArray.size() > 0)
+        else
         {
-            remoteRegistrations = remoteRegistrationArray;
+            return new ArrayList<>(remoteMemberMap.values());
         }
-
-        return remoteRegistrations;
     }
 
 
@@ -299,7 +276,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      * @param metadataCollectionId - unique identifier for the repository
      * @return MemberRegistration object containing details of the remote metadata repository. (null if not found)
      */
-    public MemberRegistration retrieveRemoteRegistration(String    metadataCollectionId)
+    public synchronized MemberRegistration retrieveRemoteRegistration(String    metadataCollectionId)
     {
         MemberRegistration    remoteRegistration = null;
 
@@ -309,31 +286,9 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
              * Ensure the current properties are retrieved from the registry.
              */
             CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
+            Map<String, MemberRegistration>  remoteMemberMap = this.getRemoteMemberMap(registryStoreProperties.getRemoteRegistrations());
 
-            /*
-             * Retrieve the list of remote registrations
-             */
-            List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
-
-            if (remotePropertiesList != null)
-            {
-                /*
-                 * Locate the required entry
-                 */
-                int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
-
-                /*
-                 * If the entry is found create a registration object from it.
-                 */
-                if (indexOfEntry < remotePropertiesList.size())
-                {
-                    remoteRegistration = remotePropertiesList.get(indexOfEntry);
-                }
-            }
-            else
-            {
-                log.debug("No remote registrations");
-            }
+            remoteRegistration = remoteMemberMap.get(metadataCollectionId);
         }
         else
         {
@@ -355,6 +310,11 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
             log.debug("Null metadataCollectionId passed to retrieveRemoteRegistration :(");
         }
 
+        if (remoteRegistration == null)
+        {
+            log.debug("No remote registrations");
+        }
+
         return remoteRegistration;
     }
 
@@ -364,7 +324,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
      *
      * @param metadataCollectionId - unique identifier for the repository
      */
-    public void removeRemoteRegistration(String    metadataCollectionId)
+    public synchronized void removeRemoteRegistration(String    metadataCollectionId)
     {
         if (metadataCollectionId != null)
         {
@@ -372,51 +332,38 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
              * Ensure the current properties are retrieved from the registry.
              */
             CohortMembership registryStoreProperties = this.retrieveRegistryStoreProperties();
+            Map<String, MemberRegistration> remoteMemberMap = this.getRemoteMemberMap(registryStoreProperties.getRemoteRegistrations());
 
             /*
-             * Retrieve the list of remote registrations
+             * Remove the requested properties
              */
-            List<MemberRegistration> remotePropertiesList = registryStoreProperties.getRemoteRegistrations();
+            MemberRegistration removedMember = remoteMemberMap.remove(metadataCollectionId);
 
-            if (remotePropertiesList != null)
+            if (removedMember != null)
             {
-                /*
-                 * Locate the required entry
-                 */
-                int indexOfEntry = findRemoteRegistration(metadataCollectionId, remotePropertiesList);
-
-                /*
-                 * If the entry is found create a registration object from it.
-                 */
-                if (indexOfEntry < remotePropertiesList.size())
-                {
-                    remotePropertiesList.remove(indexOfEntry);
-                    registryStoreProperties.setRemoteRegistrations(remotePropertiesList);
-                    writeRegistryStoreProperties(registryStoreProperties);
-                }
-                else
-                {
-                    if (auditLog != null)
-                    {
-                        String actionDescription = "Removing Remote Registration from Cohort Registry Store";
-
-                        OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
-
-                        auditLog.logRecord(actionDescription,
-                                           auditCode.getLogMessageId(),
-                                           auditCode.getSeverity(),
-                                           auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
-                                           null,
-                                           auditCode.getSystemAction(),
-                                           auditCode.getUserAction());
-                    }
-
-                    log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
-                }
+                registryStoreProperties.setRemoteRegistrations(new ArrayList<>(remoteMemberMap.values()));
+                writeRegistryStoreProperties(registryStoreProperties);
             }
             else
             {
-                log.debug("No remote registrations");
+                log.debug("No remote registration");
+
+                if (auditLog != null)
+                {
+                    String actionDescription = "Removing Remote Registration from Cohort Registry Store";
+
+                    OMRSAuditCode auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
+
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(metadataCollectionId, registryStoreName),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
+
+                log.debug("MetadataCollectionId : " + metadataCollectionId + " passed to removeRemoteRegistration not found :(");
             }
         }
         else
@@ -522,6 +469,205 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
 
     /**
+     * Test the uniqueness of a single cohort member
+     *
+     * @param testMember member to test
+     * @param metadataCollectionIdTestMap test map
+     * @param serverNameTestMap test map
+     * @param endpointAddressTestMap test map
+     */
+    private void  mapMember(MemberRegistration               testMember,
+                            Map<String, MemberRegistration>  metadataCollectionIdTestMap,
+                            Map<String, MemberRegistration>  serverNameTestMap,
+                            Map<String, MemberRegistration>  endpointAddressTestMap)
+    {
+        if (auditLog != null)
+        {
+            String actionDescription = "saveRegistryStore";
+
+            if (testMember != null)
+            {
+                if ((testMember.getMetadataCollectionId() == null) || ("".equals(testMember.getMetadataCollectionId())))
+                {
+                    OMRSAuditCode auditCode = OMRSAuditCode.NULL_REGISTERED_MC_ID;
+
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(testMember.getServerName()),
+                                       testMember.toString(),
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
+                else
+                {
+                    MemberRegistration duplicateMember = metadataCollectionIdTestMap.put(testMember.getMetadataCollectionId(), testMember);
+
+                    if (duplicateMember != null)
+                    {
+                        OMRSAuditCode auditCode = OMRSAuditCode.DUPLICATE_REGISTERED_MC_ID;
+
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(testMember.getMetadataCollectionId(), testMember.getServerName(), duplicateMember.getServerName()),
+                                           testMember.toString() + " " + duplicateMember.toString(),
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
+                }
+
+
+                if ((testMember.getServerName() == null) || ("".equals(testMember.getServerName())))
+                {
+                    OMRSAuditCode auditCode = OMRSAuditCode.NULL_REGISTERED_SERVER_NAME;
+
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(testMember.getMetadataCollectionId()),
+                                       testMember.toString(),
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
+                else
+                {
+                    MemberRegistration duplicateMember = serverNameTestMap.put(testMember.getServerName(), testMember);
+                    if (duplicateMember != null)
+                    {
+                        OMRSAuditCode auditCode = OMRSAuditCode.DUPLICATE_REGISTERED_SERVER_NAME;
+
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(testMember.getServerName(), testMember.getMetadataCollectionId(), duplicateMember.getMetadataCollectionId()),
+                                           testMember.toString() + " " + duplicateMember.toString(),
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
+                }
+
+                Connection repositoryConnection = testMember.getRepositoryConnection();
+
+                if (repositoryConnection != null)
+                {
+                    Endpoint endpoint   = repositoryConnection.getEndpoint();
+                    String   serverAddress = null;
+
+                    if (endpoint != null)
+                    {
+                        serverAddress = endpoint.getAddress();
+                    }
+
+                    if (serverAddress != null)
+                    {
+                        MemberRegistration duplicateMember = endpointAddressTestMap.put(serverAddress, testMember);
+
+                        if (duplicateMember != null)
+                        {
+                            OMRSAuditCode auditCode = OMRSAuditCode.DUPLICATE_REGISTERED_SERVER_ADDR;
+
+                            auditLog.logRecord(actionDescription,
+                                               auditCode.getLogMessageId(),
+                                               auditCode.getSeverity(),
+                                               auditCode.getFormattedLogMessage(testMember.getServerName(),
+                                                                                testMember.getMetadataCollectionId(),
+                                                                                serverAddress,
+                                                                                duplicateMember.getServerName(),
+                                                                                duplicateMember.getMetadataCollectionId()),
+                                               testMember.toString() + " " + duplicateMember.toString(),
+                                               auditCode.getSystemAction(),
+                                               auditCode.getUserAction());
+                        }
+                    }
+                    else
+                    {
+                        OMRSAuditCode auditCode = OMRSAuditCode.NULL_REGISTERED_SERVER_NAME;
+
+                        auditLog.logRecord(actionDescription,
+                                           auditCode.getLogMessageId(),
+                                           auditCode.getSeverity(),
+                                           auditCode.getFormattedLogMessage(testMember.getServerName(), testMember.getMetadataCollectionId()),
+                                           testMember.toString(),
+                                           auditCode.getSystemAction(),
+                                           auditCode.getUserAction());
+                    }
+                }
+                else
+                {
+                    OMRSAuditCode auditCode = OMRSAuditCode.NULL_REGISTERED_SERVER_CONNECTION;
+
+                    auditLog.logRecord(actionDescription,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(testMember.getServerName(), testMember.getMetadataCollectionId()),
+                                       testMember.toString(),
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+                }
+            }
+            else
+            {
+                OMRSAuditCode auditCode = OMRSAuditCode.NULL_MEMBER_REGISTRATION;
+
+                auditLog.logRecord(actionDescription,
+                                   auditCode.getLogMessageId(),
+                                   auditCode.getSeverity(),
+                                   auditCode.getFormattedLogMessage(),
+                                   null,
+                                   auditCode.getSystemAction(),
+                                   auditCode.getUserAction());
+            }
+        }
+    }
+
+
+    /**
+     * This method performs a number of checks to ensure each member of the cohort is unique
+     * in terms of its metadata collection id, server name and endpoint address.
+     *
+     * @param newRegistryStoreProperties values that are about to written the registry store
+     */
+    private void validateRegistryStore(CohortMembership   newRegistryStoreProperties)
+    {
+        if (newRegistryStoreProperties != null)
+        {
+            Map<String, MemberRegistration> metadataCollectionIdTestMap = new HashMap<>();
+            Map<String, MemberRegistration> serverNameTestMap           = new HashMap<>();
+            Map<String, MemberRegistration> endpointAddressTestMap      = new HashMap<>();
+
+            /*
+             * It is ok for the local registration to be null
+             */
+            if (newRegistryStoreProperties.getLocalRegistration() != null)
+            {
+                /*
+                 * Add the local member to each of the test maps
+                 */
+                mapMember(newRegistryStoreProperties.getLocalRegistration(),
+                          metadataCollectionIdTestMap,
+                          serverNameTestMap,
+                          endpointAddressTestMap);
+            }
+
+            if (newRegistryStoreProperties.getRemoteRegistrations() != null)
+            {
+                /*
+                 * The remote members should not be null/empty
+                 */
+                for (MemberRegistration  remoteMember : newRegistryStoreProperties.getRemoteRegistrations())
+                {
+                    mapMember(remoteMember,
+                              metadataCollectionIdTestMap,
+                              serverNameTestMap,
+                              endpointAddressTestMap);
+                }
+            }
+        }
+    }
+
+
+    /**
      * Writes the supplied registry store properties to the registry store.
      *
      * @param newRegistryStoreProperties - contents of the registry store
@@ -529,6 +675,8 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
     private void writeRegistryStoreProperties(CohortMembership   newRegistryStoreProperties)
     {
         File    registryStoreFile = new File(registryStoreName);
+
+        this.validateRegistryStore(newRegistryStoreProperties);
 
         try
         {
