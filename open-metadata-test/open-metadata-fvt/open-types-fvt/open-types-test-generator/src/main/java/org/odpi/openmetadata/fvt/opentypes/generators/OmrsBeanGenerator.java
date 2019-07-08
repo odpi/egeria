@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.fvt.opentypes.generators;
 
 import org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanAttribute;
+import org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference;
 import org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -401,7 +402,6 @@ public class OmrsBeanGenerator {
         BufferedReader reader = null;
         try {
             outputFileWriter = new FileWriter(topReferenceFileName);
-            log.debug("Generating top reference file {}",topReferenceFileName);
             reader = new BufferedReader(new FileReader(TOP_REFERENCE_TEMPLATE));
             String line = reader.readLine();
             while (line != null) {
@@ -1013,7 +1013,10 @@ public class OmrsBeanGenerator {
     }
 
     private void generateReferenceFiles() throws IOException {
-        List<org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference> omrsBeanReferences = omrsBeanModel.getOmrsBeanReferences();
+        // optimization to only process each entity once
+        HashSet<String> processedEntities = new HashSet<String>();
+
+        List<OmrsBeanReference> omrsBeanReferences = omrsBeanModel.getOmrsBeanReferences();
         for (org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference omrsBeanReference : omrsBeanReferences) {
 
             // for each omrsBeanReference we need to create a java file in the right folder.
@@ -1043,16 +1046,20 @@ public class OmrsBeanGenerator {
             } finally {
                 closeReaderAndFileWriter(outputFileWriter, reader);
             }
+
             //generateClientSideRelationshipImpl the top references file
             Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = omrsBeanModel.getOmrsBeanReferencesAsAttributesByEntity();
 
             final Set<String> entitiesWithRelationships = omrsBeanReferencesAsAttributesByEntity.keySet();
             for (String entityName : entitiesWithRelationships) {
-                outputFolder = this.createEntityJavaFolderIfRequired(entityName);
-                final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
-                final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
-                log.debug("generating top reference file {}",topReferenceFileName);
-                generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+                if (!processedEntities.contains(entityName)) {
+                    outputFolder = this.createEntityJavaFolderIfRequired(entityName);
+                    final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
+                    final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
+                    log.debug("generating top reference file {}", topReferenceFileName);
+                    generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+                    processedEntities.add(entityName);
+                }
             }
         }
     }
