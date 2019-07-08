@@ -302,7 +302,7 @@
 - name: enable lineage on dstage1
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
-            /ibm/iis/igc-rest/v1/assets/{{ item.json['items'][0]._id }}/include_for_lineage"
+            /ibm/iis/igc-rest/v1/assets/{{ __cocopharma_dstage1_lineage.json['items'][0]._id }}/include_for_lineage"
     method: PUT
     user: "{{ ibm_infosvr_users.isadmin }}"
     password: "{{ ibm_infosvr_upwds.isadmin }}"
@@ -312,10 +312,7 @@
     status_code: 200
     headers:
       Content-Type: "application/json"
-    when: item.json['items'][0].include_for_lineage == "setToFalse"
-    loop_control:
-      label: "{{ item.json['items'][0]._name }}"
-    with_items: "{{ __cocopharma_dstage1_lineage.results }}"
+    when: __cocopharma_dstage1_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
 - import_role: name=IBM.infosvr-import-export
   vars:
