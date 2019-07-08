@@ -64,7 +64,8 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         } catch (UserNotAuthorizedException e) {
             DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
@@ -75,19 +76,10 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         }
-    }
-
-    /**
-     * Register the provided SoftwareServiceCapbility as a Data Engine.
-     *
-     * @param dataEngine
-     * @return String - the GUID of the registered Data Engine
-     */
-    public String registerDataEngine(SoftwareServerCapability dataEngine) {
-        return registerDataEngine(dataEngine, null);
     }
 
     /**
@@ -110,7 +102,8 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         } catch (UserNotAuthorizedException e) {
             DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
@@ -121,19 +114,10 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         }
-    }
-
-    /**
-     * Send the provided process to the Data Engine OMAS.
-     *
-     * @param process
-     * @return String - the GUID of the process that was created
-     */
-    public String sendProcess(Process process) {
-        return sendProcess(process, null);
     }
 
     /**
@@ -155,7 +139,8 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         } catch (UserNotAuthorizedException e) {
             DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
@@ -166,18 +151,10 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
-                    errorCode.getUserAction()
+                    errorCode.getUserAction(),
+                    e
             );
         }
-    }
-
-    /**
-     * Send the provided list of LineageMappings to the Data Engine OMAS.
-     *
-     * @param lineageMappingList
-     */
-    public void sendLineageMappings(List<LineageMapping> lineageMappingList) {
-        sendLineageMappings(lineageMappingList, null);
     }
 
 }
