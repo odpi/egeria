@@ -17,14 +17,19 @@ public enum CommonServicesDescription implements Serializable
                                       "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/"),
 
     ADMIN_OPERATIONAL_SERVICES       (3001,
-                                      "OMAG Operational Services",
-                                      "Management of services active in an open metadata and governance server (OMAG Server)",
+                                      "OMAG Server Operational Services",
+                                      "Management of services active in an Open Metadata and governance server (OMAG Server)",
                                       "https://odpi.github.io/egeria/open-metadata-implementation/admin-services"),
 
     OCF_METADATA_MANAGEMENT          (3002,
-                                      "OCF Metadata Management Services",
+                                      "Connected Asset Services",
                                       "Common metadata services for the Open Connector Framework (OCF)",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/ocf-metadata-management/");;
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/ocf-metadata-management/"),
+
+    OPEN_METADATA_SECURITY           (3003,
+                                      "Open Metadata Security Services",
+                                      "Authorization services for Open Metadata and Governance",
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/metadata-security/");
 
 
     private static final long     serialVersionUID    = 1L;

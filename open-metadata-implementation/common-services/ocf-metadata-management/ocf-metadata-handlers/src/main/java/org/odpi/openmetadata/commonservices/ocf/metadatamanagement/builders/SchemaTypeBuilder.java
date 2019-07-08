@@ -165,4 +165,17 @@ public class SchemaTypeBuilder extends ReferenceableBuilder
 
         return properties;
     }
+
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
+    {
+        return super.getNameInstanceProperties(methodName);
+    }
+
 }

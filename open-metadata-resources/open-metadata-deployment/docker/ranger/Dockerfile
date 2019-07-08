@@ -18,6 +18,7 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Ranger and build it
+ADD https://api.github.com/repos/apache/ranger/git/refs/heads/$branch version.json
 RUN git clone http://github.com/apache/ranger.git -b ${branch}
 
 # Remove -DskipTests if unit tests are to be included - build the code...
@@ -66,7 +67,7 @@ RUN chmod 755 /opt/ranger-admin/ranger-docker-start.sh
 # Configure and install Solr locally
 WORKDIR /opt/ranger-admin/contrib/solr_for_audit_setup
 RUN sed -i 's|SOLR_INSTALL=false|SOLR_INSTALL=true|' install.properties
-RUN sed -i "s|SOLR_DOWNLOAD_URL=|SOLR_DOWNLOAD_URL=http://www.mirrorservice.org/sites/ftp.apache.org/lucene/solr/7.7.1/solr-7.7.1.tgz|" install.properties
+RUN sed -i "s|SOLR_DOWNLOAD_URL=|SOLR_DOWNLOAD_URL=http://www.mirrorservice.org/sites/ftp.apache.org/lucene/solr/7.7.2/solr-7.7.2.tgz|" install.properties
 RUN ./setup.sh
 RUN sed -i 's|^SOLR_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"$|SOLR_JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"|g' /opt/solr/ranger_audit_server/scripts/solr.in.sh
 

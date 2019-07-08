@@ -7,7 +7,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 
 
 /**
- * RelatedAssetProperties returns detailed information about an asset that is related to a connected asset.
+ * RelatedAssetProperties returns detailed information about an asset that is related to an asset
+ * that is linked to the original anchor asset with a relationship.
  *
  * It is a generic interface for all types of open metadata assets.  However, it assumes the asset's metadata model
  * inherits from <b>Asset</b> (see model 0010 in Area 0).
@@ -34,9 +35,9 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      *
      * If null is returned, the caller is not linked to a metadata repository.
      */
-    protected AssetUniverse   assetProperties = null;
-    protected AssetDescriptor connectedAsset  = null;
-    protected RelatedAsset    relatedAsset    = null;
+    protected AssetUniverse     assetProperties = null;
+    protected AssetDescriptor   connectedAsset  = null;
+    protected AssetRelatedAsset relatedAsset    = null;
 
 
     /**
@@ -54,7 +55,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
      * @param connectedAsset original top-level asset
      * @param relatedAsset asset to extract the full set of properties.
      */
-    public RelatedAssetProperties(AssetDescriptor connectedAsset, RelatedAsset relatedAsset)
+    public RelatedAssetProperties(AssetDescriptor connectedAsset, AssetRelatedAsset relatedAsset)
     {
         /*
          * Remember the parent asset and details of the related asset to be retrieved.

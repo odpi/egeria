@@ -27,6 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -122,7 +123,6 @@ public class GovernedAssetHandler {
         GovernanceEngineValidator.validateUserId(userId, methodName);
         GovernanceEngineValidator.validateGUID(assetGuid, assetParameter, methodName);
 
-
         EntityDetail entityDetail = getEntityDetailById(userId, assetGuid);
         if (entityDetail == null) {
             return null;
@@ -200,6 +200,10 @@ public class GovernedAssetHandler {
     }
 
     private List<GovernedAsset> getGovernedAssets(List<EntityDetail> entityDetails) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
+        if (entityDetails == null || entityDetails.isEmpty()) {
+            return Collections.emptyList();
+        }
+
         List<GovernedAsset> governedAssets = new ArrayList<>(entityDetails.size());
 
         for (EntityDetail entityDetail : entityDetails) {

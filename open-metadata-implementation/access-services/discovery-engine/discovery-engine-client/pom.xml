@@ -26,39 +26,33 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-api</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>ocf-metadata-client</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>

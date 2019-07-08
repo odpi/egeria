@@ -77,10 +77,7 @@ public enum InstanceProvenanceType implements Serializable
                                                                           "The metadata collection id remains the same. If the repository rejoins the cohort " +
                                                                           "then these elements can be refreshed from the rejoining repository."),
     CONFIGURATION           (5, "Configuration",           "The instance is part of a service's configuration.  The metadata collection id is null."),
-    DATA_PLATFORM           (6, "Data Platform",           "The instance is maintained by an external data platform.  The metadata collection id is the guid of the data platform's entity."),
-    EXTERNAL_ENGINE         (7, "External Engine",         "The instance is maintained by an external engine that is " +
-                                                                          "manipulating the data in real time.  The metadata collection id is the guid of the engine's entity."),
-    EXTERNAL_TOOL           (8, "External Tool",           "The instance is maintained by an external tool.  The metadata collection id is the guid of the tool's entity.");
+    EXTERNAL_SOURCE         (6, "External Source",         "The instance is maintained by an external technology.  The metadata collection id is the guid of the technology's descriptive entity.");
 
     private static final long serialVersionUID = 1L;
 

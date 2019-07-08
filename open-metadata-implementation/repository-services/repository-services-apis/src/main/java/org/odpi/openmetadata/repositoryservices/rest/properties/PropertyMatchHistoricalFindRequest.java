@@ -115,7 +115,8 @@ public class PropertyMatchHistoricalFindRequest extends PropertyMatchFindRequest
         {
             return false;
         }
-        PropertyMatchHistoricalFindRequest that = (PropertyMatchHistoricalFindRequest) objectToCompare;
+        PropertyMatchHistoricalFindRequest
+                that = (PropertyMatchHistoricalFindRequest) objectToCompare;
         return Objects.equals(getAsOfTime(), that.getAsOfTime());
     }
 

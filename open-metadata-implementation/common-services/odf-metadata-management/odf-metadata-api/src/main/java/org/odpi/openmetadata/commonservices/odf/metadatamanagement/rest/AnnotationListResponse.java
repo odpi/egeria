@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * AnnotationListResponse is the response structure used on  OMAS REST API calls that returns a
+ * AnnotationListResponse is the response structure used on OMAS REST API calls that return a
  * list of Annotations objects as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)

@@ -147,7 +147,8 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
         {
             return false;
         }
-        PropertyMatchFindRequest that = (PropertyMatchFindRequest) objectToCompare;
+        PropertyMatchFindRequest
+                that = (PropertyMatchFindRequest) objectToCompare;
         return Objects.equals(getMatchProperties(), that.getMatchProperties()) &&
                 getMatchCriteria() == that.getMatchCriteria();
     }

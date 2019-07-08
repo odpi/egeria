@@ -3,7 +3,8 @@
   "shell": "src/my-app.js",
   "sources": [
     "images/**/*",
-    "locales/**/*"
+    "locales/**/*",
+    "properties/**/*"
   ],
   "extraDependencies": [
     "manifest.json",
@@ -13,10 +14,8 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
   ],
   "builds": [
-
     {
       "name": "dev"
-
     }
   ],
   "moduleResolution": "node",

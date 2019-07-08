@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.context;
 
 
 import edu.emory.mathcs.backport.java.util.Collections;
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.events.EndpointSource;
