@@ -20,6 +20,14 @@ public class PortImplementation extends Port {
     @JsonProperty("schema")
     private SchemaType schemaType;
 
+    public PortImplementation() {
+    }
+
+    public PortImplementation(String displayName, String qualifiedName, PortType portType, SchemaType schemaType) {
+        super(displayName, qualifiedName, portType);
+        this.schemaType = schemaType;
+    }
+
     public SchemaType getSchemaType() {
         return schemaType;
     }
