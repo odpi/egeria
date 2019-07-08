@@ -136,10 +136,11 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      */
     private void distributeEvent(String event)
     {
-        topicListeners.parallelStream().forEach((listener) -> {
+        for (OpenMetadataTopicListener  topicListener : topicListeners)
+        {
             try
             {
-                listener.processEvent(event);
+                topicListener.processEvent(event);
             }
             catch (Throwable  error)
             {
@@ -154,7 +155,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
             }
-        });
+        }
     }
 
 
