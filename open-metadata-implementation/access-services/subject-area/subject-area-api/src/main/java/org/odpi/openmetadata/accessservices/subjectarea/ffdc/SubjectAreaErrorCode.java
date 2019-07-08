@@ -155,7 +155,7 @@ public enum SubjectAreaErrorCode {
             "The system is unable to process the request.",
             "Look into whether the typename was correctly specified."),
     TYPEDEF_ERROR(400, "OMAS-SUBJECTAREA-400-032 ",
-            "An error occurred when processing a request {0} involving type {1} .",
+            "An error occurred when processing a request {0}; the instance is not associated with a known type.",
             "The system is unable to process the request.",
             "Contact your administrator to review the audit log to find the cause of the error."),
     ENTITY_NOT_KNOWN_ERROR(400, "OMAS-SUBJECTAREA-400-033 ",

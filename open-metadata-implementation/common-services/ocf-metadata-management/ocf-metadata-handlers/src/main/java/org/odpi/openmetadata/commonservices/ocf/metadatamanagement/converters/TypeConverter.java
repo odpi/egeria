@@ -72,23 +72,17 @@ class TypeConverter
                 case DEREGISTERED_REPOSITORY:
                     return ElementOrigin.DEREGISTERED_REPOSITORY;
 
-                case EXTERNAL_ENGINE:
-                    return ElementOrigin.EXTERNAL_ENGINE;
+                case EXTERNAL_SOURCE:
+                    return ElementOrigin.EXTERNAL_SOURCE;
 
                 case EXPORT_ARCHIVE:
                     return ElementOrigin.EXPORT_ARCHIVE;
-
-                case EXTERNAL_TOOL:
-                    return ElementOrigin.EXTERNAL_TOOL;
 
                 case LOCAL_COHORT:
                     return ElementOrigin.LOCAL_COHORT;
 
                 case CONTENT_PACK:
                     return ElementOrigin.CONTENT_PACK;
-
-                case DATA_PLATFORM:
-                    return ElementOrigin.DATA_PLATFORM;
 
                 case CONFIGURATION:
                     return ElementOrigin.CONFIGURATION;

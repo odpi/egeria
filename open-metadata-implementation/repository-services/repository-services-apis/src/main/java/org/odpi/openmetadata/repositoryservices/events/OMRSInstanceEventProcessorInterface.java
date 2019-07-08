@@ -80,6 +80,7 @@ public interface OMRSInstanceEventProcessorInterface
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId  unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
+     * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  details of the version of the entity that has been restored.
@@ -242,11 +243,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param entity  deleted entity
      */
-    void processDeletePurgedEntityEvent(String       sourceName,
-                                        String       originatorMetadataCollectionId,
-                                        String       originatorServerName,
-                                        String       originatorServerType,
-                                        String       originatorOrganizationName,
+    void processDeletePurgedEntityEvent(String sourceName,
+                                        String originatorMetadataCollectionId,
+                                        String originatorServerName,
+                                        String originatorServerType,
+                                        String originatorOrganizationName,
                                         EntityDetail entity);
 
 
@@ -512,11 +513,11 @@ public interface OMRSInstanceEventProcessorInterface
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param relationship  deleted relationship
      */
-    void processDeletePurgedRelationshipEvent(String       sourceName,
-                                              String       originatorMetadataCollectionId,
-                                              String       originatorServerName,
-                                              String       originatorServerType,
-                                              String       originatorOrganizationName,
+    void processDeletePurgedRelationshipEvent(String sourceName,
+                                              String originatorMetadataCollectionId,
+                                              String originatorServerName,
+                                              String originatorServerType,
+                                              String originatorOrganizationName,
                                               Relationship relationship);
 
 

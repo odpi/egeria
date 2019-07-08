@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -56,8 +57,12 @@ public class DataViewHandler {
     public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
 
         log.debug("Creating data view based on payload {}", requestBody);
+        SoftwareServerCapabilitySource softwareServerCapabilitySource = dataViewCreator.retrieveSoftwareServerCapability(requestBody.getRegistrationGuid(), requestBody.getRegistrationQualifiedName());
+        requestBody.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
+        requestBody.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
+
         try {
-            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getDataView().getEndpointAddress(), Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
+            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getRegistrationQualifiedName(), Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
                     .withStringProperty(Constants.NAME, requestBody.getDataView().getName())

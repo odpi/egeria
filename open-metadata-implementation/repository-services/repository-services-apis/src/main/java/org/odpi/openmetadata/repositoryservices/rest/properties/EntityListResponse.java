@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -37,7 +39,7 @@ public class EntityListResponse extends OMRSAPIPagedResponse
      *
      * @param template object to copy
      */
-    public EntityListResponse(EntityListResponse   template)
+    public EntityListResponse(EntityListResponse template)
     {
         super(template);
 
@@ -132,7 +134,8 @@ public class EntityListResponse extends OMRSAPIPagedResponse
         {
             return false;
         }
-        EntityListResponse that = (EntityListResponse) objectToCompare;
+        EntityListResponse
+                that = (EntityListResponse) objectToCompare;
         return Objects.equals(getEntities(), that.getEntities());
     }
 

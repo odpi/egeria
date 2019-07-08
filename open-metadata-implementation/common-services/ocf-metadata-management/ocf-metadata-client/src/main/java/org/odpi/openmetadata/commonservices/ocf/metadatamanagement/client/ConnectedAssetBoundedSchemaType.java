@@ -11,6 +11,7 @@ class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
      * Typical constructor creates an AssetComplexSchemaType object primed with information to retrieve an asset's schema
      * information.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param omasServerURL url root of the server to use.
      * @param userId user id to use on server calls.
@@ -18,16 +19,18 @@ class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
      * @param schemaBean details of the schema object.
      * @param restClient client to call REST API
      */
-    ConnectedAssetBoundedSchemaType(String                 serverName,
+    ConnectedAssetBoundedSchemaType(String                 serviceName,
+                                    String                 serverName,
                                     String                 omasServerURL,
                                     String                 userId,
                                     ConnectedAssetUniverse parentAsset,
                                     BoundedSchemaType      schemaBean,
-                                    OCFRESTClient restClient)
+                                    OCFRESTClient          restClient)
     {
         super(parentAsset);
         super.setBean(schemaBean);
-        super.boundedSchemaElementType = parentAsset.getAssetSchemaType(serverName,
+        super.boundedSchemaElementType = parentAsset.getAssetSchemaType(serviceName,
+                                                                        serverName,
                                                                         omasServerURL,
                                                                         userId,
                                                                         schemaBean.getElementType(),

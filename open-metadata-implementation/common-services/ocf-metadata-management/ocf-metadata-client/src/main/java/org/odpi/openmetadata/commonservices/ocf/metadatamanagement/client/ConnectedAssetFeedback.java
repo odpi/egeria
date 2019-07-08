@@ -15,6 +15,7 @@ public class ConnectedAssetFeedback extends AssetFeedback
      * Typical constructor creates an AssetFeedback object primed with the iterators for the asset's comments,
      * tags, likes and ratings.
      *
+     * @param serviceName calling service
      * @param serverName name of server to use on server calls.
      * @param userId user id to use on server calls.
      * @param omasServerURL url root of the server to use.
@@ -28,7 +29,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
      * @param restClient client to call REST API
      */
-    ConnectedAssetFeedback(String                 serverName,
+    ConnectedAssetFeedback(String                 serviceName,
+                           String                 serverName,
                            String                 userId,
                            String                 omasServerURL,
                            String                 assetGUID,
@@ -38,13 +40,14 @@ public class ConnectedAssetFeedback extends AssetFeedback
                            int                    ratingCount,
                            int                    tagCount,
                            int                    maxCacheSize,
-                           OCFRESTClient restClient)
+                           OCFRESTClient          restClient)
     {
         super(parentAsset);
 
         if (commentCount > 0)
         {
-            super.comments = new ConnectedAssetComments(serverName,
+            super.comments = new ConnectedAssetComments(serviceName,
+                                                        serverName,
                                                         userId,
                                                         omasServerURL,
                                                         assetGUID,
@@ -57,7 +60,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
 
         if (likeCount > 0)
         {
-            super.likes = new ConnectedAssetLikes(serverName,
+            super.likes = new ConnectedAssetLikes(serviceName,
+                                                  serverName,
                                                   userId,
                                                   omasServerURL,
                                                   assetGUID,
@@ -69,7 +73,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
 
         if (ratingCount > 0)
         {
-            super.ratings = new ConnectedAssetRatings(serverName,
+            super.ratings = new ConnectedAssetRatings(serviceName,
+                                                      serverName,
                                                       userId,
                                                       omasServerURL,
                                                       assetGUID,
@@ -81,7 +86,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
 
         if (tagCount > 0)
         {
-            super.informalTags = new ConnectedAssetInformalTags(serverName,
+            super.informalTags = new ConnectedAssetInformalTags(serviceName,
+                                                                serverName,
                                                                 userId,
                                                                 omasServerURL,
                                                                 assetGUID,

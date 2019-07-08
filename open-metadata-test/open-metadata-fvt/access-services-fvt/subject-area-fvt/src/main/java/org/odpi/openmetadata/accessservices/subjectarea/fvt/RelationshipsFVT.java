@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 
@@ -31,6 +32,7 @@ public class RelationshipsFVT
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT =null;
     private CategoryFVT catFVT = null;
+    private ProjectFVT projectFVT = null;
     private String url = null;
     private String serverName = null;
     private String userId = null;
@@ -42,6 +44,7 @@ public class RelationshipsFVT
         termFVT = new TermFVT(url,serverName,userId);
         catFVT = new CategoryFVT(url,serverName,userId);
         glossaryFVT = new GlossaryFVT(url,serverName,userId);
+        projectFVT = new ProjectFVT(url,serverName,userId);
         this.serverName=serverName;
         this.userId=userId;
     }
@@ -175,6 +178,11 @@ public class RelationshipsFVT
         if (term1relationshipcount !=numberofrelationships) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "Expected " + term1Relationships.size() + " got "+ numberofrelationships, "", "");
         }
+        Project project =projectFVT.createProject("Test Project For ProjectScope FVT");
+        projectScopeFVT(project,term1);
+        projectFVT.deleteProject(project.getSystemAttributes().getGUID());
+        projectFVT.purgeProject(project.getSystemAttributes().getGUID());
+
     }
 
     private void checkRelationshipNumberforTerm(int expectedrelationshipcount, Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
@@ -1437,5 +1445,78 @@ public class RelationshipsFVT
         FVTUtils.validateLine(createdTermCategorization);
         System.out.println("Created TermCategorizationRelationship " + createdTermCategorization);
         return createdTermCategorization;
+    }
+
+    private void projectScopeFVT(Project project, Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException {
+        ProjectScopeRelationship createdProjectScope= createProjectScope(project, term);
+        FVTUtils.validateLine(createdProjectScope);
+        System.out.println("Created ProjectScopeRelationship " + createdProjectScope);
+        String guid = createdProjectScope.getGuid();
+
+        ProjectScopeRelationship gotProjectScopeRelationship =subjectAreaRelationship.getProjectScopeRelationship(this.serverName,this.userId, guid);
+        FVTUtils.validateLine(gotProjectScopeRelationship);
+        System.out.println("Got ProjectScopeRelationship " +gotProjectScopeRelationship);
+
+        ProjectScopeRelationship updateProjectScope = new ProjectScopeRelationship();
+        updateProjectScope.setScopeDescription("ddd2");
+        updateProjectScope.setGuid(createdProjectScope.getGuid());
+        ProjectScopeRelationship updatedProjectScope = subjectAreaRelationship.updateProjectScopeRelationship(this.serverName,this.userId, updateProjectScope);
+        FVTUtils.validateLine(updatedProjectScope);
+        if (!updatedProjectScope.getScopeDescription().equals(updateProjectScope.getScopeDescription()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Project scope  update scopeDescription not as expected", "", "");
+        }
+
+        if (!updatedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Project scope update project end not as expected", "", "");
+        }
+        if (!updatedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Project scope update node end not as expected", "", "");
+        }
+        System.out.println("Updated ProjectScopeRelationship " + createdProjectScope);
+        ProjectScopeRelationship replaceProjectScope = new ProjectScopeRelationship();
+        replaceProjectScope.setScopeDescription("ddd3");
+        replaceProjectScope.setGuid(createdProjectScope.getGuid());
+        ProjectScopeRelationship replacedProjectScope = subjectAreaRelationship.replaceProjectScopeRelationship(this.serverName,this.userId, replaceProjectScope);
+        FVTUtils.validateLine(replacedProjectScope);
+        if (!replacedProjectScope.getScopeDescription().equals(replaceProjectScope.getScopeDescription()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: project scope replace scope description not as expected", "", "");
+        }
+        if (!replacedProjectScope.getProjectGuid().equals(createdProjectScope.getProjectGuid()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: project scope replace project end not as expected", "", "");
+        }
+        if (!replacedProjectScope.getNodeGuid().equals(createdProjectScope.getNodeGuid()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: project scope replace node end not as expected", "", "");
+        }
+        System.out.println("Replaced ProjectScopeRelationship " + createdProjectScope);
+        gotProjectScopeRelationship = subjectAreaRelationship.deleteProjectScopeRelationship(this.serverName,this.userId, guid);
+        FVTUtils.validateLine(gotProjectScopeRelationship);
+        System.out.println("Soft deleted ProjectScopeRelationship with guid=" + guid);
+        gotProjectScopeRelationship = subjectAreaRelationship.restoreProjectScopeRelationship(this.serverName,this.userId, guid);
+        FVTUtils.validateLine(gotProjectScopeRelationship);
+        System.out.println("Restored ProjectScopeRelationship with guid=" + guid);
+        gotProjectScopeRelationship = subjectAreaRelationship.deleteProjectScopeRelationship(this.serverName,this.userId, guid);
+        FVTUtils.validateLine(gotProjectScopeRelationship);
+        System.out.println("Soft deleted ProjectScopeRelationship with guid=" + guid);
+        subjectAreaRelationship.purgeProjectScopeRelationship(this.serverName,this.userId, guid);
+
+
+
+        System.out.println("Hard deleted ProjectScopeRelationship with guid=" + guid);
+    }
+
+    private ProjectScopeRelationship createProjectScope(Project project, Term term) throws SubjectAreaFVTCheckedException, UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException {
+       ProjectScopeRelationship projectScope = new ProjectScopeRelationship();
+        projectScope.setNodeGuid(term.getSystemAttributes().getGUID());
+        projectScope.setProjectGuid(project.getSystemAttributes().getGUID());
+        ProjectScopeRelationship createdProjectScope = subjectAreaRelationship.createProjectScopeRelationship(this.serverName,this.userId, projectScope);
+        FVTUtils.validateLine(createdProjectScope);
+        System.out.println("CreatedProjectScopeRelationship " + createdProjectScope);
+        return createdProjectScope;
     }
 }

@@ -5,7 +5,9 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.classifications;
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
@@ -23,58 +25,112 @@ public class ClassificationFactory {
     public ClassificationFactory(OMRSAPIHelper omrsapiHelper) {
         this.omrsapiHelper= omrsapiHelper;
         this.repositoryHelper=omrsapiHelper.getOMRSRepositoryHelper();
-        
     }
 
     /**
-     * Get a Classification based on the name and then map the supplied omrs classificaiton to the omas one.
+     * Get an OMAS Classification based on the name and then map the supplied omrs classificaiton to the omas one.
      * @param name name of the classification. Note this may not match the classification name if the classification is a sub type of the supplied name.
      * @param omrsClassification the supplied omrs classification to map
      * @return the omas classification, null if not known.
      */
     public org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification getOMASClassification(String name, Classification omrsClassification)  {
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"SpineAttribute")) {
+        final String serviceName = omrsapiHelper.getServiceName();
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SpineAttribute")) {
             return new SpineAttributeMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"CanonicalVocabulary")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"CanonicalVocabulary")) {
             return new CanonicalVocabularyMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
       
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"Confidence")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Confidence")) {
             return new ConfidenceMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
        
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"Criticality")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Criticality")) {
             return new CriticalityMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
        
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"GlossaryProject")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"GlossaryProject")) {
             return new GlossaryProjectMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
       
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"SpineObject")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SpineObject")) {
             return new SpineObjectMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
 
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"Taxonomy")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Taxonomy")) {
             return new TaxonomyMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
         
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"Retention")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Retention")) {
             return new RetentionMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
         
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"SubjectArea")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SubjectArea")) {
             return new SubjectAreaMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
        
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"ObjectIdentifier")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"ObjectIdentifier")) {
             return new ObjectIdentifierMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
 
-        if (this.repositoryHelper.isTypeOf(omrsapiHelper.getServiceName(),name,"Confidentiality")) {
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Confidentiality")) {
             return new ConfidentialityMapper(this.omrsapiHelper).mapOmrsToBean(omrsClassification);
         }
         return null;
+    }
+    /**
+     * Get an OMRS Classification based on the the supplied omas classification.
+     * @param omasClassification the supplied omas classification to map
+     * @return the omas classification, null if not known.
+     */
+    public Classification getOMRSClassification(org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
+        final String name = omasClassification.getClassificationName();
+        final String serviceName = omrsapiHelper.getServiceName();
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SpineAttribute")) {
+            return new SpineAttributeMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"CanonicalVocabulary")) {
+            return new CanonicalVocabularyMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Confidence")) {
+            return new ConfidenceMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Criticality")) {
+            return new CriticalityMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"GlossaryProject")) {
+            return new GlossaryProjectMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SpineObject")) {
+            return new SpineObjectMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Taxonomy")) {
+            return new TaxonomyMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Retention")) {
+            return new RetentionMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"SubjectArea")) {
+            return new SubjectAreaMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"ObjectIdentifier")) {
+            return new ObjectIdentifierMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+
+        if (this.repositoryHelper.isTypeOf(serviceName,name,"Confidentiality")) {
+            return new ConfidentialityMapper(this.omrsapiHelper).mapBeanToOmrs(omasClassification);
+        }
+        return null;
+
     }
 }

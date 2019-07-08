@@ -35,7 +35,8 @@ class InMemoryEntityNeighbourhood
     /**
      * Constructor
      *
-     * @param repositoryHelper
+     * @param repositoryHelper             helper methods when calling the repository connector
+     * @param repositoryName               name of this repository
      * @param repositoryValidator          repository validator
      * @param entityStore                  entity store
      * @param relationshipStore            relationship store
@@ -50,7 +51,17 @@ class InMemoryEntityNeighbourhood
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param level                        the number of the relationships out from the starting entity that the query will traverse to
      */
-    InMemoryEntityNeighbourhood(OMRSRepositoryHelper repositoryHelper, String repositoryName, OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
+    InMemoryEntityNeighbourhood(OMRSRepositoryHelper      repositoryHelper,
+                                String                    repositoryName,
+                                OMRSRepositoryValidator   repositoryValidator,
+                                Map<String, EntityDetail> entityStore,
+                                Map<String, Relationship> relationshipStore,
+                                String                    rootEntityGUID,
+                                List<String>              entityTypeGUIDs,
+                                List<String>              relationshipTypeGUIDs,
+                                List<InstanceStatus>      limitResultsByStatus,
+                                List<String>              limitResultsByClassification,
+                                int                       level)
     {
         this.repositoryHelper = repositoryHelper;
         this.repositoryName = repositoryName;
@@ -130,16 +141,20 @@ class InMemoryEntityNeighbourhood
      *
      * @param relationship relationship to verify
      * @return true if valid otherwise false
+     * @throws TypeErrorException type error
      */
-    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship) throws TypeErrorException {
+    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship) throws TypeErrorException
+    {
         boolean valid = false;
         boolean validEntity1 = false;
         boolean validEntity2 = false;
         boolean validRelationship = false;
+
         if (!validateRelationshipAgainstEntityTypes(relationship))
         {
            return false;
         }
+
         if (relationship != null)
         {
             String relationshipEnd1Guid = getEnd1EntityGUID(relationship);
@@ -218,7 +233,7 @@ class InMemoryEntityNeighbourhood
      */
     private boolean validateRelationshipAgainstEntityTypes(Relationship relationship) throws TypeErrorException
     {
-        String methodName  ="validatetypes";
+        String methodName  ="validateRelationshipAgainstEntityTypes";
         boolean valid = false;
         /*
          * If we have entityType Guids specified then they will scope this relationship. So we need to check that the relationship
@@ -267,6 +282,7 @@ class InMemoryEntityNeighbourhood
      * Create the instance graph
      *
      * @return InstanceGraph  the instance graph that contains the entities and relationships that radiate out from the supplied entity GUID.
+     * @throws TypeErrorException Type error.
      */
     InstanceGraph createInstanceGraph() throws TypeErrorException
     {
@@ -303,6 +319,7 @@ class InMemoryEntityNeighbourhood
      * @param visitedEntities      the entities that have already been visited (seen)
      * @param visitedRelationships the relationship that have already been visited (seen)
      * @param currentLevel         the current level
+     * @throws TypeErrorException Type error.
      */
     private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws TypeErrorException
     {

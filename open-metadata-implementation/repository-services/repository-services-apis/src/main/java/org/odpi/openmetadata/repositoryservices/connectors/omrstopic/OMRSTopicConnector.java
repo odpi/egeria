@@ -3,24 +3,26 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -470,12 +472,12 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             if ((eventBean != null) && (eventBean instanceof OMRSEventV1))
             {
-                for (OMRSTopicListener  topicListener : internalTopicListeners)
-                {
+                OMRSEventBean finalEventBean = eventBean;
+                internalTopicListeners.parallelStream().forEach((topicListener) -> {
                     try
                     {
-                        this.processOMRSEvent((OMRSEventV1)eventBean,
-                                              topicListener);
+                        this.processOMRSEvent((OMRSEventV1) finalEventBean,
+                                topicListener);
                     }
                     catch (Throwable  error)
                     {
@@ -486,18 +488,18 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                             OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
 
                             auditLog.logException(connectorName,
-                                                  auditCode.getLogMessageId(),
-                                                  auditCode.getSeverity(),
-                                                  auditCode.getFormattedLogMessage(event,
-                                                                                   error.toString(),
-                                                                                   topicListener.toString()),
-                                                  null,
-                                                  auditCode.getSystemAction(),
-                                                  auditCode.getUserAction(),
-                                                  error);
+                                    auditCode.getLogMessageId(),
+                                    auditCode.getSeverity(),
+                                    auditCode.getFormattedLogMessage(event,
+                                            error.toString(),
+                                            topicListener.toString()),
+                                    null,
+                                    auditCode.getSystemAction(),
+                                    auditCode.getUserAction(),
+                                    error);
                         }
                     }
-                }
+                });
             }
         }
         else

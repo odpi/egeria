@@ -8,6 +8,7 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
@@ -35,6 +36,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
     private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
     private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
+    private DataEngineProxyOperationalServices  operationalDataEngineProxyServices  = null;
 
 
     /**
@@ -283,4 +285,26 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     {
         this.operationalVirtualizationServices = operationalVirtualizationServices;
     }
+
+    /**
+     * Return the running instance of Data Engine proxy
+     *
+     * @return DataEngineProxyOperationalServices
+     */
+    DataEngineProxyOperationalServices getOperationalDataEngineProxyServices()
+    {
+        return operationalDataEngineProxyServices;
+    }
+
+
+    /**
+     * Set up the running instance of Data Engine proxy
+     *
+     * @param operationalDataEngineProxyServices DataEngineProxyOperationalServices
+     */
+    void setOperationalDataEngineProxyServices(DataEngineProxyOperationalServices operationalDataEngineProxyServices)
+    {
+        this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
+    }
+
 }

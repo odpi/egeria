@@ -2,34 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-
-import java.io.Serializable;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
-
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 
 /**
  * Identifies a glossary that contains unique terms.
@@ -41,7 +26,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 public class CanonicalVocabulary extends Classification {
     private static final Logger log = LoggerFactory.getLogger( CanonicalVocabulary.class);
     private static final String className =  CanonicalVocabulary.class.getName();
-    private Map<String, Object> extraAttributes;
+    private Map<String, String> extraAttributes;
 
 
  public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
@@ -77,24 +62,6 @@ public class CanonicalVocabulary extends Classification {
     public CanonicalVocabulary() {
             super.classificationName="CanonicalVocabulary";
     }
-    @Override
-    public InstanceProperties obtainInstanceProperties() {
-        final String methodName = "obtainInstanceProperties";
-        if (log.isDebugEnabled()) {
-               log.debug("==> Method: " + methodName);
-        }
-        InstanceProperties instanceProperties = new InstanceProperties();
-        EnumPropertyValue enumPropertyValue=null;
-        MapPropertyValue mapPropertyValue=null;
-        PrimitivePropertyValue primitivePropertyValue=null;
-        primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveValue(scope);
-        instanceProperties.setProperty("scope",primitivePropertyValue);
-        if (log.isDebugEnabled()) {
-               log.debug("<== Method: " + methodName);
-        }
-        return instanceProperties;
-    }
 
        private String scope;
        /**
@@ -114,10 +81,10 @@ public class CanonicalVocabulary extends Classification {
       * Get the extra attributes - ones that are in addition to the standard types.
       * @return extra attributes
       */
-    public Map<String, Object> getExtraAttributes() {
+    public Map<String, String> getAdditionalProperties() {
           return extraAttributes;
     }
-    public void setExtraAttributes(Map<String, Object> extraAttributes) {
-          this.extraAttributes = extraAttributes;
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+          this.extraAttributes = additionalProperties;
     }
 }

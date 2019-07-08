@@ -14,17 +14,17 @@ public interface SecurityServiceConnector {
 
     void importTaggedResources(List<GovernedAsset> governedAssets);
 
-    void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper);
-
-    List<RangerTag> createSecurityTags(GovernanceClassification classification);
-
-    ResourceTagMapper getTagAssociatedWithTheResource(Long id);
-
-    ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID);
+    RangerServiceResource createResource(GovernedAsset governedAsset);
 
     RangerServiceResource getResourceByGUID(String resourceGuid);
 
-    void deleteResourceByGUID(String resourceGuid);
+    void deleteResource(String resourceGuid);
 
-    RangerServiceResource createResource(GovernedAsset governedAsset);
+    List<RangerTag> createSecurityTags(GovernanceClassification classification);
+
+    List<ResourceTagMapper> getTagsAssociatedWithTheResource(Long id);
+
+    ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID);
+
+    void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper);
 }

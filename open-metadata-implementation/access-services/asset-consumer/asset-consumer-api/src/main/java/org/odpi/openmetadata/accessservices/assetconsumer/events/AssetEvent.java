@@ -40,6 +40,8 @@ public class AssetEvent extends AssetConsumerEventHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public AssetEvent(AssetEvent template)
     {

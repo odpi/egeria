@@ -37,6 +37,8 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param workbenchDocURL link to documentation for the workbench.
      * @param localServerUserId local server's userId
      * @param localServerPassword local server's password
+     * @param tutType type of technology to test
+     * @param maxPageSize maximum number of results to return on any one call.
      */
     public OpenMetadataConformanceWorkbenchWorkPad(String       workbenchId,
                                                    String       workbenchName,
@@ -186,7 +188,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      *
      * @return OpenMetadataConformanceStatus enum
      */
-    protected OpenMetadataConformanceStatus getStatusFromEvidence(List<OpenMetadataConformanceTestEvidence> positiveTestEvidence,
+    private   OpenMetadataConformanceStatus getStatusFromEvidence(List<OpenMetadataConformanceTestEvidence> positiveTestEvidence,
                                                                   List<OpenMetadataConformanceTestEvidence> negativeTestEvidence,
                                                                   List<OpenMetadataConformanceTestEvidence> unsupportedTestEvidence)
     {
@@ -451,13 +453,13 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      * @param assertionMessage message associated with the exception.
      * @param exception exception
      */
-    public synchronized void  addUnexpectedException(Integer              profileId,
-                                                     Integer              requirementId,
-                                                     String               testCaseId,
-                                                     String               testCaseName,
-                                                     String               testCaseDocumentationURL,
-                                                     String               assertionMessage,
-                                                     ExceptionBean        exception)
+    synchronized void  addUnexpectedException(Integer              profileId,
+                                              Integer              requirementId,
+                                              String               testCaseId,
+                                              String               testCaseName,
+                                              String               testCaseDocumentationURL,
+                                              String               assertionMessage,
+                                              ExceptionBean        exception)
     {
         OpenMetadataConformanceTestEvidence  testEvidence = new OpenMetadataConformanceTestEvidence();
 
@@ -479,8 +481,9 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      *
      * @param testCaseId identifier of the test case of interest
      * @return test case results
+     * @throws InvalidParameterException unknown test case id
      */
-    public  synchronized  OpenMetadataTestCaseResult   getTestCaseResult(String  testCaseId) throws InvalidParameterException
+    synchronized  OpenMetadataTestCaseResult   getTestCaseResult(String  testCaseId) throws InvalidParameterException
     {
         final String   methodName    = "getTestCaseReport";
         final String   parameterName = "testCaseId";
@@ -510,7 +513,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      *
      * @return failed test cases
      */
-    public  synchronized List<OpenMetadataTestCaseResult>  getFailedTestCases()
+    synchronized List<OpenMetadataTestCaseResult>  getFailedTestCases()
     {
         List<OpenMetadataTestCaseResult> failedTestCases = new ArrayList<>();
 
@@ -542,7 +545,7 @@ public abstract class OpenMetadataConformanceWorkbenchWorkPad
      *
      * @return workbench results object
      */
-    public synchronized OpenMetadataConformanceWorkbenchResults getWorkbenchResults()
+    synchronized OpenMetadataConformanceWorkbenchResults getWorkbenchResults()
     {
         OpenMetadataConformanceWorkbenchResults workbenchResults = new OpenMetadataConformanceWorkbenchResults();
 
