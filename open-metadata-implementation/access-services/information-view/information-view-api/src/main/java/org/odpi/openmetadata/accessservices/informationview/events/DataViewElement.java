@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 
+import java.util.List;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -20,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = DataViewColumn.class, name = "DataViewColumn"),
-        @JsonSubTypes.Type(value = DataViewTable.class, name = "DataViewTable")})
+        @JsonSubTypes.Type(value = DataViewModel.class, name = "DataViewModel")})
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class)
 @JsonIdentityReference
 public class DataViewElement {
@@ -32,6 +34,7 @@ public class DataViewElement {
     private String nativeClass;
     private String comment;
     private String description;
+    private List<DataViewElement> elements;
 
     public String getId() {
         return id;
@@ -73,6 +76,13 @@ public class DataViewElement {
         this.description = description;
     }
 
+    public List<DataViewElement> getElements() {
+        return elements;
+    }
+
+    public void setElements(List<DataViewElement> elements) {
+        this.elements = elements;
+    }
 
     @Override
     public String toString() {
@@ -82,6 +92,7 @@ public class DataViewElement {
                 ", nativeClass='" + nativeClass + '\'' +
                 ", comment='" + comment + '\'' +
                 ", description='" + description + '\'' +
+                ", elements=" + elements +
                 '}';
     }
 }
