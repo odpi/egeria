@@ -126,7 +126,8 @@ public class TypeDefValidationForRequest extends OMRSAPIRequest
         {
             return false;
         }
-        TypeDefValidationForRequest that = (TypeDefValidationForRequest) objectToCompare;
+        TypeDefValidationForRequest
+                that = (TypeDefValidationForRequest) objectToCompare;
         return Objects.equals(getTypeDefGUID(), that.getTypeDefGUID()) &&
                 Objects.equals(getTypeDefName(), that.getTypeDefName());
     }

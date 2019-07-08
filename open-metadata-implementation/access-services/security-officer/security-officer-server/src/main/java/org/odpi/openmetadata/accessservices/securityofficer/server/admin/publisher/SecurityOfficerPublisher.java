@@ -4,7 +4,15 @@
  */
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.publisher;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor.SecurityOfficerEventProcessor;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -19,10 +27,15 @@ import org.slf4j.LoggerFactory;
 public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerPublisher.class);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private SecurityOfficerEventProcessor securityOfficerEventProcessor;
+    private OpenMetadataTopicConnector openMetadataTopicConnector;
+    private OMRSAuditLog auditLog;
 
-    public SecurityOfficerPublisher(SecurityOfficerEventProcessor securityOfficerEventProcessor) {
+    public SecurityOfficerPublisher(SecurityOfficerEventProcessor securityOfficerEventProcessor, OpenMetadataTopicConnector openMetadataTopicConnector, OMRSAuditLog auditLog) {
         this.securityOfficerEventProcessor = securityOfficerEventProcessor;
+        this.openMetadataTopicConnector = openMetadataTopicConnector;
+        this.auditLog = auditLog;
     }
 
     @Override
@@ -88,7 +101,13 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
     @Override
     public void processNewRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
         if (relationship.getType().getTypeDefName().equals("SemanticAssignment") && isSchemaElement(relationship.getEntityOneProxy().getType())) {
-            securityOfficerEventProcessor.processSemanticAssignmentForSchemaElement(relationship);
+            SecurityOfficerEvent securityOfficerEvent = securityOfficerEventProcessor.processSemanticAssignmentForSchemaElement(relationship);
+
+            try {
+                sendEvent(securityOfficerEvent);
+            } catch (JsonProcessingException e) {
+                log.debug("Unable to build the event");
+            }
         } else {
             log.debug("No processing needed");
         }
@@ -148,5 +167,25 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processConflictingTypeEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String targetMetadataCollectionId, TypeDefSummary targetTypeDef, String targetInstanceGUID, TypeDefSummary otherTypeDef, String errorMessage) {
+    }
+
+    public void sendEvent(SecurityOfficerEvent securityOfficerEvent) throws JsonProcessingException {
+        String event = OBJECT_MAPPER.writeValueAsString(securityOfficerEvent);
+
+        try {
+            openMetadataTopicConnector.sendEvent(event);
+        } catch (ConnectorCheckedException e) {
+            log.error("Exception publishing event", e);
+            SecurityOfficerErrorCode auditCode = SecurityOfficerErrorCode.PUBLISH_EVENT_EXCEPTION;
+
+            auditLog.logException("send event",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(securityOfficerEvent.getClass().getName(), e.getMessage()),
+                    "event {" + securityOfficerEvent + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+        }
     }
 }

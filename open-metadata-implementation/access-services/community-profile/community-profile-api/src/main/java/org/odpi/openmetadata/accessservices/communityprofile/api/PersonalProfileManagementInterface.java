@@ -65,6 +65,7 @@ public interface PersonalProfileManagementInterface
      * @param additionalProperties  additional properties about the individual.
      *
      * @throws InvalidParameterException the known name is null or the qualifiedName does not match the profileGUID.
+     * @throws NoProfileForUserException unable to locate the profile for this userId.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
@@ -89,7 +90,7 @@ public interface PersonalProfileManagementInterface
      * @param profileGUID unique identifier for the profile.
      * @param qualifiedName personnel/serial/unique employee number of the individual.
      * @throws InvalidParameterException the qualifiedName or guid is null.
-     *
+     * @throws NoProfileForUserException unable to locate the profile for this userId.
      * @throws PropertyServerException the server is not available.
      * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
      */

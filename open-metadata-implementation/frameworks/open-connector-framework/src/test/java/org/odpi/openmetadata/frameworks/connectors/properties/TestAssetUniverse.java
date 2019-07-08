@@ -30,14 +30,14 @@ public class TestAssetUniverse
     private AssetNoteLogs               noteLogs               = null;
     private AssetExternalReferences     externalReferences     = null;
     private AssetConnections            connections            = null;
-    private AssetLicenses               licenses               = null;
-    private AssetCertifications         certifications         = null;
-    private List<AssetMeaning>          meanings               = null;
-    private AssetSchemaType             schema                 = null;
-    private AssetFeedback               feedback               = null;
-    private AssetLocations              knownLocations         = null;
-    private AssetLineage                lineage                = null;
-    private RelatedAssets               relatedAssets          = null;
+    private AssetLicenses       licenses       = null;
+    private AssetCertifications certifications = null;
+    private List<AssetMeaning>  meanings       = null;
+    private AssetSchemaType     schema         = null;
+    private AssetFeedback       feedback       = null;
+    private AssetLocations      knownLocations = null;
+    private AssetLineage        lineage        = null;
+    private AssetRelatedAssets  relatedAssets  = null;
 
 
     /**
@@ -173,7 +173,7 @@ public class TestAssetUniverse
         AssetFeedback      feedback       = null;
         AssetLocations     knownLocations = null;
         AssetLineage       lineage        = null;
-        RelatedAssets      relatedAssets  = null;
+        AssetRelatedAssets relatedAssets  = null;
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -215,9 +215,9 @@ public class TestAssetUniverse
                                                                  likes,
                                                                  ratings,
                                                                  comments);
-        AssetLocations knownLocations = new MockAssetLocations(null, 15, 50);
-        AssetLineage   lineage        = new AssetLineage();
-        RelatedAssets  relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
+        AssetLineage       lineage        = new AssetLineage();
+        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         AssetUniverse testObject = new AssetUniverse(new Asset(),
                                                      externalIdentifiers,
@@ -262,13 +262,13 @@ public class TestAssetUniverse
         AssetInformalTags  informalTags = new MockAssetInformalTags(null, 15, 50);
         AssetLikes         likes        = new MockAssetLikes(null, 15, 50);
         AssetRatings       ratings      = new MockAssetRatings(null, 15, 50);
-        AssetComments      comments     = new MockAssetComments(null, 15, 50);
-        List<AssetMeaning> meanings     = new ArrayList<>();
-        AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
+        AssetComments      comments       = new MockAssetComments(null, 15, 50);
+        List<AssetMeaning> meanings       = new ArrayList<>();
+        AssetSchemaType    schema         = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
         AssetFeedback      feedback       = new AssetFeedback(null, informalTags, likes, ratings, comments);
         AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
         AssetLineage       lineage        = new AssetLineage();
-        RelatedAssets      relatedAssets  = new MockRelatedAssets(null, 15, 50);
+        AssetRelatedAssets relatedAssets  = new MockRelatedAssets(null, 15, 50);
 
         AssetUniverse testTemplate = new AssetUniverse(new Asset(),
                                                        externalIdentifiers,

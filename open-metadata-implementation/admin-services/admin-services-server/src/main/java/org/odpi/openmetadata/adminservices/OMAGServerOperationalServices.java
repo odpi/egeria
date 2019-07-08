@@ -4,16 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
@@ -33,9 +24,11 @@ import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalSe
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -162,6 +155,7 @@ public class OMAGServerOperationalServices
             SecurityOfficerConfig     securityOfficerConfig     = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
+            DataEngineProxyConfig     dataEngineProxyConfig     = configuration.getDataEngineProxyConfig();
 
             if ((repositoryServicesConfig == null) &&
                     (accessServiceConfigList == null) &&
@@ -171,7 +165,8 @@ public class OMAGServerOperationalServices
                     (securitySyncConfig == null) &&
                     (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
-                    (virtualizationConfig == null))
+                    (virtualizationConfig == null) &&
+                    (dataEngineProxyConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -218,12 +213,6 @@ public class OMAGServerOperationalServices
                 this.deactivateTemporarily(userId, serverName);
             }
 
-
-            /*
-             * Set up the security for the server using the config
-             */
-            platformInstanceMap.startUpServerInstance(serverName, configuration.getServerSecurityConnection());
-
             /*
              * The instance saves the operational services objects for this server instance so they can be retrieved
              * in response to subsequent REST calls for the server
@@ -264,6 +253,25 @@ public class OMAGServerOperationalServices
              */
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
             operationalRepositoryServices.initialize(repositoryServicesConfig);
+
+
+            /*
+             * Set up the server instance - ensure it is active and the security has been set up correctly.
+             */
+            OpenMetadataServerSecurityVerifier securityVerifier =
+                        platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
+                                                                  serverName,
+                                                                  operationalRepositoryServices.getAuditLog(CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
+                                                                  configuration.getServerSecurityConnection());
+
+            /*
+             * Pass the resulting security verify to the repository services.  It will be set up in the local
+             * repository (if there is a local repository in this server).
+             */
+            operationalRepositoryServices.setSecurityVerifier(securityVerifier);
 
             /*
              * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
@@ -530,6 +538,29 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName());
             }
 
+            /*
+             * Initialize the Data Engine Proxy Services.
+             */
+            if (dataEngineProxyConfig != null)
+            {
+                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                        configuration.getLocalServerType(),
+                        configuration.getOrganizationName(),
+                        configuration.getLocalServerUserId(),
+                        configuration.getLocalServerURL());
+
+                instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
+                operationalDataEngineProxyServices.initialize(
+                        dataEngineProxyConfig,
+                        operationalRepositoryServices.getAuditLog(
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
+                                GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceWiki())
+                );
+
+                activatedServiceList.add(GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
+            }
 
             /*
              * Initialize the Stewardship Services.  This is a governance daemon for running automated stewardship actions.
@@ -581,9 +612,13 @@ public class OMAGServerOperationalServices
     /**
      * Shutdown any running services for a specific server instance.
      *
+     * @param userId calling user
      * @param serverName name of this server
+     * @param methodName calling method
      * @param instance a list of the running services
      * @param permanentDeactivation should the server be permanently disconnected
+     * @throws InvalidParameterException one of the services detected an invalid parameter
+     * @throws PropertyServerException one of the services had problems shutting down
      */
     private void deactivateRunningServiceInstances(String                          userId,
                                                    String                          serverName,

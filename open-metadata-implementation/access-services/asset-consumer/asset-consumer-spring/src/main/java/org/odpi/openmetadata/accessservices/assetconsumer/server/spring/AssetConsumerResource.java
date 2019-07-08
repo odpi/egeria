@@ -37,23 +37,25 @@ public class AssetConsumerResource
      *
      * @param serverName    name of the server instances for this request.
      * @param userId        String - userId of user making request.
+     * @param assetGUID     String - unique id of asset that this chain of comments is linked.
      * @param commentGUID   String - unique id for an existing comment.  Used to add a reply to a comment.
      * @param requestBody   containing type of comment enum and the text of the comment.
      *
-     * @return guid for new comment object or
+     * @return assetGUID for new comment object or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException There is a problem adding the asset properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/comments/{commentGUID}/replies")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments/{commentGUID}/replies")
 
     public GUIDResponse addCommentReply(@PathVariable String             serverName,
                                         @PathVariable String             userId,
+                                        @PathVariable String             assetGUID,
                                         @PathVariable String             commentGUID,
                                         @RequestBody  CommentRequestBody requestBody)
     {
-        return restAPI.addCommentReply(serverName, userId, commentGUID, requestBody);
+        return restAPI.addCommentReply(serverName, userId, assetGUID, commentGUID, requestBody);
     }
 
 
@@ -62,23 +64,23 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId      String - userId of user making request.
-     * @param guid        String - unique id for the asset.
+     * @param assetGUID        String - unique id for the asset.
      * @param requestBody containing type of comment enum and the text of the comment.
      *
-     * @return guid for new comment object or
+     * @return assetGUID for new comment object or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException There is a problem adding the asset properties to
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/comments")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments")
 
     public GUIDResponse addCommentToAsset(@PathVariable String              serverName,
                                           @PathVariable String              userId,
-                                          @PathVariable String              guid,
+                                          @PathVariable String              assetGUID,
                                           @RequestBody  CommentRequestBody  requestBody)
     {
-        return restAPI.addCommentToAsset(serverName, userId, guid, requestBody);
+        return restAPI.addCommentToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -87,7 +89,7 @@ public class AssetConsumerResource
      *
      * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
-     * @param guid        String - unique id for the asset.
+     * @param assetGUID   String - unique id for the asset.
      * @param requestBody feedback request body.
      *
      * @return void or
@@ -96,14 +98,14 @@ public class AssetConsumerResource
      *                                   the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/likes")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/likes")
 
     public VoidResponse addLikeToAsset(@PathVariable String              serverName,
                                        @PathVariable String              userId,
-                                       @PathVariable String              guid,
+                                       @PathVariable String              assetGUID,
                                        @RequestBody  FeedbackRequestBody requestBody)
     {
-        return restAPI.addLikeToAsset(serverName, userId, guid, requestBody);
+        return restAPI.addLikeToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -112,7 +114,7 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId  String - userId of user making request.
-     * @param guid  String - unique id for the asset.
+     * @param assetGUID  String - unique id for the asset.
      * @param requestBody containing:
      * connectorInstanceId  (String - (optional) id of connector in use (if any)),
      * connectionName  (String - (optional) name of the connection (extracted from the connector)),
@@ -125,14 +127,14 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem adding the log message to the audit log for this asset or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/log-records")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/log-records")
 
     public VoidResponse addLogMessageToAsset(@PathVariable String                serverName,
                                              @PathVariable String                userId,
-                                             @PathVariable String                guid,
+                                             @PathVariable String                assetGUID,
                                              @RequestBody  LogRecordRequestBody requestBody)
     {
-        return restAPI.addLogMessageToAsset(serverName, userId, guid, requestBody);
+        return restAPI.addLogMessageToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -141,22 +143,22 @@ public class AssetConsumerResource
      *
      * @param serverName  name of the server instances for this request.
      * @param userId      String - userId of user making request.
-     * @param guid        String - unique id for the asset.
+     * @param assetGUID        String - unique id for the asset.
      * @param requestBody containing the StarRating and user review of asset.
      *
-     * @return guid for new review object or
+     * @return assetGUID for new review object or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/ratings")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/ratings")
 
     public VoidResponse addRatingToAsset(@PathVariable String             serverName,
                                          @PathVariable String             userId,
-                                         @PathVariable String             guid,
+                                         @PathVariable String             assetGUID,
                                          @RequestBody  RatingRequestBody requestBody)
     {
-        return restAPI.addRatingToAsset(serverName, userId, guid, requestBody);
+        return restAPI.addRatingToAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -187,57 +189,33 @@ public class AssetConsumerResource
 
 
     /**
-     * Creates a new private informal tag and returns the unique identifier for it.
+     * Creates a new informal tag and returns the unique identifier for it.
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       userId of user making request.
-     * @param requestBody  name of the tag and (optional) description of the tag.
+     * @param requestBody  public/private flag, name of the tag and (optional) description of the tag.
      *
-     * @return new guid or
+     * @return new assetGUID or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException There is a problem adding the asset properties to the metadata repository or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/private")
+    @RequestMapping(method = RequestMethod.POST, path = "/tags")
 
-    public GUIDResponse createPrivateTag(@PathVariable String         serverName,
-                                         @PathVariable String         userId,
-                                         @RequestBody  TagRequestBody requestBody)
+    public GUIDResponse createTag(@PathVariable String         serverName,
+                                  @PathVariable String         userId,
+                                  @RequestBody  TagRequestBody requestBody)
     {
-        return restAPI.createPrivateTag(serverName, userId, requestBody);
+        return restAPI.createTag(serverName, userId, requestBody);
     }
 
 
     /**
-     * Creates a new public informal tag and returns the unique identifier for it.
-     *
-     * @param serverName   name of the server instances for this request.
-     * @param userId       userId of user making request.
-     * @param requestBody  name of the tag and (optional) description of the tag.
-     *                     Setting a description, particularly in a public tag
-     *                     makes the tag more valuable to other users and can act as an embryonic glossary term.
-     *
-     * @return new guid or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException There is a problem adding the asset properties to the metadata repository or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/public")
-
-    public GUIDResponse createPublicTag(@PathVariable String         serverName,
-                                        @PathVariable String         userId,
-                                        @RequestBody  TagRequestBody requestBody)
-    {
-        return restAPI.createPublicTag(serverName, userId, requestBody);
-    }
-
-
-    /**
-     * Removes a tag from the asset that was added by this user.
+     * Removes a tag from the repository.  All of the relationships to referenceables are lost.
      *
      * @param serverName   name of the server instances for this request
      * @param userId       String - userId of user making request.
-     * @param guid         String - unique id for the tag.
+     * @param tagGUID      String - unique id for the tag.
      * @param requestBody  null request body.
      *
      * @return void or
@@ -245,38 +223,14 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem updating the asset properties in the metadata repository or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/tags/{guid}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/tags/{tagGUID}/delete")
 
     public VoidResponse   deleteTag(@PathVariable String          serverName,
                                     @PathVariable String          userId,
-                                    @PathVariable String          guid,
+                                    @PathVariable String          tagGUID,
                                     @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.deleteTag(serverName, userId, guid, requestBody);
-    }
-
-
-    /**
-     * Returns the unique identifier for the asset connected to the connection identified by the supplied guid.
-     *
-     * @param serverName name of the server instances for this request.
-     * @param userId the userId of the requesting user.
-     * @param connectionGUID  uniqueId for the connection.
-     *
-     * @return unique identifier of asset or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * PropertyServerException there is a problem retrieving the connected asset properties from the property server or
-     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the property server or
-     * NoConnectedAssetException there is no asset associated with this connection or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-connection/{connectionGUID}")
-
-    public GUIDResponse getAssetForConnectionGUID(@PathVariable String   serverName,
-                                                  @PathVariable String   userId,
-                                                  @PathVariable String   connectionGUID)
-    {
-        return restAPI.getAssetForConnection(serverName, userId, connectionGUID);
+        return restAPI.deleteTag(serverName, userId, tagGUID, requestBody);
     }
 
 
@@ -300,7 +254,7 @@ public class AssetConsumerResource
                                                   @PathVariable String   userId,
                                                   @PathVariable String   connectionName)
     {
-        return restAPI.getAssetForConnection(serverName, userId, connectionName);
+        return restAPI.getAssetForConnectionName(serverName, userId, connectionName);
     }
 
 
@@ -318,38 +272,15 @@ public class AssetConsumerResource
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/by-name/{name}")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
 
     public AssetsResponse getAssetsByName(@PathVariable String   serverName,
                                           @PathVariable String   userId,
-                                          @PathVariable String   name,
                                           @RequestParam int      startFrom,
-                                          @RequestParam int      pageSize)
+                                          @RequestParam int      pageSize,
+                                          @RequestBody  String   name)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
-    }
-
-
-    /**
-     * Returns the connection object corresponding to the supplied connection GUID.
-     *
-     * @param serverName name of the server instances for this request.
-     * @param userId userId of user making request.
-     * @param guid  the unique id for the connection within the property server.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionGUIDException the supplied GUID is not recognized by the metadata repository or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/connections/{guid}")
-
-    public ConnectionResponse getConnectionByGUID(@PathVariable String     serverName,
-                                                  @PathVariable String     userId,
-                                                  @PathVariable String     guid)
-    {
-        return restAPI.getConnectionByGUID(serverName, userId, guid);
     }
 
 
@@ -378,34 +309,11 @@ public class AssetConsumerResource
 
 
     /**
-     * Returns the connection corresponding to the supplied asset GUID.
-     *
-     * @param serverName  name of the server instances for this request
-     * @param userId      userId of user making request.
-     * @param assetGUID   the unique id for the asset within the metadata repository.
-     *
-     * @return connection object or
-     * InvalidParameterException one of the parameters is null or invalid or
-     * UnrecognizedConnectionNameException there is no connection defined for this name or
-     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
-     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
-
-    public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
-                                                    @PathVariable String   userId,
-                                                    @PathVariable String   assetGUID)
-    {
-        return restAPI.getConnectionForAsset(serverName, userId, assetGUID);
-    }
-
-
-    /**
      * Return the full definition (meaning) of the terms matching the supplied name.
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param term name of term.  This may include wild card characters.
+     * @param name name of term.  This may include wild card characters.
      * @param startFrom  index of the list ot start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of meaning objects or
@@ -413,15 +321,15 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{term}")
+    @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{name}")
 
     public GlossaryTermListResponse getMeaningByName(@PathVariable String  serverName,
                                                      @PathVariable String  userId,
-                                                     @PathVariable String  term,
+                                                     @PathVariable String  name,
                                                      @RequestParam int     startFrom,
                                                      @RequestParam int     pageSize)
     {
-        return restAPI.getMeaningByName(serverName, userId, term, startFrom, pageSize);
+        return restAPI.getMeaningByName(serverName, userId, name, startFrom, pageSize);
     }
 
 
@@ -430,42 +338,42 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request.
      * @param userId userId of the user making the request.
-     * @param guid unique identifier of the meaning.
+     * @param termGUID unique identifier of the glossary term that contains the meaning.
      *
      * @return meaning object or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/meanings/{guid}")
+    @RequestMapping(method = RequestMethod.GET, path = "/meanings/{termGUID}")
 
     public GlossaryTermResponse getMeaning(@PathVariable String   serverName,
                                            @PathVariable String   userId,
-                                           @PathVariable String   guid)
+                                           @PathVariable String   termGUID)
     {
-        return restAPI.getMeaning(serverName, userId, guid);
+        return restAPI.getMeaning(serverName, userId, termGUID);
     }
 
 
     /**
-     * Return the Informal Tag for the supplied unique identifier (guid).
+     * Return the Informal Tag for the supplied unique identifier (assetGUID).
      *
      * @param serverName name of the server instances for this request.
      * @param userId userId of the user making the request.
-     * @param guid unique identifier of the meaning.
+     * @param tagGUID unique identifier of the meaning.
      *
      * @return tag object or
      * InvalidParameterException the userId is null or invalid or
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/tags/{guid}")
+    @RequestMapping(method = RequestMethod.GET, path = "/tags/{tagGUID}")
 
     public TagResponse getTag(@PathVariable String   serverName,
                               @PathVariable String   userId,
-                              @PathVariable String   guid)
+                              @PathVariable String   tagGUID)
     {
-        return restAPI.getTag(serverName, userId, guid);
+        return restAPI.getTag(serverName, userId, tagGUID);
     }
 
 
@@ -482,13 +390,13 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/tags/by-name/{tagName}")
+    @RequestMapping(method = RequestMethod.POST, path = "/tags/by-name")
 
     public TagsResponse getTagsByName(@PathVariable String  serverName,
                                       @PathVariable String  userId,
-                                      @PathVariable String  tagName,
                                       @RequestParam int     startFrom,
-                                      @RequestParam int     pageSize)
+                                      @RequestParam int     pageSize,
+                                      @RequestBody  String  tagName)
     {
         return restAPI.getTagsByName(serverName, userId, tagName, startFrom, pageSize);
     }
@@ -499,7 +407,8 @@ public class AssetConsumerResource
      *
      * @param serverName name of the server instances for this request
      * @param userId       String - userId of user making request.
-     * @param guid         String - unique id for the comment object
+     * @param assetGUID  String - unique id for the asset object
+     * @param commentGUID  String - unique id for the comment object
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -507,14 +416,15 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/comments/{guid}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/comments/{commentGUID}/delete")
 
     public VoidResponse removeCommentFromAsset(@PathVariable String          serverName,
                                                @PathVariable String          userId,
-                                               @PathVariable String          guid,
+                                               @PathVariable String          assetGUID,
+                                               @PathVariable String          commentGUID,
                                                @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.removeCommentFromAsset(serverName, userId, guid, requestBody);
+        return restAPI.removeCommentFromAsset(serverName, userId, assetGUID, commentGUID, requestBody);
     }
 
 
@@ -523,7 +433,7 @@ public class AssetConsumerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         unique identifier for the asset where the like is attached.
+     * @param assetGUID    unique identifier for the asset where the like is attached.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -531,14 +441,14 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/likes/{guid}/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/likes/delete")
 
     public VoidResponse   removeLikeFromAsset(@PathVariable String          serverName,
                                               @PathVariable String          userId,
-                                              @PathVariable String          guid,
+                                              @PathVariable String          assetGUID,
                                               @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.removeLikeFromAsset(serverName, userId, guid, requestBody);
+        return restAPI.removeLikeFromAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -547,7 +457,7 @@ public class AssetConsumerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       String - userId of user making request.
-     * @param guid         unique identifier for the asset where the rating is attached.
+     * @param assetGUID         unique identifier for the asset where the rating is attached.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
      * @return void or
@@ -555,14 +465,14 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/assets/{guid}/ratings/delete")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/{assetGUID}/ratings/delete")
 
     public VoidResponse   removeRatingFromAsset(@PathVariable String          serverName,
                                                 @PathVariable String          userId,
-                                                @PathVariable String          guid,
+                                                @PathVariable String          assetGUID,
                                                 @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.removeRatingFromAsset(serverName, userId, guid, requestBody);
+        return restAPI.removeRatingFromAsset(serverName, userId, assetGUID, requestBody);
     }
 
 
@@ -597,6 +507,7 @@ public class AssetConsumerResource
      *
      * @param serverName   name of the server instances for this request.
      * @param userId       userId of user making request.
+     * @param assetGUID    unique identifier for the asset that the comment is attached to (directly or indirectly).
      * @param commentGUID  unique identifier for the comment to change.
      * @param requestBody  containing type of comment enum and the text of the comment.
      *
@@ -605,19 +516,20 @@ public class AssetConsumerResource
      * PropertyServerException There is a problem updating the asset properties in the metadata repository.
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/comments/{commentGUID}/update")
+    @RequestMapping(method = RequestMethod.POST, path = "assets/{assetGUID}/comments/{commentGUID}/update")
 
     public VoidResponse   updateComment(@PathVariable String              serverName,
                                         @PathVariable String              userId,
+                                        @PathVariable String              assetGUID,
                                         @PathVariable String              commentGUID,
                                         @RequestBody  CommentRequestBody  requestBody)
     {
-        return restAPI.updateComment(serverName, userId, commentGUID, requestBody);
+        return restAPI.updateComment(serverName, userId, assetGUID, commentGUID, requestBody);
     }
 
 
     /**
-     * Updates the description of an existing tag (either private of public).
+     * Updates the description of an existing tag (either private or public).
      *
      * @param serverName   name of the server instances for this request
      * @param userId       userId of user making request.

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -104,7 +103,7 @@ public class ReferenceableBuilder extends RootBuilder
         if (additionalProperties != null)
         {
             properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
-                                                                         null,
+                                                                         properties,
                                                                          ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
                                                                          additionalProperties,
                                                                          methodName);

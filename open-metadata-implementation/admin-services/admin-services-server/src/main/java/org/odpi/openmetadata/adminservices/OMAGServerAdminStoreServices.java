@@ -15,8 +15,9 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
 import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +44,7 @@ public class OMAGServerAdminStoreServices
      * @param userId calling user.
      * @param connection connection used to create and configure the connector that interacts with
      *                   the real store.
+     * @return void response
      */
     public synchronized VoidResponse setConfigurationStoreConnection(String       userId,
                                                                      Connection   connection)
@@ -214,6 +216,7 @@ public class OMAGServerAdminStoreServices
     /**
      * Retrieve any saved configuration for this server.
      *
+     * @param userId calling user
      * @param serverName  name of the server
      * @param methodName  method requesting the server details
      * @return  configuration properties
@@ -283,14 +286,14 @@ public class OMAGServerAdminStoreServices
 
             try
             {
-                OpenMetadataServerSecurityConnector serverSecurityConnector =
-                        OpenMetadataPlatformSecurityVerifier.getServerSecurityConnector(serverName,
+                OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
+
+                securityVerifier.registerSecurityValidator(serverConfig.getLocalServerUserId(),
+                                                                                        serverName,
+                                                                                        null,
                                                                                         serverConfig.getServerSecurityConnection());
 
-                if (serverSecurityConnector != null)
-                {
-                    serverSecurityConnector.validateUserAsServerAdmin(userId);
-                }
+                securityVerifier.validateUserAsServerAdmin(userId);
             }
             catch (InvalidParameterException error)
             {

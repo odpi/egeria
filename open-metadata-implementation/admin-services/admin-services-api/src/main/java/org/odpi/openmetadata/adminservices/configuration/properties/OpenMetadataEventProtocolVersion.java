@@ -31,6 +31,10 @@ public enum OpenMetadataEventProtocolVersion implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param ordinal index
+     * @param name short description
+     * @param description longer definition
      */
     OpenMetadataEventProtocolVersion(int ordinal, String name, String description)
     {
@@ -46,7 +50,7 @@ public enum OpenMetadataEventProtocolVersion implements Serializable
     /**
      * Return the code for this enum instance
      *
-     * @return int star rating code
+     * @return int  code
      */
     public int getOrdinal()
     {
@@ -55,9 +59,9 @@ public enum OpenMetadataEventProtocolVersion implements Serializable
 
 
     /**
-     * Return the default symbol for this enum instance.
+     * Return the default name for this enum instance.
      *
-     * @return String default symbol
+     * @return String default name
      */
     public String getName()
     {
@@ -66,7 +70,7 @@ public enum OpenMetadataEventProtocolVersion implements Serializable
 
 
     /**
-     * Return the default description for the star rating for this enum instance.
+     * Return the default description for this enum instance.
      *
      * @return String default description
      */

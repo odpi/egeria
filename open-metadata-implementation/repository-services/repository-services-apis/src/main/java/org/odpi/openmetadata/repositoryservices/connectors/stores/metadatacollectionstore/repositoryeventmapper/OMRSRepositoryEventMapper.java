@@ -22,7 +22,7 @@ public interface OMRSRepositoryEventMapper
      *                            events from.  The repository connector is used to retrieve additional information
      *                            necessary to fill out the OMRS Events.
      */
-    void initialize(String                  repositoryEventMapperName,
+    void initialize(String repositoryEventMapperName,
                     OMRSRepositoryConnector repositoryConnector);
 
 
@@ -47,7 +47,7 @@ public interface OMRSRepositoryEventMapper
      *
      * @param serverName String name
      */
-    void  setServerName(String      serverName);
+    void  setServerName(String serverName);
 
 
     /**
@@ -81,7 +81,7 @@ public interface OMRSRepositoryEventMapper
      *
      * @param metadataCollectionId String unique Id
      */
-    void setMetadataCollectionId(String         metadataCollectionId);
+    void setMetadataCollectionId(String metadataCollectionId);
 
 
     /**

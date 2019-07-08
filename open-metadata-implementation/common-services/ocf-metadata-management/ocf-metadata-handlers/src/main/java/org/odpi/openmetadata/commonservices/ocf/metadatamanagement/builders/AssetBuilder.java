@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * AssetBuilder creates the repository entity for an asset.
+ * AssetBuilder creates the root repository entity for an asset.
  */
 public class AssetBuilder extends ReferenceableBuilder
 {
@@ -42,7 +42,7 @@ public class AssetBuilder extends ReferenceableBuilder
         super(qualifiedName, repositoryHelper, serviceName, serverName);
 
         this.displayName = displayName;
-        this.description = description;
+        this.description = null;
     }
 
 
@@ -51,7 +51,7 @@ public class AssetBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
-     * @param description new description for the discovery engine.
+     * @param description new description for the asset.
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -74,10 +74,12 @@ public class AssetBuilder extends ReferenceableBuilder
      * Constructor supporting all properties.
      *
      * @param qualifiedName unique name
+     * @param displayName new value for the display name.
+     * @param description new description for the asset.
      * @param owner name of the owner
      * @param ownerType type of owner
-     * @param zoneMembership list of zones that this discovery service belongs to.
-     * @param latestChange description of the last change to the entity.
+     * @param zoneMembership list of zones that this asset belongs to.
+     * @param latestChange description of the last change to the asset.
      * @param additionalProperties additional properties
      * @param extendedProperties  properties from the subtype.
      * @param repositoryHelper helper methods
@@ -208,7 +210,7 @@ public class AssetBuilder extends ReferenceableBuilder
      * @param methodName calling method
      * @return updated properties
      */
-    protected InstanceProperties addOwnerTypeToProperties(InstanceProperties properties,
+    private InstanceProperties addOwnerTypeToProperties(InstanceProperties properties,
                                                         String             methodName)
     {
         InstanceProperties resultingProperties = properties;
@@ -231,7 +233,7 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                                  AssetMapper.OWNER_TYPE_PROPERTY_NAME,
                                                                                  1,
                                                                                  "ProfileId",
-                                                                                 "The unique identifier (guid) of the profile of the owner..",
+                                                                                 "The unique identifier (guid) of the profile of the owner.",
                                                                                  methodName);
                 break;
 

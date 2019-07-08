@@ -34,11 +34,33 @@ public enum OMAGOCFErrorCode
                               "The system is unable to process the request without this value.",
                               "Correct the code in the caller to provide the name."),
 
+    NO_ASSET_PROPERTIES(400, "OMAG-OCF-400-002 ",
+                        "The request for the properties of asset {0} failed with the following message returned: {1}",
+                        "The system is unable to process the request.",
+                        "Use the information in the message to understand the nature of the problem and once it is resolved, retry the request."),
+
+    NULL_CLASSIFICATION_NAME(400, "OMAG-OCF-400-003 ",
+                             "Service {0} is unable to process one of the classifications supplied on the {1} call because the classification name is null",
+                             "The system is unable to create a new instance.",
+                             "Verify the classification parameters passed with this request."),
+
+    BAD_CLASSIFICATION_PROPERTIES(400, "OMAG-OCF-400-004 ",
+                                  "Service {0} is unable to process the properties supplied with classification {1}.  The associated error message was: {2}",
+                                  "The system is unable to create a new instance.",
+                                  "Verify the classification parameters passed with this request."),
+
     OMRS_NOT_INITIALIZED(404, "OMAG-OCF-404-001 ",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
                          "Check that the server where the Open Connector Framework metadata services are running is initialized correctly.  " +
-                                 "Correct any errors discovered and retry the request when the open metadata services are available."),;
+                                 "Correct any errors discovered and retry the request when the open metadata services are available."),
+
+    NULL_CONNECTOR_RETURNED(500, "OMAG-OCF-500-001 ",
+                            "The requested connector for connection named {0} is not returned by the OMAS Server {1} at {2}",
+                            "The system is unable to create a connector.",
+                            "Verify that the OMAS server is running and the connection definition is correctly configured."),
+
+    ;
 
     private int    httpErrorCode;
     private String errorMessageId;

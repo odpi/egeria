@@ -35,6 +35,10 @@ public enum RelatedMediaUsage implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param mediaUsageCode ordinal
+     * @param mediaUsageName short name
+     * @param mediaUsageDescription longer explanation
      */
     RelatedMediaUsage(int     mediaUsageCode, String   mediaUsageName, String   mediaUsageDescription)
     {

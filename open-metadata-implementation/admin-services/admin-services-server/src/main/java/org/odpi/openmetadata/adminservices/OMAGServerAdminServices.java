@@ -1134,6 +1134,7 @@ public class OMAGServerAdminServices
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
+     * @param configurationProperties additional properties for the cohort
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.
