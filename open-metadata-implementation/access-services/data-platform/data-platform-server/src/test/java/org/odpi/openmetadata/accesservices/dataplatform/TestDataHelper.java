@@ -389,12 +389,18 @@ public class TestDataHelper {
         event.getTableSource().getDatabaseSource().setName(DATABASE_NAME);
 
         List<BusinessTerm> businessTerms = new ArrayList<>();
-        businessTerms.get(0).setName("clientName");
-        businessTerms.get(0).setQuery("query");
-        businessTerms.get(0).setGuid(BUSINESS_TERM_GUID);
-        businessTerms.get(1).setName("clientName1");
-        businessTerms.get(1).setQuery("query1");
-        businessTerms.get(1).setGuid(BUSINESS_TERM_GUID2);
+
+        BusinessTerm businessTerm1=new BusinessTerm();
+        businessTerm1.setName("clientName");
+        businessTerm1.setGuid(BUSINESS_TERM_GUID);
+        businessTerm1.setQuery("search query");
+        businessTerms.add(businessTerm1);
+
+        BusinessTerm businessTerm2=new BusinessTerm();
+        businessTerm2.setName("clientName");
+        businessTerm2.setGuid(BUSINESS_TERM_GUID2);
+        businessTerm2.setQuery("add query");
+        businessTerms.add(businessTerm2);
 
         TableColumn realColumn = new TableColumn();
         realColumn.setName("cl_nm");
