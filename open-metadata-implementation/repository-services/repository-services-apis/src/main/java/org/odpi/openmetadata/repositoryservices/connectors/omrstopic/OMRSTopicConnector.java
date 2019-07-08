@@ -472,12 +472,12 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
              */
             if ((eventBean != null) && (eventBean instanceof OMRSEventV1))
             {
-                for (OMRSTopicListener  topicListener : internalTopicListeners)
-                {
+                OMRSEventBean finalEventBean = eventBean;
+                internalTopicListeners.parallelStream().forEach((topicListener) -> {
                     try
                     {
-                        this.processOMRSEvent((OMRSEventV1)eventBean,
-                                              topicListener);
+                        this.processOMRSEvent((OMRSEventV1) finalEventBean,
+                                topicListener);
                     }
                     catch (Throwable  error)
                     {
@@ -488,18 +488,18 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                             OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
 
                             auditLog.logException(connectorName,
-                                                  auditCode.getLogMessageId(),
-                                                  auditCode.getSeverity(),
-                                                  auditCode.getFormattedLogMessage(event,
-                                                                                   error.toString(),
-                                                                                   topicListener.toString()),
-                                                  null,
-                                                  auditCode.getSystemAction(),
-                                                  auditCode.getUserAction(),
-                                                  error);
+                                    auditCode.getLogMessageId(),
+                                    auditCode.getSeverity(),
+                                    auditCode.getFormattedLogMessage(event,
+                                            error.toString(),
+                                            topicListener.toString()),
+                                    null,
+                                    auditCode.getSystemAction(),
+                                    auditCode.getUserAction(),
+                                    error);
                         }
                     }
-                }
+                });
             }
         }
         else
