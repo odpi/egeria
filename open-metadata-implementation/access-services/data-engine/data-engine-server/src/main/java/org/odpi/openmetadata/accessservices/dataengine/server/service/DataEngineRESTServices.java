@@ -6,13 +6,14 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
@@ -21,6 +22,7 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandl
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -254,22 +256,64 @@ public class DataEngineRESTServices {
     /**
      * Create the process with ports, schema types and lineage mappings
      *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
-     * @param processRequestBody properties of the process
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
+     * @param processesRequestBody properties of the processes
      *
-     * @return the unique identifier (guid) of the created process
+     * @return a list unique identifiers (GUIDs) of the created processes
      */
-    public GUIDResponse createProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
+    public GUIDListResponse createProcesses(String userId, String serverName,
+                                            ProcessesRequestBody processesRequestBody) {
         final String methodName = "createProcess";
 
         log.debug("Calling method: {}", methodName);
 
-        if (processRequestBody == null) {
+        if (processesRequestBody == null) {
+            return null;
+        }
+        List<Process> processes = processesRequestBody.getProcesses();
+        if(CollectionUtils.isEmpty(processes)) {
             return null;
         }
 
-        org.odpi.openmetadata.accessservices.dataengine.model.Process process = processRequestBody.getProcess();
+        GUIDListResponse response = new GUIDListResponse();
+        List<String> processList = new ArrayList<>();
+
+        processesRequestBody.getProcesses().forEach(process -> {
+            try {
+                processList.add(createProcess(userId, serverName, process));
+            } catch (InvalidParameterException error) {
+                restExceptionHandler.captureInvalidParameterException(response, error);
+            } catch (PropertyServerException error) {
+                restExceptionHandler.capturePropertyServerException(response, error);
+            } catch (UserNotAuthorizedException error) {
+                restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            }
+        });
+
+        response.setGUIDs(processList);
+
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+
+        return response;
+    }
+
+    /**
+     * Create the process with ports, schema types and lineage mappings
+     *
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     * @param process    properties of the process
+     *
+     * @return the unique identifier (guid) of the created process
+     */
+    private String createProcess(String userId, String serverName, Process process) throws InvalidParameterException,
+                                                                                          PropertyServerException,
+                                                                                          UserNotAuthorizedException {
+        final String methodName = "createProcess";
+
+        log.debug("Calling method: {}", methodName);
+
         String qualifiedName = process.getQualifiedName();
         String processName = process.getName();
         String description = process.getDescription();
@@ -284,35 +328,26 @@ public class DataEngineRESTServices {
         List<LineageMapping> lineageMappings = process.getLineageMappings();
         GUIDResponse response = new GUIDResponse();
 
-        try {
-            List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
+        List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
 
-            portGUIDs.addAll(createPortAliases(userId, portAliases, serverName));
+        portGUIDs.addAll(createPortAliases(userId, portAliases, serverName));
 
-            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
-                    latestChange, zoneMembership, displayName, formula, owner, ownerType);
+        String processGuid = processHandler.createProcess(userId, qualifiedName, processName, description,
+                latestChange, zoneMembership, displayName, formula, owner, ownerType);
 
-            for (String portGUID : portGUIDs) {
-                processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
-            }
-
-            createLineageMappings(userId, serverName, lineageMappings);
-
-            response.setGUID(processGuid);
-
-        } catch (InvalidParameterException error) {
-            restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        for (String portGUID : portGUIDs) {
+            processHandler.addProcessPortRelationship(userId, processGuid, portGUID);
         }
+
+        createLineageMappings(userId, serverName, lineageMappings);
 
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
-        return response;
+        return processGuid;
+
+
     }
 
     /**

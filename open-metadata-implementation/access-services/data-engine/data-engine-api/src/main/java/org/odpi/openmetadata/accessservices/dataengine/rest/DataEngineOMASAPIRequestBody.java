@@ -21,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = SoftwareServerCapabilityRequestBody.class, name = "dataEngine"),
                 @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "port"),
                 @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
-                @JsonSubTypes.Type(value = ProcessRequestBody.class, name = "process"),
+                @JsonSubTypes.Type(value = ProcessesRequestBody.class, name = "processes"),
                 @JsonSubTypes.Type(value = SchemaTypeRequestBody.class, name = "schema"),
         })
 
