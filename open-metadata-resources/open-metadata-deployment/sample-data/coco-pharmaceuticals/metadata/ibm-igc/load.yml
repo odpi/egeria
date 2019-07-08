@@ -273,6 +273,50 @@
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           is: 55
 
+- name: get dstage1 lineage details
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+          /ibm/iis/igc-rest/v1/search/"
+    method: POST
+    user: "{{ ibm_infosvr_users.isadmin }}"
+    password: "{{ ibm_infosvr_upwds.isadmin }}"
+    body: >-
+      {
+        "properties": ["name", "include_for_lineage"],
+        "types": ["transformation_project"],
+        "where": {
+          "conditions": [{
+            "value": "dstage1", "property": "name", "operator": "="
+          }],
+          "operator":"and"
+        }
+      }
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  changed_when: False
+  register: __cocopharma_dstage1_lineage
+
+- name: enable lineage on dstage1
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}\
+            /ibm/iis/igc-rest/v1/assets/{{ item.json['items'][0]._id }}/include_for_lineage"
+    method: PUT
+    user: "{{ ibm_infosvr_users.isadmin }}"
+    password: "{{ ibm_infosvr_upwds.isadmin }}"
+    body: '"setToTrue"'
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+    when: item.json['items'][0].include_for_lineage == "setToFalse"
+    loop_control:
+      label: "{{ item.json['items'][0]._name }}"
+    with_items: "{{ __cocopharma_dstage1_lineage.results }}"
+
 - import_role: name=IBM.infosvr-import-export
   vars:
     ingest:
