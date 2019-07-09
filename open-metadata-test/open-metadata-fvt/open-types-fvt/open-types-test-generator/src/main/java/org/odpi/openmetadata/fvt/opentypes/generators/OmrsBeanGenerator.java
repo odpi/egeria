@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.fvt.opentypes.generators;
 
 import org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanAttribute;
+import org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference;
 import org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.*;
@@ -22,6 +25,7 @@ public class OmrsBeanGenerator {
 
     // This generator can be run in the top level Egeria folder - i.e. the folder you run git commands in. It is run automatically as part of the Maven build.
 
+    private static final Logger log = LoggerFactory.getLogger(OmrsBeanGenerator.class);
 
     //public static final String OPEN_METADATA_IMPLEMENTATION = "open-metadata-implementation";
     public static final String OPEN_METADATA_TEST = "open-metadata-test";
@@ -112,12 +116,20 @@ public class OmrsBeanGenerator {
     }
 
     public static void main(String[] args) throws IOException {
+
+        log.debug("Starting test code generation");
         if (checkCurrentFolder()) {
             // make sure we have the generation folders
             initializeFoldersandFiles();
             // run the generation
             generate(args);
         }
+        else {
+            log.error("Failed generation due to incorrect working directory. This must contain {}",OPEN_METADATA_TEST);
+            // We need to fail to ensure build tools correctly see this as a failure
+            System.exit(1);
+        }
+        log.debug("Ending test code generation");
     }
 
     /**
@@ -131,7 +143,9 @@ public class OmrsBeanGenerator {
         boolean validCurrentFolder =false;
         for(File f : filesList){
             String folderName = f.getName();
+            log.debug("Found folder {}",folderName);
             if (folderName.equals(OPEN_METADATA_TEST)) {
+                log.debug("Good folder found");
                 validCurrentFolder = true;
             }
         }
@@ -139,6 +153,8 @@ public class OmrsBeanGenerator {
     }
 
     private static void initializeFoldersandFiles() throws FileNotFoundException {
+
+        log.debug("Creating folders");
         GeneratorUtilities.createEmptyFolder(GENERATION_FOLDER);
         GeneratorUtilities.writeFolder(GENERATION_REFERENCES_FOLDER);
         GeneratorUtilities.writeFolder(GENERATION_ENTITIES_FOLDER);
@@ -157,6 +173,7 @@ public class OmrsBeanGenerator {
         if (relationshipToLinesFile.exists()) {
             relationshipToLinesFile.delete();
         }
+        log.debug("Folder creation complete");
     }
 
     /**
@@ -187,23 +204,33 @@ public class OmrsBeanGenerator {
 
         OmrsBeanGenerator generator = new OmrsBeanGenerator(omrsBeanModel);
 
+        log.debug("starting actual generation");
         // generate the enum files
+        log.debug("Generating Enum files");
         generator.generateEnumFiles();
         // generate the classification files and their attributes
+        log.debug("Generating Classification files");
         generator.generateClassificationFiles();
         // generate the classification bean factory
+        log.debug("Generating Classification bean factory");
         generator.generateClassificationBeanFactory();
         // generate OMRSRelationshipToLines.
+        log.debug("Generating OMRS Relationship to Lines");
         generator.generateOMRSRelationshipToLines();
         // generate the entity and attribute files
+        log.debug("Generating Entity related files");
         generator.generateEntityRelatedFiles(omrsBeanModel.getOmrsBeanEntityAttributeMap());
         // generate relationships and their attributes
+        log.debug("Generating Relationship files");
         generator.generateRelationshipFiles();
         // generate the reference files
+        log.debug("Generating Reference files");
         generator.generateReferenceFiles();
         // generate the omrs beans accessor file
+        log.debug("Generating OMRS Beans Accessor file");
         generator.generateOMRSBeansAccessorFile(GENERATION_REST_FILE, OMRS_BEANS_TEMPLATE);
         // generate the omrs beans test file
+        log.debug("Generating OMRS Beans Accessor file");
         generator.generateOMRSBeansAccessorFile(GENERATION_REST_TEST_FILE, OMRS_BEANS_TEST_TEMPLATE);
     }
 
@@ -212,6 +239,7 @@ public class OmrsBeanGenerator {
         Map<String, List<org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanEnumValue>> enumsMap = omrsBeanModel.getEnumsMap();
         for (String enumName : enumsMap.keySet()) {
             final String enumFileName = GENERATION_ENUMS_FOLDER + enumName + ".java";
+            log.debug("Generating enum file {}",enumFileName);
             generateEnumFile(enumName, enumsMap.get(enumName), enumFileName,GEN_PKG_ENUMS);
         }
     }
@@ -223,7 +251,9 @@ public class OmrsBeanGenerator {
             String outputFolder = this.createClassificationJavaFolderIfRequired(classificationName);
             final String classificationFileName = outputFolder + "/" + classificationName + ".java";
             final String classificationMapperFileName = outputFolder + "/" + classificationName + "Mapper.java";
+            log.debug("Generating classification file {}",classificationFileName);
             generateClassificationFile(classificationName, classificationFileName,GEN_PKG_CLASSIFICATIONS+"."+classificationName);
+            log.debug("Generating classification mapper file {}",classificationMapperFileName);
             generateClassificationMapperFile(classificationName, classificationMapperFileName);
         }
     }
@@ -338,8 +368,11 @@ public class OmrsBeanGenerator {
             String outputFolder = this.createRelationshipJavaFolderIfRequired(relationshipName);
             final String relationshipFileName = outputFolder + "/" + relationshipName + ".java";
             org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanRelationship omrsBeanRelationship = omrsBeanModel.getOmrsBeanRelationshipByName(relationshipName);
+            log.debug("Generating relationship file {}",relationshipFileName);
+
             generateRelationshipFile(omrsBeanRelationship, relationshipFileName,GEN_PKG_RELATIONSHIPS +"."+relationshipName);
             final String relationshipMapperFileName = outputFolder + "/" + relationshipName + "Mapper.java";
+            log.debug("Generating relationship mapper file {}",relationshipMapperFileName);
             generateRelationshipMapperFile(omrsBeanRelationship, relationshipMapperFileName);
         }
 
@@ -349,8 +382,10 @@ public class OmrsBeanGenerator {
         for (String entityName : omrsBeanAttributeMap.keySet()) {
             String outputFolder = this.createEntityJavaFolderIfRequired(entityName);
             final String entityFileName = outputFolder + "/" + entityName + ".java";
+            log.debug("Generating Entity file {}",entityFileName);
             generateEntityFile(entityName, entityFileName);
             final String mapperFileName = outputFolder + "/" + entityName + "Mapper.java";
+            log.debug("Generating Entity mapper file {}",mapperFileName);
             generateEntityMapperFile(entityName, mapperFileName);
         }
     }
@@ -978,7 +1013,10 @@ public class OmrsBeanGenerator {
     }
 
     private void generateReferenceFiles() throws IOException {
-        List<org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference> omrsBeanReferences = omrsBeanModel.getOmrsBeanReferences();
+        // optimization to only process each entity once
+        HashSet<String> processedEntities = new HashSet<String>();
+
+        List<OmrsBeanReference> omrsBeanReferences = omrsBeanModel.getOmrsBeanReferences();
         for (org.odpi.openmetadata.fvt.opentypes.model.OmrsBeanReference omrsBeanReference : omrsBeanReferences) {
 
             // for each omrsBeanReference we need to create a java file in the right folder.
@@ -987,6 +1025,7 @@ public class OmrsBeanGenerator {
             FileWriter outputFileWriter = null;
             BufferedReader reader =null;
             try {
+                log.debug("generating reference file {}",fileName);
                 outputFileWriter = new FileWriter(fileName);
                 reader = new BufferedReader(new FileReader(REFERENCE_TEMPLATE));
                 String line = reader.readLine();
@@ -1007,15 +1046,20 @@ public class OmrsBeanGenerator {
             } finally {
                 closeReaderAndFileWriter(outputFileWriter, reader);
             }
+
             //generateClientSideRelationshipImpl the top references file
             Map<String, List<OmrsBeanAttribute>> omrsBeanReferencesAsAttributesByEntity = omrsBeanModel.getOmrsBeanReferencesAsAttributesByEntity();
 
             final Set<String> entitiesWithRelationships = omrsBeanReferencesAsAttributesByEntity.keySet();
             for (String entityName : entitiesWithRelationships) {
-                outputFolder = this.createEntityJavaFolderIfRequired(entityName);
-                final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
-                final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
-                generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+                if (!processedEntities.contains(entityName)) {
+                    outputFolder = this.createEntityJavaFolderIfRequired(entityName);
+                    final String topReferenceFileName = outputFolder + "/" + entityName + "References.java";
+                    final List<OmrsBeanAttribute> omrsBeanAttributes = omrsBeanReferencesAsAttributesByEntity.get(entityName);
+                    log.debug("generating top reference file {}", topReferenceFileName);
+                    generateTopReferenceFile(entityName, omrsBeanAttributes, topReferenceFileName);
+                    processedEntities.add(entityName);
+                }
             }
         }
     }
