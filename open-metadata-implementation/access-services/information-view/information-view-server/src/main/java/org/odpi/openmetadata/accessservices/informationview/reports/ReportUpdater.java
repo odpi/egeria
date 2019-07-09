@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportRequest
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -64,22 +63,27 @@ public class ReportUpdater extends ReportBasicOperation {
 
     /**
      *
+     *
+     * @param userId
      * @param payload  - object describing the report
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param reportEntity - entity describing the report
      * @throws Exception
      */
-    public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws UserNotAuthorizedException,
-                                                                                          EntityNotKnownException,
-                                                                                          EntityNotDeletedException,
-                                                                                          InvalidParameterException,
-                                                                                          RepositoryErrorException,
-                                                                                          FunctionNotSupportedException,
-                                                                                          PropertyErrorException,
-                                                                                          TypeErrorException,
-                                                                                          PagingErrorException,
-                                                                                          RelationshipNotKnownException,
-                                                                                          EntityProxyOnlyException,
-                                                                                          RelationshipNotDeletedException {
+    public void updateReport(String userId, ReportRequestBody payload, String registrationGuid,
+                             String registrationQualifiedName, EntityDetail reportEntity) throws UserNotAuthorizedException,
+                                                                                                                                                                    EntityNotKnownException,
+                                                                                                                                                                    EntityNotDeletedException,
+                                                                                                                                                                    InvalidParameterException,
+                                                                                                                                                                    RepositoryErrorException,
+                                                                                                                                                                    FunctionNotSupportedException,
+                                                                                                                                                                    PropertyErrorException,
+                                                                                                                                                                    TypeErrorException,
+                                                                                                                                                                    PagingErrorException,
+                                                                                                                                                                    RelationshipNotKnownException,
+                                                                                                                                                                    EntityProxyOnlyException,
+                                                                                                                                                                    RelationshipNotDeletedException {
         String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getReport().getId()  + Constants.TYPE_SUFFIX);
 
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
@@ -98,27 +102,32 @@ public class ReportUpdater extends ReportBasicOperation {
                 log.info("Entity {} already exists", qualifiedNameForComplexSchemaType);
             } else {
                 omEntityDao.purgeEntity(schemaTypeRelationship.getEntityTwoProxy());
-                schemaTypeEntity = addAssetSchemaType(reportEntity.getGUID(), qualifiedNameForComplexSchemaType, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
+                schemaTypeEntity = addAssetSchemaType(userId, reportEntity.getGUID(), qualifiedNameForComplexSchemaType, registrationGuid, registrationQualifiedName, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
                 schemaTypeGuid = schemaTypeEntity.getGUID();
             }
         } else {
-            schemaTypeEntity = addAssetSchemaType(reportEntity.getGUID(), qualifiedNameForComplexSchemaType, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
+            schemaTypeEntity = addAssetSchemaType(userId, reportEntity.getGUID(), qualifiedNameForComplexSchemaType, registrationGuid, registrationQualifiedName, Constants.COMPLEX_SCHEMA_TYPE, complexSchemaTypeProperties);
             schemaTypeGuid = schemaTypeEntity.getGUID();
         }
 
         String qualifiedNameForReport = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "updateReport");
-        createOrUpdateElements(qualifiedNameForReport, schemaTypeGuid, payload.getReport().getReportElements());
+        createOrUpdateElements(userId, qualifiedNameForReport, registrationGuid, registrationQualifiedName, schemaTypeGuid, payload.getReport().getReportElements());
 
     }
 
     /**
      *
+     *
+     * @param userId
      * @param qualifiedNameForParent - qualified name of the parent element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param parentGuid - guid of the parent element
      * @param reportElements - elements describing the report
      * @throws Exception
      */
-    private void createOrUpdateElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> reportElements) throws
+    private void createOrUpdateElements(String userId, String qualifiedNameForParent, String registrationGuid,
+                                        String registrationQualifiedName, String parentGuid, List<ReportElement> reportElements) throws
                                                                                                                               InvalidParameterException,
                                                                                                                               RelationshipNotDeletedException,
                                                                                                                               RelationshipNotKnownException,
@@ -134,7 +143,7 @@ public class ReportUpdater extends ReportBasicOperation {
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
         if (reportElements != null && !reportElements.isEmpty()) {
-            reportElements.forEach(e -> createOrUpdateReportElement(qualifiedNameForParent, parentGuid, matchingEntities, e));
+            reportElements.forEach(e -> createOrUpdateReportElement(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, matchingEntities, e));
         }
     }
 
@@ -220,18 +229,21 @@ public class ReportUpdater extends ReportBasicOperation {
 
 
     /**
-     *
+     * @param userId
      * @param qualifiedNameForParent qualified name for the parent
      * @param parentGuid guid of the report element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param existingElements entities already defined
      * @param element element in the report
      */
-    private void createOrUpdateReportElement(String qualifiedNameForParent, String parentGuid, List<EntityDetail> existingElements, ReportElement element) {
+    private void createOrUpdateReportElement(String userId, String qualifiedNameForParent, String parentGuid,
+                                             String registrationGuid, String registrationQualifiedName, List<EntityDetail> existingElements, ReportElement element) {
         try {
             if (element instanceof ReportSection) {
-                createOrUpdateReportSection(qualifiedNameForParent, parentGuid, (ReportSection) element, existingElements);
+                createOrUpdateReportSection(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportSection) element, existingElements);
             } else if (element instanceof ReportColumn) {
-                createOrUpdateReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element, existingElements);
+                createOrUpdateReportColumn(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportColumn) element, existingElements);
             }
         } catch (TypeDefNotKnownException | InvalidParameterException | RelationshipNotDeletedException | FunctionNotSupportedException | EntityNotDeletedException | EntityProxyOnlyException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | EntityNotKnownException | RepositoryErrorException | RelationshipNotKnownException | StatusNotSupportedException | PropertyErrorException e) {
             throw new ReportElementCreationException(ReportUpdater.class.getName(),
@@ -245,13 +257,18 @@ public class ReportUpdater extends ReportBasicOperation {
 
     /**
      *
+     *
+     * @param userId
      * @param qualifiedNameForParent qualified name for the parent
      * @param parentGuid guid of the report element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param reportSection section in the report
      * @param existingElements entities already defined
      * @throws Exception
      */
-    private void createOrUpdateReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection, List<EntityDetail> existingElements) throws
+    private void createOrUpdateReportSection(String userId, String qualifiedNameForParent, String parentGuid,
+                                             String registrationGuid, String registrationQualifiedName, ReportSection reportSection, List<EntityDetail> existingElements) throws
                                                                                                                                                                  InvalidParameterException,
                                                                                                                                                                  TypeErrorException,
                                                                                                                                                                  PropertyErrorException,
@@ -277,16 +294,16 @@ public class ReportUpdater extends ReportBasicOperation {
             String qualifiedNameForSectionType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection.getName() + Constants.TYPE_SUFFIX);
             sectionTypeRelationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
             if (sectionTypeRelationships == null || sectionTypeRelationships.isEmpty()) {
-                EntityDetail schemaType = createSchemaType(Constants.DOCUMENT_SCHEMA_TYPE,  qualifiedNameForSectionType, helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, new InstanceProperties(), Constants.QUALIFIED_NAME, qualifiedNameForSectionType, "addSchemaType"), Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID() );
+                EntityDetail schemaType = createSchemaType(userId, Constants.DOCUMENT_SCHEMA_TYPE,  qualifiedNameForSectionType, registrationGuid, registrationQualifiedName, helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, new InstanceProperties(), Constants.QUALIFIED_NAME, qualifiedNameForSectionType, "addSchemaType"), Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID() );
                 sectionTypeGuid = schemaType.getGUID();
             } else {
                 sectionTypeGuid = sectionTypeRelationships.get(0).getEntityTwoProxy().getGUID();
             }
-            createOrUpdateElements(qualifiedNameForSection, sectionTypeGuid, reportSection.getElements());
+            createOrUpdateElements(userId, qualifiedNameForSection, registrationGuid, registrationQualifiedName, sectionTypeGuid, reportSection.getElements());
         } else {
-            EntityDetail sectionTypeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
+            EntityDetail sectionTypeEntity = addSectionAndSectionType(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, reportSection);
             String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent,Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
-            createOrUpdateElements(qualifiedNameForSection, sectionTypeEntity.getGUID(), reportSection.getElements());
+            createOrUpdateElements(userId, qualifiedNameForSection, registrationGuid, registrationQualifiedName, sectionTypeEntity.getGUID(), reportSection.getElements());
         }
     }
 
@@ -309,7 +326,8 @@ public class ReportUpdater extends ReportBasicOperation {
     }
 
 
-    private void createOrUpdateReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn, List<EntityDetail> existingElements) throws
+    private void createOrUpdateReportColumn(String userId, String parentQualifiedName, String parentGuid,
+                                            String registrationGuid, String registrationQualifiedName, ReportColumn reportColumn, List<EntityDetail> existingElements) throws
                                                                                                                                                            InvalidParameterException,
                                                                                                                                                            StatusNotSupportedException,
                                                                                                                                                            PropertyErrorException,
@@ -321,7 +339,6 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                                                                                            UserNotAuthorizedException,
                                                                                                                                                            RepositoryErrorException,
                                                                                                                                                            RelationshipNotKnownException,
-                                                                                                                                                           TypeDefNotKnownException,
                                                                                                                                                            RelationshipNotDeletedException {
 
         EntityDetail matchingColumn = findMatchingEntityForElements(reportColumn, existingElements);
@@ -344,10 +361,10 @@ public class ReportUpdater extends ReportBasicOperation {
                 String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.SCHEMA_TYPE, reportColumn.getName());
                 InstanceProperties schemaAttributeTypeProperties = new EntityPropertiesBuilder().withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumnType)
                                                                                                 .build();
-                createSchemaType(Constants.SCHEMA_TYPE,  qualifiedNameForColumnType, schemaAttributeTypeProperties, Constants.SCHEMA_ATTRIBUTE_TYPE, wrapper.getEntityDetail().getGUID() );
+                createSchemaType(userId, Constants.SCHEMA_TYPE,  qualifiedNameForColumnType, registrationGuid, registrationQualifiedName, schemaAttributeTypeProperties, Constants.SCHEMA_ATTRIBUTE_TYPE, wrapper.getEntityDetail().getGUID() );
             }
         } else {
-            addReportColumn(parentQualifiedName, parentGuid, reportColumn);
+            addReportColumn(userId, parentQualifiedName, parentGuid, registrationGuid, registrationQualifiedName, reportColumn);
         }
 
     }

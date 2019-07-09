@@ -337,6 +337,7 @@ public class OMEntityDao {
         return addEntity(typeName, qualifiedName, properties, null, zoneRestricted);
     }
 
+
     /**
      * Returns the entity of the given type with the specified qualified name; if it doesn't already exists, it is created with the provided instance properties
      *
@@ -411,6 +412,76 @@ public class OMEntityDao {
         return wrapper;
     }
 
+    public OMEntityWrapper createOrUpdateExternalEntity(String userId,
+                                                        String typeName,
+                                                        String qualifiedName,
+                                                        String externalSourceGuid,
+                                                        String externalSourceName,
+                                                        InstanceProperties properties,
+                                                        List<Classification> classifications,
+                                                        boolean update,
+                                                        boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException,
+                                                                                       InvalidParameterException, RepositoryErrorException,
+                                                                                       PropertyErrorException, TypeErrorException,
+                                                                                       PagingErrorException, ClassificationErrorException,
+                                                                                       StatusNotSupportedException {
+        EntityDetail entityDetail;
+        OMEntityWrapper wrapper;
+        entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
+        if (entityDetail == null) {
+            entityDetail = addExternalEntity(userId, typeName, qualifiedName, externalSourceGuid, externalSourceName, properties, classifications, zoneRestricted);
+            log.info("Entity with qualified name {} added", qualifiedName);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
+            wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
+        } else {
+            log.info("Entity with qualified name {} already exists", qualifiedName);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
+            if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
+                log.info("Updating entity with qualified name {} ", qualifiedName);
+                entityDetail = addExternalEntity(userId, typeName, qualifiedName, externalSourceGuid, externalSourceName, properties, classifications, zoneRestricted);
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
+            }
+            else{
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+            }
+
+        }
+
+        return wrapper;
+    }
+
+
+
+    public EntityDetail addExternalEntity(String userId,
+                                          String typeName,
+                                          String qualifiedName,
+                                          String externalSourceGuid,
+                                          String externalSourceName,
+                                          InstanceProperties properties,
+                                          List<Classification> classifications,
+                                          boolean zoneRestricted) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, FunctionNotSupportedException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+        TypeDef type = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.INFORMATION_VIEW_OMAS_NAME, typeName);
+        if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
+            properties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, properties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+        }
+        properties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, properties, Constants.QUALIFIED_NAME, qualifiedName, "addEntity");
+
+        return enterpriseConnector.getMetadataCollection().addExternalEntity(userId,
+                                                    type.getGUID(),
+                                                    externalSourceGuid,
+                                                    externalSourceName,
+                                                    properties,
+                                                    classifications,
+                                                    InstanceStatus.ACTIVE);
+    }
+
+
+
+
     private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties, boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
         //TODO add validation to new instance properties
         if(zoneRestricted){
@@ -460,6 +531,74 @@ public class OMEntityDao {
         }
 
         return relationship;
+    }
+
+
+    public Relationship addExternalRelationship(String userId,
+                                                String relationshipType,
+                                                String externalSourceGuid,
+                                                String externalSourceName,
+                                                String guid1,
+                                                String guid2,
+                                                InstanceProperties instanceProperties) throws InvalidParameterException, TypeErrorException,  PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
+        Relationship relationship;
+
+        relationship = getRelationship(relationshipType, guid1, guid2);
+        if (relationship == null) {
+            relationship = addExternalRelationship(userId,"", relationshipType, externalSourceGuid, externalSourceName, instanceProperties, guid1, guid2 );
+            log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
+        } else {
+            log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
+        }
+
+        return relationship;
+    }
+
+    private Relationship addExternalRelationship(String userId,
+                                                 String metadataCollectionId,
+                                                 String typeName,
+                                                 String registrationGuid,
+                                                 String registrationQualifiedName,
+                                                 InstanceProperties instanceProperties,
+                                                 String entityOneGUID,
+                                                 String entityTwoGUID) throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
+
+        Relationship relationship;
+        try {
+            relationship = enterpriseConnector.getRepositoryHelper().getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
+                                                                                            metadataCollectionId,
+                                                                                            InstanceProvenanceType.LOCAL_COHORT,
+                                                                                            Constants.INFORMATION_VIEW_USER_ID,
+                                                                                            typeName);
+            return enterpriseConnector.getMetadataCollection().addExternalRelationship(userId,
+                                                                                        relationship.getType().getTypeDefGUID(),
+                                                                                        registrationGuid,
+                                                                                        registrationQualifiedName,
+                                                                                        instanceProperties,
+                                                                                        entityOneGUID,
+                                                                                        entityTwoGUID,
+                                                                                        InstanceStatus.ACTIVE);
+        } catch (Exception e) {
+
+            InformationViewErrorCode auditCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+            auditLog.logException("addRelationship",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
+                    "relationship of type{" + typeName + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+
+            throw e;
+        }
+
     }
 
 

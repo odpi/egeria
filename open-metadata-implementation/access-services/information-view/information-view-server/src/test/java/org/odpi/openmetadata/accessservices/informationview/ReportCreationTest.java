@@ -40,7 +40,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
 
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
-        reportHandler.submitReportModel(request);
+        reportHandler.submitReportModel("", request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         assertEquals("(DeployedReport)=registration-qualified-name::report_number_35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
@@ -101,7 +101,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         request.getReport().setAuthor("test_author");
-        reportHandler.submitReportModel(request);
+        reportHandler.submitReportModel("", request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         assertEquals("test_author", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.AUTHOR)).getPrimitiveValue());
@@ -112,7 +112,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         request.getReport().getReportElements().get(0).setName("SectionA");
-        reportHandler.submitReportModel(request);
+        reportHandler.submitReportModel("", request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         EntityDetail reportTypeEntity = omEntityDao.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "(AssetSchemaType)=report_number_35_type", false);
@@ -136,7 +136,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
         column.setName("test_column");
         column.setSources(((ReportColumn)((ReportSection)((ReportSection)request.getReport().getReportElements().get(0)).getElements().get(0)).getElements().get(0)).getSources());
         ((ReportSection)request.getReport().getReportElements().get(0)).getElements().add(column);
-        reportHandler.submitReportModel(request);
+        reportHandler.submitReportModel("", request);
         EntityDetail reportEntity = omEntityDao.getEntity(Constants.DEPLOYED_REPORT, "(DeployedReport)=registration-qualified-name::report_number_35", true);
         assertNotNull("Report was not created", reportEntity);
         EntityDetail reportTypeEntity = omEntityDao.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "(AssetSchemaType)=report_number_35_type", false);
