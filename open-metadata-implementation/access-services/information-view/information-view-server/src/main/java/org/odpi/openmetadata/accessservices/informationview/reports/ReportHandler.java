@@ -13,15 +13,11 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode.REPORT_SUBMIT_EXCEPTION;
 
@@ -44,10 +40,12 @@ public class ReportHandler {
 
     /**
      *
+     *
+     * @param userId
      * @param payload - object describing the report
      * @throws ReportSubmitException
      */
-    public void submitReportModel(ReportRequestBody payload) throws ReportSubmitException {
+    public void submitReportModel(String userId, ReportRequestBody payload) throws ReportSubmitException {
 
         try {
             if(log.isDebugEnabled()) {
@@ -71,28 +69,30 @@ public class ReportHandler {
                     .withDateProperty(Constants.CREATE_TIME, payload.getReport().getCreatedTime())
                     .build();
 
-            OMEntityWrapper reportWrapper = omEntityDao.saveEntityReferenceCopy(payload.getRegistrationGuid(),
+            OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
                                                                                 Constants.DEPLOYED_REPORT,
                                                                                 qualifiedNameForReport,
+                                                                                payload.getRegistrationGuid(),
+                                                                                payload.getRegistrationQualifiedName(),
                                                                                 reportProperties,
+                                                                                null,
                                                                                 true,
                                                                                 true);
 
             if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
-                reportCreator.createReport(payload, reportWrapper.getEntityDetail());
+                reportCreator.createReport(userId, payload, reportWrapper.getEntityDetail());
             } else {
-                reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
+                reportUpdater.updateReport(userId, payload, payload.getRegistrationGuid(), payload.getRegistrationQualifiedName(), reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
-
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException  e) {
             throw new ReportSubmitException(500,
-                    ReportHandler.class.getName(),
-                    REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage( e.getMessage()),
-                    REPORT_SUBMIT_EXCEPTION.getUserAction(),
-                    REPORT_SUBMIT_EXCEPTION.getSystemAction(),
-                    e,
-                    payload.getReport().getReportName());
+                                            ReportHandler.class.getName(),
+                                            REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage( e.getMessage()),
+                                            REPORT_SUBMIT_EXCEPTION.getUserAction(),
+                                            REPORT_SUBMIT_EXCEPTION.getSystemAction(),
+                                            e,
+                                            payload.getReport().getReportName());
         }
     }
 

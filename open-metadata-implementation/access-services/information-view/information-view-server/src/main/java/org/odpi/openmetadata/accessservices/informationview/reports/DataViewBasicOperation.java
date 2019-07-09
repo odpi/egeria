@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewModel;
-import org.odpi.openmetadata.accessservices.informationview.events.DataViewModel;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -32,40 +31,49 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
 
     /**
-     *
+     * @param userId
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param dataViewElements the list of all nested elements
      */
-    protected void addElements(String parentQualifiedName, String parentGuid, List<DataViewElement> dataViewElements) {
+    protected void addElements(String userId, String parentQualifiedName, String parentGuid, String registrationGuid,
+                               String registrationQualifiedName, List<DataViewElement> dataViewElements) {
         if (dataViewElements == null || dataViewElements.isEmpty())
             return;
-        dataViewElements.parallelStream().forEach(e -> addDataViewElement(parentQualifiedName, parentGuid, e));
+        dataViewElements.parallelStream().forEach(e -> addDataViewElement(userId, parentQualifiedName, parentGuid, registrationGuid, registrationQualifiedName, e));
     }
 
 
     /**
-     *
+     * @param userId
      * @param qualifiedNameForParent qualified name for the parent element
      * @param parentGuid  guid of the parent element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param element element to be added
      */
-    public void addDataViewElement(String qualifiedNameForParent, String parentGuid, DataViewElement element) {
+    public void addDataViewElement(String userId, String qualifiedNameForParent, String parentGuid,
+                                   String registrationGuid, String registrationQualifiedName, DataViewElement element) {
             if (element instanceof DataViewModel) {
-                addDataViewModel(qualifiedNameForParent, parentGuid, (DataViewModel) element);
+                addDataViewModel(userId, qualifiedNameForParent, registrationGuid, registrationQualifiedName, parentGuid, (DataViewModel) element);
             } else if (element instanceof DataViewColumn) {
-                addDataViewColumn(qualifiedNameForParent, parentGuid, (DataViewColumn) element);
+                addDataViewColumn(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (DataViewColumn) element);
             }
     }
 
 
     /**
-     *
+     * @param userId
      * @param qualifiedNameForParent qualified name for the parent element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param parentGuid guid of the parent element
      * @param DataViewModel current element
      */
-    private void addDataViewModel(String qualifiedNameForParent, String parentGuid, DataViewModel DataViewModel) {
+    private void addDataViewModel(String userId, String qualifiedNameForParent, String registrationGuid,
+                                  String registrationQualifiedName, String parentGuid, DataViewModel DataViewModel) {
 
         String qualifiedNameForDataViewModel = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  DataViewModel.getId());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
@@ -76,23 +84,28 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.NATIVE_CLASS, DataViewModel.getNativeClass())
                 .withStringProperty(Constants.DESCRIPTION, DataViewModel.getDescription())
                 .build();
-        EntityDetail DataViewModelEntity = createSchemaType(Constants.SCHEMA_ATTRIBUTE, qualifiedNameForDataViewModel,
-                                                            sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        EntityDetail DataViewModelEntity = createSchemaType(userId, Constants.SCHEMA_ATTRIBUTE, qualifiedNameForDataViewModel,
+                registrationGuid, registrationQualifiedName, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
         String qualifiedNameForDataViewModelType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  DataViewModel.getId() + Constants.TYPE_SUFFIX);
-        EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewModelType, DataViewModelEntity.getGUID(), Constants.COMPLEX_SCHEMA_TYPE, null);
-        addElements(qualifiedNameForParent, schemaTypeEntity.getGUID(), DataViewModel.getElements());
+        EntityDetail schemaTypeEntity = addSchemaType(userId, qualifiedNameForDataViewModelType, registrationGuid, registrationQualifiedName, DataViewModelEntity.getGUID(), Constants.COMPLEX_SCHEMA_TYPE, null);
+        addElements(userId, qualifiedNameForParent, schemaTypeEntity.getGUID(), registrationGuid, registrationQualifiedName, DataViewModel.getElements());
     }
 
 
     /**
      *
+     *
+     * @param userId
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid
+     * @param registrationQualifiedName
      * @param dataViewColumn element to be created
      * @return
      */
-    protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn)  {
+    protected EntityDetail addDataViewColumn(String userId, String parentQualifiedName, String parentGuid,
+                                             String registrationGuid, String registrationQualifiedName, DataViewColumn dataViewColumn)  {
 
         String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE,  dataViewColumn.getId());
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -106,16 +119,16 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.AGGREGATING_FUNCTION, dataViewColumn.getRegularAggregate())
                 .build();
 
-        EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        EntityDetail dataViewColumnEntity = createSchemaType(userId, Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, registrationGuid, registrationQualifiedName, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        addSemanticAssignments(dataViewColumn.getBusinessTerms(), dataViewColumnEntity);
-        addQueryTargets(dataViewColumn.getSources(), dataViewColumnEntity);
+        addSemanticAssignments(userId, registrationGuid, registrationQualifiedName, dataViewColumn.getBusinessTerms(), dataViewColumnEntity);
+        addQueryTargets(userId, registrationGuid, registrationQualifiedName, dataViewColumn.getSources(), dataViewColumnEntity);
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
                                                                     .withStringProperty(Constants.DATA_TYPE, dataViewColumn.getDataType())
                                                                     .build();
         String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.PRIMITIVE_SCHEMA_TYPE,dataViewColumn.getId() + Constants.TYPE_SUFFIX );
-        addSchemaType(qualifiedNameForColumnType, dataViewColumnEntity.getGUID(), Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
+        addSchemaType(userId, qualifiedNameForColumnType, registrationGuid, registrationQualifiedName, dataViewColumnEntity.getGUID(), Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
 
         return dataViewColumnEntity;
     }

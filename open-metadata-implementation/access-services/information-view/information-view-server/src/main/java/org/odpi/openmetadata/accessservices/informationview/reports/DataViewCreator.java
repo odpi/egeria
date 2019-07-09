@@ -28,11 +28,13 @@ public class DataViewCreator extends DataViewBasicOperation{
 
     /**
      *
+     *
+     * @param userId
      * @param requestBody json describing the data view
      * @param dataViewEntity the entity describing the data view
      * @throws Exception
      */
-    public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
+    public void createDataView(String userId, DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
                                                                                              InvalidParameterException,
                                                                                              StatusNotSupportedException,
                                                                                              TypeErrorException,
@@ -48,8 +50,15 @@ public class DataViewCreator extends DataViewBasicOperation{
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
-            OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false, false);
+            OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
+                    Constants.COMPLEX_SCHEMA_TYPE,
+                    qualifiedNameForComplexSchemaType,
+                    requestBody.getRegistrationGuid(),
+                    requestBody.getRegistrationQualifiedName(),
+                    complexSchemaTypeProperties,
+                    null,
+                    false,
+                    false);
 
             log.debug("Created data view schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
             omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
@@ -58,7 +67,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     new InstanceProperties());
 
         String qualifiedNameForDataView = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, dataViewEntity.getProperties(), methodName);
-            addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getDataView().getElements());
+            addElements(userId, qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getRegistrationGuid(), requestBody.getRegistrationQualifiedName(), requestBody.getDataView().getElements());
 
 
     }
