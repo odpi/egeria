@@ -2,159 +2,109 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
 
-import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineConnectorBase.class);
 
-    private DataEngineImpl dataEngineClient;
-
     public DataEngineConnectorBase() { super(); }
 
     /**
-     * Call made by the ConnectorProvider to initialize the Connector with the base services.
+     * Retrieve the details about the data engine to which we are connected.
      *
-     * @param connectorInstanceId   unique id for the connector instance useful for messages etc
-     * @param connectionProperties   POJO for the configuration used to create the connector.
+     * @return DataEngineSoftwareServerCapability
      */
-    @Override
-    public void initialize(String               connectorInstanceId,
-                           ConnectionProperties connectionProperties) {
-        super.initialize(connectorInstanceId, connectionProperties);
-        Map<String, Object> omasProperties = this.connectionBean.getSecuredProperties();
-        if (omasProperties != null) {
-            // Setup the Data Engine OMAS connection based on the secured client sent through from the connector's
-            // configuration and initialization (from DataEngineProxyOperationalServices)
-            dataEngineClient = (DataEngineImpl) omasProperties.getOrDefault("dataEngineOMASClient", null);
-        }
+    public DataEngineSoftwareServerCapability getDataEngineDetails() {
+        log.warn("DataEngineConnectorBase::getDataEngineDetails() is not overridden (unimplemented).");
+        return null;
     }
 
     /**
-     * Register the provided SoftwareServiceCapbility as a Data Engine.
+     * Retrieve the date and time at which changes were last synchronized.
      *
-     * @param dataEngine
-     * @param userId
-     * @return String - the GUID of the registered Data Engine
+     * @return Date
      */
-    public String registerDataEngine(SoftwareServerCapability dataEngine, String userId) {
-        final String methodName = "registerDataEngine";
-        try {
-            return dataEngineClient.createSoftwareServerCapability(userId, dataEngine);
-        } catch (InvalidParameterException | PropertyServerException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        } catch (UserNotAuthorizedException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        }
+    public Date getChangesLastSynced() {
+        log.warn("DataEngineConnectorBase::getChangesLastSynced() is not overridden (unimplemented).");
+        return null;
     }
 
     /**
-     * Send the provided process to the Data Engine OMAS.
+     * Persist the date and time at which changes were last successfully synchronized.
      *
-     * @param process
-     * @param userId
-     * @return String - the GUID of the process that was created
+     * @param time
+     * @throws OCFRuntimeException if there is any problem persisting the date and time
      */
-    public String sendProcess(Process process, String userId) {
-        final String methodName = "sendProcess";
-        try {
-            return dataEngineClient.createProcess(userId, process);
-        } catch (InvalidParameterException | PropertyServerException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        } catch (UserNotAuthorizedException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        }
+    public void setChangesLastSynced(Date time) throws OCFRuntimeException {
+        log.warn("DataEngineConnectorBase::setChangesLastSynced(Date) is not overridden (unimplemented).");
     }
 
     /**
-     * Send the provided list of LineageMappings to the Data Engine OMAS.
+     * Retrieve a list of the changed schema types between the dates and times provided.
      *
-     * @param lineageMappingList
-     * @param userId
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineSchemaType>}
      */
-    public void sendLineageMappings(List<LineageMapping> lineageMappingList, String userId) {
-        final String methodName = "sendLineageMappings";
-        try {
-            dataEngineClient.addLineageMappings(userId, lineageMappingList);
-        } catch (InvalidParameterException | PropertyServerException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        } catch (UserNotAuthorizedException e) {
-            DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.USER_NOT_AUTHORIZED;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-            throw new OCFRuntimeException(
-                    errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e
-            );
-        }
+    public List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to) {
+        log.warn("DataEngineConnectorBase::getChangedSchemaTypes(Date, Date) is not overridden (unimplemented).");
+        return null;
+    }
+
+    /**
+     * Retrieve a list of the changed port implementations between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEnginePortImplementation>}
+     */
+    public List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to) {
+        log.warn("DataEngineConnectorBase::getChangedPortImplementations(Date, Date) is not overridden (unimplemented).");
+        return null;
+    }
+
+    /**
+     * Retrieve a list of the changed port aliases between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEnginePortAlias>}
+     */
+    public List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to) {
+        log.warn("DataEngineConnectorBase::getChangedPortAliases(Date, Date) is not overridden (unimplemented).");
+        return null;
+    }
+
+    /**
+     * Retrieve a list of the changed processes between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineProcess>}
+     */
+    public List<DataEngineProcess> getChangedProcesses(Date from, Date to) {
+        log.warn("DataEngineConnectorBase::getChangedProcesses(Date, Date) is not overridden (unimplemented).");
+        return null;
+    }
+
+    /**
+     * Retrieve a list of the changed lineage mappings between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineLineageMappings>}
+     */
+    public List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to) {
+        log.warn("DataEngineConnectorBase::getChangedLineageMappings(Date, Date) is not overridden (unimplemented).");
+        return null;
     }
 
 }

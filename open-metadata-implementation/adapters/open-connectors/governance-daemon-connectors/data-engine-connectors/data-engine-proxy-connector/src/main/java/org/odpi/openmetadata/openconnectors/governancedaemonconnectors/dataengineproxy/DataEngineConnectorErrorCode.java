@@ -14,6 +14,10 @@ public enum DataEngineConnectorErrorCode {
             "The user is not authorized for the Data Engine OMAS operation",
             "The system is unable to process the operation due to the user not being authorized to do so.",
             "Check your OMAS configuration and user authorizations."),
+    NO_CONFIG(404, "DATA-ENGINE-CONNECTOR-404-003",
+            "No configuration was provided for the Data Engine Proxy server",
+            "The system is unable to process the operation due to a lack of a configuration document.",
+            "Check your configuration request and ensure all necessary information is provided and accurate."),
     ;
 
     private int    httpErrorCode;

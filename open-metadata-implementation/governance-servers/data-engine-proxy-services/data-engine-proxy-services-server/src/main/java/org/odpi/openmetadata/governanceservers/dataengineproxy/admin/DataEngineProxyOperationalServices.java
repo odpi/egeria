@@ -5,21 +5,17 @@ package org.odpi.openmetadata.governanceservers.dataengineproxy.admin;
 import org.odpi.openmetadata.accessservices.dataengine.client.DataEngineImpl;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.auditlog.DataEngineProxyAuditCode;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.processor.DataEngineProxyChangePoller;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.DataEngineConnectorBase;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.DataEngineConnectorProvider;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DataEngineProxyOperationalServices {
 
@@ -35,6 +31,7 @@ public class DataEngineProxyOperationalServices {
 
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineProxyConnector;
+    private Thread changePoller;
 
     /**
      * Constructor used at server startup.
@@ -131,9 +128,8 @@ public class DataEngineProxyOperationalServices {
                     auditCode.getUserAction());
         }
 
-
         /*
-         * Create the client information
+         * Create the OMAS client
          */
         DataEngineImpl dataEngineClient;
         try {
@@ -155,22 +151,27 @@ public class DataEngineProxyOperationalServices {
 
         // Configure the connector
         Connection dataEngineProxy = dataEngineProxyConfig.getDataEngineProxyConnection();
-        Map<String, Object> securedProperties = dataEngineProxy.getSecuredProperties();
-        if (securedProperties == null) {
-            securedProperties = new HashMap<>();
-        }
-        // Add the Data Engine OMAS Client connection to the secured properties of the connector
-        securedProperties.put("dataEngineOMASClient", dataEngineClient);
-        dataEngineProxy.setSecuredProperties(securedProperties);
         if (dataEngineProxy != null) {
             log.info("Found connection: " + dataEngineProxy);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineProxyConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineProxy);
+                // If the config says we should poll for changes, do so via a new thread
+                if (dataEngineProxyConfig.pollForChanges()) {
+                    DataEngineProxyChangePoller poller = new DataEngineProxyChangePoller(
+                            dataEngineProxyConnector,
+                            dataEngineProxyConfig,
+                            dataEngineClient,
+                            auditLog
+                    );
+                    changePoller = new Thread(poller);
+                    changePoller.start();
+                }
+                // TODO: otherwise we likely need to look for and process events
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 auditCode = DataEngineProxyAuditCode.ERROR_INITIALIZING_CONNECTION;
-                auditLog.logRecord(actionDescription,
+                this.auditLog.logRecord("ChangePoller construction",
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
                         auditCode.getFormattedLogMessage(),
@@ -178,26 +179,6 @@ public class DataEngineProxyOperationalServices {
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
             }
-        }
-
-        // Start the connector
-        if (dataEngineProxyConnector != null) {
-            try {
-                dataEngineProxyConnector.start();
-            } catch (ConnectorCheckedException e) {
-                log.error("Error in starting the Data Engine Proxy connector.", e);
-            }
-        }
-
-        if (dataEngineProxyConnector != null && dataEngineProxyConnector.isActive()) {
-            auditCode = DataEngineProxyAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord("Initializing",
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
         }
 
         log.info("Data Engine Proxy has been started!");
@@ -213,6 +194,11 @@ public class DataEngineProxyOperationalServices {
     public boolean disconnect(boolean permanent) {
         DataEngineProxyAuditCode auditCode;
         try {
+            // Stop the change polling thread, if there is one and it is active
+            if (changePoller != null && changePoller.isAlive()) {
+                changePoller.interrupt();
+            }
+            // Disconnect the data engine connector
             dataEngineProxyConnector.disconnect();
             auditCode = DataEngineProxyAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
