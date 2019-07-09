@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.eventprocessor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformHeader;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -329,7 +329,7 @@ public class EventPublisher  extends OMRSInstanceEventProcessor  {
      * @param event to be published
      * @return true/false based on the success of the operation
      */
-    public boolean sendEvent(DataPlatformHeader event) {
+    public boolean sendEvent(DataPlatformEventHeader event) {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 

@@ -9,7 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewInformationViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
@@ -404,8 +404,8 @@ public class DataPlatformOmasListenerTest {
         TypeLimitedFindRequest type = (new TypeLimitedFindRequest());
         type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");
 
-        DataPlatformEvent dataPlatformEvent = testDataHelper.buildEvent();
-        listener.processEvent(new ObjectMapper().writeValueAsString(dataPlatformEvent));
+        NewInformationViewEvent newInformationViewEvent = testDataHelper.buildEvent();
+        listener.processEvent(new ObjectMapper().writeValueAsString(newInformationViewEvent));
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
 

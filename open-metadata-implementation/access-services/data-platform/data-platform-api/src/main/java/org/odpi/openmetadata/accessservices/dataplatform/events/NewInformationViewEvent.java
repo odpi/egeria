@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.TableSource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class DataPlatformEvent extends DataPlatformHeader {
+public class NewInformationViewEvent extends DataPlatformEventHeader {
+
     private TableSource tableSource;
     private TableSource originalTableSource;
     private List<DerivedColumn> derivedColumns = new ArrayList<>();
@@ -34,20 +37,10 @@ public class DataPlatformEvent extends DataPlatformHeader {
         this.tableSource = tableSource;
     }
 
-    /**
-     * Return list of derived columns
-     *
-     * @return the list of the properties for each derived column
-     */
     public List<DerivedColumn> getDerivedColumns() {
         return derivedColumns;
     }
 
-    /**
-     * Set up the list of derived columns
-     *
-     * @param derivedColumns - list of properties for each derived columns
-     */
     public void setDerivedColumns(List<DerivedColumn> derivedColumns) {
         this.derivedColumns = derivedColumns;
     }
@@ -62,7 +55,7 @@ public class DataPlatformEvent extends DataPlatformHeader {
 
     @Override
     public String toString() {
-        return "InformationViewEvent{" +
+        return "NewInformationViewEvent{" +
                 "tableSource=" + tableSource +
                 ", originalTableSource=" + originalTableSource +
                 ", derivedColumns=" + derivedColumns +
