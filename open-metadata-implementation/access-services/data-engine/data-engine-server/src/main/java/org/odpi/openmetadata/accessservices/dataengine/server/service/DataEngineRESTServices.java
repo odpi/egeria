@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -75,9 +76,11 @@ public class DataEngineRESTServices {
             SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
                     methodName);
 
-            response.setGUID(handler.createSoftwareServerCapability(userId, requestBody.getQualifiedName(),
-                    requestBody.getDisplayName(), requestBody.getDescription(), requestBody.getEngineType(),
-                    requestBody.getEngineVersion(), requestBody.getPatchLevel(), requestBody.getSource()));
+            SoftwareServerCapability softwareServerCapability = requestBody.getSoftwareServerCapability();
+            response.setGUID(handler.createSoftwareServerCapability(userId, softwareServerCapability.getQualifiedName(),
+                    softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(),
+                    softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(),
+                    softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource()));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.accessservices.dataengine.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 
 import java.util.Objects;
 
@@ -15,83 +17,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
 public class SoftwareServerCapabilityRequestBody extends DataEngineOMASAPIRequestBody {
+    @JsonProperty("dataEngine")
+    private SoftwareServerCapability softwareServerCapability;
 
-    private String qualifiedName;
-    private String displayName;
-    private String description;
-    private String engineType;
-    private String engineVersion;
-    private String patchLevel;
-    private String source;
-
-    public String getDisplayName() {
-        return displayName;
+    public SoftwareServerCapability getSoftwareServerCapability() {
+        return softwareServerCapability;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getEngineType() {
-        return engineType;
-    }
-
-    public void setEngineType(String engineType) {
-        this.engineType = engineType;
-    }
-
-    public String getEngineVersion() {
-        return engineVersion;
-    }
-
-    public void setEngineVersion(String engineVersion) {
-        this.engineVersion = engineVersion;
-    }
-
-    public String getQualifiedName() {
-        return qualifiedName;
-    }
-
-    public void setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getPatchLevel() {
-        return patchLevel;
-    }
-
-    public void setPatchLevel(String patchLevel) {
-        this.patchLevel = patchLevel;
+    public void setSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) {
+        this.softwareServerCapability = softwareServerCapability;
     }
 
     @Override
     public String toString() {
         return "SoftwareServerCapabilityRequestBody{" +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", engineType='" + engineType + '\'' +
-                ", engineVersion='" + engineVersion + '\'' +
-                ", patchLevel='" + patchLevel + '\'' +
-                ", source='" + source + '\'' +
+                "softwareServerCapability=" + softwareServerCapability +
                 '}';
     }
 
@@ -100,17 +41,11 @@ public class SoftwareServerCapabilityRequestBody extends DataEngineOMASAPIReques
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SoftwareServerCapabilityRequestBody that = (SoftwareServerCapabilityRequestBody) o;
-        return Objects.equals(qualifiedName, that.qualifiedName) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(engineType, that.engineType) &&
-                Objects.equals(engineVersion, that.engineVersion) &&
-                Objects.equals(patchLevel, that.patchLevel) &&
-                Objects.equals(source, that.source);
+        return Objects.equals(softwareServerCapability, that.softwareServerCapability);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(qualifiedName, displayName, description, engineType, engineVersion, patchLevel, source);
+        return Objects.hash(softwareServerCapability);
     }
 }

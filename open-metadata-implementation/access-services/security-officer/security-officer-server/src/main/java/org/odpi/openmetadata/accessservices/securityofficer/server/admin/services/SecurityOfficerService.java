@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.servic
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagResponse;
@@ -31,7 +30,7 @@ public class SecurityOfficerService {
     private static SecurityOfficerInstanceHandler instanceHandler = new SecurityOfficerInstanceHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    public SecurityOfficerOMASAPIResponse getSecurityTagByAssetId(String serverName, String userId, String schemaElementId) {
+    public SecurityOfficerSecurityTagResponse getSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) {
         SecurityOfficerSecurityTagResponse response = new SecurityOfficerSecurityTagResponse();
 
         try {

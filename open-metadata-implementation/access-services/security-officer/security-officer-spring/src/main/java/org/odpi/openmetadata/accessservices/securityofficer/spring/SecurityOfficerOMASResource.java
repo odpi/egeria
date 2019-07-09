@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.securityofficer.spring;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.services.SecurityOfficerService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,7 +29,7 @@ public class SecurityOfficerOMASResource {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public SecurityOfficerOMASAPIResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String schemaElementId) {
-        return service.getSecurityTagByAssetId(serverName, userId, schemaElementId);
+        return service.getSecurityTagBySchemaElementId(serverName, userId, schemaElementId);
     }
 
     /**
@@ -40,7 +39,7 @@ public class SecurityOfficerOMASResource {
      * @param userId     String - userId of user making request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/security-tag", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SecurityOfficerSecurityTagListResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId) {
+    public SecurityOfficerOMASAPIResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId) {
         return service.getSecurityTags(serverName, userId);
     }
 
