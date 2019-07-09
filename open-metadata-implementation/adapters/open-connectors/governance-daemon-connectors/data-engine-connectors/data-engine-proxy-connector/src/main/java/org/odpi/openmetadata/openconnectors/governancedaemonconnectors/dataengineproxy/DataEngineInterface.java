@@ -5,38 +5,79 @@
  */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
 
-import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
-import org.odpi.openmetadata.accessservices.dataengine.model.Process;
-import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFRuntimeException;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy.model.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface DataEngineInterface {
 
     /**
-     * Register the provided SoftwareServiceCapbility as a Data Engine.
+     * Retrieve the details about the data engine to which we are connected.
      *
-     * @param dataEngine
-     * @param userId
-     * @return String - the GUID of the registered Data Engine
+     * @return DataEngineSoftwareServerCapability
      */
-    String registerDataEngine(SoftwareServerCapability dataEngine, String userId);
+    DataEngineSoftwareServerCapability getDataEngineDetails();
 
     /**
-     * Send the provided process to the Data Engine OMAS.
+     * Retrieve the date and time at which changes were last synchronized.
      *
-     * @param process
-     * @param userId
-     * @return String - the GUID of the process that was created
+     * @return Date
      */
-    String sendProcess(Process process, String userId);
+    Date getChangesLastSynced();
 
     /**
-     * Send the provided list of LineageMappings to the Data Engine OMAS.
+     * Persist the date and time at which changes were last successfully synchronized.
      *
-     * @param lineageMappingList
-     * @param userId
+     * @param time
+     * @throws OCFRuntimeException if there is any problem persisting the date and time
      */
-    void sendLineageMappings(List<LineageMapping> lineageMappingList, String userId);
+    void setChangesLastSynced(Date time) throws OCFRuntimeException;
+
+    /**
+     * Retrieve a list of the changed schema types between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineSchemaType>}
+     */
+    List<DataEngineSchemaType> getChangedSchemaTypes(Date from, Date to);
+
+    /**
+     * Retrieve a list of the changed port implementations between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEnginePortImplementation>}
+     */
+    List<DataEnginePortImplementation> getChangedPortImplementations(Date from, Date to);
+
+    /**
+     * Retrieve a list of the changed port aliases between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEnginePortAlias>}
+     */
+    List<DataEnginePortAlias> getChangedPortAliases(Date from, Date to);
+
+    /**
+     * Retrieve a list of the changed processes between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineProcess>}
+     */
+    List<DataEngineProcess> getChangedProcesses(Date from, Date to);
+
+    /**
+     * Retrieve a list of the changed lineage mappings between the dates and times provided.
+     *
+     * @param from the date and time from which to look for changes (exclusive)
+     * @param to the date and time up to which to look for changes (inclusive)
+     * @return {@code List<DataEngineLineageMappings>}
+     */
+    List<DataEngineLineageMappings> getChangedLineageMappings(Date from, Date to);
 
 }
