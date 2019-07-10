@@ -150,6 +150,7 @@
         <h2-database.version>1.4.196</h2-database.version>
         <jwt.version>0.6.0</jwt.version>
         <javax-persistence.version>2.2</javax-persistence.version>
+        <javax-validation.version>2.0.1.Final</javax-validation.version>
         <gaian.version>2.1.8</gaian.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
@@ -306,6 +307,13 @@
                 <artifactId>javax.persistence-api</artifactId>
                 <scope>compile</scope>
                 <version>${javax-persistence.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.validation</groupId>
+                <artifactId>validation-api</artifactId>
+                <scope>compile</scope>
+                <version>${javax-validation.version}</version>
             </dependency>
 
             <dependency>
@@ -1424,13 +1432,6 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>
-                <scope>compile</scope>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-validation</artifactId>
                 <scope>compile</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
