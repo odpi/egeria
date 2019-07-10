@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.virtualizationservices.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewInformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils.ConnectorUtils;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.ViewGeneratorConnectorBase;
@@ -60,8 +60,8 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         try{
             TableContextEvent eventObject = objectMapper.readValue(event, TableContextEvent.class);
             Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
-            List<NewInformationViewEvent> viewEvents = generateViewEvents(eventObject, views);
-            for (NewInformationViewEvent item : viewEvents){
+            List<NewViewEvent> viewEvents = generateViewEvents(eventObject, views);
+            for (NewViewEvent item : viewEvents){
                 ivInTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
             }
         }catch (Exception e){
@@ -77,8 +77,8 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
      *
      * @return list of events published to kafka topic
      */
-    public List<NewInformationViewEvent> generateViewEvents(TableContextEvent tableContextEvent, Map<String, String> createdViews) {
-        List<NewInformationViewEvent> events = new ArrayList<>();
+    public List<NewViewEvent> generateViewEvents(TableContextEvent tableContextEvent, Map<String, String> createdViews) {
+        List<NewViewEvent> events = new ArrayList<>();
         try {
             if (createdViews == null || createdViews.isEmpty()) {
                 log.info("No views were created, nothing to publish");
@@ -107,8 +107,8 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
      */
 
 
-    private NewInformationViewEvent createDataPlatformEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
-        NewInformationViewEvent view = addConnectionDetailsAndTableContext(new NewInformationViewEvent(), tableName);
+    private NewViewEvent createDataPlatformEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
+        NewViewEvent view = addConnectionDetailsAndTableContext(new NewViewEvent(), tableName);
         view.setOriginalTableSource(convertTableSource(tableContextEvent.getTableSource()));
         List<org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn> derivedColumn = new ArrayList<>();
         for (TableColumn databaseColumn : tableContextEvent.getTableColumns()) {
@@ -168,7 +168,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         return tableColumn;
     }
 
-    private NewInformationViewEvent addConnectionDetailsAndTableContext(NewInformationViewEvent informationViewEvent, String tableName) {
+    private NewViewEvent addConnectionDetailsAndTableContext(NewViewEvent informationViewEvent, String tableName) {
         org.odpi.openmetadata.accessservices.dataplatform.properties.TableSource tableSource = new org.odpi.openmetadata.accessservices.dataplatform.properties.TableSource();
         org.odpi.openmetadata.accessservices.dataplatform.properties.DatabaseSource databaseSource = new org.odpi.openmetadata.accessservices.dataplatform.properties.DatabaseSource();
         tableSource.setDatabaseSource(databaseSource);

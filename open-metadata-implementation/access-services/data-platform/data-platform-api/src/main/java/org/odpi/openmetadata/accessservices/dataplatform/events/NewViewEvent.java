@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class NewInformationViewEvent extends DataPlatformEventHeader {
+public class NewViewEvent extends DataPlatformEventHeader {
 
     private TableSource tableSource;
     private TableSource originalTableSource;
@@ -55,7 +55,7 @@ public class NewInformationViewEvent extends DataPlatformEventHeader {
 
     @Override
     public String toString() {
-        return "NewInformationViewEvent{" +
+        return "NewViewEvent{" +
                 "tableSource=" + tableSource +
                 ", originalTableSource=" + originalTableSource +
                 ", derivedColumns=" + derivedColumns +

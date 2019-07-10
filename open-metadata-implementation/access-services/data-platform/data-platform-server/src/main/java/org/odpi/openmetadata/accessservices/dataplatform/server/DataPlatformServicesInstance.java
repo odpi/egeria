@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
 
-    private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_ENGINE_OMAS;
+    private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
 
     private LoggingHandler loggingHandler;
 
