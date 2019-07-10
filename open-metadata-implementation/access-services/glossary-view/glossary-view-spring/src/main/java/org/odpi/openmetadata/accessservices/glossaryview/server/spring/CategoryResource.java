@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.CategoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,20 +15,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_FROM_DEFAULT_VALUE;
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_DEFAULT_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_MAX_VALUE;
 
 /**
  * Spring Rest Controller defining 'GlossaryCategory' oriented endpoints
  */
 @RestController
+@Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 public class CategoryResource {
 
     private static final Logger log = LoggerFactory.getLogger(CategoryResource.class);
-
 
     private CategoryService categoryService;
 
@@ -50,7 +53,7 @@ public class CategoryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}")
     public GlossaryViewEntityDetailResponse getCategory(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
-                                                        @PathVariable("categoryGUID") String categoryGUID) {
+                                                        @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  categoryService.getCategory(userId, serverName, categoryGUID);
@@ -74,9 +77,10 @@ public class CategoryResource {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/categories")
     public GlossaryViewEntityDetailResponse getCategoriesViaCategoryAnchorRelationships(@PathVariable("serverName") String serverName,
-                                                                                        @PathVariable("userId") String userId, @PathVariable("glossaryGUID") String glossaryGUID,
+                                                                                        @PathVariable("userId") String userId,
+                                                                                        @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
                                                                                         @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  categoryService.getCategoriesViaCategoryAnchorRelationships(userId, serverName, glossaryGUID, from, size);
@@ -101,9 +105,9 @@ public class CategoryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/subcategories")
     public GlossaryViewEntityDetailResponse getSubcategories(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
-                                                             @PathVariable("categoryGUID") String categoryGUID,
+                                                             @PathVariable("categoryGUID") @NotBlank String categoryGUID,
                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  categoryService.getSubcategories(userId, serverName, categoryGUID, from, size);
@@ -128,9 +132,9 @@ public class CategoryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
-                                                                  @PathVariable("categoryGUID") String categoryGUID,
+                                                                  @PathVariable("categoryGUID") @NotBlank String categoryGUID,
                                                                   @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = categoryService.getExternalGlossaries(userId, serverName, categoryGUID, from, size);
