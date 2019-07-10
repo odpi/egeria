@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.TermService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,11 +19,14 @@ import javax.validation.constraints.PositiveOrZero;
 
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_FROM_DEFAULT_VALUE;
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_DEFAULT_VALUE;
+import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_MAX_VALUE;
+
 
 /**
  * Spring Rest Controller defining 'GlossaryTerm' oriented endpoints
  */
 @RestController
+@Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 public class TermResource {
 
@@ -76,7 +80,7 @@ public class TermResource {
     public GlossaryViewEntityDetailResponse getTermsViaTermAnchorRelationships(@PathVariable("serverName") String serverName,
                                                                                @PathVariable("userId") String userId, @PathVariable("glossaryGUID") String glossaryGUID,
                                                                                @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                               @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                               @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  termService.getTermsViaTermAnchorRelationships(userId, serverName, glossaryGUID, from, size);
@@ -103,7 +107,7 @@ public class TermResource {
                                                                                        @PathVariable("userId") String userId,
                                                                                        @PathVariable("categoryGUID") String categoryGUID,
                                                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                                       @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                                       @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getTermsViaTermCategorizationRelationships(userId, serverName, categoryGUID, from, size);
@@ -130,7 +134,7 @@ public class TermResource {
                                                                   @PathVariable("userId") String userId,
                                                                   @PathVariable("termGUID") String termGUID,
                                                                   @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getExternalGlossaries(userId, serverName, termGUID, from, size);
@@ -157,7 +161,7 @@ public class TermResource {
                                                             @PathVariable("userId") String userId,
                                                             @PathVariable("termGUID") String termGUID,
                                                             @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                            @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                            @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getRelatedTerms(userId, serverName, termGUID, from, size);
@@ -184,7 +188,7 @@ public class TermResource {
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("termGUID") String termGUID,
                                                         @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getSynonyms(userId, serverName, termGUID, from, size);
@@ -211,7 +215,7 @@ public class TermResource {
                                                         @PathVariable("userId") String userId,
                                                         @PathVariable("termGUID") String termGUID,
                                                         @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getAntonyms(userId, serverName, termGUID, from, size);
@@ -238,7 +242,7 @@ public class TermResource {
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("termGUID") String termGUID,
                                                               @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getPreferredTerms(userId, serverName, termGUID, from, size);
@@ -265,7 +269,7 @@ public class TermResource {
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") String termGUID,
                                                                 @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getReplacementTerms(userId, serverName, termGUID, from, size);
@@ -292,7 +296,7 @@ public class TermResource {
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") String termGUID,
                                                                 @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getTranslations(userId, serverName, termGUID, from, size);
@@ -319,7 +323,7 @@ public class TermResource {
                                                    @PathVariable("userId") String userId,
                                                    @PathVariable("termGUID") String termGUID,
                                                    @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                   @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                   @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getIsA(userId, serverName, termGUID, from, size);
@@ -346,7 +350,7 @@ public class TermResource {
                                                            @PathVariable("userId") String userId,
                                                            @PathVariable("termGUID") String termGUID,
                                                            @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                           @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                           @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getValidValues(userId, serverName, termGUID, from, size);
@@ -373,13 +377,40 @@ public class TermResource {
                                                               @PathVariable("userId") String userId,
                                                               @PathVariable("termGUID") String termGUID,
                                                               @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getUsedInContexts(userId, serverName, termGUID, from, size);
 
         watch.stop();
         log.debug("Method: getUsedInContexts; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract assigned elements
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/assigned-elements")
+    public GlossaryViewEntityDetailResponse getAssignedElements(@PathVariable("serverName") String serverName,
+                                                              @PathVariable("userId") String userId,
+                                                              @PathVariable("termGUID") String termGUID,
+                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getAssignedElements(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getAssignedElements; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }
