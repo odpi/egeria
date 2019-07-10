@@ -71,7 +71,7 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
      *
      * @return a glossary
      */
@@ -94,7 +94,7 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param termGUID from
+     * @param termGUID term GUID
      *
      * @return glossaries
      */
@@ -117,7 +117,7 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param categoryGUID from
+     * @param categoryGUID category GUID
      *
      * @return glossaries
      */
@@ -140,7 +140,7 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
      * @param from from
      * @param size size
      *
