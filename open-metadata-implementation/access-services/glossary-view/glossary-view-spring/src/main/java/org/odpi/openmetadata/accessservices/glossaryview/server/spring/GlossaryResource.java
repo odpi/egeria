@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 /**
@@ -77,7 +78,7 @@ public class GlossaryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}")
     public GlossaryViewEntityDetailResponse getGlossary(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
-                                                        @PathVariable("glossaryGUID") String glossaryGUID) {
+                                                        @PathVariable("glossaryGUID") @NotBlank String glossaryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = glossaryService.getGlossary(userId, serverName, glossaryGUID);
@@ -100,7 +101,7 @@ public class GlossaryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/glossary")
     public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
-                                                                @PathVariable("termGUID") String termGUID) {
+                                                                @PathVariable("termGUID") @NotBlank String termGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getTermHomeGlossary(userId, serverName, termGUID);
@@ -123,7 +124,7 @@ public class GlossaryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/glossary")
     public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
-                                                                    @PathVariable("categoryGUID") String categoryGUID) {
+                                                                    @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getCategoryHomeGlossary(userId, serverName, categoryGUID);
@@ -148,7 +149,7 @@ public class GlossaryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
-                                                                  @PathVariable("glossaryGUID") String glossaryGUID,
+                                                                  @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
                                                                   @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
                                                                   @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
