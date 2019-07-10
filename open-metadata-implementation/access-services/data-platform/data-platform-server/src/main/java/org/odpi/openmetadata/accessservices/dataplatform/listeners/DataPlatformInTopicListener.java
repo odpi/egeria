@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewInformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
@@ -49,9 +49,9 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String eventAsString) {
 
-        NewInformationViewEvent event = null;
+        NewViewEvent event = null;
         try {
-            event = OBJECT_MAPPER.readValue(eventAsString, NewInformationViewEvent.class);
+            event = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
         } catch (Exception e) {
             DataPlatformAuditCode auditCode = DataPlatformAuditCode.PARSE_EVENT;
 

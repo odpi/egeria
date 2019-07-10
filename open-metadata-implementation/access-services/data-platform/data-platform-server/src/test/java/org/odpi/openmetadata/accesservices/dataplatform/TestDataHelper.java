@@ -373,8 +373,8 @@ public class TestDataHelper {
     }
 
 
-    public NewInformationViewEvent buildEvent() {
-        NewInformationViewEvent event = new NewInformationViewEvent();
+    public NewViewEvent buildEvent() {
+        NewViewEvent event = new NewViewEvent();
         TableSource tableSource = new TableSource();
         tableSource.setDatabaseSource(new DatabaseSource());
         tableSource.getDatabaseSource().setEndpointSource(new EndpointSource());

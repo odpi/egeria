@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewInformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
@@ -29,12 +29,11 @@ public class ViewHandler implements Callable<View> {
 
 
     private static final Logger log = LoggerFactory.getLogger(ViewHandler.class);
-    private View view;
-    private NewInformationViewEvent event;
+    private NewViewEvent event;
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
 
-    public ViewHandler(NewInformationViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
+    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
         this.event = event;
         this.omEntityDao = omEntityDao;
         this.helper = helper;
@@ -112,7 +111,7 @@ public class ViewHandler implements Callable<View> {
     }
 
 
-    private void deleteView(NewInformationViewEvent event) throws UserNotAuthorizedException,
+    private void deleteView(NewViewEvent event) throws UserNotAuthorizedException,
             EntityNotKnownException,
             EntityNotDeletedException,
             InvalidParameterException,

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewInformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
@@ -20,10 +20,10 @@ import java.util.concurrent.Callable;
 public class InformationViewAssetHandler implements Callable<InformationViewAsset> {
 
 
-    private NewInformationViewEvent event;
+    private NewViewEvent event;
     private OMEntityDao omEntityDao;
 
-    public InformationViewAssetHandler(NewInformationViewEvent event, OMEntityDao omEntityDao) {
+    public InformationViewAssetHandler(NewViewEvent event, OMEntityDao omEntityDao) {
         this.event = event;
         this.omEntityDao = omEntityDao;
     }
