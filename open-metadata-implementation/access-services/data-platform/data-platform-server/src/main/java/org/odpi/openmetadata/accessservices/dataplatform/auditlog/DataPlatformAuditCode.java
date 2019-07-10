@@ -23,13 +23,13 @@ public enum DataPlatformAuditCode {
             "The Data Platform OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_AL_IN_TOPIC("OMAS-DATA-PLATFORM-0003",
+    SERVICE_REGISTERED_WITH_DP_IN_TOPIC("OMAS-DATA-PLATFORM-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is registering a listener with the Data Platform In topic {0}",
             "The Data Platform OMAS is registering to receive incoming events from external tools and applications.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_AL_OUT_TOPIC("OMAS-DATA-PLATFORM-0004",
+    SERVICE_REGISTERED_WITH_DP_OUT_TOPIC("OMAS-DATA-PLATFORM-0004",
             OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is registering a publisher with the Data Platform Out topic {0}",
             "The Data Platform OMAS is registering to publish events to Data Platform Out topic.",
