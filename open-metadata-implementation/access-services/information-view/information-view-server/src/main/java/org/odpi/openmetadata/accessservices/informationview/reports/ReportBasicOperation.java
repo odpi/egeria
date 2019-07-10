@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -15,6 +17,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameU
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -22,6 +25,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
@@ -29,8 +34,14 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddRelationshipException;
 
 public abstract class ReportBasicOperation extends BasicOperation{
 
@@ -43,11 +54,11 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
 
     /**
-     * @param userId
+     * @param userId user id of user submitting the request
      * @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param allElements all elements linked to the current element
      */
     public void addElements(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid,
@@ -59,11 +70,11 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
 
     /**
-     * @param userId
+     * @param userId user id of user submitting the request    
      * @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param element object describing the current element
      */
     public void addReportElement(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportElement element) {
@@ -87,11 +98,10 @@ public abstract class ReportBasicOperation extends BasicOperation{
     /**
      *
      *
-     * @param userId
-     * @param qualifiedNameForParent qualified name of the parent element
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportSection object describing the current section in the report
      * @throws InvalidParameterException
      * @throws PropertyErrorException
@@ -115,11 +125,10 @@ public abstract class ReportBasicOperation extends BasicOperation{
     /**
      *
      *
-     * @param userId
-     * @param qualifiedNameForParent qualified name of the parent element
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid guid of software server capability source
+     * @param registrationQualifiedName qualified name of software server capability source
      * @param reportSection object describing the current section in the report
      * @return
      * @throws InvalidParameterException
@@ -169,13 +178,12 @@ public abstract class ReportBasicOperation extends BasicOperation{
     /**
      *
      *
-     * @param userId
-     * @param qualifiedNameForParent qualified name of the parent element
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportColumn object describing the current column in the report
-     * @return
+     * @return entity representing column
      * @throws InvalidParameterException
      * @throws TypeErrorException
      * @throws TypeDefNotKnownException
@@ -188,8 +196,21 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws StatusNotSupportedException
      */
-    protected EntityDetail addReportColumn(String userId, String qualifiedNameForParent, String parentGuid,
-                                           String registrationGuid, String registrationQualifiedName, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
+    protected EntityDetail addReportColumn(String userId,
+                                           String qualifiedNameForParent,
+                                           String parentGuid,
+                                           String registrationGuid,
+                                           String registrationQualifiedName,
+                                           ReportColumn reportColumn) throws InvalidParameterException,
+                                                                             TypeErrorException,
+                                                                             PropertyErrorException,
+                                                                             EntityNotKnownException,
+                                                                             FunctionNotSupportedException,
+                                                                             PagingErrorException,
+                                                                             ClassificationErrorException,
+                                                                             UserNotAuthorizedException,
+                                                                             RepositoryErrorException,
+                                                                             StatusNotSupportedException {
 
         String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DERIVED_SCHEMA_ATTRIBUTE, reportColumn.getName());
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -224,10 +245,5 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         return derivedColumnEntity;
     }
-
-    private String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
-        return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
-    }
-
 
 }

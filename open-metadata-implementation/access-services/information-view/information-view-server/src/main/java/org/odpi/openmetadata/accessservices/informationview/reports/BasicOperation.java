@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -27,14 +29,16 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDe
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddEntityRelationship;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddRelationshipException;
@@ -84,7 +88,9 @@ public abstract class BasicOperation {
                         registrationQualifiedName, false);
 
             }
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException | PagingErrorException | FunctionNotSupportedException | PropertyErrorException | TypeErrorException e) {
+        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException
+                | EntityNotKnownException | PagingErrorException | FunctionNotSupportedException | PropertyErrorException
+                | TypeErrorException e) {
             throwEntityNotFoundException(searchProperty, searchValue, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
         }
         if (softwareServerCapability == null) {
@@ -100,15 +106,15 @@ public abstract class BasicOperation {
 
     /**
      *
-     * @param userId
+     * @param userId id of user submitting the request
      * @param schemaAttributeTypeName       - type name for the actual schema type entity to be created
      * @param qualifiedNameForSchemaType    - qualifiedName for schema type entity
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of softwareServerCapability
+     * @param registrationQualifiedName - qualified name of software server capability
      * @param schemaAttributeTypeProperties - instance properties for schema attribute
      * @param schemaTypeRelationshipName    - type name for the actual schema type entity to be created
      * @param schemaAttributeGuid           - guid of the schema attribute for which the schema type was created
-     * @return
+     * @return entity representing schema type
      */
     protected EntityDetail createSchemaType(String userId, String schemaAttributeTypeName,
                                             String qualifiedNameForSchemaType,
@@ -132,12 +138,12 @@ public abstract class BasicOperation {
 
         try {
             omEntityDao.addExternalRelationship(userId,
-                    schemaTypeRelationshipName,
-                    registrationGuid,
-                    registrationQualifiedName,
-                    schemaAttributeGuid,
-                    schemaTypeEntity.getGUID(),
-                    new InstanceProperties());
+                                                schemaTypeRelationshipName,
+                                                registrationGuid,
+                                                registrationQualifiedName,
+                                                schemaAttributeGuid,
+                                                schemaTypeEntity.getGUID(),
+                                                new InstanceProperties());
         } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
             throwAddRelationshipException(schemaTypeRelationshipName, e, ReportBasicOperation.class.getName());
         }
@@ -146,9 +152,9 @@ public abstract class BasicOperation {
 
 
     /**
-     * @param userId
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param userId id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param referenceableEntityGuid guid of the entity representing the derived column
      * @param businessTermGuid        guid of businessTerm
      */
@@ -169,9 +175,9 @@ public abstract class BasicOperation {
     }
 
     /**
-     * @param userId
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param userId id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param derivedColumnEntityGuid the guid of the entity representing the derived column
      * @param sourceColumnGuid        identifier of the source column entity
      * @param queryValue
@@ -196,14 +202,14 @@ public abstract class BasicOperation {
 
     /**
      *
-     * @param userId
-     * @param qualifiedNameForType qualified name of the schema attribute
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param userId - id of user submitting the request
+     * @param qualifiedNameForType - qualified name of the schema attribute
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param schemaAttributeGuid  schema attribute entity guid
      * @param schemaAttributeType  schema attribute type entity
      * @param properties           properties for the type entity
-     * @return
+     * @return entity describing the schema type
      */
     protected EntityDetail addSchemaType(String userId, String qualifiedNameForType, String registrationGuid,
                                          String registrationQualifiedName, String schemaAttributeGuid,
@@ -219,14 +225,14 @@ public abstract class BasicOperation {
 
     /**
      *
-     * @param userId
-     * @param assetGuid                         guid of the entity describing the asset
+     * @param userId id of user submitting the request - userId of the user submitting the request
+     * @param assetGuid                  -       guid of the entity describing the asset
      * @param qualifiedNameForComplexSchemaType qualified name for complex schema type
-     * @param registrationGuid
-     * @param registrationQualifiedName
-     * @param schemaTypeName
+     * @param registrationGuid - guid of softwareServerCapability
+     * @param registrationQualifiedName - qualified name of software server capability
+     * @param schemaTypeName - name os schema type
      * @param complexSchemaTypeProperties       properties of the complex schema type
-     * @return
+     * @return entity describing the asset schema type
      */
     protected EntityDetail addAssetSchemaType(String userId, String assetGuid, String qualifiedNameForComplexSchemaType,
                                               String registrationGuid, String registrationQualifiedName, String schemaTypeName, InstanceProperties complexSchemaTypeProperties) {
@@ -278,11 +284,11 @@ public abstract class BasicOperation {
 
     /**
      * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms and the entity representing the column
-     * @param userId
-     * @param registrationGuid
-     * @param registrationQualifiedName
-     * @param  businessTerms list of business terms
-     * @param derivedColumnEntity entity describing the derived column
+     * @param userId - id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
+     * @param  businessTerms - list of business terms
+     * @param derivedColumnEntity - entity describing the derived column
      */
     public void addSemanticAssignments(String userId, String registrationGuid, String registrationQualifiedName, List<BusinessTerm> businessTerms, EntityDetail derivedColumnEntity){
         if(businessTerms != null && !businessTerms.isEmpty()) {
@@ -292,6 +298,14 @@ public abstract class BasicOperation {
         }
     }
 
+    /**
+     *
+     * @param userId - id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
+     * @param bt - business term to link to derived column
+     * @param derivedColumnEntity - entity describing the column
+     */
     public void addSemanticAssignment(String userId, String registrationGuid, String registrationQualifiedName, BusinessTerm bt, EntityDetail derivedColumnEntity)  {
         String businessTermGuid;
         try {
@@ -319,21 +333,11 @@ public abstract class BasicOperation {
     /**
      *
      *
-     * @param userId
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param userId id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param sources list of sources describing the report column
      * @param derivedColumnEntity entity describing the derived column
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
      */
     public void addQueryTargets(String userId, String registrationGuid, String registrationQualifiedName, List<Source> sources, EntityDetail derivedColumnEntity) {
         if(sources!=null && !sources.isEmpty()) {
@@ -348,4 +352,147 @@ public abstract class BasicOperation {
             }
         }
     }
+
+
+    /**
+     * @param userId - id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
+     * @param columnGuid guid of the column
+     * @param businessTerm business term to link or update to column
+     * @param existingAssignments list of existing relationships of type semantic assignment
+     */
+    protected void createOrUpdateSemanticAssignment(String userId, String registrationGuid,
+                                                    String registrationQualifiedName,
+                                                    String columnGuid,
+                                                    BusinessTerm businessTerm,
+                                                    List<Relationship> existingAssignments) {
+        try {
+            String businessTermAssignedToColumnGuid = entityReferenceResolver.getBusinessTermGuid(businessTerm);
+            List<Relationship> matchingRelationship = new ArrayList<>();
+            if (existingAssignments != null && !existingAssignments.isEmpty()) {
+                matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
+                deleteRelationships(existingAssignments.stream().filter(e -> !e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList()));
+            }
+
+            if ((matchingRelationship == null || matchingRelationship.isEmpty()) && !StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
+                omEntityDao.addExternalRelationship(userId,
+                        Constants.SEMANTIC_ASSIGNMENT,
+                        registrationGuid,
+                        registrationQualifiedName,
+                        columnGuid,
+                        businessTermAssignedToColumnGuid,
+                        new InstanceProperties());
+            }
+        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
+            throwAddRelationshipException(Constants.SEMANTIC_ASSIGNMENT, e, ReportUpdater.class.getName());
+        }
+    }
+
+
+    protected String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
+        return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
+    }
+
+
+    /**
+     *
+     * @param sources list of sources to be linked to column
+     * @param columnGuid guid of column
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     * @throws StatusNotSupportedException
+     * @throws EntityNotKnownException
+     * @throws RelationshipNotKnownException
+     * @throws RelationshipNotDeletedException
+     */
+    protected void createOrUpdateSchemaQueryImplementation(List<Source> sources, String columnGuid) throws
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    PropertyErrorException,
+                                                                                                    TypeErrorException,
+                                                                                                    PagingErrorException,
+                                                                                                    StatusNotSupportedException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    RelationshipNotKnownException,
+                                                                                                    RelationshipNotDeletedException {
+
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
+        List<String> relationshipsToRemove = new ArrayList<>();
+        if (relationships != null && !relationships.isEmpty()) {
+            relationshipsToRemove = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
+        }
+        for (Source source : sources) {
+            String sourceColumnGuid = entityReferenceResolver.getSourceGuid(source);
+            if (!StringUtils.isEmpty(sourceColumnGuid)) {
+                log.info("source {} found.", source);
+                if (relationshipsToRemove != null && relationshipsToRemove.contains(sourceColumnGuid)) {
+                    log.info("Relationship already exists and is valid");
+                    relationshipsToRemove.remove(sourceColumnGuid);
+                } else {
+                    InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
+                            .withStringProperty(Constants.QUERY, "")
+                            .build();
+                    omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+                            columnGuid,
+                            sourceColumnGuid,
+                            schemaQueryImplProperties);
+                }
+            } else {
+                log.error(MessageFormat.format("source column not found, unable to add relationship {0} between column {1} and source {2}", Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid, source.toString()));
+            }
+
+            if (relationships != null && !relationships.isEmpty() && relationshipsToRemove != null && !relationshipsToRemove.isEmpty()) {
+                for (Relationship relationship : relationships) {
+                    if (relationshipsToRemove.contains(relationship.getGUID())) {
+                        omEntityDao.purgeRelationship(relationship);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     *
+     * @param userId - id of user submitting the request
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
+     * @param businessTerms list of business terms  to link to column
+     * @param columnGuid guid of column
+     * @throws UserNotAuthorizedException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
+    protected void createOrUpdateSemanticAssignments(String userId, String registrationGuid,
+                                                     String registrationQualifiedName,
+                                                     List<BusinessTerm> businessTerms,
+                                                     String columnGuid) throws UserNotAuthorizedException,
+                                                                               EntityNotKnownException,
+                                                                               FunctionNotSupportedException,
+                                                                               InvalidParameterException,
+                                                                               RepositoryErrorException,
+                                                                               PropertyErrorException,
+                                                                               TypeErrorException,
+                                                                               PagingErrorException{
+        List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
+        if (businessTerms == null || businessTerms.isEmpty()) {
+            deleteRelationships(existingAssignments);
+        } else {
+            businessTerms.stream().forEach( bt -> createOrUpdateSemanticAssignment(userId, registrationGuid, registrationQualifiedName, columnGuid, bt, existingAssignments));
+        }
+    }
+
 }
