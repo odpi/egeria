@@ -31,11 +31,11 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
 
     /**
-     * @param userId
+     * @param userId id of user submitting the request
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param dataViewElements the list of all nested elements
      */
     protected void addElements(String userId, String parentQualifiedName, String parentGuid, String registrationGuid,
@@ -47,11 +47,11 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
 
     /**
-     * @param userId
+     * @param userId id of user submitting the request
      * @param qualifiedNameForParent qualified name for the parent element
      * @param parentGuid  guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param element element to be added
      */
     public void addDataViewElement(String userId, String qualifiedNameForParent, String parentGuid,
@@ -65,10 +65,10 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
 
     /**
-     * @param userId
+     * @param userId id of user submitting the request
      * @param qualifiedNameForParent qualified name for the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param parentGuid guid of the parent element
      * @param DataViewModel current element
      */
@@ -96,13 +96,13 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     /**
      *
      *
-     * @param userId
+     * @param userId id of user submitting the request
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
-     * @param registrationGuid
-     * @param registrationQualifiedName
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param dataViewColumn element to be created
-     * @return
+     * @return entity describing the column
      */
     protected EntityDetail addDataViewColumn(String userId, String parentQualifiedName, String parentGuid,
                                              String registrationGuid, String registrationQualifiedName, DataViewColumn dataViewColumn)  {
