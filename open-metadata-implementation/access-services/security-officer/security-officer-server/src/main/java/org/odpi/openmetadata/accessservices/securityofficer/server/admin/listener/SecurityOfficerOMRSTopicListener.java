@@ -10,8 +10,7 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase
-{
+public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase {
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerOMRSTopicListener.class);
     private OMRSInstanceEventProcessor instanceEventProcessor;
 
@@ -33,20 +32,20 @@ public class SecurityOfficerOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the new relationship
      */
-    public void processNewRelationshipEvent(String       sourceName,
-                                            String       originatorMetadataCollectionId,
-                                            String       originatorServerName,
-                                            String       originatorServerType,
-                                            String       originatorOrganizationName,
+    public void processNewRelationshipEvent(String sourceName,
+                                            String originatorMetadataCollectionId,
+                                            String originatorServerName,
+                                            String originatorServerType,
+                                            String originatorOrganizationName,
                                             Relationship relationship) {
 
         log.debug("Processing new relationship event from: " + sourceName);
 
         instanceEventProcessor.processNewRelationshipEvent(sourceName,
-                                                           originatorMetadataCollectionId,
-                                                           originatorServerName,
-                                                           originatorServerType,
-                                                           originatorOrganizationName,
-                                                           relationship);
+                originatorMetadataCollectionId,
+                originatorServerName,
+                originatorServerType,
+                originatorOrganizationName,
+                relationship);
     }
 }
