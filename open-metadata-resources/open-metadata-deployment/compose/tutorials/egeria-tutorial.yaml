@@ -5,7 +5,8 @@
 # To run
 #   * Ensure Docker is installed
 #   * Start the tutorial stack using
-#     'docker-compose -f ./kafka-compose.yaml up'
+#     'docker-compose -f ./egeria-tutorial.yaml up'
+#   * Go to notebook at http://localhost:18888
 #
 # See the following link for more info on volumes & why we need to use root:
 #   https://docs.bitnami.com/containers/how-to/work-with-non-root-containers/
@@ -55,7 +56,7 @@ services:
             - JUPYTER_ENABLE_LAB=yes
         command: start.sh jupyter lab --LabApp.token=''
         ports:
-            - '8888:8888'
+            - '18888:8888'
         #user: root
         #volumes:
             #- type: volume
@@ -69,7 +70,7 @@ services:
             - kafka
         image: 'odpi/egeria:latest'
         ports:
-            - '8080:8080'
+            - '18080:8080'
 
 
 #volumes:
