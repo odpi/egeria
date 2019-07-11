@@ -32,7 +32,7 @@ public class GlossaryViewException extends Exception {
      * @param systemAction      actions of the system as a result of the error
      * @param userAction        instructions for correcting the error
      */
-    GlossaryViewException(int httpCode, String className, String actionDescription, String errorMessage,
+    public GlossaryViewException(int httpCode, String className, String actionDescription, String errorMessage,
                           String systemAction, String userAction) {
         super(errorMessage);
         this.reportedHTTPCode = httpCode;
@@ -55,7 +55,7 @@ public class GlossaryViewException extends Exception {
      * @param userAction        instructions for correcting the error
      * @param caughtError       the error that resulted in this exception.
      */
-    GlossaryViewException(int httpCode, String className, String actionDescription, String errorMessage,
+    public GlossaryViewException(int httpCode, String className, String actionDescription, String errorMessage,
                           String systemAction, String userAction, Throwable caughtError) {
         super(errorMessage, caughtError);
         this.reportedHTTPCode = httpCode;

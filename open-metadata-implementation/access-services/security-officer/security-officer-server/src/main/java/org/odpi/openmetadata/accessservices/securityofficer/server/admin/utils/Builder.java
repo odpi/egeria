@@ -6,8 +6,10 @@
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.BusinessTerm;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.Entity;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecuritySchemaElement;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -17,6 +19,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,27 +33,36 @@ import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.
 
 public class Builder {
 
-    public SchemaElementEntity buildSchemaElement(EntityDetail entityDetail, OMRSRepositoryHelper omrsRepositoryHelper) {
+    public SecuritySchemaElement buildSecuritySchemaElement(EntityDetail entityDetail, OMRSRepositoryHelper omrsRepositoryHelper) {
+        Entity securitySchemaElement = new SecuritySchemaElement();
 
-        SchemaElementEntity schemaElementEntity = new SchemaElementEntity();
+        buildEntity(entityDetail, securitySchemaElement);
 
-        schemaElementEntity.setGuid(entityDetail.getGUID());
-        schemaElementEntity.setStatus(entityDetail.getStatus().getName());
-        schemaElementEntity.setType(entityDetail.getType().getTypeDefName());
-        schemaElementEntity.setCreatedBy(entityDetail.getCreatedBy());
-        schemaElementEntity.setCreatedTime(entityDetail.getCreateTime());
-        schemaElementEntity.setUpdatedBy(entityDetail.getUpdatedBy());
-        schemaElementEntity.setUpdatedTime(entityDetail.getUpdateTime());
-        schemaElementEntity.setProperties(getProperties(entityDetail.getProperties()));
 
-        return getSecurityClassification(entityDetail, schemaElementEntity, omrsRepositoryHelper);
+        SecurityClassification securityClassification = getSecurityClassification(entityDetail, omrsRepositoryHelper);
+        if (securityClassification != null && securitySchemaElement instanceof SecuritySchemaElement) {
+            ((SecuritySchemaElement) securitySchemaElement).setSecurityClassification(securityClassification);
+        }
+
+        return (SecuritySchemaElement) securitySchemaElement;
     }
 
-    public SchemaElementEntity buildSchemaElementContext(EntityDetail schemaElement, EntityDetail glossaryTerm, OMRSRepositoryHelper omrsRepositoryHelper) {
-        SchemaElementEntity schemaElementEntity = buildSchemaElement(schemaElement, omrsRepositoryHelper);
+    private void buildEntity(EntityDetail entityDetail, Entity securitySchemaElement) {
+        securitySchemaElement.setGuid(entityDetail.getGUID());
+        securitySchemaElement.setStatus(entityDetail.getStatus().getName());
+        securitySchemaElement.setType(entityDetail.getType().getTypeDefName());
+        securitySchemaElement.setCreatedBy(entityDetail.getCreatedBy());
+        securitySchemaElement.setCreatedTime(entityDetail.getCreateTime());
+        securitySchemaElement.setUpdatedBy(entityDetail.getUpdatedBy());
+        securitySchemaElement.setUpdatedTime(entityDetail.getUpdateTime());
+        securitySchemaElement.setProperties(getProperties(entityDetail.getProperties()));
+    }
+
+    public SchemaElementEntity buildSchemaElementContext(EntityDetail schemaElement, EntityDetail glossaryTerm) {
+        SchemaElementEntity schemaElementEntity = buildSchemaElement(schemaElement);
         schemaElementEntity.setBusinessTerm(buildBusinessTerm(glossaryTerm));
 
-        return getSecurityClassification(glossaryTerm, schemaElementEntity, omrsRepositoryHelper);
+        return schemaElementEntity;
     }
 
     public SecurityClassification buildSecurityTag(Classification classification, OMRSRepositoryHelper repositoryHelper) {
@@ -67,25 +80,56 @@ public class Builder {
         return securityClassification;
     }
 
-    private SchemaElementEntity getSecurityClassification(EntityDetail entityDetail, SchemaElementEntity schemaElementEntity, OMRSRepositoryHelper omrsRepositoryHelper) {
-        if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
-            Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
-            securityTag.ifPresent(classification -> schemaElementEntity.setSecurityClassification(buildSecurityTag(classification, omrsRepositoryHelper)));
+    private SchemaElementEntity buildSchemaElement(EntityDetail entityDetail) {
+        Entity schemaElementEntity = new SchemaElementEntity();
+
+        buildEntity(entityDetail, schemaElementEntity);
+
+
+        schemaElementEntity.setClassifications(getClassifications(entityDetail.getClassifications()));
+        return (SchemaElementEntity) schemaElementEntity;
+    }
+
+    private BusinessTerm buildBusinessTerm(EntityDetail entityDetail) {
+        Entity businessTerm = new BusinessTerm();
+        buildEntity(entityDetail, businessTerm);
+
+
+        businessTerm.setClassifications(getClassifications(entityDetail.getClassifications()));
+        return (BusinessTerm) businessTerm;
+    }
+
+    private List<org.odpi.openmetadata.accessservices.securityofficer.api.model.Classification> getClassifications(List<Classification> existingClassifications) {
+        if (existingClassifications == null || existingClassifications.isEmpty()) {
+            return Collections.emptyList();
         }
 
-        return schemaElementEntity;
+        List<org.odpi.openmetadata.accessservices.securityofficer.api.model.Classification> classifications = new ArrayList<>();
+        existingClassifications.forEach(classification -> classifications.add(buildClassification(classification)));
+        return classifications;
+    }
+
+    private org.odpi.openmetadata.accessservices.securityofficer.api.model.Classification buildClassification(Classification classification) {
+        org.odpi.openmetadata.accessservices.securityofficer.api.model.Classification newClassification = new org.odpi.openmetadata.accessservices.securityofficer.api.model.Classification();
+        newClassification.setName(classification.getName());
+        newClassification.setType(classification.getType().getTypeDefName());
+        newClassification.setProperties(getProperties(classification.getProperties()));
+
+        return newClassification;
+    }
+
+    private SecurityClassification getSecurityClassification(EntityDetail entityDetail, OMRSRepositoryHelper omrsRepositoryHelper) {
+        if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
+            Optional<Classification> securityTag = getSecurityTag(entityDetail.getClassifications());
+            if (securityTag.isPresent()) {
+                return buildSecurityTag(securityTag.get(), omrsRepositoryHelper);
+            }
+        }
+        return null;
     }
 
     private Optional<Classification> getSecurityTag(List<Classification> classifications) {
         return classifications.stream().filter(classification -> classification.getName().equals(SECURITY_TAGS)).findAny();
-    }
-
-    private BusinessTerm buildBusinessTerm(EntityDetail entityDetail) {
-        BusinessTerm businessTerm = new BusinessTerm();
-        businessTerm.setGuid(entityDetail.getGUID());
-        businessTerm.setStatus(entityDetail.getStatus().getName());
-        businessTerm.setProperties(getProperties(entityDetail.getProperties()));
-        return businessTerm;
     }
 
     private Map<String, String> getProperties(InstanceProperties uniqueProperties) {
