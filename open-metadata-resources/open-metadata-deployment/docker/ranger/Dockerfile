@@ -2,6 +2,7 @@
 # Copyright Contributors to the Egeria project
 
 # Create minimal runtime image
+ARG REPO=odpi
 FROM $REPO/ranger:build AS build
 FROM openjdk:8-jdk-alpine
 
