@@ -57,6 +57,12 @@ services:
         command: start.sh jupyter lab --LabApp.token=''
         ports:
             - '18888:8888'
+        links:
+            - zookeeper
+            - kafka
+            - egeria
+        depends_on:
+            - egeria
         #user: root
         #volumes:
             #- type: volume
@@ -71,6 +77,9 @@ services:
         image: 'odpi/egeria:latest'
         ports:
             - '18080:8080'
+        links:
+            - zookeeper
+            - kafka
 
 
 #volumes:
