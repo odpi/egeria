@@ -132,7 +132,8 @@ public abstract class BasicOperation {
                                                             schemaAttributeTypeProperties,
                                                             null,
                                                             false);
-        } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException  | FunctionNotSupportedException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
+        } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException  | FunctionNotSupportedException
+                | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
             throwAddEntityRelationship(schemaAttributeTypeName, e, ReportBasicOperation.class.getName());
         }
 
@@ -144,7 +145,9 @@ public abstract class BasicOperation {
                                                 schemaAttributeGuid,
                                                 schemaTypeEntity.getGUID(),
                                                 new InstanceProperties());
-        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
+        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
+                FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException
+                | StatusNotSupportedException e) {
             throwAddRelationshipException(schemaTypeRelationshipName, e, ReportBasicOperation.class.getName());
         }
         return schemaTypeEntity;
@@ -168,7 +171,9 @@ public abstract class BasicOperation {
                                                     referenceableEntityGuid,
                                                     businessTermGuid,
                                                     new InstanceProperties());
-            } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
+            } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
+                    FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException |
+                    StatusNotSupportedException e) {
                throwAddRelationshipException(Constants.SEMANTIC_ASSIGNMENT, e, ReportBasicOperation.class.getName());
             }
         }
@@ -195,7 +200,9 @@ public abstract class BasicOperation {
                                                 derivedColumnEntityGuid,
                                                 sourceColumnGuid,
                                                 schemaQueryImplProperties);
-        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
+        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
+                FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException |
+                StatusNotSupportedException e) {
            throwAddRelationshipException(Constants.SCHEMA_QUERY_IMPLEMENTATION, e, ReportBasicOperation.class.getName());
         }
     }
@@ -331,8 +338,6 @@ public abstract class BasicOperation {
 
 
     /**
-     *
-     *
      * @param userId id of user submitting the request
      * @param registrationGuid - guid of software server capability
      * @param registrationQualifiedName  - qualified name of software server capability
