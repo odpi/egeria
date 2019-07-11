@@ -38,7 +38,7 @@ public class InformationViewOMASResource {
     @PostMapping(path = "/report")
     public InformationViewOMASAPIResponse submitReport(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @RequestBody @Valid ReportRequestBody requestBody) {
+                                                       @Valid @RequestBody ReportRequestBody requestBody) {
         return restAPI.submitReport(serverName, userId, requestBody);
     }
 
@@ -151,7 +151,7 @@ public class InformationViewOMASResource {
     @PostMapping(path = "register")
     public InformationViewOMASAPIResponse registerExternalTool(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
-                                                               @RequestBody RegistrationRequestBody requestBody) {
+                                                               @Valid @RequestBody RegistrationRequestBody requestBody) {
         return restAPI.registerExternalTool(serverName, userId, requestBody);
     }
 
@@ -166,7 +166,7 @@ public class InformationViewOMASResource {
     @PostMapping(path = "registration/lookup")
     public InformationViewOMASAPIResponse lookupExternalTool(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
-                                                             @RequestBody RegistrationRequestBody requestBody) {
+                                                             @Valid @RequestBody RegistrationRequestBody requestBody) {
         return restAPI.lookupRegistration(serverName, userId, requestBody);
     }
 
