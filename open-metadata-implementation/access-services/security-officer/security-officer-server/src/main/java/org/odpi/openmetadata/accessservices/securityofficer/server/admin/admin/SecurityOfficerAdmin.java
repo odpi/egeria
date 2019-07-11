@@ -72,7 +72,7 @@ public class SecurityOfficerAdmin extends AccessServiceAdmin {
                         auditCode.getUserAction());
 
                 SecurityOfficerOMRSTopicListener omrsTopicListener = new SecurityOfficerOMRSTopicListener(accessServiceConfigurationProperties.getAccessServiceName(),
-                                                                                                          securityOfficerPublisher);
+                        securityOfficerPublisher);
                 enterpriseOMRSTopicConnector.registerListener(omrsTopicListener);
             }
 

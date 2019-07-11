@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.GlossaryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,18 +15,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.PositiveOrZero;
 
 /**
  * Spring Rest Controller defining 'Glossary' oriented endpoints
  */
 @RestController
+@Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 public class GlossaryResource {
 
     public static final String PAGE_FROM_DEFAULT_VALUE = "0";
     public static final String PAGE_SIZE_DEFAULT_VALUE = "1000";
+    public static final int PAGE_SIZE_MAX_VALUE = 10000;
     private static final Logger log = LoggerFactory.getLogger(GlossaryResource.class);
+
 
     private GlossaryService glossaryService;
 
@@ -50,7 +55,7 @@ public class GlossaryResource {
     public GlossaryViewEntityDetailResponse getAllGlossaries(@PathVariable("serverName") String serverName,
                                                              @PathVariable("userId") String userId,
                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getAllGlossaries(userId, serverName, from, size);
@@ -66,14 +71,14 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
      *
      * @return a glossary
      */
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}")
     public GlossaryViewEntityDetailResponse getGlossary(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
-                                                        @PathVariable("glossaryGUID") String glossaryGUID) {
+                                                        @PathVariable("glossaryGUID") @NotBlank String glossaryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = glossaryService.getGlossary(userId, serverName, glossaryGUID);
@@ -89,14 +94,14 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param termGUID from
+     * @param termGUID term GUID
      *
      * @return glossaries
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/glossary")
     public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
-                                                                @PathVariable("termGUID") String termGUID) {
+                                                                @PathVariable("termGUID") @NotBlank String termGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getTermHomeGlossary(userId, serverName, termGUID);
@@ -112,14 +117,14 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param categoryGUID from
+     * @param categoryGUID category GUID
      *
      * @return glossaries
      */
     @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/glossary")
     public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
-                                                                    @PathVariable("categoryGUID") String categoryGUID) {
+                                                                    @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response =  glossaryService.getCategoryHomeGlossary(userId, serverName, categoryGUID);
@@ -135,7 +140,7 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
      * @param from from
      * @param size size
      *
@@ -144,9 +149,9 @@ public class GlossaryResource {
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
-                                                                  @PathVariable("glossaryGUID") String glossaryGUID,
+                                                                  @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
                                                                   @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(10000) Integer size) {
+                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = glossaryService.getExternalGlossaries(userId, serverName, glossaryGUID, from, size);
