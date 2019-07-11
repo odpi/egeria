@@ -23,6 +23,9 @@ RUN wget https://www.apache.org/dist/ranger/$version/apache-ranger-$version.tar.
 # Remove -DskipTests if unit tests are to be included - build the code...
 WORKDIR /root/ranger
 
+# Copy settings file to mvn settings
+COPY dist/settings.xml /root/.m2/settings.xml
+
 # untar the package
 RUN tar -zxf /root/*.tar.gz --strip 1 
 
