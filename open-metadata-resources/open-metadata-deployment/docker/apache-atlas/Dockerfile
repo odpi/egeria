@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM odpi/apache-atlas AS build
+FROM $REPO/apache-atlas:build AS build
+
 FROM openjdk:8-jdk-alpine
 
 LABEL org.label-schema.schema-version = "1.0"

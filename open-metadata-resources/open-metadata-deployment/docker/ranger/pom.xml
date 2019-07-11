@@ -32,6 +32,20 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>base-image-build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <dockerfile>Docker.build</dockerfile>
+                            <buildArgs>
+                                <REPO>${docker.repo}</REPO>
+                             </buildArgs>                            
+                            <tag>build</tag>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>build-and-tag-latest</id>
                         <phase>install</phase>
                         <goals>
