@@ -21,6 +21,9 @@ WORKDIR /root/apache-atlas-sources-$atlas_version
 # need more java heap
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
+# Copy settings file to mvn settings
+COPY dist/settings.xml /root/.m2/settings.xml
+
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean -DskipTests install
 RUN mvn clean -DskipTests package -Pdist,embedded-hbase-solr
