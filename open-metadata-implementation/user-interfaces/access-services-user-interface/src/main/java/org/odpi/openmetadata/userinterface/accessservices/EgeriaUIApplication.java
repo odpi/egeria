@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.http.HttpHelper;
+import org.odpi.openmetadata.userinterface.accessservices.api.TypeExplorerController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -42,6 +43,7 @@ public class EgeriaUIApplication {
     }
 
 
+
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
                                         @Value("${omas.server.name}") String serverName) {
@@ -52,5 +54,7 @@ public class EgeriaUIApplication {
                                       @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new SubjectAreaImpl(serverName, serverUrl);
     }
+
+
 
 }
