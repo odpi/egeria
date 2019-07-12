@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.views;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.dataplatform.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
@@ -20,7 +21,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
@@ -186,8 +189,9 @@ public class ViewHandler implements Callable<View> {
             addRelationship(tableTypeEntity.getGUID(), derivedColumnEntity.getGUID(), Constants.ATTRIBUTE_FOR_SCHEMA);
             addRelationship(derivedColumnEntity.getGUID(), derivedColumn.getSourceColumn().getGuid(), Constants.SCHEMA_QUERY_IMPLEMENTATION);
             addRelationship(derivedColumnEntity.getGUID(), columnTypeEntity.getGUID(), Constants.SCHEMA_ATTRIBUTE_TYPE);
-            addRelationship(derivedColumnEntity.getGUID(), derivedColumn.getSourceColumn().getBusinessTerm().getGuid(), Constants.SEMANTIC_ASSIGNMENT);
-
+            for(BusinessTerm businessTerm : derivedColumn.getSourceColumn().getBusinessTerms()){
+                addRelationship(derivedColumnEntity.getGUID(), businessTerm.getGuid(), Constants.SEMANTIC_ASSIGNMENT);
+            }
             return derivedColumnEntity;
 
         } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {

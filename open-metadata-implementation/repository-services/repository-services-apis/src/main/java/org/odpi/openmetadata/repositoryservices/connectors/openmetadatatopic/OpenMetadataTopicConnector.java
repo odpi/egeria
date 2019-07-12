@@ -148,12 +148,12 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
 
                 OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
                 auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(event, error.toString()),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(event, error.toString()),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
             }
         }
     }

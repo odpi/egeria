@@ -8,7 +8,6 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 
 import java.io.Serializable;
 
@@ -25,7 +24,6 @@ public class SecurityOfficerEvent implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private SecurityOfficerEventType eventType = SecurityOfficerEventType.UNKNOWN_SECURITY_OFFICER_EVENT;
-    private SchemaElementEntity schemaElementEntity;
 
     public SecurityOfficerEventType getEventType() {
         return eventType;
@@ -35,11 +33,4 @@ public class SecurityOfficerEvent implements Serializable {
         this.eventType = eventType;
     }
 
-    public SchemaElementEntity getSchemaElementEntity() {
-        return schemaElementEntity;
-    }
-
-    public void setSchemaElementEntity(SchemaElementEntity schemaElementEntity) {
-        this.schemaElementEntity = schemaElementEntity;
-    }
 }
