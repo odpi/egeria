@@ -25,6 +25,19 @@ public class Attribute implements Serializable {
     private String dataType;
     private String defaultValue;
 
+    public Attribute() {
+    }
+
+    public Attribute(String qualifiedName, String displayName, String cardinality, int elementPosition,
+                     String defaultValueOverride, String dataType, String defaultValue) {
+        this.qualifiedName = qualifiedName;
+        this.displayName = displayName;
+        this.cardinality = cardinality;
+        this.elementPosition = elementPosition;
+        this.defaultValueOverride = defaultValueOverride;
+        this.dataType = dataType;
+        this.defaultValue = defaultValue;
+    }
 
     public String getQualifiedName() {
         return qualifiedName;

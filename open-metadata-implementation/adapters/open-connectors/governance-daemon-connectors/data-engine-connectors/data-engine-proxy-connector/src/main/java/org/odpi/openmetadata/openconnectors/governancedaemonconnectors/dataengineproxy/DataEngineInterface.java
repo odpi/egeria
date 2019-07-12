@@ -5,9 +5,25 @@
  */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengineproxy;
 
+import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
+import org.odpi.openmetadata.accessservices.dataengine.model.Process;
+
+import java.util.List;
+
 public interface DataEngineInterface {
 
-    // TODO: put in OMAS-based arguments once Data Engine OMAS is avaialble
-    void sendProcess();
+    /**
+     * Send the provided process to the Data Engine OMAS.
+     *
+     * @param process
+     */
+    void sendProcess(Process process);
+
+    /**
+     * Send the provided list of LineageMappings to the Data Engine OMAS.
+     *
+     * @param lineageMappingList
+     */
+    void sendLineageMappings(List<LineageMapping> lineageMappingList);
 
 }
