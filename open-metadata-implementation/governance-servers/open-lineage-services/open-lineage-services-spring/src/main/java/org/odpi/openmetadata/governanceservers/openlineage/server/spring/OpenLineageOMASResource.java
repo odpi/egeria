@@ -34,12 +34,13 @@ public class OpenLineageOMASResource {
         return restAPI.generateGraph(serverName, userId);
     }
 
-    @GetMapping(path = "/initial-graph/{lineageType}/{guid}")
+    @GetMapping(path = "/initial-graph/{lineageQuery}/{graph}/{guid}")
     public String initialGraph(@PathVariable("userId") String userId,
                                                @PathVariable("serverName") String serverName,
-                                               @PathVariable("lineageType") String lineageType,
+                                               @PathVariable("lineageQuery") String lineageType,
+                                               @PathVariable("graph") String graph,
                                                @PathVariable("guid") String guid) {
-        return restAPI.initialGraph(serverName, userId, lineageType, guid);
+        return restAPI.initialGraph(serverName, userId, lineageType, graph, guid);
     }
 
 }
