@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
 import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageAPIResponse;
@@ -47,11 +46,11 @@ public class OpenLineageRestServices {
     }
 
 
-    public String initialGraph(String serverName, String userId, String lineageType, String guid) {
+    public String initialGraph(String serverName, String userId, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
             QueryHandler queryHandler = instanceHandler.queryHandler(serverName);
-            response = queryHandler.getInitialGraph(lineageType, guid);
+            response = queryHandler.getInitialGraph(lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
