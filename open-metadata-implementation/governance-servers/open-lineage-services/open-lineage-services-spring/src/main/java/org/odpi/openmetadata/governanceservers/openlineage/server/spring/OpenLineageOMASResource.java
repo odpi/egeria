@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage")
+@RequestMapping("/open-metadata/open-lineage/users/{userId}/servers/{serverName}/")
 public class OpenLineageOMASResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
