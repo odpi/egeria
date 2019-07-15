@@ -58,7 +58,7 @@ public class QueryHandler {
         GraphTraversalSource g = graph.traversal();
         Graph subGraph = (Graph) g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE("ETL").count().is(0)).
-                repeat(outE("ETL").subgraph("subGraph").outV()).
+                repeat(outE("ETL").subgraph("subGraph").inV()).
                 cap("subGraph").next();
 
         return janusGraphToGraphson(subGraph);
