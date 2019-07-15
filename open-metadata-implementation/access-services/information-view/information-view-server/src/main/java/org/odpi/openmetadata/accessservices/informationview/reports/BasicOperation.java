@@ -235,7 +235,7 @@ public abstract class BasicOperation {
      * @param derivedColumnEntity - entity describing the derived column
      */
     public void addSemanticAssignments(String userId, String registrationGuid, String registrationQualifiedName, List<BusinessTerm> businessTerms, EntityDetail derivedColumnEntity){
-        if(businessTerms != null && !businessTerms.isEmpty()) {
+        if(!CollectionUtils.isEmpty(businessTerms)) {
             businessTerms.stream().forEach(bt -> {
                 addSemanticAssignment(userId, registrationGuid, registrationQualifiedName, bt, derivedColumnEntity);
             });
