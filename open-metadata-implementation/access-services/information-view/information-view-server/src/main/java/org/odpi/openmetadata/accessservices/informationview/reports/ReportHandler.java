@@ -46,7 +46,6 @@ public class ReportHandler {
      * @throws ReportSubmitException
      */
     public void submitReportModel(String userId, ReportRequestBody payload) throws ReportSubmitException {
-
         try {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);

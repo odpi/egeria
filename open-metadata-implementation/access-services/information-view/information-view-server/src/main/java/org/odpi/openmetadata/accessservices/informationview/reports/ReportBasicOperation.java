@@ -3,11 +3,9 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
-import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -17,7 +15,6 @@ import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameU
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -25,8 +22,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
@@ -34,14 +29,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddRelationshipException;
 
 public abstract class ReportBasicOperation extends BasicOperation{
 
@@ -201,16 +190,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
                                            String parentGuid,
                                            String registrationGuid,
                                            String registrationQualifiedName,
-                                           ReportColumn reportColumn) throws InvalidParameterException,
-                                                                             TypeErrorException,
-                                                                             PropertyErrorException,
-                                                                             EntityNotKnownException,
-                                                                             FunctionNotSupportedException,
-                                                                             PagingErrorException,
-                                                                             ClassificationErrorException,
-                                                                             UserNotAuthorizedException,
-                                                                             RepositoryErrorException,
-                                                                             StatusNotSupportedException {
+                                           ReportColumn reportColumn) {
 
         String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DERIVED_SCHEMA_ATTRIBUTE, reportColumn.getName());
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -224,8 +204,8 @@ public abstract class ReportBasicOperation extends BasicOperation{
                                                                         registrationGuid,
                                                                         registrationQualifiedName,
                                                                         columnProperties,
-                                                            null,
-                                                            false);
+                                                                        null,
+                                                                        false);
 
         omEntityDao.addExternalRelationship(userId,
                                             Constants.ATTRIBUTE_FOR_SCHEMA,

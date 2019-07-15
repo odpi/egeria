@@ -6,9 +6,9 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RegistrationException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.SoftwareServerCapabilityLookup;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -30,6 +30,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import java.util.Optional;
 
 public class RegistrationHandler {
 
@@ -76,11 +78,11 @@ public class RegistrationHandler {
         OMEntityWrapper registration;
         try {
             registration = omEntityDao.createOrUpdateEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
-                    qualifiedNameForSoftwareServer,
-                    softwareServerProperties,
-                    null,
-                    true,
-                    true);
+                                                            qualifiedNameForSoftwareServer,
+                                                            softwareServerProperties,
+                                                            null,
+                                                            true,
+                                                            true);
 
             return buildSoftwareServerCapabilitySource(registration.getEntityDetail());
         } catch (InvalidParameterException | StatusNotSupportedException | PropertyErrorException | EntityNotKnownException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
@@ -95,21 +97,14 @@ public class RegistrationHandler {
     }
 
 
-
     public SoftwareServerCapabilitySource lookupSoftwareServerCapability(RegistrationRequestBody requestBody) {
-
-        try {
-            EntityDetail entity = lookup.lookupEntity(requestBody.getSoftwareServerCapability());
-            SoftwareServerCapabilitySource source = buildSoftwareServerCapabilitySource(entity);
-            return source;
-
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            throw new RetrieveEntityException(RegistrationHandler.class.getName(),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getFormattedErrorMessage(e.getMessage()),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getUserAction(),
-                    null);
-        }
+        EntityDetail entity =
+                Optional.ofNullable(lookup.lookupEntity(requestBody.getSoftwareServerCapability()))
+                        .orElseThrow(() -> ExceptionHandler.buildEntityNotFoundException(Constants.SOURCE,
+                                                                                        requestBody.getSoftwareServerCapability().toString(),
+                                                                                        Constants.SOFTWARE_SERVER_CAPABILITY,
+                                                                                        this.getClass().getName()));
+        return buildSoftwareServerCapabilitySource(entity);
     }
 
     private SoftwareServerCapabilitySource buildSoftwareServerCapabilitySource(EntityDetail entity) {

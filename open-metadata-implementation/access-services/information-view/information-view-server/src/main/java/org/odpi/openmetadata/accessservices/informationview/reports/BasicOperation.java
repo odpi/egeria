@@ -7,8 +7,6 @@ import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -18,34 +16,21 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddEntityRelationship;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwAddRelationshipException;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwDeleteRelationshipException;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwEntityNotFoundException;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwNoRegistrationDetailsProvided;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwSourceNotFoundException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildAddRelationshipException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildEntityNotFoundException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildNoRegistrationDetailsProvided;
 
 public abstract class BasicOperation {
 
@@ -69,37 +54,33 @@ public abstract class BasicOperation {
      * @return entity of type SoftwareServerCapability retrieved by provided identifiers
      */
     public SoftwareServerCapabilitySource retrieveSoftwareServerCapability(String registrationGuid, String registrationQualifiedName) {
-        EntityDetail softwareServerCapability = null;
+        EntityDetail softwareServerCapability;
         if (StringUtils.isEmpty(registrationGuid) && StringUtils.isEmpty(registrationQualifiedName)) {
-             throwNoRegistrationDetailsProvided(null, ReportBasicOperation.class.getName());
+            throw buildNoRegistrationDetailsProvided(null, ReportBasicOperation.class.getName());
         }
-
-        String searchProperty = "";
-        String searchValue = "";
-        try {
-            if (!StringUtils.isEmpty(registrationGuid)) {
-                searchProperty = Constants.GUID;
-                searchValue = registrationGuid;
-                softwareServerCapability = omEntityDao.getEntityByGuid(registrationGuid);
-            } else {
-                searchProperty = Constants.QUALIFIED_NAME;
-                searchValue = registrationGuid;
-                softwareServerCapability = omEntityDao.getEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
-                        registrationQualifiedName, false);
-
-            }
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException
-                | EntityNotKnownException | PagingErrorException | FunctionNotSupportedException | PropertyErrorException
-                | TypeErrorException e) {
-            throwEntityNotFoundException(searchProperty, searchValue, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
+        if (!StringUtils.isEmpty(registrationGuid)) {
+            softwareServerCapability = Optional.ofNullable(omEntityDao.getEntityByGuid(registrationGuid))
+                                                .orElseThrow(() -> buildEntityNotFoundException(Constants.GUID, registrationGuid,
+                                                                                                Constants.SOFTWARE_SERVER_CAPABILITY,
+                                                                                                ReportBasicOperation.class.getName()));
+        }else {
+            softwareServerCapability = Optional.ofNullable(omEntityDao.getEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
+                                                                                registrationQualifiedName,
+                                                                                false))
+                                                .orElseThrow(() -> buildEntityNotFoundException(Constants.QUALIFIED_NAME,
+                                                        registrationQualifiedName,
+                                                        Constants.SOFTWARE_SERVER_CAPABILITY,
+                                                        ReportBasicOperation.class.getName()));
         }
-        if (softwareServerCapability == null) {
-             throwEntityNotFoundException(Constants.QUALIFIED_NAME, registrationQualifiedName, Constants.SOFTWARE_SERVER_CAPABILITY, ReportBasicOperation.class.getName());
-        }
+        return buildSoftwareServerCapabilitySource(softwareServerCapability);
+    }
 
+    private SoftwareServerCapabilitySource buildSoftwareServerCapabilitySource(EntityDetail softwareServerCapability) {
         SoftwareServerCapabilitySource softwareServerCapabilitySource = new SoftwareServerCapabilitySource();
         softwareServerCapabilitySource.setGuid(softwareServerCapability.getGUID());
-        softwareServerCapabilitySource.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, softwareServerCapability.getProperties(), "retrieveSoftwareServerCapability"));
+        softwareServerCapabilitySource.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
+                Constants.QUALIFIED_NAME, softwareServerCapability.getProperties(),
+                "retrieveSoftwareServerCapability"));
         return softwareServerCapabilitySource;
     }
 
@@ -123,33 +104,22 @@ public abstract class BasicOperation {
                                             InstanceProperties schemaAttributeTypeProperties,
                                             String schemaTypeRelationshipName,
                                             String schemaAttributeGuid) {
-        EntityDetail schemaTypeEntity = null;
-        try {
-            schemaTypeEntity = omEntityDao.addExternalEntity(userId, schemaAttributeTypeName,
+        EntityDetail schemaTypeEntity;
+        schemaTypeEntity = omEntityDao.addExternalEntity(userId,
+                                                            schemaAttributeTypeName,
                                                             qualifiedNameForSchemaType,
                                                             registrationGuid,
                                                             registrationQualifiedName,
                                                             schemaAttributeTypeProperties,
                                                             null,
                                                             false);
-        } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException  | FunctionNotSupportedException
-                | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {
-            throwAddEntityRelationship(schemaAttributeTypeName, e, ReportBasicOperation.class.getName());
-        }
-
-        try {
-            omEntityDao.addExternalRelationship(userId,
-                                                schemaTypeRelationshipName,
-                                                registrationGuid,
-                                                registrationQualifiedName,
-                                                schemaAttributeGuid,
-                                                schemaTypeEntity.getGUID(),
-                                                new InstanceProperties());
-        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
-                FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException
-                | StatusNotSupportedException e) {
-            throwAddRelationshipException(schemaTypeRelationshipName, e, ReportBasicOperation.class.getName());
-        }
+        omEntityDao.addExternalRelationship(userId,
+                                            schemaTypeRelationshipName,
+                                            registrationGuid,
+                                            registrationQualifiedName,
+                                            schemaAttributeGuid,
+                                            schemaTypeEntity.getGUID(),
+                                            new InstanceProperties());
         return schemaTypeEntity;
     }
 
@@ -163,7 +133,6 @@ public abstract class BasicOperation {
      */
     protected void addBusinessTerm(String userId, String registrationGuid, String registrationQualifiedName, String referenceableEntityGuid, String businessTermGuid)  {
         if (!StringUtils.isEmpty(businessTermGuid)) {
-            try {
                 omEntityDao.addExternalRelationship(userId,
                                                     Constants.SEMANTIC_ASSIGNMENT,
                                                     registrationGuid,
@@ -171,11 +140,7 @@ public abstract class BasicOperation {
                                                     referenceableEntityGuid,
                                                     businessTermGuid,
                                                     new InstanceProperties());
-            } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
-                    FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException |
-                    StatusNotSupportedException e) {
-               throwAddRelationshipException(Constants.SEMANTIC_ASSIGNMENT, e, ReportBasicOperation.class.getName());
-            }
+
         }
     }
 
@@ -192,7 +157,6 @@ public abstract class BasicOperation {
         InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUERY, queryValue)
                 .build();
-        try {
             omEntityDao.addExternalRelationship(userId,
                                                 Constants.SCHEMA_QUERY_IMPLEMENTATION,
                                                 registrationGuid,
@@ -200,11 +164,7 @@ public abstract class BasicOperation {
                                                 derivedColumnEntityGuid,
                                                 sourceColumnGuid,
                                                 schemaQueryImplProperties);
-        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException |
-                FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException |
-                StatusNotSupportedException e) {
-           throwAddRelationshipException(Constants.SCHEMA_QUERY_IMPLEMENTATION, e, ReportBasicOperation.class.getName());
-        }
+
     }
 
     /**
@@ -243,54 +203,31 @@ public abstract class BasicOperation {
      */
     protected EntityDetail addAssetSchemaType(String userId, String assetGuid, String qualifiedNameForComplexSchemaType,
                                               String registrationGuid, String registrationQualifiedName, String schemaTypeName, InstanceProperties complexSchemaTypeProperties) {
-        EntityDetail complexSchemaTypeEntity = null;
-        try {
-            complexSchemaTypeEntity = omEntityDao.addExternalEntity(userId,
-                                                            schemaTypeName,
-                                                            qualifiedNameForComplexSchemaType,
-                                                            registrationGuid,
-                                                            registrationQualifiedName,
-                                                            complexSchemaTypeProperties,
-                                                            null,
-                                                            false);
-        } catch (InvalidParameterException | StatusNotSupportedException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException  | ClassificationErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
-           throwAddEntityRelationship(schemaTypeName, e, ReportBasicOperation.class.getName());
-        }
+        EntityDetail complexSchemaTypeEntity = omEntityDao.addExternalEntity(userId,
+                                                                            schemaTypeName,
+                                                                            qualifiedNameForComplexSchemaType,
+                                                                            registrationGuid,
+                                                                            registrationQualifiedName,
+                                                                            complexSchemaTypeProperties,
+                                                                            null,
+                                                                            false);
 
-        try {
-            omEntityDao.addExternalRelationship(userId,
-                                                Constants.ASSET_SCHEMA_TYPE,
-                                                registrationGuid,
-                                                registrationQualifiedName,
-                                                assetGuid,
-                                                complexSchemaTypeEntity.getGUID(),
-                                                new InstanceProperties());
-        } catch (InvalidParameterException | TypeErrorException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
-            throwAddRelationshipException(Constants.ASSET_SCHEMA_TYPE, e, ReportBasicOperation.class.getName());
-        }
+        omEntityDao.addExternalRelationship(userId,
+                                            Constants.ASSET_SCHEMA_TYPE,
+                                            registrationGuid,
+                                            registrationQualifiedName,
+                                            assetGuid,
+                                            complexSchemaTypeEntity.getGUID(),
+                                            new InstanceProperties());
+
         return complexSchemaTypeEntity;
     }
 
-    /**
-     * @param existingRelationships relationships to be deleted
-     */
-    protected void deleteRelationships(List<Relationship> existingRelationships) {
-        if (existingRelationships != null && !existingRelationships.isEmpty()) {
-            for (Relationship relationship : existingRelationships) {
-                try {
-                    omEntityDao.purgeRelationship(relationship);
-                } catch (RepositoryErrorException | UserNotAuthorizedException | InvalidParameterException | RelationshipNotDeletedException | RelationshipNotKnownException | FunctionNotSupportedException e) {
-                    throwDeleteRelationshipException(relationship, null, BasicOperation.class.getName());
-                }
-            }
-        } else {
-            log.debug("No relationships to delete.");
-        }
-    }
 
 
     /**
-     * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms and the entity representing the column
+     * Create relationships of type SEMANTIC_ASSIGNMENT between the business terms and the entity representing the
+     * column
      * @param userId - id of user submitting the request
      * @param registrationGuid - guid of software server capability
      * @param registrationQualifiedName  - qualified name of software server capability
@@ -315,25 +252,14 @@ public abstract class BasicOperation {
      */
     public void addSemanticAssignment(String userId, String registrationGuid, String registrationQualifiedName, BusinessTerm bt, EntityDetail derivedColumnEntity)  {
         String businessTermGuid;
-        try {
-            businessTermGuid = entityReferenceResolver.getBusinessTermGuid(bt);
-            if (!StringUtils.isEmpty(businessTermGuid)) {
-                omEntityDao.addExternalRelationship(userId,
-                                                    Constants.SEMANTIC_ASSIGNMENT,
-                                                    registrationGuid,
-                                                    registrationQualifiedName,
-                                                    derivedColumnEntity.getGUID(),
-                                                    businessTermGuid,
-                                                    new InstanceProperties());
-            }
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
-            InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
-            throw new AddRelationshipException(errorCode.getHttpErrorCode(), ReportUpdater.class.getName(),
-                    errorCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, e.getMessage()),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e);
-        }
+        businessTermGuid = entityReferenceResolver.getBusinessTermGuid(bt);
+        omEntityDao.addExternalRelationship(userId,
+                                            Constants.SEMANTIC_ASSIGNMENT,
+                                            registrationGuid,
+                                            registrationQualifiedName,
+                                            derivedColumnEntity.getGUID(),
+                                            businessTermGuid,
+                                            new InstanceProperties());
     }
 
 
@@ -345,17 +271,12 @@ public abstract class BasicOperation {
      * @param derivedColumnEntity entity describing the derived column
      */
     public void addQueryTargets(String userId, String registrationGuid, String registrationQualifiedName, List<Source> sources, EntityDetail derivedColumnEntity) {
-        if(sources!=null && !sources.isEmpty()) {
-            for (Source source : sources) {
-                String sourceColumnGUID = entityReferenceResolver.getSourceGuid(source);
-                if (!StringUtils.isEmpty(sourceColumnGUID)) {
-                    log.debug("source {} for entity {} found.", source, derivedColumnEntity.getGUID());
-                    addQueryTarget(userId, registrationGuid, registrationQualifiedName, derivedColumnEntity.getGUID(), sourceColumnGUID, "");
-                } else {
-                    throwSourceNotFoundException(source, null, ReportBasicOperation.class.getName());
-                }
-            }
-        }
+        Optional.ofNullable(sources)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .forEach(s -> {String sourceColumnGUID = entityReferenceResolver.resolveSourceGuid(s);
+                              addQueryTarget(userId, registrationGuid, registrationQualifiedName, derivedColumnEntity.getGUID(), sourceColumnGUID, "");});
+
     }
 
 
@@ -367,35 +288,28 @@ public abstract class BasicOperation {
      * @param businessTerm business term to link or update to column
      * @param existingAssignments list of existing relationships of type semantic assignment
      */
-    protected void createOrUpdateSemanticAssignment(String userId, String registrationGuid,
+    protected Relationship createOrUpdateSemanticAssignment(String userId, String registrationGuid,
                                                     String registrationQualifiedName,
                                                     String columnGuid,
                                                     BusinessTerm businessTerm,
                                                     List<Relationship> existingAssignments) {
-        try {
             String businessTermAssignedToColumnGuid = entityReferenceResolver.getBusinessTermGuid(businessTerm);
-            List<Relationship> matchingRelationship = new ArrayList<>();
-            if (existingAssignments != null && !existingAssignments.isEmpty()) {
-                matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
-                deleteRelationships(existingAssignments.stream().filter(e -> !e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList()));
-            }
-
-            if ((matchingRelationship == null || matchingRelationship.isEmpty()) && !StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
-                omEntityDao.addExternalRelationship(userId,
-                        Constants.SEMANTIC_ASSIGNMENT,
-                        registrationGuid,
-                        registrationQualifiedName,
-                        columnGuid,
-                        businessTermAssignedToColumnGuid,
-                        new InstanceProperties());
-            }
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException | StatusNotSupportedException | EntityNotKnownException e) {
-            throwAddRelationshipException(Constants.SEMANTIC_ASSIGNMENT, e, ReportUpdater.class.getName());
-        }
+            return Optional.ofNullable(existingAssignments).map(Collection::stream)
+                                                            .orElseGet(Stream::empty)
+                                                            .filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid))
+                                                            .findFirst()
+                                                            .orElseGet(() -> omEntityDao.addExternalRelationship(userId,
+                                                                                                                Constants.SEMANTIC_ASSIGNMENT,
+                                                                                                                registrationGuid,
+                                                                                                                registrationQualifiedName,
+                                                                                                                columnGuid,
+                                                                                                                businessTermAssignedToColumnGuid,
+                                                                                                                new InstanceProperties()));
     }
 
 
-    protected String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
+    protected String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType,
+                                                     ReportElement element) {
         return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
     }
 
@@ -404,64 +318,39 @@ public abstract class BasicOperation {
      *
      * @param sources list of sources to be linked to column
      * @param columnGuid guid of column
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     * @throws StatusNotSupportedException
-     * @throws EntityNotKnownException
-     * @throws RelationshipNotKnownException
-     * @throws RelationshipNotDeletedException
      */
-    protected void createOrUpdateSchemaQueryImplementation(List<Source> sources, String columnGuid) throws
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    FunctionNotSupportedException,
-                                                                                                    InvalidParameterException,
-                                                                                                    RepositoryErrorException,
-                                                                                                    PropertyErrorException,
-                                                                                                    TypeErrorException,
-                                                                                                    PagingErrorException,
-                                                                                                    StatusNotSupportedException,
-                                                                                                    EntityNotKnownException,
-                                                                                                    RelationshipNotKnownException,
-                                                                                                    RelationshipNotDeletedException {
+    protected void createOrUpdateSchemaQueryImplementation(List<Source> sources, String columnGuid)  {
 
-        List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
-        List<String> relationshipsToRemove = new ArrayList<>();
-        if (relationships != null && !relationships.isEmpty()) {
-            relationshipsToRemove = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
+        List<Relationship> existingRelationships = omEntityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
+        List<String> validRelationships = sources.stream().map(source -> addQueryTarget(columnGuid, source,
+                existingRelationships).getGUID()).collect(Collectors.toList());
+        if (!CollectionUtils.isEmpty(existingRelationships) ) {
+            existingRelationships.stream().filter(r -> !validRelationships.contains(r.getGUID())).forEach(r -> omEntityDao.purgeRelationship(r));
         }
-        for (Source source : sources) {
-            String sourceColumnGuid = entityReferenceResolver.getSourceGuid(source);
-            if (!StringUtils.isEmpty(sourceColumnGuid)) {
-                log.info("source {} found.", source);
-                if (relationshipsToRemove != null && relationshipsToRemove.contains(sourceColumnGuid)) {
-                    log.info("Relationship already exists and is valid");
-                    relationshipsToRemove.remove(sourceColumnGuid);
-                } else {
-                    InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
-                            .withStringProperty(Constants.QUERY, "")
-                            .build();
-                    omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                            columnGuid,
-                            sourceColumnGuid,
-                            schemaQueryImplProperties);
-                }
-            } else {
-                log.error(MessageFormat.format("source column not found, unable to add relationship {0} between column {1} and source {2}", Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid, source.toString()));
-            }
+    }
 
-            if (relationships != null && !relationships.isEmpty() && relationshipsToRemove != null && !relationshipsToRemove.isEmpty()) {
-                for (Relationship relationship : relationships) {
-                    if (relationshipsToRemove.contains(relationship.getGUID())) {
-                        omEntityDao.purgeRelationship(relationship);
-                    }
-                }
-            }
+    private Relationship addQueryTarget(String columnGuid, Source source, List<Relationship> existingRelationships) {
+        String sourceColumnGuid = entityReferenceResolver.resolveSourceGuid(source);
+        if (!StringUtils.isEmpty(sourceColumnGuid)) {
+            log.debug("source {} found.", source);
+            return Optional.ofNullable(existingRelationships)
+                                                            .map(Collection::stream)
+                                                            .orElseGet(Stream::empty)
+                                                            .filter(r -> r.getEntityTwoProxy().getGUID().equals(sourceColumnGuid) ||
+                                                                    r.getEntityOneProxy().getGUID().equals(sourceColumnGuid))
+                                                            .findFirst()
+                                                            .orElseGet(() ->{
+                                                                InstanceProperties schemaQueryImplProperties =
+                                                                        new EntityPropertiesBuilder().withStringProperty(Constants.QUERY, "")
+                                                                                .build();
+                                                                return omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+                                                                                                columnGuid,
+                                                                                                sourceColumnGuid,
+                                                                                                schemaQueryImplProperties);});
         }
+        log.error(MessageFormat.format("source column not found, unable to add relationship {0} between column " +
+                "{1} and source {2}", Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid, source.toString()));
+        throw buildAddRelationshipException(Constants.SCHEMA_QUERY_IMPLEMENTATION, null, this.getClass().getName());
     }
 
     /**
@@ -472,31 +361,16 @@ public abstract class BasicOperation {
      * @param registrationQualifiedName  - qualified name of software server capability
      * @param businessTerms list of business terms  to link to column
      * @param columnGuid guid of column
-     * @throws UserNotAuthorizedException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
      */
     protected void createOrUpdateSemanticAssignments(String userId, String registrationGuid,
                                                      String registrationQualifiedName,
                                                      List<BusinessTerm> businessTerms,
-                                                     String columnGuid) throws UserNotAuthorizedException,
-                                                                               EntityNotKnownException,
-                                                                               FunctionNotSupportedException,
-                                                                               InvalidParameterException,
-                                                                               RepositoryErrorException,
-                                                                               PropertyErrorException,
-                                                                               TypeErrorException,
-                                                                               PagingErrorException{
+                                                     String columnGuid) {
         List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
-        if (businessTerms == null || businessTerms.isEmpty()) {
-            deleteRelationships(existingAssignments);
+        if (CollectionUtils.isEmpty(businessTerms)) {
+            omEntityDao.purgeRelationships(existingAssignments);
         } else {
-            businessTerms.stream().forEach( bt -> createOrUpdateSemanticAssignment(userId, registrationGuid, registrationQualifiedName, columnGuid, bt, existingAssignments));
+            businessTerms.stream().map( bt -> createOrUpdateSemanticAssignment(userId, registrationGuid, registrationQualifiedName, columnGuid, bt, existingAssignments));
         }
     }
 
