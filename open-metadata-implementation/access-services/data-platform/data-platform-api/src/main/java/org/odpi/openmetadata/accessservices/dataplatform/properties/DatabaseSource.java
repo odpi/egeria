@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.dataplatform.events;
+package org.odpi.openmetadata.accessservices.dataplatform.properties;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -13,11 +14,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TableSource extends Source {
+public class DatabaseSource extends Source {
 
     private String name;
-    private String schemaName;
-    private DatabaseSource databaseSource;
+    private EndpointSource endpointSource;
 
     public String getName() {
         return name;
@@ -27,30 +27,20 @@ public class TableSource extends Source {
         this.name = name;
     }
 
-    public String getSchemaName() {
-        return schemaName;
+    public EndpointSource getEndpointSource() {
+        return endpointSource;
     }
 
-    public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
+    public void setEndpointSource(EndpointSource endpointSource) {
+        this.endpointSource = endpointSource;
     }
 
-
-    public DatabaseSource getDatabaseSource() {
-        return databaseSource;
-    }
-
-    public void setDatabaseSource(DatabaseSource databaseSource) {
-        this.databaseSource = databaseSource;
-    }
 
     @Override
     public String toString() {
         return "{" +
                 "name='" + name + '\'' +
-                ", schemaName='" + schemaName + '\'' +
-                ", guid='" + guid + '\'' +
-                ", databaseSource=" + databaseSource +
+                ", endpointSource=" + endpointSource +
                 '}';
     }
 }
