@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accesservices.dataplatform;
 
 import org.odpi.openmetadata.accessservices.dataplatform.events.*;
-import org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.*;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -373,8 +373,8 @@ public class TestDataHelper {
     }
 
 
-    public DataPlatformEvent buildEvent() {
-        DataPlatformEvent event = new DataPlatformEvent();
+    public NewViewEvent buildEvent() {
+        NewViewEvent event = new NewViewEvent();
         TableSource tableSource = new TableSource();
         tableSource.setDatabaseSource(new DatabaseSource());
         tableSource.getDatabaseSource().setEndpointSource(new EndpointSource());
