@@ -82,7 +82,7 @@ Note that the scan may take a long time - an hour or more for all checks.
 
 If running against ALL components (ie from the root) an invocation like
 ```
-MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC" unbuffer mvn clean install -DfindBugs 
+MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC" mvn clean install -DfindBugs 
 ```
 may be needed due to the memory requirements of a security scan
 ----
