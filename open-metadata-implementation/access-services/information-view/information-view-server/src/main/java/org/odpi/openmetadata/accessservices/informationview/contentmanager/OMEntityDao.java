@@ -54,6 +54,7 @@ import static org.odpi.openmetadata.accessservices.informationview.ffdc.Exceptio
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildEntityNotFoundException;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildRetrieveEntityException;
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildRetrieveRelationshipException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildUpdateEntityException;
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.PAGE_SIZE;
 
 public class OMEntityDao {
@@ -401,7 +402,7 @@ public class OMEntityDao {
             }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
-                entityDetail = addExternalEntity(userId, typeName, qualifiedName, externalSourceGuid, externalSourceName, properties, classifications, zoneRestricted);
+                entityDetail = updateEntity(entityDetail, userId, properties,  zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
             else{
@@ -445,12 +446,16 @@ public class OMEntityDao {
 
 
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties, boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties, boolean zoneRestricted)  {
         //TODO add validation to new instance properties
         if(zoneRestricted){
             instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
         }
-        entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), instanceProperties);
+        try {
+            entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), instanceProperties);
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | UserNotAuthorizedException | FunctionNotSupportedException e) {
+            throw buildUpdateEntityException(entityDetail.getGUID(), e, this.getClass().getName());
+        }
         return entityDetail;
     }
 

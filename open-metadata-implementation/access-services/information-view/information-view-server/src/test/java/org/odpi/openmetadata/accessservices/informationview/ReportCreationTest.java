@@ -99,7 +99,6 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
     }
 
     @Test
-    @Ignore//TODO addExternalEntity doesn't currently support update
     public void testReportBasicPropertiesUpdate() throws Exception {
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);

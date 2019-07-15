@@ -124,12 +124,25 @@ public class ExceptionHandler {
                                             InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getUserAction(),
                                             reportedCaughtException);
     }
+
     public static InformationViewExceptionBase buildNoMatchingEntityException(InstanceProperties matchingProperties,
                                                                               Throwable reportedCaughtException,
                                                                               String reportingClassName) {
         return new NoMatchingEntityException(InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getHttpErrorCode(),
                                             reportingClassName,
                                             InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getFormattedErrorMessage(matchingProperties.toString()),
+                                            InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getSystemAction(),
+                                            InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getUserAction(),
+                                            reportedCaughtException);
+    }
+
+
+    public static InformationViewExceptionBase buildUpdateEntityException(String entityGuid,
+                                                                          Throwable reportedCaughtException,
+                                                                          String reportingClassName) {
+        return new NoMatchingEntityException(InformationViewErrorCode.UPDATE_ENTITY_EXCEPTION.getHttpErrorCode(),
+                                            reportingClassName,
+                                            InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getFormattedErrorMessage(entityGuid,reportedCaughtException.getMessage()),
                                             InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getSystemAction(),
                                             InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getUserAction(),
                                             reportedCaughtException);
