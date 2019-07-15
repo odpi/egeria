@@ -49,7 +49,7 @@ services:
             #      nocopy: true
 
     notebook:
-        image: 'jupyter/minimal-notebook:latest'
+        image: 'jupyter/base-notebook:latest'
         environment:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
