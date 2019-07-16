@@ -26,7 +26,7 @@ class UserOptions extends PolymerElement {
           background-color: #DDD;
         }
       </style>
-        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users" token="[[token]]" auto></token-ajax>
+        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users/current" token="[[token]]" auto></token-ajax>
         <element style="float: right">
             <paper-menu-button
                 horizontal-align="right"
