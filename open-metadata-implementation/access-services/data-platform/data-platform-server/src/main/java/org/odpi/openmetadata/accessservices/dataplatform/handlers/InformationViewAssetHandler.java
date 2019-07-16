@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.views;
+package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.beans.InformationViewAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -20,10 +20,10 @@ import java.util.concurrent.Callable;
 public class InformationViewAssetHandler implements Callable<InformationViewAsset> {
 
 
-    private DataPlatformEvent event;
+    private NewViewEvent event;
     private OMEntityDao omEntityDao;
 
-    public InformationViewAssetHandler(DataPlatformEvent event, OMEntityDao omEntityDao) {
+    public InformationViewAssetHandler(NewViewEvent event, OMEntityDao omEntityDao) {
         this.event = event;
         this.omEntityDao = omEntityDao;
     }

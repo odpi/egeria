@@ -61,6 +61,10 @@ public enum DataPlatformErrorCode
             "The enumeration value passed on the {0} parameter of the {1} operation is null",
             "The system is unable to process the request without this enumeration value.",
             "Correct the code in the caller to provide the name."),
+    BAD_CONFIG(400,"OMAS-DATA-PLATFORM-400-011 ",
+            "The Data Platform Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+            "The access service has not been passed valid configuration.",
+            "Correct the configuration and restart the service."),
     SERVER_NOT_AVAILABLE(404, "OMAS-DATA-PLATFORM-404-001 ",
             "The OMAS Service {0} is not available",
             "The system is unable to connect to the OMAS Server.",
@@ -90,7 +94,7 @@ public enum DataPlatformErrorCode
     SERVICE_NOT_INITIALIZED(503, "OMAS-DATA-PLATFORM-503-003 ",
             "The access service has not been initialized and can not support REST API call {0}",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
-            "If the server is supposed to have this access service activated, correct the server configuration and restart the server.")
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
     ;
 
 
