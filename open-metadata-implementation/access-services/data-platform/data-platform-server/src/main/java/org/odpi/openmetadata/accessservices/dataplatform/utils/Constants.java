@@ -36,7 +36,6 @@ public class Constants {
     public static final String IS_UNIQUE = "isUnique";
     public static final String QUERY = "query";
     public static final String FORMULA = "formula";
-    public static final String INFO_VIEW_PREFIX = "iv_";
     public static final String INFORMATION_VIEW = "InformationView";
     public static final String TYPE_SUFFIX = "_type";
     public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";
@@ -51,7 +50,6 @@ public class Constants {
     public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
-    public static final String GAIAN_DB_NODE_NAME = "GDName";
     public static final String USER_ID = "dataPlatformOmas";
     public static final String CONNECTOR_TYPE = "ConnectorType";
     public static final String DEPLOYED_DATABASE_SCHEMA = "DeployedDatabaseSchema";
@@ -61,9 +59,16 @@ public class Constants {
     public static final String DATABASE_SERVER = "DatabaseServer";
     public static final String SERVER_ENDPOINT = "ServerEndpoint";
     public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareServerCapability";
+    public static final String SOFTWARE_SERVER_CAPABILITY_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
     public static final String ENGINE = "Engine";
     public static final String ID = "id";
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
     public static final int START_FROM = 0;
     public static final Integer PAGE_SIZE = 100;
+    public static final String PATCH_LEVEL = "patchLevel";
+    public static final String VERSION = "version";
+    public static final String TYPE = "type";
+    public static final String SOURCE = "source";
+    public static final String GUID = "guid";
+    public static final String DATA_PLATFORM_USER_ID = "dataPlatformOmas";
 }

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformE
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -31,8 +32,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DataPlatformAdmin extends AccessServiceAdmin
-{
+public class DataPlatformAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAdmin.class);
     private OpenMetadataTopicConnector dataPlatformInTopicConnector;
@@ -65,23 +65,53 @@ public class DataPlatformAdmin extends AccessServiceAdmin
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
 
+        try {
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
 
-        this.auditLog = auditLog;
+            this.auditLog = auditLog;
 
-        if (enterpriseConnector != null) {
-            serverName = enterpriseConnector.getServerName();
-        }
-        String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
-        String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        dataPlatformInTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
-        dataPlatformOutTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            if (enterpriseConnector != null) {
+                serverName = enterpriseConnector.getServerName();
+            }
 
-        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
-        EventPublisher eventPublisher = null;
+            this.instance = new DataPlatformServicesInstance(enterpriseConnector, supportedZones, auditLog);
 
-        if (enterpriseOMRSTopicConnector != null) {
-            auditCode = DataPlatformAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+            String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
+            String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            dataPlatformInTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
+            dataPlatformOutTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+
+
+            OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
+            EventPublisher eventPublisher = null;
+
+            if (enterpriseOMRSTopicConnector != null) {
+                auditCode = DataPlatformAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+                auditLog.logRecord(actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(serverName),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+
+                eventPublisher = new EventPublisher(dataPlatformOutTopicConnector, auditLog);
+                DataPlatformEnterpriseOmrsEventListener dataPlatformEnterpriseOmrsEventListener = new DataPlatformEnterpriseOmrsEventListener(eventPublisher, auditLog);
+                enterpriseOMRSTopicConnector.registerListener(dataPlatformEnterpriseOmrsEventListener);
+            }
+
+
+            if (dataPlatformInTopicConnector != null) {
+                OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+                this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
+                startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
+            }
+
+            if (dataPlatformOutTopicConnector != null) {
+                startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_OUT_TOPIC, actionDescription, outTopicName, dataPlatformOutTopicConnector);
+            }
+
+            auditCode = DataPlatformAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
@@ -90,31 +120,20 @@ public class DataPlatformAdmin extends AccessServiceAdmin
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            eventPublisher = new EventPublisher(dataPlatformOutTopicConnector, auditLog);
-            DataPlatformEnterpriseOmrsEventListener dataPlatformEnterpriseOmrsEventListener = new DataPlatformEnterpriseOmrsEventListener(eventPublisher, auditLog);
-            enterpriseOMRSTopicConnector.registerListener(dataPlatformEnterpriseOmrsEventListener);
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
+        } catch (Throwable error) {
+            auditCode = DataPlatformAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
-
-
-        if (dataPlatformInTopicConnector != null) {
-            OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
-            this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
-            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
-        }
-
-        if (dataPlatformOutTopicConnector != null) {
-            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_OUT_TOPIC, actionDescription, outTopicName, dataPlatformOutTopicConnector);
-        }
-
-        auditCode = DataPlatformAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
     }
+
 
     private void startConnector(DataPlatformAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
 
