@@ -1,0 +1,102 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project
+
+# To run
+#   * Ensure Docker is installed
+#   * Start the tutorial stack using
+#     'docker-compose -f ./egeria-tutorial.yaml up'
+#   * starts 3 egeria serves, kafka, zookeeper & jupyter notebook
+#   * Go to notebook at http://localhost:18888
+#
+# See the following link for more info on volumes & why we need to use root:
+#   https://docs.bitnami.com/containers/how-to/work-with-non-root-containers/
+
+version: '3.7'
+
+services:
+
+    zookeeper:
+        image: 'bitnami/zookeeper:latest'
+        environment:
+            - ALLOW_ANONYMOUS_LOGIN=yes
+        ports:
+            - '12181:2181'
+        networks:
+            - egerianet
+
+    kafka:
+        depends_on:
+            - zookeeper
+        links:
+            - zookeeper
+        image: 'bitnami/kafka:latest'
+        environment:
+            - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+            - ALLOW_PLAINTEXT_LISTENER=yes
+        ports:
+            - '19092:9092'
+        networks:
+            - egerianet
+
+    notebook:
+        image: 'jupyter/base-notebook:latest'
+        environment:
+            - GRANT_SUDO=yes
+            - CHOWN_HOME=yes
+            - JUPYTER_ENABLE_LAB=yes
+        command: start.sh jupyter lab --LabApp.token=''
+        ports:
+            - '18888:8888'
+        links:
+            - zookeeper
+            - kafka
+            - egeriacore
+            - egeriadev
+            - egeriadl
+        depends_on:
+            - egeriacore
+            - egeriadev
+            - egeriadl
+        networks:
+            - egerianet
+
+    egeriacore:
+        depends_on:
+            - kafka
+        image: 'odpi/egeria:latest'
+        ports:
+            - '18080:8080'
+        links:
+            - zookeeper
+            - kafka
+        networks:
+            egerianet:
+                aliases:
+                    - egeria
+
+    egeriadev:
+        depends_on:
+            - kafka
+        image: 'odpi/egeria:latest'
+        ports:
+            - '18081:8080'
+        links:
+            - zookeeper
+            - kafka
+        networks:
+            - egerianet
+
+    egeriadl:
+        depends_on:
+            - kafka
+        image: 'odpi/egeria:latest'
+        ports:
+            - '18082:8080'
+        links:
+            - zookeeper
+        networks:
+            - egerianet
+
+networks:
+    egerianet:

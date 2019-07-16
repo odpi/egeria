@@ -1,6 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.events;
+
+package org.odpi.openmetadata.accessservices.dataplatform.properties;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,10 +14,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryCategory {
+public class DatabaseSource extends Source {
 
     private String name;
-    private GlossaryCategory parentCategory;
+    private EndpointSource endpointSource;
 
     public String getName() {
         return name;
@@ -25,19 +27,20 @@ public class GlossaryCategory {
         this.name = name;
     }
 
-    public GlossaryCategory getParentCategory() {
-        return parentCategory;
+    public EndpointSource getEndpointSource() {
+        return endpointSource;
     }
 
-    public void setParentCategory(GlossaryCategory parentCategory) {
-        this.parentCategory = parentCategory;
+    public void setEndpointSource(EndpointSource endpointSource) {
+        this.endpointSource = endpointSource;
     }
+
 
     @Override
     public String toString() {
-        return "GlossaryCategory{" +
+        return "{" +
                 "name='" + name + '\'' +
-                ", parentCategory=" + parentCategory +
+                ", endpointSource=" + endpointSource +
                 '}';
     }
 }

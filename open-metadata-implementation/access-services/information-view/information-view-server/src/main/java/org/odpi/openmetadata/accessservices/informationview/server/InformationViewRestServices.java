@@ -28,7 +28,6 @@ import org.odpi.openmetadata.accessservices.informationview.responses.TableColum
 import org.odpi.openmetadata.accessservices.informationview.responses.TableContextResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +57,7 @@ public class InformationViewRestServices {
 
         try {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
-            reportCreator.submitReportModel(requestBody);
+            reportCreator.submitReportModel(userId, requestBody);
         }
         catch (InformationViewExceptionBase e) {
             log.error(e.getMessage(), e);
@@ -83,7 +82,7 @@ public class InformationViewRestServices {
 
         try {
             DataViewHandler dataViewHandler = instanceHandler.getDataViewHandler(serverName);
-            dataViewHandler.createDataView(requestBody);
+            dataViewHandler.createDataView(userId, requestBody);
         }
         catch (InformationViewExceptionBase e) {
              log.error(e.getMessage(), e);

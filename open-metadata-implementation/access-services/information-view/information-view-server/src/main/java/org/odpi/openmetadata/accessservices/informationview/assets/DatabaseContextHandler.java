@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.assets;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
@@ -12,30 +13,22 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IncorrectModelException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IncorrectTypeException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
-import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class DatabaseContextHandler {
 
@@ -56,14 +49,8 @@ public class DatabaseContextHandler {
 
     public List<DatabaseSource> getDatabases(int startFrom, int pageSize) {
         InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
-        try {
             List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, startFrom, pageSize);
             return buildDatabaseContext(entities);
-        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
-            throw new RetrieveEntityException(DatabaseContextHandler.class.getName(),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getFormattedErrorMessage("type", Constants.DATABASE, e.getMessage()), InformationViewErrorCode.GET_ENTITY_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.GET_ENTITY_EXCEPTION.getUserAction(), e);
-        }
     }
 
     public List<TableSource> getTables(String databaseGuid, int startFrom, int pageSize) {
@@ -82,14 +69,11 @@ public class DatabaseContextHandler {
     }
 
     private List<DatabaseSource> buildDatabaseContext(List<EntityDetail> entities) {
-        List<DatabaseSource> databaseSources = new ArrayList<>();
-        if (entities != null && !entities.isEmpty()) {
-            for (EntityDetail entityDetail : entities) {
-                List<TableContextEvent> contexts;
-                contexts = columnContextBuilder.getDatabaseContext(entityDetail.getGUID());
-                databaseSources.add(contexts.get(0).getTableSource().getDatabaseSource());
-            }
-        }
+        List<DatabaseSource> databaseSources = Optional.ofNullable(entities).map(Collection::stream)
+                                                         .orElseGet(Stream::empty)
+                                                         .map(e -> { List<TableContextEvent> contexts = columnContextBuilder.getDatabaseContext(e.getGUID());
+                                                                        return contexts.get(0).getTableSource().getDatabaseSource();})
+                                                         .collect(Collectors.toList());
         return databaseSources;
     }
 
@@ -110,15 +94,10 @@ public class DatabaseContextHandler {
     }
 
     private EntityDetail getEntity(String guid, String typeName) {
-        EntityDetail entityDetail;
-        try {
-            entityDetail = omEntityDao.getEntityByGuid(guid);
-        } catch (EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | InvalidParameterException | RepositoryErrorException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), e);
-        }
+        EntityDetail entityDetail = omEntityDao.getEntityByGuid(guid);
         if (entityDetail == null)
             throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
-        if(!repositoryHelper.isTypeOf("getEntity", entityDetail.getType().getTypeDefName(), typeName)){
+        if(!repositoryHelper.isTypeOf("lookupEntityByGuid", entityDetail.getType().getTypeDefName(), typeName)){
             throw new IncorrectTypeException(InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getFormattedErrorMessage(Constants.GUID,  guid, typeName), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getSystemAction(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getUserAction(), null);
         }
         return entityDetail;

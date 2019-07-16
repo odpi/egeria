@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.handlers;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Path;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
@@ -19,10 +19,9 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
-import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 
 public class QueryHandler {
@@ -32,7 +31,7 @@ public class QueryHandler {
     public String getInitialGraph(String lineageQuery, String graphString, String guid) {
 
         String response = "";
-        JanusGraph graph = getJanusGraph(graphString);
+        Graph graph = getJanusGraph(graphString);
         switch (Graphs.valueOf(lineageQuery)) {
             case ultimatesource:
                 response = ultimateSource(guid, graph);
@@ -46,32 +45,23 @@ public class QueryHandler {
         return response;
     }
 
-    private String ultimateSource(String guid, JanusGraph graph) {
-        String response;
-
+    private String ultimateSource(String guid, Graph graph) {
         GraphTraversalSource g = graph.traversal();
-        List<Vertex> vertexList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).until(inE("ETL").count().is(0)).repeat(inE("ETL").outV()).toList();
-        List<Path> pathList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).until(inE("ETL").count().is(0)).repeat(inE("ETL").outV()).path().toList();
-
-        GraphTraversal<Vertex, Object> subGraph = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+        Graph subGraph = (Graph) g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE("ETL").count().is(0)).
                 repeat(inE("ETL").subgraph("subGraph").outV()).
-                cap("subGraph").iterate();
-
-        for (Vertex vertex : vertexList)
-            System.out.println(vertex.value(PROPERTY_KEY_ENTITY_GUID).toString());
-//
-//                for(int i = 0; i < pathList.size(); i++)
-//                    pathList.get(0).sub
-
-        response = "Ultimate source is not yet supported.";
-        return response;
+                cap("subGraph").next();
+        return janusGraphToGraphson(subGraph);
     }
 
-    private String ultimateDestination(String guid, JanusGraph graph) {
-        String response;
-        response = "Ultimate destination is not yet supported.";
-        return response;
+    private String ultimateDestination(String guid, Graph graph) {
+        GraphTraversalSource g = graph.traversal();
+        Graph subGraph = (Graph) g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+                until(outE("ETL").count().is(0)).
+                repeat(outE("ETL").subgraph("subGraph").inV()).
+                cap("subGraph").next();
+
+        return janusGraphToGraphson(subGraph);
     }
 
     public void dumpGraph(String graphString) {
@@ -85,10 +75,10 @@ public class QueryHandler {
 
     public String exportGraph(String graphString) {
         JanusGraph graph = getJanusGraph(graphString);
-        return toGraphson(graph);
+        return janusGraphToGraphson(graph);
     }
 
-    private String toGraphson(JanusGraph graph) {
+    private String janusGraphToGraphson(Graph graph) {
         OutputStream out = new ByteArrayOutputStream();
         GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
         GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).create();
