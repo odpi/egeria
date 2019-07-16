@@ -8,12 +8,11 @@ import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-input/paper-input-behavior.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
+
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import './shared-styles.js';
 import './form-feedback.js';
-
 
 class LoginView extends PolymerElement {
     static get template() {
@@ -59,9 +58,11 @@ class LoginView extends PolymerElement {
         }
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
+
       <p>
           <img class="logo" src="images/Logo_transparent.png"/>
       </p>
+       
        <div class="container6">
               <paper-material  class="login">
                  <iron-form id="form">
@@ -74,17 +75,18 @@ class LoginView extends PolymerElement {
                                      type="password" ></paper-input>
                                      
                         <form-feedback message="{{feedback}}" level="{{feedbackLevel}}"></form-feedback>
-                        <element style="float: right">
+                        <div style="float: right">
                             <paper-button id="login-button" on-tap="_logIn" raised>Login</paper-button>
-                        </element>
+                        </div>
                         <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
                     </form>
                 </iron-form>   
                </paper-material>
        </div>
-       
+
     `;
     }
+
     static get properties() {
         return {
             token: {
