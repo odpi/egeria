@@ -8,14 +8,6 @@ import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColum
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,14 +36,7 @@ public class LookupHelper {
         columnLookup = new ColumnLookup(enterpriseConnector, omEntityDao, tableLookup, auditLog);
     }
 
-    public EntityDetail lookupDatabaseColumn(DatabaseColumnSource source) throws EntityNotKnownException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 FunctionNotSupportedException,
-                                                                                 InvalidParameterException,
-                                                                                 RepositoryErrorException,
-                                                                                 PropertyErrorException,
-                                                                                 TypeErrorException,
-                                                                                 PagingErrorException {
+    public EntityDetail lookupDatabaseColumn(DatabaseColumnSource source) {
         if(log.isDebugEnabled()) {
             log.debug(MessageFormat.format("lookup database column {0}", source));
         }
