@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Map;
 
@@ -19,11 +20,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DeployedReport {
 
     private String guid;
-
+    private String qualifiedName;
     private List<Source> sources;
+    @NotBlank
     private String id;
     private Long createdTime;
     private String author;
+    @NotBlank
     private String reportName;
     private String reportUrl;
     private String lastModifier;
@@ -31,6 +34,22 @@ public class DeployedReport {
     private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
 
+
+    /**
+     *
+     * @return qualifiedName of the report
+     */
+    public String getQualifiedName() {
+        return qualifiedName;
+    }
+
+    /**
+     *
+     * @param qualifiedName value of property qualified name
+     */
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
+    }
 
     /**
      *
@@ -214,6 +233,7 @@ public class DeployedReport {
     public String toString() {
         return "{" +
                 "guid='" + guid + '\'' +
+                ", qualifiedName='" + qualifiedName + '\'' +
                 ", sources=" + sources +
                 ", id='" + id + '\'' +
                 ", createdTime=" + createdTime +

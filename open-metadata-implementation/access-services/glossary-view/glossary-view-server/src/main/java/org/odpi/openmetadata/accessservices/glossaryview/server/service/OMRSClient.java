@@ -20,7 +20,7 @@ import java.util.Optional;
  */
 public class OMRSClient {
 
-    protected GlossaryViewInstanceHandler instanceHandler = new GlossaryViewInstanceHandler();
+    private GlossaryViewInstanceHandler instanceHandler = new GlossaryViewInstanceHandler();
 
     /**
      * Extract an entity detail for the given GUID
@@ -117,10 +117,11 @@ public class OMRSClient {
      * @return optional with helper if found
      *         empty optional if not found
      */
-    protected Optional<OMRSRepositoryHelper> getOMRSRepositoryHelper(String userId, String serverName){
+    protected Optional<OMRSRepositoryHelper> getOMRSRepositoryHelper(String userId, String serverName, String serviceOperationName){
         Optional<OMRSRepositoryHelper> helper = Optional.empty();
         try {
-            helper = Optional.ofNullable(instanceHandler.getRepositoryConnector(userId, serverName, serverName).getRepositoryHelper());
+            helper = Optional.ofNullable(instanceHandler.getRepositoryConnector(userId, serverName, serviceOperationName)
+                    .getRepositoryHelper());
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             return helper;
         }
