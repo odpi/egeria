@@ -35,7 +35,7 @@ public class MockGraphGenerator {
 
     private void setProperties() {
 
-        this.numberGlossaryTerms = 3;
+        this.numberGlossaryTerms = 20;
         this.numberFlows = 1;
         this.processesPerFlow = 2;
         this.columnsPerTable = 3;
@@ -73,21 +73,24 @@ public class MockGraphGenerator {
 
         GraphTraversalSource g = mockGraph.traversal();
 
-        for (int i = 0; i < numberGlossaryTerms; i++)
-            glossaryNodes.add(g.addV("Glossary term").next());
-
+        for (int i = 0; i < numberGlossaryTerms; i++) {
+            Vertex glossaryVertex = g.addV("Glossary Term").next();
+            glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
+            glossaryNodes.add(glossaryVertex);
+        }
         List<Vertex> processNodes = new ArrayList<>();
-        for (int i = 0; i < numberProcesses; i++)
-            processNodes.add(g.addV("Process").next());
-
+        for (int i = 0; i < numberProcesses; i++) {
+            Vertex processVertex = g.addV("Process").next();
+            processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+            processNodes.add(processVertex);
+        }
         for (int j = 0; j < numberTables; j++) {
             Vertex tableVertex = g.addV("Table").next();
-            tableVertex.property("qualifiedName", "Qualified Name " + j);
+            tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
             columnNodes = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV("Column").next();
-                columnVertex.property("qualifiedName", "Qualified Name " + i);
-                columnVertex.property(PROPERTY_KEY_ENTITY_GUID, j + i);
+                columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
                 tableVertex.addEdge("Included in", columnVertex);
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
