@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DataViewReque
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.DataViewCreationException;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
@@ -41,20 +42,22 @@ public class DataViewHandler {
     private DataViewUpdater dataViewUpdater;
 
 
-    public DataViewHandler(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+    public DataViewHandler(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.omEntityDao = omEntityDao;
-        dataViewCreator = new DataViewCreator(omEntityDao, helper, auditLog);
-        dataViewUpdater = new DataViewUpdater(omEntityDao, helper, auditLog);
+        dataViewCreator = new DataViewCreator(omEntityDao,lookupHelper, helper, auditLog);
+        dataViewUpdater = new DataViewUpdater(omEntityDao, lookupHelper, helper, auditLog);
         this.auditLog = auditLog;
     }
 
 
     /**
      *
+     *
+     * @param userId
      * @param requestBody - json describing the data view
      * @throws DataViewCreationException
      */
-    public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
+    public void createDataView(String userId, DataViewRequestBody requestBody) throws DataViewCreationException {
 
         log.debug("Creating data view based on payload {}", requestBody);
         SoftwareServerCapabilitySource softwareServerCapabilitySource = dataViewCreator.retrieveSoftwareServerCapability(requestBody.getRegistrationGuid(), requestBody.getRegistrationQualifiedName());
@@ -75,15 +78,18 @@ public class DataViewHandler {
                     .build();
 
 
-            OMEntityWrapper dataViewWrapper = omEntityDao.saveEntityReferenceCopy(requestBody.getRegistrationGuid(),
+            OMEntityWrapper dataViewWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
                                                                                 Constants.INFORMATION_VIEW,
                                                                                 qualifiedNameForDataView,
+                                                                                requestBody.getRegistrationGuid(),
+                                                                                requestBody.getRegistrationQualifiedName(),
                                                                                 dataViewProperties,
+                                                                                null,
                                                                                 true,
-                                                                                true);
+                                                                    true);
 
 
-            dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
+            dataViewCreator.createDataView(userId, requestBody, dataViewWrapper.getEntityDetail());
 
 //            if (dataViewWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
 //                dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
@@ -92,7 +98,7 @@ public class DataViewHandler {
 //            } TODO update not implemented yet
 
 
-        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException |InvalidEntityException | EntityConflictException | HomeEntityException e) {
+        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException  e) {
             throw new DataViewCreationException(InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getHttpErrorCode(),
                                                DataViewHandler.class.getName(),
                                                InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.getDataView().toString(), e.getMessage()),

@@ -102,7 +102,7 @@ public class InformationViewAdmin extends AccessServiceAdmin {
         }
 
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
-        DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
+        DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
         ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
         RegistrationHandler registrationHandler = new RegistrationHandler(omEntityDao, enterpriseConnector, auditLog);
         ContextBuilders contextBuilders = new ContextBuilders(enterpriseConnector, omEntityDao, auditLog);
