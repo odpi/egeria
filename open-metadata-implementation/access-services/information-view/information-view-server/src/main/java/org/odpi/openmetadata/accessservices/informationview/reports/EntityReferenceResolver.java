@@ -15,19 +15,12 @@ import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupStrategy;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveEntityException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildRetrieveEntityException;
 
 public class EntityReferenceResolver {
 
@@ -57,38 +50,19 @@ public class EntityReferenceResolver {
      *
      * @param source - object used to describe the source of the report column
      * @return
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
      */
-    public String getSourceGuid(Source source)  {
+    public String resolveSourceGuid(Source source)  {
         if (source == null)
             return null;
         if (!StringUtils.isEmpty(source.getGuid())) {
             return source.getGuid();
         }
-        String sourceName = source.getClass().getName();
         if (!StringUtils.isEmpty(source.getQualifiedName())) {
-            EntityDetail entity = null;
-            try {
-                entity = omEntityDao.getEntity(sourceName, source.getQualifiedName(), false);
-            } catch (PagingErrorException | UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException e) {
-                throwRetrieveEntityException(Constants.QUALIFIED_NAME, source.getQualifiedName(), e, EntityReferenceResolver.class.getName());
-            }
-            return entity.getGUID();
+            return omEntityDao.getEntity(source.getClass().getName(), source.getQualifiedName(), false).getGUID();
         }
-        LookupStrategy strategy = strategies.get(sourceName);
+        LookupStrategy strategy = strategies.get(source.getClass().getName());
         if (strategy != null) {
-            EntityDetail entity = null;
-            try {
-                entity = strategy.lookup(source);
-            } catch (UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-                throwRetrieveEntityException(Constants.SOURCE, source.toString(), e, EntityReferenceResolver.class.getName());
-            }
+            EntityDetail entity = strategy.lookup(source);
             if (entity != null)
                 return entity.getGUID();
         }
@@ -100,33 +74,19 @@ public class EntityReferenceResolver {
      *
      * @param businessTerm - object describing the business term
      * @return
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
      */
-    public String getBusinessTermGuid(BusinessTerm businessTerm) throws UserNotAuthorizedException,
-                                                                        FunctionNotSupportedException,
-                                                                        InvalidParameterException,
-                                                                        RepositoryErrorException,
-                                                                        PropertyErrorException,
-                                                                        TypeErrorException,
-                                                                        PagingErrorException {
+    public String getBusinessTermGuid(BusinessTerm businessTerm)  {
         if (businessTerm == null)
             return null;
         if (!StringUtils.isEmpty(businessTerm.getGuid())) {
             return businessTerm.getGuid();
         }
-
         if (!StringUtils.isEmpty(businessTerm.getQualifiedName())) {
             EntityDetail entity = omEntityDao.getEntity(Constants.BUSINESS_TERM, businessTerm.getQualifiedName(),
                     false);
             return entity.getGUID();
         }
-        return null;
+        throw buildRetrieveEntityException(Constants.GUID, businessTerm.getGuid(), null, this.getClass().getName());
     }
 
 
