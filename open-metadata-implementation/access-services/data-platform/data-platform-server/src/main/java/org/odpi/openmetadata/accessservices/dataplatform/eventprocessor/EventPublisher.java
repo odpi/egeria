@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.eventprocessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -343,15 +344,16 @@ public class EventPublisher  extends OMRSInstanceEventProcessor  {
 
         } catch (Throwable error) {
             log.error("Exception publishing event", error);
-            DataPlatformAuditCode auditCode = DataPlatformAuditCode.PUBLISH_EVENT_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PUBLISH_EVENT_EXCEPTION;
 
-            auditLog.logException(actionDescription,
-                    auditCode.getLogMessageId(),
+            auditLog.logException(
+                    actionDescription,
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedLogMessage(event.getClass().getName(), error.getMessage()),
+                    errorCode.getFormattedErrorMessage(event.getClass().getName(), error.getMessage()),
                     "event {" + event.toString() + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     error);
 
         }

@@ -24,7 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GUIDResponse.class, name = "GUIDResponse"),
-                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
+                @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
+                @JsonSubTypes.Type(value = RegistrationRequestBody.class, name = "dataPlatform"),
         })
 public abstract class DataPlatformOMASAPIResponse implements java.io.Serializable
 {
