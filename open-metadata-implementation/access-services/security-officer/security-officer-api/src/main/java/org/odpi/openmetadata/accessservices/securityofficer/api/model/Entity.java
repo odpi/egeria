@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -24,6 +26,14 @@ public class Entity implements Serializable {
     private String guid;
     private String status;
     private Map<String, String> properties;
+
+    private String createdBy;
+    private String updatedBy;
+    private Date createdTime;
+    private Date updatedTime;
+    private String type;
+    private String assetGuid;
+    private List<Classification> classifications;
 
     public String getGuid() {
         return guid;
@@ -47,5 +57,76 @@ public class Entity implements Serializable {
 
     public void setProperties(Map<String, String> properties) {
         this.properties = properties;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getUpdatedBy() {
+        return updatedBy;
+    }
+
+    public void setUpdatedBy(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getAssetGuid() {
+        return assetGuid;
+    }
+
+    public void setAssetGuid(String assetGuid) {
+        this.assetGuid = assetGuid;
+    }
+
+    public List<Classification> getClassifications() {
+        return classifications;
+    }
+
+    public void setClassifications(List<Classification> classifications) {
+        this.classifications = classifications;
+    }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "guid='" + guid + '\'' +
+                ", status='" + status + '\'' +
+                ", properties=" + properties +
+                ", createdBy='" + createdBy + '\'' +
+                ", updatedBy='" + updatedBy + '\'' +
+                ", createdTime=" + createdTime +
+                ", updatedTime=" + updatedTime +
+                ", type='" + type + '\'' +
+                ", assetGuid='" + assetGuid + '\'' +
+                '}';
     }
 }

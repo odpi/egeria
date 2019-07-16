@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.model.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecuritySchemaElement;
 
 import java.io.Serializable;
 import java.util.List;
@@ -21,13 +21,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SecurityOfficerSchemaElementListResponse extends SecurityOfficerOMASAPIResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private List<SchemaElementEntity> schemaElementEntityList;
+    private List<SecuritySchemaElement> schemaElementEntityList;
 
-    public List<SchemaElementEntity> getSchemaElementEntityList() {
+    public List<SecuritySchemaElement> getSchemaElementEntityList() {
         return schemaElementEntityList;
     }
 
-    public void setSchemaElementEntityList(List<SchemaElementEntity> schemaElementEntityList) {
+    public void setSchemaElementEntityList(List<SecuritySchemaElement> schemaElementEntityList) {
         this.schemaElementEntityList = schemaElementEntityList;
     }
 }

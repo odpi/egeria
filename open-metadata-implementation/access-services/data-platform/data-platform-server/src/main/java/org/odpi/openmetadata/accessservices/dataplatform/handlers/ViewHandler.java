@@ -1,15 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.views;
+package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.DerivedColumn;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
+import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -28,12 +29,11 @@ public class ViewHandler implements Callable<View> {
 
 
     private static final Logger log = LoggerFactory.getLogger(ViewHandler.class);
-    private View view;
-    private DataPlatformEvent event;
+    private NewViewEvent event;
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
 
-    public ViewHandler(DataPlatformEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
+    public ViewHandler(NewViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
         this.event = event;
         this.omEntityDao = omEntityDao;
         this.helper = helper;
@@ -111,7 +111,7 @@ public class ViewHandler implements Callable<View> {
     }
 
 
-    private void deleteView(DataPlatformEvent event) throws UserNotAuthorizedException,
+    private void deleteView(NewViewEvent event) throws UserNotAuthorizedException,
             EntityNotKnownException,
             EntityNotDeletedException,
             InvalidParameterException,
@@ -186,8 +186,9 @@ public class ViewHandler implements Callable<View> {
             addRelationship(tableTypeEntity.getGUID(), derivedColumnEntity.getGUID(), Constants.ATTRIBUTE_FOR_SCHEMA);
             addRelationship(derivedColumnEntity.getGUID(), derivedColumn.getSourceColumn().getGuid(), Constants.SCHEMA_QUERY_IMPLEMENTATION);
             addRelationship(derivedColumnEntity.getGUID(), columnTypeEntity.getGUID(), Constants.SCHEMA_ATTRIBUTE_TYPE);
-            addRelationship(derivedColumnEntity.getGUID(), derivedColumn.getSourceColumn().getBusinessTerm().getGuid(), Constants.SEMANTIC_ASSIGNMENT);
-
+            for(BusinessTerm businessTerm : derivedColumn.getSourceColumn().getBusinessTerms()){
+                addRelationship(derivedColumnEntity.getGUID(), businessTerm.getGuid(), Constants.SEMANTIC_ASSIGNMENT);
+            }
             return derivedColumnEntity;
 
         } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException e) {

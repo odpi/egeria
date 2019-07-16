@@ -3128,7 +3128,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if ((entityOneDetail != null ) && (entityTwoDetail != null))
             {
                 EntityProxy entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
-                EntityProxy entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
+                EntityProxy entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
 
                 repositoryValidator.validateRelationshipEnds(repositoryName,
                                                              entityOneProxy,
