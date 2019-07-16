@@ -87,6 +87,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
