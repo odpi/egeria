@@ -6,6 +6,7 @@ package org.odpi.openmetadata.platformservices.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
@@ -26,6 +27,141 @@ public class OMAGServerPlatformActiveServices
     private OMAGServerPlatformInstanceMap serverInstanceMap = new OMAGServerPlatformInstanceMap();
 
     private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
+
+
+    /**
+     * Return the list of access services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a metadata server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    public RegisteredOMAGServicesResponse getRegisteredAccessServices(String userId)
+    {
+        final String methodName = "getRegisteredAccessServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            response.setServices(serverInstanceMap.getRegisteredAccessServices(userId));
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureThrowable(response, error, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of governance services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a governance server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(String userId)
+    {
+        final String methodName = "getRegisteredGovernanceServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            response.setServices(serverInstanceMap.getRegisteredGovernanceServices(userId));
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureThrowable(response, error, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of common services that are registered (supported) in this OMAG Server Platform.
+     * These services are use in all types of servers.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    public RegisteredOMAGServicesResponse getRegisteredCommonServices(String userId)
+    {
+        final String methodName = "getRegisteredCommonServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            response.setServices(serverInstanceMap.getRegisteredCommonServices(userId));
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureThrowable(response, error, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of all services that are registered (supported) in this OMAG Server Platform.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    public RegisteredOMAGServicesResponse getAllRegisteredServices(String userId)
+    {
+        final String methodName = "getAllRegisteredServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            response.setServices(serverInstanceMap.getAllRegisteredServices(userId));
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            exceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureThrowable(response, error, methodName);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
 
 
     /**
