@@ -5,7 +5,6 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 import java.util.Objects;
 
@@ -24,7 +23,6 @@ public class SchemaAnalysisAnnotation extends Annotation
 {
     private String     schemaName = null;
     private String     schemaTypeName = null;
-    private SchemaType existingSchemaType = null;
 
 
     /**
@@ -49,7 +47,6 @@ public class SchemaAnalysisAnnotation extends Annotation
         {
             this.schemaName = template.getSchemaName();
             this.schemaTypeName = template.getSchemaTypeName();
-            this.existingSchemaType = template.getExistingSchemaType();
         }
     }
 
@@ -101,32 +98,6 @@ public class SchemaAnalysisAnnotation extends Annotation
 
 
     /**
-     * Return details of the existing schema that has been previously
-     * defined for this asset.  Null means there is no schema type
-     * currently defined.
-     *
-     * @return schema type bean
-     */
-    public SchemaType getExistingSchemaType()
-    {
-        return existingSchemaType;
-    }
-
-
-    /**
-     * Set up details of the existing schema that has been previously
-     * defined for this asset.  Null means there is no schema type
-     * currently defined.
-     *
-     * @param existingSchemaType schema type bean
-     */
-    public void setExistingSchemaType(SchemaType existingSchemaType)
-    {
-        this.existingSchemaType = existingSchemaType;
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -137,7 +108,6 @@ public class SchemaAnalysisAnnotation extends Annotation
         return "SchemaAnalysisAnnotation{" +
                 "schemaName='" + schemaName + '\'' +
                 ", schemaTypeName='" + schemaTypeName + '\'' +
-                ", existingSchemaType=" + existingSchemaType +
                 ", annotationType='" + getAnnotationType() + '\'' +
                 ", summary='" + getSummary() + '\'' +
                 ", confidenceLevel=" + getConfidenceLevel() +
@@ -147,7 +117,6 @@ public class SchemaAnalysisAnnotation extends Annotation
                 ", jsonProperties='" + getJsonProperties() + '\'' +
                 ", annotationStatus=" + getAnnotationStatus() +
                 ", numAttachedAnnotations=" + getNumAttachedAnnotations() +
-                ", reviewDate=" + getReviewDate() +
                 ", steward='" + getSteward() + '\'' +
                 ", reviewComment='" + getReviewComment() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
@@ -184,8 +153,7 @@ public class SchemaAnalysisAnnotation extends Annotation
         }
         SchemaAnalysisAnnotation that = (SchemaAnalysisAnnotation) objectToCompare;
         return Objects.equals(getSchemaName(), that.getSchemaName()) &&
-                Objects.equals(getSchemaTypeName(), that.getSchemaTypeName()) &&
-                Objects.equals(getExistingSchemaType(), that.getExistingSchemaType());
+                Objects.equals(getSchemaTypeName(), that.getSchemaTypeName());
     }
 
 
@@ -198,6 +166,6 @@ public class SchemaAnalysisAnnotation extends Annotation
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaTypeName(), getExistingSchemaType());
+        return Objects.hash(super.hashCode(), getSchemaName(), getSchemaTypeName());
     }
 }
