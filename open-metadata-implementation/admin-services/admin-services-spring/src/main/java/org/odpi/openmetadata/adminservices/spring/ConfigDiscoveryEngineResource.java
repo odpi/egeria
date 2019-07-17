@@ -19,7 +19,8 @@ public class ConfigDiscoveryEngineResource
     private OMAGServerConfigDiscoveryServer adminAPI = new OMAGServerConfigDiscoveryServer();
 
     /**
-     * Set up the root URL of the access service.
+     * Set up the root URL of the OMAG Server Platform where the metadata repository for
+     * the discovery engines is located.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -39,7 +40,7 @@ public class ConfigDiscoveryEngineResource
 
 
     /**
-     * Set up the server name of the access service.
+     * Set up the server name of the Discovery Engine OMAS.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -59,7 +60,7 @@ public class ConfigDiscoveryEngineResource
 
 
     /**
-     * Set up the server name of the access service.
+     * Set up the list of discovery engines that are to run in the discovery service.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
