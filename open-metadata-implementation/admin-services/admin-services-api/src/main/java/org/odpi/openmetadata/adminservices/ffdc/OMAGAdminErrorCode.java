@@ -48,6 +48,16 @@ public enum OMAGAdminErrorCode
             "The system is unable to configure the local server.",
             "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
+    ACCESS_SERVICE_NOT_RECOGNIZED(400, "OMAG-ADMIN-400-004 ",
+            "Unable to configure server {0} since access service {1} is not registered in this OMAG Server Platform",
+            "The system is unable to configure the local server.",
+            "Validate and correct the name of the access service URL marker."),
+
+    ACCESS_SERVICE_NOT_ENABLED(400, "OMAG-ADMIN-400-004 ",
+            "Unable to configure server {0} since access service {1} is not enabled in this OMAG Server Platform",
+            "The system is unable to configure the local server.",
+            "Validate and correct the name of the access service URL marker or enable the access service in this platform."),
+
     NULL_COHORT_NAME(400, "OMAG-ADMIN-400-006 ",
             "OMAG server {0} has been configured with a null cohort name",
             "The system is unable to configure the local server.",
