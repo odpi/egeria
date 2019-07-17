@@ -47,6 +47,12 @@ public enum DiscoveryEngineAuditCode
              "The Discovery Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    ASSET_AUDIT_LOG("OMAS-DISCOVERY-SERVER-0120",
+                    OMRSAuditLogRecordSeverity.INFO,
+                    "Log message for asset {0} from discovery service {1}: {2}",
+                    "A discovery service has logged a message about an asset.",
+                    "Review the message to ensure no action is required.")
     ;
 
     private String                     logMessageId;
