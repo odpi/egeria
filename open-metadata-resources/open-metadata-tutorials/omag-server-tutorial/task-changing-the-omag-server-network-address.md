@@ -77,11 +77,11 @@ $
 
 ```
 
-[Start the OMAG server platform again](task-starting-the-omag-server.md)
+[Start the OMAG server platform again](task-starting-omag-server.md)
 and issue the following REST call to check the server is running with the new server address.
 
 ```text
-$ curl -X GET http://localhost:8081/open-metadata/platform-services/users/test/server-platform-origin
+$ curl -X GET http://localhost:8081/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform
 $
 
