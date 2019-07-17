@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.utils.RegexEscapeUtil;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -173,6 +174,8 @@ public class PortHandler {
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException {
         final String methodName = "getPortEntityByQualifiedName";
+
+        qualifiedName = RegexEscapeUtil.escapeSpecialGraphRegexCharacters(qualifiedName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
