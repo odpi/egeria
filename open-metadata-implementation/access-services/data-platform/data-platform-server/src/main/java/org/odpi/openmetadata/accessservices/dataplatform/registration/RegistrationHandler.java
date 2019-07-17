@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.registration;
 
-import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.exceptions.RegistrationException;
-import org.odpi.openmetadata.accessservices.dataplatform.ffdc.exceptions.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
@@ -33,18 +31,20 @@ public class RegistrationHandler {
         this.invalidParameterHandler = invalidParameterHandler;
     }
 
+
     /**
      * Create software server capability entity.
      *
-     * @param registrationRequestBody the registration event
+     * @param softwareServerCapability the software server capability
      * @return the string
-     * @throws RegistrationException the registration exception
+     * @throws InvalidParameterException  the invalid parameter exception
+     * @throws UserNotAuthorizedException the user not authorized exception
+     * @throws PropertyServerException    the property server exception
      */
-    public String createSoftwareServerCapability(RegistrationRequestBody registrationRequestBody) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+    public String createSoftwareServerCapability(SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "createSoftwareServerCapability";
 
-        SoftwareServerCapability softwareServerCapability = registrationRequestBody.getSoftwareServerCapability();
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
 
         invalidParameterHandler.validateUserId(Constants.DATA_PLATFORM_USER_ID, methodName);
@@ -81,7 +81,6 @@ public class RegistrationHandler {
     public String getSoftwareServerCapabilityGuidByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
-
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, Constants.QUALIFIED_NAME, methodName);
