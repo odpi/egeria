@@ -8,16 +8,13 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
-public class DataPlatformOMASRegistration {
+class DataPlatformOMASRegistration {
 
 
-    public DataPlatformOMASRegistration() {
+    DataPlatformOMASRegistration() {
 
             AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
-            AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                    myDescription.getAccessServiceName(),
-                    myDescription.getAccessServiceDescription(),
-                    myDescription.getAccessServiceWiki(),
+            AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                     AccessServiceOperationalStatus.ENABLED,
                     DataPlatformAdmin.class.getName()
 

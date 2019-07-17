@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * GovernanceServersDescription provides a list of registered governance servers.
+ * GovernanceServicesDescription provides a list of registered governance servers.
  */
-public enum GovernanceServersDescription implements Serializable
+public enum GovernanceServicesDescription implements Serializable
 {
     DISCOVERY_ENGINE_SERVICES        (2000,
                                       "Discovery Engine Services",
@@ -67,18 +67,18 @@ public enum GovernanceServersDescription implements Serializable
      *
      * @return List of enums
      */
-    public static List<GovernanceServersDescription> getGovernanceServersDescriptionList()
+    public static List<GovernanceServicesDescription> getGovernanceServersDescriptionList()
     {
-        List<GovernanceServersDescription> serviceDescriptionList = new ArrayList<>();
+        List<GovernanceServicesDescription> serviceDescriptionList = new ArrayList<>();
 
-        serviceDescriptionList.add(GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.SECURITY_OFFICER_SERVICES);
-        serviceDescriptionList.add(GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES);
+        serviceDescriptionList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES);
 
         return serviceDescriptionList;
     }
@@ -93,11 +93,11 @@ public enum GovernanceServersDescription implements Serializable
      * @param serviceDescription short description for this access service
      * @param serviceWiki wiki page for the access service for this access service
      */
-    GovernanceServersDescription(int    serviceCode,
-                                 String serviceName,
-                                 String serviceURLMarker,
-                                 String serviceDescription,
-                                 String serviceWiki)
+    GovernanceServicesDescription(int    serviceCode,
+                                  String serviceName,
+                                  String serviceURLMarker,
+                                  String serviceDescription,
+                                  String serviceWiki)
     {
         this.serviceCode = serviceCode;
         this.serviceName = serviceName;
