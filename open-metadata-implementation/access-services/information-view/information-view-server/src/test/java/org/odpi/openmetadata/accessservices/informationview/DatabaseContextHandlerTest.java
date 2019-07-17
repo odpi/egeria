@@ -2,27 +2,27 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview;
 
+import org.junit.Before;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
 
     private DatabaseContextHandler databaseContextHandler;
 
-    @BeforeClass
+    @Before
     public void setup() throws Exception {
         super.setup();
         databaseContextHandler = new DatabaseContextHandler(enterpriseConnector, omEntityDao, auditLog);
