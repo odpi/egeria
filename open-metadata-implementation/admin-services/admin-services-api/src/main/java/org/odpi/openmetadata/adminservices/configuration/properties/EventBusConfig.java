@@ -24,6 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EventBusConfig extends AdminServicesConfigHeader
 {
+    private static  String DEFAULT_TOPIC_ROOT = "egeria.omag";
+
     private String              connectorProvider       = null;
     private String              topicURLRoot            = null;
     private Map<String, Object> configurationProperties = null;
@@ -87,6 +89,11 @@ public class EventBusConfig extends AdminServicesConfigHeader
      */
     public String getTopicURLRoot()
     {
+        if (topicURLRoot == null)
+        {
+            return DEFAULT_TOPIC_ROOT;
+        }
+
         return topicURLRoot;
     }
 
