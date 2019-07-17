@@ -46,5 +46,4 @@ public class ServerOriginResource
     {
         return originAPI.getServerOrigin(userId);
     }
-
 }
