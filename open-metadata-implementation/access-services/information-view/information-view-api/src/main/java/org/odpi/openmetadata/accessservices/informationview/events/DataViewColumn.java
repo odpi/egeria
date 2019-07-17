@@ -22,9 +22,8 @@ public class DataViewColumn extends DataViewElement {
     private String expression;
     private String dataType;
     private String hidden;
-    private String columnGuid;
-    private List<String> businessTermGuids;
-    private DataViewSource dataViewSource;
+    private List<BusinessTerm> businessTerms;
+    private List<Source> sources;
 
     public String getRegularAggregate() {
         return regularAggregate;
@@ -67,30 +66,21 @@ public class DataViewColumn extends DataViewElement {
     }
 
 
-    public String getColumnGuid() {
-        return columnGuid;
+    public List<Source> getSources() {
+        return sources;
     }
 
-    public void setColumnGuid(String columnGuid) {
-        this.columnGuid = columnGuid;
+    public void setSources(List<Source> sources) {
+        this.sources = sources;
     }
 
-    public List<String> getBusinessTermGuids() {
-        return businessTermGuids;
+    public List<BusinessTerm> getBusinessTerms() {
+        return businessTerms;
     }
 
-    public void setBusinessTermGuids(List<String> businessTermGuids) {
-        this.businessTermGuids = businessTermGuids;
+    public void setBusinessTerms(List<BusinessTerm> businessTerms) {
+        this.businessTerms = businessTerms;
     }
-
-    public DataViewSource getDataViewSource() {
-        return dataViewSource;
-    }
-
-    public void setDataViewSource(DataViewSource dataViewSource) {
-        this.dataViewSource = dataViewSource;
-    }
-
 
     @Override
     public String toString() {
@@ -100,9 +90,8 @@ public class DataViewColumn extends DataViewElement {
                 ", expression='" + expression + '\'' +
                 ", dataType='" + dataType + '\'' +
                 ", hidden='" + hidden + '\'' +
-                ", columnGuid='" + columnGuid + '\'' +
-                ", businessTermGuids='" + businessTermGuids + '\'' +
-                ", dataViewSource=" + dataViewSource +
+                ", businessTerms=" + businessTerms +
+                ", sources=" + sources +
                 '}';
     }
 }
