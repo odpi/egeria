@@ -23,10 +23,7 @@ public class SecurityOfficerRegistration {
     public static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.SECURITY_OFFICER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                 AccessServiceOperationalStatus.ENABLED,
                 SecurityOfficerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

@@ -9,15 +9,12 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
-public class InformationViewOMASRegistration {
+class InformationViewOMASRegistration {
 
-    public InformationViewOMASRegistration() {
+    InformationViewOMASRegistration() {
 
         AccessServiceDescription myDescription = AccessServiceDescription.INFORMATION_VIEW_OMAS;
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                 AccessServiceOperationalStatus.ENABLED,
                 InformationViewAdmin.class.getName()
 

@@ -15,19 +15,16 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * then use this registration information as confirmation that there is an implementation of this
  * access service in the server and it can be configured and used.
  */
-public class CommunityProfileRegistration
+class CommunityProfileRegistration
 {
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService()
+    static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  AccessServiceOperationalStatus.ENABLED,
                                                                                  CommunityProfileAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
