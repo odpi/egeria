@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.SoftwareServerPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.utils.RegexEscapeUtil;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -104,6 +105,8 @@ public class SoftwareServerRegistrationHandler {
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException {
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+
+        qualifiedName = RegexEscapeUtil.escapeSpecialGraphRegexCharacters(qualifiedName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
