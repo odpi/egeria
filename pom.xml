@@ -1659,6 +1659,7 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>${surefire.plugin.version}</version>
                     <configuration>
+                        <useSystemClassLoader>false</useSystemClassLoader>
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
