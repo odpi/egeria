@@ -1923,34 +1923,7 @@
                     </execution>
                 </executions>
             </plugin>
-
-            <plugin>
-                <groupId>org.owasp</groupId>
-                <artifactId>dependency-check-maven</artifactId>
-                <configuration>
-                <skipSystemScope>true</skipSystemScope>
-                <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
-                <enableExperimental>true</enableExperimental>
-                <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>
-                <cmakeAnalyzerEnabled>false</cmakeAnalyzerEnabled>
-                <autoconfAnalyzerEnabled>false</autoconfAnalyzerEnabled>
-                <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
-                <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
-                <bundleAuditAnalyzerEnabled>false</bundleAuditAnalyzerEnabled>
-                <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
-                <nuspecAnalyzerEnabled>false</nuspecAnalyzerEnabled>
-                <nugetconfAnalyzerEnabled>false</nugetconfAnalyzerEnabled>
-                <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
-            </configuration>
-                <executions>
-                <execution>
-                    <goals>
-                        <goal>check</goal>
-                    </goals>
-                </execution>
-            </executions>
-            </plugin>
-
+        
         </plugins>
     </build>
 
@@ -2090,7 +2063,32 @@
                             </execution>
                         </executions>
                     </plugin>
-
+                    <plugin>
+                        <groupId>org.owasp</groupId>
+                        <artifactId>dependency-check-maven</artifactId>
+                        <configuration>
+                            <skipSystemScope>true</skipSystemScope>
+                            <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
+                            <enableExperimental>true</enableExperimental>
+                            <rubygemsAnalyzerEnabled>false</rubygemsAnalyzerEnabled>
+                            <cmakeAnalyzerEnabled>false</cmakeAnalyzerEnabled>
+                            <autoconfAnalyzerEnabled>false</autoconfAnalyzerEnabled>
+                            <composerAnalyzerEnabled>false</composerAnalyzerEnabled>
+                            <cocoapodsAnalyzerEnabled>false</cocoapodsAnalyzerEnabled>
+                            <bundleAuditAnalyzerEnabled>false</bundleAuditAnalyzerEnabled>
+                            <swiftPackageManagerAnalyzerEnabled>false</swiftPackageManagerAnalyzerEnabled>
+                            <nuspecAnalyzerEnabled>false</nuspecAnalyzerEnabled>
+                            <nugetconfAnalyzerEnabled>false</nugetconfAnalyzerEnabled>
+                            <retireJsAnalyzerEnabled>true</retireJsAnalyzerEnabled>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
