@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DataViewTable extends DataViewElement {
+public class DataViewModel extends DataViewElement {
 
     private List<DataViewElement> elements;
 
@@ -27,7 +27,6 @@ public class DataViewTable extends DataViewElement {
     public void setElements(List<DataViewElement> elements) {
         this.elements = elements;
     }
-
 
     @Override
     public String toString() {

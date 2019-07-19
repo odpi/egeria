@@ -11,7 +11,7 @@ import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 
 import static org.mockito.Mockito.times;
@@ -32,10 +32,10 @@ class DataEngineResourceTest {
 
     @Test
     void testCreateProcess() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcess(USER, SERVER_NAME, processRequestBody);
+        ProcessesRequestBody processesRequestBody = new ProcessesRequestBody();
+        dataEngineResource.createProcesses(USER, SERVER_NAME, processesRequestBody);
 
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+        verify(dataEngineRestServices, times(1)).createProcesses(USER, SERVER_NAME, processesRequestBody);
     }
 
     @Test
