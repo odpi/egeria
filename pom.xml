@@ -1552,6 +1552,11 @@
             <plugins>
 
                 <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler.version}</version>
+                </plugin>
+
+                <plugin>
                     <groupId>com.spotify</groupId>
                     <artifactId>dockerfile-maven-plugin</artifactId>
                     <version>${spotify-docker-plugin.version}</version>
@@ -1680,6 +1685,30 @@
                     </dependencies>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.owasp</groupId>
+                    <artifactId>dependency-check-maven</artifactId>
+                    <version>${owasp.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven-pmd.version}</version>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
@@ -1702,7 +1731,6 @@
 	<plugins>
 	    <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-		<version>${maven-compiler.version}</version>
                 <configuration>
                     <compilerArgument>-Xlint:deprecation</compilerArgument>
                     <failOnWarning>false</failOnWarning>
@@ -1712,7 +1740,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
             </plugin>
 
             <!-- Validates maven & java versions -->
@@ -1758,7 +1785,6 @@
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>0.12</version>
                 <configuration>
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <useMavenDefaultExcludes>true</useMavenDefaultExcludes>
@@ -1862,7 +1888,6 @@
             <!-- Note test scope dependencies can't be reliably checked -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
                 <executions>
                     <execution>
                         <id>analyze</id>
@@ -1898,7 +1923,7 @@
                     </execution>
                 </executions>
             </plugin>
-
+        
         </plugins>
     </build>
 
@@ -1991,7 +2016,6 @@
                     <plugin>
                         <groupId>com.github.spotbugs</groupId>
                         <artifactId>spotbugs-maven-plugin</artifactId>
-                        <version>${spotbugs-maven.version}</version>
                         <dependencies>
                             <dependency>
                                 <groupId>com.github.spotbugs</groupId>
@@ -2026,7 +2050,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-pmd-plugin</artifactId>
-                        <version>${maven-pmd.version}</version>
                         <configuration>
                             <failOnViolation>false</failOnViolation>
                             <printFailingErrors>true</printFailingErrors>
@@ -2043,7 +2066,6 @@
                     <plugin>
                         <groupId>org.owasp</groupId>
                         <artifactId>dependency-check-maven</artifactId>
-                        <version>${owasp.version}</version>
                         <configuration>
                             <skipSystemScope>true</skipSystemScope>
                             <assemblyAnalyzerEnabled>false</assemblyAnalyzerEnabled>
