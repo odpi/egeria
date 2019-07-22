@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
-import org.odpi.openmetadata.accessservices.dataplatform.registration.RegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;

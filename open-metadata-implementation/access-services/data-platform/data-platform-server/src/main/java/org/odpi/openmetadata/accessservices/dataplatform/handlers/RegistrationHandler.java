@@ -1,10 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.dataplatform.registration;
+package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
-import org.odpi.openmetadata.accessservices.dataplatform.ffdc.exceptions.RegistrationException;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -15,6 +13,7 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.*;
 
 
 public class RegistrationHandler {
@@ -48,22 +47,22 @@ public class RegistrationHandler {
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
 
         invalidParameterHandler.validateUserId(Constants.DATA_PLATFORM_USER_ID, methodName);
-        invalidParameterHandler.validateName(qualifiedNameForSoftwareServer, Constants.QUALIFIED_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedNameForSoftwareServer, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
-                .withStringProperty(Constants.PATCH_LEVEL, softwareServerCapability.getPatchLevel())
-                .withStringProperty(Constants.TYPE, softwareServerCapability.getDataPlatformType())
-                .withStringProperty(Constants.VERSION, softwareServerCapability.getDataPlatformVersion())
-                .withStringProperty(Constants.SOURCE, softwareServerCapability.getSource())
-                .withStringProperty(Constants.NAME, softwareServerCapability.getDisplayName())
+                .withStringProperty(QUALIFIED_NAME_PROPERTY_NAME, qualifiedNameForSoftwareServer)
+                .withStringProperty(PATCH_LEVEL__PROPERTY_NAME, softwareServerCapability.getPatchLevel())
+                .withStringProperty(TYPE_PROPERTY_NAME, softwareServerCapability.getDataPlatformType())
+                .withStringProperty(VERSION__PROPERTY_NAME, softwareServerCapability.getDataPlatformVersion())
+                .withStringProperty(SOURCE_PROPERTY_NAME, softwareServerCapability.getSource())
+                .withStringProperty(NAME_PROPERTY_NAME, softwareServerCapability.getDisplayName())
                 .withStringProperty(Constants.DESCRIPTION, softwareServerCapability.getDescription())
                 .build();
 
         return repositoryHandler.createEntity(
                 Constants.DATA_PLATFORM_USER_ID,
-                Constants.SOFTWARE_SERVER_CAPABILITY_GUID,
-                Constants.SOFTWARE_SERVER_CAPABILITY,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                 softwareServerProperties,
                 methodName);
     }
@@ -83,22 +82,22 @@ public class RegistrationHandler {
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, Constants.QUALIFIED_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(
                 serviceName,
                 null,
-                Constants.QUALIFIED_NAME,
+                QUALIFIED_NAME_PROPERTY_NAME,
                 qualifiedName,
                 methodName);
 
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(
                 userId,
                 qualifiedName,
-                Constants.QUALIFIED_NAME,
+                QUALIFIED_NAME_PROPERTY_NAME,
                 properties,
-                Constants.SOFTWARE_SERVER_CAPABILITY_GUID,
-                Constants.SOFTWARE_SERVER_CAPABILITY,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                 methodName);
 
         return retrievedEntity.getGUID();
