@@ -483,7 +483,7 @@ public class OMEntityDao {
             return classification;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_CLASSIFICATION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_CLASSIFICATION_EXCEPTION;
             auditLog.logException("getClassification",
                     errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,

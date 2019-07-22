@@ -7,20 +7,19 @@ import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRest
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The type Data platform omas resource.
+ */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/data-platform/users/{userId}/")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/data-platform/users/{userId}")
 public class DataPlatformOMASResource {
 
-    private final DataPlatformRestServices restAPI;
-
+    private DataPlatformRestServices restAPI = new DataPlatformRestServices();
 
     /**
-     * Instantiates a new Data platform omas resource.
-     *
-     * @param restAPI the rest api
+     * Instantiates a new Data Platform omas resource.
      */
-    public DataPlatformOMASResource(DataPlatformRestServices restAPI) {
-        this.restAPI = restAPI;
+    public DataPlatformOMASResource() {
     }
 
     /**
@@ -29,7 +28,6 @@ public class DataPlatformOMASResource {
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
      * @param requestBody properties of the entity
-     *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/software-server-capabilities")
@@ -40,19 +38,18 @@ public class DataPlatformOMASResource {
     }
 
     /**
-     * Return the unique identifier from a software server capability definition.
+     * Return the unique identifier(GUID) from a software server capability definition.
      *
      * @param serverName    name of server instance to call
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the software server capability
-     *
      * @return unique identified of the software server
      */
     @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
-    public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerByQualifiedName(serverName, userId, qualifiedName);
+    public GUIDResponse getSoftwareServerCapabilityGuidByQualifiedName(@PathVariable String serverName,
+                                                                       @PathVariable String userId,
+                                                                       @PathVariable String qualifiedName) {
+        return restAPI.getSoftwareServerGuidByQualifiedName(serverName, userId, qualifiedName);
     }
 
 }

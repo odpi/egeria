@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.dataplatform.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 
 import java.util.Objects;
@@ -24,8 +23,16 @@ public class RegistrationRequestBody extends DataPlatformOMASAPIResponse {
 
     private SoftwareServerCapability softwareServerCapability;
 
+
     /**
-     * Default constructor
+     * Instantiates a new Registration request body.
+     */
+    public RegistrationRequestBody() {
+    }
+
+
+    /**
+     * Instantiates a new Registration request body.
      *
      * @param softwareServerCapability the software server capability
      */

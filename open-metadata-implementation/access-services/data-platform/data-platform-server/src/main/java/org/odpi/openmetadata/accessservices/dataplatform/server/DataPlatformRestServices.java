@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
-import org.odpi.openmetadata.accessservices.dataplatform.registration.RegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -44,21 +44,20 @@ public class DataPlatformRestServices {
      */
     public GUIDResponse createSoftwareServer(String serverName, String userId,
                                              RegistrationRequestBody registrationRequestBody) {
+
         final String methodName = "createSoftwareServer";
 
         log.debug("Calling method: {}", methodName);
 
-        if (registrationRequestBody == null) {
-            return null;
-        }
-
         GUIDResponse response = new GUIDResponse();
 
         try {
+            if (registrationRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
             RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
-
             SoftwareServerCapability softwareServerCapability = registrationRequestBody.getSoftwareServerCapability();
-
             response.setGUID(handler.createSoftwareServerCapability(softwareServerCapability));
 
         } catch (InvalidParameterException error) {
@@ -83,9 +82,9 @@ public class DataPlatformRestServices {
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public GUIDResponse getSoftwareServerByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public GUIDResponse getSoftwareServerGuidByQualifiedName(String serverName, String userId, String qualifiedName) {
 
-        final String methodName = "getSoftwareServerByQualifiedName";
+        final String methodName = "getSoftwareServerGuidByQualifiedName";
 
         log.debug("Calling method: {}", methodName);
 

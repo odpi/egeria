@@ -6,6 +6,7 @@ public class Constants {
 
     public static final String DATA_PLATFORM_OMAS_NAME = "DataPlatformOmas";
     public static final String DATA_PLATFORM = "DataPlatform";
+    public static final String DATA_PLATFORM_USER_ID = "dataPlatformOmas";
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String BUSINESS_TERM = "GlossaryTerm";
@@ -27,14 +28,9 @@ public class Constants {
     public static final String DISPLAY_NAME = "displayName";
     public static final String AUTHOR = "author";
     public static final String USAGE = "usage";
-    public static final String SUMMARY = "summary";
-    public static final String ABBREVIATION = "abbreviation";
     public static final String ENCODING_STANDARD = "encodingStandard";
     public static final String DATA_TYPE = "dataType";
     public static final String ELEMENT_POSITION_NAME = "position";
-    public static final String IS_NULLABLE = "isNullable";
-    public static final String IS_UNIQUE = "isUnique";
-    public static final String QUERY = "query";
     public static final String FORMULA = "formula";
     public static final String INFORMATION_VIEW = "InformationView";
     public static final String TYPE_SUFFIX = "_type";
@@ -43,10 +39,7 @@ public class Constants {
     public static final String SCHEMA_QUERY_IMPLEMENTATION = "SchemaQueryImplementation";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String RELATIONAL_TABLE_TYPE = "RelationalTableType";
-    public static final String URL = "url";
-    public static final String EXAMPLES = "examples";
     public static final String PROTOCOL = "protocol";
-    public static final String ENCRYPTION_METHOD = "encryptionMethod";
     public static final String NETWORK_ADDRESS = "networkAddress";
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
@@ -58,17 +51,7 @@ public class Constants {
     public static final String SOFTWARE_SERVER = "SoftwareServer";
     public static final String DATABASE_SERVER = "DatabaseServer";
     public static final String SERVER_ENDPOINT = "ServerEndpoint";
-    public static final String SOFTWARE_SERVER_CAPABILITY = "SoftwareServerCapability";
-    public static final String SOFTWARE_SERVER_CAPABILITY_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
-    public static final String ENGINE = "Engine";
-    public static final String ID = "id";
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
     public static final int START_FROM = 0;
     public static final Integer PAGE_SIZE = 100;
-    public static final String PATCH_LEVEL = "patchLevel";
-    public static final String VERSION = "version";
-    public static final String TYPE = "type";
-    public static final String SOURCE = "source";
-    public static final String GUID = "guid";
-    public static final String DATA_PLATFORM_USER_ID = "dataPlatformOmas";
 }

@@ -93,11 +93,11 @@ public enum DataPlatformErrorCode
             "Relationship {0} could not be fetched. Error: {1}",
             "The system is unable to process the request.",
             "Verify the topic event."),
-    PARSE_EVENT(400, "OMAS-DATA-PLATFORM-400-019",
+    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-PLATFORM-400-019",
             "Event could not be parsed",
             "The system is unable to process the request.",
             "Verify the topic event."),
-    ADD_CLASSIFICATION(400, "OMAS-DATA-PLATFORM-400-020",
+    ADD_CLASSIFICATION_EXCEPTION(400, "OMAS-DATA-PLATFORM-400-020",
             "Unable to create classification {0} for entity of type {1}. Error: {2}",
             "The system is unable to process the request.",
             "Verify the topic event."),
@@ -108,12 +108,12 @@ public enum DataPlatformErrorCode
     OMRS_NOT_INITIALIZED(404, "OMAS-DATA-PLATFORM-404-002 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to an open metadata repository.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server where the Data Platform OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     OMRS_NOT_AVAILABLE(404, "OMAS-DATA-PLATFORM-404-003 ",
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata repository.",
-            "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the server where the Data Platform OMAS is running initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     NO_METADATA_COLLECTION(404, "OMAS-DATA-PLATFORM-404-004 ",
             "The repository connector {0} is not returning a metadata collection object",

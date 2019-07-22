@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
@@ -54,8 +53,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
         } catch (Exception e) {
-            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT;
-
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
             auditLog.logException("processEvent",
                     errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
@@ -64,7 +62,6 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction(),
                     e);
-
         }
         if (event != null) {
             try {

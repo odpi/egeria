@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
-import org.odpi.openmetadata.accessservices.dataplatform.registration.RegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -18,21 +18,9 @@ import java.util.List;
 public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
 
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
+
     private RegistrationHandler registrationHandler;
 
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName         name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param auditLog            logging destination
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public DataPlatformServicesInstance(String serviceName, OMRSRepositoryConnector repositoryConnector, OMRSAuditLog auditLog, String serverName) throws NewInstanceException {
-        super(serviceName, repositoryConnector, auditLog);
-        this.serverName = serverName;
-        this.serviceName=myDescription.getAccessServiceName();
-    }
 
     /**
      * Set up the handler for Data Platform OMAS server.
@@ -61,7 +49,7 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
         }
         else
         {
-            DataPlatformErrorCode errorCode    = DataPlatformErrorCode.OMRS_NOT_INITIALIZED;
+            DataPlatformErrorCode  errorCode    = DataPlatformErrorCode.OMRS_NOT_INITIALIZED;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
@@ -70,7 +58,6 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-
         }
     }
 
