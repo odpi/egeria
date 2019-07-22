@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
-public class DataPlatformInstanceHandler {
-    private static DataPlatformServicesInstanceMap instanceMap = new DataPlatformServicesInstanceMap();
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
+
+public class DataPlatformInstanceHandler extends OCFOMASServiceInstanceHandler {
 
     /**
      * Default constructor registers the access service
      */
-    DataPlatformInstanceHandler() {
-        new DataPlatformOMASRegistration();
+    public DataPlatformInstanceHandler() {
+        super(AccessServiceDescription.DATA_PLATFORM_OMAS.getAccessServiceName() + " OMAS");
+        DataPlatformOMASRegistration.registerAccessService();
     }
-
 }

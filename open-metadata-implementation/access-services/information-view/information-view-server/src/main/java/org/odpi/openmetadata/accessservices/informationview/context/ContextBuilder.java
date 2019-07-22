@@ -4,32 +4,18 @@ package org.odpi.openmetadata.accessservices.informationview.context;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
-import org.odpi.openmetadata.accessservices.informationview.lookup.ReportLookup;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveRelationshipException;
+import java.util.stream.Stream;
 
 public abstract class ContextBuilder<T> {
 
@@ -53,35 +39,13 @@ public abstract class ContextBuilder<T> {
      */
     protected List<T> getChildrenElements(String guid) {
         List<Relationship> elementsRelationship;
-        try {
-            elementsRelationship = entityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, guid);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
-                    OMEntityDao.class.getName(),
-                    auditCode.getFormattedErrorMessage(Constants.ATTRIBUTE_FOR_SCHEMA, guid, e.getMessage()),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-        if(elementsRelationship == null || elementsRelationship.isEmpty())
-            return Collections.emptyList();
-        List elements = new ArrayList();
-        for (Relationship element: elementsRelationship){
-            try {
-                EntityDetail entity = entityDao.getEntityByGuid(element.getEntityTwoProxy().getGUID());
-                elements.add(buildElement(entity));
+        elementsRelationship = entityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, guid);
 
-            } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException e) {
-                throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                        ReportLookup.class.getName(),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, element.getGUID()),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                        InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                        null);
-            }
-        }
-        return elements;
+        return Optional.ofNullable(elementsRelationship).
+                        map(Collection::stream).
+                        orElseGet(Stream::empty).
+                        map(e -> buildElement( entityDao.getEntityByGuid(e.getEntityTwoProxy().getGUID()))).
+                        collect(Collectors.toList());
     }
 
     abstract T buildElement(EntityDetail entity);
@@ -93,37 +57,18 @@ public abstract class ContextBuilder<T> {
      * @return bean describing the business term associated
      */
     protected List<BusinessTerm> getAssignedBusinessTerms(String entityGuid) {
-        List<Relationship> semanticAssignments ;
-        try {
-            semanticAssignments = entityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, entityGuid);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
-                    OMEntityDao.class.getName(),
-                    auditCode.getFormattedErrorMessage(Constants.SEMANTIC_ASSIGNMENT, entityGuid, e.getMessage()),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-        if(semanticAssignments != null && !semanticAssignments.isEmpty()){
-            return semanticAssignments.stream().map(r -> retrieveBusinessTerm(r.getEntityTwoProxy().getGUID())).collect(Collectors.toList());
-        }
-        return Collections.emptyList();
+        List<Relationship> semanticAssignments = entityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, entityGuid);
+       return Optional.ofNullable(semanticAssignments)
+               .map(Collection::stream)
+               .orElseGet(Stream::empty)
+               .map(r -> retrieveBusinessTerm(r.getEntityTwoProxy().getGUID()))
+               .collect(Collectors.toList());
     }
 
     private BusinessTerm retrieveBusinessTerm(String businessTermGuid) {
         BusinessTerm businessTerm = new BusinessTerm();
-        EntityDetail businessTermEntity;
-        try {
-            businessTermEntity = entityDao.getEntityByGuid(businessTermGuid);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | InvalidParameterException | EntityNotKnownException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                    ReportLookup.class.getName(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, businessTermGuid),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                    null);
-        }
+        EntityDetail businessTermEntity = entityDao.getEntityByGuid(businessTermGuid);
+
         businessTerm.setGuid(businessTermGuid);
         businessTerm.setName(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, businessTermEntity.getProperties(), "retrieveReport"));
         businessTerm.setSummary(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.SUMMARY, businessTermEntity.getProperties(), "retrieveReport"));
@@ -143,13 +88,7 @@ public abstract class ContextBuilder<T> {
      * @return the list of asset schema type relationships linked to the entity
      */
     protected List<Relationship> getAssetSchemaTypeRelationships(String guid) {
-        List<Relationship> relationships = Collections.emptyList();
-        try {
-            relationships = entityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, guid);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            throwRetrieveRelationshipException(guid, Constants.ASSET_SCHEMA_TYPE, e, ContextBuilder.class.getName());
-        }
-        return relationships;
+        return entityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, guid);
     }
 
 
