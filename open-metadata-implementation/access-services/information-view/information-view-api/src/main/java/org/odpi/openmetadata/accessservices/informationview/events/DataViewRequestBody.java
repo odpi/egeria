@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,6 +21,8 @@ public class DataViewRequestBody extends InformationViewHeader{
 
     private String registrationGuid;
     private String registrationQualifiedName;
+    @Valid
+    @NotNull
     private DataView dataView;
 
     public DataView getDataView() {

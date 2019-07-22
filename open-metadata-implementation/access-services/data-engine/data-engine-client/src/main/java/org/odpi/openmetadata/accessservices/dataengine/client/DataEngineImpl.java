@@ -15,11 +15,12 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
@@ -28,6 +29,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -91,11 +93,12 @@ public class DataEngineImpl implements DataEngineClient {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
-        ProcessRequestBody requestBody = new ProcessRequestBody();
-        requestBody.setProcess(new Process(qualifiedName, processName, description, latestChange, zoneMembership,
-                displayName, formula, owner, ownerType, portImplementations, portAliases, lineageMappings));
+        ProcessesRequestBody requestBody = new ProcessesRequestBody();
+        requestBody.setProcesses(Collections.singletonList(new Process(qualifiedName, processName, description,
+                latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
+                portAliases, lineageMappings)));
 
-        return callGUIDPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
+        return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
     }
 
     @Override
@@ -106,10 +109,24 @@ public class DataEngineImpl implements DataEngineClient {
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        ProcessRequestBody requestBody = new ProcessRequestBody();
-        requestBody.setProcess(process);
+        ProcessesRequestBody requestBody = new ProcessesRequestBody();
+        requestBody.setProcesses(Collections.singletonList(process));
 
-        return callGUIDPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
+         return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
+    }
+
+    @Override
+    public List<String> createProcesses(String userId, List<Process> processes) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException {
+        final String methodName = "createProcesses";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        ProcessesRequestBody requestBody = new ProcessesRequestBody();
+        requestBody.setProcesses(processes);
+
+        return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -295,5 +312,20 @@ public class DataEngineImpl implements DataEngineClient {
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult.getGUID();
+    }
+
+    private List<String> callGUIDListPostRESTCall(String userId, String methodName, String urlTemplate,
+                                                  DataEngineOMASAPIRequestBody requestBody, Object... params) throws
+                                                                                                              PropertyServerException,
+                                                                                                              InvalidParameterException,
+                                                                                                              UserNotAuthorizedException {
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getGUIDs();
     }
 }
