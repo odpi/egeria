@@ -72,6 +72,24 @@ public interface DataEngineClient {
     String createProcess(String userId, Process process) throws InvalidParameterException, PropertyServerException,
                                                                 UserNotAuthorizedException;
 
+
+    /**
+     * Creates the process, with all the ports, schema types and corresponding relationships
+     *
+     * @param userId  the name of the calling user
+     * @param processes list of processes
+     *
+     * @return unique identifier of the process in the repository
+     *
+     * @throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException the bean properties are
+     * invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    List<String> createProcesses(String userId, List<Process> processes) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException;
+
     /**
      * Create the software server capability entity
      *
@@ -220,8 +238,8 @@ public interface DataEngineClient {
     /**
      * Create the Port Alias entity with a PortDelegation relationship
      *
-     * @param userId        the name of the calling user
-     * @param portAlias   the port alias bean
+     * @param userId    the name of the calling user
+     * @param portAlias the port alias bean
      *
      * @return unique identifier of the port alias in the repository
      *
