@@ -57,11 +57,6 @@ public class OMAGServerSecurityOfficerService
             serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
-            securityOfficerConfig.setSecurityOfficerServiceCode(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceCode());
-            securityOfficerConfig.setSecurityOfficerServiceName(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName());
-            securityOfficerConfig.setSecurityOfficerServiceDescription(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceDescription());
-            securityOfficerConfig.setSecurityOfficerServerWiki(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceWiki());
-
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
             if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerInTopicName() != null) {
                 securityOfficerConfig.setSecurityOfficerServerInTopic(

@@ -23,11 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecurityOfficerConfig extends AdminServicesConfigHeader {
 
-    private int         securityOfficerServiceCode = 0;
-    private String      securityOfficerServiceName;
-    private String      securityOfficerServiceDescription;
-    private String      securityOfficerServerWiki;
-
     private String      accessServiceRootURL;
     private String      accessServiceServerName;
 
@@ -41,78 +36,6 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      */
     public SecurityOfficerConfig() {
         super();
-    }
-
-    /**
-     * Return the code number (ordinal) for this Security Officer Server
-     *
-     * @return the code number for Security Officer Server component
-     */
-    public int getSecurityOfficerServiceCode() {
-        return securityOfficerServiceCode;
-    }
-
-    /**
-     * Set up the code number (ordinal) for the Security Officer Server
-     *
-     * @param securityOfficerServiceCode int ordinal
-     */
-    public void setSecurityOfficerServiceCode(int securityOfficerServiceCode) {
-        this.securityOfficerServiceCode = securityOfficerServiceCode;
-    }
-
-    /**
-     *  Return the name of the Security Officer Server
-     *
-     * @return the name of the security Officer Server
-     */
-    public String getSecurityOfficerServiceName() {
-        return securityOfficerServiceName;
-    }
-
-    /**
-     * Set up the name of the Security Officer Server Name
-     *
-     * @param securityOfficerServiceName server name
-     */
-    public void setSecurityOfficerServiceName(String securityOfficerServiceName) {
-        this.securityOfficerServiceName = securityOfficerServiceName;
-    }
-
-    /**
-     * Return the short description of the Security Officer Server Component.  The default value is in English but this can be changed.
-     *
-     * @return String description
-     */
-    public String getSecurityOfficerServiceDescription() {
-        return securityOfficerServiceDescription;
-    }
-
-    /**
-     * Set up the short description of the Security Officer Server Component.  The default value is in English but this can be changed.
-     *
-     * @param  securityOfficerServiceDescription String securityOfficerServiceDescription
-     */
-    public void setSecurityOfficerServiceDescription(String securityOfficerServiceDescription) {
-        this.securityOfficerServiceDescription = securityOfficerServiceDescription;
-    }
-
-    /**
-     * Return the wiki page link for the Security Officer. The default value points to a page on the Egeria confluence wiki.
-     *
-     * @return String url
-     */
-    public String getSecurityOfficerServerWiki() {
-        return securityOfficerServerWiki;
-    }
-
-    /**
-     * Set up the wiki page link for the Security Officer Server. The default value points to a page on the Egeria confluence wiki.
-     *
-     * @param securityOfficerServerWiki String url
-     */
-    public void setSecurityOfficerServerWiki(String securityOfficerServerWiki) {
-        this.securityOfficerServerWiki = securityOfficerServerWiki;
     }
 
     /**
@@ -225,11 +148,7 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
     @Override
     public String toString() {
         return "SecurityOfficerConfig{" +
-                "securityOfficerServiceCode=" + securityOfficerServiceCode +
-                ", securityOfficerServiceName='" + securityOfficerServiceName + '\'' +
-                ", securityOfficerServiceDescription='" + securityOfficerServiceDescription + '\'' +
-                ", securityOfficerServerWiki='" + securityOfficerServerWiki + '\'' +
-                ", accessServiceRootURL='" + accessServiceRootURL + '\'' +
+                " accessServiceRootURL='" + accessServiceRootURL + '\'' +
                 ", accessServiceServerName='" + accessServiceServerName + '\'' +
                 ", securityOfficerServerInTopicName='" + securityOfficerServerInTopicName + '\'' +
                 ", securityOfficerServerInTopic=" + securityOfficerServerInTopic +
@@ -249,11 +168,7 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SecurityOfficerConfig that = (SecurityOfficerConfig) o;
-        return securityOfficerServiceCode == that.securityOfficerServiceCode &&
-                Objects.equals(securityOfficerServiceName, that.securityOfficerServiceName) &&
-                Objects.equals(securityOfficerServiceDescription, that.securityOfficerServiceDescription) &&
-                Objects.equals(securityOfficerServerWiki, that.securityOfficerServerWiki) &&
-                Objects.equals(accessServiceRootURL, that.accessServiceRootURL) &&
+        return Objects.equals(accessServiceRootURL, that.accessServiceRootURL) &&
                 Objects.equals(accessServiceServerName, that.accessServiceServerName) &&
                 Objects.equals(securityOfficerServerInTopicName, that.securityOfficerServerInTopicName) &&
                 Objects.equals(securityOfficerServerInTopic, that.securityOfficerServerInTopic) &&
@@ -268,8 +183,7 @@ public class SecurityOfficerConfig extends AdminServicesConfigHeader {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(securityOfficerServiceCode, securityOfficerServiceName, securityOfficerServiceDescription,
-                securityOfficerServerWiki, accessServiceRootURL, accessServiceServerName, securityOfficerServerInTopicName,
+        return Objects.hash(accessServiceRootURL, accessServiceServerName, securityOfficerServerInTopicName,
                 securityOfficerServerInTopic, securityOfficerServerOutTopicName, securityOfficerServerOutTopic);
     }
 }
