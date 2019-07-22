@@ -52,11 +52,6 @@ public class OMAGServerSecuritySyncService {
 
             serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-            securitySyncConfig.setSecuritySyncServiceCode(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceCode());
-            securitySyncConfig.setSecuritySyncServiceName(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceName());
-            securitySyncConfig.setSecuritySyncServerDescription(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceDescription());
-            securitySyncConfig.setSecuritySyncServiceWiki(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceWiki());
-
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
             if (securitySyncConfig != null && securitySyncConfig.getSecuritySyncInTopicName() != null) {

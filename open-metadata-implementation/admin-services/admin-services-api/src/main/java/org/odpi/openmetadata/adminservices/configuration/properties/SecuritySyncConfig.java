@@ -20,10 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecuritySyncConfig extends AdminServicesConfigHeader {
-    private int         securitySyncServiceCode = 0;
-    private String      securitySyncServiceName;
-    private String      securitySyncServerDescription;
-    private String      securitySyncServiceWiki;
 
     private String      accessServiceRootURL;
     private String      accessServiceServerName;
@@ -56,11 +52,6 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         super(template);
 
         if (template != null) {
-            securitySyncServiceCode = template.securitySyncServiceCode;
-            securitySyncServiceName = template.securitySyncServiceName;
-            securitySyncServerDescription = template.securitySyncServerDescription;
-            securitySyncServiceWiki = template.securitySyncServiceWiki;
-
             accessServiceRootURL = template.accessServiceRootURL;
             accessServiceServerName = template.accessServiceServerName;
 
@@ -76,87 +67,6 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
             securitySyncOutTopicName = template.securitySyncOutTopicName;
         }
     }
-
-
-    /**
-     * Return the code number (ordinal) for this Security Sync
-     *
-     * @return the code number for Security Sync component
-     */
-    public int getSecuritySyncServiceCode() {
-        return securitySyncServiceCode;
-    }
-
-
-    /**
-     * Set up the code number (ordinal) for the Security Sync
-     *
-     * @param securitySyncServiceCode int ordinal
-     */
-    public void setSecuritySyncServiceCode(int securitySyncServiceCode) {
-        this.securitySyncServiceCode = securitySyncServiceCode;
-    }
-
-
-    /**
-     * Return the name of the Security Sync Connector
-     *
-     * @return the name of the security sync connector
-     */
-    public String getSecuritySyncServiceName() {
-        return securitySyncServiceName;
-    }
-
-
-    /**
-     * Set up the name of the Security Sync Connector
-     *
-     * @param securitySyncServiceName connector name
-     */
-    public void setSecuritySyncServiceName(String securitySyncServiceName) {
-        this.securitySyncServiceName = securitySyncServiceName;
-    }
-
-
-    /**
-     * Return the short description of the Security Sync Component.  The default value is in English but this can be changed.
-     *
-     * @return String description
-     */
-    public String getSecuritySyncServerDescription() {
-        return securitySyncServerDescription;
-    }
-
-
-    /**
-     * Set up the short description of the Security Sync.
-     *
-     * @param securitySyncServerDescription String description
-     */
-    public void setSecuritySyncServerDescription(String securitySyncServerDescription) {
-        this.securitySyncServerDescription = securitySyncServerDescription;
-    }
-
-
-    /**
-     * Return the wiki page link for the Security Sync. The default value points to a page on the Egeria confluence wiki.
-     *
-     * @return String url
-     */
-    public String getSecuritySyncServiceWiki() {
-        return securitySyncServiceWiki;
-    }
-
-
-    /**
-     * Set up the wiki page link for the Security Sync. The default value points to a page on the Egeria confluence wiki.
-     *
-     * @param securitySyncServiceWiki String url
-     */
-    public void setSecuritySyncServiceWiki(String securitySyncServiceWiki) {
-        this.securitySyncServiceWiki = securitySyncServiceWiki;
-    }
-
 
     /**
      * Return the URL for the Security Server used in the Governance Server Connector
@@ -378,11 +288,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     @Override
     public String toString() {
         return "SecuritySyncConfig{" +
-                "securitySyncServiceCode=" + securitySyncServiceCode +
-                ", securitySyncServiceName='" + securitySyncServiceName + '\'' +
-                ", securitySyncServerDescription='" + securitySyncServerDescription + '\'' +
-                ", securitySyncServiceWiki ='" + securitySyncServiceWiki + '\'' +
-                ", securityServerURL='" + securityServerURL + '\'' +
+                " securityServerURL='" + securityServerURL + '\'' +
                 ", accessServiceRootURL='" + accessServiceRootURL + '\'' +
                 ", accessServiceServerName='" + accessServiceServerName + '\'' +
                 ", securitySyncServerType='" + securitySyncServerType + '\'' +
@@ -411,11 +317,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
             return false;
         }
         SecuritySyncConfig that = (SecuritySyncConfig) objectToCompare;
-        return getSecuritySyncServiceCode() == that.getSecuritySyncServiceCode() &&
-                Objects.equals(getSecuritySyncServiceName(), that.getSecuritySyncServiceName()) &&
-                Objects.equals(getSecuritySyncServerDescription(), that.getSecuritySyncServerDescription()) &&
-                Objects.equals(getSecuritySyncServiceWiki(), that.getSecuritySyncServiceWiki()) &&
-                Objects.equals(getSecurityServerURL(), that.getSecurityServerURL()) &&
+        return Objects.equals(getSecurityServerURL(), that.getSecurityServerURL()) &&
                 Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
                 Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
                 Objects.equals(getSecuritySyncServerAuthorization(), that.getSecuritySyncServerAuthorization()) &&
@@ -435,10 +337,6 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(
-                getSecuritySyncServiceCode(),
-                getSecuritySyncServiceName(),
-                getSecuritySyncServerDescription(),
-                getSecuritySyncServiceWiki(),
                 getSecurityServerURL(),
                 getAccessServiceRootURL(),
                 getAccessServiceServerName(),
