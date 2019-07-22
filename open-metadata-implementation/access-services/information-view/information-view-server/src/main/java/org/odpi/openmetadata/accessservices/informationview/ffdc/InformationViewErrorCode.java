@@ -120,7 +120,11 @@ public enum InformationViewErrorCode {
     DELETE_RELATIONSHIP_EXCEPTION("OMAS-INFORMATION-VIEW-027",
                             "Relationship {0} of type {1} could not be deleted. Error: {2}",
                             "The system is unable to process the request.",
-                            "Verify the topic event.");
+                            "Verify the topic event."),
+    UPDATE_ENTITY_EXCEPTION(403,"OMAS-INFORMATION-VIEW-028",
+                            "Entity {0} could not be updated. Error: {1}",
+                            "The system is unable to process the request.",
+                            "Verify the exception message.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;

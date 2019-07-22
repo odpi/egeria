@@ -28,34 +28,46 @@ public class ReportCreator extends ReportBasicOperation {
 
     /**
      *
+     *
+     * @param userId
      * @param payload object describing the report
      * @param reportEntity entity describing the report
      * @throws Exception
      */
-    public void createReport(ReportRequestBody payload, EntityDetail reportEntity) throws InvalidParameterException,
-                                                                                          StatusNotSupportedException,
-                                                                                          PropertyErrorException,
-                                                                                          EntityNotKnownException,
-                                                                                          TypeErrorException,
-                                                                                          FunctionNotSupportedException,
-                                                                                          PagingErrorException,
-                                                                                          ClassificationErrorException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          RepositoryErrorException {
+    public void createReport(String userId, ReportRequestBody payload, EntityDetail reportEntity) throws InvalidParameterException,
+                                                                                                         StatusNotSupportedException,
+                                                                                                         PropertyErrorException,
+                                                                                                         EntityNotKnownException,
+                                                                                                         TypeErrorException,
+                                                                                                         FunctionNotSupportedException,
+                                                                                                         PagingErrorException,
+                                                                                                         ClassificationErrorException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         RepositoryErrorException {
         String qualifiedNameForComplexSchemaType =  QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getReport().getId()  + Constants.TYPE_SUFFIX);
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                 .build();
-        OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true, false);
+        OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
+                                                                                        Constants.COMPLEX_SCHEMA_TYPE,
+                                                                                        qualifiedNameForComplexSchemaType,
+                                                                                        payload.getRegistrationGuid(),
+                                                                                        payload.getRegistrationQualifiedName(),
+                                                                                        complexSchemaTypeProperties,
+                                                                            null,
+                                                                                 true,
+                                                                                         false);
 
         log.debug("Created report schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
-        omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
-                reportEntity.getGUID(),
-                complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
-                new InstanceProperties());
+        omEntityDao.addExternalRelationship(userId,
+                                            Constants.ASSET_SCHEMA_TYPE,
+                                            payload.getRegistrationGuid(),
+                                            payload.getRegistrationQualifiedName(),
+                                            reportEntity.getGUID(),
+                                            complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
+                                            new InstanceProperties());
 
-        addElements(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReport().getReportElements());
+        addElements(userId, helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getRegistrationGuid(), payload.getRegistrationQualifiedName(), payload.getReport().getReportElements());
     }
 
 

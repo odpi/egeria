@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
@@ -16,6 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ReportRequestBody extends InformationViewHeader {
 
+    @Valid
+    @NotNull
     private DeployedReport report;
     private String registrationGuid;
     private String registrationQualifiedName;

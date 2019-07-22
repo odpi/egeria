@@ -79,6 +79,12 @@ This will run (and create a file for each module)
  * [OWASP dependency checker](https://jeremylong.github.io/DependencyCheck/dependency-check-maven/) (dependency-check-report.html)
 
 Note that the scan may take a long time - an hour or more for all checks.
+
+If running against ALL components (ie from the root) an invocation like
+```
+MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC" mvn clean install -DfindBugs 
+```
+may be needed due to the memory requirements of a security scan
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

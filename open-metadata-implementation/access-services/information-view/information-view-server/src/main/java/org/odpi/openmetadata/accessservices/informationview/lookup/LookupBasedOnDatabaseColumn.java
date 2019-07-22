@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
 
 public class LookupBasedOnDatabaseColumn implements LookupStrategy {
 
-
     private static final Logger log = LoggerFactory.getLogger(LookupBasedOnDatabaseColumn.class);
     private LookupHelper lookupHelper;
 
@@ -33,15 +32,6 @@ public class LookupBasedOnDatabaseColumn implements LookupStrategy {
         if(log.isDebugEnabled()) {
             log.debug("Lookup based on source {0}", source);
         }
-        try {
-            return lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
-        } catch (EntityNotKnownException | UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                    EntityLookup.class.getName(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage("source", source.toString()),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                    null);
-        }
+        return lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
     }
 }
