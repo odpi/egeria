@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/open-lineage")
+@RequestMapping("/open-metadata/open-lineage/users/{userId}/servers/{serverName}/")
 public class OpenLineageOMASResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
@@ -34,12 +34,13 @@ public class OpenLineageOMASResource {
         return restAPI.generateGraph(serverName, userId);
     }
 
-    @GetMapping(path = "/initial-graph/{lineageType}/{guid}")
+    @GetMapping(path = "/initial-graph/{lineageQuery}/{graph}/{guid}")
     public String initialGraph(@PathVariable("userId") String userId,
                                                @PathVariable("serverName") String serverName,
-                                               @PathVariable("lineageType") String lineageType,
+                                               @PathVariable("lineageQuery") String lineageType,
+                                               @PathVariable("graph") String graph,
                                                @PathVariable("guid") String guid) {
-        return restAPI.initialGraph(serverName, userId, lineageType, guid);
+        return restAPI.initialGraph(serverName, userId, lineageType, graph, guid);
     }
 
 }

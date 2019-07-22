@@ -4,47 +4,46 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 public class DatabaseSchemaLookup extends EntityLookup<TableSource> {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseSchemaLookup.class);
 
     public DatabaseSchemaLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, omEntityDao, parentChain, auditLog);
+        super(enterpriseConnector, omEntityDao, parentChain, auditLog, Constants.DEPLOYED_DATABASE_SCHEMA);
     }
 
     @Override
-    public EntityDetail lookupEntity(TableSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
-        EntityDetail database = parentChain.lookupEntity(source.getDatabaseSource());
-        if(database == null)
-            return null;
-        List<String> allSchemaGuids = getRelatedEntities(database.getGUID(), Constants.DATA_CONTENT_FOR_DATASET);
-        List<EntityDetail> allLinkedSchemaList = allSchemaGuids.stream().map(guid -> getEntity(guid)).collect(Collectors.toList());
-        EntityDetail schemaEntity = lookupEntity(Arrays.asList(Constants.DEPLOYED_DATABASE_SCHEMA, Constants.INFORMATION_VIEW), source, allLinkedSchemaList);
-        if(log.isDebugEnabled()) {
-            log.debug("DatabaseSchema found [{}]", schemaEntity);
+    public EntityDetail lookupEntity(TableSource source){
+        EntityDetail entity = Optional.ofNullable(super.lookupEntity(source))
+                                                .orElseGet(() -> lookupBasedOnHierarchy(source));
+        if (log.isDebugEnabled()) {
+            log.debug("DatabaseSchema found [{}]", entity);
         }
-        return schemaEntity;
+        return entity;
+    }
 
+    private EntityDetail lookupBasedOnHierarchy(TableSource source) {
+        Optional<EntityDetail> optional = Optional.ofNullable(parentChain.lookupEntity(source.getDatabaseSource()));
+        return optional.ofNullable(filterBasedOnMatchingProperties(source, optional))
+                        .orElseThrow(() -> ExceptionHandler.buildRetrieveEntityException(Constants.SOURCE, source.toString(), null, this.getClass().getName()));
+    }
+
+    private EntityDetail filterBasedOnMatchingProperties(TableSource source, Optional<EntityDetail> optional) {
+        List<EntityDetail> allSchemas = omEntityDao.getRelatedEntities(Arrays.asList(optional.get().getGUID()), Constants.DATA_CONTENT_FOR_DATASET, e -> e.getEntityTwoProxy().getGUID());
+        return filterEntities(Arrays.asList(Constants.DEPLOYED_DATABASE_SCHEMA, Constants.INFORMATION_VIEW), source, allSchemas);
     }
 
     @Override

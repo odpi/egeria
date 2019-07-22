@@ -5,37 +5,25 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
+
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildMultipleEntitiesMatchingException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildNoMatchingEntityException;
 
 public abstract class EntityLookup<T extends Source> {
 
@@ -45,18 +33,28 @@ public abstract class EntityLookup<T extends Source> {
     protected OMEntityDao omEntityDao;
     protected OMRSAuditLog auditLog;
     protected EntityLookup parentChain;
+    protected String equivalentOMType;
 
-    public EntityLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
+    public EntityLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog, String equivalentOMType) {
         this.enterpriseConnector = enterpriseConnector;
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.parentChain = parentChain;
+        this.equivalentOMType = equivalentOMType;
     }
-
-    public abstract EntityDetail lookupEntity(T source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException;
 
     public void setParentChain(EntityLookup parentChain) {
         this.parentChain = parentChain;
+    }
+
+    public EntityDetail lookupEntity(T source){
+        if(!StringUtils.isEmpty(source.getGuid())){
+            return omEntityDao.getEntityByGuid(source.getGuid());
+        }
+        if(!StringUtils.isEmpty(source.getQualifiedName())){
+            return omEntityDao.getEntity(equivalentOMType, source.getQualifiedName(), false);
+        }
+        return null;
     }
 
     /**
@@ -66,9 +64,8 @@ public abstract class EntityLookup<T extends Source> {
      * @param list of entities in which to search
      * @return entity matching type and source
      */
-    public EntityDetail lookupEntity(List<String> typeNames, T source, List<EntityDetail> list)  {
-        List<EntityDetail> filteredList =
-                list.stream().filter(e -> isTypeOf(typeNames, e)).collect(Collectors.toList());
+    public EntityDetail filterEntities(List<String> typeNames, T source, List<EntityDetail> list)  {
+        List<EntityDetail> filteredList = list.stream().filter(e -> isTypeOf(typeNames, e)).collect(Collectors.toList());
         InstanceProperties matchProperties = getMatchingProperties(source);
         return matchExactlyToUniqueEntity(filteredList, matchProperties);
     }
@@ -96,17 +93,9 @@ public abstract class EntityLookup<T extends Source> {
      * @param matchProperties properties to use for querying the repositories
      * @param typeDefName type name of the entities to search for
      * @return the entity detail matching the type and properties
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
      */
-    public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
-        List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE);
-        return matchExactlyToUniqueEntity(existingEntities, matchProperties);
+    public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) {
+        return matchExactlyToUniqueEntity(omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE), matchProperties);
     }
 
 
@@ -118,29 +107,18 @@ public abstract class EntityLookup<T extends Source> {
      * @throws InformationViewExceptionBase throws NoMatchingEntityException if no entity is found matching
      * throws MultipleEntitiesMatching if multiple entities match
      */
-    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws
-                                                                                                                             InformationViewExceptionBase {
-        if (entities != null && !entities.isEmpty()) {
+    public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties){
+        if (!CollectionUtils.isEmpty(entities)) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
-            if (filteredEntities == null || filteredEntities.isEmpty()) {
-                throw new NoMatchingEntityException(InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getHttpErrorCode(),
-                                                    EntityLookup.class.getName(),
-                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getFormattedErrorMessage(matchingProperties.toString()),
-                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getSystemAction(),
-                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getUserAction(),
-                                                    null);
+            if (CollectionUtils.isEmpty(filteredEntities)) {
+                throw buildNoMatchingEntityException(matchingProperties, null, this.getClass().getName());
             }
             if (filteredEntities.size() > 1) {
-                throw new MultipleEntitiesMatching(InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getHttpErrorCode(),
-                        EntityLookup.class.getName(),
-                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getFormattedErrorMessage(matchingProperties.toString()),
-                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getSystemAction(),
-                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getUserAction(),
-                        null);
+                throw buildMultipleEntitiesMatchingException(matchingProperties, null, this.getClass().getName());
             }
             return filteredEntities.get(0);
         }
-        return null;
+        throw buildNoMatchingEntityException(matchingProperties, null, this.getClass().getName());
     }
 
     /**
@@ -152,7 +130,6 @@ public abstract class EntityLookup<T extends Source> {
     public boolean matchProperties(EntityDetail entityDetail, InstanceProperties matchingProperties) {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
-
             String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
             if (!((PrimitivePropertyValue)property.getValue()).getPrimitiveValue().equals(actualValue)) {
                 return false;
@@ -162,74 +139,4 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
-    /**
-     * Return list of guids of entities linked through the mentioned relationship
-     * @param parentEntityGuid entity guid to search relationships for
-     * @param relationshipTypeName
-     * @return list of entities
-     * @throws UserNotAuthorizedException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     */
-    protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) throws
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    EntityNotKnownException,
-                                                                                                    FunctionNotSupportedException,
-                                                                                                    InvalidParameterException,
-                                                                                                    RepositoryErrorException,
-                                                                                                    PropertyErrorException,
-                                                                                                    TypeErrorException,
-                                                                                                    PagingErrorException {
-        List<Relationship> relationships = omEntityDao.getRelationships(relationshipTypeName, parentEntityGuid);
-        return relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
-    }
-
-
-    protected List<EntityDetail> getRelatedEntities(List<String> allEntitiesGuids, String relationshipType) {
-        List<Relationship> allSchemaTypeToTableRelationships = allEntitiesGuids.stream().flatMap(e ->  getRelationships(e, relationshipType).stream()).collect(Collectors.toList());
-        return getEntityDetails(allSchemaTypeToTableRelationships);
-    }
-
-    private List<Relationship> getRelationships(String guid, String relationshipType) {
-        List<Relationship> relationships = null;
-        try {
-            relationships = omEntityDao.getRelationships(relationshipType, guid);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
-                    OMEntityDao.class.getName(),
-                    auditCode.getFormattedErrorMessage(relationshipType, guid, e.getMessage()),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-        if(relationships != null && !relationships.isEmpty()){
-            return relationships;
-        }
-        return Collections.emptyList();
-    }
-
-    protected List<EntityDetail> getEntityDetails(List<Relationship> relationships) {
-        Set<String> allLinkedTablesGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toSet());
-        return allLinkedTablesGuids.stream().map(guid -> getEntity(guid)).collect(Collectors.toList());
-    }
-
-
-    protected EntityDetail getEntity(String guid) {
-        try {
-            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, guid);
-        } catch (InvalidParameterException | EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | RepositoryErrorException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                    EntityLookup.class.getName(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                    null);
-        }
-    }
 }
