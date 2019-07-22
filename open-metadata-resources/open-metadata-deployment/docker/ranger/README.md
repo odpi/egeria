@@ -14,7 +14,13 @@ Docker build script for Apache Ranger
 ## Usage
 
  - switch into this directory
+ - docker build -f Docker.build -t <repo>/ranger:build .
  - docker build -t ranger-admin-egeriavdc:0.2.0 .
+ 
+## Version change in build image
+
+If ranger verison other 1.2.0
+- docker build --build-arg version=<version> -f Docker.build -t <repo>/ranger:build .
 
 ## Publishing the build
 
