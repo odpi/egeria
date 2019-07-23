@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM maven:3.6.0-jdk-8 
+FROM maven:3.6.0-jdk-8
 ARG atlas_version=2.0.0
 
 WORKDIR /root
@@ -20,6 +20,9 @@ WORKDIR /root/apache-atlas-sources-$atlas_version
 
 # need more java heap
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
+
+# Copy settings file to mvn settings
+COPY dist/settings.xml /root/.m2/settings.xml
 
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean -DskipTests install
