@@ -16,7 +16,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -100,11 +99,11 @@ public class DataPlatformAdmin extends AccessServiceAdmin
         if (dataPlatformInTopicConnector != null) {
             OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
             this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
-            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_AL_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
+            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
         }
 
         if (dataPlatformOutTopicConnector != null) {
-            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, outTopicName, dataPlatformOutTopicConnector);
+            startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_OUT_TOPIC, actionDescription, outTopicName, dataPlatformOutTopicConnector);
         }
 
         auditCode = DataPlatformAuditCode.SERVICE_INITIALIZED;
@@ -267,7 +266,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
                             error.getClass().getName(),
                             error.getMessage());
 
-                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
+                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                             this.getClass().getName(),
                             methodName,
                             errorMessage,

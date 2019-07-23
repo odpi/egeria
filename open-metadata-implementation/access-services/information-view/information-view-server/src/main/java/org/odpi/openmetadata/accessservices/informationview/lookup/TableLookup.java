@@ -4,55 +4,69 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class TableLookup extends EntityLookup<TableSource> {
-
 
     private static final Logger log = LoggerFactory.getLogger(TableLookup.class);
 
     public TableLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, omEntityDao, parentChain, auditLog);
+        super(enterpriseConnector, omEntityDao, parentChain, auditLog, Constants.RELATIONAL_TABLE);
     }
 
     @Override
-    public EntityDetail lookupEntity(TableSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
-        EntityDetail schemaDatabase = parentChain.lookupEntity(source);
-        if(schemaDatabase == null)
-            return null;
-
-        List<String> allSchemaTypeGuids = getRelatedEntities(schemaDatabase.getGUID(), Constants.ASSET_SCHEMA_TYPE);
-        List<EntityDetail> allLinkedTablesList = getRelatedEntities(allSchemaTypeGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
-
-        EntityDetail tableEntity = lookupEntity(Arrays.asList(Constants.RELATIONAL_TABLE), source, allLinkedTablesList);
+    public EntityDetail lookupEntity(TableSource source){
+        EntityDetail entity = Optional.ofNullable(super.lookupEntity(source))
+                                      .orElseGet(() -> lookupStartingFromParent(source));
         if(log.isDebugEnabled()) {
-            log.debug("Table found [{}]", tableEntity);
+            log.debug("Table found [{}]", entity);
         }
-        return tableEntity;
-
+        return entity;
     }
 
+    public EntityDetail lookupStartingFromParent(TableSource source){
+        Supplier<InformationViewExceptionBase> exceptionBaseSupplier =
+                () -> ExceptionHandler.buildRetrieveEntityException(Constants.SOURCE, source.toString(), null,
+                                                                    this.getClass().getName());
+        EntityDetail entityDetail = Optional.ofNullable(parentChain.lookupEntity(source))
+                                            .orElseThrow(exceptionBaseSupplier) ;
 
+        return Optional.ofNullable(lookup(source, entityDetail))
+                       .orElseThrow(exceptionBaseSupplier);
+    }
+
+    private EntityDetail lookup(TableSource source, EntityDetail schemaDatabase) {
+        List<EntityDetail> allSchemaType = omEntityDao.getRelatedEntities(Arrays.asList(schemaDatabase.getGUID()),
+                                                                            Constants.ASSET_SCHEMA_TYPE,
+                                                                            r -> r.getEntityTwoProxy().getGUID());
+        if (!CollectionUtils.isEmpty(allSchemaType)) {
+            List<EntityDetail> allLinkedTablesList =
+                    omEntityDao.getRelatedEntities(allSchemaType.stream().map(e -> e.getGUID()).collect(Collectors.toList()),
+                                                                            Constants.ATTRIBUTE_FOR_SCHEMA,
+                                                                            r -> r.getEntityTwoProxy().getGUID());
+            return filterEntities(Arrays.asList(Constants.RELATIONAL_TABLE), source, allLinkedTablesList);
+        }
+        return null;
+    }
 
     @Override
     protected InstanceProperties getMatchingProperties(TableSource source) {
-        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getName(), "lookupEntity");
+        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(),
+                Constants.NAME, source.getName(), "lookupEntity");
     }
 }

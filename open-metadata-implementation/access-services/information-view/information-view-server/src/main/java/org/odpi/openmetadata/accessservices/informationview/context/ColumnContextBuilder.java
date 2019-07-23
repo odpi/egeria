@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.informationview.context;
 
 
-import edu.emory.mathcs.backport.java.util.Collections;
 import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
@@ -12,6 +11,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ForeignKey;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
@@ -37,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -388,8 +389,7 @@ public class ColumnContextBuilder {
                 try {
                     btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, businessTermGuid);
                 } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
-                    InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-                    throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, columnEntity.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+                    throw ExceptionHandler.buildRetrieveEntityException(Constants.GUID, businessTermGuid, e, this.getClass().getName());
                 }
                 return buildBusinessTerm(btDetail);
             }).collect(Collectors.toList());

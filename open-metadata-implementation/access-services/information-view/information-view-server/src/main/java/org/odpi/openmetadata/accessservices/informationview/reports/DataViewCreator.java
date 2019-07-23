@@ -5,9 +5,9 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -21,18 +21,20 @@ public class DataViewCreator extends DataViewBasicOperation{
 
     private static final Logger log = LoggerFactory.getLogger(DataViewCreator.class);
 
-    protected DataViewCreator(org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        super(omEntityDao, helper, auditLog);
+    protected DataViewCreator(org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao, lookupHelper, helper, auditLog);
     }
 
 
     /**
      *
+     *
+     * @param userId
      * @param requestBody json describing the data view
      * @param dataViewEntity the entity describing the data view
      * @throws Exception
      */
-    public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
+    public void createDataView(String userId, DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
                                                                                              InvalidParameterException,
                                                                                              StatusNotSupportedException,
                                                                                              TypeErrorException,
@@ -48,8 +50,15 @@ public class DataViewCreator extends DataViewBasicOperation{
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
-            OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false, false);
+            OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
+                    Constants.COMPLEX_SCHEMA_TYPE,
+                    qualifiedNameForComplexSchemaType,
+                    requestBody.getRegistrationGuid(),
+                    requestBody.getRegistrationQualifiedName(),
+                    complexSchemaTypeProperties,
+                    null,
+                    false,
+                    false);
 
             log.debug("Created data view schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
             omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
@@ -58,7 +67,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     new InstanceProperties());
 
         String qualifiedNameForDataView = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, dataViewEntity.getProperties(), methodName);
-            addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getDataView().getElements());
+            addElements(userId, qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getRegistrationGuid(), requestBody.getRegistrationQualifiedName(), requestBody.getDataView().getElements());
 
 
     }
