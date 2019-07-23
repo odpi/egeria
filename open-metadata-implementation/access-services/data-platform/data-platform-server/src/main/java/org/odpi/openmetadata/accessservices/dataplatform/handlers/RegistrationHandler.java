@@ -13,6 +13,9 @@ import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.DATA_PLATFORM_OMAS_NAME;
+import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.DATA_PLATFORM_USER_ID;
 import static org.odpi.openmetadata.accessservices.dataplatform.utils.SoftwareServerCapabilityMapper.*;
 
 
@@ -46,7 +49,7 @@ public class RegistrationHandler {
 
         String qualifiedNameForSoftwareServer = softwareServerCapability.getQualifiedName();
 
-        invalidParameterHandler.validateUserId(Constants.DATA_PLATFORM_USER_ID, methodName);
+        invalidParameterHandler.validateUserId(DATA_PLATFORM_USER_ID, methodName);
         invalidParameterHandler.validateName(qualifiedNameForSoftwareServer, QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
@@ -60,8 +63,8 @@ public class RegistrationHandler {
                 .build();
 
         return repositoryHandler.createEntity(
-                Constants.DATA_PLATFORM_USER_ID,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                DATA_PLATFORM_USER_ID,
+                repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID,SOFTWARE_SERVER_CAPABILITY_TYPE_NAME).getGUID(),
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                 softwareServerProperties,
                 methodName);
@@ -69,15 +72,15 @@ public class RegistrationHandler {
 
 
     /**
-     * Gets software server capability guid by qualified name .
+     * Gets software server capability by qualified name.
      *
      * @param userId        the user id
      * @param qualifiedName the qualified name
-     * @return the software server capability guid
+     * @return the software server capability entity
      * @throws UserNotAuthorizedException the user not authorized exception
      * @throws PropertyServerException    the property server exception
      */
-    public String getSoftwareServerCapabilityGuidByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
+    public SoftwareServerCapability getSoftwareServerCapabilityByQualifiedName(String userId, String qualifiedName) throws InvalidParameterException,UserNotAuthorizedException, PropertyServerException {
 
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
 
@@ -91,15 +94,26 @@ public class RegistrationHandler {
                 qualifiedName,
                 methodName);
 
-        EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(
+        EntityDetail entity=repositoryHandler.getUniqueEntityByName(
                 userId,
                 qualifiedName,
                 QUALIFIED_NAME_PROPERTY_NAME,
                 properties,
-                SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
+                repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID,SOFTWARE_SERVER_CAPABILITY_TYPE_NAME).getGUID(),
                 SOFTWARE_SERVER_CAPABILITY_TYPE_NAME,
                 methodName);
+        return buildSoftwareServerCapabilitySource(entity);
+    }
 
-        return retrievedEntity.getGUID();
+    private SoftwareServerCapability buildSoftwareServerCapabilitySource(EntityDetail entity) {
+        String methodName= "buildSoftwareServerCapabilitySource";
+        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
+        softwareServerCapability.setDisplayName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, NAME_PROPERTY_NAME, entity.getProperties(),  methodName));
+        softwareServerCapability.setQualifiedName(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, QUALIFIED_NAME_PROPERTY_NAME, entity.getProperties(),  methodName));
+        softwareServerCapability.setDataPlatformVersion(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, VERSION__PROPERTY_NAME, entity.getProperties(),  methodName));
+        softwareServerCapability.setPatchLevel(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME,PATCH_LEVEL__PROPERTY_NAME, entity.getProperties(),  methodName));
+        softwareServerCapability.setDataPlatformType(repositoryHelper.getStringProperty(Constants.DATA_PLATFORM_OMAS_NAME, TYPE_PROPERTY_NAME, entity.getProperties(),  methodName));
+        softwareServerCapability.setDescription(repositoryHelper.getStringProperty(DATA_PLATFORM_OMAS_NAME, Constants.DESCRIPTION, entity.getProperties(),  methodName));
+        return softwareServerCapability;
     }
 }

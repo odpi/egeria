@@ -38,18 +38,18 @@ public class DataPlatformOMASResource {
     }
 
     /**
-     * Return the unique identifier(GUID) from a software server capability definition.
+     * Return the software server capability by qualified name.
      *
-     * @param serverName    name of server instance to call
-     * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the software server capability
-     * @return unique identified of the software server
+     * @param serverName    the server name
+     * @param userId        the user id
+     * @param qualifiedName the qualified name
+     * @return the software server capability by qualified name
      */
     @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
-    public GUIDResponse getSoftwareServerCapabilityGuidByQualifiedName(@PathVariable String serverName,
-                                                                       @PathVariable String userId,
-                                                                       @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerGuidByQualifiedName(serverName, userId, qualifiedName);
+    public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String qualifiedName) {
+        return restAPI.getSoftwareServerCapabilityByQualifiedName(serverName, userId, qualifiedName);
     }
 
 }
