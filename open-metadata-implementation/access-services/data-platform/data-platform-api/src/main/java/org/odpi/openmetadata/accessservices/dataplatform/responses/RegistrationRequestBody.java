@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Objects;
 
@@ -19,10 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class RegistrationRequestBody extends DataPlatformOMASAPIResponse {
+public class RegistrationRequestBody extends FFDCResponseBase {
 
     private SoftwareServerCapability softwareServerCapability;
-
 
     /**
      * Instantiates a new Registration request body.
@@ -30,23 +30,11 @@ public class RegistrationRequestBody extends DataPlatformOMASAPIResponse {
     public RegistrationRequestBody() {
     }
 
-
-    /**
-     * Instantiates a new Registration request body.
-     *
-     * @param softwareServerCapability the software server capability
-     */
     public RegistrationRequestBody(SoftwareServerCapability softwareServerCapability) {
         this.softwareServerCapability = softwareServerCapability;
     }
 
-    /**
-     * Copy/clone constructor
-     *
-     * @param template                 object to copy
-     * @param softwareServerCapability the software server capability
-     */
-    public RegistrationRequestBody(DataPlatformOMASAPIResponse template, SoftwareServerCapability softwareServerCapability) {
+    public RegistrationRequestBody(FFDCResponseBase template, SoftwareServerCapability softwareServerCapability) {
         super(template);
         this.softwareServerCapability = softwareServerCapability;
     }
@@ -73,9 +61,8 @@ public class RegistrationRequestBody extends DataPlatformOMASAPIResponse {
     public String toString() {
         return "RegistrationRequestBody{" +
                 "softwareServerCapability=" + softwareServerCapability +
-                '}';
+                "} " + super.toString();
     }
-
 
     @Override
     public int hashCode() {

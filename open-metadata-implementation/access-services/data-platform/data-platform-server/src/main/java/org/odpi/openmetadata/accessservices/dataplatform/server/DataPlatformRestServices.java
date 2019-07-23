@@ -75,26 +75,22 @@ public class DataPlatformRestServices {
 
 
     /**
-     * Get the unique identifier from a software server capability definition
+     * Return the software server capability definition
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the server
      * @return the unique identifier from a software server capability definition
      */
-    public GUIDResponse getSoftwareServerGuidByQualifiedName(String serverName, String userId, String qualifiedName) {
+    public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(String serverName, String userId, String qualifiedName) {
 
-        final String methodName = "getSoftwareServerGuidByQualifiedName";
-
-        log.debug("Calling method: {}", methodName);
-
-        GUIDResponse response = new GUIDResponse();
+        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+        RegistrationRequestBody response = new RegistrationRequestBody();
 
         try {
-            RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName,
-                    methodName);
+            RegistrationHandler handler = dataPlatformInstanceHandler.getRegistrationHandler(userId, serverName, methodName);
 
-            response.setGUID(handler.getSoftwareServerCapabilityGuidByQualifiedName(userId, qualifiedName));
+            response.setSoftwareServerCapability(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
 
         } catch (InvalidParameterException error) {
             dataPlatformInstanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
@@ -103,11 +99,8 @@ public class DataPlatformRestServices {
         } catch (UserNotAuthorizedException error) {
             dataPlatformInstanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
-
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
     }
-
-
 }

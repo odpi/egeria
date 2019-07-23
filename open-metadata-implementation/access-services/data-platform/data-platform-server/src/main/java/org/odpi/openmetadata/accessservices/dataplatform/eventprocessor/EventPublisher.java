@@ -331,7 +331,7 @@ public class EventPublisher  extends OMRSInstanceEventProcessor  {
      * @param event to be published
      * @return true/false based on the success of the operation
      */
-    public boolean sendEvent(NewViewEvent event) {
+    public boolean sendEvent(DataPlatformEventHeader event) {
 
         String actionDescription = "Send New Event";
         boolean successFlag = false;
