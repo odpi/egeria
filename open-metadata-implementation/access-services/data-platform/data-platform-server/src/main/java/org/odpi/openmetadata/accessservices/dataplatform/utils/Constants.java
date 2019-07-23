@@ -14,6 +14,7 @@ public class Constants {
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
     public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
     public static final String DATA_STORE = "DataStore";
+    public static final String DATABASE = "Database";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String OWNER = "owner";
     public static final String DESCRIPTION = "description";
