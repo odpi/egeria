@@ -117,20 +117,20 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 connectorTypeEntity.getGUID(),
                 new InstanceProperties());
 
-        String qualifiedNameForDataStore = QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATA_STORE, event.getTableSource().getDatabaseSource().getName());
-        InstanceProperties dataStoreProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
+        String qualifiedNameForDatabase = QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATABASE, event.getTableSource().getDatabaseSource().getName());
+        InstanceProperties databaseProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDatabase)
                 .withStringProperty(Constants.NAME, event.getTableSource().getDatabaseSource().getName())
                 .build();
-        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE, qualifiedNameForDataStore, dataStoreProperties, true);
-        informationViewAsset.setDataStore(dataStore);
+        EntityDetail database = omEntityDao.addEntity(Constants.DATABASE, qualifiedNameForDatabase, databaseProperties, true);
+        informationViewAsset.setDatabase(database);
 
         omEntityDao.addRelationship(Constants.CONNECTION_TO_ASSET,
                 connectionEntity.getGUID(),
-                dataStore.getGUID(),
+                database.getGUID(),
                 new InstanceProperties());
 
-        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDataStore, Constants.INFORMATION_VIEW, event.getTableSource().getSchemaName());
+        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDatabase, Constants.INFORMATION_VIEW, event.getTableSource().getSchemaName());
         InstanceProperties ivProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForInformationView)
                 .withStringProperty(Constants.NAME, event.getTableSource().getSchemaName())
@@ -142,11 +142,11 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
         informationViewAsset.setInformationViewEntity(informationViewEntity);
 
         omEntityDao.addRelationship(Constants.DATA_CONTENT_FOR_DATASET,
-                dataStore.getGUID(),
+                database.getGUID(),
                 informationViewEntity.getGUID(),
                 new InstanceProperties());
 
-        String qualifiedNameForDbSchemaType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDataStore, Constants.RELATIONAL_DB_SCHEMA_TYPE, event.getTableSource().getSchemaName() + Constants.TYPE_SUFFIX);
+        String qualifiedNameForDbSchemaType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDatabase, Constants.RELATIONAL_DB_SCHEMA_TYPE, event.getTableSource().getSchemaName() + Constants.TYPE_SUFFIX);
         InstanceProperties dbSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDbSchemaType)
                 .withStringProperty(Constants.DISPLAY_NAME, event.getTableSource().getSchemaName() + Constants.TYPE_SUFFIX)
