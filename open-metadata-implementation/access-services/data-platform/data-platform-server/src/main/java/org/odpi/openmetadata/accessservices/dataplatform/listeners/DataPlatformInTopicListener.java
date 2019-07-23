@@ -4,10 +4,10 @@ package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
@@ -53,17 +53,15 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
         } catch (Exception e) {
-            DataPlatformAuditCode auditCode = DataPlatformAuditCode.PARSE_EVENT;
-
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
             auditLog.logException("processEvent",
-                    auditCode.getLogMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedLogMessage(),
+                    errorCode.getFormattedErrorMessage(),
                     "event {" + eventAsString + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
-
         }
         if (event != null) {
             try {
@@ -89,15 +87,15 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                 eventPublisher.sendEvent(event);
             } catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
-                DataPlatformAuditCode auditCode = DataPlatformAuditCode.PROCESS_EVENT_EXCEPTION;
+                DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
 
                 auditLog.logException("processEvent",
-                        auditCode.getLogMessageId(),
+                        errorCode.getErrorMessageId(),
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        auditCode.getFormattedLogMessage(eventAsString, e.getMessage()),
+                        errorCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
                         e.getMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction(),
                         e);
             }
         }
