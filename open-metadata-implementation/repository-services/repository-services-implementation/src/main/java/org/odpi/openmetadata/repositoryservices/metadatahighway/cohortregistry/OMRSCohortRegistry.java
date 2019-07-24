@@ -180,6 +180,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
     }
 
+
     /**
      * Initialize the cohort registry object.  The parameters passed control its behavior.
      *
@@ -387,6 +388,38 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                 }
             }
         }
+    }
+
+
+    /**
+     * Return the local registration for this cohort.
+     *
+     * @return list of member registrations
+     */
+    public synchronized MemberRegistration getLocalRegistration()
+    {
+        if (registryStore != null)
+        {
+            return registryStore.retrieveLocalRegistration();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the remote members for this cohort.
+     *
+     * @return list of member registrations
+     */
+    public synchronized List<MemberRegistration> getRemoteMembers()
+    {
+        if (registryStore != null)
+        {
+            return registryStore.retrieveRemoteRegistrations();
+        }
+
+        return null;
     }
 
 

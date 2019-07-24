@@ -15,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHighwayManager;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstance;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceHandler;
@@ -102,18 +103,21 @@ public class OMRSRepositoryRESTServices
      * @param localRepositoryConnector link to the local repository responsible for servicing the REST calls.
      *                                 If localRepositoryConnector is null when a REST calls is received, the request
      *                                 is rejected.
+     * @param metadataHighwayManager URL of the local server
      * @param localServerURL URL of the local server
      * @param auditLog auditLog destination
      */
     public static void setServerRepositories(String                          localServerName,
                                              LocalOMRSRepositoryConnector    localRepositoryConnector,
                                              OMRSRepositoryConnector         enterpriseRepositoryConnector,
+                                             OMRSMetadataHighwayManager      metadataHighwayManager,
                                              String                          localServerURL,
                                              OMRSAuditLog                    auditLog)
     {
         new OMRSRepositoryServicesInstance(localServerName,
                                            localRepositoryConnector,
                                            enterpriseRepositoryConnector,
+                                           metadataHighwayManager,
                                            localServerURL,
                                            serviceName,
                                            auditLog);
@@ -287,7 +291,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable  error)
         {
-            captureThrowable(response, error, methodName, null);
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -7096,16 +7100,32 @@ public class OMRSRepositoryRESTServices
          */
         if (metadataCollection == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NO_LOCAL_REPOSITORY;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(methodName);
+            if (localRepository)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.NO_LOCAL_REPOSITORY;
+                String errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+            else
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.NO_ENTERPRISE_REPOSITORY;
+                String errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(methodName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
         }
 
         return metadataCollection;

@@ -380,16 +380,6 @@ public class OMRSOperationalServices
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
             }
-
-            /*
-             * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
-             * calls.
-             */
-            OMRSRepositoryRESTServices.setServerRepositories(localServerName,
-                                                             localRepositoryConnector,
-                                                             this.getEnterpriseOMRSRepositoryConnector(OMRSAuditingComponent.REST_SERVICES.getComponentName()),
-                                                             localServerURL,
-                                                             auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES));
         }
 
 
@@ -448,6 +438,17 @@ public class OMRSOperationalServices
                                                        cohortConfigList);
         }
 
+
+        /*
+         * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
+         * calls.
+         */
+        OMRSRepositoryRESTServices.setServerRepositories(localServerName,
+                                                         localRepositoryConnector,
+                                                         this.getEnterpriseOMRSRepositoryConnector(OMRSAuditingComponent.REST_SERVICES.getComponentName()),
+                                                         metadataHighwayManager,
+                                                         localServerURL,
+                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES));
 
         /*
          * The local repository (if configured) has been started while the archives were loaded and the
