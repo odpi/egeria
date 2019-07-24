@@ -25,7 +25,21 @@ public class ServerPlatformOriginResource
      * @param userId name of the user making the request
      * @return String description
      */
+    @Deprecated
     @RequestMapping(method = RequestMethod.GET, path = "/server-platform-origin")
+    public String getOldServerOrigin(@PathVariable String   userId)
+    {
+        return originAPI.getServerPlatformOrigin(userId);
+    }
+
+
+    /**
+     * Return the origin of this server implementation.
+     *
+     * @param userId name of the user making the request
+     * @return String description
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/origin")
     public String getServerOrigin(@PathVariable String   userId)
     {
         return originAPI.getServerPlatformOrigin(userId);
