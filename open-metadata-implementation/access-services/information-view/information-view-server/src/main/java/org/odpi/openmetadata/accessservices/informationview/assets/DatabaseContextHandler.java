@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.assets;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -71,8 +73,13 @@ public class DatabaseContextHandler {
     private List<DatabaseSource> buildDatabaseContext(List<EntityDetail> entities) {
         List<DatabaseSource> databaseSources = Optional.ofNullable(entities).map(Collection::stream)
                                                          .orElseGet(Stream::empty)
+                                                         .parallel()
                                                          .map(e -> { List<TableContextEvent> contexts = columnContextBuilder.getDatabaseContext(e.getGUID());
-                                                                        return contexts.get(0).getTableSource().getDatabaseSource();})
+                                                                        if(!CollectionUtils.isEmpty(contexts)){
+                                                                            return contexts.get(0).getTableSource().getDatabaseSource();
+                                                                        }
+                                                                        return null;})
+                                                         .filter(Objects::nonNull)
                                                          .collect(Collectors.toList());
         return databaseSources;
     }
