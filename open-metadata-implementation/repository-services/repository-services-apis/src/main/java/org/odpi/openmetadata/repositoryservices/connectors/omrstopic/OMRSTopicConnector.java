@@ -270,6 +270,30 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
+     * Log that this connector does not support the requested event protocol.
+     * This protocol level is requested in the configuration.
+     *
+     * @throws ConnectorCheckedException unsupported event protocol
+     */
+    private void handleUnsupportedEventVersion() throws ConnectorCheckedException
+    {
+        log.debug("Unsupported Protocol: " + eventProtocolVersion);
+
+        OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
+        String errorMessage = errorCode.getErrorMessageId()
+                                      + errorCode.getFormattedErrorMessage(connectionName,
+                                                                           eventProtocolVersion.toString());
+
+        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            connectorName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction());
+    }
+
+
+    /**
      * Send the registry event to the OMRS Topic connector and manage errors
      *
      * @param registryEvent  properties of the event to send
@@ -283,19 +307,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -314,19 +326,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -346,19 +346,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -470,14 +458,14 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             /*
              * If the event bean is successfully created then pass it on to the registered listeners.
              */
-            if ((eventBean != null) && (eventBean instanceof OMRSEventV1))
+            if (eventBean instanceof OMRSEventV1)
             {
                 OMRSEventBean finalEventBean = eventBean;
-                internalTopicListeners.parallelStream().forEach((topicListener) -> {
+                internalTopicListeners.parallelStream().forEach((topicListener) ->
+                {
                     try
                     {
-                        this.processOMRSEvent((OMRSEventV1) finalEventBean,
-                                topicListener);
+                        this.processOMRSEvent((OMRSEventV1) finalEventBean, topicListener);
                     }
                     catch (Throwable  error)
                     {
@@ -488,15 +476,15 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                             OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
 
                             auditLog.logException(connectorName,
-                                    auditCode.getLogMessageId(),
-                                    auditCode.getSeverity(),
-                                    auditCode.getFormattedLogMessage(event,
-                                            error.toString(),
-                                            topicListener.toString()),
-                                    null,
-                                    auditCode.getSystemAction(),
-                                    auditCode.getUserAction(),
-                                    error);
+                                                  auditCode.getLogMessageId(),
+                                                  auditCode.getSeverity(),
+                                                  auditCode.getFormattedLogMessage(event,
+                                                                                   error.toString(),
+                                                                                   topicListener.toString()),
+                                                  event,
+                                                  auditCode.getSystemAction(),
+                                                  auditCode.getUserAction(),
+                                                  error);
                         }
                     }
                 });

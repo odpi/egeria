@@ -2,12 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
+import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
+import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenMetadataEventProtocolVersion;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -106,7 +108,7 @@ public class OMRSMetadataHighwayManager
      * @param cohortConfig description of cohort.
      * @return the status of the cohort
      */
-    public  CohortConnectionStatus connectToCohort(CohortConfig         cohortConfig)
+    public CohortConnectionStatus connectToCohort(CohortConfig         cohortConfig)
     {
         OMRSCohortManager cohortManager  = new OMRSCohortManager(auditLog.createNewAuditLog(OMRSAuditingComponent.COHORT_MANAGER));
         String            localMetadataCollectionId = null;
@@ -191,6 +193,7 @@ public class OMRSMetadataHighwayManager
                                      enterpriseAccessConnectionConsumer,
                                      enterpriseAccessTopicConnector,
                                      cohortRegistryStore,
+                                     cohortConfig.getCohortOMRSTopicConnection(),
                                      cohortTopicConnector,
                                      inboundEventExchangeRule);
 
@@ -218,6 +221,88 @@ public class OMRSMetadataHighwayManager
         }
 
         return cohortManager.getCohortConnectionStatus();
+    }
+
+
+    public MemberRegistration getLocalRegistration()
+    {
+        for (OMRSCohortManager  existingCohortManager : cohortManagers)
+        {
+            if (existingCohortManager != null)
+            {
+                return existingCohortManager.getLocalRegistration();
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the remote member of a specific cohort
+     *
+     * @param cohortName name of cohort
+     * @return list of members
+     */
+    public List<MemberRegistration> getRemoteMembers(String   cohortName)
+    {
+        if (cohortName == null)
+        {
+            final String  actionDescription = "get remote members";
+
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_COHORT_NAME;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                                 + errorCode.getFormattedErrorMessage();
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              actionDescription,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        for (OMRSCohortManager  existingCohortManager : cohortManagers)
+        {
+            if (existingCohortManager != null)
+            {
+                if (cohortName.equals(existingCohortManager.getCohortName()))
+                {
+                    return existingCohortManager.getRemoteMembers();
+                }
+
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of cohorts
+     *
+     * @return cohort descriptions
+     */
+    public List<CohortDescription>  getCohortDescriptions()
+    {
+        List<CohortDescription>  cohortDescriptions = new ArrayList<>();
+
+        for (OMRSCohortManager  existingCohortManager : cohortManagers)
+        {
+            if (existingCohortManager != null)
+            {
+                cohortDescriptions.add(existingCohortManager.getCohortDescription());
+            }
+        }
+
+        if (cohortDescriptions.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return cohortDescriptions;
+        }
     }
 
 
