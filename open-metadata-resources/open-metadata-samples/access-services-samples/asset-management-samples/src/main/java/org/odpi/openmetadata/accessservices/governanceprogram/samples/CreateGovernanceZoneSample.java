@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.samples;
+package org.odpi.openmetadata.accessservices.governanceprogram.samples;
 
 import org.odpi.openmetadata.accessservices.assetowner.client.AssetOwner;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -82,7 +82,7 @@ public class CreateGovernanceZoneSample
         {
             client = new AssetOwner(serverName, serverURLRoot);
 
-            GovernanceZoneSampleDefinitions[]   zoneSampleDefinitions = GovernanceZoneSampleDefinitions.values();
+            GovernanceZoneSampleDefinitions[] zoneSampleDefinitions = GovernanceZoneSampleDefinitions.values();
 
             for (GovernanceZoneSampleDefinitions zoneDefinition : zoneSampleDefinitions)
             {
