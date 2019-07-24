@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -860,7 +859,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 {
                     List<TypeDefLink>   entityDefs = classificationTypeDef.getValidEntityDefs();
 
-                    if (CollectionUtils.isEmpty(entityDefs))
+                    if (entityDefs == null || entityDefs.isEmpty())
                     {
                         /*
                          * The classification has no restrictions on which entities it can be attached to.
