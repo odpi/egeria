@@ -1659,7 +1659,7 @@
                     <configuration>
                         <forkCount>3</forkCount>
                         <reuseForks>true</reuseForks>
-                        <argLine>-Xmx1024m</argLine>
+                        <argLine>-Xmx1024m ${argLine}</argLine>
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>

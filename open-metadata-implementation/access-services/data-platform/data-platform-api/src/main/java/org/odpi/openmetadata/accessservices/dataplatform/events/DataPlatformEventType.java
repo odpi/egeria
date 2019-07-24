@@ -25,7 +25,7 @@ public enum DataPlatformEventType implements Serializable
     UNKNOWN_DATA_PLATFORM_EVENT         (0,  "Unknown Event",  "An event that is not recognized by the local server."),
     NEW_ASSET_EVENT                     (1,  "New Asset",      "A new asset has been added to one of the access point zones."),
     UPDATED_ASSET_EVENT                 (2,  "Updated Asset",  "An existing asset has been updated or added to one of the access point zones."),
-    NEW_RELATIONSHIP_EVENT              (3,  "New Relationship",  "An new relationship as been assigned between assets.");
+    NEW_RELATIONSHIP_EVENT              (3,  "New Relationship",  "An new relationship as been assigned between entities.");
 
     private static final long     serialVersionUID = 1L;
 

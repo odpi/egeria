@@ -50,5 +50,9 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
     </dependencies>
 </project>
