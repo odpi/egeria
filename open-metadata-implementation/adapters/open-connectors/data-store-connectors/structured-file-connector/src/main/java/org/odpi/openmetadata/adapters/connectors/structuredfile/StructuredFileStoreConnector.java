@@ -343,8 +343,11 @@ public class StructuredFileStoreConnector extends ConnectorBase implements Struc
                     }
 
                 }
-            } else {
-                if (character == quoteChar) {
+            }
+            else
+            {
+                if (character == quoteChar)
+                {
 
                     inQuotes = true;
 

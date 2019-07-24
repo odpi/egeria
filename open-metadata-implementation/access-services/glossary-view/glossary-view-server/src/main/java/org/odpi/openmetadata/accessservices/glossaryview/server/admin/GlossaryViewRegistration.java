@@ -16,9 +16,8 @@ public class GlossaryViewRegistration {
     public static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.GLOSSARY_VIEW_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(), myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(), AccessServiceOperationalStatus.ENABLED,
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
+                AccessServiceOperationalStatus.ENABLED,
                 GlossaryViewAdmin.class.getName());
 
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);
