@@ -10,13 +10,14 @@ import java.io.Serializable;
 public class AccessServiceRegistration implements Serializable
 {
     private static final long     serialVersionUID    = 1L;
-    private static final String   defaultTopicRoot    = "open-metadata.access-services.";
+    private static final String   defaultTopicRoot    = "omas.";
     private static final String   defaultInTopicLeaf  = ".inTopic";
     private static final String   defaultOutTopicLeaf = ".outTopic";
 
 
     private int                            accessServiceCode;
     private String                         accessServiceName;
+    private String                         accessServiceURLMarker;
     private String                         accessServiceDescription;
     private String                         accessServiceWiki;
     private AccessServiceOperationalStatus accessServiceOperationalStatus;
@@ -34,20 +35,40 @@ public class AccessServiceRegistration implements Serializable
      */
     public AccessServiceRegistration(int                            accessServiceCode,
                                      String                         accessServiceName,
+                                     String                         accessServiceURLMarker,
                                      String                         accessServiceDescription,
                                      String                         accessServiceWiki,
                                      AccessServiceOperationalStatus accessServiceOperationalStatus,
                                      String                         accessServiceAdminClassName)
     {
-        /*
-         * Save the values supplied
-         */
         this.accessServiceCode = accessServiceCode;
         this.accessServiceName = accessServiceName;
+        this.accessServiceURLMarker = accessServiceURLMarker;
         this.accessServiceDescription = accessServiceDescription;
         this.accessServiceWiki = accessServiceWiki;
         this.accessServiceOperationalStatus = accessServiceOperationalStatus;
         this.accessServiceAdminClassName = accessServiceAdminClassName;
+    }
+
+
+    /**
+     * Enum Constructor
+     *
+     * @param accessServiceDescription enum for this access service
+     * @param accessServiceOperationalStatus default initial operational status for the access service
+     * @param accessServiceAdminClassName  name of AccessServiceAdmin implementation class for the access service
+     */
+    public AccessServiceRegistration(AccessServiceDescription       accessServiceDescription,
+                                     AccessServiceOperationalStatus accessServiceOperationalStatus,
+                                     String                         accessServiceAdminClassName)
+    {
+        this(accessServiceDescription.getAccessServiceCode(),
+             accessServiceDescription.getAccessServiceName(),
+             accessServiceDescription.getAccessServiceURLMarker(),
+             accessServiceDescription.getAccessServiceDescription(),
+             accessServiceDescription.getAccessServiceWiki(),
+             accessServiceOperationalStatus,
+             accessServiceAdminClassName);
     }
 
 
@@ -91,6 +112,7 @@ public class AccessServiceRegistration implements Serializable
     }
 
 
+
     /**
      * Set up the default name for this access service.
      *
@@ -99,6 +121,30 @@ public class AccessServiceRegistration implements Serializable
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
+    }
+
+
+    /**
+     * Return the string that appears in the REST API URL that identifies the owning service.
+     * Null means no REST APIs supported by this service.
+     *
+     * @return String default name
+     */
+    public String getAccessServiceURLMarker()
+    {
+        return accessServiceURLMarker;
+    }
+
+
+    /**
+     * Set up the string that appears in the REST API URL that identifies the owning service.
+     * Null means no REST APIs supported by this service.
+     *
+     * @param accessServiceURLMarker url fragment
+     */
+    public void setServiceURLMarker(String accessServiceURLMarker)
+    {
+        this.accessServiceURLMarker = accessServiceURLMarker;
     }
 
 
@@ -168,7 +214,7 @@ public class AccessServiceRegistration implements Serializable
     }
 
     /**
-     * Return the class name of the adminservices class that should be called during initialization and
+     * Return the class name of the admin class that should be called during initialization and
      * termination.
      *
      * @return class name
@@ -180,7 +226,7 @@ public class AccessServiceRegistration implements Serializable
 
 
     /**
-     * Set up the class name of the adminservices class that should be called during initialization and
+     * Set up the class name of the admin class that should be called during initialization and
      * termination.
      *
      * @param accessServiceAdminClassName  class name
@@ -198,7 +244,7 @@ public class AccessServiceRegistration implements Serializable
      */
     public String getAccessServiceInTopic()
     {
-        return defaultTopicRoot + accessServiceName.replaceAll("\\s", "") + defaultInTopicLeaf;
+        return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultInTopicLeaf;
     }
 
 
@@ -209,7 +255,7 @@ public class AccessServiceRegistration implements Serializable
      */
     public String getAccessServiceOutTopic()
     {
-        return defaultTopicRoot + accessServiceName.replaceAll("\\s", "") + defaultOutTopicLeaf;
+        return defaultTopicRoot + accessServiceURLMarker.replaceAll("-", "") + defaultOutTopicLeaf;
     }
 
 }

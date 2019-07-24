@@ -64,8 +64,14 @@ public enum ODFErrorCode
             "The connection is stored with the asset definition in the open metadata repository used by the discovery engine.  Use the error message to correct the connection properties.  Once the connection is corrected is resolved, retry the discovery request."),
     INVALID_ASSET_CONNECTOR(400, "ODF-DISCOVERY-SERVICE-400-007 ",
             "Invalid connector for asset {0}.  Error message was {1}.  The connection was {2}",
-            "The discovery service is able to analyze the asset.",
-            "This may be a configuration or a code error.  Look for other error messages and review the code of the connector.  Once the cause is resolved, retry the discovery request.");
+            "The discovery service is not able to analyze the asset.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the connector.  Once the cause is resolved, retry the discovery request."),
+
+    UNEXPECTED_EXCEPTION(500, "ODF-DISCOVERY-SERVICE-500-001 ",
+            "Unexpected exception in discovery service {0} of type {1} detected by method {2}.  The error message was {3}",
+            "The discovery service failed during its operation.",
+            "This may be a configuration or a code error.  Look for other error messages and review the code of the discovery service.  Once the cause is resolved, retry the discovery request.");
+    ;
 
 
     private int    httpErrorCode;

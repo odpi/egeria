@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
 
 /**
  * DiscoveryAssetStore defines the interface to a connector broker backed by a metadata store that returns
- * information about the Asset that a Discovery Engine is to analyze.  The userId that made the discovery
- * request is the default user for the asset store.  This userId may be over-ridden by the discovery engine.
+ * information about the Asset that a Discovery Engine is to analyze.  The userId that is passed on the call
+ * by the discovery engine.
  */
 public abstract class DiscoveryAssetStore
 {
@@ -37,9 +37,19 @@ public abstract class DiscoveryAssetStore
 
 
     /**
+     * Return the unique identifier for the asset.
+     *
+     * @return guid
+     */
+    public String getAssetGUID()
+    {
+        return assetGUID;
+    }
+
+
+    /**
      * Returns the connector corresponding to the supplied connection.
      *
-     * @param userId       userId of user making request.
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
      * @return Connector   connector instance
@@ -49,8 +59,7 @@ public abstract class DiscoveryAssetStore
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
-    protected abstract Connector getConnectorByConnection(String     userId,
-                                                          Connection connection) throws InvalidParameterException,
+    protected abstract Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
                                                                                         ConnectionCheckedException,
                                                                                         ConnectorCheckedException;
 
@@ -72,19 +81,28 @@ public abstract class DiscoveryAssetStore
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
      * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    protected abstract AssetUniverse getAssetProperties(String userId,
-                                                        String assetGUID) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException;
+    public abstract AssetUniverse getAssetProperties() throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param message message to log
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract void logAssetAuditMessage(String    message) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
 
 
     /**
@@ -110,6 +128,6 @@ public abstract class DiscoveryAssetStore
             assetConnection = getConnectionForAsset();
         }
 
-        return this.getConnectorByConnection(userId, assetConnection);
+        return this.getConnectorByConnection(assetConnection);
     }
 }
