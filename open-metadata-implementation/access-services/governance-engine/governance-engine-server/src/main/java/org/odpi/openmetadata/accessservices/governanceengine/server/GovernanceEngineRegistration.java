@@ -21,10 +21,7 @@ class GovernanceEngineRegistration {
     static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                 AccessServiceOperationalStatus.ENABLED,
                 GovernanceEngineAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

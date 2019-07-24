@@ -61,7 +61,7 @@
 * [Community Guide](../../Community-Guide.md)
 * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
 * Configuration
-  * [Configuration Document](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
+  * [Configuration Document](../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
   * [Configuration Factory for Open Connectors](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
   * [Configuration Properties for Open Metadata Access Services (OMASs)](../../open-metadata-implementation/access-services/docs/concepts/configuration-properties)
   * [Configuration Store Connectors](../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)

@@ -113,6 +113,7 @@ public class DiscoveryServerResource
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param userId calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -121,11 +122,12 @@ public class DiscoveryServerResource
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}/extended-annotations")
+    @RequestMapping(method = RequestMethod.GET, path = "/discovery-analysis-reports/{discoveryRequestGUID}/annotations/{annotationGUID}/extended-annotations")
 
     public AnnotationListResponse getExtendedAnnotations(@PathVariable String   serverName,
                                                          @PathVariable String   discoveryEngineGUID,
                                                          @PathVariable String   userId,
+                                                         @PathVariable String   discoveryRequestGUID,
                                                          @PathVariable String   annotationGUID,
                                                          @RequestParam int      startingFrom,
                                                          @RequestParam int      maximumResults)
@@ -133,6 +135,7 @@ public class DiscoveryServerResource
         return restAPI.getExtendedAnnotations(serverName,
                                               discoveryEngineGUID,
                                               userId,
+                                              discoveryRequestGUID,
                                               annotationGUID,
                                               startingFrom,
                                               maximumResults);
@@ -146,19 +149,21 @@ public class DiscoveryServerResource
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param userId calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object or
      *
      *  DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/annotations/{annotationGUID}")
+    @RequestMapping(method = RequestMethod.GET, path = "discovery-analysis-reports/{discoveryRequestGUID}//annotations/{annotationGUID}")
 
     public AnnotationResponse getAnnotation(@PathVariable String   serverName,
                                             @PathVariable String   discoveryEngineGUID,
                                             @PathVariable String   userId,
+                                            @PathVariable String   discoveryRequestGUID,
                                             @PathVariable String   annotationGUID)
     {
-        return restAPI.getAnnotation(serverName, discoveryEngineGUID, userId, annotationGUID);
+        return restAPI.getAnnotation(serverName, discoveryEngineGUID, userId, discoveryRequestGUID, annotationGUID);
     }
 }

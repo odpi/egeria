@@ -147,13 +147,15 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                 final String   actionDescription = "distributeEvent";
 
                 OMRSAuditCode auditCode = OMRSAuditCode.EVENT_PROCESSING_ERROR;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(event, error.toString()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
+
+                auditLog.logException(actionDescription,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(event, error.toString()),
+                                      event,
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      error);
             }
         }
     }
@@ -234,7 +236,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             {
                 Object   sleepTime = configurationProperties.get("sleepTime");
 
-                if ((sleepTime != null) && (sleepTime instanceof Integer))
+                if (sleepTime instanceof Integer)
                 {
                     this.sleepTime = (Integer)sleepTime;
                 }

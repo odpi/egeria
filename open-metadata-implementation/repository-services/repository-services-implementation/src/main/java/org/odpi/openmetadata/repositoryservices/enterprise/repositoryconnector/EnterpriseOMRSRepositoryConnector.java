@@ -47,7 +47,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
     private String                              localMetadataCollectionId = null;
     private List<FederatedConnector>            remoteCohortConnectors    = new ArrayList<>();
 
-    private String                              accessServiceName         = null;
+    private String callingServiceName = null;
 
     private static final Logger       log      = LoggerFactory.getLogger(EnterpriseOMRSRepositoryConnector.class);
 
@@ -107,24 +107,24 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Return the name of the access service using this connector.
+     * Return the name of the service using this connector.
      *
-     * @return access service name
+     * @return service name
      */
-    public String getAccessServiceName()
+    public String getCallingServiceName()
     {
-        return accessServiceName;
+        return callingServiceName;
     }
 
 
     /**
      * Set up the name of the access service using this connector.
      *
-     * @param accessServiceName string name
+     * @param callingServiceName string name
      */
-    public void setAccessServiceName(String accessServiceName)
+    public void setCallingServiceName(String callingServiceName)
     {
-        this.accessServiceName = accessServiceName;
+        this.callingServiceName = callingServiceName;
     }
 
 
@@ -145,7 +145,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(accessServiceName),
+                               auditCode.getFormattedLogMessage(callingServiceName),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
@@ -170,7 +170,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(accessServiceName),
+                               auditCode.getFormattedLogMessage(callingServiceName),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
@@ -318,7 +318,7 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
         else
         {
             OMRSErrorCode errorCode = OMRSErrorCode.NO_REPOSITORIES;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(accessServiceName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(callingServiceName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),
