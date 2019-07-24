@@ -33,13 +33,13 @@ public class ConnectorConfigurationFactory
     /*
      * Default property fillers
      */
-    private static final String defaultTopicRootName     = "open-metadata.repository-services.";
+    private static final String defaultTopicRootName     = "openmetadata.repositoryservices.";
     private static final String defaultOMRSTopicLeafName = ".OMRSTopic";
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
-    private static final String defaultEventMapperTopicName = defaultTopicRootName + "local-repository.events";
+    private static final String defaultEventMapperTopicName = defaultTopicRootName + "localrepository.events";
 
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
 

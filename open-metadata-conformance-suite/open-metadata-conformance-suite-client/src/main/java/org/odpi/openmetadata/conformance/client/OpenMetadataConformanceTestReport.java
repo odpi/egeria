@@ -83,7 +83,7 @@ public class OpenMetadataConformanceTestReport
                                                                                 UserNotAuthorizedException
     {
         final String   methodName = "getConformanceReport";
-        final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite-services/users/{1}/report";
+        final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite/users/{1}/report";
 
         try
         {

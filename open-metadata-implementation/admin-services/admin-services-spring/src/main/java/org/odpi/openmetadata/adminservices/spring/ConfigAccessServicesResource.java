@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForAccessServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,47 @@ public class ConfigAccessServicesResource
 {
     private OMAGServerAdminForAccessServices adminAPI = new OMAGServerAdminForAccessServices();
 
+
     /**
-     * Enable all access services that are installed into this server.  The access services are set up to use the
-     * default event bus
+     * Return the list of access services that are configured for this server.
+     *
+     * @param userId calling user
+     * @return list of access service descriptions
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/access-services/configuration")
+
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(@PathVariable String              userId,
+                                                                      @PathVariable String              serverName)
+    {
+        return adminAPI.getConfiguredAccessServices(userId, serverName);
+    }
+
+
+    /**
+     * Enable a single access service.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/access-services/{serviceURLMarker}")
+
+    public VoidResponse configureAccessService(@PathVariable                   String              userId,
+                                               @PathVariable                   String              serverName,
+                                               @PathVariable                   String              serviceURLMarker,
+                                               @RequestBody(required = false)  Map<String, Object> accessServiceOptions)
+    {
+        return adminAPI.configureAccessService(userId, serverName, serviceURLMarker, accessServiceOptions);
+    }
+
+
+    /**
+     * Enable all access services that are registered with this server platform.
+     * The access services are set up to use the default event bus.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.

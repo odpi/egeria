@@ -160,7 +160,7 @@ public class DiscoveryEngineHandler
                                                                                                                           discoveryEngineProperties.getDisplayName() + " (" + discoveryEngineGUID + ").",
                                                                                                           creationTime,
                                                                                                           analysisParameters,
-                                                                                                          DiscoveryRequestStatus.IN_PROGRESS,
+                                                                                                          DiscoveryRequestStatus.WAITING,
                                                                                                           assetGUID,
                                                                                                           discoveryEngineGUID,
                                                                                                           discoveryServiceCache.getDiscoveryServiceGUID(),
@@ -186,7 +186,9 @@ public class DiscoveryEngineHandler
                                                                                           discoveryServiceCache.getDiscoveryServiceName(),
                                                                                           discoveryServiceCache.getNextDiscoveryService(),
                                                                                           discoveryContext,
-                                                                                          auditLog);
+                                                                                          auditLog,
+                                                                                          discoveryEngineClient,
+                                                                                          serverUserId);
             Thread thread = new Thread(discoveryServiceHandler, discoveryServiceCache.getDiscoveryServiceName() + assetGUID + new Date().toString());
             thread.start();
 
@@ -259,6 +261,7 @@ public class DiscoveryEngineHandler
     /**
      * Return any annotations attached to this annotation.
      *
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -269,7 +272,8 @@ public class DiscoveryEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  List<Annotation>  getExtendedAnnotations(String   annotationGUID,
+    public  List<Annotation>  getExtendedAnnotations(String   discoveryRequestGUID,
+                                                     String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -278,6 +282,7 @@ public class DiscoveryEngineHandler
         try
         {
             return discoveryEngineClient.getExtendedAnnotations(serverUserId,
+                                                                discoveryRequestGUID,
                                                                 annotationGUID,
                                                                 startingFrom,
                                                                 maximumResults);
@@ -293,6 +298,7 @@ public class DiscoveryEngineHandler
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -301,13 +307,14 @@ public class DiscoveryEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  Annotation        getAnnotation(String   annotationGUID) throws InvalidParameterException,
+    public  Annotation        getAnnotation(String   discoveryRequestGUID,
+                                            String   annotationGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             DiscoveryEngineException
     {
         try
         {
-            return discoveryEngineClient.getAnnotation(serverUserId, annotationGUID);
+            return discoveryEngineClient.getAnnotation(serverUserId, discoveryRequestGUID, annotationGUID);
         }
         catch (PropertyServerException  error)
         {
