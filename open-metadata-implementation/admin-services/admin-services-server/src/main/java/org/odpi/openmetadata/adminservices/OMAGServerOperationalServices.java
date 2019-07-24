@@ -556,10 +556,10 @@ public class OMAGServerOperationalServices
                 operationalDataEngineProxyServices.initialize(
                         dataEngineProxyConfig,
                         operationalRepositoryServices.getAuditLog(
-                                GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
-                                GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
-                                GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
-                                GovernanceServersDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki())
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki())
                 );
 
                 activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
