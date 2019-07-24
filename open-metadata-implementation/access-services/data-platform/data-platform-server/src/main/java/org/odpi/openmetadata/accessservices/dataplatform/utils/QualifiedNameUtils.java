@@ -24,14 +24,14 @@ public class QualifiedNameUtils {
 
     public static String buildQualifiedNameForInformationView(String hostAddress, String databaseName, String schemaName){
         String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
-        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, databaseName);
+        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATABASE, databaseName);
         return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.DATA_PLATFORM, schemaName);
     }
 
 
     public static String buildQualifiedNameForRelationalDbSchemaType(String hostAddress, String databaseName, String schemaName){
         String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
-        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, databaseName);
+        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATABASE, databaseName);
         return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.RELATIONAL_DB_SCHEMA_TYPE, schemaName + Constants.TYPE_SUFFIX);
     }
 
