@@ -13,7 +13,7 @@ import java.util.List;
  * server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-engine")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-server")
 public class ConfigDiscoveryEngineResource
 {
     private OMAGServerConfigDiscoveryServer adminAPI = new OMAGServerConfigDiscoveryServer();
