@@ -16,7 +16,7 @@ public abstract class OpenMetadataTopicProvider extends ConnectorProviderBase
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * OMRS Connector implementation.
      */
-    public OpenMetadataTopicProvider()
+    protected OpenMetadataTopicProvider()
     {
         Class        connectorClass = OpenMetadataTopicConnector.class;
 

@@ -147,6 +147,7 @@ public abstract class DiscoveryEngine
      * Return any annotations attached to this annotation.
      *
      * @param userId identifier of calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -158,6 +159,7 @@ public abstract class DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract List<Annotation>  getExtendedAnnotations(String   userId,
+                                                             String   discoveryRequestGUID,
                                                              String   annotationGUID,
                                                              int      startingFrom,
                                                              int      maximumResults) throws InvalidParameterException,
@@ -170,6 +172,7 @@ public abstract class DiscoveryEngine
      * for an annotation.
      *
      * @param userId identifier of calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -179,6 +182,7 @@ public abstract class DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract Annotation        getAnnotation(String   userId,
+                                                    String   discoveryRequestGUID,
                                                     String   annotationGUID) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     DiscoveryEngineException;

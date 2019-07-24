@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.discoveryserver.server;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.multitenant.GovernanceServerServiceInstanceHandler;
 import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -21,7 +21,7 @@ class DiscoveryServerInstanceHandler extends GovernanceServerServiceInstanceHand
      */
     DiscoveryServerInstanceHandler()
     {
-        super(GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
+        super(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
     }
 
 
