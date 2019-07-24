@@ -21089,6 +21089,8 @@ public class OpenMetadataTypesArchive
                                                                 attribute1DescriptionGUID);
         properties.add(property);
 
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 

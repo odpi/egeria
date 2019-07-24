@@ -147,41 +147,11 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Validate parameters
          */
         TypeDef typeDef = super.addEntityParameterValidation(userId,
-                entityTypeGUID,
-                initialProperties,
-                initialClassifications,
-                initialStatus);
-
-        /*
-         *  Ensure all classifications have valid InstanceType
-         *
-         */
-        if (initialClassifications != null) {
-            for (Classification classification : initialClassifications) {
-                // Check the classification contains the type
-                if (classification.getType() == null) {
-                    // Retrieve the classification def and construct an InstanceType
-                    ClassificationDef classificationDef;
-                    try {
-                        classificationDef = (ClassificationDef) repositoryHelper.getTypeDefByName(repositoryName, classification.getName());
-                        classification.setType(repositoryHelper.getNewInstanceType(metadataCollectionId, classificationDef));
-                    } catch (Exception e) {
-                        log.error("{}: Could not find classification def with name {}", methodName, classification.getName(), e);
-
-                        OMRSErrorCode errorCode = OMRSErrorCode.INVALID_TYPEDEF;
-                        String errorMessage = errorCode.getErrorMessageId()
-                                + errorCode.getFormattedErrorMessage(classification.getName(), "unknown", "initialClassifications", methodName, repositoryName, "unknown");
-
-                        throw new TypeErrorException(errorCode.getHTTPErrorCode(),
-                                this.getClass().getName(),
-                                methodName,
-                                errorMessage,
-                                errorCode.getSystemAction(),
-                                errorCode.getUserAction());
-                    }
-                }
-            }
-        }
+                                                             entityTypeGUID,
+                                                             initialProperties,
+                                                             initialClassifications,
+                                                             initialStatus,
+                                                             methodName);
 
         /*
          * Validation complete - ok to create new instance
@@ -211,6 +181,62 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         return newEntity;
     }
 
+
+    // addExternalEntity
+    public EntityDetail addExternalEntity(String                userId,
+                                          String                entityTypeGUID,
+                                          String                externalSourceGUID,
+                                          String                externalSourceName,
+                                          InstanceProperties    initialProperties,
+                                          List<Classification>  initialClassifications,
+                                          InstanceStatus        initialStatus) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      ClassificationErrorException,
+                                                                                      StatusNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String  methodName = "addExternalEntity";
+
+        TypeDef typeDef = super.addExternalEntityParameterValidation(userId,
+                                                                     entityTypeGUID,
+                                                                     externalSourceGUID,
+                                                                     initialProperties,
+                                                                     initialClassifications,
+                                                                     initialStatus,
+                                                                     methodName);
+
+        /*
+         * Validation complete - ok to create new instance
+         */
+        EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
+                                                               externalSourceGUID,
+                                                               InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                               userId,
+                                                               typeDef.getName(),
+                                                               initialProperties,
+                                                               initialClassifications);
+
+        /*
+         * Ensure metadataCollectionName also set
+         */
+        newEntity.setMetadataCollectionName(externalSourceName);
+        newEntity.setReplicatedBy(metadataCollectionId);
+
+
+        /*
+         * If an initial status is supplied then override the default value.
+         */
+        if (initialStatus != null) {
+            newEntity.setStatus(initialStatus);
+        }
+
+
+        newEntity = graphStore.createEntityInStore(newEntity);
+
+        return newEntity;
+    }
 
 
     // addEntityProxy
@@ -424,6 +450,87 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
         return relationship;
     }
+
+
+    // addExternalRelationship
+    public Relationship addExternalRelationship(String               userId,
+                                                String               relationshipTypeGUID,
+                                                String               externalSourceGUID,
+                                                String               externalSourceName,
+                                                InstanceProperties   initialProperties,
+                                                String               entityOneGUID,
+                                                String               entityTwoGUID,
+                                                InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           TypeErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           StatusNotSupportedException,
+                                                                                           UserNotAuthorizedException
+    {
+        final String methodName = "addExternalRelationship";
+
+        /*
+         * Validate parameters
+         */
+        TypeDef typeDef = super.addRelationshipParameterValidation(userId,
+                                                                   relationshipTypeGUID,
+                                                                   initialProperties,
+                                                                   entityOneGUID,
+                                                                   entityTwoGUID,
+                                                                   initialStatus,
+                                                                   methodName);
+
+
+        /*
+         * Validation complete - ok to create new instance
+         */
+        Relationship relationship = repositoryHelper.getNewRelationship(repositoryName,
+                                                                        externalSourceGUID,
+                                                                        InstanceProvenanceType.EXTERNAL_SOURCE,
+                                                                        userId,
+                                                                        typeDef.getName(),
+                                                                        initialProperties);
+
+        relationship.setMetadataCollectionName(externalSourceName);
+        relationship.setReplicatedBy(metadataCollectionId);
+
+
+        /*
+         * Retrieve a proxy for entity 1
+         */
+        EntityProxy entityOneProxy = graphStore.getEntityProxyFromStore(entityOneGUID);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
+
+        /*
+         * Retrieve a proxy for entity 2
+         */
+        EntityProxy entityTwoProxy = graphStore.getEntityProxyFromStore(entityTwoGUID);
+
+        repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
+        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
+
+
+        repositoryValidator.validateRelationshipEnds(repositoryName, entityOneProxy, entityTwoProxy, typeDef, methodName);
+
+        relationship.setEntityOneProxy(entityOneProxy);
+        relationship.setEntityTwoProxy(entityTwoProxy);
+
+        /*
+         * If an initial status is supplied then override the default value.
+         */
+        if (initialStatus != null)
+        {
+            relationship.setStatus(initialStatus);
+        }
+
+        graphStore.createRelationshipInStore(relationship);
+
+        return relationship;
+    }
+
 
     // getRelationship
     public Relationship getRelationship(String    userId,

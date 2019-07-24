@@ -20,14 +20,11 @@ class AssetOwnerRegistration
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService()
+    static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  AccessServiceOperationalStatus.ENABLED,
                                                                                  AssetOwnerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

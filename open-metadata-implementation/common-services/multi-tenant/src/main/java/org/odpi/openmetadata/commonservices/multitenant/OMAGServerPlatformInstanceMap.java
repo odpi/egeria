@@ -2,9 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
@@ -25,6 +31,227 @@ public class OMAGServerPlatformInstanceMap
 {
     private static Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
     private static Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
+
+
+    /**
+     * Verify that the calling user is allowed to query the platform services.
+     *
+     * @param userId calling user
+     * @throws UserNotAuthorizedException calling user not allowed to use these services
+     */
+    private static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+    }
+
+
+    /**
+     * Create a service description object.
+     *
+     * @param serviceName name of the service
+     * @param serviceURLMarker name use in URLs
+     * @param serviceDescription short description
+     * @param serviceWiki link to more info
+     * @return service description object
+     */
+    private static RegisteredOMAGService getServiceDescription(String serviceName,
+                                                               String serviceURLMarker,
+                                                               String serviceDescription,
+                                                               String serviceWiki)
+    {
+        RegisteredOMAGService service = new RegisteredOMAGService();
+
+        service.setServiceName(serviceName);
+        service.setServiceURLMarker(serviceURLMarker);
+        service.setServiceDescription(serviceDescription);
+        service.setServiceWiki(serviceWiki);
+
+        return service;
+    }
+
+
+    /**
+     * Return the list of access services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a server.
+     *
+     * @param userId calling user
+     * @return list of access service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredAccessServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Access Services implemented in this server.
+         */
+        List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+
+        /*
+         * Set up the available access services.
+         */
+        if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
+        {
+            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            {
+                if (registration != null)
+                {
+                    if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                    {
+                        response.add(getServiceDescription(registration.getAccessServiceName(),
+                                                           registration.getAccessServiceURLMarker(),
+                                                           registration.getAccessServiceDescription(),
+                                                           registration.getAccessServiceWiki()));
+                    }
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of governance services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a governance server.
+     *
+     * @param userId calling user
+     * @return list of governance service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredGovernanceServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Governance Services implemented in this server.
+         */
+        GovernanceServicesDescription[] governanceServicesDescriptions = GovernanceServicesDescription.values();
+
+        /*
+         * Set up the available governance services.
+         */
+        if (governanceServicesDescriptions.length != 0)
+        {
+            for (GovernanceServicesDescription registration : governanceServicesDescriptions)
+            {
+                if (registration != null)
+                {
+                    response.add(getServiceDescription(registration.getServiceName(),
+                                                       registration.getServiceURLMarker(),
+                                                       registration.getServiceDescription(),
+                                                       registration.getServiceWiki()));
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of common services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredCommonServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Common Services implemented in this server.
+         */
+        CommonServicesDescription[] commonServicesDescriptions = CommonServicesDescription.values();
+
+        /*
+         * Set up the available governance services.
+         */
+        if (commonServicesDescriptions.length != 0)
+        {
+            for (CommonServicesDescription registration : commonServicesDescriptions)
+            {
+                if (registration != null)
+                {
+                    response.add(getServiceDescription(registration.getServiceName(),
+                                                       registration.getServiceURLMarker(),
+                                                       registration.getServiceDescription(),
+                                                       registration.getServiceWiki()));
+                }
+            }
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of  services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getAllRegisteredServices(String userId) throws UserNotAuthorizedException
+    {
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        List<RegisteredOMAGService> services = getRegisteredCommonServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredAccessServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredGovernanceServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        return response;
+    }
 
 
     /**
@@ -122,17 +349,12 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized boolean isServerInstanceActive(String  userId,
                                                                String  serverName) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        validateUserAsInvestigatorForPlatform(userId);
 
         return (activeServerInstanceMap.get(serverName) != null);
     }
+
+
 
     /**
      * Return whether a particular service is registered with this platform.
@@ -147,14 +369,7 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized boolean isServerInstanceKnown(String  userId,
                                                               String  serverName) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        validateUserAsInvestigatorForPlatform(userId);
 
         return ((activeServerInstanceMap.get(serverName) != null) ||
                 (inActiveServerInstanceMap.get(serverName) != null));
