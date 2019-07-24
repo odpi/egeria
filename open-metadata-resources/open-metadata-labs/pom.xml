@@ -8,27 +8,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>egeria</artifactId>
+        <artifactId>open-metadata-resources</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Resources</name>
+    <name>Open Metadata Labs</name>
     <description>
-        The open metadata resources contains the open metadata demos and samples.
+        Python notebooks illustrating how to use Egeria.
     </description>
 
-    <artifactId>open-metadata-resources</artifactId>
-
-    <packaging>pom</packaging>
-    <modules>
-        <module>open-metadata-samples</module>
-        <module>open-metadata-demos</module>
-        <module>open-metadata-tutorials</module>
-        <module>open-metadata-labs</module>
-        <module>open-metadata-deployment</module>
-    </modules>
+    <artifactId>open-metadata-labs</artifactId>
 
 </project>
