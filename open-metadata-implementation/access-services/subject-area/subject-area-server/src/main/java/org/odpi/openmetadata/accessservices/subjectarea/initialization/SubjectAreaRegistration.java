@@ -22,10 +22,7 @@ public class SubjectAreaRegistration
     public static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.SUBJECT_AREA_OMAS;
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                 AccessServiceOperationalStatus.ENABLED,
                 SubjectAreaAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

@@ -2,16 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.discoveryserver.handlers;
 
+import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
-import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryContext;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
-import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
+import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.Date;
-import java.util.List;
 
 
 public class DiscoveryServiceHandler implements Runnable
@@ -22,6 +21,8 @@ public class DiscoveryServiceHandler implements Runnable
     private DiscoveryService          discoveryService;
     private DiscoveryContext          discoveryContext;
     private OMRSAuditLog              auditLog;
+    private DiscoveryEngineClient     discoveryEngineClient;
+    private String                    discoveryEngineUserId;
 
 
     /**
@@ -35,13 +36,17 @@ public class DiscoveryServiceHandler implements Runnable
      * @param discoveryService connector that does the work
      * @param discoveryContext context for the connector
      * @param auditLog destination for log messages
+     * @param discoveryEngineClient client connected to the metadata repository
+     * @param discoveryEngineUserId this server's userId for calling the metadata repository
      */
      DiscoveryServiceHandler(DiscoveryEngineProperties discoveryEngineProperties,
                              String                    assetType,
                              String                    discoveryServiceName,
                              DiscoveryService          discoveryService,
                              DiscoveryContext          discoveryContext,
-                             OMRSAuditLog              auditLog)
+                             OMRSAuditLog              auditLog,
+                             DiscoveryEngineClient     discoveryEngineClient,
+                             String                    discoveryEngineUserId)
     {
         this.discoveryEngineProperties = discoveryEngineProperties;
         this.assetType = assetType;
@@ -49,6 +54,8 @@ public class DiscoveryServiceHandler implements Runnable
         this.discoveryService = discoveryService;
         this.discoveryContext = discoveryContext;
         this.auditLog = auditLog;
+        this.discoveryEngineClient = discoveryEngineClient;
+        this.discoveryEngineUserId = discoveryEngineUserId;
     }
 
 
@@ -80,7 +87,12 @@ public class DiscoveryServiceHandler implements Runnable
 
         try
         {
+            discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
+                                                     discoveryContext.getDiscoveryReportGUID(),
+                                                     DiscoveryRequestStatus.IN_PROGRESS);
+
             discoveryService.setDiscoveryContext(discoveryContext);
+            discoveryService.setDiscoveryServiceName(discoveryServiceName);
             startTime = new Date();
             discoveryService.start();
             endTime = new Date();
@@ -97,6 +109,9 @@ public class DiscoveryServiceHandler implements Runnable
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
+            discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
+                                                     discoveryContext.getDiscoveryReportGUID(),
+                                                     DiscoveryRequestStatus.COMPLETED);
             discoveryService.disconnect();
         }
         catch (Throwable  error)
@@ -116,6 +131,28 @@ public class DiscoveryServiceHandler implements Runnable
                                error.toString(),
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+
+            try
+            {
+                discoveryEngineClient.setDiscoveryStatus(discoveryEngineUserId,
+                                                         discoveryContext.getDiscoveryReportGUID(),
+                                                         DiscoveryRequestStatus.FAILED);
+            }
+            catch (Throwable statusError)
+            {
+                auditCode = DiscoveryServerAuditCode.EXC_ON_ERROR_STATUS_UPDATE;
+                auditLog.logException(actionDescription,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(discoveryEngineProperties.getDisplayName(),
+                                                                       discoveryServiceName,
+                                                                       statusError.getClass().getName(),
+                                                                       statusError.getMessage()),
+                                      statusError.toString(),
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      statusError);
+            }
         }
     }
 }

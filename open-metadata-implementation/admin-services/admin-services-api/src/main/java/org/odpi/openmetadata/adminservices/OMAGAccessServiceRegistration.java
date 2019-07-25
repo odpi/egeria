@@ -65,4 +65,28 @@ public class OMAGAccessServiceRegistration
         return registrationList;
     }
 
+
+    /**
+     * Retrieve the requested OMAS registration information
+     *
+     * @return access service registration info
+     */
+    public static synchronized AccessServiceRegistration getAccessServiceRegistration(String   urlMarker)
+    {
+        if (urlMarker != null)
+        {
+            for (AccessServiceRegistration accessServiceRegistration : accessServiceRegistrationMap.values())
+            {
+                if (accessServiceRegistration != null)
+                {
+                    if (urlMarker.equals(accessServiceRegistration.getAccessServiceURLMarker()))
+                    {
+                        return accessServiceRegistration;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
 }
