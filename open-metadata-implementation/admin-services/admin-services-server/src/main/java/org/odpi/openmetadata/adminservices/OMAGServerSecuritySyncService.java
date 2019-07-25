@@ -6,7 +6,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
