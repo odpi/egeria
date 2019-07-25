@@ -1666,7 +1666,7 @@
                     <configuration>
                         <forkCount>3</forkCount>
                         <reuseForks>true</reuseForks>
-                        <argLine>-Xmx1024m</argLine>
+                        <argLine>-Xmx1024m ${argLine}</argLine>
                         <includes>
                             <include>**/*Test.java</include>
                         </includes>
@@ -1801,6 +1801,8 @@
                         <exclude>**/*.drawio</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.csv</exclude>
+                        <exclude>**/*.ipynb</exclude>
+                        <exclude>**/*.png</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>

@@ -14,17 +14,14 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
  * then use this registration information as confirmation that there is an implementation of this
  * access service in the server and it can be configured and used.
  */
-public class AssetCatalogRegistration {
+class AssetCatalogRegistration {
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService() {
+    static void registerAccessService() {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                myDescription.getAccessServiceName(),
-                myDescription.getAccessServiceDescription(),
-                myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                 AccessServiceOperationalStatus.ENABLED,
                 AssetCatalogAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

@@ -10,8 +10,12 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -24,6 +28,8 @@ import java.util.Map;
  */
 public class OMAGServerAdminForAccessServices
 {
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminForAccessServices.class);
+
     private static final String      defaultInTopicName = "InTopic";
     private static final String      defaultOutTopicName = "OutTopic";
 
@@ -37,6 +43,166 @@ public class OMAGServerAdminForAccessServices
      */
     public OMAGServerAdminForAccessServices()
     {
+    }
+
+
+    /**
+     * Return the list of access services that are configured for this server.
+     *
+     * @param userId calling user
+     * @return list of access service descriptions
+     */
+    public RegisteredOMAGServicesResponse getConfiguredAccessServices(String              userId,
+                                                                      String              serverName)
+    {
+        final String methodName = "getConfiguredAccessServices";
+
+        log.debug("Calling method: " + methodName);
+
+        RegisteredOMAGServicesResponse response = new RegisteredOMAGServicesResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            /*
+             * Get the list of Access Services configured in this server.
+             */
+            List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
+
+            /*
+             * Set up the available access services.
+             */
+            if ((accessServiceConfigList != null) && (! accessServiceConfigList.isEmpty()))
+            {
+                for (AccessServiceConfig accessServiceConfig : accessServiceConfigList)
+                {
+                    if (accessServiceConfig != null)
+                    {
+                        if (accessServiceConfig.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                        {
+                            RegisteredOMAGService service = new RegisteredOMAGService();
+
+                            service.setServiceName(accessServiceConfig.getAccessServiceName());
+                            service.setServiceDescription(accessServiceConfig.getAccessServiceDescription());
+                            service.setServiceURLMarker(accessServiceConfig.getAccessServiceURLMarker());
+                            service.setServiceWiki(accessServiceConfig.getAccessServiceWiki());
+                        }
+                    }
+                }
+
+            }
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Enable a single access service.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException the event bus has not been configured or
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+    public VoidResponse configureAccessService(String              userId,
+                                               String              serverName,
+                                               String              serviceURLMarker,
+                                               Map<String, Object> accessServiceOptions)
+    {
+        final String methodName = "configureAccessService";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            /*
+             * Validate and set up the userName and server name.
+             */
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            EventBusConfig            eventBusConfig          = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
+            List<AccessServiceConfig> accessServiceConfigList = serverConfig.getAccessServicesConfig();
+            EnterpriseAccessConfig    enterpriseAccessConfig  = this.getEnterpriseAccessConfig(serverConfig);
+
+            /*
+             * Get the registration information for this access service.
+             */
+            AccessServiceRegistration accessServiceRegistration = OMAGAccessServiceRegistration.getAccessServiceRegistration(serviceURLMarker);
+
+            errorHandler.validateAccessServiceIsRegistered(accessServiceRegistration, serviceURLMarker, serverName, methodName);
+
+            accessServiceConfigList = this.updateAccessServiceConfig(createAccessServiceConfig(accessServiceRegistration,
+                                                                                               accessServiceOptions,
+                                                                                               eventBusConfig,
+                                                                                               serverName,
+                                                                                               serverConfig.getLocalServerId()),
+                                                                     accessServiceConfigList);
+
+
+            if (enterpriseAccessConfig == null)
+            {
+                /*
+                 * Set up the enterprise repository services if this is the first access service.
+                 */
+                OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+                enterpriseAccessConfig = configurationFactory.getDefaultEnterpriseAccessConfig(serverConfig.getLocalServerName(),
+                                                                                               serverConfig.getLocalServerId());
+            }
+
+            this.setAccessServicesConfig(userId, serverName, accessServiceConfigList);
+            this.setEnterpriseAccessConfig(userId, serverName, enterpriseAccessConfig);
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -57,6 +223,8 @@ public class OMAGServerAdminForAccessServices
                                              Map<String, Object> accessServiceOptions)
     {
         final String methodName = "enableAccessServices";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -90,27 +258,11 @@ public class OMAGServerAdminForAccessServices
                     {
                         if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
                         {
-                            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-                            AccessServiceConfig accessServiceConfig = new AccessServiceConfig(registration);
-
-                            accessServiceConfig.setAccessServiceOptions(accessServiceOptions);
-                            accessServiceConfig.setAccessServiceInTopic(
-                                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
-                                                                                               eventBusConfig.getConnectorProvider(),
-                                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                                               registration.getAccessServiceInTopic(),
-                                                                                               serverConfig.getLocalServerId(),
-                                                                                               eventBusConfig.getConfigurationProperties()));
-                            accessServiceConfig.setAccessServiceOutTopic(
-                                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
-                                                                                               eventBusConfig.getConnectorProvider(),
-                                                                                               eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                                                                               registration.getAccessServiceOutTopic(),
-                                                                                               serverConfig.getLocalServerId(),
-                                                                                               eventBusConfig.getConfigurationProperties()));
-
-                            accessServiceConfigList.add(accessServiceConfig);
+                            accessServiceConfigList.add(createAccessServiceConfig(registration,
+                                                                                  accessServiceOptions,
+                                                                                  eventBusConfig,
+                                                                                  serverName,
+                                                                                  serverConfig.getLocalServerId()));
                         }
                     }
                 }
@@ -148,7 +300,86 @@ public class OMAGServerAdminForAccessServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
+    }
+
+
+    /**
+     * Set up the configuration for a single access service.
+     *
+     * @param registration registration information about the service.
+     * @param accessServiceOptions options for the service
+     * @param eventBusConfig details of the event bus
+     * @param serverName name of this server
+     * @param localServerId unique Id for this server
+     * @return newly created config object
+     */
+    private AccessServiceConfig  createAccessServiceConfig(AccessServiceRegistration   registration,
+                                                           Map<String, Object>         accessServiceOptions,
+                                                           EventBusConfig              eventBusConfig,
+                                                           String                      serverName,
+                                                           String                      localServerId)
+    {
+        ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+        AccessServiceConfig accessServiceConfig = new AccessServiceConfig(registration);
+
+        accessServiceConfig.setAccessServiceOptions(accessServiceOptions);
+        accessServiceConfig.setAccessServiceInTopic(
+                connectorConfigurationFactory.getDefaultEventBusConnection(defaultInTopicName,
+                                                                           eventBusConfig.getConnectorProvider(),
+                                                                           eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                                                           registration.getAccessServiceInTopic(),
+                                                                           localServerId,
+                                                                           eventBusConfig.getConfigurationProperties()));
+        accessServiceConfig.setAccessServiceOutTopic(
+                connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
+                                                                           eventBusConfig.getConnectorProvider(),
+                                                                           eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                                                           registration.getAccessServiceOutTopic(),
+                                                                           localServerId,
+                                                                           eventBusConfig.getConfigurationProperties()));
+
+        return accessServiceConfig;
+    }
+
+
+    /**
+     * Add/update the configuration for a single service in the configuration.
+     *
+     * @param accessServiceConfig configuration to add/change
+     * @param currentList current config (may be null)
+     * @return updated list
+     */
+    private List<AccessServiceConfig>  updateAccessServiceConfig(AccessServiceConfig         accessServiceConfig,
+                                                                 List<AccessServiceConfig>   currentList)
+    {
+        List<AccessServiceConfig> newList = currentList;
+
+        if (accessServiceConfig != null)
+        {
+            if (newList == null)
+            {
+                newList = new ArrayList<>();
+            }
+
+            for (AccessServiceConfig existingConfig : newList)
+            {
+                if (existingConfig != null)
+                {
+                    if (accessServiceConfig.getAccessServiceId() == existingConfig.getAccessServiceId())
+                    {
+                        newList.remove(existingConfig);
+                    }
+                }
+            }
+
+            newList.add(accessServiceConfig);
+        }
+
+        return newList;
     }
 
 
@@ -166,6 +397,8 @@ public class OMAGServerAdminForAccessServices
                                               String          serverName)
     {
         final String methodName = "disableAccessServices";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -193,6 +426,8 @@ public class OMAGServerAdminForAccessServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -213,6 +448,8 @@ public class OMAGServerAdminForAccessServices
                                                 List<AccessServiceConfig> accessServicesConfig)
     {
         final String methodName = "setAccessServicesConfig";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -258,7 +495,28 @@ public class OMAGServerAdminForAccessServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
+    }
+
+
+    /**
+     * Extract the current value of the enterprise access configuration.
+     *
+     * @param serverConfig current configuration
+     * @return enterprise access configuration
+     */
+    private EnterpriseAccessConfig getEnterpriseAccessConfig(OMAGServerConfig   serverConfig)
+    {
+        RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+        if (repositoryServicesConfig != null)
+        {
+            return repositoryServicesConfig.getEnterpriseAccessConfig();
+        }
+
+        return null;
     }
 
 
@@ -280,6 +538,8 @@ public class OMAGServerAdminForAccessServices
                                                   EnterpriseAccessConfig enterpriseAccessConfig)
     {
         final String methodName = "setEnterpriseAccessConfig";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -338,6 +598,8 @@ public class OMAGServerAdminForAccessServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
