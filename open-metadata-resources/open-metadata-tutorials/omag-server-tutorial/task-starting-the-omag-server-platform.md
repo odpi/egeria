@@ -54,7 +54,7 @@ Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 This means your OMAG server platform is running.  Try the following command:
 
 ```text
-$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform-origin
+$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform/origin
 ODPi Egeria OMAG Server Platform
 $
 ```

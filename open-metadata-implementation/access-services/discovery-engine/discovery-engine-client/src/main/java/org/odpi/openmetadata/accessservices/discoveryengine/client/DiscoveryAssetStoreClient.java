@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 
 /**
@@ -22,7 +23,6 @@ import org.odpi.openmetadata.frameworks.discovery.DiscoveryAssetStore;
 public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
 {
     private DiscoveryEngineClient discoveryEngineClient;    /* Initialized in constructor */
-
 
     /**
      * Constructor sets up the key parameters for accessing the asset store.
@@ -61,7 +61,6 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
     /**
      * Returns the connector corresponding to the supplied connection.
      *
-     * @param userId       userId of user making request.
      * @param connection   the connection object that contains the properties needed to create the connection.
      *
      * @return Connector   connector instance
@@ -71,8 +70,7 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
      *                                      the creation of a connector.
      * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      */
-    public Connector getConnectorByConnection(String     userId,
-                                              Connection connection) throws InvalidParameterException,
+    public Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
                                                                             ConnectionCheckedException,
                                                                             ConnectorCheckedException
     {
@@ -83,20 +81,33 @@ public class DiscoveryAssetStoreClient extends DiscoveryAssetStore
     /**
      * Returns a comprehensive collection of properties about the requested asset.
      *
-     * @param userId         userId of user making request.
-     * @param assetGUID      unique identifier for asset.
-     *
      * @return a comprehensive collection of properties about the asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public AssetUniverse getAssetProperties(String userId,
-                                            String assetGUID) throws InvalidParameterException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public AssetUniverse getAssetProperties() throws InvalidParameterException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException
     {
         return discoveryEngineClient.getAssetProperties(userId, assetGUID);
+    }
+
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param message message to log
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void logAssetAuditMessage(String    message) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        discoveryEngineClient.logAssetAuditMessage(userId, assetGUID, message);
     }
 }

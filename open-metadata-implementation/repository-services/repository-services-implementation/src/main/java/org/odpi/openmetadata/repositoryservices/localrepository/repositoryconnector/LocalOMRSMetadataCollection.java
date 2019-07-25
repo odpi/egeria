@@ -2199,7 +2199,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validation complete, ok to create new instance
          */
-
         EntityDetail   entity = realMetadataCollection.addEntity(userId,
                                                                  entityTypeGUID,
                                                                  initialProperties,
@@ -2279,39 +2278,35 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        TypeDef typeDef = super.addExternalEntityParameterValidation(userId,
-                                                                     entityTypeGUID,
-                                                                     externalSourceGUID,
-                                                                     initialProperties,
-                                                                     initialClassifications,
-                                                                     initialStatus,
-                                                                     methodName);
-
+        super.addExternalEntityParameterValidation(userId,
+                                                   entityTypeGUID,
+                                                   externalSourceGUID,
+                                                   initialProperties,
+                                                   initialClassifications,
+                                                   initialStatus,
+                                                   methodName);
 
         /*
          * Validation complete, ok to create new instance
          */
-        EntityDetail entity = repositoryHelper.getNewEntity(externalSourceName,
-                                                            externalSourceGUID,
-                                                            InstanceProvenanceType.EXTERNAL_SOURCE,
-                                                            userId,
-                                                            typeDef.getName(),
-                                                            initialProperties,
-                                                            initialClassifications);
+        EntityDetail   entity = realMetadataCollection.addExternalEntity(userId,
+                                                                         entityTypeGUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         initialProperties,
+                                                                         initialClassifications,
+                                                                         initialStatus);
 
-
-        /*
-         * Since the event propagation can be handled by the local repository, the real
-         * local repository can store this entity as a reference copy.
-         */
         if (entity != null)
         {
+            setLocalProvenance(entity);
             entity.setReplicatedBy(metadataCollectionId);
 
-            try
+            /*
+             * OK to send out
+             */
+            if (produceEventsForRealConnector)
             {
-                this.saveEntityReferenceCopy(userId, entity);
-
                 outboundRepositoryEventProcessor.processNewEntityEvent(repositoryName,
                                                                        metadataCollectionId,
                                                                        localServerName,
@@ -2319,15 +2314,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                        localOrganizationName,
                                                                        entity);
             }
-            catch (InvalidEntityException | HomeEntityException | EntityConflictException error)
-            {
-                throw new RepositoryErrorException(error);
-            }
         }
 
         return entity;
     }
-
 
 
     /**
@@ -2377,11 +2367,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     private EntityDetail validateEntityNotProxy(String           userId,
-                                        String           entityGUID,
-                                        String           methodName) throws InvalidParameterException,
-                                                                            RepositoryErrorException,
-                                                                            EntityNotKnownException,
-                                                                            UserNotAuthorizedException
+                                                String           entityGUID,
+                                                String           methodName) throws InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    EntityNotKnownException,
+                                                                                    UserNotAuthorizedException
     {
         try
         {
@@ -3096,74 +3086,45 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
         /*
          * Validate parameters
          */
-        TypeDef  typeDef = super.addExternalRelationshipParameterValidation(userId,
-                                                                            relationshipTypeGUID,
-                                                                            externalSourceGUID,
-                                                                            initialProperties,
-                                                                            entityOneGUID,
-                                                                            entityTwoGUID,
-                                                                            initialStatus,
-                                                                            methodName);
+        super.addExternalRelationshipParameterValidation(userId,
+                                                         relationshipTypeGUID,
+                                                         externalSourceGUID,
+                                                         initialProperties,
+                                                         entityOneGUID,
+                                                         entityTwoGUID,
+                                                         initialStatus,
+                                                         methodName);
+
 
         /*
          * Validation complete ok to create new instance
-         *
-         * Since the event propagation is owned by the local repository, the real
-         * local repository can store this relationship as a reference copy.
          */
-        Relationship relationship = repositoryHelper.getNewRelationship(externalSourceName,
-                                                                        externalSourceGUID,
-                                                                        InstanceProvenanceType.EXTERNAL_SOURCE,
-                                                                        userId,
-                                                                        typeDef.getName(),
-                                                                        initialProperties);
+
+        Relationship   relationship = realMetadataCollection.addExternalRelationship(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     externalSourceGUID,
+                                                                                     externalSourceName,
+                                                                                     initialProperties,
+                                                                                     entityOneGUID,
+                                                                                     entityTwoGUID,
+                                                                                     initialStatus);
+
         if (relationship != null)
         {
+            setLocalProvenance(relationship);
+            relationship.setReplicatedBy(metadataCollectionId);
+
             /*
-             * Retrieve a proxy for entity 1
+             * OK to send out
              */
-            EntityDetail  entityOneDetail = realMetadataCollection.isEntityKnown(userId, entityOneGUID);
-            EntityDetail  entityTwoDetail = realMetadataCollection.isEntityKnown(userId, entityTwoGUID);
-
-            if ((entityOneDetail != null ) && (entityTwoDetail != null))
+            if (produceEventsForRealConnector)
             {
-                EntityProxy entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
-                EntityProxy entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
-
-                repositoryValidator.validateRelationshipEnds(repositoryName,
-                                                             entityOneProxy,
-                                                             entityTwoProxy,
-                                                             typeDef,
-                                                             methodName);
-
-                relationship.setEntityOneProxy(entityOneProxy);
-                relationship.setEntityTwoProxy(entityTwoProxy);
-
-                /*
-                 * If an initial status is supplied then override the default value.
-                 */
-                if (initialStatus != null)
-                {
-                    relationship.setStatus(initialStatus);
-                }
-
-                relationship.setReplicatedBy(metadataCollectionId);
-
-                try
-                {
-                    this.saveRelationshipReferenceCopy(userId, relationship);
-
-                    outboundRepositoryEventProcessor.processNewRelationshipEvent(repositoryName,
-                                                                                 metadataCollectionId,
-                                                                                 localServerName,
-                                                                                 localServerType,
-                                                                                 localOrganizationName,
-                                                                                 relationship);
-                }
-                catch (InvalidRelationshipException | HomeRelationshipException | RelationshipConflictException error)
-                {
-                    throw new RepositoryErrorException(error);
-                }
+                outboundRepositoryEventProcessor.processNewRelationshipEvent(repositoryName,
+                                                                             metadataCollectionId,
+                                                                             localServerName,
+                                                                             localServerType,
+                                                                             localOrganizationName,
+                                                                             relationship);
             }
         }
 
