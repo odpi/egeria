@@ -98,7 +98,7 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/glossary")
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/home-glossary")
     public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
                                                                 @PathVariable("userId") String userId,
                                                                 @PathVariable("termGUID") @NotBlank String termGUID) {
@@ -121,7 +121,7 @@ public class GlossaryResource {
      *
      * @return glossaries
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/glossary")
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/home-glossary")
     public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(@PathVariable("serverName") String serverName,
                                                                     @PathVariable("userId") String userId,
                                                                     @PathVariable("categoryGUID") @NotBlank String categoryGUID) {

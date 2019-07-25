@@ -12,7 +12,6 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 public class TermService extends GlossaryViewOMAS {
 
     private static final String TERM_TYPE_NAME = "GlossaryTerm";
-    private static final String CATEGORY_TYPE_NAME = "GlossaryCategory";
 
     private static final String TERM_CATEGORIZATION_RELATIONSHIP_NAME = "TermCategorization";
     private static final String LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME = "LibraryTermReference";
@@ -27,6 +26,9 @@ public class TermService extends GlossaryViewOMAS {
     private static final String VALID_VALUE_RELATIONSHIP_NAME = "ValidValue";
     private static final String USED_IN_CONTEXT_RELATIONSHIP_NAME = "UsedInContext";
     private static final String SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME = "SemanticAssignment";
+    private static final String TERM_HAS_A_RELATIONSHIP_NAME = "TermHASARelationship";
+    private static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME = "TermISATypeOFRelationship";
+    private static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
 
     public TermService() {}
 
@@ -107,7 +109,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse related terms
      */
     public GlossaryViewEntityDetailResponse getRelatedTerms(String userId, String serverName, String termGUID,
-                                                                  Integer from, Integer size){
+                                                            Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, RELATED_TERM_RELATIONSHIP_NAME,
                 from, size, "getRelatedTerms");
     }
@@ -124,7 +126,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse synonyms
      */
     public GlossaryViewEntityDetailResponse getSynonyms(String userId, String serverName, String termGUID,
-                                                            Integer from, Integer size){
+                                                        Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, SYNONYM_RELATIONSHIP_NAME,
                 from, size, "getSynonyms");
     }
@@ -158,7 +160,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse preferred terms
      */
     public GlossaryViewEntityDetailResponse getPreferredTerms(String userId, String serverName, String termGUID,
-                                                        Integer from, Integer size){
+                                                              Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, PREFERRED_TERM_RELATIONSHIP_NAME,
                 from, size,"getPreferredTerms");
     }
@@ -175,7 +177,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse replacement terms
      */
     public GlossaryViewEntityDetailResponse getReplacementTerms(String userId, String serverName, String termGUID,
-                                                              Integer from, Integer size){
+                                                                Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, REPLACEMENT_TERM_RELATIONSHIP_NAME,
                 from, size,"getReplacementTerms");
     }
@@ -192,7 +194,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse translations
      */
     public GlossaryViewEntityDetailResponse getTranslations(String userId, String serverName, String termGUID,
-                                                                Integer from, Integer size){
+                                                            Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, TRANSLATION_RELATIONSHIP_NAME,
                 from, size, "getTranslations");
     }
@@ -209,7 +211,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse "is a"
      */
     public GlossaryViewEntityDetailResponse getIsA(String userId, String serverName, String termGUID,
-                                                            Integer from, Integer size){
+                                                   Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, IS_A_RELATIONSHIP_NAME,
                 from, size, "getIsA");
     }
@@ -226,7 +228,7 @@ public class TermService extends GlossaryViewOMAS {
      * @return EntityDetailResponse valid values
      */
     public GlossaryViewEntityDetailResponse getValidValues(String userId, String serverName, String termGUID,
-                                                   Integer from, Integer size){
+                                                           Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, VALID_VALUE_RELATIONSHIP_NAME,
                 from, size, "getValidValues");
     }
@@ -242,8 +244,8 @@ public class TermService extends GlossaryViewOMAS {
      *
      * @return EntityDetailResponse "used in contexts"
      */
-    public GlossaryViewEntityDetailResponse getUsedInContexts(String userId, String serverName, String termGUID,
-                                                           Integer from, Integer size){
+    public GlossaryViewEntityDetailResponse getUsedInContexts(String userId, String serverName, String termGUID, Integer from,
+                                                              Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, USED_IN_CONTEXT_RELATIONSHIP_NAME,
                 from, size, "getUsedInContexts");
     }
@@ -263,6 +265,57 @@ public class TermService extends GlossaryViewOMAS {
                                                                 Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, SEMANTIC_ASSIGNMENT_RELATIONSHIP_NAME,
                 from, size, "getAssignedElements");
+    }
+
+    /**
+     * Extract attributes
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return EntityDetailResponse semantic assignments
+     */
+    public GlossaryViewEntityDetailResponse getAttributes(String userId, String serverName, String termGUID, Integer from,
+                                                          Integer size){
+        return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, TERM_HAS_A_RELATIONSHIP_NAME,
+                from, size, "getAttributes");
+    }
+
+    /**
+     * Extract subtypes
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return EntityDetailResponse semantic assignments
+     */
+    public GlossaryViewEntityDetailResponse getSubtypes(String userId, String serverName, String termGUID, Integer from,
+                                                        Integer size){
+        return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, TERM_IS_A_TYPE_OF_RELATIONSHIP_NAME,
+                from, size, "getSubtypes");
+    }
+
+    /**
+     * Extract types
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return EntityDetailResponse semantic assignments
+     */
+    public GlossaryViewEntityDetailResponse getTypes(String userId, String serverName, String termGUID, Integer from,
+                                                     Integer size){
+        return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME, TERM_TYPED_BY_RELATIONSHIP_NAME,
+                from, size, "getTypes");
     }
 
 }
