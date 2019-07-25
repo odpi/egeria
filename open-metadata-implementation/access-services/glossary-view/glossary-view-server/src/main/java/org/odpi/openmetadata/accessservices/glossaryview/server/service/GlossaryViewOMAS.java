@@ -3,9 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
-import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewException;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSExceptionWrapper;
-import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSRuntimeExceptionWrapper;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewClassification;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailFactory;
@@ -14,9 +12,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -117,7 +115,8 @@ public class GlossaryViewOMAS extends OMRSClient {
                 response.addEntityDetail(entityDetailConverter.apply(entityDetail.get()));
             }
         }catch (OMRSExceptionWrapper ew){
-            prepare(response, ew);
+            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
+                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
         return response;
     }
@@ -152,10 +151,9 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(entity -> !entity.getGUID().equals(entityGUID))
                     .map(entity -> entityDetailConverter.apply(entity))
                     .collect(Collectors.toList()));
-        }catch (OMRSExceptionWrapper | GlossaryViewException e){
-            prepare(response, e);
-        }catch (OMRSRuntimeExceptionWrapper ew){
-            prepare(response, ew);
+        }catch (OMRSExceptionWrapper ew){
+            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
+                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
 
         return response;
@@ -186,8 +184,9 @@ public class GlossaryViewOMAS extends OMRSClient {
             response.addEntityDetails(entities.stream()
                     .map(entity -> entityDetailConverter.apply(entity) )
                     .collect(Collectors.toList()));
-        }catch (OMRSExceptionWrapper | GlossaryViewException e){
-            prepare(response, e);
+        }catch (OMRSExceptionWrapper ew){
+            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
+                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
 
         return response;
@@ -197,12 +196,22 @@ public class GlossaryViewOMAS extends OMRSClient {
      * Prepares the response with information from caught exception
      *
      * @param response
-     * @param exception
+     * @param httpCode  http response code to use if this exception flows over a REST call
+     * @param className  name of class reporting error
+     * @param userAction  instructions for correcting the error
+     * @param errorMessage  description of error
+     * @param systemAction  actions of the system as a result of the error
+     * @param properties  description of function it was performing when error detected
      */
-    private void prepare(GlossaryViewEntityDetailResponse response, Exception exception) {
-        response.setExceptionClassName(exception.getClass().getName());
-        response.setExceptionErrorMessage(exception.getMessage());
-        response.setRelatedHTTPCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+    private void prepare(GlossaryViewEntityDetailResponse response, int httpCode, String className, String actionDescription,
+                         String userAction, String errorMessage, String systemAction, Map<String, Object> properties){
+        response.setRelatedHTTPCode(httpCode);
+        response.setExceptionClassName(className);
+        response.setActionDescription(actionDescription);
+        response.setExceptionUserAction(userAction);
+        response.setExceptionErrorMessage(errorMessage);
+        response.setExceptionSystemAction(systemAction);
+        response.setExceptionProperties(properties);
     }
 
     /**
@@ -215,12 +224,12 @@ public class GlossaryViewOMAS extends OMRSClient {
      * @return guid
      *
      */
-    private String getTypeDefGUID(String typeDefName, String userId, String serverName) throws GlossaryViewException{
+    private String getTypeDefGUID(String typeDefName, String userId, String serverName) throws OMRSExceptionWrapper{
         String getTypeDefGUID = "getTypeDefGUID";
         Optional<OMRSRepositoryHelper> helper = getOMRSRepositoryHelper(userId, serverName, getTypeDefGUID);
 
         if(!helper.isPresent()){
-            throw new GlossaryViewException(500, getClass().getSimpleName(), getTypeDefGUID, "Unable to retrieve repository helper",
+            throw new OMRSExceptionWrapper(500, getClass().getSimpleName(), getTypeDefGUID, "Unable to retrieve repository helper",
                     getTypeDefGUID, null);
         }
         return helper.get().getTypeDefByName(GLOSSARY_VIEW_OMAS, typeDefName).getGUID();
