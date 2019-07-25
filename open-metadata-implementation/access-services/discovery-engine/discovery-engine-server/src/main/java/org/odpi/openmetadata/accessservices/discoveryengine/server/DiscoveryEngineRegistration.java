@@ -24,10 +24,7 @@ class DiscoveryEngineRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  AccessServiceOperationalStatus.ENABLED,
                                                                                  DiscoveryEngineAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

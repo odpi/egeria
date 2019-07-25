@@ -10,7 +10,7 @@ public class InformationViewAsset {
     private EntityDetail endpointProperties;
     private EntityDetail connectionEntity;
     private EntityDetail connectorTypeEntity;
-    private EntityDetail dataStore;
+    private EntityDetail database;
     private EntityDetail informationViewEntity;
     private EntityDetail relationalDbSchemaType;
 
@@ -46,12 +46,12 @@ public class InformationViewAsset {
         this.connectorTypeEntity = connectorTypeEntity;
     }
 
-    public EntityDetail getDataStore() {
-        return dataStore;
+    public EntityDetail getDatabase() {
+        return database;
     }
 
-    public void setDataStore(EntityDetail dataStore) {
-        this.dataStore = dataStore;
+    public void setDatabase(EntityDetail database) {
+        this.database = database;
     }
 
     public EntityDetail getInformationViewEntity() {

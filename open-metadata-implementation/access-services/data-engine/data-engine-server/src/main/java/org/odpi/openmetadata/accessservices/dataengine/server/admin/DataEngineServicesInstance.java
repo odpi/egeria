@@ -45,7 +45,7 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
             softwareServerRegistrationHandler = new SoftwareServerRegistrationHandler(serviceName, serverName,
                     invalidParameterHandler, repositoryHandler, repositoryHelper);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper);
+                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
                     repositoryHelper);
 
