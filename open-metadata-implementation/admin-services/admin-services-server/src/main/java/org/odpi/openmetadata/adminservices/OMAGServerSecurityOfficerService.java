@@ -98,7 +98,7 @@ public class OMAGServerSecurityOfficerService
             return outputTopic + securityServerType + defaultOutTopic;
         }
 
-        return outputTopic + "SecurityOfficerServer" + defaultInTopicName;
+        return outputTopic + "SecurityOfficerServer" + defaultOutTopic;
     }
 
     public VoidResponse enableSecurityOfficerService(String userId, String serverName)
