@@ -417,4 +417,85 @@ public class TermResource {
         return response;
     }
 
+    /**
+     * Extract attributes
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/attributes")
+    public GlossaryViewEntityDetailResponse getAttributes(@PathVariable("serverName") String serverName,
+                                                          @PathVariable("userId") String userId,
+                                                          @PathVariable("termGUID") @NotBlank String termGUID,
+                                                          @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                          @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getAttributes(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getAttributes; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract subtypes
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/subtypes")
+    public GlossaryViewEntityDetailResponse getSubtypes(@PathVariable("serverName") String serverName,
+                                                          @PathVariable("userId") String userId,
+                                                          @PathVariable("termGUID") @NotBlank String termGUID,
+                                                          @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                          @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getSubtypes(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getSubtypes; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract types
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     * @param from from
+     * @param size size
+     *
+     * @return valid values
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/types")
+    public GlossaryViewEntityDetailResponse getTypes(@PathVariable("serverName") String serverName,
+                                                        @PathVariable("userId") String userId,
+                                                        @PathVariable("termGUID") @NotBlank String termGUID,
+                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getTypes(userId, serverName, termGUID, from, size);
+
+        watch.stop();
+        log.debug("Method: getTypes; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
 }
