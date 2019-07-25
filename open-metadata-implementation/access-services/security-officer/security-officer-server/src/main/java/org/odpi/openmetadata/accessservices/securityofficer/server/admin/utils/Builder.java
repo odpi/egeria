@@ -35,9 +35,7 @@ public class Builder {
 
     public SecuritySchemaElement buildSecuritySchemaElement(EntityDetail entityDetail, OMRSRepositoryHelper omrsRepositoryHelper) {
         Entity securitySchemaElement = new SecuritySchemaElement();
-
         buildEntity(entityDetail, securitySchemaElement);
-
 
         SecurityClassification securityClassification = getSecurityClassification(entityDetail, omrsRepositoryHelper);
         if (securityClassification != null && securitySchemaElement instanceof SecuritySchemaElement) {
@@ -80,11 +78,10 @@ public class Builder {
         return securityClassification;
     }
 
-    private SchemaElementEntity buildSchemaElement(EntityDetail entityDetail) {
+    public SchemaElementEntity buildSchemaElement(EntityDetail entityDetail) {
         Entity schemaElementEntity = new SchemaElementEntity();
 
         buildEntity(entityDetail, schemaElementEntity);
-
 
         schemaElementEntity.setClassifications(getClassifications(entityDetail.getClassifications()));
         return (SchemaElementEntity) schemaElementEntity;
