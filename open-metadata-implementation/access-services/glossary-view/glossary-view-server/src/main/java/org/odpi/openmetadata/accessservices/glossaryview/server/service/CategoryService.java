@@ -11,7 +11,6 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
  */
 public class CategoryService extends GlossaryViewOMAS {
 
-    private static final String GLOSSARY_TYPE_NAME = "Glossary";
     private static final String CATEGORY_TYPE_NAME = "GlossaryCategory";
 
     private static final String CATEGORY_ANCHOR_RELATIONSHIP_NAME = "CategoryAnchor";
