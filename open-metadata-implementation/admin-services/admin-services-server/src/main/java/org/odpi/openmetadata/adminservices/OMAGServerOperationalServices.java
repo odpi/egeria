@@ -549,16 +549,17 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerType(),
                         configuration.getOrganizationName(),
                         configuration.getLocalServerUserId(),
+                        configuration.getLocalServerPassword(),
                         configuration.getLocalServerURL());
 
                 instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
                 operationalDataEngineProxyServices.initialize(
                         dataEngineProxyConfig,
                         operationalRepositoryServices.getAuditLog(
-                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
-                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
-                                GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceWiki())
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki())
                 );
 
                 activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
