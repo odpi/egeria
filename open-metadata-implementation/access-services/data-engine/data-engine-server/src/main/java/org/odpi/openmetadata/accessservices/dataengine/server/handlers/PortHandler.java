@@ -122,7 +122,7 @@ public class PortHandler {
                 PortPropertiesMapper.PORT_ALIAS_TYPE_GUID, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
 
         if (!StringUtils.isEmpty(delegatesTo)) {
-            EntityDetail delegatedPort = getPortEntityByQualifiedName(userId, delegatesTo);
+            EntityDetail delegatedPort = getPortEntityDetailByQualifiedName(userId, delegatesTo);
             String delegatedPortType = getPortType(delegatedPort);
             if (delegatedPortType.equalsIgnoreCase(portType.getName())) {
                 addPortDelegationRelationship(userId, portAliasGUID, delegatedPort.getGUID());
@@ -150,9 +150,9 @@ public class PortHandler {
      * @throws PropertyServerException problem accessing the property server
      */
     private void addPortDelegationRelationship(String userId, String firstPortGUID, String secondPortGUID) throws
-                                                                                                          InvalidParameterException,
-                                                                                                          UserNotAuthorizedException,
-                                                                                                          PropertyServerException {
+                                                                                                           InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException {
         final String methodName = "addPortDelegationRelationship";
 
         validateRelationshipParameters(userId, firstPortGUID, secondPortGUID, methodName);
@@ -169,11 +169,11 @@ public class PortHandler {
         invalidParameterHandler.validateGUID(secondGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
     }
 
-    private EntityDetail getPortEntityByQualifiedName(String userId, String qualifiedName) throws
+    private EntityDetail getPortEntityDetailByQualifiedName(String userId, String qualifiedName) throws
                                                                                            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException {
-        final String methodName = "getPortEntityByQualifiedName";
+        final String methodName = "getPortEntityDetailByQualifiedName";
 
         qualifiedName = RegexEscapeUtil.escapeSpecialGraphRegexCharacters(qualifiedName);
 
@@ -217,8 +217,9 @@ public class PortHandler {
         final String methodName = "createPortEntity";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(userId, displayName, methodName);
-        invalidParameterHandler.validateName(userId, qualifiedName, methodName);
+        invalidParameterHandler.validateName(displayName, PortPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
         PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, portType,
                 repositoryHelper,
