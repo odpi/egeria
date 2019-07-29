@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview;
 
 
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.informationview.context.ColumnContextBuilder;
@@ -14,20 +16,18 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.AdditionalMatchers.or;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.odpi.openmetadata.accessservices.informationview.TestDataHelper.*;
 import static org.mockito.Mockito.when;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
 public class ColumnContextBuilderTest {
 
@@ -42,7 +42,7 @@ public class ColumnContextBuilderTest {
 
     private TestDataHelper helper;
 
-    @BeforeMethod
+    @Before
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
@@ -93,17 +93,17 @@ public class ColumnContextBuilderTest {
         when(omrsMetadataCollection.getEntityDetail(eq(Constants.INFORMATION_VIEW_USER_ID), eq(endpointEntityDetail.getGUID()))).thenReturn(endpointEntityDetail);
         when(omrsMetadataCollection.getEntityDetail(eq(Constants.INFORMATION_VIEW_USER_ID), eq(connectionEntity.getGUID()))).thenReturn(connectionEntity);
         when(omrsMetadataCollection.getEntityDetail(eq(Constants.INFORMATION_VIEW_USER_ID), eq(connectorTypeEntity.getGUID()))).thenReturn(connectorTypeEntity);
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(columnEntityDetail.getGUID()),eq(tableTypeEntityDetail.getGUID())), eq(ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToParentSchemaType(columnEntityDetail.getGUID(), tableTypeEntityDetail.getGUID())));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(columnEntityDetail.getGUID()), eq(columnEntityTypeEntity.getGUID())), eq(SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToSchemaType(columnEntityDetail.getGUID(), columnEntityTypeEntity.getGUID())));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(tableEntityDetail.getGUID()), eq(dbSchemaTypeEntityDetail.getGUID())), eq(ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToParentSchemaType(tableEntityDetail.getGUID(), dbSchemaTypeEntityDetail.getGUID())));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(tableEntityDetail.getGUID()), eq(tableTypeEntityDetail.getGUID())), eq(SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToSchemaType(tableEntityDetail.getGUID(), tableTypeEntityDetail.getGUID())));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(dbSchemaTypeEntityDetail.getGUID()), eq(deployedDatabaseSchemaEntityDetail.getGUID())), eq(ASSET_SCHEMA_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipAssetSchemaType(GUID_DB_SCHEMA_TYPE, GUID_DEPLOYED_DATABASE_SCHEMA)));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(deployedDatabaseSchemaEntityDetail.getGUID()),eq(databaseEntityDetail.getGUID())), eq(DATA_CONTENT_DATASET_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipDataContentForDataSet(GUID_DEPLOYED_DATABASE_SCHEMA, GUID_DATABASE)));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(databaseEntityDetail.getGUID()), eq(connectionEntity.getGUID())), eq(CONNECTION_ASSET_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipConnectionToAsset(GUID_DATABASE, GUID_CONNECTION)));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), eq(endpointEntityDetail.getGUID()), any(String.class), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(new ArrayList<>());
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(deployedDatabaseSchemaEntityDetail.getGUID())), eq(CONNECTION_ASSET_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_TO_ASSET, GUID_CONNECTION, GUID_DEPLOYED_DATABASE_SCHEMA)));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(endpointEntityDetail.getGUID())), eq(CONNECTION_ENDPOINT_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_TO_ENDPOINT, GUID_ENDPOINT, GUID_CONNECTION)));
-        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(connectorTypeEntity.getGUID())), eq(CONNECTION_CONNECTOR_REL_TYPE_GUID), eq(0), eq(null), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_CONNECTOR_TYPE, GUID_CONNECTION, GUID_CONNECTOR_TYPE)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(columnEntityDetail.getGUID()),eq(tableTypeEntityDetail.getGUID())), eq(ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToParentSchemaType(columnEntityDetail.getGUID(), tableTypeEntityDetail.getGUID())));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(columnEntityDetail.getGUID()), eq(columnEntityTypeEntity.getGUID())), eq(SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToSchemaType(columnEntityDetail.getGUID(), columnEntityTypeEntity.getGUID())));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(tableEntityDetail.getGUID()), eq(dbSchemaTypeEntityDetail.getGUID())), eq(ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToParentSchemaType(tableEntityDetail.getGUID(), dbSchemaTypeEntityDetail.getGUID())));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(tableEntityDetail.getGUID()), eq(tableTypeEntityDetail.getGUID())), eq(SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipToSchemaType(tableEntityDetail.getGUID(), tableTypeEntityDetail.getGUID())));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(dbSchemaTypeEntityDetail.getGUID()), eq(deployedDatabaseSchemaEntityDetail.getGUID())), eq(ASSET_SCHEMA_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipAssetSchemaType(GUID_DB_SCHEMA_TYPE, GUID_DEPLOYED_DATABASE_SCHEMA)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(deployedDatabaseSchemaEntityDetail.getGUID()),eq(databaseEntityDetail.getGUID())), eq(DATA_CONTENT_DATASET_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipDataContentForDataSet(GUID_DEPLOYED_DATABASE_SCHEMA, GUID_DATABASE)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(databaseEntityDetail.getGUID()), eq(connectionEntity.getGUID())), eq(CONNECTION_ASSET_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationshipConnectionToAsset(GUID_DATABASE, GUID_CONNECTION)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), eq(endpointEntityDetail.getGUID()), any(String.class), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(new ArrayList<>());
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(deployedDatabaseSchemaEntityDetail.getGUID())), eq(CONNECTION_ASSET_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_TO_ASSET, GUID_CONNECTION, GUID_DEPLOYED_DATABASE_SCHEMA)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(endpointEntityDetail.getGUID())), eq(CONNECTION_ENDPOINT_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_TO_ENDPOINT, GUID_ENDPOINT, GUID_CONNECTION)));
+        when(omrsMetadataCollection.getRelationshipsForEntity(eq(Constants.INFORMATION_VIEW_USER_ID), or(eq(connectionEntity.getGUID()), eq(connectorTypeEntity.getGUID())), eq(CONNECTION_CONNECTOR_REL_TYPE_GUID), eq(0), any(List.class), eq(null), eq(null), eq(null), any(Integer.class))).thenReturn(Collections.singletonList(helper.createRelationship(Constants.CONNECTION_CONNECTOR_TYPE, GUID_CONNECTION, GUID_CONNECTOR_TYPE)));
     }
 
 
@@ -132,7 +132,7 @@ public class ColumnContextBuilderTest {
     }
 
     @Test
-    public void testColumnContext() throws Exception {
+    public void testColumnContext()  {
         List<TableContextEvent> events = builder.buildContexts(GUID_COLUMN);
         assertNotNull(events);
         assertEquals(events.size(), 1);

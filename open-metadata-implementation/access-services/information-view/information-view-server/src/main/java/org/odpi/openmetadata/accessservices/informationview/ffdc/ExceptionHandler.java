@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.AddRelationshipException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.DeleteRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewExceptionBase;
@@ -146,5 +147,11 @@ public class ExceptionHandler {
                                             InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getSystemAction(),
                                             InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getUserAction(),
                                             reportedCaughtException);
+    }
+
+
+    public static InformationViewExceptionBase buildRetrieveContextException(String entityGuid, OMRSCheckedExceptionBase e, String reportingClassName) {
+        InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+        return new ContextLoadException(code.getHttpErrorCode(), reportingClassName, code.getFormattedErrorMessage(entityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
     }
 }
