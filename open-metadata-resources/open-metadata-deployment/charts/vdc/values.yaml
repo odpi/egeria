@@ -33,6 +33,7 @@ service:
   nodeport:
     egeria: 30080
     atlas: 31000
+    atlas_kafka: 31092
     ibmigc: 32446
     ibmigc_kafka: 32092
     igcproxy: 30081
