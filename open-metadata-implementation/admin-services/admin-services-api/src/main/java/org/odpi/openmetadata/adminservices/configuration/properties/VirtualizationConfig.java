@@ -25,13 +25,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class VirtualizationConfig extends AdminServicesConfigHeader {
 
-    private String virtualizationProvider                     = null;
-    private String virtualizerOutboundTopicName               = null;
-    private Connection virtualizerOutboundTopic               = null;
-    private String virtualizerInboundTopicName                = null;
-    private Connection virtualizerInboundTopic                = null;
-    private Connection virtualizationSolutionConnection       = null;
-    private Map<String, Object> virtualizationSolutionConfig  = null;
+    private String              virtualizationProvider;
+    private String              virtualizerOutboundTopicName;
+    private Connection          virtualizerOutboundTopic;
+    private String              virtualizerInboundTopicName;
+    private Connection          virtualizerInboundTopic;
+    private Connection          virtualizationSolutionConnection;
+    private Map<String, Object> virtualizationSolutionConfig;
 
 
     /**
@@ -49,10 +49,10 @@ public class VirtualizationConfig extends AdminServicesConfigHeader {
     public VirtualizationConfig(VirtualizationConfig template) {
         if (template != null) {
             this.virtualizationProvider           = template.virtualizationProvider;
-            this.virtualizerOutboundTopicName = template.virtualizerOutboundTopicName;
-            this.virtualizerOutboundTopic = template.virtualizerOutboundTopic;
-            this.virtualizerInboundTopicName = template.virtualizerInboundTopicName;
-            this.virtualizerInboundTopic = template.virtualizerInboundTopic;
+            this.virtualizerOutboundTopicName     = template.virtualizerOutboundTopicName;
+            this.virtualizerOutboundTopic         = template.virtualizerOutboundTopic;
+            this.virtualizerInboundTopicName      = template.virtualizerInboundTopicName;
+            this.virtualizerInboundTopic          = template.virtualizerInboundTopic;
             this.virtualizationSolutionConnection = template.virtualizationSolutionConnection;
             this.virtualizationSolutionConfig     = template.virtualizationSolutionConfig;
         }
