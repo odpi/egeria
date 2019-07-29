@@ -156,11 +156,11 @@ public enum DiscoveryServerAuditCode
                          "The server is not able to run any discovery requests.  It fails to start.",
                          "Add the configuration for at least one discovery engine to this discovery server."),
 
-    ASSET_AUDIT_LOG("OMAS-DISCOVERY-SERVER-0120",
-               OMRSAuditLogRecordSeverity.INFO,
-               "Log message for asset {0} from discovery service {1}: {2}",
-               "A discovery service has logged a message about an asset.",
-               "Review the message to ensure no action is required.")
+    EXC_ON_ERROR_STATUS_UPDATE("OMAS-DISCOVERY-SERVER-0021",
+                                 OMRSAuditLogRecordSeverity.EXCEPTION,
+                                 "Discovery engine {0} is unable to update failed status for discovery service {1}.  The exception was {2} with error message {3}",
+                                 "The server is not able to record the failed result for a discovery request. The discovery report status is not updated.",
+                                 "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, retry the discovery request."),
 
     ;
 

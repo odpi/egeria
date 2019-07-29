@@ -27,6 +27,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     private int                            accessServiceId                = 0;
     private String                         accessServiceAdminClass        = null;
     private String                         accessServiceName              = null;
+    private String                         accessServiceURLMarker         = null;
     private String                         accessServiceDescription       = null;
     private String                         accessServiceWiki              = null;
     private AccessServiceOperationalStatus accessServiceOperationalStatus = null;
@@ -78,6 +79,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     {
         this.accessServiceId = accessServiceRegistration.getAccessServiceCode();
         this.accessServiceName = accessServiceRegistration.getAccessServiceName();
+        this.accessServiceURLMarker = accessServiceRegistration.getAccessServiceURLMarker();
         this.accessServiceAdminClass = accessServiceRegistration.getAccessServiceAdminClassName();
         this.accessServiceDescription = accessServiceRegistration.getAccessServiceDescription();
         this.accessServiceWiki = accessServiceRegistration.getAccessServiceWiki();
@@ -150,6 +152,30 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     public void setAccessServiceName(String accessServiceName)
     {
         this.accessServiceName = accessServiceName;
+    }
+
+
+    /**
+     * Return the string that appears in the REST API URL that identifies the owning service.
+     * Null means no REST APIs supported by this service.
+     *
+     * @return String default name
+     */
+    public String getAccessServiceURLMarker()
+    {
+        return accessServiceURLMarker;
+    }
+
+
+    /**
+     * Set up the string that appears in the REST API URL that identifies the owning service.
+     * Null means no REST APIs supported by this service.
+     *
+     * @param accessServiceURLMarker url fragment
+     */
+    public void setServiceURLMarker(String accessServiceURLMarker)
+    {
+        this.accessServiceURLMarker = accessServiceURLMarker;
     }
 
 
@@ -317,6 +343,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
                 "accessServiceId=" + accessServiceId +
                 ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
                 ", accessServiceName='" + accessServiceName + '\'' +
+                ", accessServiceURLMarker='" + accessServiceURLMarker + '\'' +
                 ", accessServiceDescription='" + accessServiceDescription + '\'' +
                 ", accessServiceWiki='" + accessServiceWiki + '\'' +
                 ", accessServiceOperationalStatus=" + accessServiceOperationalStatus +
@@ -346,14 +373,15 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
         }
         AccessServiceConfig that = (AccessServiceConfig) objectToCompare;
         return getAccessServiceId() == that.getAccessServiceId() &&
-                Objects.equals(getAccessServiceAdminClass(), that.getAccessServiceAdminClass()) &&
-                Objects.equals(getAccessServiceName(), that.getAccessServiceName()) &&
-                Objects.equals(getAccessServiceDescription(), that.getAccessServiceDescription()) &&
-                Objects.equals(getAccessServiceWiki(), that.getAccessServiceWiki()) &&
-                getAccessServiceOperationalStatus() == that.getAccessServiceOperationalStatus() &&
-                Objects.equals(getAccessServiceInTopic(), that.getAccessServiceInTopic()) &&
-                Objects.equals(getAccessServiceOutTopic(), that.getAccessServiceOutTopic()) &&
-                Objects.equals(getAccessServiceOptions(), that.getAccessServiceOptions());
+                       Objects.equals(getAccessServiceAdminClass(), that.getAccessServiceAdminClass()) &&
+                       Objects.equals(getAccessServiceName(), that.getAccessServiceName()) &&
+                       Objects.equals(getAccessServiceURLMarker(), that.getAccessServiceURLMarker()) &&
+                       Objects.equals(getAccessServiceDescription(), that.getAccessServiceDescription()) &&
+                       Objects.equals(getAccessServiceWiki(), that.getAccessServiceWiki()) &&
+                       getAccessServiceOperationalStatus() == that.getAccessServiceOperationalStatus() &&
+                       Objects.equals(getAccessServiceInTopic(), that.getAccessServiceInTopic()) &&
+                       Objects.equals(getAccessServiceOutTopic(), that.getAccessServiceOutTopic()) &&
+                       Objects.equals(getAccessServiceOptions(), that.getAccessServiceOptions());
     }
 
 
@@ -365,7 +393,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getAccessServiceId(), getAccessServiceAdminClass(), getAccessServiceName(),
+        return Objects.hash(getAccessServiceId(), getAccessServiceAdminClass(), getAccessServiceName(), getAccessServiceURLMarker(),
                             getAccessServiceDescription(), getAccessServiceWiki(), getAccessServiceOperationalStatus(),
                             getAccessServiceInTopic(), getAccessServiceOutTopic(), getAccessServiceOptions());
     }

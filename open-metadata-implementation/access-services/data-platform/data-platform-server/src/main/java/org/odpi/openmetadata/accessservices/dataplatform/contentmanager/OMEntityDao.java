@@ -78,14 +78,14 @@ public class OMEntityDao {
                     entity.getStatus());
         } catch (Exception e) {
 
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.ADD_ENTITY_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_ENTITY_EXCEPTION;
             auditLog.logException("addEntity",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
+                    errorCode.getFormattedErrorMessage(typeName, e.getMessage()),
                     "entity of type{" + typeName + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
             throw e;
         }
@@ -131,14 +131,14 @@ public class OMEntityDao {
                             InstanceStatus.ACTIVE);
         } catch (Exception e) {
 
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.ADD_RELATIONSHIP_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_RELATIONSHIP_EXCEPTION;
             auditLog.logException("addRelationship",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
+                    errorCode.getFormattedErrorMessage(typeName, e.getMessage()),
                     "relationship of type{" + typeName + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
 
             throw e;
@@ -193,14 +193,14 @@ public class OMEntityDao {
                     SequencingOrder.ANY,
                     pageSize);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.GET_ENTITY_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("retrieveEntity",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("matchProperties", "" + matchProperties, e.getMessage()),
+                    errorCode.getFormattedErrorMessage("matchProperties", "" + matchProperties, e.getMessage()),
                     "entity with properties {" + matchProperties + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
 
             throw e;
@@ -246,14 +246,14 @@ public class OMEntityDao {
         try {
             relationships = getRelationships(relationshipType, guid2);
         } catch (Exception e) {
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationship",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
+                    errorCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
                     "relationship with type" + relationshipType + " between {" + guid1 + ", " + guid2 + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
             return null;
         }
@@ -284,14 +284,14 @@ public class OMEntityDao {
                     null,
                     Constants.PAGE_SIZE);
         } catch (Exception e) {
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationships",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
+                    errorCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
                     "relationship with type" + relationshipType + " gor {" + guid2 + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
         }
         return relationships;
@@ -483,14 +483,14 @@ public class OMEntityDao {
             return classification;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.ADD_CLASSIFICATION;
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.ADD_CLASSIFICATION_EXCEPTION;
             auditLog.logException("getClassification",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(classificationTypeName, entityTypeName, e.getMessage()),
+                    errorCode.getFormattedErrorMessage(classificationTypeName, entityTypeName, e.getMessage()),
                     e.getMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
 
             throw e;

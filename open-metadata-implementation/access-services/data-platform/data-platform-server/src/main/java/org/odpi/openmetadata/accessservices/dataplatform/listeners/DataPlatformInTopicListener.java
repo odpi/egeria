@@ -6,13 +6,13 @@ package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
-import org.odpi.openmetadata.accessservices.dataplatform.views.InformationViewAssetHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.views.ViewHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.beans.InformationViewAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -49,21 +49,19 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String eventAsString) {
 
-        DataPlatformEvent event = null;
+        NewViewEvent event = null;
         try {
-            event = OBJECT_MAPPER.readValue(eventAsString, DataPlatformEvent.class);
+            event = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
         } catch (Exception e) {
-            DataPlatformErrorCode auditCode = DataPlatformErrorCode.PARSE_EVENT;
-
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
             auditLog.logException("processEvent",
-                    auditCode.getErrorMessageId(),
+                    errorCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getErrorMessage(),
+                    errorCode.getFormattedErrorMessage(),
                     "event {" + eventAsString + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
                     e);
-
         }
         if (event != null) {
             try {
@@ -89,15 +87,15 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                 eventPublisher.sendEvent(event);
             } catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
-                DataPlatformErrorCode auditCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
+                DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
 
                 auditLog.logException("processEvent",
-                        auditCode.getErrorMessageId(),
+                        errorCode.getErrorMessageId(),
                         OMRSAuditLogRecordSeverity.EXCEPTION,
-                        auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                        errorCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
                         e.getMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction(),
                         e);
             }
         }

@@ -9,7 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
@@ -76,12 +76,12 @@ public class DataPlatformOmasListenerTest {
     private static final String CONNECTION_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection";
     private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.GaianConnectorProvider_type";
     private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest";
-    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema";
-    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(RelationalDBSchemaType)=schema_type";
-    private static final String TABLE_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(DataPlatform)=schema::(RelationalTableType)=customer_table_type";
-    private static final String TABLE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table";
-    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table::(DerivedRelationalColumn)=client_name";
-    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table::(RelationalColumnType)=client_name_type";
+    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(InformationView)=schema";
+    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(RelationalDBSchemaType)=schema_type";
+    private static final String TABLE_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(DataPlatform)=schema::(RelationalTableType)=customer_table_type";
+    private static final String TABLE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table";
+    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table::(DerivedRelationalColumn)=client_name";
+    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(Database)=databaseTest::(DataPlatform)=schema::(RelationalTable)=customer_table::(RelationalColumnType)=client_name_type";
     private static final String IV_PREFIX = "iv_";
 
     private DataPlatformInTopicListener listener;
@@ -126,7 +126,7 @@ public class DataPlatformOmasListenerTest {
     private ArgumentCaptor<InstanceProperties> endpointInstanceProperties;
     private ArgumentCaptor<InstanceProperties> connectionInstanceProperties;
     private ArgumentCaptor<InstanceProperties> connectorTypeInstanceProperties;
-    private ArgumentCaptor<InstanceProperties> dataStoreInstanceProperties;
+    private ArgumentCaptor<InstanceProperties> databaseInstanceProperties;
     private ArgumentCaptor<InstanceProperties> informationViewInstanceProperties;
     private ArgumentCaptor<InstanceProperties> dbSchemaTypeInstanceProperties;
     private ArgumentCaptor<InstanceProperties> tableTypeInstanceProperties;
@@ -200,7 +200,7 @@ public class DataPlatformOmasListenerTest {
         endpointInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         connectionInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         connectorTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
-        dataStoreInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
+        databaseInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         informationViewInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         dbSchemaTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         tableTypeInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
@@ -213,7 +213,7 @@ public class DataPlatformOmasListenerTest {
         mockAddEntityCall(ENDPOINT_TYPE_GUID, Constants.ENDPOINT, endpointInstanceProperties, this.endpoint);
         mockAddEntityCall(CONNECTION_TYPE_GUID, Constants.CONNECTION, connectionInstanceProperties, this.connection);
         mockAddEntityCall(CONNECTOR_TYPE_GUID, Constants.CONNECTOR_TYPE, connectorTypeInstanceProperties, this.connectorType);
-        mockAddEntityCall(DATABASE_TYPE_GUID, Constants.DATA_STORE, dataStoreInstanceProperties, this.database);
+        mockAddEntityCall(DATABASE_TYPE_GUID, Constants.DATABASE, databaseInstanceProperties, this.database);
         mockAddEntityCall(INFORMATION_VIEW_TYPE_GUID, Constants.INFORMATION_VIEW, informationViewInstanceProperties, this.informationView);
         mockAddEntityCall(DB_SCHEMA_TYPE_GUID, Constants.RELATIONAL_DB_SCHEMA_TYPE, dbSchemaTypeInstanceProperties, this.dbSchemaType);
         mockAddEntityCall(TABLETYPE_TYPE_GUID, Constants.RELATIONAL_TABLE_TYPE, tableTypeInstanceProperties, this.tableType);
@@ -343,7 +343,7 @@ public class DataPlatformOmasListenerTest {
         when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
-        typeDef = testDataHelper.buildInstanceType(Constants.DATA_STORE, DATABASE_TYPE_GUID);
+        typeDef = testDataHelper.buildInstanceType(Constants.DATABASE, DATABASE_TYPE_GUID);
         when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
@@ -404,8 +404,8 @@ public class DataPlatformOmasListenerTest {
         TypeLimitedFindRequest type = (new TypeLimitedFindRequest());
         type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");
 
-        DataPlatformEvent dataPlatformEvent = testDataHelper.buildEvent();
-        listener.processEvent(new ObjectMapper().writeValueAsString(dataPlatformEvent));
+        NewViewEvent newViewEvent = testDataHelper.buildEvent();
+        listener.processEvent(new ObjectMapper().writeValueAsString(newViewEvent));
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
 

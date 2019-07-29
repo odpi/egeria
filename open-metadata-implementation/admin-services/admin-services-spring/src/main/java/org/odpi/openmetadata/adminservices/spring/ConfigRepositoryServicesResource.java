@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
@@ -227,6 +228,26 @@ public class ConfigRepositoryServicesResource
                                                        @PathVariable  String               name)
     {
         return adminAPI.setLocalMetadataCollectionName(userId, serverName, name);
+    }
+
+
+    /**
+     * Return the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @return guid response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/local-repository/metadata-collection-id")
+
+    public GUIDResponse getLocalMetadataCollectionId(@PathVariable  String               userId,
+                                                     @PathVariable  String               serverName)
+    {
+        return adminAPI.getLocalMetadataCollectionId(userId, serverName);
     }
 
 

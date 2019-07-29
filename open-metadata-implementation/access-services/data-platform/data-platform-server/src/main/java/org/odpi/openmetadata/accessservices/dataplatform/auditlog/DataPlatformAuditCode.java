@@ -18,45 +18,44 @@ public enum DataPlatformAuditCode {
             "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-DATA-PLATFORM-0002",
-                                             OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-                                                     "The Data Platform OMAS is registering to receive events from the connected open metadata repositories.",
-                                                     "No action is required.  This is part of the normal operation of the server."),
+            "The Data Platform OMAS is registering to receive events from the connected open metadata repositories.",
+            "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_AL_IN_TOPIC("OMAS-DATA-PLATFORM-0003",
-                                        OMRSAuditLogRecordSeverity.INFO,
+    SERVICE_REGISTERED_WITH_DP_IN_TOPIC("OMAS-DATA-PLATFORM-0003",
+            OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is registering a listener with the Data Platform In topic {0}",
-                                                "The Data Platform OMAS is registering to receive incoming events from external tools and applications.",
-                                                "No action is required.  This is part of the normal operation of the server."),
+            "The Data Platform OMAS is registering to receive incoming events from external tools and applications.",
+            "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_AL_OUT_TOPIC("OMAS-DATA-PLATFORM-0004",
-                                         OMRSAuditLogRecordSeverity.INFO,
+    SERVICE_REGISTERED_WITH_DP_OUT_TOPIC("OMAS-DATA-PLATFORM-0004",
+            OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is registering a publisher with the Data Platform Out topic {0}",
-                                                 "The Data Platform OMAS is registering to publish events to Data Platform Out topic.",
-                                                 "No action is required.  This is part of the normal operation of the server."),
+            "The Data Platform OMAS is registering to publish events to Data Platform Out topic.",
+            "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-DATA-PLATFORM-0005",
-                        OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
-                                "The Data Platform OMAS has completed initialization.",
-                                "No action is required.  This is part of the normal operation of the server."),
+            "The Data Platform OMAS has completed initialization.",
+            "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OMAS-DATA-PLATFORM-0006",
-                     OMRSAuditLogRecordSeverity.INFO,
+            OMRSAuditLogRecordSeverity.INFO,
             "The Data Platform Open Metadata Access Service (OMAS) is shutting down server instance {0}",
-                             "The local server has requested shut down of an Data Platform OMAS server instance.",
-                             "No action is required.  This is part of the normal operation of the server."),
-
+            "The local server has requested shut down of an Data Platform OMAS server instance.",
+            "No action is required.  This is part of the normal operation of the server."),
     ERROR_INITIALIZING_CONNECTION("OMAS-DATA-PLATFORM-0007",
-                                  OMRSAuditLogRecordSeverity.EXCEPTION,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Data Platform Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
-                                          "The connection could not be initialized.",
-                                          "Review the exception and resolve the configuration. "),
+            "The connection could not be initialized.",
+            "Review the exception and resolve the configuration. "),
 
     ERROR_INITIALIZING_DATA_PLATFORM_TOPIC_CONNECTION("OMAS-DATA-PLATFORM-0008",
-                                                      OMRSAuditLogRecordSeverity.EXCEPTION,
+            OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Data Platform Open Metadata Access Service (OMAS) instance for server {1} ",
-                                                              "The connection to Data Platform topic could not be initialized.",
+            "The connection to Data Platform topic could not be initialized.",
             "Review the exception and resolve the configuration. "),
     SUPPORTED_ZONES("OMAS-DATA-PLATFORM-0009",
             OMRSAuditLogRecordSeverity.INFO,
@@ -74,8 +73,13 @@ public enum DataPlatformAuditCode {
             "The Data Platform Open Metadata Access Service (OMAS) is supporting all governance zones",
             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
                     "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
-            "No action is required.  This is part of the normal operation of the service.")
-            ;
+            "No action is required.  This is part of the normal operation of the service."),
+    SERVICE_INSTANCE_FAILURE("OMAS-DATA-PLATFORM-0012",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Data Platform Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+    ;
 
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAuditCode.class);
