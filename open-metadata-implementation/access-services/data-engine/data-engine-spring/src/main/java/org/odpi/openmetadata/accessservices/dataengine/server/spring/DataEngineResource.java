@@ -6,10 +6,11 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsReque
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,15 +124,15 @@ public class DataEngineResource {
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user
-     * @param processRequestBody properties of the process
+     * @param processesRequestBody properties of the process
      *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/processes")
-    public GUIDResponse createProcess(@PathVariable("userId") String userId,
-                                      @PathVariable("serverName") String serverName,
-                                      @RequestBody ProcessRequestBody processRequestBody) {
-        return restAPI.createProcess(userId, serverName, processRequestBody);
+    public GUIDListResponse createProcesses(@PathVariable("userId") String userId,
+                                            @PathVariable("serverName") String serverName,
+                                            @RequestBody ProcessesRequestBody processesRequestBody) {
+        return restAPI.createProcesses(userId, serverName, processesRequestBody);
     }
 
     /**

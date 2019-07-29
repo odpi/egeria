@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * ConformanceSuiteResource provides the REST API for running the Open Metadata Conformance Suite.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/conformance-suite-services/users/{userId}")
+@RequestMapping("/servers/{serverName}/open-metadata/conformance-suite/users/{userId}")
 
 public class ConformanceSuiteResource
 {

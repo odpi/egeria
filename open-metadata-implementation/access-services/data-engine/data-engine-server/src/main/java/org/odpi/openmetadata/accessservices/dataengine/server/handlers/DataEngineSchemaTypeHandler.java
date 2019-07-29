@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.utils.RegexEscapeUtil;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
@@ -53,14 +54,13 @@ public class DataEngineSchemaTypeHandler {
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName,
                                        InvalidParameterHandler invalidParameterHandler,
-                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                                       SchemaTypeHandler schemaTypeHandler) {
         this.serviceName = serviceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-
-        schemaTypeHandler = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                repositoryHelper);
+        this.schemaTypeHandler = schemaTypeHandler;
     }
 
     /**
@@ -166,6 +166,8 @@ public class DataEngineSchemaTypeHandler {
                                                                             UserNotAuthorizedException,
                                                                             PropertyServerException {
         final String methodName = "findSchemaAttribute";
+
+        qualifiedName = RegexEscapeUtil.escapeSpecialGraphRegexCharacters(qualifiedName);
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);

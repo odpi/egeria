@@ -9,32 +9,37 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
+
+import java.util.Optional;
 
 public class EndpointLookup extends EntityLookup<EndpointSource> {
 
     private static final Logger log = LoggerFactory.getLogger(EndpointLookup.class);
 
     public EndpointLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup chain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, omEntityDao, chain, auditLog);
+        super(enterpriseConnector, omEntityDao, chain, auditLog, Constants.ENDPOINT);
 
     }
 
     @Override
-    public EntityDetail lookupEntity(EndpointSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
-        return findEndpoint(source);
+    public EntityDetail lookupEntity(EndpointSource source) {
+        EntityDetail entity = Optional.ofNullable(super.lookupEntity(source))
+                                                 .orElseGet(() -> findEndpoint(source));
+
+        if(log.isDebugEnabled()) {
+            log.debug("Endpoint found [{}]", entity);
+        }
+        return entity;
 
     }
+
+    public EntityDetail findEndpoint(EndpointSource source){
+        return findEntity(getMatchingProperties(source), Constants.ENDPOINT);
+    }
+
 
     @Override
     protected InstanceProperties getMatchingProperties(EndpointSource source) {
@@ -47,15 +52,5 @@ public class EndpointLookup extends EntityLookup<EndpointSource> {
 
         return matchProperties;
     }
-
-
-    public EntityDetail findEndpoint(EndpointSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
-        EntityDetail entity = findEntity(getMatchingProperties(source), Constants.ENDPOINT);
-        if(log.isDebugEnabled()) {
-            log.debug("Endpoint found [{}]", entity);
-        }
-        return entity;
-    }
-
 
 }

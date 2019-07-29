@@ -4,7 +4,7 @@ package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
@@ -31,9 +31,9 @@ public class DiscoveryServerOperationalServices
     private String                  localServerPassword;           /* Initialized in constructor */
     private int                     maxPageSize;                   /* Initialized in constructor */
 
-    private DiscoveryServerInstance             discoveryServerInstance = null;
+    private DiscoveryServerInstance discoveryServerInstance = null;
 
-    private OMRSAuditLog          auditLog              = null;
+    private OMRSAuditLog            auditLog                = null;
 
 
 
@@ -271,7 +271,7 @@ public class DiscoveryServerOperationalServices
         else
         {
             discoveryServerInstance = new DiscoveryServerInstance(localServerName,
-                                                                  GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
                                                                   auditLog,
                                                                   discoveryServerConfig.getAccessServiceRootURL(),
                                                                   discoveryServerConfig.getAccessServiceServerName(),

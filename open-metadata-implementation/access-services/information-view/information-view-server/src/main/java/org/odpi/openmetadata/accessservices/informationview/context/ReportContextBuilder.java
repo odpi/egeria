@@ -9,8 +9,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportElement
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.lookup.ReportLookup;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -18,19 +17,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.List;
-
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.throwRetrieveRelationshipException;
+import java.util.Optional;
 
 public class ReportContextBuilder extends ContextBuilder{
 
@@ -50,18 +40,9 @@ public class ReportContextBuilder extends ContextBuilder{
 
         ReportSource source = new ReportSource();
         source.setReportId(reportId);
-        EntityDetail reportEntity;
-        try {
-            reportEntity = reportLookup.lookupEntity(source);
-        } catch (UserNotAuthorizedException | FunctionNotSupportedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException e) {
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
-                    ReportLookup.class.getName(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage("source", source.toString()),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
-                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
-                    null);
-        }
-        return buildReport( reportEntity);
+        EntityDetail reportEntity = Optional.ofNullable(reportLookup.lookupEntity(source))
+                                            .orElseThrow(() -> ExceptionHandler.buildEntityNotFoundException(Constants.ID, reportId, Constants.DEPLOYED_REPORT, this.getClass().getName()));
+        return buildReport(reportEntity);
     }
 
     /**
@@ -116,15 +97,12 @@ public class ReportContextBuilder extends ContextBuilder{
         if(entityDetail.getType().getTypeDefName().equals(Constants.DOCUMENT_SCHEMA_ATTRIBUTE)){
             ReportSection reportElement = new ReportSection();
             reportElement.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, entityDetail.getProperties(), "buildElement"));
-            try {
                 List<Relationship> schemaType = entityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE,
                         entityDetail.getGUID());
                 if(schemaType != null && !schemaType.isEmpty()) {
                     reportElement.setElements(getChildrenElements(schemaType.get(0).getEntityTwoProxy().getGUID()));
                 }
-            } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-                throwRetrieveRelationshipException(entityDetail.getGUID(), Constants.ASSET_SCHEMA_TYPE, e, ReportContextBuilder.class.getName());
-            }
+
             return reportElement;
         }else{
             ReportColumn reportElement = new ReportColumn();
@@ -137,7 +115,7 @@ public class ReportContextBuilder extends ContextBuilder{
         }
     }
 
-    private List<Source> getSources(String guid) {
+    protected List<Source> getSources(String guid) {
         return null;
     }
 
