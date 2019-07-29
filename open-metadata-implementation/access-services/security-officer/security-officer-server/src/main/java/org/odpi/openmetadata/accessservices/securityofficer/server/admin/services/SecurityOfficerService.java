@@ -7,7 +7,6 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.servic
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementListResponse;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSchemaElementResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagListResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerSecurityTagResponse;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.ExceptionHandler;
@@ -72,12 +71,14 @@ public class SecurityOfficerService {
         return response;
     }
 
-    public SecurityOfficerSchemaElementResponse deleteSecurityTag(String serverName, String userId, String schemaElementId) {
-        SecurityOfficerSchemaElementResponse response = new SecurityOfficerSchemaElementResponse();
+    public SecurityOfficerSchemaElementListResponse deleteSecurityTag(String serverName, String userId, String schemaElementId) {
+        SecurityOfficerSchemaElementListResponse response = new SecurityOfficerSchemaElementListResponse();
 
         try {
-            response.setSchemaElementEntity(instanceHandler.deleteSecurityTagBySchemaElementId(serverName, userId, schemaElementId));
-        } catch (ClassificationErrorException | EntityNotKnownException | InvalidParameterException | EntityProxyOnlyException | UserNotAuthorizedException | RepositoryErrorException e) {
+            response.setSchemaElementEntityList(instanceHandler.deleteSecurityTagBySchemaElementId(serverName, userId, schemaElementId));
+        } catch (ClassificationErrorException | EntityNotKnownException | InvalidParameterException | EntityProxyOnlyException
+                | UserNotAuthorizedException | RepositoryErrorException | TypeErrorException | PagingErrorException
+                | TypeDefNotKnownException | PropertyErrorException | FunctionNotSupportedException e) {
             exceptionHandler.captureOMRSException(response, e);
         } catch (PropertyServerException e) {
             exceptionHandler.captureCheckedException(response, e, e.getClass().getName());

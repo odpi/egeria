@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityO
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerUpdateTagEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecuritySchemaElement;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Builder;
@@ -50,6 +49,7 @@ import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_PROPERTIES;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_TAGS;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SOURCE;
 
 /**
  * SecurityOfficerInstanceHandler retrieves information from the instance map for the
@@ -88,19 +88,24 @@ class SecurityOfficerInstanceHandler {
         List<SecuritySchemaElement> result = new ArrayList<>();
         result.add(securitySchemaElement);
 
-        updateColumns(serverName, userId, metadataCollection, instanceProperties, schemaElement, result, securityClassification.getSecurityLabels());
+        updateSecurityTagOnColumns(serverName, userId, metadataCollection, instanceProperties, schemaElement, result, securityClassification.getSecurityLabels());
 
         return result;
     }
 
-    SchemaElementEntity deleteSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, ClassificationErrorException {
+    List<SecuritySchemaElement> deleteSecurityTagBySchemaElementId(String serverName, String userId, String schemaElementId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, ClassificationErrorException, TypeErrorException, TypeDefNotKnownException, PagingErrorException, FunctionNotSupportedException, PropertyErrorException {
         OMRSMetadataCollection metadataCollection = getRepositoryConnector(serverName).getMetadataCollection();
         EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, schemaElementId);
 
         OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
-        EntityDetail response = repositoryHelper.deleteClassificationFromEntity(serverName, entityDetail, SECURITY_TAGS, "deleteSecurityTagBySchemaElementId");
+        EntityDetail response = deleteSecurityTagClassification(repositoryHelper, serverName, entityDetail);
 
-        return builder.buildSchemaElement(response);
+        List<EntityDetail> deleteSecurityTagOnColumns = deleteSecurityTagOnColumns(serverName, entityDetail, userId, metadataCollection);
+        if (deleteSecurityTagOnColumns != null) {
+            deleteSecurityTagOnColumns.add(response);
+            return builder.buildSecuritySchemaElementList(deleteSecurityTagOnColumns, repositoryHelper);
+        }
+        return builder.buildSecuritySchemaElementList(Collections.singletonList(response), repositoryHelper);
     }
 
     private EntityDetail addSecurityTagsClassification(String userId, OMRSMetadataCollection metadataCollection,
@@ -110,6 +115,10 @@ class SecurityOfficerInstanceHandler {
         } else {
             return metadataCollection.classifyEntity(userId, schemaElement.getGUID(), SECURITY_TAGS, instanceProperties);
         }
+    }
+
+    private EntityDetail deleteSecurityTagClassification(OMRSRepositoryHelper repositoryHelper, String serverName, EntityDetail entityDetail) throws ClassificationErrorException {
+        return repositoryHelper.deleteClassificationFromEntity(serverName, entityDetail, SECURITY_TAGS, "deleteSecurityTagClassification");
     }
 
     /**
@@ -138,8 +147,8 @@ class SecurityOfficerInstanceHandler {
         }
     }
 
-    private void updateColumns(String serverName, String userId, OMRSMetadataCollection metadataCollection, InstanceProperties instanceProperties,
-                               EntityDetail schemaElement, List<SecuritySchemaElement> result, List<String> newSecurityLabels) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, PagingErrorException, EntityNotKnownException, FunctionNotSupportedException, PropertyErrorException, ClassificationErrorException, PropertyServerException {
+    private void updateSecurityTagOnColumns(String serverName, String userId, OMRSMetadataCollection metadataCollection, InstanceProperties instanceProperties,
+                                            EntityDetail schemaElement, List<SecuritySchemaElement> result, List<String> newSecurityLabels) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, PagingErrorException, EntityNotKnownException, FunctionNotSupportedException, PropertyErrorException, ClassificationErrorException, PropertyServerException {
         if (isRelationalTable(schemaElement.getType().getTypeDefName())) {
             List<EntityDetail> columns = getColumns(metadataCollection, userId, schemaElement);
 
@@ -150,6 +159,34 @@ class SecurityOfficerInstanceHandler {
                 }
             }
         }
+    }
+
+    private List<EntityDetail> deleteSecurityTagOnColumns(String serverName, EntityDetail schemaElement, String userId,
+                                                          OMRSMetadataCollection metadataCollection) throws InvalidParameterException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException, PropertyServerException {
+        if (!isRelationalTable(schemaElement.getType().getTypeDefName())) {
+            return Collections.emptyList();
+        }
+
+        List<EntityDetail> columns = getColumns(metadataCollection, userId, schemaElement);
+        if (columns.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<EntityDetail> entitiesWithDeletedSecurityTags = new ArrayList<>();
+        OMRSRepositoryHelper repositoryHelper = getRepositoryConnector(serverName).getRepositoryHelper();
+        for (EntityDetail column : columns) {
+            SecurityClassification securityTags = getSecurityClassification(serverName, column.getClassifications());
+            if (securityTags != null) {
+                if (isEligibleForDelete(securityTags, column.getType().getTypeDefName())) {
+                    deleteSecurityTagClassification(repositoryHelper, serverName, column);
+                    entitiesWithDeletedSecurityTags.add(column);
+                } else {
+                    log.debug("The security tag on the schema element should not be deleted because the source of the assignment is different.");
+                }
+            }
+        }
+
+        return entitiesWithDeletedSecurityTags;
     }
 
     private boolean isMoreRestrictiveLabel(String serverName, List<Classification> classifications, List<String> newSecurityLabels) throws PropertyServerException {
@@ -172,6 +209,16 @@ class SecurityOfficerInstanceHandler {
         Integer currentConfidentialityLevel = getConfidentialityLevel(existingConfidentialityLevel.get());
         Integer newConfidentialityLevel = getConfidentialityLevel(newConfidentialityLabel.get());
         return currentConfidentialityLevel < newConfidentialityLevel;
+    }
+
+    private Boolean isEligibleForDelete(SecurityClassification securityTag, String actualSource) {
+        if (securityTag.getSecurityProperties() != null) {
+            String source = String.valueOf(securityTag.getSecurityProperties().get(SOURCE));
+            if (actualSource.equals(source)) {
+                return Boolean.TRUE;
+            }
+        }
+        return Boolean.FALSE;
     }
 
     private Optional<String> getConfidentialityLabel(List<String> securityLabels) {
