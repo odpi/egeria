@@ -122,7 +122,7 @@ public class DataViewContextBuilder extends ContextBuilder<DataViewElement>{
         }
     }
 
-    private List<Source> getSources(String guid) {
+    protected List<Source> getSources(String guid) {
         return null;
     }
 
