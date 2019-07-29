@@ -43,9 +43,14 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
                 glossaries.get(0).getGUID(), 0, 10000);
 
         assertEquals(3, response.getGlossaryViewEntityDetails().get("categories").size());
+
         assertEquals(categories.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(0).getGuid() );
         assertEquals(categories.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(1).getGuid() );
         assertEquals(categories.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(2).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("categories").get(0)));
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("categories").get(1)));
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("categories").get(2)));
     }
 
     @Test
@@ -58,8 +63,12 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
                 categories.get(0).getGUID(), 0, 10000);
 
         assertEquals(2, response.getGlossaryViewEntityDetails().get("categories").size());
+
         assertEquals(categories.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(0).getGuid() );
         assertEquals(categories.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("categories").get(0)));
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("categories").get(1)));
     }
 
     @Test
@@ -72,7 +81,10 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
                 categories.get(0).getGUID(),0, 10);
 
         assertEquals(1, response.getGlossaryViewEntityDetails().size());
+
         assertEquals(externalGlossaryLink.getGUID(), response.getGlossaryViewEntityDetails().get("externalGlossaryLinks").get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getGlossaryViewEntityDetails().get("externalGlossaryLinks").get(0)));
     }
 
 }

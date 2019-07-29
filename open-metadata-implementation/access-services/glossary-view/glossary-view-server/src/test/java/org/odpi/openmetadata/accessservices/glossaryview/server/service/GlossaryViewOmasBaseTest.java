@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -82,6 +84,16 @@ public class GlossaryViewOmasBaseTest {
     protected static final String TERM_IS_A_TYPE_OF_RELATIONSHIP_GUID = "term-is-a-type-of-relationship-guid";
     protected static final String TERM_TYPED_BY_RELATIONSHIP_NAME = "TermTYPEDBYRelationship";
     protected static final String TERM_TYPED_BY_RELATIONSHIP_GUID = "term-typed-by-relationship-guid";
+
+    protected Predicate<GlossaryViewEntityDetail> isEffective = e -> {
+        if(e.getEffectiveFromTime() == null || e.getEffectiveToTime() == null){
+            return true;
+        }
+        long effectiveFromTime = e.getEffectiveFromTime().getTime();
+        long effectiveToTime = e.getEffectiveToTime().getTime();
+        long now = Calendar.getInstance().getTimeInMillis();
+        return effectiveFromTime <= now && now <= effectiveToTime;
+    };
 
     protected List<EntityDetail> glossaries = new ArrayList<>();
     protected List<EntityDetail> categories = new ArrayList<>();
@@ -235,7 +247,7 @@ public class GlossaryViewOmasBaseTest {
     }
 
     private EntityDetail createExternalGlossaryLink(String guid){
-        return createEntityDetail(guid, createExternalGlossaryLinkType(), null, null);
+        return createEntityDetail(guid, createExternalGlossaryLinkType(), createExternalGlossaryLinkProperties(guid), null);
     }
 
     private EntityDetail createEntityDetail(String guid, InstanceType instanceType, InstanceProperties instanceProperties,
@@ -284,14 +296,13 @@ public class GlossaryViewOmasBaseTest {
     }
 
     private InstanceProperties createGlossaryProperties(String guid){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveFromTime = calendar.getTime();
+        Calendar from = Calendar.getInstance();
+        from.set(Calendar.HOUR_OF_DAY, from.get(Calendar.HOUR_OF_DAY) - 1);
+        Date effectiveFromTime = from.getTime();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveToTime = calendar.getTime();
+        Calendar to = Calendar.getInstance();
+        to.set(Calendar.HOUR_OF_DAY, to.get(Calendar.HOUR_OF_DAY) + 1);
+        Date effectiveToTime = to.getTime();
 
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
@@ -305,14 +316,13 @@ public class GlossaryViewOmasBaseTest {
     }
 
     private InstanceProperties createCategoryProperties(String guid){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveFromTime = calendar.getTime();
+        Calendar from = Calendar.getInstance();
+        from.set(Calendar.HOUR_OF_DAY, from.get(Calendar.HOUR_OF_DAY) - 1);
+        Date effectiveFromTime = from.getTime();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveToTime = calendar.getTime();
+        Calendar to = Calendar.getInstance();
+        to.set(Calendar.HOUR_OF_DAY, to.get(Calendar.HOUR_OF_DAY) + 1);
+        Date effectiveToTime = to.getTime();
 
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
@@ -324,14 +334,18 @@ public class GlossaryViewOmasBaseTest {
     }
 
     private InstanceProperties createTermProperties(String guid){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 13);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveFromTime = calendar.getTime();
+        Calendar from = Calendar.getInstance();
+        from.set(Calendar.HOUR_OF_DAY, from.get(Calendar.HOUR_OF_DAY) - 1);
+        Date effectiveFromTime = from.getTime();
 
-        calendar.set(Calendar.HOUR_OF_DAY, 14);
-        calendar.set(Calendar.MINUTE, 0);
-        Date effectiveToTime = calendar.getTime();
+        Calendar to = Calendar.getInstance();
+        to.set(Calendar.HOUR_OF_DAY, to.get(Calendar.HOUR_OF_DAY) + 1);
+        Date effectiveToTime = to.getTime();
+
+        if(guid.equalsIgnoreCase("term-5")){
+            from.set(Calendar.HOUR_OF_DAY, from.get(Calendar.HOUR_OF_DAY) + 2);
+            to.set(Calendar.HOUR_OF_DAY, to.get(Calendar.HOUR_OF_DAY) + 4);
+        }
 
         InstanceProperties properties = new InstanceProperties();
         properties.setEffectiveFromTime(effectiveFromTime);
@@ -342,6 +356,22 @@ public class GlossaryViewOmasBaseTest {
         properties.setProperty("examples", createPrimitiveStringPropertyValue("Examples of " + guid));
         properties.setProperty("abbreviation", createPrimitiveStringPropertyValue("Abbreviation of " + guid));
         properties.setProperty("usage", createPrimitiveStringPropertyValue("Usage of " + guid));
+
+        return properties;
+    }
+
+    private InstanceProperties createExternalGlossaryLinkProperties(String guid){
+        Calendar from = Calendar.getInstance();
+        from.set(Calendar.HOUR_OF_DAY, from.get(Calendar.HOUR_OF_DAY) - 1);
+        Date effectiveFromTime = from.getTime();
+
+        Calendar to = Calendar.getInstance();
+        to.set(Calendar.HOUR_OF_DAY, to.get(Calendar.HOUR_OF_DAY) + 1);
+        Date effectiveToTime = to.getTime();
+
+        InstanceProperties properties = new InstanceProperties();
+        properties.setEffectiveFromTime(effectiveFromTime);
+        properties.setEffectiveToTime(effectiveToTime);
 
         return properties;
     }
