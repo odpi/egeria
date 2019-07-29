@@ -115,7 +115,7 @@ public class ReportContextBuilder extends ContextBuilder{
         }
     }
 
-    private List<Source> getSources(String guid) {
+    protected List<Source> getSources(String guid) {
         return null;
     }
 
