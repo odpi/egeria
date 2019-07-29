@@ -27,6 +27,7 @@ spec:
     - name: kafka
       port: 9027
       targetPort: 9027
+      nodePort: {{ .Values.service.nodeport.atlas_kafka }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
