@@ -96,6 +96,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
                         ";password=" + password +
                         ";proxy-user=" + username +
                         ";proxy-pwd=" + password;
+                log.debug("The generated databased url is " + databaseUrl);
             } else {
                 log.error("Errors in the server configuration. The address of the server cannot be extracted");
                 if (omrsAuditLog != null) {
@@ -172,6 +173,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
             derbyStatement.setQueryTimeout(timeoutInSecond);
             derbyStatement.executeUpdate("call removelt('" + tableName + "')");
 
+            log.debug("Successfully deleted table: " + tableName);
             return true;
 
         } catch (SQLException e) {
@@ -229,6 +231,8 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
             derbyStatement = derbyConnection.createStatement();
             derbyStatement.setQueryTimeout(timeoutInSecond);
             derbyStatement.executeUpdate(update);
+
+            log.debug("Successfully executed query: " + update);
             return true;
         } catch (SQLException e) {
             log.error("Error in executing a customized update!", e);
