@@ -22,8 +22,10 @@ class AssetLineageView extends PolymerElement {
         
       </style>
         <div class="container">
+        
+            <!--mock-up graph-->
             <vis-graph id="visgraph" 
-            dotcontent="dinetwork {1 -> 1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1;3 ->7; 5; 6 -> 5; 7 -> 6 }" 
+            dotcontent="dinetwork {1 -> 2; 2 -> 3; 2 -- 4; 2 -> 1; 3 ->7; 5 ; 6 -> 5; 7 -> 6 }" 
             ></vis-graph>
         </div>
     `;
