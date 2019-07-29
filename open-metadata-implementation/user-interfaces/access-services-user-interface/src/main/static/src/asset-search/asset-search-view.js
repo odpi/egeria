@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-material/paper-material.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
@@ -115,7 +114,10 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             var value = properties[key];
             console.log(key + ' is ' + value);
         }
-        this.$.itemDetails.open();
+        this.dispatchEvent(new CustomEvent('open-page', {
+            bubbles: true,
+            composed: true,
+            detail: {page: "asset-lineage"}}));
     }
 
 

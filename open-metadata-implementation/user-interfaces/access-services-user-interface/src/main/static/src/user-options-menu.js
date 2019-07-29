@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-material/paper-material.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
