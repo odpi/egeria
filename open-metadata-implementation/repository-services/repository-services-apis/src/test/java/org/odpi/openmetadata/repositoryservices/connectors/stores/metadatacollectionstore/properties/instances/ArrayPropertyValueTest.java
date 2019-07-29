@@ -10,6 +10,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class ArrayPropertyValueTest {
 
@@ -50,9 +51,9 @@ public class ArrayPropertyValueTest {
     public void testValueAsObject() {
         Object actual = arrayPropertyValue.valueAsObject();
         Object expected = new HashMap<String, Object>() {{
-            put("0", "PropertyValue");
-            put("17", "PropertyValue");
-            put("88", "PropertyValue");
+            put("0", "PropertyObject");
+            put("17", "PropertyObject");
+            put("88", "PropertyObject");
         }};
         assertEquals(actual, expected);
     }
@@ -60,8 +61,12 @@ public class ArrayPropertyValueTest {
     @Test
     public void testValueAsString() {
         String actual = arrayPropertyValue.valueAsString();
-        String expected = "{0=PropertyValue, 88=PropertyValue, 17=PropertyValue}";
+        String expected1 = "0=PropertyValue";
+        String expected2 = "17=PropertyValue";
+        String expected3 = "88=PropertyValue";
 
-        assertEquals(actual, expected);
+        assertTrue(actual.contains(expected1));
+        assertTrue(actual.contains(expected2));
+        assertTrue(actual.contains(expected3));
     }
 }
