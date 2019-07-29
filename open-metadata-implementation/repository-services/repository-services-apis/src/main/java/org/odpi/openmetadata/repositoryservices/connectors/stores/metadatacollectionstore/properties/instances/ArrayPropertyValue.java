@@ -75,7 +75,7 @@ public class ArrayPropertyValue extends InstancePropertyValue {
      * @return object value
      */
     public Object valueAsObject() {
-        return mapValuesAsString(arrayValues.getInstanceProperties());
+        return mapValuesAsObject(arrayValues.getInstanceProperties());
     }
 
 
