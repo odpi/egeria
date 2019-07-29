@@ -35,8 +35,7 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
         assertNotNull(databases);
         assertTrue( databases.size() == 1, "Database was not retrieved");
 
-        List<TableSource> tables =
-                databaseContextHandler.getTables(databases.get(0).getGuid(), 0, 10);
+        List<TableSource> tables =  databaseContextHandler.getTables(databases.get(0).getGuid(), 0, 10);
 
         assertNotNull(tables);
         assertEquals("EMPLOYEE", tables.get(0).getName());

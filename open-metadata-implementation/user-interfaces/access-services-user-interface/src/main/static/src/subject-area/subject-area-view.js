@@ -1,31 +1,32 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 
 /* Copyright Contributors to the ODPi Egeria project. */
-import "../../node_modules/@polymer/paper-input/paper-input.js";
-import "../../node_modules/@polymer/paper-material/paper-material.js";
-import "../../node_modules/@polymer/iron-form/iron-form.js";
-import "../../node_modules/@polymer/iron-a11y-keys/iron-a11y-keys.js";
-import "../../node_modules/@polymer/paper-button/paper-button.js";
-import "../../node_modules/@polymer/paper-styles/paper-styles.js";
-import "../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
-import "../../node_modules/@polymer/paper-listbox/paper-listbox.js";
-import "../../node_modules/@polymer/paper-item/paper-item.js";
-import "../../node_modules/@polymer/paper-menu-button/paper-menu-button.js";
-import "../../node_modules/@polymer/paper-input/paper-input-behavior.js";
-import "../../node_modules/@polymer/paper-dialog/paper-dialog.js";
-import "../../node_modules/@polymer/paper-dialog-behavior/paper-dialog-behavior.js";
-import "../../node_modules/@polymer/iron-localstorage/iron-localstorage.js";
-import "../../node_modules/@polymer/iron-ajax/iron-ajax.js";
-import {mixinBehaviors} from "../../node_modules/@polymer/polymer/lib/legacy/class.js";
-import {AppLocalizeBehavior} from "../../node_modules/@polymer/app-localize-behavior/app-localize-behavior.js";
-import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid.js";
-import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid-selection-column.js";
-import "../../node_modules/@vaadin/vaadin-grid/vaadin-grid-sort-column.js";
-import "../../node_modules/@vaadin/vaadin-text-field/vaadin-text-field.js";
-import "../../node_modules/@vaadin/vaadin-button/vaadin-button.js";
-import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polymer-element.js";
+import "@polymer/paper-input/paper-input.js";
+import "@polymer/paper-material/paper-material.js";
+import "@polymer/iron-form/iron-form.js";
+import "@polymer/iron-a11y-keys/iron-a11y-keys.js";
+import "@polymer/paper-button/paper-button.js";
+import "@polymer/paper-styles/paper-styles.js";
+import "@polymer/paper-dropdown-menu/paper-dropdown-menu.js";
+import "@polymer/paper-listbox/paper-listbox.js";
+import "@polymer/paper-item/paper-item.js";
+import "@polymer/paper-menu-button/paper-menu-button.js";
+import "@polymer/paper-input/paper-input-behavior.js";
+import "@polymer/paper-dialog/paper-dialog.js";
+import "@polymer/paper-dialog-behavior/paper-dialog-behavior.js";
+import "@polymer/iron-localstorage/iron-localstorage.js";
+import "@polymer/iron-ajax/iron-ajax.js";
+import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class.js";
+import {AppLocalizeBehavior} from "@polymer/app-localize-behavior/app-localize-behavior.js";
+import "@vaadin/vaadin-grid/vaadin-grid.js";
+import "@vaadin/vaadin-grid/vaadin-grid-selection-column.js";
+import "@vaadin/vaadin-grid/vaadin-grid-sort-column.js";
+import "@vaadin/vaadin-text-field/vaadin-text-field.js";
+import "@vaadin/vaadin-button/vaadin-button.js";
+import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
+import './property-pane/property-pane.js';
 import './glossary-selector.js';
 import './project-selector.js';
 /**
@@ -44,11 +45,13 @@ class SubjectAreaView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       </style>
        <div style="margin-bottom: 20px">
 
-       [[localize('subject-area_prototypeLabel')]]
-       <p>
-         <glossary-selector selected-glossary="{{selectedGlossary}}" ></glossary-selector>
+         [[localize('subject-area_prototypeLabel')]]
          <p>
-         <project-selector selected-project="{{selectedProject}}" ></project-selector>
+         <glossary-selector id='glossarySelector'></glossary-selector>
+         <p>
+         <project-selector id='projectSelector'></project-selector>
+         <p>
+         <property-pane id="selected-artifact" name="Glossary" artifact="{{selectedGlossary}}" component="subject-area"></property-pane>
        </div>
   `;
    }
@@ -72,13 +75,19 @@ class SubjectAreaView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
   attached() {
         this.loadResources(
                // The specified file only contains the flattened translations for that language:
-               "locales/subjectarea/" + this.language + ".json",  //e.g. for es {"hi": "hola"}
+               "locales/subject-area/" + this.language + ".json",  //e.g. for es {"hi": "hola"}
                this.language,               // unflatten -> {"es": {"hi": "hola"}}
                true                // merge so existing resources won't be clobbered
              );
   }
   ready(){
      super.ready();
+     this.$.glossarySelector.addEventListener('glossarySelectionEvent', e => {this._handleGlossarySelected(e)});
+  }
+  _handleGlossarySelected(event) {
+     console.log("subject-area-view _handleGlossarySelected... " + event);
+     this.selectedGlossary = event.detail;
+
   }
 }
 

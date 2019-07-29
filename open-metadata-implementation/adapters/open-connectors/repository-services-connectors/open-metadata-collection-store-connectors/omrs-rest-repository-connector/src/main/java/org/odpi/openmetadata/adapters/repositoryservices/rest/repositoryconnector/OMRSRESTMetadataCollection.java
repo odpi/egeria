@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The OMRSRESTMetadataCollection represents a remote metadata repository that supports the OMRS REST API.
@@ -104,7 +105,6 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /* ======================================================================
      * Group 1: Confirm the identity of the metadata repository being called.
      */
-
 
     /**
      * Returns the identifier of the metadata repository.  This is the identifier used to register the
@@ -192,6 +192,94 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     }
 
 
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @return String metadata collection id.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     */
+    public String getMetadataCollectionId(String   userId) throws RepositoryErrorException
+    {
+        final String methodName  = "getMetadataCollectionId";
+        final String urlTemplate = "users/{0}/metadata-collection-id";
+
+        MetadataCollectionIdResponse restResult;
+
+        try
+        {
+            restResult = restClient.callGetRESTCall(methodName,
+                                                    MetadataCollectionIdResponse.class,
+                                                    restURLRoot + urlTemplate,
+                                                    userId);
+        }
+        catch (Throwable error)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     repositoryName,
+                                                                                                     error.getClass().getSimpleName(),
+                                                                                                     error.getMessage());
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
+        }
+
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        String remoteMetadataCollectionId = null;
+
+        if (restResult != null)
+        {
+            remoteMetadataCollectionId = restResult.getMetadataCollectionId();
+        }
+
+        if (remoteMetadataCollectionId != null)
+        {
+            if (remoteMetadataCollectionId.equals(super.metadataCollectionId))
+            {
+                return remoteMetadataCollectionId;
+            }
+            else
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(repositoryName,
+                                                             remoteMetadataCollectionId,
+                                                             super.metadataCollectionId);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+        }
+        else
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(repositoryName,
+                                                         super.metadataCollectionId);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+    }
+
+
     /* ==============================
      * Group 2: Working with typedefs
      */
@@ -205,10 +293,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @throws InvalidParameterException the userId is null
      * @throws RepositoryErrorException   there is a problem communicating with the metadata repository.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public TypeDefGallery getAllTypes(String userId) throws RepositoryErrorException,
+    public TypeDefGallery getAllTypes(String userId) throws InvalidParameterException,
+                                                            RepositoryErrorException,
                                                             UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
@@ -218,8 +308,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                                restURLRoot + urlTemplate,
                                                                                userId);
 
-        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
 
         return this.getTypeDefGalleryFromRESTResult(restResult);
     }
@@ -1446,8 +1537,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (asOfTime == null)
         {
-            final String              urlTemplate = "users/{0}/instances/entities/by-classification/{1}";
-            PropertyMatchFindRequest  findRequestParameters = new PropertyMatchFindRequest();
+            final String             urlTemplate           = "users/{0}/instances/entities/by-classification/{1}";
+            PropertyMatchFindRequest findRequestParameters = new PropertyMatchFindRequest();
 
             findRequestParameters.setTypeGUID(entityTypeGUID);
             findRequestParameters.setMatchProperties(matchClassificationProperties);
@@ -2248,9 +2339,85 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         final String methodName  = "addEntity";
         final String urlTemplate = "users/{0}/instances/entity";
 
-        EntityCreateRequest   requestBody = new EntityCreateRequest();
+        EntityCreateRequest requestBody = new EntityCreateRequest();
 
         requestBody.setEntityTypeGUID(entityTypeGUID);
+        requestBody.setInitialClassifications(initialClassifications);
+        requestBody.setInitialProperties(initialProperties);
+        requestBody.setInitialStatus(initialStatus);
+
+        EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowClassificationErrorException(methodName, restResult);
+        this.detectAndThrowStatusNotSupportedException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getEntity();
+    }
+
+
+    /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param initialClassifications initial list of classifications for the new entity null means no classifications.
+     * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetail addExternalEntity(String                userId,
+                                          String                entityTypeGUID,
+                                          String                externalSourceGUID,
+                                          String                externalSourceName,
+                                          InstanceProperties    initialProperties,
+                                          List<Classification>  initialClassifications,
+                                          InstanceStatus        initialStatus) throws InvalidParameterException,
+                                                                                      RepositoryErrorException,
+                                                                                      TypeErrorException,
+                                                                                      PropertyErrorException,
+                                                                                      ClassificationErrorException,
+                                                                                      StatusNotSupportedException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
+    {
+        final String  methodName = "addExternalEntity";
+
+        final String urlTemplate = "users/{0}/instances/entity/external";
+
+        EntityCreateRequest requestBody = new EntityCreateRequest();
+
+        requestBody.setEntityTypeGUID(entityTypeGUID);
+        requestBody.setMetadataCollectionId(externalSourceGUID);
+        requestBody.setMetadataCollectionName(externalSourceName);
         requestBody.setInitialClassifications(initialClassifications);
         requestBody.setInitialProperties(initialProperties);
         requestBody.setInitialStatus(initialStatus);
@@ -2774,6 +2941,82 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         RelationshipCreateRequest request = new RelationshipCreateRequest();
         request.setRelationshipTypeGUID(relationshipTypeGUID);
+        request.setInitialProperties(initialProperties);
+        request.setEntityOneGUID(entityOneGUID);
+        request.setEntityTwoGUID(entityTwoGUID);
+        request.setInitialStatus(initialStatus);
+
+        RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
+                                                                            restURLRoot + urlTemplate,
+                                                                            request,
+                                                                            userId);
+
+        this.detectAndThrowInvalidParameterException(methodName, restResult);
+        this.detectAndThrowTypeErrorException(methodName, restResult);
+        this.detectAndThrowPropertyErrorException(methodName, restResult);
+        this.detectAndThrowEntityNotKnownException(methodName, restResult);
+        this.detectAndThrowStatusNotSupportedException(methodName, restResult);
+        this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
+        this.detectAndThrowRepositoryErrorException(methodName, restResult);
+
+        return restResult.getRelationship();
+    }
+
+
+    /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param externalSourceGUID unique identifier (guid) for the external source.
+     * @param externalSourceName unique name for the external source.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status; typically DRAFT, PREPARED or ACTIVE.
+     * @return Relationship structure with the new header, requested entities and properties.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
+     */
+    public Relationship addExternalRelationship(String               userId,
+                                                String               relationshipTypeGUID,
+                                                String               externalSourceGUID,
+                                                String               externalSourceName,
+                                                InstanceProperties   initialProperties,
+                                                String               entityOneGUID,
+                                                String               entityTwoGUID,
+                                                InstanceStatus       initialStatus) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           TypeErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           StatusNotSupportedException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           FunctionNotSupportedException
+    {
+        final String  methodName = "addExternalRelationship";
+
+        final String urlTemplate = "users/{0}/instances/relationship/external";
+
+        RelationshipCreateRequest request = new RelationshipCreateRequest();
+        request.setRelationshipTypeGUID(relationshipTypeGUID);
+        request.setMetadataCollectionId(externalSourceGUID);
+        request.setMetadataCollectionName(externalSourceGUID);
         request.setInitialProperties(initialProperties);
         request.setEntityOneGUID(entityOneGUID);
         request.setEntityTwoGUID(entityTwoGUID);
@@ -4296,7 +4539,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a GET REST call that returns the requested object.
      *
+     * @param <T> class name
      * @param methodName  name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
@@ -4312,7 +4557,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a GET REST call that returns a TypeDefResponse object.
      *
+     * @param <T> class name
      * @param methodName  name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefResponse
@@ -4350,7 +4597,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     /**
      * Issue a POST REST call that returns the requested type of object.
      *
+     * @param <T> class name
      * @param methodName name of the method being called
+     * @param returnClass class name of response object
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
      * @param request request body object
      * @param params a list of parameters that are slotted into the url template
@@ -4660,20 +4909,57 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param methodName name of the method called
      * @param restResult response from the rest call.  This generated in the remote server.
      * @throws InvalidParameterException encoded exception from the server
+     * @throws RepositoryErrorException invalid parameter is "serverName"
      */
     private void detectAndThrowInvalidParameterException(String          methodName,
-                                                         OMRSAPIResponse restResult) throws InvalidParameterException
+                                                         OMRSAPIResponse restResult) throws InvalidParameterException,
+                                                                                            RepositoryErrorException
     {
-        final String   exceptionClassName = InvalidParameterException.class.getName();
+        final String exceptionClassName = InvalidParameterException.class.getName();
+        final String propertyName = "parameterName";
+        final String serverName = "serverName";
+
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                restResult.getExceptionErrorMessage(),
-                                                restResult.getExceptionSystemAction(),
-                                                restResult.getExceptionUserAction());
+            String parameterName = null;
+
+            Map<String, Object>   exceptionProperties = restResult.getExceptionProperties();
+
+            if (exceptionProperties != null)
+            {
+                Object  nameObject = exceptionProperties.get(propertyName);
+
+                if (nameObject != null)
+                {
+                    parameterName = (String)nameObject;
+                }
+            }
+
+            if (serverName.equals(parameterName))
+            {
+                /*
+                 * If the platform is up but the server is not running on the platform the response is
+                 * InvalidParameterException because the serverName is invalid - so this is turned into
+                 * a RepositoryErrorException as if the whole platform is missing.
+                 */
+                throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction());
+            }
+            else
+            {
+                throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction(),
+                                                    parameterName);
+            }
         }
     }
 

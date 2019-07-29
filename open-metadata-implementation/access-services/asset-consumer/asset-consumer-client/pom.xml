@@ -27,26 +27,27 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>rest-client-connectors-api</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>ocf-metadata-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>rest-client-factory</artifactId>
-            <version>${open-metadata.version}</version>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
         <!-- Asset Consumer is built on Connected Asset -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>

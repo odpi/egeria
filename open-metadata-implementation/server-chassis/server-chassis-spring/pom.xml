@@ -15,9 +15,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Server Chassis for Spring</name>
+    <name>OMAG Server Platform Chassis for Spring</name>
     <description>
-        Provides the spring-based server chassis.
+        Provides the spring-based OMAG server platform chassis.
     </description>
 
     <artifactId>server-chassis-spring</artifactId>
@@ -25,130 +25,144 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>platform-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-metadata-conformance-suite-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-owner-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-services-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-engine-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>governance-program-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-spring</artifactId>
-            <version>${open-metadata.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
-                </exclusion>
-            </exclusions>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>glossary-view-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>http-helper</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-officer-spring</artifactId>
-            <version>${open-metadata.version}</version>
+            <scope>runtime</scope>
         </dependency>
 
         <!-- Spring for REST APIs -->
@@ -167,14 +181,32 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
         </dependency>
 
         <!-- Spring Fox Swagger UI dependency for presentation of generated swagger.json -->
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.7.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spring-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spi</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
         </dependency>
 
     </dependencies>
@@ -195,6 +227,33 @@
                     </execution>
                 </executions>
             </plugin>
+
+           <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>analyze</id>
+                        <goals>
+                            <goal>analyze-only</goal>
+                        </goals>
+                        <configuration>
+                            <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <!-- all egeria spring modules are dynamically added -->
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
+                                <!-- springfox added for swagger UI -->
+                                <ignoredUnusedDeclaredDependency>io.springfox:springfox-swagger-ui</ignoredUnusedDeclaredDependency>
+                                <!-- Spring seems to cause false positives on dependency checker -->
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-data-jpa:*</ignoredUnusedDeclaredDependency>
+                            </ignoredUnusedDeclaredDependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Special configuration for dependency checking due to the way spring scans -->
+
         </plugins>
     </build>
 

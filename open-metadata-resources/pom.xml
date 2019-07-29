@@ -21,13 +21,14 @@
     </description>
 
     <artifactId>open-metadata-resources</artifactId>
+
     <packaging>pom</packaging>
     <modules>
         <module>open-metadata-samples</module>
         <module>open-metadata-demos</module>
         <module>open-metadata-tutorials</module>
+        <module>open-metadata-labs</module>
         <module>open-metadata-deployment</module>
     </modules>
-
 
 </project>

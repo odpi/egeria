@@ -159,7 +159,8 @@ public class RelatedEntitiesFindRequest extends OMRSAPIPagedFindRequest
         {
             return false;
         }
-        RelatedEntitiesFindRequest that = (RelatedEntitiesFindRequest) objectToCompare;
+        RelatedEntitiesFindRequest
+                that = (RelatedEntitiesFindRequest) objectToCompare;
         return Objects.equals(getEntityTypeGUIDs(), that.getEntityTypeGUIDs()) &&
                 Objects.equals(getLimitResultsByClassification(), that.getLimitResultsByClassification());
     }

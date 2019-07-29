@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -20,8 +20,8 @@ import java.util.List;
  */
 public class OMAGServerConfigDiscoveryServer
 {
-    static final String serviceName    = GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName();
-    static final String accessService  = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName();
+    private static final String serviceName    = GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName();
+    private static final String accessService  = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName();
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -263,7 +263,7 @@ public class OMAGServerConfigDiscoveryServer
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @return
+     * @return void response
      */
     public VoidResponse deleteService(String userId, String serverName)
     {

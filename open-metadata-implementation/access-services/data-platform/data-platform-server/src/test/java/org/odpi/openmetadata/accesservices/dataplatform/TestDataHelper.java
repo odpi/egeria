@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accesservices.dataplatform;
 
 import org.odpi.openmetadata.accessservices.dataplatform.events.*;
-import org.odpi.openmetadata.accessservices.dataplatform.events.TableColumn;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.*;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -34,6 +34,7 @@ public class TestDataHelper {
     public static final String SCHEMA_NAME = "schema";
     public static final String PROVIDER_CLASS_NAME = "GaianConnectorProvider";
     public static final String BUSINESS_TERM_GUID = "businessTermGuid";
+    public static final String BUSINESS_TERM_GUID2 = "businessTermGuid2";
     public static final String REAL_COLUMN_GUID = "realColumnGuid";
     public static final String CONNECTION_ENDPOINT_REL_TYPE_GUID = "ConnectionEndpointTypeGuid";
     public static final String SERVER_ENDPOINT_REL_TYPE_GUID = "ServerEndpointTypeGuid";
@@ -372,8 +373,8 @@ public class TestDataHelper {
     }
 
 
-    public DataPlatformEvent buildEvent() {
-        DataPlatformEvent event = new DataPlatformEvent();
+    public NewViewEvent buildEvent() {
+        NewViewEvent event = new NewViewEvent();
         TableSource tableSource = new TableSource();
         tableSource.setDatabaseSource(new DatabaseSource());
         tableSource.getDatabaseSource().setEndpointSource(new EndpointSource());
@@ -387,10 +388,23 @@ public class TestDataHelper {
         event.getTableSource().setName(TABLE_NAME);
         event.getTableSource().getDatabaseSource().setName(DATABASE_NAME);
 
-        BusinessTerm businessTerm = new BusinessTerm();
+        List<BusinessTerm> businessTerms = new ArrayList<>();
+
+        BusinessTerm businessTerm1=new BusinessTerm();
+        businessTerm1.setName("clientName");
+        businessTerm1.setGuid(BUSINESS_TERM_GUID);
+        businessTerm1.setQuery("search query");
+        businessTerms.add(businessTerm1);
+
+        BusinessTerm businessTerm2=new BusinessTerm();
+        businessTerm2.setName("clientName");
+        businessTerm2.setGuid(BUSINESS_TERM_GUID2);
+        businessTerm2.setQuery("add query");
+        businessTerms.add(businessTerm2);
+
         TableColumn realColumn = new TableColumn();
         realColumn.setName("cl_nm");
-        realColumn.setBusinessTerm(businessTerm);
+        realColumn.setBusinessTerms(businessTerms);
         realColumn.setPosition(2);
         realColumn.setGuid(REAL_COLUMN_GUID);
         realColumn.setQualifiedName("jdbc:derby:localhost:9393.connection.databaseTest.schema.schema_type.customer_table_type.customer_table.client_name_type.client_name");
@@ -399,9 +413,7 @@ public class TestDataHelper {
         columnClientName.setPosition(1);
         columnClientName.setName("client_name");
         columnClientName.setSourceColumn(realColumn);
-        businessTerm.setName("clientName");
-        businessTerm.setQuery("query");
-        businessTerm.setGuid(BUSINESS_TERM_GUID);
+
         event.setDerivedColumns(Collections.singletonList(columnClientName));
 
 

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportSubmitException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -17,9 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import static org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode.REPORT_SUBMIT_EXCEPTION;
 
@@ -42,22 +40,23 @@ public class ReportHandler {
 
     /**
      *
+     *
+     * @param userId
      * @param payload - object describing the report
      * @throws ReportSubmitException
      */
-    public void submitReportModel(ReportRequestBody payload) throws ReportSubmitException {
-
+    public void submitReportModel(String userId, ReportRequestBody payload) throws ReportSubmitException {
         try {
             if(log.isDebugEnabled()) {
                 log.debug("Creating report based on payload {}", payload);
             }
-            URL url = new URL(payload.getReport().getReportUrl());
-            String networkAddress = url.getHost();
-            if (url.getPort() > 0) {
-                networkAddress = networkAddress + ":" + url.getPort();
-            }
+            SoftwareServerCapabilitySource softwareServerCapabilitySource =
+                    reportCreator.retrieveSoftwareServerCapability(payload.getRegistrationGuid(),
+                    payload.getRegistrationQualifiedName());
+            payload.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
+            payload.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
 
-            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT,networkAddress + BasicOperation.SEPARATOR + payload.getReport().getId());
+            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("", Constants.DEPLOYED_REPORT, payload.getRegistrationQualifiedName() + BasicOperation.SEPARATOR + payload.getReport().getId());
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
                     .withStringProperty(Constants.NAME, payload.getReport().getReportName())
@@ -69,32 +68,31 @@ public class ReportHandler {
                     .withDateProperty(Constants.CREATE_TIME, payload.getReport().getCreatedTime())
                     .build();
 
-
-            OMEntityWrapper reportWrapper = omEntityDao.saveEntityReferenceCopy(payload.getRegistrationGuid(),
+            OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateExternalEntity(userId,
                                                                                 Constants.DEPLOYED_REPORT,
                                                                                 qualifiedNameForReport,
+                                                                                payload.getRegistrationGuid(),
+                                                                                payload.getRegistrationQualifiedName(),
                                                                                 reportProperties,
+                                                                                null,
                                                                                 true,
                                                                                 true);
 
-
             if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
-                reportCreator.createReport(payload, reportWrapper.getEntityDetail());
+                reportCreator.createReport(userId, payload, reportWrapper.getEntityDetail());
             } else {
-                reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
+                reportUpdater.updateReport(userId, payload, payload.getRegistrationGuid(), payload.getRegistrationQualifiedName(), reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
-
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException  e) {
             throw new ReportSubmitException(500,
-                    ReportHandler.class.getName(),
-                    REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage( e.getMessage()),
-                    REPORT_SUBMIT_EXCEPTION.getUserAction(),
-                    REPORT_SUBMIT_EXCEPTION.getSystemAction(),
-                    e,
-                    payload.getReport().getReportName());
+                                            ReportHandler.class.getName(),
+                                            REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage( e.getMessage()),
+                                            REPORT_SUBMIT_EXCEPTION.getUserAction(),
+                                            REPORT_SUBMIT_EXCEPTION.getSystemAction(),
+                                            e,
+                                            payload.getReport().getReportName());
         }
-
     }
 
 }

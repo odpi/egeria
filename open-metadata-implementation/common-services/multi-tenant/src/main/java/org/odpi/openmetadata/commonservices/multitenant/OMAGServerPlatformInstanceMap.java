@@ -2,14 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGService;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
-import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.util.*;
 
@@ -24,6 +31,227 @@ public class OMAGServerPlatformInstanceMap
 {
     private static Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
     private static Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
+
+
+    /**
+     * Verify that the calling user is allowed to query the platform services.
+     *
+     * @param userId calling user
+     * @throws UserNotAuthorizedException calling user not allowed to use these services
+     */
+    private static void validateUserAsInvestigatorForPlatform(String userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+    }
+
+
+    /**
+     * Create a service description object.
+     *
+     * @param serviceName name of the service
+     * @param serviceURLMarker name use in URLs
+     * @param serviceDescription short description
+     * @param serviceWiki link to more info
+     * @return service description object
+     */
+    private static RegisteredOMAGService getServiceDescription(String serviceName,
+                                                               String serviceURLMarker,
+                                                               String serviceDescription,
+                                                               String serviceWiki)
+    {
+        RegisteredOMAGService service = new RegisteredOMAGService();
+
+        service.setServiceName(serviceName);
+        service.setServiceURLMarker(serviceURLMarker);
+        service.setServiceDescription(serviceDescription);
+        service.setServiceWiki(serviceWiki);
+
+        return service;
+    }
+
+
+    /**
+     * Return the list of access services that are registered (supported) in this OMAG Server Platform
+     * and can be configured in a server.
+     *
+     * @param userId calling user
+     * @return list of access service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredAccessServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Access Services implemented in this server.
+         */
+        List<AccessServiceRegistration> accessServiceRegistrationList = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
+
+        /*
+         * Set up the available access services.
+         */
+        if ((accessServiceRegistrationList != null) && (! accessServiceRegistrationList.isEmpty()))
+        {
+            for (AccessServiceRegistration registration : accessServiceRegistrationList)
+            {
+                if (registration != null)
+                {
+                    if (registration.getAccessServiceOperationalStatus() == AccessServiceOperationalStatus.ENABLED)
+                    {
+                        response.add(getServiceDescription(registration.getAccessServiceName(),
+                                                           registration.getAccessServiceURLMarker(),
+                                                           registration.getAccessServiceDescription(),
+                                                           registration.getAccessServiceWiki()));
+                    }
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of governance services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a governance server.
+     *
+     * @param userId calling user
+     * @return list of governance service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredGovernanceServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Governance Services implemented in this server.
+         */
+        GovernanceServicesDescription[] governanceServicesDescriptions = GovernanceServicesDescription.values();
+
+        /*
+         * Set up the available governance services.
+         */
+        if (governanceServicesDescriptions.length != 0)
+        {
+            for (GovernanceServicesDescription registration : governanceServicesDescriptions)
+            {
+                if (registration != null)
+                {
+                    response.add(getServiceDescription(registration.getServiceName(),
+                                                       registration.getServiceURLMarker(),
+                                                       registration.getServiceDescription(),
+                                                       registration.getServiceWiki()));
+                }
+            }
+
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of common services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getRegisteredCommonServices(String userId) throws UserNotAuthorizedException
+    {
+        validateUserAsInvestigatorForPlatform(userId);
+
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        /*
+         * Get the list of Common Services implemented in this server.
+         */
+        CommonServicesDescription[] commonServicesDescriptions = CommonServicesDescription.values();
+
+        /*
+         * Set up the available governance services.
+         */
+        if (commonServicesDescriptions.length != 0)
+        {
+            for (CommonServicesDescription registration : commonServicesDescriptions)
+            {
+                if (registration != null)
+                {
+                    response.add(getServiceDescription(registration.getServiceName(),
+                                                       registration.getServiceURLMarker(),
+                                                       registration.getServiceDescription(),
+                                                       registration.getServiceWiki()));
+                }
+            }
+        }
+
+        if (response.isEmpty())
+        {
+            return null;
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of  services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     * @throws UserNotAuthorizedException user not authorized
+     */
+    public List<RegisteredOMAGService> getAllRegisteredServices(String userId) throws UserNotAuthorizedException
+    {
+        List<RegisteredOMAGService> response = new ArrayList<>();
+
+        List<RegisteredOMAGService> services = getRegisteredCommonServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredAccessServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        services = getRegisteredGovernanceServices(userId);
+
+        if ((services != null) && (! services.isEmpty()))
+        {
+            response.addAll(services);
+        }
+
+        return response;
+    }
 
 
     /**
@@ -89,17 +317,22 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Add a new server security connector to the server map.
      *
+     * @param localServerUserId server's userId
      * @param serverName name of the server
+     * @param auditLog logging destination
      * @param connection connection for the server's security validator
+     * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connector is not valid.
      */
-    private static synchronized void setServerActiveWithSecurity(String     serverName,
-                                                                 Connection connection) throws InvalidParameterException
+    private static synchronized OpenMetadataServerSecurityVerifier setServerActiveWithSecurity(String       localServerUserId,
+                                                                                               String       serverName,
+                                                                                               OMRSAuditLog auditLog,
+                                                                                               Connection   connection) throws InvalidParameterException
     {
         OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
 
         serverInstance.initialize();
-        serverInstance.registerSecurityValidator(connection);
+        return serverInstance.registerSecurityValidator(localServerUserId, auditLog, connection);
     }
 
 
@@ -116,17 +349,12 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized boolean isServerInstanceActive(String  userId,
                                                                String  serverName) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        validateUserAsInvestigatorForPlatform(userId);
 
         return (activeServerInstanceMap.get(serverName) != null);
     }
+
+
 
     /**
      * Return whether a particular service is registered with this platform.
@@ -141,14 +369,7 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized boolean isServerInstanceKnown(String  userId,
                                                               String  serverName) throws UserNotAuthorizedException
     {
-        try
-        {
-            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-        {
-            throw new UserNotAuthorizedException(error);
-        }
+        validateUserAsInvestigatorForPlatform(userId);
 
         return ((activeServerInstanceMap.get(serverName) != null) ||
                 (inActiveServerInstanceMap.get(serverName) != null));
@@ -179,21 +400,19 @@ public class OMAGServerPlatformInstanceMap
 
         if (serverInstance != null)
         {
-            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+            OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            if (serverSecurityVerifier != null)
+            try
             {
-                try
-                {
-                    serverSecurityVerifier.validateUserForServer(userId);
-                    serverSecurityVerifier.validateUserForService(userId, serviceName);
-                    serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
-                }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-                {
-                    throw new UserNotAuthorizedException(error);
-                }
+                serverSecurityVerifier.validateUserForServer(userId);
+                serverSecurityVerifier.validateUserForService(userId, serviceName);
+                serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
             }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
+            }
+
             return serverInstance.getRegisteredService(userId, serviceName, serviceOperationName);
         }
         else
@@ -280,19 +499,16 @@ public class OMAGServerPlatformInstanceMap
     {
         if (serverInstance != null)
         {
-            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+            OpenMetadataServerSecurityVerifier serverSecurityVerifier = serverInstance.getSecurityVerifier();
 
-            if (serverSecurityVerifier != null)
+            try
             {
-                try
-                {
-                    serverSecurityVerifier.validateUserForServer(userId);
-                    serverSecurityVerifier.validateUserAsServerInvestigator(userId);
-                }
-                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
-                {
-                    throw new UserNotAuthorizedException(error);
-                }
+                serverSecurityVerifier.validateUserForServer(userId);
+                serverSecurityVerifier.validateUserAsServerInvestigator(userId);
+            }
+            catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+            {
+                throw new UserNotAuthorizedException(error);
             }
         }
     }
@@ -411,6 +627,7 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Return the list of services running in an OMAG Server that is running on this OMAG Server Platform.
      *
+     * @param userId calling user
      * @param serverName name of the server
      * @return list on OMAG Services or null if the server is not
      * @throws InvalidParameterException the server name is not known
@@ -492,6 +709,36 @@ public class OMAGServerPlatformInstanceMap
             inActiveServerInstanceMap.put(serverName, serverInstance);
             activeServerInstanceMap.remove(serverName);
         }
+    }
+
+
+    /**
+     * Return the security verifier for the server.
+     *
+     * @param userId calling user
+     * @param serverName name of the server
+     *
+     * @return OpenMetadataServerSecurityVerifier object - never null
+     * @throws InvalidParameterException the server name is not known
+     */
+    private static synchronized OpenMetadataServerSecurityVerifier getServerSecurityVerifierForPlatform(String    userId,
+                                                                                                        String    serverName) throws InvalidParameterException
+    {
+        final String  methodName = "getServerSecurityVerifierForPlatform";
+
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            return serverInstance.getSecurityVerifier();
+        }
+
+        /*
+         * Null will never be returned since handlerBadServerName always throws an exception (but the
+         * compiler is not sure :).
+         */
+        handleBadServerName(userId, serverName, methodName);
+        return null;
     }
 
 
@@ -637,14 +884,19 @@ public class OMAGServerPlatformInstanceMap
     /**
      * Start up the server with the requested security.
      *
+     * @param localServerUserId userId for local server
      * @param serverName name of the server
+     * @param auditLog logging destination
      * @param connection connection properties for open metadata security connector for server (can be null for no security)
+     * @return OpenMetadataServerSecurityVerifier object
      * @throws InvalidParameterException the connection is invalid
      */
-    public void startUpServerInstance(String       serverName,
-                                      Connection   connection) throws InvalidParameterException
+    public OpenMetadataServerSecurityVerifier startUpServerInstance(String       localServerUserId,
+                                                                    String       serverName,
+                                                                    OMRSAuditLog auditLog,
+                                                                    Connection   connection) throws InvalidParameterException
     {
-        OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(serverName, connection);
+        return OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(localServerUserId, serverName, auditLog, connection);
     }
 
 
@@ -702,6 +954,20 @@ public class OMAGServerPlatformInstanceMap
     }
 
 
+    /**
+     * Return the security verifier for the server.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return OpenMetadataServerSecurityVerifier object - never null
+     * @throws InvalidParameterException the server name is not known
+     */
+    OpenMetadataServerSecurityVerifier getServerSecurityVerifier(String    userId,
+                                                                 String    serverName) throws InvalidParameterException
+    {
+        return OMAGServerPlatformInstanceMap.getServerSecurityVerifierForPlatform(userId, serverName);
+    }
 
 
     /**

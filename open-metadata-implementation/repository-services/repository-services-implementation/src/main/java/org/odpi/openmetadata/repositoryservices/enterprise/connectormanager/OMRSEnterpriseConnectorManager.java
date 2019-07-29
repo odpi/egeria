@@ -137,6 +137,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * connector instances.
      *
      * If there is an error during disconnect of the local connector, it is logged here and re-thrown to generate an audit log entry.
+     *
+     * @throws ConnectorCheckedException exception from the connector
      */
     public void disconnect() throws ConnectorCheckedException
     {

@@ -343,8 +343,11 @@ public class StructuredFileStoreConnector extends ConnectorBase implements Struc
                     }
 
                 }
-            } else {
-                if (character == quoteChar) {
+            }
+            else
+            {
+                if (character == quoteChar)
+                {
 
                     inQuotes = true;
 
@@ -406,6 +409,7 @@ public class StructuredFileStoreConnector extends ConnectorBase implements Struc
      * Validates that the file of the supplied file name can be open and read.
      *
      * @param fileStoreName name of the file
+     * @param methodName calling method
      * @return File object
      * @throws FileReadException null file name or file is actually a directory, or file not found or file not readable.
      */

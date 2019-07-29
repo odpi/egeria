@@ -18,6 +18,8 @@
         Provides the basic package for embedding Egeria into a metadata repository server.
     </description>
 
+    <packaging>pom</packaging>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>open-metadata-native-package</artifactId>

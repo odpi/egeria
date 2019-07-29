@@ -92,7 +92,7 @@ public abstract class OpenMetadataTestCase
     /**
      * Update the test case Id, name and documentation URL if not already supplied in the constructor.
      *
-     * @param testCaseId common identifier of test case
+     * @param testCaseRootId common identifier of test case
      * @param testCaseId unique identifier of test case
      * @param testCaseName name of test case
      */

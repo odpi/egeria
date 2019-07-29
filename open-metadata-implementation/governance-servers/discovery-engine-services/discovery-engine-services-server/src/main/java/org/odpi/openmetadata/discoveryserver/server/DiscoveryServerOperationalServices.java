@@ -4,9 +4,9 @@ package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
 import org.odpi.openmetadata.discoveryserver.ffdc.DiscoveryServerErrorCode;
 import org.odpi.openmetadata.discoveryserver.handlers.DiscoveryEngineHandler;
@@ -31,9 +31,9 @@ public class DiscoveryServerOperationalServices
     private String                  localServerPassword;           /* Initialized in constructor */
     private int                     maxPageSize;                   /* Initialized in constructor */
 
-    private DiscoveryServerInstance             discoveryServerInstance = null;
+    private DiscoveryServerInstance discoveryServerInstance = null;
 
-    private OMRSAuditLog          auditLog              = null;
+    private OMRSAuditLog            auditLog                = null;
 
 
 
@@ -74,7 +74,7 @@ public class DiscoveryServerOperationalServices
         final String             methodName = "initialize";
 
         DiscoveryServerAuditCode auditCode;
-        DiscoveryRESTClient      discoveryRESTClient;
+        ODFRESTClient            ODFRESTClient;
 
         this.auditLog = auditLog;
 
@@ -151,20 +151,20 @@ public class DiscoveryServerOperationalServices
         {
             if ((localServerName != null) && (localServerPassword != null))
             {
-                discoveryRESTClient = new DiscoveryRESTClient(discoveryServerConfig.getAccessServiceServerName(),
-                                                              discoveryServerConfig.getAccessServiceRootURL(),
-                                                              localServerUserId,
-                                                              localServerPassword);
+                ODFRESTClient = new ODFRESTClient(discoveryServerConfig.getAccessServiceServerName(),
+                                                  discoveryServerConfig.getAccessServiceRootURL(),
+                                                  localServerUserId,
+                                                  localServerPassword);
             }
             else
             {
-                discoveryRESTClient = new DiscoveryRESTClient(discoveryServerConfig.getAccessServiceServerName(),
-                                                              discoveryServerConfig.getAccessServiceRootURL());
+                ODFRESTClient = new ODFRESTClient(discoveryServerConfig.getAccessServiceServerName(),
+                                                  discoveryServerConfig.getAccessServiceRootURL());
             }
 
             configurationClient = new DiscoveryConfigurationClient(discoveryServerConfig.getAccessServiceServerName(),
                                                                    discoveryServerConfig.getAccessServiceRootURL(),
-                                                                   discoveryRESTClient,
+                                                                   ODFRESTClient,
                                                                    maxPageSize);
         }
         catch (InvalidParameterException error)
@@ -217,7 +217,7 @@ public class DiscoveryServerOperationalServices
                                                                                  discoveryServerConfig.getAccessServiceServerName(),
                                                                                  localServerUserId,
                                                                                  configurationClient,
-                                                                                 discoveryRESTClient,
+                                                                                 ODFRESTClient,
                                                                                  auditLog,
                                                                                  maxPageSize);
 
@@ -271,7 +271,7 @@ public class DiscoveryServerOperationalServices
         else
         {
             discoveryServerInstance = new DiscoveryServerInstance(localServerName,
-                                                                  GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
                                                                   auditLog,
                                                                   discoveryServerConfig.getAccessServiceRootURL(),
                                                                   discoveryServerConfig.getAccessServiceServerName(),

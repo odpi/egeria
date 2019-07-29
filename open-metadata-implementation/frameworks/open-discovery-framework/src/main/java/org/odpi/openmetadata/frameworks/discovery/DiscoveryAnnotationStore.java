@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.AnnotationStatus;
+import org.odpi.openmetadata.frameworks.discovery.properties.DataField;
 
 import java.util.List;
 
@@ -94,7 +95,6 @@ public abstract class DiscoveryAnnotationStore
     /**
      * Return any annotations attached to this annotation.
      *
-     * @param userId identifier of calling user
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -105,8 +105,7 @@ public abstract class DiscoveryAnnotationStore
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException there was a problem that occurred within the property server.
      */
-    public abstract List<Annotation>  getExtendedAnnotations(String   userId,
-                                                             String   annotationGUID,
+    public abstract List<Annotation>  getExtendedAnnotations(String   annotationGUID,
                                                              int      startingFrom,
                                                              int      maximumResults) throws InvalidParameterException,
                                                                                              UserNotAuthorizedException,
@@ -134,7 +133,7 @@ public abstract class DiscoveryAnnotationStore
      * @return unique identifier of new annotation
      * @throws InvalidParameterException the annotation is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
-     * @throws PropertyServerException there was a problem retrieving adding the annotation to the annotation store.
+     * @throws PropertyServerException there was a problem adding the annotation to the annotation store.
      */
     public abstract String  addAnnotationToDiscoveryReport(Annotation annotation) throws InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -144,17 +143,17 @@ public abstract class DiscoveryAnnotationStore
     /**
      * Add a new annotation and link it to an existing annotation.
      *
-     * @param anchorAnnotationGUID unique identifier of the annotation that this new one os to be attached to
+     * @param anchorAnnotationGUID unique identifier of the annotation that this new one is to be attached to
      * @param annotation annotation object
-     * @return fully filled out annotation
+     * @return unique identifier of new annotation
      * @throws InvalidParameterException one of the parameters is invalid
      * @throws UserNotAuthorizedException the user id not authorized to issue this request
      * @throws PropertyServerException there was a problem saving annotations in the annotation store.
      */
-    public abstract Annotation  addAnnotationToAnnotation(String     anchorAnnotationGUID,
-                                                          Annotation annotation) throws InvalidParameterException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        PropertyServerException;
+    public abstract String  addAnnotationToAnnotation(String     anchorAnnotationGUID,
+                                                      Annotation annotation) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException;
 
 
     /**
@@ -198,8 +197,8 @@ public abstract class DiscoveryAnnotationStore
      * @throws PropertyServerException there was a problem updating the annotation in the annotation store.
      */
     public abstract Annotation  updateAnnotation(Annotation annotation) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException;
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
 
 
     /**
@@ -213,4 +212,146 @@ public abstract class DiscoveryAnnotationStore
     public abstract void  deleteAnnotation(String   annotationGUID) throws InvalidParameterException,
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException;
+
+
+    /**
+     * Return the list of data fields from previous runs of the discovery service.
+     *
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     * @return list of data fields (or null if none are registered)
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    public abstract List<DataField>  getPreviousDataFieldsForAsset(int              startingFrom,
+                                                                   int              maximumResults) throws InvalidParameterException,
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException;
+
+
+    /**
+     * Return the current list of data fields for this discovery run.
+     *
+     * @param startingFrom starting position in the list.
+     * @param maximumResults maximum number of elements that can be returned
+     * @return list of data fields (or null if none are registered)
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem retrieving data fields from the annotation store.
+     */
+    public abstract List<Annotation>  getNewDataFieldsForAsset(int       startingFrom,
+                                                               int       maximumResults) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                PropertyServerException;
+
+
+    /**
+     * Return any annotations attached to this annotation.
+     *
+     * @param anchorDataFieldGUID anchor data field identifier
+     * @param startingFrom starting position in the list
+     * @param maximumResults maximum number of annotations that can be returned.
+     *
+     * @return list of DataField objects
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException there was a problem that occurred within the property server.
+     */
+    public abstract List<DataField>  getNestedDataFields(String   anchorDataFieldGUID,
+                                                         int      startingFrom,
+                                                         int      maximumResults) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException;
+
+
+    /**
+     * Return a specific data field stored in the annotation store (previous or new).
+     *
+     * @param dataFieldGUID unique identifier of the data field
+     * @return data field object
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem retrieving the data field from the annotation store.
+     */
+    public abstract DataField  getDataField(String    dataFieldGUID) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException;
+
+    /**
+     * Add a new data field to the Annotation store linked off of an annotation (typically SchemaAnalysisAnnotation).
+     *
+     * @param annotationGUID unique identifier of the annotation that the data field is to be linked to
+     * @param dataField dataField object
+     * @return unique identifier of new data field
+     * @throws InvalidParameterException the dataField is invalid or the annotation GUID points to an annotation
+     *                                   that can not be associated with a data field.
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem adding the data field to the Annotation store.
+     */
+    public abstract String  addDataFieldToDiscoveryReport(String    annotationGUID,
+                                                          DataField dataField) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException;
+
+
+    /**
+     * Add a new data field and link it to an existing data field.
+     *
+     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param dataField data field object
+     * @return unique identifier of new data field
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public abstract String addDataFieldToDataField(String    anchorDataFieldGUID,
+                                                   DataField dataField) throws InvalidParameterException,
+                                                                               UserNotAuthorizedException,
+                                                                               PropertyServerException;
+
+
+    /**
+     * Add a new annotation and link it to an existing data field.
+     *
+     * @param anchorDataFieldGUID unique identifier of the data field that this new one is to be attached to
+     * @param annotation data field object
+     * @return unique identifier of new annotation
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem saving data fields in the annotation store.
+     */
+    public abstract String  addAnnotationToDataField(String     anchorDataFieldGUID,
+                                                     Annotation annotation) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException;
+
+
+    /**
+     * Replace the current properties of a data field.
+     *
+     * @param dataField new properties
+     *
+     * @return fully filled out data field
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem updating the data field in the annotation store.
+     */
+    public abstract DataField  updateDataField(DataField dataField) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException;
+
+
+    /**
+     * Remove a data field from the annotation store.
+     *
+     * @param dataFieldGUID unique identifier of the data field
+     * @throws InvalidParameterException one of the parameters is invalid
+     * @throws UserNotAuthorizedException the user id not authorized to issue this request
+     * @throws PropertyServerException there was a problem deleting the data field from the annotation store.
+     */
+    public abstract void  deleteDataField(String   dataFieldGUID) throws InvalidParameterException,
+                                                                         UserNotAuthorizedException,
+                                                                         PropertyServerException;
 }

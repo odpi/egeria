@@ -5,12 +5,13 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetComplexSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ComplexSchemaType;
 
-public class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
+class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
 {
     /**
      * Typical constructor creates an AssetComplexSchemaType object primed with information to retrieve an asset's schema
      * information.
      *
+     * @param serviceName calling service
      * @param serverName  name of the server.
      * @param omasServerURL url root of the server to use.
      * @param userId user id to use on server calls.
@@ -20,13 +21,14 @@ public class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
      * @param schemaBean details of the schema object.
      * @param restClient client to call REST API
      */
-    ConnectedAssetComplexSchemaType(String                 serverName,
+    ConnectedAssetComplexSchemaType(String                 serviceName,
+                                    String                 serverName,
                                     String                 omasServerURL,
                                     String                 userId,
                                     ConnectedAssetUniverse parentAsset,
                                     int                    maxCacheSize,
                                     ComplexSchemaType      schemaBean,
-                                    OCFRESTClient restClient)
+                                    OCFRESTClient          restClient)
     {
         super(parentAsset);
 
@@ -38,7 +40,8 @@ public class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
 
             if (schemaAttributeCount > 0)
             {
-                super.schemaAttributes = new ConnectedAssetSchemaAttributes(serverName,
+                super.schemaAttributes = new ConnectedAssetSchemaAttributes(serviceName,
+                                                                            serverName,
                                                                             userId,
                                                                             omasServerURL,
                                                                             schemaBean.getGUID(),

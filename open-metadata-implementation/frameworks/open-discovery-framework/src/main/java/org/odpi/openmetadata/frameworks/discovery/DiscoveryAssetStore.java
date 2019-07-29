@@ -5,13 +5,14 @@ package org.odpi.openmetadata.frameworks.discovery;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFErrorCode;
 
 /**
  * DiscoveryAssetStore defines the interface to a connector broker backed by a metadata store that returns
- * information about the Asset that a Discovery Engine is to analyze.  The userId that made the discovery
- * request is the default user for the asset store.  This userId may be over-ridden by the discovery engine.
+ * information about the Asset that a Discovery Engine is to analyze.  The userId that is passed on the call
+ * by the discovery engine.
  */
 public abstract class DiscoveryAssetStore
 {
@@ -36,53 +37,31 @@ public abstract class DiscoveryAssetStore
 
 
     /**
-     * Return the connector for a connection.
+     * Return the unique identifier for the asset.
      *
-     * @param connection connection properties to create the connector
-     * @return connector to the asset
-     * @throws InvalidParameterException the connection object is not valid
-     * @throws PropertyServerException the connector is not operating correctly
+     * @return guid
      */
-    private   Connector  getConnectorFromConnection(Connection   connection) throws InvalidParameterException,
-                                                                                    PropertyServerException
+    public String getAssetGUID()
     {
-        final String    methodName = "getConnectorFromConnection";
-
-        ConnectorBroker  connectorBroker = new ConnectorBroker();
-
-        try
-        {
-            return connectorBroker.getConnector(connection);
-        }
-        catch (ConnectionCheckedException  error)
-        {
-            ODFErrorCode errorCode = ODFErrorCode.INVALID_ASSET_CONNECTION;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(assetGUID, error.getErrorMessage(), connection.toString());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error,
-                                                "connection");
-        }
-        catch (ConnectorCheckedException  error)
-        {
-            ODFErrorCode errorCode    = ODFErrorCode.INVALID_ASSET_CONNECTOR;
-            String       errorMessage = errorCode.getErrorMessageId()
-                                      + errorCode.getFormattedErrorMessage(assetGUID, error.getErrorMessage(), connection.toString());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
-        }
+        return assetGUID;
     }
+
+
+    /**
+     * Returns the connector corresponding to the supplied connection.
+     *
+     * @param connection   the connection object that contains the properties needed to create the connection.
+     *
+     * @return Connector   connector instance
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
+     */
+    protected abstract Connector getConnectorByConnection(Connection connection) throws InvalidParameterException,
+                                                                                        ConnectionCheckedException,
+                                                                                        ConnectorCheckedException;
 
 
     /**
@@ -100,15 +79,47 @@ public abstract class DiscoveryAssetStore
 
 
     /**
+     * Returns a comprehensive collection of properties about the requested asset.
+     *
+     * @return a comprehensive collection of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract AssetUniverse getAssetProperties() throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
+
+    /**
+     * Log an audit message about this asset.
+     *
+     * @param message message to log
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public abstract void logAssetAuditMessage(String    message) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException;
+
+
+    /**
      * Return the connector to the requested asset.
      *
      * @return Open Connector Framework (OCF) connector
-     * @throws InvalidParameterException the asset guid is not recognized
+     * @throws InvalidParameterException the asset guid is not recognized or the userId is null
+     * @throws ConnectionCheckedException there are errors in the configuration of the connection which is preventing
+     *                                      the creation of a connector.
+     * @throws ConnectorCheckedException there are errors in the initialization of the connector.
      * @throws UserNotAuthorizedException the user is not authorized to access the asset and/or connection needed to
      *                                    create the connector.
      * @throws PropertyServerException there was a problem in the store whether the asset/connection properties are kept.
      */
     public Connector  getConnectorToAsset() throws InvalidParameterException,
+                                                   ConnectionCheckedException,
+                                                   ConnectorCheckedException,
                                                    UserNotAuthorizedException,
                                                    PropertyServerException
     {
@@ -117,6 +128,6 @@ public abstract class DiscoveryAssetStore
             assetConnection = getConnectionForAsset();
         }
 
-        return getConnectorFromConnection(assetConnection);
+        return this.getConnectorByConnection(assetConnection);
     }
 }

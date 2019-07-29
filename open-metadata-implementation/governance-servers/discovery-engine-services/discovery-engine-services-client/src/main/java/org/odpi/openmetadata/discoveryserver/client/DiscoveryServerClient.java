@@ -5,7 +5,7 @@ package org.odpi.openmetadata.discoveryserver.client;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationListResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.AnnotationResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.rest.DiscoveryAnalysisReportResponse;
@@ -27,10 +27,10 @@ import java.util.Map;
  */
 public class DiscoveryServerClient extends DiscoveryEngine
 {
-    private String              serverName;               /* Initialized in constructor */
-    private String              serverPlatformRootURL;    /* Initialized in constructor */
-    private String              discoveryEngineGUID;      /* Initialized in constructor */
-    private DiscoveryRESTClient restClient;               /* Initialized in constructor */
+    private String        serverName;               /* Initialized in constructor */
+    private String        serverPlatformRootURL;    /* Initialized in constructor */
+    private String        discoveryEngineGUID;      /* Initialized in constructor */
+    private ODFRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
@@ -52,7 +52,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
         this.serverName = serverName;
         this.discoveryEngineGUID = discoveryEngineGUID;
 
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -76,7 +76,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
         this.serverName = serverName;
         this.discoveryEngineGUID = discoveryEngineGUID;
 
-        this.restClient = new DiscoveryRESTClient(serverName, serverPlatformRootURL, userId, password);
+        this.restClient = new ODFRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -233,10 +233,10 @@ public class DiscoveryServerClient extends DiscoveryEngine
      */
     public DiscoveryAnalysisReport getDiscoveryReport(String   userId,
                                                       String   discoveryRequestGUID) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
-                                                                                     DiscoveryEngineException
+                                                                                            UserNotAuthorizedException,
+                                                                                            DiscoveryEngineException
     {
-        final String   methodName = "getDiscoveryReport";
+        final String   methodName = "getDiscoveryAnalysisReport";
         final String   reportGUIDParameterName = "discoveryRequestGUID";
         final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}";
 
@@ -323,6 +323,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      * Return any annotations attached to this annotation.
      *
      * @param userId identifier of calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -334,6 +335,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public  List<Annotation>  getExtendedAnnotations(String   userId,
+                                                     String   discoveryRequestGUID,
                                                      String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
@@ -342,7 +344,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
     {
         final String methodName                  = "getExtendedAnnotations";
         final String annotationGUIDParameterName = "annotationGUID";
-        final String urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/annotations/{3}/extended-annotations?startingFrom={4}&maximumResults={5}";
+        final String urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}/annotations/{4}/extended-annotations?startingFrom={5}&maximumResults={6}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -355,6 +357,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
                                                                                          serverName,
                                                                                          userId,
                                                                                          discoveryEngineGUID,
+                                                                                         discoveryRequestGUID,
                                                                                          annotationGUID,
                                                                                          Integer.toString(startingFrom),
                                                                                          Integer.toString(maximumResults));
@@ -378,6 +381,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
      * for an annotation.
      *
      * @param userId identifier of calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -387,13 +391,14 @@ public class DiscoveryServerClient extends DiscoveryEngine
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public  Annotation        getAnnotation(String   userId,
+                                            String   discoveryRequestGUID,
                                             String   annotationGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             DiscoveryEngineException
     {
         final String   methodName = "getAnnotation";
         final String   annotationGUIDParameterName = "annotationGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/annotations/{3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/discovery-server/users/{1}/discovery-engine/{2}/discovery-analysis-reports/{3}/annotations/{4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(annotationGUID, annotationGUIDParameterName, methodName);
@@ -405,6 +410,7 @@ public class DiscoveryServerClient extends DiscoveryEngine
                                                                                  serverName,
                                                                                  userId,
                                                                                  discoveryEngineGUID,
+                                                                                 discoveryRequestGUID,
                                                                                  annotationGUID);
 
             exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);

@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project
+
+FROM maven:3.6.0-jdk-8
+ARG atlas_version=2.0.0
+
+WORKDIR /root
+
+# Pull down Apache Atlas and build it into /root/atlas-bin.
+RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/$atlas_version/apache-atlas-$atlas_version-sources.tar.gz
+RUN wget https://www.apache.org/dist/atlas/KEYS
+RUN wget https://www.apache.org/dist/atlas/$atlas_version/apache-atlas-$atlas_version-sources.tar.gz.asc
+
+RUN gpg --import KEYS
+RUN gpg --verify apache-atlas-$atlas_version-sources.tar.gz.asc apache-atlas-$atlas_version-sources.tar.gz
+
+RUN tar zxf apache-atlas-$atlas_version-sources.tar.gz
+
+WORKDIR /root/apache-atlas-sources-$atlas_version
+
+# need more java heap
+ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
+
+# Copy settings file to mvn settings
+COPY dist/settings.xml /root/.m2/settings.xml
+
+# Remove -DskipTests if unit tests are to be included
+RUN mvn clean -DskipTests install
+RUN mvn clean -DskipTests package -Pdist,embedded-hbase-solr
+
+RUN mkdir -p /root/atlas-bin
+RUN tar xzf /root/apache-atlas-sources-$atlas_version/distro/target/*server.tar.gz --strip-components 1 -C /root/atlas-bin

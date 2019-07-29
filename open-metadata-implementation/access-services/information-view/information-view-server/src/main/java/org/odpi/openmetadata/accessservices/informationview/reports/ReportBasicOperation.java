@@ -6,10 +6,8 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
-import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.SourceNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -17,7 +15,6 @@ import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameU
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -25,8 +22,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
@@ -34,48 +29,49 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
-import java.text.MessageFormat;
 import java.util.List;
 
 public abstract class ReportBasicOperation extends BasicOperation{
 
     private static final Logger log = LoggerFactory.getLogger(ReportBasicOperation.class);
 
-    protected final EntityReferenceResolver entityReferenceResolver;
+    public ReportBasicOperation(OMEntityDao omEntityDao,LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao,lookupHelper, helper, auditLog);
 
-    public ReportBasicOperation(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        super(omEntityDao, helper, auditLog);
-        this.entityReferenceResolver = new EntityReferenceResolver(lookupHelper, omEntityDao);
     }
 
 
     /**
-     *
+     * @param userId user id of user submitting the request
      * @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param allElements all elements linked to the current element
      */
-    public void addElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> allElements) {
+    public void addElements(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid,
+                            String registrationQualifiedName, List<ReportElement> allElements) {
         if (allElements == null || allElements.isEmpty())
             return;
-        allElements.parallelStream().forEach(e -> addReportElement(qualifiedNameForParent, parentGuid, e));
+        allElements.parallelStream().forEach(e -> addReportElement(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, e));
     }
 
 
     /**
-     *
+     * @param userId user id of user submitting the request    
      * @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param element object describing the current element
      */
-    public void addReportElement(String qualifiedNameForParent, String parentGuid, ReportElement element) {
+    public void addReportElement(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportElement element) {
         try {
             if (element instanceof ReportSection) {
-                addReportSection(qualifiedNameForParent, parentGuid, (ReportSection) element);
+                addReportSection(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportSection) element);
             } else if (element instanceof ReportColumn) {
-                addReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element);
+                addReportColumn(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportColumn) element);
             }
         } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException e) {
             log.error("Exception creating report element", e);
@@ -90,8 +86,11 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
     /**
      *
-     * @param qualifiedNameForParent qualified name of the parent element
+     *
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportSection object describing the current section in the report
      * @throws InvalidParameterException
      * @throws PropertyErrorException
@@ -105,17 +104,20 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws TypeErrorException
      * @throws StatusNotSupportedException
      */
-    private void addReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
-        EntityDetail typeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
+    private void addReportSection(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+        EntityDetail typeEntity = addSectionAndSectionType(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, reportSection);
         String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
-        addElements(qualifiedNameForSection, typeEntity.getGUID(), reportSection.getElements());
+        addElements(userId, qualifiedNameForSection, typeEntity.getGUID(), registrationGuid, registrationQualifiedName, reportSection.getElements());
     }
 
 
     /**
      *
-     * @param qualifiedNameForParent qualified name of the parent element
+     *
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid guid of software server capability source
+     * @param registrationQualifiedName qualified name of software server capability source
      * @param reportSection object describing the current section in the report
      * @return
      * @throws InvalidParameterException
@@ -130,35 +132,47 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws TypeDefNotKnownException
      */
-    protected EntityDetail addSectionAndSectionType(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
+    protected EntityDetail addSectionAndSectionType(String userId, String qualifiedNameForParent, String parentGuid,
+                                                    String registrationGuid, String registrationQualifiedName, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
 
         String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSection)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
                 .build();
-        EntityDetail sectionEntity = omEntityDao.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
-                                                                    qualifiedNameForSection,
-                                                                    sectionProperties,
-                                                        false);
+        EntityDetail sectionEntity = omEntityDao.addExternalEntity(userId,
+                                                            Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
+                                                            qualifiedNameForSection,
+                                                            registrationGuid,
+                                                            registrationQualifiedName,
+                                                            sectionProperties,
+                                                            null,
+                                                            false);
 
-
-        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+        omEntityDao.addExternalRelationship(userId,
+                                            Constants.ATTRIBUTE_FOR_SCHEMA,
+                                            registrationGuid,
+                                            registrationQualifiedName,
                                             parentGuid,
                                             sectionEntity.getGUID(),
-                new InstanceProperties());
+                                            new InstanceProperties());
 
         String qualifiedNameForSectionType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection);
-        return addSchemaType(qualifiedNameForSectionType, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
+        InstanceProperties schemaAttributeTypeProperties = new InstanceProperties();
+        schemaAttributeTypeProperties = helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, schemaAttributeTypeProperties, Constants.QUALIFIED_NAME, qualifiedNameForSectionType, "addSchemaType");
+        return createSchemaType(userId, Constants.DOCUMENT_SCHEMA_TYPE,  qualifiedNameForSectionType, registrationGuid, registrationQualifiedName, schemaAttributeTypeProperties, Constants.SCHEMA_ATTRIBUTE_TYPE, sectionEntity.getGUID() );
     }
 
 
     /**
      *
-     * @param qualifiedNameForParent qualified name of the parent element
+     *
+     * @param userId user id of user submitting the request* @param qualifiedNameForParent qualified name of the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportColumn object describing the current column in the report
-     * @return
+     * @return entity representing column
      * @throws InvalidParameterException
      * @throws TypeErrorException
      * @throws TypeDefNotKnownException
@@ -171,196 +185,45 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws StatusNotSupportedException
      */
-    protected EntityDetail addReportColumn(String qualifiedNameForParent, String parentGuid, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
+    protected EntityDetail addReportColumn(String userId,
+                                           String qualifiedNameForParent,
+                                           String parentGuid,
+                                           String registrationGuid,
+                                           String registrationQualifiedName,
+                                           ReportColumn reportColumn) {
 
         String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DERIVED_SCHEMA_ATTRIBUTE, reportColumn.getName());
-
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
-                .withStringProperty(Constants.ATTRIBUTE_NAME, reportColumn.getName())
-                .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
-                .build();
-        EntityDetail derivedColumnEntity = omEntityDao.addEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE,
-                                                                qualifiedNameForColumn,
-                                                                columnProperties,
-                                                    false);
+                                                                        .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
+                                                                        .withStringProperty(Constants.ATTRIBUTE_NAME, reportColumn.getName())
+                                                                        .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
+                                                                        .build();
+        EntityDetail derivedColumnEntity = omEntityDao.addExternalEntity(userId,
+                                                                        Constants.DERIVED_SCHEMA_ATTRIBUTE,
+                                                                        qualifiedNameForColumn,
+                                                                        registrationGuid,
+                                                                        registrationQualifiedName,
+                                                                        columnProperties,
+                                                                        null,
+                                                                        false);
 
-        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                parentGuid,
-                derivedColumnEntity.getGUID(),
-                new InstanceProperties());
+        omEntityDao.addExternalRelationship(userId,
+                                            Constants.ATTRIBUTE_FOR_SCHEMA,
+                                            registrationGuid,
+                                            registrationQualifiedName,
+                                            parentGuid,
+                                            derivedColumnEntity.getGUID(),
+                                            new InstanceProperties());
 
-        addBusinessTerm(reportColumn, derivedColumnEntity);
-        addQueryTargets(reportColumn, derivedColumnEntity);
+
+        addQueryTargets(userId, registrationGuid, registrationQualifiedName, reportColumn.getSources(), derivedColumnEntity);
+        addSemanticAssignments(userId, registrationGuid, registrationQualifiedName, reportColumn.getBusinessTerms(), derivedColumnEntity);
         String qualifiedNameForColumnType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.SCHEMA_TYPE, reportColumn);
-
-        addSchemaType(qualifiedNameForColumnType, derivedColumnEntity, Constants.SCHEMA_TYPE);
+        InstanceProperties schemaAttributeTypeProperties = new InstanceProperties();
+        schemaAttributeTypeProperties = helper.addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, schemaAttributeTypeProperties, Constants.QUALIFIED_NAME, qualifiedNameForColumnType, "addReportColumn");
+        createSchemaType(userId, Constants.SCHEMA_TYPE,  qualifiedNameForColumnType, registrationGuid, registrationQualifiedName, schemaAttributeTypeProperties, Constants.SCHEMA_ATTRIBUTE_TYPE, derivedColumnEntity.getGUID() );
 
         return derivedColumnEntity;
     }
-
-    private String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
-        return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
-    }
-
-    /**
-     *
-     * @param qualifiedNameForType qualified name for the schema attribute
-     * @param schemaAttributeEntity entity describing the schema entity
-     * @param schemaAttributeTypeName typename for the schema type
-     * @return
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws ClassificationErrorException
-     */
-    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-
-
-        InstanceProperties typeProperties = new EntityPropertiesBuilder()
-                                                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
-                                                .build();
-
-        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
-                                                                        qualifiedNameForType,
-                                                                        typeProperties,
-                                                                        false);
-
-        omEntityDao.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
-                                            schemaAttributeEntity.getGUID(),
-                                            schemaTypeEntity.getGUID(),
-                                            new InstanceProperties());
-        return schemaTypeEntity;
-    }
-
-    /**
-     *
-     * @param reportColumn object describing the report column
-     * @param derivedColumnEntity entity describing the derived column
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     * @throws StatusNotSupportedException
-     * @throws TypeDefNotKnownException
-     * @throws EntityNotKnownException
-     */
-    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, EntityNotKnownException {
-        String businessTermGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
-            if (!StringUtils.isEmpty(businessTermGuid)) {
-                omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                                            derivedColumnEntity.getGUID(),
-                                            businessTermGuid,
-                        new InstanceProperties());
-            }
-    }
-
-    /**
-     *
-     * @param reportColumn object describing the report column
-     * @param derivedColumnEntity entity describing the derived column
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     */
-    private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
-        for (Source source : reportColumn.getSources()) {
-
-            String sourceColumnGUID = entityReferenceResolver.getSourceGuid(source);
-            if (!StringUtils.isEmpty(sourceColumnGUID)) {
-                log.info("source {} for report column {} found.", source, reportColumn.getName());
-
-                InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
-                                                                .withStringProperty(Constants.QUERY, "")
-                                                                .build();
-                omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                                                    derivedColumnEntity.getGUID(),
-                                                    sourceColumnGUID,
-                                                    schemaQueryImplProperties);
-            } else {
-                InformationViewErrorCode code = InformationViewErrorCode.SOURCE_NOT_FOUND_EXCEPTION;
-                throw new SourceNotFoundException(code.getHttpErrorCode(),
-                                                    ReportBasicOperation.class.getName(),
-                                                    code.getFormattedErrorMessage(source.toString()),
-                                                    code.getSystemAction(),
-                                                    code.getUserAction(),
-                                                    null);
-            }
-        }
-    }
-
-
-    /**
-     * \
-     * @param reportEntity entity describing the report
-     * @param qualifiedNameForComplexSchemaType qualified name for complex schema type
-     * @param complexSchemaTypeProperties properties of the complex schema type
-     * @return
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws ClassificationErrorException
-     */
-    protected EntityDetail addReportSchemaType(EntityDetail reportEntity, String qualifiedNameForComplexSchemaType, InstanceProperties complexSchemaTypeProperties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-        EntityDetail complexSchemaTypeEntity;
-        complexSchemaTypeEntity = omEntityDao.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                                                                  qualifiedNameForComplexSchemaType,
-                                                                  complexSchemaTypeProperties,
-                                                       null,
-                                                    false);
-
-        omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
-                                                reportEntity.getGUID(),
-                                                complexSchemaTypeEntity.getGUID(),
-                new InstanceProperties());
-        return complexSchemaTypeEntity;
-    }
-
-
-    /**
-     *
-     * @param existingAssignments semantic assignment to be deleted
-     * @throws RepositoryErrorException
-     * @throws UserNotAuthorizedException
-     * @throws InvalidParameterException
-     * @throws RelationshipNotDeletedException
-     * @throws RelationshipNotKnownException
-     * @throws FunctionNotSupportedException
-     */
-    protected void deleteRelationships(List<Relationship> existingAssignments) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException {
-        if (existingAssignments != null && !existingAssignments.isEmpty()) {
-            for (Relationship relationship : existingAssignments) {
-                omEntityDao.purgeRelationship(relationship);
-            }
-        } else {
-            log.info("No relationships to delete");
-        }
-    }
-
-
 
 }

@@ -110,7 +110,8 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
         {
             return false;
         }
-        MetadataCollectionIdResponse that = (MetadataCollectionIdResponse) objectToCompare;
+        MetadataCollectionIdResponse
+                that = (MetadataCollectionIdResponse) objectToCompare;
         return metadataCollectionId.equals(that.metadataCollectionId);
     }
 

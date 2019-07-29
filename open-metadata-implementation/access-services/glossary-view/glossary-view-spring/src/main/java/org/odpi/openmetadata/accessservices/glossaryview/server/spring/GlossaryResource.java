@@ -7,19 +7,28 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 import org.odpi.openmetadata.accessservices.glossaryview.server.service.GlossaryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.PositiveOrZero;
+
 /**
- * Provides the server-side implementation of the Glossary View Open Metadata Access Service
- * (OMAS). This interface facilitates the retrieval of glossaries
+ * Spring Rest Controller defining 'Glossary' oriented endpoints
  */
 @RestController
+@Validated
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/glossary-view/users/{userId}")
 public class GlossaryResource {
 
+    public static final String PAGE_FROM_DEFAULT_VALUE = "0";
+    public static final String PAGE_SIZE_DEFAULT_VALUE = "1000";
+    public static final int PAGE_SIZE_MAX_VALUE = 10000;
     private static final Logger log = LoggerFactory.getLogger(GlossaryResource.class);
 
 
@@ -29,7 +38,7 @@ public class GlossaryResource {
      * Called by Spring
      */
     public GlossaryResource() {
-        glossaryService = GlossaryService.getInstance();
+        glossaryService = new GlossaryService();
     }
 
     /**
@@ -37,15 +46,19 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
+     * @param from from
+     * @param size size
      *
-     * @return all glossaries
+     * @return glossaries
      */
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries")
     public GlossaryViewEntityDetailResponse getAllGlossaries(@PathVariable("serverName") String serverName,
-                                                             @PathVariable("userId") String userId) {
+                                                             @PathVariable("userId") String userId,
+                                                             @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                             @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response =  glossaryService.getAllGlossaries(userId, serverName);
+        GlossaryViewEntityDetailResponse response =  glossaryService.getAllGlossaries(userId, serverName, from, size);
 
         watch.stop();
         log.debug("Method: getAllGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
@@ -58,14 +71,14 @@ public class GlossaryResource {
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
      *
      * @return a glossary
      */
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}")
     public GlossaryViewEntityDetailResponse getGlossary(@PathVariable("serverName") String serverName,
                                                         @PathVariable("userId") String userId,
-                                                        @PathVariable("glossaryGUID") String glossaryGUID) {
+                                                        @PathVariable("glossaryGUID") @NotBlank String glossaryGUID) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = glossaryService.getGlossary(userId, serverName, glossaryGUID);
@@ -77,21 +90,71 @@ public class GlossaryResource {
     }
 
     /**
+     * Extract a term's home glossary
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     *
+     * @return glossaries
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/home-glossary")
+    public GlossaryViewEntityDetailResponse getTermHomeGlossary(@PathVariable("serverName") String serverName,
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("termGUID") @NotBlank String termGUID) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response =  glossaryService.getTermHomeGlossary(userId, serverName, termGUID);
+
+        watch.stop();
+        log.debug("Method: getTermHomeGlossary; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract a category's home glossary
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param categoryGUID category GUID
+     *
+     * @return glossaries
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/home-glossary")
+    public GlossaryViewEntityDetailResponse getCategoryHomeGlossary(@PathVariable("serverName") String serverName,
+                                                                    @PathVariable("userId") String userId,
+                                                                    @PathVariable("categoryGUID") @NotBlank String categoryGUID) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response =  glossaryService.getCategoryHomeGlossary(userId, serverName, categoryGUID);
+
+        watch.stop();
+        log.debug("Method: getCategoryHomeGlossary; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
      * Extract the external glossary definitions
      *
      * @param serverName instance to call
      * @param userId calling user
-     * @param glossaryGUID glossary guid
+     * @param glossaryGUID glossary GUID
+     * @param from from
+     * @param size size
      *
-     * @return external glossary
+     * @return external glossaries
      */
     @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
-                                                                  @PathVariable("glossaryGUID") String glossaryGUID) {
+                                                                  @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
+                                                                  @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response = glossaryService.getExternalGlossaries(userId, serverName, glossaryGUID);
+        GlossaryViewEntityDetailResponse response = glossaryService.getExternalGlossaries(userId, serverName, glossaryGUID, from, size);
 
         watch.stop();
         log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");

@@ -4,20 +4,11 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServicesDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -33,9 +24,11 @@ import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalSe
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
+import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -162,6 +155,7 @@ public class OMAGServerOperationalServices
             SecurityOfficerConfig     securityOfficerConfig     = configuration.getSecurityOfficerConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
+            DataEngineProxyConfig     dataEngineProxyConfig     = configuration.getDataEngineProxyConfig();
 
             if ((repositoryServicesConfig == null) &&
                     (accessServiceConfigList == null) &&
@@ -171,7 +165,8 @@ public class OMAGServerOperationalServices
                     (securitySyncConfig == null) &&
                     (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
-                    (virtualizationConfig == null))
+                    (virtualizationConfig == null) &&
+                    (dataEngineProxyConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -218,12 +213,6 @@ public class OMAGServerOperationalServices
                 this.deactivateTemporarily(userId, serverName);
             }
 
-
-            /*
-             * Set up the security for the server using the config
-             */
-            platformInstanceMap.startUpServerInstance(serverName, configuration.getServerSecurityConnection());
-
             /*
              * The instance saves the operational services objects for this server instance so they can be retrieved
              * in response to subsequent REST calls for the server
@@ -264,6 +253,25 @@ public class OMAGServerOperationalServices
              */
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
             operationalRepositoryServices.initialize(repositoryServicesConfig);
+
+
+            /*
+             * Set up the server instance - ensure it is active and the security has been set up correctly.
+             */
+            OpenMetadataServerSecurityVerifier securityVerifier =
+                        platformInstanceMap.startUpServerInstance(configuration.getLocalServerUserId(),
+                                                                  serverName,
+                                                                  operationalRepositoryServices.getAuditLog(CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceCode(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceName(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceDescription(),
+                                                                                                            CommonServicesDescription.OPEN_METADATA_SECURITY.getServiceWiki()),
+                                                                  configuration.getServerSecurityConnection());
+
+            /*
+             * Pass the resulting security verify to the repository services.  It will be set up in the local
+             * repository (if there is a local repository in this server).
+             */
+            operationalRepositoryServices.setSecurityVerifier(securityVerifier);
 
             /*
              * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
@@ -384,12 +392,12 @@ public class OMAGServerOperationalServices
                                                                enterpriseTopicConnector,
                                                                operationalRepositoryServices.getEnterpriseConnectorManager(),
                                                                operationalRepositoryServices.getAuditLog(
-                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
-                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
-                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
-                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
+                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
+                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
+                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
+                                                                       GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
             }
 
             /*
@@ -435,12 +443,12 @@ public class OMAGServerOperationalServices
                 instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
                 operationalDiscoveryServer.initialize(discoveryServerConfig,
                                                       operationalRepositoryServices.getAuditLog(
-                                                              GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
-                                                              GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
-                                                              GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceDescription(),
-                                                              GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
+                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
+                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
+                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceDescription(),
+                                                              GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName());
             }
 
             /*
@@ -456,12 +464,12 @@ public class OMAGServerOperationalServices
                         configuration.getMaxPageSize());
                 instance.setOpenLineageOperationalServices(openLineageOperationalServices);
                 openLineageOperationalServices.initialize(openLineageConfig,
-                        operationalRepositoryServices.getAuditLog(GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+                        operationalRepositoryServices.getAuditLog(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
+                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
+                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
             }
 
             /*
@@ -478,12 +486,13 @@ public class OMAGServerOperationalServices
                                                                                                               configuration.getMaxPageSize());
                 instance.setOperationalSecuritySyncServices(operationalSecuritySync);
                 operationalSecuritySync.initialize(securitySyncConfig,
-                                                   operationalRepositoryServices.getAuditLog(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceCode(),
-                                                                                             GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceName(),
-                                                                                             GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceDescription(),
-                                                                                             GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceWiki()));
+                                                   operationalRepositoryServices.getAuditLog(
+                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceCode(),
+                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName(),
+                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceDescription(),
+                                                           GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.SECURITY_SYNC_SERVICES.getServiceName());
             }
 
             /*
@@ -500,12 +509,13 @@ public class OMAGServerOperationalServices
                                                                                                               configuration.getMaxPageSize());
                 instance.setOperationalSecurityOfficerService(operationalSecurityOfficer);
                 operationalSecurityOfficer.initialize(securityOfficerConfig,
-                                                      operationalRepositoryServices.getAuditLog(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
-                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
-                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
-                                                                                                GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
+                                                      operationalRepositoryServices.getAuditLog(
+                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceCode(),
+                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName(),
+                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceDescription(),
+                                                              GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.SECURITY_OFFICER_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.SECURITY_OFFICER_SERVICES.getServiceName());
             }
 
             /*
@@ -522,14 +532,38 @@ public class OMAGServerOperationalServices
                 instance.setOperationalVirtualizationServices(operationalVirtualizationServices);
                 operationalVirtualizationServices.initialize(virtualizationConfig,
                                                              operationalRepositoryServices.getAuditLog(
-                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
-                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName(),
-                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
-                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
+                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
+                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
+                                                                     GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.VIRTUALIZATION_SERVICES.getServiceName());
             }
 
+            /*
+             * Initialize the Data Engine Proxy Services.
+             */
+            if (dataEngineProxyConfig != null)
+            {
+                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
+                        configuration.getLocalServerType(),
+                        configuration.getOrganizationName(),
+                        configuration.getLocalServerUserId(),
+                        configuration.getLocalServerPassword(),
+                        configuration.getLocalServerURL());
+
+                instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
+                operationalDataEngineProxyServices.initialize(
+                        dataEngineProxyConfig,
+                        operationalRepositoryServices.getAuditLog(
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceCode(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceWiki())
+                );
+
+                activatedServiceList.add(GovernanceServicesDescription.DATA_ENGINE_PROXY_SERVICES.getServiceName());
+            }
 
             /*
              * Initialize the Stewardship Services.  This is a governance daemon for running automated stewardship actions.
@@ -543,12 +577,12 @@ public class OMAGServerOperationalServices
                 instance.setOperationalStewardshipServices(operationalStewardshipServices);
                 operationalStewardshipServices.initialize(stewardshipServicesConfig,
                                                           operationalRepositoryServices.getAuditLog(
-                                                              GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceCode(),
-                                                              GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceName(),
-                                                              GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceDescription(),
-                                                              GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceWiki()));
+                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceCode(),
+                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName(),
+                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceDescription(),
+                                                                  GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceWiki()));
 
-                activatedServiceList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceName());
+                activatedServiceList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName());
             }
 
             response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
@@ -581,9 +615,13 @@ public class OMAGServerOperationalServices
     /**
      * Shutdown any running services for a specific server instance.
      *
+     * @param userId calling user
      * @param serverName name of this server
+     * @param methodName calling method
      * @param instance a list of the running services
      * @param permanentDeactivation should the server be permanently disconnected
+     * @throws InvalidParameterException one of the services detected an invalid parameter
+     * @throws PropertyServerException one of the services had problems shutting down
      */
     private void deactivateRunningServiceInstances(String                          userId,
                                                    String                          serverName,

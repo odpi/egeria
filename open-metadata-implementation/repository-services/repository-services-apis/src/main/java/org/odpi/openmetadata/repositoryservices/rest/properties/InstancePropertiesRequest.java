@@ -109,7 +109,8 @@ public class InstancePropertiesRequest extends OMRSAPIRequest
         {
             return false;
         }
-        InstancePropertiesRequest that = (InstancePropertiesRequest) objectToCompare;
+        InstancePropertiesRequest
+                that = (InstancePropertiesRequest) objectToCompare;
         return Objects.equals(getInstanceProperties(), that.getInstanceProperties());
     }
 

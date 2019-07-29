@@ -37,7 +37,7 @@ public class TypeDefResponse extends OMRSAPIResponse
      *
      * @param template object to copy
      */
-    public TypeDefResponse(TypeDefResponse  template)
+    public TypeDefResponse(TypeDefResponse template)
     {
         super(template);
 
@@ -118,7 +118,8 @@ public class TypeDefResponse extends OMRSAPIResponse
         {
             return false;
         }
-        TypeDefResponse that = (TypeDefResponse) objectToCompare;
+        TypeDefResponse
+                that = (TypeDefResponse) objectToCompare;
         return Objects.equals(getTypeDef(), that.getTypeDef());
     }
 

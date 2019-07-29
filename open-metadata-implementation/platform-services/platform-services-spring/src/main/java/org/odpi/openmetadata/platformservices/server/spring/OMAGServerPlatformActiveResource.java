@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.platformservices.server.spring;
 
 import org.odpi.openmetadata.commonservices.ffdc.rest.BooleanResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.RegisteredOMAGServicesResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerServicesListResponse;
 import org.odpi.openmetadata.platformservices.rest.ServerStatusResponse;
@@ -18,10 +19,70 @@ import org.springframework.web.bind.annotation.RestController;
  * platform and the services that are active within them.
  */
 @RestController
-@RequestMapping("/open-metadata/platform-services/users/{userId}")
+@RequestMapping("/open-metadata/platform-services/users/{userId}/server-platform")
 public class OMAGServerPlatformActiveResource
 {
     OMAGServerPlatformActiveServices  platformAPI = new OMAGServerPlatformActiveServices();
+
+
+    /**
+     * Return the list of access services that are registered (supported) in this OMAG Server Platform
+     * and can be configured for a metadata server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/access-services")
+
+    public RegisteredOMAGServicesResponse getRegisteredAccessServices(@PathVariable String userId)
+    {
+        return platformAPI.getRegisteredAccessServices(userId);
+    }
+
+
+    /**
+     * Return the list of governance services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of a governance server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/governance-services")
+
+    public RegisteredOMAGServicesResponse getRegisteredGovernanceServices(@PathVariable String userId)
+    {
+        return platformAPI.getRegisteredGovernanceServices(userId);
+    }
+
+
+    /**
+     * Return the list of common services that are registered (supported) in this OMAG Server Platform
+     * and can be configured as part of any server.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/registered-services/common-services")
+
+    public RegisteredOMAGServicesResponse getRegisteredCommonServices(@PathVariable String userId)
+    {
+        return platformAPI.getRegisteredCommonServices(userId);
+    }
+
+
+    /**
+     * Return the list of all services that are registered (supported) in this OMAG Server Platform.
+     *
+     * @param userId calling user
+     * @return list of service descriptions
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/registered-services")
+
+    public RegisteredOMAGServicesResponse getAllRegisteredServices(@PathVariable String userId)
+    {
+        return platformAPI.getAllRegisteredServices(userId);
+    }
+
 
     /**
      * Return a flag to indicate if this server has ever run on this OMAG Server Platform.
@@ -30,7 +91,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName server of interest
      * @return flag
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/servers/{serverName}/is-known")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/is-known")
 
     public BooleanResponse isServerKnown(@PathVariable String    userId,
                                          @PathVariable String    serverName)
@@ -45,7 +106,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId calling user
      * @return list of OMAG server names
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/servers")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers")
 
     public ServerListResponse getKnownServerList(@PathVariable String userId)
     {
@@ -59,7 +120,7 @@ public class OMAGServerPlatformActiveResource
      * @param userId name of the user making the request
      * @return list of server names
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/servers/active")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers/active")
 
     public ServerListResponse getActiveServerList(@PathVariable String    userId)
     {
@@ -74,7 +135,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName name of the server of interest
      * @return details of the server status
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/servers/{serverName}/status")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/status")
 
     public ServerStatusResponse getServerStatus(@PathVariable String    userId,
                                                 @PathVariable String    serverName)
@@ -90,7 +151,7 @@ public class OMAGServerPlatformActiveResource
      * @param serverName name of the server of interest
      * @return server name and list od services running within
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-platform/servers/{serverName}/services")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/services")
 
     public ServerServicesListResponse getActiveServiceListForServer(@PathVariable String    userId,
                                                                     @PathVariable String    serverName)
