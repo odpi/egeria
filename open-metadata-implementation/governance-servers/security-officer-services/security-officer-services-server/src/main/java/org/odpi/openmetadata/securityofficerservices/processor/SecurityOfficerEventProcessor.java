@@ -29,6 +29,9 @@ import java.util.Collections;
 public class SecurityOfficerEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerEventProcessor.class);
+    private static final String SECURITY_OFFICER_SERVER = "SecurityOfficerServer";
+    private static final String SECURITY_OFFICER_OMAS_URL = "{0}/servers/{1}/open-metadata/access-services/security-officer/users/{2}/security-tag/element/{3}";
+
     private OMRSAuditLog auditLog;
     private SecurityOfficerConfig securitySyncConfig;
     private SecurityOfficerConnector connector;
@@ -78,9 +81,10 @@ public class SecurityOfficerEventProcessor {
     private String getSecurityOMASURL(String guid) {
 
         return MessageFormat.format(
-                securitySyncConfig.getSecurityOfficerOMASURL(),
-                securitySyncConfig.getSecurityOfficerOMASServerName(),
-                securitySyncConfig.getSecurityOfficerOMASUsername(),
+                SECURITY_OFFICER_OMAS_URL,
+                securitySyncConfig.getAccessServiceRootURL(),
+                securitySyncConfig.getAccessServiceServerName(),
+                SECURITY_OFFICER_SERVER,
                 guid);
     }
 

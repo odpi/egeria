@@ -14,9 +14,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 public class OMAGServerSecurityOfficerService
@@ -50,9 +48,9 @@ public class OMAGServerSecurityOfficerService
             }
 
             if (securityOfficerConfig == null) {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for security Officer services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for Security Officer Service.");
             } else {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for security Officer services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for Security Officer Service.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -70,7 +68,7 @@ public class OMAGServerSecurityOfficerService
                                 eventBusConfig.getConfigurationProperties()));
             }
 
-            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerServerOutTopicName() != null) {
+            if (securityOfficerConfig != null) {
                 securityOfficerConfig.setSecurityOfficerServerOutTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                 eventBusConfig.getConnectorProvider(),
@@ -78,19 +76,6 @@ public class OMAGServerSecurityOfficerService
                                 getOutputTopicName(securityOfficerConfig.getSecurityOfficerServerOutTopicName()),
                                 serverConfig.getLocalServerId(),
                                 eventBusConfig.getConfigurationProperties()));
-            }
-
-            if(securityOfficerConfig != null && securityOfficerConfig.getSecurityOfficerOMASURL() != null
-                    && securityOfficerConfig.getSecurityOfficerOMASUsername() != null
-                    && securityOfficerConfig.getSecurityOfficerOMASServerName() != null){
-                Map<String, Object> additionalProperties = new HashMap<>();
-                additionalProperties.put("username", securityOfficerConfig.getSecurityOfficerOMASUsername());
-                additionalProperties.put("serverName", securityOfficerConfig.getSecurityOfficerOMASServerName());
-
-                securityOfficerConfig.setSecurityOfficerConnection(
-                        connectorConfigurationFactory.getSecurityOfficerServerConnection(serverName,
-                                securityOfficerConfig.getSecurityOfficerOMASURL(),
-                                additionalProperties));
             }
 
             serverConfig.setSecurityOfficerConfig(securityOfficerConfig);
@@ -108,9 +93,12 @@ public class OMAGServerSecurityOfficerService
         return response;
     }
 
-    private String getOutputTopicName(String securityServerType)
-    {
-        return outputTopic + securityServerType + defaultOutTopic;
+    private String getOutputTopicName(String securityServerType) {
+        if (securityServerType != null) {
+            return outputTopic + securityServerType + defaultOutTopic;
+        }
+
+        return outputTopic + "SecurityOfficerServer" + defaultOutTopic;
     }
 
     public VoidResponse enableSecurityOfficerService(String userId, String serverName)

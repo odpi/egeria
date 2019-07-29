@@ -1794,6 +1794,8 @@
                         <exclude>**/*.drawio</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.csv</exclude>
+                        <exclude>**/*.ipynb</exclude>
+                        <exclude>**/*.png</exclude>
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>

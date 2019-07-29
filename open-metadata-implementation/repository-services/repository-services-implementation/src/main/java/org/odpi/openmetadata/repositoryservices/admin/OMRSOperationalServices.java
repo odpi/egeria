@@ -140,10 +140,10 @@ public class OMRSOperationalServices
     /**
      * Create repository connector for an access service.
      *
-     * @param accessServiceName name of the access service name.
+     * @param callingServiceName name of the access service name.
      * @return a repository connector that is able to retrieve and maintain information from all connected repositories.
      */
-    public OMRSRepositoryConnector getEnterpriseOMRSRepositoryConnector(String   accessServiceName)
+    public OMRSRepositoryConnector getEnterpriseOMRSRepositoryConnector(String   callingServiceName)
     {
         final String    actionDescription = "getEnterpriseOMRSRepositoryConnector";
 
@@ -164,17 +164,16 @@ public class OMRSOperationalServices
             {
                 Connector connector = connectorProvider.getConnector(new EnterpriseOMRSConnection());
 
-                EnterpriseOMRSRepositoryConnector omrsRepositoryConnector =
-                        (EnterpriseOMRSRepositoryConnector) connector;
+                EnterpriseOMRSRepositoryConnector omrsRepositoryConnector = (EnterpriseOMRSRepositoryConnector) connector;
 
-                omrsRepositoryConnector.setAccessServiceName(accessServiceName);
+                omrsRepositoryConnector.setCallingServiceName(callingServiceName);
                 omrsRepositoryConnector.setMaxPageSize(maxPageSize);
 
                 OMRSAuditCode auditCode = OMRSAuditCode.NEW_ENTERPRISE_CONNECTOR;
                 auditLog.logRecord(actionDescription,
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(accessServiceName),
+                                   auditCode.getFormattedLogMessage(callingServiceName),
                                    null,
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
@@ -189,7 +188,7 @@ public class OMRSOperationalServices
                 auditLog.logRecord(actionDescription,
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(accessServiceName),
+                                   auditCode.getFormattedLogMessage(callingServiceName),
                                    null,
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
@@ -381,15 +380,6 @@ public class OMRSOperationalServices
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
             }
-
-            /*
-             * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
-             * calls.
-             */
-            OMRSRepositoryRESTServices.setLocalRepository(localServerName,
-                                                          localRepositoryConnector,
-                                                          localServerURL,
-                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES));
         }
 
 
@@ -448,6 +438,17 @@ public class OMRSOperationalServices
                                                        cohortConfigList);
         }
 
+
+        /*
+         * Set up the OMRS REST Services with the local repository so it is able to process incoming REST
+         * calls.
+         */
+        OMRSRepositoryRESTServices.setServerRepositories(localServerName,
+                                                         localRepositoryConnector,
+                                                         this.getEnterpriseOMRSRepositoryConnector(OMRSAuditingComponent.REST_SERVICES.getComponentName()),
+                                                         metadataHighwayManager,
+                                                         localServerURL,
+                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES));
 
         /*
          * The local repository (if configured) has been started while the archives were loaded and the

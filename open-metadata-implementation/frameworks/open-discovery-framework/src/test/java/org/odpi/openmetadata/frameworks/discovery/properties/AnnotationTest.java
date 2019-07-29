@@ -4,9 +4,7 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -56,7 +54,6 @@ public class AnnotationTest
         testObject.setAnalysisStep("TestAnalysisStep");
         testObject.setJsonProperties("TestJsonProperties");
         testObject.setAnnotationStatus(AnnotationStatus.UNKNOWN_STATUS);
-        testObject.setReviewDate(reviewDate);
         testObject.setSteward("TestSteward");
         testObject.setReviewComment("TestReviewComment");
         testObject.setAdditionalProperties(additionalProperties);
@@ -85,7 +82,6 @@ public class AnnotationTest
         assertTrue(resultObject.getAnalysisStep().equals("TestAnalysisStep"));
         assertTrue(resultObject.getJsonProperties().equals("TestJsonProperties"));
         assertTrue(resultObject.getAnnotationStatus().equals(AnnotationStatus.UNKNOWN_STATUS));
-        assertTrue(resultObject.getReviewDate().equals(reviewDate));
         assertTrue(resultObject.getSteward().equals("TestSteward"));
         assertTrue(resultObject.getReviewComment().equals("TestReviewComment"));
         assertTrue(resultObject.getAdditionalProperties().equals(additionalProperties));
@@ -112,7 +108,6 @@ public class AnnotationTest
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
         assertTrue(nullObject.getAnnotationStatus() == null);
-        assertTrue(nullObject.getReviewDate() == null);
         assertTrue(nullObject.getSteward() == null);
         assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
@@ -132,7 +127,6 @@ public class AnnotationTest
         assertTrue(nullObject.getAnalysisStep() == null);
         assertTrue(nullObject.getJsonProperties() == null);
         assertTrue(nullObject.getAnnotationStatus() == null);
-        assertTrue(nullObject.getReviewDate() == null);
         assertTrue(nullObject.getSteward() == null);
         assertTrue(nullObject.getReviewComment() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
