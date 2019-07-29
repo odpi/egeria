@@ -23,9 +23,11 @@ import '@polymer/paper-button';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-listbox/paper-listbox.js';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-menu-button';
+import '@polymer/paper-item/paper-item.js';
+import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
+import '@polymer/iron-form/iron-form.js';
 import './my-icons.js';
 import './token-ajax';
 import './login-view.js';
@@ -46,39 +48,73 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
       <style include="shared-styles">
         :host {
            display: block;
-        }
-        
+        };
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
-        }
-
+        };
         app-header {
           color: #fff;
           background-color: var(--app-primary-color);
-        }
-
+        };
         app-header paper-icon-button {
           --paper-icon-button-ink-color: white;
-        }
-
+        };
         .drawer-list {
           margin: 0 20px;
-        }
-
+        };
         .drawer-list a {
           display: block;
           padding: 0 16px;
           text-decoration: none;
           color: var(--app-secondary-color);
           line-height: 40px;
-        }
-
+        };
         .drawer-list-selected,
         .drawer-list div.iron-selected {
           font-weight: bold;
           color: var(--app-secondary-color);
           background-color: var(--app-primary-color);
-        }
+        };
+        
+        paper-input.custom:hover {
+          border: 1px solid #29B6F6;
+        };
+        paper-input.custom {
+          margin-bottom: 14px;
+          --primary-text-color: #01579B;
+          --paper-input-container-color: black;
+          --paper-input-container-focus-color: black;
+          --paper-input-container-invalid-color: black;
+          border: 1px solid #BDBDBD;
+          border-radius: 5px;
+    
+          /* Reset some defaults */
+          --paper-input-container: { padding: 0;};
+          --paper-input-container-underline: { display: none; height: 0;};
+          --paper-input-container-underline-focus: { display: none; };
+    
+          /* New custom styles */
+          --paper-input-container-input: {
+            box-sizing: border-box;
+            font-size: inherit;
+            padding: 4px;
+          };
+          --paper-input-container-input-focus: {
+            background: rgba(0, 0, 0, 0.1);
+          };
+          --paper-input-container-input-invalid: {
+            background: rgba(255, 0, 0, 0.3);
+          };
+          --paper-input-container-label: {
+            top: -8px;
+            left: 4px;
+            background: white;
+            padding: 2px;
+            font-weight: bold;
+          };
+          --paper-input-container-label-floating: {
+            width: auto;
+         };
         
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
@@ -97,8 +133,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
                   <iron-selector selected="[[page]]" attr-for-selected="name" 
-                        class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
-                  
+                        class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">                  
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
@@ -112,12 +147,29 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         
                   <app-header slot="header" condenses="" reveals="" effects="waterfall">
                     <app-toolbar>
-                       <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
-                      
+                      <paper-icon-button on-tap="_toggleDrawer" id="toggle" icon="menu"></paper-icon-button>
                       <template is="dom-if" if="[[narrow]]" >
                         <img src="../images/logo-white.png" style="vertical-align: middle; max-height: 80%; margin-left: 15pt; margin-right: 15pt; display: inline-block; "/>
                       </template>
-                      <div main-title=""></div>
+                      <div>
+                        <template is="dom-if" if="[[!narrow]]" >
+                            Open Metadata -
+                        </template>
+                        [[page]]
+                      </div>
+                      
+                      <div main-title="">
+<!--                        <div style="margin-left: 100pt; width: 300pt">-->
+<!--                            <iron-form id="searchForm">-->
+<!--                                <form method="get">-->
+<!--                                    <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>-->
+<!--                                    <paper-input class="custom" label="Search" value="{{q}}" no-label-float required autofocus>-->
+<!--                                        <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>-->
+<!--                                    </paper-input>-->
+<!--                                </form>-->
+<!--                           </iron-form>-->
+<!--                        </div>-->
+                      </div>
                       <div style="float: right"><user-options token="[[token]]"></user-options></div>
                       
                     </app-toolbar>
@@ -140,6 +192,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get properties() {
         return {
             language: { value: 'en' },
+
             page: {
                 type: String,
                 reflectToAttribute: true,
@@ -175,6 +228,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
         this.addEventListener('show-feedback', this._onFeedbackChanged);
+        this.addEventListener('set-title', this._onSetTitle);
+    }
+
+    _getDrawer(){
+        var dL = this.shadowRoot.querySelector('#drawerLayout');
+        if(dL){
+            return dL.drawer;
+        }
+        return;
     }
 
     _toggleDrawer() {
@@ -201,19 +263,21 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         }
 
         // Close a non-persistent drawer when the page & route are changed.
-        if (this.page!='login' && this.$.drawer && !this.$.drawer.persistent) {
-            this.$.drawer.close();
+        var drawer = this._getDrawer();
+        if (this.page!='login' && drawer && !drawer.persistent) {
+            this._getDrawer().close();
 
         }
     }
 
     _onPageChanged(event) {
-        this.page = event.model.item.page;
+        this.page = event.detail.page;
     }
 
     _onLogout(event) {
         console.log('removing token:');
         //TODO invalidate token from server
+        console.log('LOGOUT: removing token...');
         this.token = null;
     }
 
@@ -246,6 +310,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
         }
     }
+
+
 
     attached() {
         this.loadResources(

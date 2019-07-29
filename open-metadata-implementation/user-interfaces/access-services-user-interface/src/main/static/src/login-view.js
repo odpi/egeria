@@ -3,7 +3,6 @@
 
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-material/paper-material.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-styles/paper-styles.js';
@@ -17,6 +16,15 @@ import './form-feedback.js';
 class LoginView extends PolymerElement {
     static get template() {
         return html`
+        <custom-style>
+          <style is="custom-style" include="paper-material-styles">
+            .paper-material {
+              padding: 16px;
+              margin: 0 16px;
+              display: inline-block;
+            }
+          </style>
+        </custom-style>
       <style include="shared-styles">
         :host {
           display: block;
@@ -64,7 +72,7 @@ class LoginView extends PolymerElement {
       </p>
        
        <div class="container6">
-              <paper-material  class="login">
+              <div   class="login">
                  <iron-form id="form">
                     <form method="post" action="/auth/login">
                         <paper-input value={{username}} label="Username" name="username" required
@@ -81,7 +89,7 @@ class LoginView extends PolymerElement {
                         <iron-a11y-keys keys="enter" on-keys-pressed="_logIn"></iron-a11y-keys>
                     </form>
                 </iron-form>   
-               </paper-material>
+               </div>
        </div>
 
     `;
