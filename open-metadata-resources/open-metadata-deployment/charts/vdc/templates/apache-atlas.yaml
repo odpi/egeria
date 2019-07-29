@@ -110,7 +110,7 @@ spec:
           resources: {}
           volumeMounts:
             - mountPath: /opt/egeria/connectors
-              name: egeria-igc-connector-volume
+              name: egeria-connector-volume
               readOnly: true
         - name: apache-atlas
           image: "{{ if (.Values.image.atlas.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.atlas.registry | default .Values.imageDefaults.registry }}/{{ end }}\
