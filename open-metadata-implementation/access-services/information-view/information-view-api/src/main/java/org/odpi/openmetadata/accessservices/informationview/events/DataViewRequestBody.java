@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,6 +20,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataViewRequestBody extends InformationViewHeader{
 
     private String registrationGuid;
+    private String registrationQualifiedName;
+    @Valid
+    @NotNull
     private DataView dataView;
 
     public DataView getDataView() {
@@ -45,11 +49,19 @@ public class DataViewRequestBody extends InformationViewHeader{
         this.registrationGuid = registrationGuid;
     }
 
+    public String getRegistrationQualifiedName() {
+        return registrationQualifiedName;
+    }
+
+    public void setRegistrationQualifiedName(String registrationQualifiedName) {
+        this.registrationQualifiedName = registrationQualifiedName;
+    }
 
     @Override
     public String toString() {
         return "{" +
                 "registrationGuid='" + registrationGuid + '\'' +
+                ", registrationQualifiedName='" + registrationQualifiedName + '\'' +
                 ", dataView=" + dataView +
                 '}';
     }

@@ -6,132 +6,108 @@ package org.odpi.openmetadata.accessservices.informationview.reports;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
-import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
+import org.odpi.openmetadata.accessservices.informationview.events.DataViewModel;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
-import java.text.MessageFormat;
 import java.util.List;
-import java.util.Map;
 
 
 public abstract class DataViewBasicOperation extends BasicOperation{
 
-
     private static final Logger log = LoggerFactory.getLogger(DataViewBasicOperation.class);
 
-    protected DataViewBasicOperation(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        super(omEntityDao, helper, auditLog);
+    protected DataViewBasicOperation(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao, lookupHelper, helper, auditLog);
     }
 
 
     /**
-     *
+     * @param userId id of user submitting the request
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param dataViewElements the list of all nested elements
      */
-    protected void addElements(String parentQualifiedName, String parentGuid, List<DataViewElement> dataViewElements) {
+    protected void addElements(String userId, String parentQualifiedName, String parentGuid, String registrationGuid,
+                               String registrationQualifiedName, List<DataViewElement> dataViewElements) {
         if (dataViewElements == null || dataViewElements.isEmpty())
             return;
-        dataViewElements.parallelStream().forEach(e -> addDataViewElement(parentQualifiedName, parentGuid, e));
+        dataViewElements.parallelStream().forEach(e -> addDataViewElement(userId, parentQualifiedName, parentGuid, registrationGuid, registrationQualifiedName, e));
     }
 
 
     /**
-     *
+     * @param userId id of user submitting the request
      * @param qualifiedNameForParent qualified name for the parent element
      * @param parentGuid  guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param element element to be added
      */
-    public void addDataViewElement(String qualifiedNameForParent, String parentGuid, DataViewElement element) {
-        try {
-            if (element instanceof DataViewTable) {
-                addDataViewTable(qualifiedNameForParent, parentGuid, (DataViewTable) element);
+    public void addDataViewElement(String userId, String qualifiedNameForParent, String parentGuid,
+                                   String registrationGuid, String registrationQualifiedName, DataViewElement element) {
+            if (element instanceof DataViewModel) {
+                addDataViewModel(userId, qualifiedNameForParent, registrationGuid, registrationQualifiedName, parentGuid, (DataViewModel) element);
             } else if (element instanceof DataViewColumn) {
-                addDataViewColumn(qualifiedNameForParent, parentGuid, (DataViewColumn) element);
+                addDataViewColumn(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (DataViewColumn) element);
             }
-        } catch (Exception e) {
-            log.error("Exception creating data view element", e);
-            String message = MessageFormat.format("Unable to create Data View Element: {0} because of {1}", element.getId(), e.getMessage());
-            throw new RuntimeException(message, e);//TODO throw specific exception
-        }
     }
 
 
     /**
-     *
+     * @param userId id of user submitting the request
      * @param qualifiedNameForParent qualified name for the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param parentGuid guid of the parent element
-     * @param dataViewTable current element
-     * @throws InvalidParameterException
-     * @throws PropertyErrorException
-     * @throws TypeDefNotKnownException
-     * @throws RepositoryErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws ClassificationErrorException
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws StatusNotSupportedException
+     * @param DataViewModel current element
      */
-    private void addDataViewTable(String qualifiedNameForParent, String parentGuid, DataViewTable dataViewTable) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+    private void addDataViewModel(String userId, String qualifiedNameForParent, String registrationGuid,
+                                  String registrationQualifiedName, String parentGuid, DataViewModel DataViewModel) {
 
-
-        String qualifiedNameForDataViewTable = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  dataViewTable.getId());
+        String qualifiedNameForDataViewModel = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  DataViewModel.getId());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewTable)
-                .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewTable.getName())
-                .withStringProperty(Constants.ID, dataViewTable.getId())
-                .withStringProperty(Constants.COMMENT, dataViewTable.getComment())
-                .withStringProperty(Constants.NATIVE_CLASS, dataViewTable.getNativeClass())
-                .withStringProperty(Constants.DESCRIPTION, dataViewTable.getDescription())
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewModel)
+                .withStringProperty(Constants.ATTRIBUTE_NAME, DataViewModel.getName())
+                .withStringProperty(Constants.ID, DataViewModel.getId())
+                .withStringProperty(Constants.COMMENT, DataViewModel.getComment())
+                .withStringProperty(Constants.NATIVE_CLASS, DataViewModel.getNativeClass())
+                .withStringProperty(Constants.DESCRIPTION, DataViewModel.getDescription())
                 .build();
-        EntityDetail dataViewTableEntity = createSchemaType(Constants.SCHEMA_ATTRIBUTE,
-                qualifiedNameForDataViewTable, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        EntityDetail DataViewModelEntity = createSchemaType(userId, Constants.SCHEMA_ATTRIBUTE, qualifiedNameForDataViewModel,
+                registrationGuid, registrationQualifiedName, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        String qualifiedNameForDataViewTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  dataViewTable.getId() + Constants.TYPE_SUFFIX);
-        EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTableType, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
-        addElements(qualifiedNameForParent, schemaTypeEntity.getGUID(), dataViewTable.getElements());
+        String qualifiedNameForDataViewModelType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  DataViewModel.getId() + Constants.TYPE_SUFFIX);
+        EntityDetail schemaTypeEntity = addSchemaType(userId, qualifiedNameForDataViewModelType, registrationGuid, registrationQualifiedName, DataViewModelEntity.getGUID(), Constants.COMPLEX_SCHEMA_TYPE, null);
+        addElements(userId, qualifiedNameForParent, schemaTypeEntity.getGUID(), registrationGuid, registrationQualifiedName, DataViewModel.getElements());
     }
 
 
     /**
      *
+     *
+     * @param userId id of user submitting the request
      * @param parentQualifiedName qualified name for the parent element
      * @param parentGuid guid of the parent element
+     * @param registrationGuid - guid of software server capability
+     * @param registrationQualifiedName  - qualified name of software server capability
      * @param dataViewColumn element to be created
-     * @return
-     * @throws InvalidParameterException
-     * @throws TypeErrorException
-     * @throws TypeDefNotKnownException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws ClassificationErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws StatusNotSupportedException
+     * @return entity describing the column
      */
-    protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
-
+    protected EntityDetail addDataViewColumn(String userId, String parentQualifiedName, String parentGuid,
+                                             String registrationGuid, String registrationQualifiedName, DataViewColumn dataViewColumn)  {
 
         String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE,  dataViewColumn.getId());
-
-
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewColumn.getName())
@@ -143,114 +119,20 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.AGGREGATING_FUNCTION, dataViewColumn.getRegularAggregate())
                 .build();
 
-        EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        EntityDetail dataViewColumnEntity = createSchemaType(userId, Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, registrationGuid, registrationQualifiedName, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        addBusinessTerm(dataViewColumn, dataViewColumnEntity);
-        addQueryTargets(dataViewColumn, dataViewColumnEntity);
+        addSemanticAssignments(userId, registrationGuid, registrationQualifiedName, dataViewColumn.getBusinessTerms(), dataViewColumnEntity);
+        addQueryTargets(userId, registrationGuid, registrationQualifiedName, dataViewColumn.getSources(), dataViewColumnEntity);
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.DATA_TYPE, dataViewColumn.getDataType())
-                .build();
+                                                                    .withStringProperty(Constants.DATA_TYPE, dataViewColumn.getDataType())
+                                                                    .build();
         String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.PRIMITIVE_SCHEMA_TYPE,dataViewColumn.getId() + Constants.TYPE_SUFFIX );
-        addSchemaType(qualifiedNameForColumnType, dataViewColumnEntity, Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
+        addSchemaType(userId, qualifiedNameForColumnType, registrationGuid, registrationQualifiedName, dataViewColumnEntity.getGUID(), Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
 
         return dataViewColumnEntity;
     }
 
-
-    /**
-     *
-     * @param qualifiedNameForType qualified name of the schema attribute
-     * @param schemaAttributeEntity schema attribute entity
-     * @param schemaAttributeType schema attribute type entity
-     * @param properties properties for the type entity
-     * @return
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws ClassificationErrorException
-     */
-    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeType, InstanceProperties properties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-
-        InstanceProperties typeProperties;
-        if (properties != null) {
-            Map<String, InstancePropertyValue> prop = properties.getInstanceProperties();
-            prop.put(Constants.QUALIFIED_NAME, EntityPropertiesUtils.createPrimitiveStringPropertyValue(qualifiedNameForType));
-            typeProperties = new InstanceProperties();
-            typeProperties.setInstanceProperties(prop);
-        } else {
-            typeProperties = new EntityPropertiesBuilder()
-                                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
-                                .build();
-        }
-
-
-        EntityDetail schemaTypeEntity = createSchemaType(schemaAttributeType, qualifiedNameForType, typeProperties,
-                Constants.SCHEMA_ATTRIBUTE_TYPE, schemaAttributeEntity.getGUID());
-        return schemaTypeEntity;
-    }
-
-
-    /**
-     *
-     * @param dataViewColumn element describing the data view column
-     * @param derivedColumnEntity the entity representing the derived column
-     * @throws UserNotAuthorizedException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
-     * @throws StatusNotSupportedException
-     * @throws TypeDefNotKnownException
-     * @throws EntityNotKnownException
-     */
-    private void addBusinessTerm(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
-        String businessTermGuid = dataViewColumn.getBusinessTermGuid();
-        if (!StringUtils.isEmpty(businessTermGuid)) {
-            omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                    derivedColumnEntity.getGUID(),
-                    businessTermGuid,
-                    new InstanceProperties());
-        }
-    }
-
-    /**
-     *
-     * @param dataViewColumn element describing the data view column
-     * @param derivedColumnEntity the entity representing the derived column
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws TypeErrorException
-     * @throws FunctionNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws TypeDefNotKnownException
-     * @throws PagingErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     */
-    private void addQueryTargets(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
-        String sourceColumnGUID = dataViewColumn.getColumnGuid();
-
-        InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
-                .withStringProperty(Constants.QUERY, "")
-                .build();
-
-            omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                    derivedColumnEntity.getGUID(),
-                    sourceColumnGUID,
-                    schemaQueryImplProperties);
-
-    }
 
 
 }

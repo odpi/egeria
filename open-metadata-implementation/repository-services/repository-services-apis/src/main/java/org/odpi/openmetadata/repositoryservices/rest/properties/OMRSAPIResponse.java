@@ -28,6 +28,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = AttributeTypeDefListResponse.class, name = "AttributeTypeDefListResponse"),
                 @JsonSubTypes.Type(value = AttributeTypeDefResponse.class, name = "AttributeTypeDefResponse"),
                 @JsonSubTypes.Type(value = BooleanResponse.class, name = "BooleanResponse"),
+                @JsonSubTypes.Type(value = CohortMembershipResponse.class, name = "CohortMembershipResponse"),
                 @JsonSubTypes.Type(value = EntityDetailResponse.class, name = "EntityDetailResponse"),
                 @JsonSubTypes.Type(value = EntitySummaryResponse.class, name = "EntitySummaryResponse"),
                 @JsonSubTypes.Type(value = InstanceGraphResponse.class, name = "InstanceGraphResponse"),
@@ -255,7 +256,8 @@ public abstract class OMRSAPIResponse implements Serializable
         {
             return false;
         }
-        OMRSAPIResponse that = (OMRSAPIResponse) objectToCompare;
+        OMRSAPIResponse
+                that = (OMRSAPIResponse) objectToCompare;
         return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
                 Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
                 Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&

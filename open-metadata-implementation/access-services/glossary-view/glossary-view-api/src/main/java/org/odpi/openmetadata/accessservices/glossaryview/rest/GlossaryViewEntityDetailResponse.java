@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryViewEntityDetailResponse extends GlossaryViewOMASAPIResponse {
+public class GlossaryViewEntityDetailResponse extends FFDCResponseBase {
 
     private static Map<String, List<GlossaryViewEntityDetail>> defaultMap = Collections.singletonMap("entities", null);
     private static Map<String, String> singularToPlural = new HashMap<>();
@@ -30,9 +31,11 @@ public class GlossaryViewEntityDetailResponse extends GlossaryViewOMASAPIRespons
         singularToPlural.put("Glossary", "glossaries");
         singularToPlural.put("GlossaryCategory", "categories");
         singularToPlural.put("GlossaryTerm", "terms");
+        singularToPlural.put("ExternalGlossaryLink", "externalGlossaryLinks");
     }
 
     private List<GlossaryViewEntityDetail> glossaryViewEntityDetails = new ArrayList<>();
+    private String actionDescription;
 
     @JsonAnyGetter
     public Map<String, List<GlossaryViewEntityDetail>> getGlossaryViewEntityDetails() {
@@ -60,4 +63,11 @@ public class GlossaryViewEntityDetailResponse extends GlossaryViewOMASAPIRespons
         this.glossaryViewEntityDetails.add(glossaryViewEntityDetail);
     }
 
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    public void setActionDescription(String actionDescription) {
+        this.actionDescription = actionDescription;
+    }
 }

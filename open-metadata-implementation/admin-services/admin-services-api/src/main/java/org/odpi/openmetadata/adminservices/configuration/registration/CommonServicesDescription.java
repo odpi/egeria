@@ -13,24 +13,34 @@ public enum CommonServicesDescription implements Serializable
 {
     REPOSITORY_SERVICES              (3000,
                                       "Open Metadata Repository Services (OMRS)",
+                                      "repository-services",
                                       "Manages the synchronization, retrieval and maintenance of metadata stored in open metadata repositories",
                                       "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/"),
 
     ADMIN_OPERATIONAL_SERVICES       (3001,
-                                      "OMAG Operational Services",
-                                      "Management of services active in an open metadata and governance server (OMAG Server)",
+                                      "OMAG Server Operational Services",
+                                      "admin-services",
+                                      "Management of services active in an Open Metadata and governance server (OMAG Server)",
                                       "https://odpi.github.io/egeria/open-metadata-implementation/admin-services"),
 
     OCF_METADATA_MANAGEMENT          (3002,
-                                      "OCF Metadata Management Services",
+                                      "Connected Asset Services",
+                                      "connected-asset",
                                       "Common metadata services for the Open Connector Framework (OCF)",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/ocf-metadata-management/");;
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/ocf-metadata-management/"),
+
+    OPEN_METADATA_SECURITY           (3003,
+                                      "Open Metadata Security Services",
+                                      null,
+                                      "Authorization services for Open Metadata and Governance",
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/common-services/metadata-security/");
 
 
     private static final long     serialVersionUID    = 1L;
 
     private int    serviceCode;
     private String serviceName;
+    private String serviceURLMarker;
     private String serviceDescription;
     private String serviceWiki;
 
@@ -47,6 +57,7 @@ public enum CommonServicesDescription implements Serializable
         serviceDescriptionList.add(CommonServicesDescription.REPOSITORY_SERVICES);
         serviceDescriptionList.add(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES);
         serviceDescriptionList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT);
+        serviceDescriptionList.add(CommonServicesDescription.OPEN_METADATA_SECURITY);
 
         return serviceDescriptionList;
     }
@@ -57,16 +68,19 @@ public enum CommonServicesDescription implements Serializable
      *
      * @param serviceCode ordinal for this access service
      * @param serviceName symbolic name for this access service
+     * @param serviceURLMarker string used in URLs
      * @param serviceDescription short description for this access service
      * @param serviceWiki wiki page for the access service for this access service
      */
     CommonServicesDescription(int    serviceCode,
                               String serviceName,
+                              String serviceURLMarker,
                               String serviceDescription,
                               String serviceWiki)
     {
         this.serviceCode = serviceCode;
         this.serviceName = serviceName;
+        this.serviceURLMarker = serviceURLMarker;
         this.serviceDescription = serviceDescription;
         this.serviceWiki = serviceWiki;
     }
@@ -91,6 +105,18 @@ public enum CommonServicesDescription implements Serializable
     public String getServiceName()
     {
         return serviceName;
+    }
+
+
+    /**
+     * Return the string that appears in the REST API URL that identifies the owning service.
+     * Null means no REST APIs supported by this service.
+     *
+     * @return String default name
+     */
+    public String getServiceURLMarker()
+    {
+        return serviceURLMarker;
     }
 
 

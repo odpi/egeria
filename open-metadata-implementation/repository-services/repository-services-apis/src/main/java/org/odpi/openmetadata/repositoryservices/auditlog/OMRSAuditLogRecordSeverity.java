@@ -1,4 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+
 package org.odpi.openmetadata.repositoryservices.auditlog;
 
 /**
@@ -30,6 +32,9 @@ package org.odpi.openmetadata.repositoryservices.auditlog;
  *         attention to correct configuration or fix a logic error because it is not operating as a proper peer in the
  *         metadata repository cluster.
  *     </li>
+ *     <li>
+ *         SECURITY: Unauthorized access to a service or metadata instance.
+ *     </li>
  * </ul>
  */
 public enum OMRSAuditLogRecordSeverity
@@ -40,13 +45,14 @@ public enum OMRSAuditLogRecordSeverity
     DECISION  (3, "Decision",    "A decision has been made related to the interaction of the local metadata repository and the rest of the cohort."),
     ACTION    (4, "Action",      "Action is required by the administrator.  " +
                                  "At a minimum, the situation needs to be investigated and if necessary, corrective action taken."),
-    ERROR     (5, "Error",       "An error occurred, possibly caused by an incompatibility between the local metadata repository \n" +
+    ERROR     (5, "Error",       "An error occurred, possibly caused by an incompatibility between the local metadata repository " +
                                  "and one of the remote repositories.  " +
-                                 "The local repository may restrict some of the metadata interchange \n" +
+                                 "The local repository may restrict some of the metadata interchange " +
                                  "functions as a result."),
-    EXCEPTION (6, "Exception",   "Unexpected exception occurred.  This means that the local repository needs some administration\n" +
-                                 " attention to correct configuration or fix a logic error because it is not operating as a proper peer in the\n" +
-                                 " metadata repository cohort.");
+    EXCEPTION (6, "Exception",   "Unexpected exception occurred.  This means that the local repository needs some administration " +
+                                 "attention to correct configuration or fix a logic error because it is not operating as a proper peer in the " +
+                                 "metadata repository cohort."),
+    SECURITY  (7, "Security",     "Unauthorized access to a service or metadata instance has been attempted.");
 
 
     private  int    severityCode;

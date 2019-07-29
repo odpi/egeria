@@ -134,7 +134,7 @@ public class AssetElementType extends AssetPropertyElementBase
 
 
     /**
-     * Returns the OMRS identifier for the metadata collection that is managed by the repository
+     * Returns the unique identifier for the metadata collection that is managed by the repository
      * where the element originates (its home repository).
      *
      * @return String metadata collection id
@@ -144,6 +144,13 @@ public class AssetElementType extends AssetPropertyElementBase
         return elementTypeBean.getElementHomeMetadataCollectionId();
     }
 
+
+    /**
+     * Return the name of the metadata collection that this asset belongs to.
+     *
+     * @return name string
+     */
+    public String getElementHomeMetadataCollectionName() { return elementTypeBean.getElementHomeMetadataCollectionName(); }
 
     /**
      * Return the license associated with this metadata element (null means none).

@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -1042,6 +1043,83 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Return the local metadata collection id.  If the local repository is not configured
+     * then the invalid parameter exception is returned.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @return guid response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    public GUIDResponse getLocalMetadataCollectionId(String               userId,
+                                                     String               serverName)
+    {
+        final String methodName = "getLocalMetadataCollectionId";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+            LocalRepositoryConfig    localRepositoryConfig    = null;
+
+            /*
+             * Extract any existing local repository configuration
+             */
+            if (repositoryServicesConfig != null)
+            {
+                localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+            }
+
+            /*
+             * The local repository should be partially configured already by setLocalRepositoryMode()
+             */
+            if (localRepositoryConfig == null)
+            {
+                OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET;
+                String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        errorMessage,
+                                                        errorCode.getSystemAction(),
+                                                        errorCode.getUserAction());
+            }
+
+            /*
+             * Set up the metadata collection name in the local repository config and save.
+             */
+            response.setGUID(localRepositoryConfig.getMetadataCollectionId());
+
+            return response;
+
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
      * Set up the local metadata collection name.  If this is not set then the default value is the
      * local server name.
      *
@@ -1134,6 +1212,7 @@ public class OMAGServerAdminServices
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param cohortName  name of the cohort.
+     * @param configurationProperties additional properties for the cohort
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName, cohortName or serviceMode parameter.

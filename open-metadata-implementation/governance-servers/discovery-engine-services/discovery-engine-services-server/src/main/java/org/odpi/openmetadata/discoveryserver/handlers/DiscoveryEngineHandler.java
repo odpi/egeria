@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAnno
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryAssetStoreClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryEngineClient;
-import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.DiscoveryRESTClient;
+import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
 import org.odpi.openmetadata.discoveryserver.auditlog.DiscoveryServerAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
@@ -46,14 +46,21 @@ public class DiscoveryEngineHandler
      * @param discoveryEngineGUID the unique identifier of the discovery engine.
      * @param serverPlatformRootURL the root url of the platform where the discovery engine is running.
      * @param serverName the name of the discovery server where the discovery engine is running
+     * @param serverUserId user id for the server to use
+     * @param configurationClient client to retrieve the configuration
+     * @param restClient REST client for direct REST Calls
+     * @param auditLog logging destination
+     * @param maxPageSize maximum number of results that can be returned in a single request
      * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user id not allowed to access configuration
+     * @throws PropertyServerException problem in configuration server
      */
     public DiscoveryEngineHandler(String                       discoveryEngineGUID,
                                   String                       serverPlatformRootURL,
                                   String                       serverName,
                                   String                       serverUserId,
                                   DiscoveryConfigurationClient configurationClient,
-                                  DiscoveryRESTClient          restClient,
+                                  ODFRESTClient                restClient,
                                   OMRSAuditLog                 auditLog,
                                   int                          maxPageSize) throws InvalidParameterException,
                                                                                    UserNotAuthorizedException,
@@ -153,7 +160,7 @@ public class DiscoveryEngineHandler
                                                                                                                           discoveryEngineProperties.getDisplayName() + " (" + discoveryEngineGUID + ").",
                                                                                                           creationTime,
                                                                                                           analysisParameters,
-                                                                                                          DiscoveryRequestStatus.IN_PROGRESS,
+                                                                                                          DiscoveryRequestStatus.WAITING,
                                                                                                           assetGUID,
                                                                                                           discoveryEngineGUID,
                                                                                                           discoveryServiceCache.getDiscoveryServiceGUID(),
@@ -179,7 +186,9 @@ public class DiscoveryEngineHandler
                                                                                           discoveryServiceCache.getDiscoveryServiceName(),
                                                                                           discoveryServiceCache.getNextDiscoveryService(),
                                                                                           discoveryContext,
-                                                                                          auditLog);
+                                                                                          auditLog,
+                                                                                          discoveryEngineClient,
+                                                                                          serverUserId);
             Thread thread = new Thread(discoveryServiceHandler, discoveryServiceCache.getDiscoveryServiceName() + assetGUID + new Date().toString());
             thread.start();
 
@@ -207,7 +216,7 @@ public class DiscoveryEngineHandler
     {
         try
         {
-            return discoveryEngineClient.getDiscoveryReport(serverUserId, discoveryRequestGUID);
+            return discoveryEngineClient.getDiscoveryAnalysisReport(serverUserId, discoveryRequestGUID);
         }
         catch (PropertyServerException  error)
         {
@@ -252,6 +261,7 @@ public class DiscoveryEngineHandler
     /**
      * Return any annotations attached to this annotation.
      *
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -262,7 +272,8 @@ public class DiscoveryEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  List<Annotation>  getExtendedAnnotations(String   annotationGUID,
+    public  List<Annotation>  getExtendedAnnotations(String   discoveryRequestGUID,
+                                                     String   annotationGUID,
                                                      int      startingFrom,
                                                      int      maximumResults) throws InvalidParameterException,
                                                                                      UserNotAuthorizedException,
@@ -271,6 +282,7 @@ public class DiscoveryEngineHandler
         try
         {
             return discoveryEngineClient.getExtendedAnnotations(serverUserId,
+                                                                discoveryRequestGUID,
                                                                 annotationGUID,
                                                                 startingFrom,
                                                                 maximumResults);
@@ -286,6 +298,7 @@ public class DiscoveryEngineHandler
      * Retrieve a single annotation by unique identifier.  This call is typically used to retrieve the latest values
      * for an annotation.
      *
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object
@@ -294,13 +307,14 @@ public class DiscoveryEngineHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
-    public  Annotation        getAnnotation(String   annotationGUID) throws InvalidParameterException,
+    public  Annotation        getAnnotation(String   discoveryRequestGUID,
+                                            String   annotationGUID) throws InvalidParameterException,
                                                                             UserNotAuthorizedException,
                                                                             DiscoveryEngineException
     {
         try
         {
-            return discoveryEngineClient.getAnnotation(serverUserId, annotationGUID);
+            return discoveryEngineClient.getAnnotation(serverUserId, discoveryRequestGUID, annotationGUID);
         }
         catch (PropertyServerException  error)
         {

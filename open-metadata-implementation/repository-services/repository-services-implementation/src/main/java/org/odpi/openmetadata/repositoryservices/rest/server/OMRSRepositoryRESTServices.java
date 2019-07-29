@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.repositoryservices.rest.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -13,6 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHighwayManager;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstance;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceHandler;
@@ -24,7 +27,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.MessageFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * OMRSRepositoryRESTServices provides the server-side support for the OMRS Repository REST Services API.
@@ -85,28 +90,34 @@ import java.util.List;
  */
 public class OMRSRepositoryRESTServices
 {
-    private static final String                                serviceName       = "Local Repository Services";
+    private static final String                                serviceName       = CommonServicesDescription.REPOSITORY_SERVICES.getServiceName();
     private static final Logger                                log               = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
     private static       OMRSRepositoryServicesInstanceHandler instanceHandler   = new OMRSRepositoryServicesInstanceHandler(serviceName);
     private static final String                                anonymousUserId   = "anon"; // TODO add to config
 
+
     /**
-     * Set up the local repository connector that will service the REST Calls.
+     * Set up the local repository connector that will service the local repository REST Calls.
      *
      * @param localServerName name of this local server
      * @param localRepositoryConnector link to the local repository responsible for servicing the REST calls.
      *                                 If localRepositoryConnector is null when a REST calls is received, the request
      *                                 is rejected.
+     * @param metadataHighwayManager URL of the local server
      * @param localServerURL URL of the local server
      * @param auditLog auditLog destination
      */
-    public static void setLocalRepository(String                          localServerName,
-                                          LocalOMRSRepositoryConnector    localRepositoryConnector,
-                                          String                          localServerURL,
-                                          OMRSAuditLog                    auditLog)
+    public static void setServerRepositories(String                          localServerName,
+                                             LocalOMRSRepositoryConnector    localRepositoryConnector,
+                                             OMRSRepositoryConnector         enterpriseRepositoryConnector,
+                                             OMRSMetadataHighwayManager      metadataHighwayManager,
+                                             String                          localServerURL,
+                                             OMRSAuditLog                    auditLog)
     {
         new OMRSRepositoryServicesInstance(localServerName,
                                            localRepositoryConnector,
+                                           enterpriseRepositoryConnector,
+                                           metadataHighwayManager,
                                            localServerURL,
                                            serviceName,
                                            auditLog);
@@ -122,6 +133,7 @@ public class OMRSRepositoryRESTServices
     {
         new OMRSRepositoryServicesInstanceHandler(serviceName).removeInstance(localServerName);
     }
+
 
     /**
      * Return the URL for the requested instance.
@@ -145,11 +157,14 @@ public class OMRSRepositoryRESTServices
                 {
                     String localServerURL = localServerInstance.getLocalServerURL();
 
-                    final String urlTemplate = "/instances/entity/{0}";
+                    if (localServerURL != null)
+                    {
+                        final String urlTemplate = "/instances/entity/{0}";
 
-                    MessageFormat mf = new MessageFormat(urlTemplate);
+                        MessageFormat mf = new MessageFormat(urlTemplate);
 
-                    return localServerURL + mf.format(guid);
+                        return localServerURL + mf.format(guid);
+                    }
                 }
             }
             catch (Throwable error)
@@ -184,11 +199,14 @@ public class OMRSRepositoryRESTServices
                 {
                     String localServerURL = localServerInstance.getLocalServerURL();
 
-                    final String urlTemplate = "/instances/relationship/{0}";
+                    if (localServerURL != null)
+                    {
+                        final String urlTemplate = "/instances/relationship/{0}";
 
-                    MessageFormat mf = new MessageFormat(urlTemplate);
+                        MessageFormat mf = new MessageFormat(urlTemplate);
 
-                    return localServerURL + mf.format(guid);
+                        return localServerURL + mf.format(guid);
+                    }
                 }
             }
             catch (Throwable error)
@@ -201,11 +219,16 @@ public class OMRSRepositoryRESTServices
     }
 
 
+    private boolean localRepository;
+
     /**
-     * Default constructor
+     * Common constructor
+     *
+     * @param localRepository  is this request for the local repository?
      */
-    public OMRSRepositoryRESTServices()
+    public OMRSRepositoryRESTServices(boolean   localRepository)
     {
+        this.localRepository = localRepository;
     }
 
 
@@ -222,7 +245,25 @@ public class OMRSRepositoryRESTServices
      * @return String metadata collection id.
      * or RepositoryErrorException there is a problem communicating with the metadata repository.
      */
+    @Deprecated
     public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName)
+    {
+        return this.getMetadataCollectionId(serverName, anonymousUserId);
+    }
+
+
+    /**
+     * Returns the identifier of the metadata repository.  This is the identifier used to register the
+     * metadata repository with the metadata repository cohort.  It is also the identifier used to
+     * identify the home repository of a metadata instance.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId calling user
+     * @return String metadata collection id.
+     * or RepositoryErrorException there is a problem communicating with the metadata repository.
+     */
+    public MetadataCollectionIdResponse getMetadataCollectionId(String     serverName,
+                                                                String     userId)
     {
         final  String   methodName = "getMetadataCollectionId";
 
@@ -232,9 +273,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(null, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId());
+            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId(userId));
         }
         catch (InvalidParameterException  error)
         {
@@ -250,7 +291,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable  error)
         {
-            captureThrowable(response, error, methodName, null);
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -274,6 +315,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @return TypeDefGalleryResponse:
      * List of different categories of type definitions or
+     * InvalidParameterException the uerId is null or
      * RepositoryErrorException there is a problem communicating with the metadata repository or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
@@ -288,7 +330,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             TypeDefGallery typeDefGallery = localMetadataCollection.getAllTypes(userId);
             if (typeDefGallery != null)
@@ -346,7 +388,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             TypeDefGallery typeDefGallery = localMetadataCollection.findTypesByName(userId, name);
             if (typeDefGallery != null)
@@ -403,7 +445,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.findTypeDefsByCategory(userId, category));
         }
@@ -454,7 +496,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDefs(localMetadataCollection.findAttributeTypeDefsByCategory(userId, category));
         }
@@ -505,7 +547,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.findTypeDefsByProperty(userId, matchCriteria));
         }
@@ -560,7 +602,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<TypeDef> typeDefs = localMetadataCollection.findTypesByExternalID(userId,
                                                                                    standard,
@@ -615,7 +657,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDefs(localMetadataCollection.searchForTypeDefs(userId, searchCriteria));
         }
@@ -668,7 +710,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.getTypeDefByGUID(userId, guid));
         }
@@ -725,7 +767,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByGUID(userId, guid));
         }
@@ -783,7 +825,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.getTypeDefByName(userId, name));
         }
@@ -840,7 +882,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByName(userId, name));
         }
@@ -901,7 +943,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.addTypeDefGallery(userId, newTypes);
         }
@@ -978,7 +1020,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.addTypeDef(userId, newTypeDef);
         }
@@ -1055,7 +1097,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
         }
@@ -1132,7 +1174,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setFlag(localMetadataCollection.verifyTypeDef(userId, typeDef));
         }
@@ -1200,7 +1242,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setFlag(localMetadataCollection.verifyAttributeTypeDef(userId, attributeTypeDef));
         }
@@ -1269,7 +1311,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.updateTypeDef(userId, typeDefPatch));
         }
@@ -1345,7 +1387,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
@@ -1417,7 +1459,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
@@ -1479,7 +1521,7 @@ public class OMRSRepositoryRESTServices
     public  TypeDefResponse reIdentifyTypeDef(String                    serverName,
                                               String                    userId,
                                               String                    originalTypeDefGUID,
-                                              TypeDefReIdentifyRequest  requestParameters)
+                                              TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
 
@@ -1500,7 +1542,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setTypeDef(localMetadataCollection.reIdentifyTypeDef(userId,
                                                                           originalTypeDefGUID,
@@ -1583,7 +1625,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setAttributeTypeDef(localMetadataCollection.reIdentifyAttributeTypeDef(userId,
                                                                                             originalAttributeTypeDefGUID,
@@ -1652,7 +1694,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.isEntityKnown(userId, guid));
         }
@@ -1705,7 +1747,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntitySummary(userId, guid));
         }
@@ -1785,7 +1827,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntityDetail(userId, guid));
         }
@@ -1851,7 +1893,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.getEntityDetail(userId, guid, asOfTime));
         }
@@ -1939,7 +1981,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
                                                                                                  entityGUID,
@@ -2067,7 +2109,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
                                                                                                  entityGUID,
@@ -2199,7 +2241,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
@@ -2330,7 +2372,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
@@ -2428,7 +2470,7 @@ public class OMRSRepositoryRESTServices
     public  EntityListResponse findEntitiesByClassification(String                    serverName,
                                                             String                    userId,
                                                             String                    classificationName,
-                                                            PropertyMatchFindRequest  findRequestParameters)
+                                                            PropertyMatchFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByClassification";
 
@@ -2459,7 +2501,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
@@ -2593,7 +2635,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
@@ -2723,7 +2765,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
                                                                                                entityTypeGUID,
@@ -2851,7 +2893,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
                                                                                                entityTypeGUID,
@@ -2948,7 +2990,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.isRelationshipKnown(userId, guid));
         }
@@ -3000,6 +3042,7 @@ public class OMRSRepositoryRESTServices
     /**
      * Return a requested relationship.
      *
+     * @param serverName name of the active server
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the relationship.
      * @return RelationshipResponse:
@@ -3023,7 +3066,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.getRelationship(userId, guid));
         }
@@ -3084,7 +3127,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.getRelationship(userId, guid, asOfTime));
         }
@@ -3171,7 +3214,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
@@ -3298,7 +3341,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
@@ -3419,7 +3462,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
                                                                                                          relationshipTypeGUID,
@@ -3542,7 +3585,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
                                                                                                          relationshipTypeGUID,
@@ -3634,11 +3677,11 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  InstanceGraphResponse getLinkingEntities(String                    serverName,
-                                                     String                    userId,
-                                                     String                    startEntityGUID,
-                                                     String                    endEntityGUID,
-                                                     OMRSAPIFindRequest        findRequestParameters)
+    public InstanceGraphResponse getLinkingEntities(String                    serverName,
+                                                    String                    userId,
+                                                    String                    startEntityGUID,
+                                                    String                    endEntityGUID,
+                                                    OMRSAPIFindRequest        findRequestParameters)
     {
         final  String   methodName = "getLinkingEntities";
 
@@ -3655,7 +3698,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
                                                                                      startEntityGUID,
@@ -3745,7 +3788,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
                                                                                      startEntityGUID,
@@ -3841,7 +3884,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
                                                                                         entityGUID,
@@ -3946,7 +3989,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
                                                                                         entityGUID,
@@ -4057,7 +4100,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
                                                                                       startEntityGUID,
@@ -4193,7 +4236,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
                                                                                       startEntityGUID,
@@ -4298,9 +4341,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public EntityDetailResponse addEntity(String                serverName,
-                                          String                userId,
-                                          EntityCreateRequest   requestBody)
+    public EntityDetailResponse addEntity(String              serverName,
+                                          String              userId,
+                                          EntityCreateRequest requestBody)
     {
         final  String   methodName = "addEntity";
 
@@ -4323,13 +4366,121 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.addEntity(userId,
                                                                  entityTypeGUID,
                                                                  initialProperties,
                                                                  initialClassifications,
                                                                  initialStatus));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (StatusNotSupportedException error)
+        {
+            captureStatusNotSupportedException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (ClassificationErrorException error)
+        {
+            captureClassificationErrorException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Save a new entity that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new entity is assigned a new GUID and put
+     * in the requested state.  The new entity is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param requestBody parameters for the new entity
+     * @return EntityDetailResponse:
+     * EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type or
+     * ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public EntityDetailResponse addExternalEntity(String              serverName,
+                                                  String              userId,
+                                                  EntityCreateRequest requestBody)
+    {
+        final  String   methodName = "addExternalEntity";
+
+        log.debug("Calling method: " + methodName);
+
+        String                     entityTypeGUID = null;
+        String                     externalSourceGUID = null;
+        String                     externalSourceName = null;
+        InstanceProperties         initialProperties = null;
+        List<Classification>       initialClassifications = null;
+        InstanceStatus             initialStatus = null;
+
+        EntityDetailResponse response = new EntityDetailResponse();
+
+        if (requestBody != null)
+        {
+            entityTypeGUID = requestBody.getEntityTypeGUID();
+            externalSourceGUID = requestBody.getMetadataCollectionId();
+            externalSourceName = requestBody.getMetadataCollectionName();
+            initialProperties = requestBody.getInitialProperties();
+            initialClassifications = requestBody.getInitialClassifications();
+            initialStatus = requestBody.getInitialStatus();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+
+            response.setEntity(localMetadataCollection.addExternalEntity(userId,
+                                                                         entityTypeGUID,
+                                                                         externalSourceGUID,
+                                                                         externalSourceName,
+                                                                         initialProperties,
+                                                                         initialClassifications,
+                                                                         initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4410,7 +4561,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.addEntityProxy(userId, entityProxy);
         }
@@ -4472,7 +4623,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus));
         }
@@ -4542,7 +4693,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, propertiesRequestBody.getInstanceProperties()));
         }
@@ -4608,7 +4759,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.undoEntityUpdate(userId, entityGUID));
         }
@@ -4685,7 +4836,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID));
         }
@@ -4759,7 +4910,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
         }
@@ -4826,7 +4977,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.restoreEntity(userId, deletedEntityGUID));
         }
@@ -4900,7 +5051,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.classifyEntity(userId,
                                                                       entityGUID,
@@ -4976,7 +5127,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.declassifyEntity(userId,
                                                                         entityGUID,
@@ -5051,7 +5202,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.updateEntityClassification(userId,
                                                                                   entityGUID,
@@ -5145,7 +5296,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.addRelationship(userId,
                     relationshipTypeGUID,
@@ -5153,6 +5304,115 @@ public class OMRSRepositoryRESTServices
                     entityOneGUID,
                     entityTwoGUID,
                     initialStatus));
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (EntityNotKnownException error)
+        {
+            captureEntityNotKnownException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (StatusNotSupportedException error)
+        {
+            captureStatusNotSupportedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Save a new relationship that is sourced from an external technology.  The external
+     * technology is identified by a GUID and a name.  These can be recorded in a
+     * Software Server Capability (guid and qualifiedName respectively.
+     * The new relationship is assigned a new GUID and put
+     * in the requested state.  The new relationship is returned.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param createRequestParameters parameters used to fill out the new relationship
+     * @return RelationshipResponse:
+     * Relationship structure with the new header, requested entities and properties or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored or
+     * TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection or
+     * PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type or
+     * EntityNotKnownException one of the requested entities is not known in the metadata collection or
+     * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public RelationshipResponse addExternalRelationship(String                     serverName,
+                                                        String                     userId,
+                                                        RelationshipCreateRequest  createRequestParameters)
+    {
+        final  String   methodName = "addExternalRelationship";
+
+        log.debug("Calling method: " + methodName);
+
+        String             relationshipTypeGUID = null;
+        String             externalSourceGUID = null;
+        String             externalSourceName = null;
+        InstanceProperties initialProperties = null;
+        String             entityOneGUID = null;
+        String             entityTwoGUID = null;
+        InstanceStatus     initialStatus = null;
+
+        RelationshipResponse response = new RelationshipResponse();
+
+        if (createRequestParameters != null)
+        {
+            relationshipTypeGUID = createRequestParameters.getRelationshipTypeGUID();
+            externalSourceGUID = createRequestParameters.getMetadataCollectionId();
+            externalSourceName = createRequestParameters.getMetadataCollectionName();
+            initialProperties = createRequestParameters.getInitialProperties();
+            entityOneGUID = createRequestParameters.getEntityOneGUID();
+            entityTwoGUID = createRequestParameters.getEntityTwoGUID();
+            initialStatus = createRequestParameters.getInitialStatus();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+
+            response.setRelationship(localMetadataCollection.addExternalRelationship(userId,
+                                                                                     relationshipTypeGUID,
+                                                                                     externalSourceGUID,
+                                                                                     externalSourceName,
+                                                                                     initialProperties,
+                                                                                     entityOneGUID,
+                                                                                     entityTwoGUID,
+                                                                                     initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5228,7 +5488,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.updateRelationshipStatus(userId,
                                                                                       relationshipGUID,
@@ -5300,7 +5560,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.updateRelationshipProperties(userId,
                                                                                           relationshipGUID,
@@ -5368,7 +5628,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.undoRelationshipUpdate(userId, relationshipGUID));
         }
@@ -5425,7 +5685,7 @@ public class OMRSRepositoryRESTServices
     public RelationshipResponse deleteRelationship(String                        serverName,
                                                    String                        userId,
                                                    String                        obsoleteRelationshipGUID,
-                                                   TypeDefValidationForRequest   typeDefValidationForRequest)
+                                                   TypeDefValidationForRequest typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
 
@@ -5444,7 +5704,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.deleteRelationship(userId,
                                                                                 typeDefGUID,
@@ -5521,7 +5781,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
         }
@@ -5589,7 +5849,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.restoreRelationship(userId, deletedRelationshipGUID));
         }
@@ -5675,7 +5935,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.reIdentifyEntity(userId,
                                                                         typeDefGUID,
@@ -5758,7 +6018,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.reTypeEntity(userId,
                                                                     entityGUID,
@@ -5854,7 +6114,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setEntity(localMetadataCollection.reHomeEntity(userId,
                                                                     entityGUID,
@@ -5938,7 +6198,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reIdentifyRelationship(userId,
                                                                                     typeDefGUID,
@@ -6021,7 +6281,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reTypeRelationship(userId,
                                                                                 relationshipGUID,
@@ -6114,7 +6374,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             response.setRelationship(localMetadataCollection.reHomeRelationship(userId,
                                                                                 relationshipGUID,
@@ -6196,7 +6456,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.saveEntityReferenceCopy(userId, entity);
         }
@@ -6291,7 +6551,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.purgeEntityReferenceCopy(userId,
                                                              entityGUID,
@@ -6377,7 +6637,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.refreshEntityReferenceCopy(userId,
                                                                entityGUID,
@@ -6457,7 +6717,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
         }
@@ -6558,7 +6818,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.purgeRelationshipReferenceCopy(userId,
                                                                    relationshipGUID,
@@ -6645,7 +6905,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.refreshRelationshipReferenceCopy(userId,
                                                                      relationshipGUID,
@@ -6695,7 +6955,8 @@ public class OMRSRepositoryRESTServices
      *
      * @param serverName unique identifier for requested server.
      * @param userId unique identifier for requesting server.
-     * @param instances instances to save or
+     * @param instances instances to save
+     * @return void response or
      * InvalidParameterException the relationship is null or
      * RepositoryErrorException  there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored or
@@ -6732,7 +6993,7 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(userId, serverName, methodName);
+            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
 
             localMetadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
         }
@@ -6798,7 +7059,7 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     * Validate that the local repository is available.
+     * Validate that the repository connector is available.
      *
      * @param userId name of the calling user.
      * @param serverName name of the server associated with the request.
@@ -6808,13 +7069,13 @@ public class OMRSRepositoryRESTServices
      * @throws RepositoryErrorException null local repository
      * @return OMRSMetadataCollection object for the local repository
      */
-    private OMRSMetadataCollection validateLocalRepository(String userId,
-                                                           String serverName,
-                                                           String methodName) throws InvalidParameterException,
-                                                                                     UserNotAuthorizedException,
+    private OMRSMetadataCollection validateRepository(String userId,
+                                                      String serverName,
+                                                      String methodName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
                                                                                      RepositoryErrorException
     {
-        OMRSMetadataCollection   localMetadataCollection = null;
+        OMRSMetadataCollection   metadataCollection = null;
 
         if (serverName != null)
         {
@@ -6822,7 +7083,14 @@ public class OMRSRepositoryRESTServices
 
             if (instance != null)
             {
-                localMetadataCollection = instance.getLocalMetadataCollection();
+                if (localRepository)
+                {
+                    metadataCollection = instance.getLocalMetadataCollection();
+                }
+                else
+                {
+                    metadataCollection = instance.getEnterpriseMetadataCollection();
+                }
             }
         }
 
@@ -6830,21 +7098,37 @@ public class OMRSRepositoryRESTServices
         /*
          * If the local repository is not set up then do not attempt to process the request.
          */
-        if (localMetadataCollection == null)
+        if (metadataCollection == null)
         {
-            OMRSErrorCode errorCode    = OMRSErrorCode.NO_LOCAL_REPOSITORY;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(methodName);
+            if (localRepository)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.NO_LOCAL_REPOSITORY;
+                String errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
+            else
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.NO_ENTERPRISE_REPOSITORY;
+                String errorMessage = errorCode.getErrorMessageId()
+                                              + errorCode.getFormattedErrorMessage(methodName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
+            }
         }
 
-        return localMetadataCollection;
+        return metadataCollection;
     }
 
 
@@ -6892,7 +7176,20 @@ public class OMRSRepositoryRESTServices
      */
     private void captureInvalidParameterException(OMRSAPIResponse response, InvalidParameterException error)
     {
-        captureCheckedException(response, error, error.getClass().getName());
+        final String propertyName = "parameterName";
+
+        if (error.getParameterName() == null)
+        {
+            captureCheckedException(response, error, error.getClass().getName());
+        }
+        else
+        {
+            Map<String, Object> exceptionProperties = new HashMap<>();
+
+            exceptionProperties.put(propertyName, error.getParameterName());
+
+            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
+        }
     }
 
 
@@ -7260,11 +7557,28 @@ public class OMRSRepositoryRESTServices
                                          OMRSCheckedExceptionBase error,
                                          String                   exceptionClassName)
     {
+        this.captureCheckedException(response, error, exceptionClassName, null);
+    }
+
+
+    /**
+     * Set the exception information into the response.
+     *
+     * @param response REST Response
+     * @param error returned response.
+     * @param exceptionClassName class name of the exception to recreate
+     */
+    private void captureCheckedException(OMRSAPIResponse          response,
+                                         OMRSCheckedExceptionBase error,
+                                         String                   exceptionClassName,
+                                         Map<String, Object>      exceptionProperties)
+    {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
         response.setExceptionErrorMessage(error.getErrorMessage());
         response.setExceptionSystemAction(error.getReportedSystemAction());
         response.setExceptionUserAction(error.getReportedUserAction());
+        response.setExceptionProperties(exceptionProperties);
     }
 
 
@@ -7273,10 +7587,14 @@ public class OMRSRepositoryRESTServices
      *
      * @param methodName calling method
      * @param serverName name of the server
+     * @param userId calling user
      * @param requestURLTemplate template of the request URL
      * @param requestBody requestBody to include
      * @param parameters parameters to include in the url
      * @return formatted string
+     * @throws InvalidParameterException the server name is not known
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     * @throws RepositoryErrorException the service name is not know - indicating a logic error
      */
     private String  formatNextPageURL(String    methodName,
                                       String    serverName,
@@ -7306,6 +7624,10 @@ public class OMRSRepositoryRESTServices
                 }
                 catch (Throwable  exc)
                 {
+                    /*
+                     * No further action is taken because the URL is a "nice to have" and do not want to
+                     * fail the entire request.
+                     */
                     log.debug("Unable to format return URL; exception is: " + exc.getMessage());
                 }
             }

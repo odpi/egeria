@@ -9,11 +9,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -26,62 +29,73 @@ class DataEngineResourceTest {
     private static final String SERVER_NAME = "serverName";
 
     @Mock
-    private DataEngineRestServices dataEngineRestServices;
+    private DataEngineRESTServices dataEngineRestServices;
 
     @InjectMocks
     private DataEngineResource dataEngineResource;
 
     @Test
-    void testCreateProcess() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcess(USER, SERVER_NAME, processRequestBody);
+    void testCreateSoftwareCapability() {
+        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+        dataEngineResource.createSoftwareServerCapability(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
-    @Test
-    void testCreateProcessWithPorts() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithPorts(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
-    @Test
-    void testCreateProcessWithDeployedApis() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
-    }
-    @Test
-    void testCreateProcessWithAssets() {
-        ProcessRequestBody processRequestBody = new ProcessRequestBody();
-        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
-
-        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+        verify(dataEngineRestServices, times(1)).createSoftwareServer(SERVER_NAME, USER, requestBody);
     }
 
     @Test
-    void testCreatePort() {
-        PortRequestBody portRequestBody = new PortRequestBody();
-        dataEngineResource.createPort(USER, SERVER_NAME, portRequestBody);
+    void testGetSoftwareServerCapabiliyty() {
+        String qualifiedName = "testQualifiedName";
+        dataEngineResource.getSoftwareServerCapabilityByQualifiedName(SERVER_NAME, USER, qualifiedName);
 
-        verify(dataEngineRestServices, times(1)).createPort(USER, SERVER_NAME, portRequestBody);
+        verify(dataEngineRestServices, times(1)).getSoftwareServerByQualifiedName(SERVER_NAME, USER, qualifiedName);
     }
 
     @Test
-    void testCreateDeployedAPI() {
-        DeployedAPIRequestBody deployedAPIRequestBody = new DeployedAPIRequestBody();
-        dataEngineResource.createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
+    void testCreateSchemaType() {
+        SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
+        dataEngineResource.createSchemaType(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
+        verify(dataEngineRestServices, times(1)).createSchemaType(SERVER_NAME, USER, requestBody);
+    }
+
+    @Test
+    void testCreatePortImplementation() {
+        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
+        dataEngineResource.createPortImplementation(SERVER_NAME, USER, requestBody);
+
+        verify(dataEngineRestServices, times(1)).createPortImplementation(SERVER_NAME, USER, requestBody);
+    }
+
+    @Test
+    void testCreatePortAlias() {
+        PortAliasRequestBody requestBody = new PortAliasRequestBody();
+        dataEngineResource.createPortAlias(SERVER_NAME, USER, requestBody);
+
+        verify(dataEngineRestServices, times(1)).createPortAlias(SERVER_NAME, USER, requestBody);
+    }
+
+    @Test
+    void testCreateProcesses() {
+        ProcessesRequestBody requestBody = new ProcessesRequestBody();
+        dataEngineResource.createProcesses(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).createProcesses(USER, SERVER_NAME, requestBody);
     }
 
     @Test
     void testAddPortsToProcess() {
-        PortListRequestBody portListRequestBody = new PortListRequestBody();
+        PortListRequestBody requestBody = new PortListRequestBody();
         String processGuid = "processGuid";
-        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, processGuid, portListRequestBody);
+        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, processGuid, requestBody);
 
-        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, processGuid,  portListRequestBody);
+        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, processGuid, requestBody);
+    }
+
+    @Test
+    void testAddLineageMappings() {
+        LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
+        dataEngineResource.addLineageMappings(USER, SERVER_NAME, requestBody);
+
+        verify(dataEngineRestServices, times(1)).addLineageMappings(USER, SERVER_NAME, requestBody);
     }
 }

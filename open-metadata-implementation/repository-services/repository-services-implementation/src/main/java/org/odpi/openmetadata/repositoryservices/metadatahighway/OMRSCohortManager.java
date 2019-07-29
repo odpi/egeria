@@ -2,6 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway;
 
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.cohortregistrystore.properties.MemberRegistration;
+import org.odpi.openmetadata.repositoryservices.properties.CohortConnectionStatus;
+import org.odpi.openmetadata.repositoryservices.properties.CohortDescription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -20,6 +24,8 @@ import org.odpi.openmetadata.repositoryservices.enterprise.connectormanager.OMRS
 import org.odpi.openmetadata.repositoryservices.localrepository.OMRSLocalRepository;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
 
+import java.util.List;
+
 
 /**
  * The OMRSCohortManager manages the components that connect to a single open metadata repository cohort.
@@ -28,6 +34,7 @@ public class OMRSCohortManager
 {
     private String                     cohortName                   = null;
     private OMRSTopicConnector         cohortTopicConnector         = null;
+    private Connection                 cohortTopicConnection        = null;
     private OMRSRepositoryEventManager cohortRepositoryEventManager = null;
     private OMRSCohortRegistry         cohortRegistry               = null;
     private OMRSEventListener          cohortEventListener          = null;
@@ -70,6 +77,7 @@ public class OMRSCohortManager
      *                           metadata repository cohort.
      * @param cohortRegistryStore the cohort registry store where details of members of the cohort are kept
      * @param cohortTopicConnector Connector to the cohort's OMRS Topic.
+     * @param cohortTopicConnection Connection to the cohort's OMRS Topic.
      * @param enterpriseTopicConnector Connector to the federated OMRS Topic.
      * @param inboundEventExchangeRule rule for processing inbound events.
      */
@@ -84,6 +92,7 @@ public class OMRSCohortManager
                            OMRSConnectionConsumer           connectionConsumer,
                            OMRSTopicConnector               enterpriseTopicConnector,
                            OMRSCohortRegistryStore          cohortRegistryStore,
+                           Connection                       cohortTopicConnection,
                            OMRSTopicConnector               cohortTopicConnector,
                            OMRSRepositoryEventExchangeRule  inboundEventExchangeRule)
     {
@@ -110,6 +119,8 @@ public class OMRSCohortManager
              * unlikely to be seen.
              */
             this.cohortConnectionStatus = CohortConnectionStatus.INITIALIZING;
+
+            this.cohortTopicConnection = cohortTopicConnection;
 
             /*
              * Create the event manager for processing incoming events from the cohort's OMRS Topic.
@@ -275,6 +286,55 @@ public class OMRSCohortManager
     public String getCohortName()
     {
         return cohortName;
+    }
+
+
+    /**
+     * Return the local registration for this cohort.
+     *
+     * @return list of member registrations
+     */
+    MemberRegistration getLocalRegistration()
+    {
+        if (cohortRegistry != null)
+        {
+            return cohortRegistry.getLocalRegistration();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the properties of the cohort.
+     *
+     * @return cohort description
+     */
+    CohortDescription getCohortDescription()
+    {
+        CohortDescription  description = new CohortDescription();
+
+        description.setCohortName(cohortName);
+        description.setTopicConnection(cohortTopicConnection);
+        description.setConnectionStatus(cohortConnectionStatus);
+
+        return description;
+    }
+
+
+    /**
+     * Return the remote members for this cohort.
+     *
+     * @return list of member registrations
+     */
+    List<MemberRegistration> getRemoteMembers()
+    {
+        if (cohortRegistry != null)
+        {
+            return cohortRegistry.getRemoteMembers();
+        }
+
+        return null;
     }
 
 

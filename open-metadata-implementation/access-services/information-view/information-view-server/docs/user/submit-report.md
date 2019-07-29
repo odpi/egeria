@@ -62,70 +62,72 @@ Sample 1
 {
   "class": "ReportRequestBody",
   "registrationGuid": "registration-guid",
-  "sources": [
-    {
-      "@id": "0",
-      "class": "TableSource",
-      "additionalProperties": {
-        "type": "live/import"
-      },
-      "name": "EMPLOYEE",
-      "schemaName": "HR",
-      "databaseSource": {
-        "class": "DatabaseSource",
-        "name": "XE",
-        "endpointSource": {
-          "networkAddress": "host",
-          "protocol": "",
-          "class": "EndpointSource"
-        }
-      }
-    }
-  ],
-  "id": "report_uuid",
-  "createdTime": 1538988150715,
-  "author": "John Martin Winston",
-  "reportName": "TestReport",
-  "reportPath": "/reports/employee46.xml",
-  "reportUrl": "http://powerbi-server/reports/testReport",
-  "lastModifier": "John Martin",
-  "lastModifiedTime": 1538988150715,
-  "reportElements": [
-    {
-      "class": "ReportSection",
-      "name": "section1",
-      "elements": [
-        {
-          "class": "ReportSection",
-          "name": "section1.1",
-          "elements": [
-            {
-              "class": "ReportColumn",
-              "name": "Full Name",
-              "formula": "concat",
-              "sources": [
-                {
-                  "class": "DatabaseColumnSource",
-                  "tableSource": "0",
-                  "name": "FNAME"
-                },
-                {
-                  "class": "DatabaseColumnSource",
-                  "tableSource": "0",
-                  "name": "LNAME"
-                }
-              ],
-              "businessTerm": {
-                             "name": "Patient Full Name",
-                             "guid": "UUID",
-                             "qualifiedName": "businessTermQualifiedName",
-                         }
+  "report":{
+      "sources": [
+          {
+            "@id": "0",
+            "class": "TableSource",
+            "additionalProperties": {
+              "type": "live/import"
+            },
+            "name": "EMPLOYEE",
+            "schemaName": "HR",
+            "databaseSource": {
+              "class": "DatabaseSource",
+              "name": "XE",
+              "endpointSource": {
+                "networkAddress": "host",
+                "protocol": "",
+                "class": "EndpointSource"
               }
-          ]
-        }
-      ]
+            }
+          }
+        ],
+        "id": "report_uuid",
+        "createdTime": 1538988150715,
+        "author": "John Martin Winston",
+        "reportName": "TestReport",
+        "reportPath": "/reports/employee46.xml",
+        "reportUrl": "http://powerbi-server/reports/testReport",
+        "lastModifier": "John Martin",
+        "lastModifiedTime": 1538988150715,
+        "reportElements": [
+          {
+            "class": "ReportSection",
+            "name": "section1",
+            "elements": [
+              {
+                "class": "ReportSection",
+                "name": "section1.1",
+                "elements": [
+                  {
+                    "class": "ReportColumn",
+                    "name": "Full Name",
+                    "formula": "concat",
+                    "sources": [
+                      {
+                        "class": "DatabaseColumnSource",
+                        "tableSource": "0",
+                        "name": "FNAME"
+                      },
+                      {
+                        "class": "DatabaseColumnSource",
+                        "tableSource": "0",
+                        "name": "LNAME"
+                      }
+                    ],
+                    "businessTerm": {
+                                   "name": "Patient Full Name",
+                                   "guid": "UUID",
+                                   "qualifiedName": "businessTermQualifiedName",
+                               }
+                    }
+                ]
+              }
+            ]
+          }
+        ]
     }
-  ]
 }
 
 ```

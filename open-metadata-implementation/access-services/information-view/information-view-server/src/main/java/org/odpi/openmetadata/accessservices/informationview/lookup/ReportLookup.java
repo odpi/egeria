@@ -5,20 +5,16 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Optional;
 
 
 public class ReportLookup extends EntityLookup<ReportSource>  {
@@ -27,17 +23,16 @@ public class ReportLookup extends EntityLookup<ReportSource>  {
     private static final Logger log = LoggerFactory.getLogger(ReportLookup.class);
 
     public ReportLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, omEntityDao, parentChain, auditLog);
+        super(enterpriseConnector, omEntityDao, parentChain, auditLog, Constants.DEPLOYED_DATABASE_SCHEMA);
     }
 
     @Override
-    public EntityDetail lookupEntity(ReportSource source) throws UserNotAuthorizedException,
-                                                                 FunctionNotSupportedException,
-                                                                 InvalidParameterException, RepositoryErrorException,
-                                                                 PropertyErrorException, TypeErrorException,
-                                                                 PagingErrorException {
-
-        EntityDetail entity = findEntity(getMatchingProperties(source), Constants.DEPLOYED_REPORT);
+    public EntityDetail lookupEntity(ReportSource source){
+        EntityDetail entity = Optional.ofNullable(findEntity(getMatchingProperties(source), Constants.DEPLOYED_REPORT))
+                                        .orElseThrow(() -> ExceptionHandler.buildEntityNotFoundException(Constants.SOURCE,
+                                                                                                        source.toString(),
+                                                                                                        Constants.DEPLOYED_REPORT,
+                                                                                                        this.getClass().getName()));
         if(log.isDebugEnabled()) {
             log.debug("Report found [{}]", entity);
         }

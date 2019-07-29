@@ -107,6 +107,7 @@ public class DiscoveryServerRESTServices
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      *
      * @return discovery report or
@@ -118,7 +119,7 @@ public class DiscoveryServerRESTServices
                                                               String   userId,
                                                               String   discoveryRequestGUID)
     {
-        final String        methodName = "getDiscoveryReport";
+        final String        methodName = "getDiscoveryAnalysisReport";
 
         log.debug("Calling method: " + methodName);
 
@@ -163,6 +164,7 @@ public class DiscoveryServerRESTServices
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
      * @param discoveryRequestGUID identifier of the discovery request.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
@@ -223,6 +225,8 @@ public class DiscoveryServerRESTServices
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID anchor annotation
      * @param startingFrom starting position in the list
      * @param maximumResults maximum number of annotations that can be returned.
@@ -234,6 +238,7 @@ public class DiscoveryServerRESTServices
     public AnnotationListResponse getExtendedAnnotations(String   serverName,
                                                          String   discoveryEngineGUID,
                                                          String   userId,
+                                                         String   discoveryRequestGUID,
                                                          String   annotationGUID,
                                                          int      startingFrom,
                                                          int      maximumResults)
@@ -253,7 +258,7 @@ public class DiscoveryServerRESTServices
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAnnotations(handler.getExtendedAnnotations(annotationGUID, startingFrom, maximumResults));
+            response.setAnnotations(handler.getExtendedAnnotations(discoveryRequestGUID, annotationGUID, startingFrom, maximumResults));
         }
         catch (InvalidParameterException error)
         {
@@ -284,6 +289,8 @@ public class DiscoveryServerRESTServices
      *
      * @param serverName name of the discovery server.
      * @param discoveryEngineGUID unique identifier of the discovery engine.
+     * @param userId calling user
+     * @param discoveryRequestGUID identifier of the discovery request.
      * @param annotationGUID unique identifier of the annotation
      *
      * @return Annotation object or
@@ -293,6 +300,7 @@ public class DiscoveryServerRESTServices
     public AnnotationResponse getAnnotation(String   serverName,
                                             String   discoveryEngineGUID,
                                             String   userId,
+                                            String   discoveryRequestGUID,
                                             String   annotationGUID)
     {
         final String        methodName = "getAnnotation";
@@ -310,7 +318,7 @@ public class DiscoveryServerRESTServices
                                                                                        methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAnnotation(handler.getAnnotation(annotationGUID));
+            response.setAnnotation(handler.getAnnotation(discoveryRequestGUID, annotationGUID));
         }
         catch (InvalidParameterException error)
         {

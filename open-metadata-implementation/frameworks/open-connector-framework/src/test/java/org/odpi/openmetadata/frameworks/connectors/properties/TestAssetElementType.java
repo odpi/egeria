@@ -41,6 +41,7 @@ public class TestAssetElementType
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementHomeMetadataCollectionName("TestHomeName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
@@ -63,6 +64,7 @@ public class TestAssetElementType
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementHomeMetadataCollectionName("TestHomeName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
@@ -82,9 +84,10 @@ public class TestAssetElementType
         testObject.setElementTypeName("TestTypeName");
         testObject.setElementTypeVersion(8);
         testObject.setElementTypeDescription("TestDescription");
-        testObject.setElementSourceServer("TestDifferentSourceServer");
+        testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementHomeMetadataCollectionName("TestHomeDifferentName");
         testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
@@ -105,6 +108,7 @@ public class TestAssetElementType
         assertTrue(resultObject.getElementSourceServer().equals("TestSourceServer"));
         assertTrue(resultObject.getElementOrigin().equals(ElementOrigin.DEREGISTERED_REPOSITORY));
         assertTrue(resultObject.getElementHomeMetadataCollectionId().equals("TestHomeId"));
+        assertTrue(resultObject.getElementHomeMetadataCollectionName().equals("TestHomeName"));
         assertTrue(resultObject.getElementLicense().equals("TestLicense"));
     }
 
@@ -123,6 +127,7 @@ public class TestAssetElementType
         assertTrue(nullObject.getElementSourceServer() == null);
         assertTrue(nullObject.getElementOrigin() == ElementOrigin.CONFIGURATION);
         assertTrue(nullObject.getElementHomeMetadataCollectionId() == null);
+        assertTrue(nullObject.getElementHomeMetadataCollectionName() == null);
         assertTrue(nullObject.getElementLicense() == null);
     }
 

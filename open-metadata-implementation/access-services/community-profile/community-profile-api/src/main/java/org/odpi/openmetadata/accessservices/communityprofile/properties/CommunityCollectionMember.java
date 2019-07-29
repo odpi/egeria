@@ -38,6 +38,8 @@ public class CommunityCollectionMember extends CollectionMemberHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public CommunityCollectionMember(CommunityCollectionMember template)
     {

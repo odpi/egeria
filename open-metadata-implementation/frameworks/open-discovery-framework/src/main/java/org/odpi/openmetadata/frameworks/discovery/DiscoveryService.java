@@ -85,6 +85,31 @@ public abstract class DiscoveryService extends ConnectorBase
 
 
     /**
+     * Provide a common exception for unexpected errors.
+     *
+     * @param methodName calling method
+     * @param error caught exception
+     * @throws ConnectorCheckedException wrapped exception
+     */
+    protected void handleUnexpectedException(String      methodName,
+                                             Throwable   error) throws ConnectorCheckedException
+    {
+        ODFErrorCode errorCode    = ODFErrorCode.UNEXPECTED_EXCEPTION;
+        String       errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(discoveryServiceName,
+                                                                                                       error.getClass().getName(),
+                                                                                                       methodName,
+                                                                                                       error.getMessage());
+
+        throw new DiscoveryServiceException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction());
+    }
+
+
+    /**
      * Free up any resources held since the connector is no longer needed.
      *
      * @throws ConnectorCheckedException there is a problem within the connector.

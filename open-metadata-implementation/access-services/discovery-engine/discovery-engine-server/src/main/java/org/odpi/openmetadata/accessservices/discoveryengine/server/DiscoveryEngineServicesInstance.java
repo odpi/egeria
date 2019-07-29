@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
+import org.odpi.openmetadata.commonservices.multitenant.ODFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -18,7 +18,7 @@ import java.util.List;
  * It is also responsible for registering itself in the instance map.
  * It is created by the admin class during server start up and
  */
-public class DiscoveryEngineServicesInstance extends OCFOMASServiceInstance
+public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 
@@ -42,6 +42,8 @@ public class DiscoveryEngineServicesInstance extends OCFOMASServiceInstance
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
+              supportedZones,
+              defaultZones,
               auditLog);
 
         final String methodName = "new ServiceInstance";

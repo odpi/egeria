@@ -3,24 +3,26 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.VirtualConnectorExtension;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventProtocolVersion;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.odpi.openmetadata.repositoryservices.events.beans.OMRSEventBean;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -268,6 +270,30 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
 
 
     /**
+     * Log that this connector does not support the requested event protocol.
+     * This protocol level is requested in the configuration.
+     *
+     * @throws ConnectorCheckedException unsupported event protocol
+     */
+    private void handleUnsupportedEventVersion() throws ConnectorCheckedException
+    {
+        log.debug("Unsupported Protocol: " + eventProtocolVersion);
+
+        OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
+        String errorMessage = errorCode.getErrorMessageId()
+                                      + errorCode.getFormattedErrorMessage(connectionName,
+                                                                           eventProtocolVersion.toString());
+
+        throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            connectorName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction());
+    }
+
+
+    /**
      * Send the registry event to the OMRS Topic connector and manage errors
      *
      * @param registryEvent  properties of the event to send
@@ -281,19 +307,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -312,19 +326,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -344,19 +346,7 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
         }
         else
         {
-            log.debug("Unsupported Protocol: " + eventProtocolVersion);
-
-            OMRSErrorCode errorCode = OMRSErrorCode.OMRS_UNSUPPORTED_EVENT_PROTOCOL;
-            String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(connectionName,
-                                                         eventProtocolVersion.toString());
-
-            throw new ConnectorCheckedException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                connectorName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction());
+            this.handleUnsupportedEventVersion();
         }
     }
 
@@ -468,14 +458,14 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
             /*
              * If the event bean is successfully created then pass it on to the registered listeners.
              */
-            if ((eventBean != null) && (eventBean instanceof OMRSEventV1))
+            if (eventBean instanceof OMRSEventV1)
             {
-                for (OMRSTopicListener  topicListener : internalTopicListeners)
+                OMRSEventBean finalEventBean = eventBean;
+                internalTopicListeners.parallelStream().forEach((topicListener) ->
                 {
                     try
                     {
-                        this.processOMRSEvent((OMRSEventV1)eventBean,
-                                              topicListener);
+                        this.processOMRSEvent((OMRSEventV1) finalEventBean, topicListener);
                     }
                     catch (Throwable  error)
                     {
@@ -491,13 +481,13 @@ public class OMRSTopicConnector extends ConnectorBase implements OMRSTopic,
                                                   auditCode.getFormattedLogMessage(event,
                                                                                    error.toString(),
                                                                                    topicListener.toString()),
-                                                  null,
+                                                  event,
                                                   auditCode.getSystemAction(),
                                                   auditCode.getUserAction(),
                                                   error);
                         }
                     }
-                }
+                });
             }
         }
         else

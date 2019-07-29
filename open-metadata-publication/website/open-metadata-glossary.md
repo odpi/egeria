@@ -7,8 +7,8 @@
 
 * [Access Services (OMAS)](../../open-metadata-implementation/access-services)
   * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
-  * [Asset Consumer](../../open-metadata-implementation/access-services/asset-consumer)
-  * [Asset Owner](../../open-metadata-implementation/access-services/asset-owner)
+  * [Asset Consumer OMAS](../../open-metadata-implementation/access-services/asset-consumer)
+  * [Asset Owner OMAS](../../open-metadata-implementation/access-services/asset-owner)
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
@@ -61,7 +61,7 @@
 * [Community Guide](../../Community-Guide.md)
 * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
 * Configuration
-  * [Configuration Document](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
+  * [Configuration Document](../../open-metadata-implementation/admin-services/docs/concepts/configuration-document.md)
   * [Configuration Factory for Open Connectors](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
   * [Configuration Properties for Open Metadata Access Services (OMASs)](../../open-metadata-implementation/access-services/docs/concepts/configuration-properties)
   * [Configuration Store Connectors](../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)
@@ -285,6 +285,7 @@
   * [stewardship-action](../../open-metadata-implementation/access-services/stewardship-action)
   * [subject-area](../../open-metadata-implementation/access-services/subject-area)
   * [user-interfaces](../../open-metadata-implementation/user-interfaces)
+* [Platform Services](../../open-metadata-implementation/platform-services)
 * [Project Management OMAS](../../open-metadata-implementation/access-services/project-management)
 * [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 

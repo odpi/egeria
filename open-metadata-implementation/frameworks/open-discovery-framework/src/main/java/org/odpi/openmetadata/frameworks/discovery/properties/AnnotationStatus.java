@@ -37,6 +37,10 @@ public enum AnnotationStatus implements Serializable
 
     /**
      * Typical Constructor
+     *
+     * @param statusCode ordinal
+     * @param statusName short name
+     * @param statusDescription longer explanation
      */
     AnnotationStatus(int     statusCode, String   statusName,  String   statusDescription)
     {

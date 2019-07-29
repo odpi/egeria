@@ -33,13 +33,13 @@ public class ConnectorConfigurationFactory
     /*
      * Default property fillers
      */
-    private static final String defaultTopicRootName     = "open-metadata.repository-services.";
+    private static final String defaultTopicRootName     = "openmetadata.repositoryservices.";
     private static final String defaultOMRSTopicLeafName = ".OMRSTopic";
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
-    private static final String defaultEventMapperTopicName = defaultTopicRootName + "local-repository.events";
+    private static final String defaultEventMapperTopicName = defaultTopicRootName + "localrepository.events";
 
     private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
 
@@ -638,6 +638,7 @@ public class ConnectorConfigurationFactory
      *
      * @param serverName name of the repository proxy server where the event mapper will run
      * @param connectorProviderClassName  java class name of the connector provider for the event mapper
+     * @param configurationProperties additional properties for event mapper
      * @param eventSource  name of the event source used by the event mapper
      * @return Connection object
      */
@@ -789,6 +790,52 @@ public class ConnectorConfigurationFactory
 
             connection.setAdditionalProperties(additionalProperties);
         }
+
+        return connection;
+    }
+
+    /**
+     * Returns the connection for an arbitrary data engine proxy.
+     *
+     * @param serverName  name of the real data engine server
+     * @param connectorProviderClassName  class name of the connector provider
+     * @param url  location of the data engine proxy
+     * @param configurationProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection  getDataEngineProxyConnection(String              serverName,
+                                                    String              connectorProviderClassName,
+                                                    String              url,
+                                                    Map<String, Object> configurationProperties)
+    {
+        final String endpointGUID             = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
+        final String endpointDescription      = "Data Engine native endpoint.";
+        final String connectionDescription    = "Data Engine native connection.";
+
+        String endpointName    = "DataEngineNative.Endpoint." + serverName;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(this.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(url);
+
+        String connectionName = "DataEngineNative.Connection." + serverName;
+
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(connectorProviderClassName));
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }

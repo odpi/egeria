@@ -24,10 +24,7 @@ public class AssetConsumerRegistration
     {
         AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
 
-        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
-                                                                                 myDescription.getAccessServiceName(),
-                                                                                 myDescription.getAccessServiceDescription(),
-                                                                                 myDescription.getAccessServiceWiki(),
+        AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription,
                                                                                  AccessServiceOperationalStatus.ENABLED,
                                                                                  AssetConsumerAdmin.class.getName());
         OMAGAccessServiceRegistration.registerAccessService(myRegistration);

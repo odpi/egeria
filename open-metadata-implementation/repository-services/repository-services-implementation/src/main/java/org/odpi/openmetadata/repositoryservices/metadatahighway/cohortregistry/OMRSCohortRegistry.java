@@ -180,6 +180,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
     }
 
+
     /**
      * Initialize the cohort registry object.  The parameters passed control its behavior.
      *
@@ -271,7 +272,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      *
      * If the server has already registered in the past, it does not need to take any action.
      */
-    public  void  connectToCohort()
+    public synchronized void  connectToCohort()
     {
         if (registryStore == null)
         {
@@ -391,13 +392,45 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
     /**
+     * Return the local registration for this cohort.
+     *
+     * @return list of member registrations
+     */
+    public synchronized MemberRegistration getLocalRegistration()
+    {
+        if (registryStore != null)
+        {
+            return registryStore.retrieveLocalRegistration();
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the remote members for this cohort.
+     *
+     * @return list of member registrations
+     */
+    public synchronized List<MemberRegistration> getRemoteMembers()
+    {
+        if (registryStore != null)
+        {
+            return registryStore.retrieveRemoteRegistrations();
+        }
+
+        return null;
+    }
+
+
+    /**
      * Close the connection to the registry store.
      *
      * @param permanent boolean flag indicating whether the disconnection is permanent or not.  If it is set
      *                  to true, the OMRS Cohort will remove all information about the cohort from the
      *                  cohort registry store.
      */
-    public  void  disconnectFromCohort(boolean   permanent)
+    public synchronized void disconnectFromCohort(boolean   permanent)
     {
         final String  actionDescription = "Disconnect from Cohort";
 
@@ -659,14 +692,14 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param registrationTimestamp the time that the server/repository issued the registration request.
      * @param remoteConnection the Connection properties for the connector used to call the registering server.
      */
-    public boolean processRegistrationEvent(String                    sourceName,
-                                            String                    originatorMetadataCollectionId,
-                                            String                    originatorMetadataCollectionName,
-                                            String                    originatorServerName,
-                                            String                    originatorServerType,
-                                            String                    originatorOrganizationName,
-                                            Date                      registrationTimestamp,
-                                            Connection                remoteConnection)
+    public synchronized boolean processRegistrationEvent(String      sourceName,
+                                                         String      originatorMetadataCollectionId,
+                                                         String      originatorMetadataCollectionName,
+                                                         String      originatorServerName,
+                                                         String      originatorServerType,
+                                                         String      originatorOrganizationName,
+                                                         Date        registrationTimestamp,
+                                                         Connection  remoteConnection)
     {
         final String    actionDescription = "Receiving Registration event";
 
@@ -729,10 +762,10 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      */
-    public boolean processRegistrationRefreshRequest(String                    sourceName,
-                                                     String                    originatorServerName,
-                                                     String                    originatorServerType,
-                                                     String                    originatorOrganizationName)
+    public synchronized boolean processRegistrationRefreshRequest(String    sourceName,
+                                                                  String    originatorServerName,
+                                                                  String    originatorServerType,
+                                                                  String    originatorOrganizationName)
     {
         final String    actionDescription = "Receiving Registration Refresh event";
 
@@ -797,14 +830,14 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param registrationTimestamp the time that the server/repository first registered with the cohort.
      * @param remoteConnection the Connection properties for the connector used to call the registering server.
      */
-    public boolean processReRegistrationEvent(String                    sourceName,
-                                              String                    originatorMetadataCollectionId,
-                                              String                    originatorMetadataCollectionName,
-                                              String                    originatorServerName,
-                                              String                    originatorServerType,
-                                              String                    originatorOrganizationName,
-                                              Date                      registrationTimestamp,
-                                              Connection                remoteConnection)
+    public synchronized boolean processReRegistrationEvent(String         sourceName,
+                                                           String         originatorMetadataCollectionId,
+                                                           String         originatorMetadataCollectionName,
+                                                           String         originatorServerName,
+                                                           String         originatorServerType,
+                                                           String         originatorOrganizationName,
+                                                           Date           registrationTimestamp,
+                                                           Connection     remoteConnection)
     {
         final String    actionDescription = "Receiving ReRegistration event";
 
@@ -881,12 +914,12 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      */
-    public boolean processUnRegistrationEvent(String                    sourceName,
-                                              String                    originatorMetadataCollectionId,
-                                              String                    originatorMetadataCollectionName,
-                                              String                    originatorServerName,
-                                              String                    originatorServerType,
-                                              String                    originatorOrganizationName)
+    public synchronized boolean processUnRegistrationEvent(String    sourceName,
+                                                           String    originatorMetadataCollectionId,
+                                                           String    originatorMetadataCollectionName,
+                                                           String    originatorServerName,
+                                                           String    originatorServerType,
+                                                           String    originatorOrganizationName)
     {
         final String    actionDescription = "Receiving unregistration event";
 
@@ -948,14 +981,14 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param conflictingMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
      * @param errorMessage details of the conflict
      */
-    public void    processConflictingCollectionIdEvent(String  sourceName,
-                                                       String  originatorMetadataCollectionId,
-                                                       String  originatorMetadataCollectionName,
-                                                       String  originatorServerName,
-                                                       String  originatorServerType,
-                                                       String  originatorOrganizationName,
-                                                       String  conflictingMetadataCollectionId,
-                                                       String  errorMessage)
+    public synchronized void    processConflictingCollectionIdEvent(String  sourceName,
+                                                                    String  originatorMetadataCollectionId,
+                                                                    String  originatorMetadataCollectionName,
+                                                                    String  originatorServerName,
+                                                                    String  originatorServerType,
+                                                                    String  originatorOrganizationName,
+                                                                    String  conflictingMetadataCollectionId,
+                                                                    String  errorMessage)
     {
         if (conflictingMetadataCollectionId != null)
         {
@@ -1005,15 +1038,15 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param remoteRepositoryConnection the Connection properties for the connector used to call the registering server.
      * @param errorMessage details of the error that occurs when the connection is used.
      */
-    public void    processBadConnectionEvent(String     sourceName,
-                                             String     originatorMetadataCollectionId,
-                                             String     originatorMetadataCollectionName,
-                                             String     originatorServerName,
-                                             String     originatorServerType,
-                                             String     originatorOrganizationName,
-                                             String     targetMetadataCollectionId,
-                                             Connection remoteRepositoryConnection,
-                                             String     errorMessage)
+    public synchronized void    processBadConnectionEvent(String     sourceName,
+                                                          String     originatorMetadataCollectionId,
+                                                          String     originatorMetadataCollectionName,
+                                                          String     originatorServerName,
+                                                          String     originatorServerType,
+                                                          String     originatorOrganizationName,
+                                                          String     targetMetadataCollectionId,
+                                                          Connection remoteRepositoryConnection,
+                                                          String     errorMessage)
     {
         if (targetMetadataCollectionId != null)
         {

@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,7 +27,7 @@ public class Classification implements Serializable {
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
-    private Map<String,Object> extraAttributes;
+    private Map<String,String> additionalProperties;
 
     protected String classificationName = null;
     /**
@@ -74,16 +73,14 @@ public class Classification implements Serializable {
         return this.classificationName;
     }
 
-    public InstanceProperties obtainInstanceProperties() { return null;}
-
     /**
-     * Get the extra attributes - ones that are in addition to the standard types.
-     * @return extra attributes
+     * Get the additional properties - ones that are in addition to the standard types.
+     * @return additional properties
      */
-    public Map<String, Object> getExtraAttributes() {
-        return extraAttributes;
+    public Map<String, String> getAdditionalProperties() {
+        return additionalProperties;
     }
-    public void setExtraAttributes(Map<String, Object> extraAttributes) {
-        this.extraAttributes = extraAttributes;
+    public void setAdditionalProperties(Map<String, String> additionalProperties) {
+        this.additionalProperties = additionalProperties;
     }
 }

@@ -15,20 +15,38 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Repository Services Connector APIs</name>
+    <name>Repository Services General APIs</name>
     <description>
-        The repository services connector APIs are the interfaces that open metadata
-        repository services (OMRS) connectors need to implement.
+        The repository services general APIs used by all components that depend on the OMRS.
     </description>
 
     <artifactId>repository-services-apis</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+       </dependency>
+
+       <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

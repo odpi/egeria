@@ -20,6 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
+                @JsonSubTypes.Type(value = CohortListResponse.class, name = "CohortListResponse"),
+                @JsonSubTypes.Type(value = CohortMembershipListResponse.class, name = "CohortMembershipListResponse"),
                 @JsonSubTypes.Type(value = EntityListResponse.class, name = "EntityListResponse"),
                 @JsonSubTypes.Type(value = RelationshipListResponse.class, name = "RelationshipListResponse")
         })
@@ -168,7 +170,8 @@ public abstract class OMRSAPIPagedResponse extends OMRSAPIResponse
         {
             return false;
         }
-        OMRSAPIPagedResponse that = (OMRSAPIPagedResponse) objectToCompare;
+        OMRSAPIPagedResponse
+                that = (OMRSAPIPagedResponse) objectToCompare;
         return getOffset() == that.getOffset() &&
                 getPageSize() == that.getPageSize() &&
                 Objects.equals(getNextPageURL(), that.getNextPageURL());
