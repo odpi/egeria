@@ -25,7 +25,7 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(VirtualizerTopicListener.class);
 
-    private OpenMetadataTopicConnector ivInTopicConnector;
+    private OpenMetadataTopicConnector virtualizerOutboundTopicConnector;
     private ViewGeneratorConnectorBase viewGeneratorConnector;
     private EndpointSource endpointSource;
     private String databaseName;
@@ -34,18 +34,18 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
 
     /**
      * Default constructor.
-     * @param ivInTopicConnector the event connector to sent out the processed topic
+     * @param virtualizerOutboundTopicConnector the event connector to sent out the processed topic
      */
-    public VirtualizerTopicListener(OpenMetadataTopicConnector ivInTopicConnector,
+    public VirtualizerTopicListener(OpenMetadataTopicConnector virtualizerOutboundTopicConnector,
                                     ViewGeneratorConnectorBase viewGeneratorConnector,
                                     EndpointSource endpointSource,
                                     String databaseName,
                                     String dataSchema){
-        this.ivInTopicConnector         = ivInTopicConnector;
-        this.viewGeneratorConnector     = viewGeneratorConnector;
-        this.endpointSource             = endpointSource;
-        this.databaseName               = databaseName;
-        this.dataSchema                 = dataSchema;
+        this.virtualizerOutboundTopicConnector = virtualizerOutboundTopicConnector;
+        this.viewGeneratorConnector            = viewGeneratorConnector;
+        this.endpointSource                    = endpointSource;
+        this.databaseName                      = databaseName;
+        this.dataSchema                        = dataSchema;
 
     }
 
@@ -58,11 +58,19 @@ public class VirtualizerTopicListener implements OpenMetadataTopicListener {
         log.info("The following event is received: " + event);
         ObjectMapper objectMapper = new ObjectMapper();
         try{
-            TableContextEvent eventObject = objectMapper.readValue(event, TableContextEvent.class);
-            Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
-            List<NewViewEvent> viewEvents = generateViewEvents(eventObject, views);
-            for (NewViewEvent item : viewEvents){
-                ivInTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
+            TableContextEvent eventObject;
+            try {
+                eventObject = objectMapper.readValue(event, TableContextEvent.class);
+            } catch (Exception e){
+                log.info("An event is not Table Context Event, discarded!");
+                eventObject = null;
+            }
+            if (eventObject != null){
+                Map<String, String> views = viewGeneratorConnector.processInformationViewEvent(eventObject);
+                List<NewViewEvent> viewEvents = generateViewEvents(eventObject, views);
+                for (NewViewEvent item : viewEvents){
+                    virtualizerOutboundTopicConnector.sendEvent(objectMapper.writeValueAsString(item));
+                }
             }
         }catch (Exception e){
             log.error("Error in processing the event from Information View OMAS", e);

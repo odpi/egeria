@@ -96,10 +96,11 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
                         ";password=" + password +
                         ";proxy-user=" + username +
                         ";proxy-pwd=" + password;
+                log.debug("The generated databased url is {}.", databaseUrl);
             } else {
                 log.error("Errors in the server configuration. The address of the server cannot be extracted");
                 if (omrsAuditLog != null) {
-                    auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_CONFIGURATION_ERROR;
+                    auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
                     omrsAuditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -112,7 +113,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } else {
             log.error("Errors in server address. The endpoint containing the server address is invalid!");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_ADDRESS_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -132,7 +133,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } else {
             log.error("Errors in settings of the GaianDB");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_LOGICAL_TABLE_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_LOGICAL_TABLE_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -163,8 +164,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
      * @param tableName table name
      * @return boolean whether the table is deleted successfully
      */
-    @Override
-    public boolean deleteLogicalTable(String tableName) {
+    private boolean deleteLogicalTable(String tableName) {
         final String actionDescription = "deleteLogicalTable";
 
         try {
@@ -172,12 +172,13 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
             derbyStatement.setQueryTimeout(timeoutInSecond);
             derbyStatement.executeUpdate("call removelt('" + tableName + "')");
 
+            log.debug("Successfully deleted table: {}.", tableName);
             return true;
 
         } catch (SQLException e) {
             log.error("Error deleting table", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -190,8 +191,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         }
     }
 
-    @Override
-    public List<LogicTable> getAllLogicTables() {
+    private List<LogicTable> getAllLogicTables() {
         final String actionDescription = "getAllLogicTables";
 
         List logicTableList = new ArrayList();
@@ -207,7 +207,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (SQLException e) {
             log.error("Error in getting all the logic tables: ", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -229,11 +229,13 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
             derbyStatement = derbyConnection.createStatement();
             derbyStatement.setQueryTimeout(timeoutInSecond);
             derbyStatement.executeUpdate(update);
+
+            log.debug("Successfully executed query: {}.", update);
             return true;
         } catch (SQLException e) {
             log.error("Error in executing a customized update!", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_QUERY_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_QUERY_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -259,7 +261,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         if (tableContextEvent == null) {
             log.debug("Object TableContextEvent is null");
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_IV_EVENT_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_INBOUND_EVENT_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -312,7 +314,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         } catch (Exception e) {
             log.error("Error in creating the connection to derby: ", e);
             if (omrsAuditLog != null) {
-                auditCode = DerbyConnectorAuditCode.CONNERCTOR_SERVER_CONNECTION_ERROR;
+                auditCode = DerbyConnectorAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
                         auditCode.getSeverity(),
@@ -326,14 +328,14 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
 
 
     private LogicTable getMatchingTables(String gaianNodeName, List<String> tables) {
-        log.debug("gaianNodeName: " + gaianNodeName);
-        log.debug("tables to match in gaian: " + tables);
+        log.debug("gaianNodeName: {}", gaianNodeName);
+        log.debug("tables to match in gaian: {}", tables);
         List<LogicTable> logicTableList = new ArrayList<>();
 
         logicTableList = getAllLogicTables();
 
         if (logicTableList != null && !logicTableList.isEmpty()) {
-            return logicTableList.stream().filter(e -> (e.getGaianNode().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
+            return logicTableList.stream().filter(e -> (e.getNodeName().equals(gaianNodeName) && tables.contains(e.getLogicalTableName()))).findFirst().orElse(null);
         }
         return null;
     }
@@ -342,7 +344,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
     private LogicTable extractLogicTableDefinition(ResultSet sqlResults) throws SQLException {
         LogicTable logicTable = new LogicTable();
         Map<String, String> defLists = new HashMap<>();
-        logicTable.setGaianNode(sqlResults.getString(gdbNode));
+        logicTable.setNodeName(sqlResults.getString(gdbNode));
         logicTable.setLogicalTableName(sqlResults.getString(logicTableName));
         String def = sqlResults.getString(logicTableDefinition);
         String[] defs = def.split(", ");//here we need to split with ,+space, it is showed in Gaian LTDEF
@@ -360,7 +362,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
         Map<String, String> createdTables = new HashMap();
         LogicTable backendTable = getMatchingTables(gaianNodeName, Collections.singletonList(logicalTableName));
         if (backendTable != null) {
-            if (!backendTable.getGaianNode().equals(gaianFrontendName)) {
+            if (!backendTable.getNodeName().equals(gaianFrontendName)) {
                 createMirroringLogicalTable(logicalTableName, gaianNodeName);
             }
             ConnectorUtils.updateColumnDataType(mappedColumns, backendTable);
@@ -375,7 +377,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
                 createdTables.put(ConnectorUtils.TECHNICAL_PREFIX, updatedTable);
             }
 
-            if (!backendTable.getGaianNode().equals(gaianFrontendName)) {
+            if (!backendTable.getNodeName().equals(gaianFrontendName)) {
                 log.info("Remove mirrored logical table: {}", logicalTableName);
                 deleteLogicalTable(logicalTableName);
             }

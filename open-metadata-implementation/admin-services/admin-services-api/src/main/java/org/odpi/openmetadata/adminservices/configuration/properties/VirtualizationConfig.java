@@ -23,15 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VirtualizationConfig extends AdminServicesConfigHeader
-{
-    private String              virtualizationProvider           = null;
-    private String              ivInTopicName                    = null;
-    private Connection          ivInTopic                        = null;
-    private String              ivOutTopicName                   = null;
-    private Connection          ivOutTopic                       = null;
-    private Connection          virtualizationSolutionConnection = null;
-    private Map<String, Object> virtualizationSolutionConfig     = null;
+public class VirtualizationConfig extends AdminServicesConfigHeader {
+
+    private String              virtualizationProvider;
+    private String              virtualizerOutboundTopicName;
+    private Connection          virtualizerOutboundTopic;
+    private String              virtualizerInboundTopicName;
+    private Connection          virtualizerInboundTopic;
+    private Connection          virtualizationSolutionConnection;
+    private Map<String, Object> virtualizationSolutionConfig;
 
 
     /**
@@ -41,19 +41,18 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
         super();
     }
 
-
     /**
      * Copy data from template
      *
-     * @param template object to copy
+     * @param template
      */
     public VirtualizationConfig(VirtualizationConfig template) {
         if (template != null) {
             this.virtualizationProvider           = template.virtualizationProvider;
-            this.ivInTopicName                    = template.ivInTopicName;
-            this.ivInTopic                        = template.ivInTopic;
-            this.ivOutTopicName                   = template.ivOutTopicName;
-            this.ivOutTopic                       = template.ivOutTopic;
+            this.virtualizerOutboundTopicName     = template.virtualizerOutboundTopicName;
+            this.virtualizerOutboundTopic         = template.virtualizerOutboundTopic;
+            this.virtualizerInboundTopicName      = template.virtualizerInboundTopicName;
+            this.virtualizerInboundTopic          = template.virtualizerInboundTopic;
             this.virtualizationSolutionConnection = template.virtualizationSolutionConnection;
             this.virtualizationSolutionConfig     = template.virtualizationSolutionConfig;
         }
@@ -62,95 +61,84 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
 
     /**
      * Provide the name of virtualization provider
-     *
      * @return String virtualizationProvider
      */
     public String getVirtualizationProvider() {
         return virtualizationProvider;
     }
 
-
     /**
      * Set the name of virtualization provider
-     *
-     * @param virtualizationProvider provider
+     * @param virtualizationProvider
      */
-    public void setVirtualizationProvider(String virtualizationProvider)
-    {
+    public void setVirtualizationProvider(String virtualizationProvider) {
         this.virtualizationProvider = virtualizationProvider;
     }
 
-
     /**
      * Provide the name of the information view in topic
-     *
-     * @return String ivInTopicName
+     * @return String virtualizerOutboundTopicName
      */
-    public String getIvInTopicName() {
-        return ivInTopicName;
+    public String getVirtualizerOutboundTopicName() {
+        return virtualizerOutboundTopicName;
     }
 
 
     /**
      * Set the name of the information view in topic
-     * @param ivInTopicName String
+     * @param virtualizerOutboundTopicName String
      */
-    public void setIvInTopicName(String ivInTopicName) {
-        this.ivInTopicName = ivInTopicName;
+    public void setVirtualizerOutboundTopicName(String virtualizerOutboundTopicName) {
+        this.virtualizerOutboundTopicName = virtualizerOutboundTopicName;
     }
-
 
     /**
      * Provide the connection of the information view in topic
-     * @return Connection ivInTopic
+     * @return Connection virtualizerOutboundTopic
      */
-    public Connection getIvInTopic() {
-        return ivInTopic;
+    public Connection getVirtualizerOutboundTopic() {
+        return virtualizerOutboundTopic;
     }
-
 
     /**
      * Set the connection of the information view in topic
-     * @param ivInTopic Connection
+     * @param virtualizerOutboundTopic Connection
      */
-    public void setIvInTopic(Connection ivInTopic) {
-        this.ivInTopic = ivInTopic;
+    public void setVirtualizerOutboundTopic(Connection virtualizerOutboundTopic) {
+        this.virtualizerOutboundTopic = virtualizerOutboundTopic;
     }
-
 
     /**
      * Provide the name of the information view out topic
-     * @return String ivOutTopicName
+     * @return String virtualizerInboundTopicName
      */
-    public String getIvOutTopicName() {
-        return ivOutTopicName;
+    public String getVirtualizerInboundTopicName() {
+        return virtualizerInboundTopicName;
     }
 
 
     /**
      * Set the name of the information view out topic
-     * @param ivOutTopicName String
+     * @param virtualizerInboundTopicName String
      */
-    public void setIvOutTopicName(String ivOutTopicName) {
-        this.ivOutTopicName = ivOutTopicName;
+    public void setVirtualizerInboundTopicName(String virtualizerInboundTopicName) {
+        this.virtualizerInboundTopicName = virtualizerInboundTopicName;
     }
-
 
     /**
      * Provide the connection of the information view out topic
-     * @return Connection ivOutTopic
+     * @return Connection virtualizerInboundTopic
      */
-    public Connection getIvOutTopic() {
-        return ivOutTopic;
+    public Connection getVirtualizerInboundTopic() {
+        return virtualizerInboundTopic;
     }
-
 
     /**
      * Set the connection of the information view out topic
-     * @param ivOutTopic Connection
+     * @param virtualizerInboundTopic Connection
      */
-    public void setIvOutTopic(Connection ivOutTopic) {
-        this.ivOutTopic = ivOutTopic;
+    public void setVirtualizerInboundTopic(Connection virtualizerInboundTopic) {
+        this.virtualizerInboundTopic = virtualizerInboundTopic;
     }
 
     /**
@@ -165,8 +153,7 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
      * Set the connection of the information view out topic
      * @param virtualizationSolutionConnection Connection
      */
-    public void setVirtualizationSolutionConnection(Connection virtualizationSolutionConnection)
-    {
+    public void setVirtualizationSolutionConnection(Connection virtualizationSolutionConnection) {
         this.virtualizationSolutionConnection = virtualizationSolutionConnection;
     }
 
@@ -192,16 +179,16 @@ public class VirtualizationConfig extends AdminServicesConfigHeader
         if (!(o instanceof VirtualizationConfig)) return false;
         VirtualizationConfig that = (VirtualizationConfig) o;
         return Objects.equals(getVirtualizationProvider(), that.getVirtualizationProvider()) &&
-                Objects.equals(getIvInTopicName(), that.getIvInTopicName()) &&
-                Objects.equals(getIvInTopic(), that.getIvInTopic()) &&
-                Objects.equals(getIvOutTopicName(), that.getIvOutTopicName()) &&
-                Objects.equals(getIvOutTopic(), that.getIvOutTopic()) &&
+                Objects.equals(getVirtualizerOutboundTopicName(), that.getVirtualizerOutboundTopicName()) &&
+                Objects.equals(getVirtualizerOutboundTopic(), that.getVirtualizerOutboundTopic()) &&
+                Objects.equals(getVirtualizerInboundTopicName(), that.getVirtualizerInboundTopicName()) &&
+                Objects.equals(getVirtualizerInboundTopic(), that.getVirtualizerInboundTopic()) &&
                 Objects.equals(getVirtualizationSolutionConnection(), that.getVirtualizationSolutionConnection()) &&
                 Objects.equals(getVirtualizationSolutionConfig(), that.getVirtualizationSolutionConfig());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getVirtualizationProvider(), getIvInTopicName(), getIvInTopic(), getIvOutTopicName(), getIvOutTopic(), getVirtualizationSolutionConnection(), getVirtualizationSolutionConfig());
+        return Objects.hash(getVirtualizationProvider(), getVirtualizerOutboundTopicName(), getVirtualizerOutboundTopic(), getVirtualizerInboundTopicName(), getVirtualizerInboundTopic(), getVirtualizationSolutionConnection(), getVirtualizationSolutionConfig());
     }
 }
