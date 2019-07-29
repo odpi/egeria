@@ -13,10 +13,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -26,6 +29,25 @@ import java.util.stream.Collectors;
 public class GlossaryViewOMAS extends OMRSClient {
 
     private final static String GLOSSARY_VIEW_OMAS = "Glossary View Omas";
+
+    /**
+     * Predicate to test the current time between effectiveFrom and effectiveTo properties of an entity detail. Will return
+     * false if now is outside the interval given by effectiveFromTime and effectiveToTime, true otherwise
+     */
+    private final Predicate<EntityDetail> effectivePredicate = (entityDetail -> {
+        if(entityDetail.getProperties() == null){
+            return true;
+        }
+        Date effectiveFromTime = entityDetail.getProperties().getEffectiveFromTime();
+        Date effectiveToTime = entityDetail.getProperties().getEffectiveToTime();
+
+        if(effectiveFromTime == null || effectiveToTime == null){
+            return true;
+        }
+
+        long now = Calendar.getInstance().getTimeInMillis();
+        return effectiveFromTime.getTime() <= now && now <= effectiveToTime.getTime();
+    });
 
     /**
      * Converts a {@code Classification} into a {@code GlossaryViewClassification} with the help of a {@code OMRSRepositoryHelper}
@@ -149,6 +171,7 @@ public class GlossaryViewOMAS extends OMRSClient {
 
             response.addEntityDetails(entities.stream()
                     .filter(entity -> !entity.getGUID().equals(entityGUID))
+                    .filter(effectivePredicate)
                     .map(entity -> entityDetailConverter.apply(entity))
                     .collect(Collectors.toList()));
         }catch (OMRSExceptionWrapper ew){
@@ -182,6 +205,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             }
 
             response.addEntityDetails(entities.stream()
+                    .filter(effectivePredicate)
                     .map(entity -> entityDetailConverter.apply(entity) )
                     .collect(Collectors.toList()));
         }catch (OMRSExceptionWrapper ew){
