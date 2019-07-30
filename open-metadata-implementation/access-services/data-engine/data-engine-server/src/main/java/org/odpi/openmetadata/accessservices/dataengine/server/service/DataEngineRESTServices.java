@@ -305,7 +305,7 @@ public class DataEngineRESTServices {
 
     private void createProcesses(String userId, String serverName, List<Process> processes, GUIDListResponse response) {
         List<String> processGUIDs = new ArrayList<>();
-        processes.parallelStream().forEach(process -> {
+        processes.stream().forEach(process -> {
             try {
                 processGUIDs.add(createProcess(userId, serverName, process, response));
             } catch (InvalidParameterException error) {
