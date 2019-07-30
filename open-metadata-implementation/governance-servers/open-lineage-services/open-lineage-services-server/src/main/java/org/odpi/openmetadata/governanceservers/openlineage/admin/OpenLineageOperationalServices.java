@@ -11,8 +11,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.handlers.GraphFactory;
-import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphFactory;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
@@ -99,8 +99,8 @@ public class OpenLineageOperationalServices {
 
                 this.graphBuilder = new GraphBuilder();
                 MockGraphGenerator mockGraphGenerator = new MockGraphGenerator();
-                QueryHandler queryHandler = new QueryHandler();
-                this.instance = new OpenLineageServicesInstance(mockGraphGenerator, queryHandler, localServerName);
+                GraphServices graphServices = new GraphServices();
+                this.instance = new OpenLineageServicesInstance(mockGraphGenerator, graphServices, localServerName);
             } catch (RepositoryErrorException e) {
                 log.error("{} Could not open graph database", "GraphBuilder constructor");
             }
