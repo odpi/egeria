@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
@@ -13,11 +13,11 @@ class OpenLineageInstanceHandler
 {
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
-    public QueryHandler queryHandler(String serverName) throws PropertyServerException {
+    public GraphServices queryHandler(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getQueryHandler();
+            return instance.getGraphServices();
         } else {
             final String methodName = "queryHandler";
             throwError(serverName, methodName);
