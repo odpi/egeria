@@ -26,16 +26,16 @@ spec:
       targetPort: 8080
       nodePort: {{ .Values.service.nodeport.igcproxy }}
 {{ if .Values.ibmigc.internal.enabled }}
-# Only expose web port if we are using a cluster-internal IGC
+# Only expose web and kafka ports if we are using a cluster-internal IGC
     - name: web
       port: 9446
       targetPort: 9446
       nodePort: {{ .Values.service.nodeport.ibmigc }}
-{{ end }}
     - name: kafka
       port: 59092
       targetPort: 59092
       nodePort: {{ .Values.service.nodeport.ibmigc_kafka }}
+{{ end }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
