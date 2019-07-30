@@ -9,7 +9,6 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
 import org.odpi.openmetadata.governanceservers.openlineage.util.Graphs;
 import org.slf4j.Logger;
