@@ -3,26 +3,26 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
 
 public class OpenLineageServicesInstance {
     private String serverName;
     private MockGraphGenerator mockGraphGenerator;
-    private QueryHandler queryHandler;
+    private GraphServices graphServices;
 
     public OpenLineageServicesInstance(MockGraphGenerator mockGraphGenerator,
-                                       QueryHandler queryHandler,
+                                       GraphServices graphServices,
                                        String serverName) {
         this.mockGraphGenerator = mockGraphGenerator;
         this.serverName = serverName;
-        this.queryHandler = queryHandler;
+        this.graphServices = graphServices;
 
         OpenLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
     }
 
-    public QueryHandler getQueryHandler() {
-        return this.queryHandler;
+    public GraphServices getGraphServices() {
+        return this.graphServices;
     }
 
 
