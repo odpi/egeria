@@ -1,16 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.handlers;
+package org.odpi.openmetadata.governanceservers.openlineage.services;
 
-import org.apache.tinkerpop.gremlin.process.traversal.Path;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
 import org.odpi.openmetadata.governanceservers.openlineage.util.Graphs;
 import org.slf4j.Logger;
@@ -24,9 +23,9 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 
-public class QueryHandler {
+public class GraphServices {
 
-    private static final Logger log = LoggerFactory.getLogger(QueryHandler.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphServices.class);
 
     public String getInitialGraph(String lineageQuery, String graphString, String guid) {
 
