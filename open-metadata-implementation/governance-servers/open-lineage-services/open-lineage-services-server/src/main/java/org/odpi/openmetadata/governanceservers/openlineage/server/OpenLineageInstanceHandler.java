@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
+import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 

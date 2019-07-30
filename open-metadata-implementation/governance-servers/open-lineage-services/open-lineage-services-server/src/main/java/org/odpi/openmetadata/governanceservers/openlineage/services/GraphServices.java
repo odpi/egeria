@@ -21,6 +21,8 @@ import java.io.OutputStream;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.EDGE_LABEL_COLUMN_AND_PROCESS;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.EDGE_LABEL_ENTITY_TO_GLOSSARYTERM;
 
 public class GraphServices {
 
@@ -37,26 +39,40 @@ public class GraphServices {
             case ultimatedestination:
                 response = ultimateDestination(guid, graph);
                 break;
-                default:
-                    log.error(lineageQuery + " is not a valid lineage query");
+            case glossary:
+                response = glossary(guid, graph);
+                break;
+            default:
+                log.error(lineageQuery + " is not a valid lineage query");
         }
         return response;
     }
 
+    private String glossary(String guid, Graph graph) {
+        GraphTraversalSource g = graph.traversal();
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+                inE(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM).subgraph("subGraph").outV().
+                cap("subGraph").next();
+        return janusGraphToGraphson(subGraph);
+    }
+
     private String ultimateSource(String guid, Graph graph) {
         GraphTraversalSource g = graph.traversal();
-        Graph subGraph = (Graph) g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-                until(inE("ETL").count().is(0)).
-                repeat(inE("ETL").subgraph("subGraph").outV()).
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+                until(inE(EDGE_LABEL_COLUMN_AND_PROCESS).count().is(0)).
+                repeat(inE(EDGE_LABEL_COLUMN_AND_PROCESS).subgraph("subGraph").outV()).
                 cap("subGraph").next();
         return janusGraphToGraphson(subGraph);
     }
 
     private String ultimateDestination(String guid, Graph graph) {
         GraphTraversalSource g = graph.traversal();
-        Graph subGraph = (Graph) g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-                until(outE("ETL").count().is(0)).
-                repeat(outE("ETL").subgraph("subGraph").inV()).
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+                until(outE(EDGE_LABEL_COLUMN_AND_PROCESS).count().is(0)).
+                repeat(outE(EDGE_LABEL_COLUMN_AND_PROCESS).subgraph("subGraph").inV()).
                 cap("subGraph").next();
 
         return janusGraphToGraphson(subGraph);

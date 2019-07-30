@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
+import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 
 public class OpenLineageServicesInstance {
     private String serverName;
