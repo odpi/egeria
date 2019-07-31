@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.performanceTesting;
+package org.odpi.openmetadata.governanceservers.openlineage.mockdata;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mockGraph;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_GUID;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
 public class MockGraphGenerator {
 
@@ -28,14 +28,13 @@ public class MockGraphGenerator {
     private List<String> nodes = new ArrayList<>();
     private List<String> properties = new ArrayList<>();
 
-
     public MockGraphGenerator() {
         setProperties();
     }
 
     private void setProperties() {
 
-        this.numberGlossaryTerms = 20;
+        this.numberGlossaryTerms = 1;
         this.numberFlows = 1;
         this.processesPerFlow = 2;
         this.columnsPerTable = 3;
@@ -74,28 +73,28 @@ public class MockGraphGenerator {
         GraphTraversalSource g = mockGraph.traversal();
 
         for (int i = 0; i < numberGlossaryTerms; i++) {
-            Vertex glossaryVertex = g.addV("Glossary Term").next();
+            Vertex glossaryVertex = g.addV(NODE_LABEL_GLOSSARYTERM).next();
             glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
             glossaryNodes.add(glossaryVertex);
         }
         List<Vertex> processNodes = new ArrayList<>();
         for (int i = 0; i < numberProcesses; i++) {
-            Vertex processVertex = g.addV("Process").next();
+            Vertex processVertex = g.addV(NODE_LABEL_PROCESS).next();
             processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
             processNodes.add(processVertex);
         }
         for (int j = 0; j < numberTables; j++) {
-            Vertex tableVertex = g.addV("Table").next();
+            Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
             tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
             columnNodes = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
-                Vertex columnVertex = g.addV("Column").next();
+                Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
                 columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
-                tableVertex.addEdge("Included in", columnVertex);
+                columnVertex.addEdge(EDGE_LABEL_COLUMN_TO_TABLE, tableVertex);
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
                     Vertex glossaryNode = glossaryNodes.get(randomNum);
-                    glossaryNode.addEdge("Semantic relationship", columnVertex);
+                    columnVertex.addEdge(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM, glossaryNode);
                 }
                 columnNodes.add(columnVertex);
             }
@@ -106,9 +105,9 @@ public class MockGraphGenerator {
             for (int j = 0; j < tablesPerFlow; j++) {
                 for (int i = 0; i < columnsPerTable; i++) {
                     if (j + 1 < tablesPerFlow)
-                        tableNodes.get(k * tablesPerFlow + j).get(i).addEdge("ETL", processNodes.get(k * processesPerFlow + j));
+                        tableNodes.get(k * tablesPerFlow + j).get(i).addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, processNodes.get(k * processesPerFlow + j));
                     if (j + 1 < tablesPerFlow)
-                        processNodes.get(k * processesPerFlow + j).addEdge("ETL", tableNodes.get(k * tablesPerFlow + j + 1).get(i));
+                        processNodes.get(k * processesPerFlow + j).addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, tableNodes.get(k * tablesPerFlow + j + 1).get(i));
                 }
             }
         }
