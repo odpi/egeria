@@ -4,9 +4,9 @@ package org.odpi.openmetadata.governanceservers.openlineage.client.util;
 
 public enum Queries {
 
+    glossary("glossary"),
     ultimatesource("ultimate-source"),
-    ultimatedestination("ultimate-destination"),
-    glossary("glossary");
+    ultimatedestination("ultimate-destination");
 
     private String name;
 
