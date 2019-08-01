@@ -43,6 +43,7 @@ service:
     ui: 30443
     ranger: 32080
     rangersecure: 30182
+    zookeeper: 32181
     solr: 30983
     # Set this to address of one of the local nodes - public IP
     omrsmonitor: 31080
@@ -85,6 +86,10 @@ postgresql:
 # NOTE: solr will eventually be required for both ranger and atlas, so will be automatically enabled if either of
 # those is enabled (once their embedded Solr's are migrated)
 solr:
+  enabled: false
+
+# NOTE: zookeeper is needed for both Solr and Kafka (and therefore for Ranger and Atlas as well)
+zookeeper:
   enabled: false
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
@@ -148,6 +153,10 @@ image:
     namespace: library
     name: solr
     tag: 7-slim
+
+  zookeeper:
+    namespace: library
+    name: zookeeper
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used

@@ -29,6 +29,8 @@ data:
   KAFKA_ENDPOINT: {{ .Values.kafka.external.brokers }}
   {{ end }}
 
+  ZK_HOST: {{ include "myapp.fullname" . }}-zookeeper-service
+
   {{ if .Values.atlas.enabled }}
   ATLASPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:8080
   ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
