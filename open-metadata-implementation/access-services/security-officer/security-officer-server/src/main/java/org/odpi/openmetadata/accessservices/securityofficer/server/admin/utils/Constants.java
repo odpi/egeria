@@ -12,6 +12,10 @@ public class Constants {
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
+    public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
+    public static final String CONFIDENTIALITY = "Confidentiality";
+    public static final String GLOSSARY_TERM = "GlossaryTerm";
+    public static final String SOURCE = "source";
 
     private Constants() {
     }

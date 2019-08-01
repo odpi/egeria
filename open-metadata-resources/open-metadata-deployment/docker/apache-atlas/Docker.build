@@ -8,8 +8,8 @@ WORKDIR /root
 
 # Pull down Apache Atlas and build it into /root/atlas-bin.
 RUN wget http://www.mirrorservice.org/sites/ftp.apache.org/atlas/$atlas_version/apache-atlas-$atlas_version-sources.tar.gz
-RUN wget https://www.apache.org/dist/atlas/KEYS
-RUN wget https://www.apache.org/dist/atlas/$atlas_version/apache-atlas-$atlas_version-sources.tar.gz.asc
+RUN wget http://www.apache.org/dist/atlas/KEYS
+RUN wget http://www.apache.org/dist/atlas/$atlas_version/apache-atlas-$atlas_version-sources.tar.gz.asc
 
 RUN gpg --import KEYS
 RUN gpg --verify apache-atlas-$atlas_version-sources.tar.gz.asc apache-atlas-$atlas_version-sources.tar.gz

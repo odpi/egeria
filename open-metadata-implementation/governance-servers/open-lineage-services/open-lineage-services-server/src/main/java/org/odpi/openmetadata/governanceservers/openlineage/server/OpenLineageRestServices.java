@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.handlers.QueryHandler;
-import org.odpi.openmetadata.governanceservers.openlineage.performanceTesting.MockGraphGenerator;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
+import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageAPIResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
@@ -22,8 +22,8 @@ public class OpenLineageRestServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            QueryHandler queryHandler = instanceHandler.queryHandler(serverName);
-            queryHandler.dumpGraph(graph);
+            GraphServices graphServices = instanceHandler.queryHandler(serverName);
+            graphServices.dumpGraph(graph);
         } catch (PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());
             response.setExceptionErrorMessage(e.getReportedErrorMessage());
@@ -37,8 +37,8 @@ public class OpenLineageRestServices {
     public String exportGraph(String serverName, String userId, String graph) {
         String response = "";
         try {
-            QueryHandler queryHandler = instanceHandler.queryHandler(serverName);
-            response = queryHandler.exportGraph(graph);
+            GraphServices graphServices = instanceHandler.queryHandler(serverName);
+            response = graphServices.exportGraph(graph);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
@@ -49,8 +49,8 @@ public class OpenLineageRestServices {
     public String initialGraph(String serverName, String userId, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
-            QueryHandler queryHandler = instanceHandler.queryHandler(serverName);
-            response = queryHandler.getInitialGraph(lineageQuery, graph, guid);
+            GraphServices graphServices = instanceHandler.queryHandler(serverName);
+            response = graphServices.getInitialGraph(lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
