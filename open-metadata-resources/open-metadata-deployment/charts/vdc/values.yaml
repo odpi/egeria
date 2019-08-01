@@ -137,7 +137,7 @@ image:
     name: gaian-egeriavdc
 
   ranger:
-    name: ranger-admin-egeriavdc
+    name: apache-ranger-admin
 
   postgresql:
     namespace: library
@@ -147,7 +147,7 @@ image:
   solr:
     namespace: library
     name: solr
-    tag: 5-alpine
+    tag: 7-slim
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
