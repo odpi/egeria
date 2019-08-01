@@ -170,7 +170,7 @@ public class OMEntityDao {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            log.info("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
+            log.debug("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
             existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     typeDef.getGUID(),
                                                                                                     matchProperties,
@@ -352,18 +352,18 @@ public class OMEntityDao {
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.INFORMATION_VIEW_USER_ID, typeName, properties, classifications, zoneRestricted);
-            log.info("Entity with qualified name {} added", qualifiedName);
+            log.debug("Entity with qualified name {} added", qualifiedName);
             if(log.isDebugEnabled()) {
                 log.debug("Entity: {}", entityDetail);
             }
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
-            log.info("Entity with qualified name {} already exists", qualifiedName);
+            log.debug("Entity with qualified name {} already exists", qualifiedName);
             if(log.isDebugEnabled()) {
                 log.debug("Entity: {}", entityDetail);
             }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
-                log.info("Updating entity with qualified name {} ", qualifiedName);
+                log.debug("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.INFORMATION_VIEW_USER_ID, properties, zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
@@ -390,18 +390,18 @@ public class OMEntityDao {
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
             entityDetail = addExternalEntity(userId, typeName, qualifiedName, externalSourceGuid, externalSourceName, properties, classifications, zoneRestricted);
-            log.info("Entity with qualified name {} added", qualifiedName);
+            log.debug("Entity with qualified name {} added", qualifiedName);
             if(log.isDebugEnabled()) {
                 log.debug("Entity: {}", entityDetail);
             }
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
-            log.info("Entity with qualified name {} already exists", qualifiedName);
+            log.debug("Entity with qualified name {} already exists", qualifiedName);
             if(log.isDebugEnabled()) {
                 log.debug("Entity: {}", entityDetail);
             }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
-                log.info("Updating entity with qualified name {} ", qualifiedName);
+                log.debug("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, userId, properties,  zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
@@ -475,12 +475,12 @@ public class OMEntityDao {
         Relationship relationship = checkRelationshipExists(relationshipType, guid1, guid2);
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
-            log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
+            log.debug("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
             if(log.isDebugEnabled()) {
                 log.debug("Relationship: {}", relationship);
             }
         } else {
-            log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
+            log.debug("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
         }
 
         return relationship;
@@ -497,12 +497,12 @@ public class OMEntityDao {
          Relationship relationship = checkRelationshipExists(relationshipType, guid1, guid2);
         if (relationship == null) {
             relationship = addExternalRelationship(userId,"", relationshipType, externalSourceGuid, externalSourceName, instanceProperties, guid1, guid2 );
-            log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
+            log.debug("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
             if(log.isDebugEnabled()) {
                 log.debug("Relationship: {}", relationship);
             }
         } else {
-            log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
+            log.debug("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
         }
 
         return relationship;
@@ -566,9 +566,9 @@ public class OMEntityDao {
     }
     public void purgeRelationship(Relationship relationship) {
         if (relationship == null || relationship.getGUID() == null || relationship.getType() == null) {
-            log.info("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
+            log.debug("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
         } else {
-            log.info("Purge relationship with guid {}", relationship.getGUID());
+            log.debug("Purge relationship with guid {}", relationship.getGUID());
             try {
                 enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
                 enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
@@ -580,9 +580,9 @@ public class OMEntityDao {
 
     public void purgeEntity(EntitySummary entitySummary) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, EntityNotDeletedException, FunctionNotSupportedException {
         if (entitySummary == null || entitySummary.getGUID() == null || entitySummary.getType() == null) {
-            log.info("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
+            log.debug("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
         } else {
-            log.info("Purge entity with guid {}", entitySummary.getGUID());
+            log.debug("Purge entity with guid {}", entitySummary.getGUID());
             enterpriseConnector.getMetadataCollection().deleteEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
             enterpriseConnector.getMetadataCollection().purgeEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }
