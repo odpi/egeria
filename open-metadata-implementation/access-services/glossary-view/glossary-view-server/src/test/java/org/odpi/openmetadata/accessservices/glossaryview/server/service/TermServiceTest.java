@@ -30,8 +30,8 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME, terms.get(0).getGUID());
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().size());
-        assertEquals(terms.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid());
+        assertEquals(1, response.getResult().size());
+        assertEquals(terms.get(0).getGUID(), response.getResult().get(0).getGuid());
     }
 
     @Test
@@ -41,8 +41,7 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getTerm(USER_ID, SERVER_NAME,"no-term-at-this-guid");
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().size());
-        assertEquals(null, response.getGlossaryViewEntityDetails().get("entities"));
+        assertEquals(0, response.getResult().size());
     }
 
     @Test
@@ -54,12 +53,19 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getTermsViaTermAnchorRelationships(USER_ID, SERVER_NAME,
                 glossaries.get(0).getGUID(), 0, 10000);
 
-        assertEquals(5, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(2).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(3).getGuid() );
-        assertEquals(terms.get(4).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(4).getGuid() );
+        assertEquals(5, response.getResult().size());
+
+        assertEquals(terms.get(0).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(1).getGuid() );
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(2).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(3).getGuid() );
+        assertEquals(terms.get(4).getGUID(), response.getResult().get(4).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
+        assertEquals(true, isEffective.test(response.getResult().get(2)));
+        assertEquals(true, isEffective.test(response.getResult().get(3)));
+        assertEquals(true, isEffective.test(response.getResult().get(4)));
     }
 
     @Test
@@ -71,10 +77,15 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getTermsViaTermCategorizationRelationships(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(), 0, 10000);
 
-        assertEquals(3, response.getGlossaryViewEntityDetails().get("terms").size() );
-        assertEquals(terms.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(2).getGuid() );
+        assertEquals(3, response.getResult().size() );
+
+        assertEquals(terms.get(0).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(1).getGuid() );
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(2).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
+        assertEquals(true, isEffective.test(response.getResult().get(2)));
     }
 
     @Test
@@ -85,8 +96,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().size());
-        assertEquals(externalGlossaryLink.getGUID(), response.getGlossaryViewEntityDetails().get("externalGlossaryLinks").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(externalGlossaryLink.getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -98,9 +112,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getRelatedTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -112,9 +130,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getSynonyms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -126,9 +148,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getAntonyms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(4).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(4).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -140,9 +166,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getPreferredTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -154,9 +184,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getReplacementTerms(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -168,8 +202,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getTranslations(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -181,8 +218,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getIsA(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -194,9 +234,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getValidValues(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -208,11 +252,17 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getUsedInContexts(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(4, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(2).getGuid() );
-        assertEquals(terms.get(4).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(3).getGuid() );
+        assertEquals(4, response.getResult().size());
+
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(1).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(2).getGuid() );
+        assertEquals(terms.get(4).getGUID(), response.getResult().get(3).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
+        assertEquals(true, isEffective.test(response.getResult().get(2)));
+        assertEquals(true, isEffective.test(response.getResult().get(3)));
     }
 
     @Test
@@ -224,9 +274,13 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getAssignedElements(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(terms.get(2).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -238,8 +292,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getAttributes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(3).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(terms.get(3).getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -251,8 +308,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getSubtypes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(4).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(terms.get(4).getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
     @Test
@@ -264,8 +324,11 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getTypes(USER_ID, SERVER_NAME, terms.get(0).getGUID(),
                 0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().get("terms").size());
-        assertEquals(terms.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("terms").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(terms.get(1).getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
 }

@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SecurityClassification;
+import org.odpi.openmetadata.accessservices.securityofficer.api.model.rest.SecurityOfficerOMASAPIResponse;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecurityOfficerConfig;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.SecurityOfficerConnector;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnector;
@@ -51,6 +52,27 @@ public class SecurityOfficerEventProcessor {
         setSecurityTag(schemaElementEntity.getGuid(), securityClassification);
     }
 
+    public void processDeletedSecurityTag(SchemaElementEntity schemaElementEntity) {
+        if (schemaElementEntity == null) {
+            return;
+        }
+
+        deleteSecurityTag(schemaElementEntity.getGuid());
+    }
+
+    private void deleteSecurityTag(String schemaElementGuid) {
+        String securityOMASURL = getSecurityOMASURL(schemaElementGuid);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getBasicHTTPHeaders());
+
+        try {
+            restTemplate.exchange(securityOMASURL, HttpMethod.DELETE, entity, SchemaElementEntity.class);
+        } catch (HttpStatusCodeException exception) {
+            log.debug("Unable to delete the security tag for schema element {}", schemaElementGuid);
+        }
+    }
+
     private void setSecurityTag(String guid, SecurityClassification securityClassification) {
         String securityOMASURL = getSecurityOMASURL(guid);
         String securityClassificationBody = getBody(securityClassification);
@@ -59,9 +81,9 @@ public class SecurityOfficerEventProcessor {
         HttpEntity<String> entity = new HttpEntity<>(securityClassificationBody, getBasicHTTPHeaders());
 
         try {
-            ResponseEntity<SchemaElementEntity> elementEntity = restTemplate.exchange(securityOMASURL, HttpMethod.POST, entity, SchemaElementEntity.class);
+            ResponseEntity<SecurityOfficerOMASAPIResponse> elementEntity = restTemplate.exchange(securityOMASURL, HttpMethod.POST, entity, SecurityOfficerOMASAPIResponse.class);
             if (elementEntity.getBody() != null) {
-                log.debug(String.valueOf(elementEntity));
+                log.debug("result of setting the security tag: {}", elementEntity.getBody());
             }
         } catch (HttpStatusCodeException exception) {
             log.debug("Unable to set/update the security tag for schema element {}", guid);

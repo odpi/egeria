@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.accessservices.informationview;
 
 
-import org.odpi.openmetadata.accessservices.informationview.events.*;
-import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -18,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.RELATIONAL_DB_SCHEMA_TYPE;
