@@ -42,8 +42,8 @@ to the following address
 {
 	"class": "VirtualizationConfig",
 	"virtualizationProvider": "{{connector-class-name}}",
-	"ivInTopicName": "{{iv-in-topic-name}}",
-	"ivOutTopicName": "{{iv-out-topic-name}}",
+	"virtualizerOutboundTopicName": "{{iv-in-topic-name}}",
+	"virtualizerInboundTopicName": "{{iv-out-topic-name}}",
 	 "virtualizationSolutionConfig": {
             "frontendName": "",
             "serverAddress": "",
