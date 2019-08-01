@@ -40,4 +40,4 @@ WORKDIR /opt/ranger-admin-bin/contrib/solr_for_audit_setup
 RUN sed -i 's|SOLR_INSTALL=false|SOLR_INSTALL=true|' install.properties && \
     sed -i "s|SOLR_DOWNLOAD_URL=|SOLR_DOWNLOAD_URL=http://www.mirrorservice.org/sites/ftp.apache.org/lucene/solr/$SOLR_VERSION/solr-$SOLR_VERSION.tgz|" install.properties && \
     ./setup.sh && \
-    sed -i 's|^SOLR_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"$|SOLR_JAVA_HOME="$JAVA_HOME"|g' /opt/solr/ranger_audit_server/scripts/solr.in.sh
+    sed -i 's|^SOLR_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"$|SOLR_JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"|g' /opt/solr/ranger_audit_server/scripts/solr.in.sh
