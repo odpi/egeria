@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.securityofficer.api.events;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.model.SchemaElementEntity;
 
-public class SecurityOfficerNewTagEvent extends SecurityOfficerEvent {
+public class SecurityOfficerTagEvent extends SecurityOfficerEvent {
 
     private SchemaElementEntity schemaElementEntity;
 
