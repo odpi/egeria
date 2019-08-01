@@ -25,11 +25,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
                 @JsonSubTypes.Type(value = Glossary.class, name = "Glossary"),
                 @JsonSubTypes.Type(value = Category.class, name = "Category"),
-                @JsonSubTypes.Type(value = Term.class, name = "Term")
+                @JsonSubTypes.Type(value = Term.class, name = "Term"),
+                @JsonSubTypes.Type(value = Term.class, name = "ControlledTerm")
         })
 public class GlossaryViewEntityDetail{
 
-    private String entityType;
+    private String typeDefName;
     private String createdBy;
     private String updatedBy;
     private Date createTime;
@@ -40,13 +41,13 @@ public class GlossaryViewEntityDetail{
     private Date effectiveFromTime;
     private Date effectiveToTime;
 
-    private Map<String, String> properties;
+    private Map<String, String> properties = new HashMap<>();
 
     private List<GlossaryViewClassification> classifications;
 
     public GlossaryViewEntityDetail(){}
 
-    protected String getEntityType(){ return entityType; }
+    public String getTypeDefName(){ return typeDefName; }
 
     public String getCreatedBy() {
         return createdBy;
@@ -92,8 +93,8 @@ public class GlossaryViewEntityDetail{
         return classifications;
     }
 
-    public GlossaryViewEntityDetail setEntityType(String entityType) {
-        this.entityType = entityType;
+    public GlossaryViewEntityDetail setTypeDefName(String typeDefName) {
+        this.typeDefName = typeDefName;
         return this;
     }
     public GlossaryViewEntityDetail setCreatedBy(String createdBy) {

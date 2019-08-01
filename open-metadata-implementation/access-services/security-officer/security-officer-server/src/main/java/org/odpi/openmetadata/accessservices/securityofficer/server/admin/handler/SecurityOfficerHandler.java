@@ -7,15 +7,31 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.handle
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 public class SecurityOfficerHandler {
 
@@ -59,6 +75,64 @@ public class SecurityOfficerHandler {
         }
 
         return null;
+    }
+
+    public List<EntityDetail> getSchemaElementsAssignedToBusinessTerms(String userId, String glossaryTermGUID) {
+
+        List<Relationship> relationshipsForEntity = getSemanticAssigmentRelationships(userId, glossaryTermGUID);
+
+        List<EntityDetail> schemaElements = new ArrayList<>();
+        for (Relationship relationship : relationshipsForEntity) {
+            EntityDetail schemaElement = getSchemaElement(userId, glossaryTermGUID, relationship);
+            if (schemaElement != null) {
+                schemaElements.add(schemaElement);
+            }
+        }
+
+        return schemaElements;
+    }
+
+    private List<Relationship> getSemanticAssigmentRelationships(String userId, String glossaryTermGUID) {
+
+        try {
+            String semanticAssigmentGUID = metadataCollection.getTypeDefByGUID(userId, SEMANTIC_ASSIGNMENT).getGUID();
+
+            return metadataCollection.getRelationshipsForEntity(userId,
+                    glossaryTermGUID,
+                    semanticAssigmentGUID,
+                    0,
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    null,
+                    null,
+                    SequencingOrder.ANY,
+                    0);
+        } catch (InvalidParameterException | PagingErrorException | FunctionNotSupportedException | EntityNotKnownException | PropertyErrorException | TypeErrorException | UserNotAuthorizedException | TypeDefNotKnownException | RepositoryErrorException e) {
+            log.debug("Unable to fetch semantic assignments for {}", glossaryTermGUID);
+        }
+
+        return Collections.emptyList();
+    }
+
+    private EntityDetail getSchemaElement(String userId, String glossaryTermGUID, Relationship relationship) {
+        try {
+            if (relationship.getEntityOneProxy().getGUID().equals(glossaryTermGUID)) {
+                if (isSchemaElement(relationship.getEntityTwoProxy().getType())) {
+                    return metadataCollection.getEntityDetail(userId, relationship.getEntityTwoProxy().getGUID());
+                }
+            } else {
+                if (isSchemaElement(relationship.getEntityOneProxy().getType())) {
+                    return metadataCollection.getEntityDetail(userId, relationship.getEntityOneProxy().getGUID());
+                }
+            }
+        } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | EntityNotKnownException e) {
+            log.debug("Unable to get schema element entity");
+        }
+
+        return null;
+    }
+
+    private boolean isSchemaElement(InstanceType type) {
+        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ELEMENT));
     }
 
 }
