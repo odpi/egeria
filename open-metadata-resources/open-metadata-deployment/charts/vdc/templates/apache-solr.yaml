@@ -60,14 +60,14 @@ spec:
     spec:
       initContainers:
         - name: wait-for-zookeeper
-            image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                    {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                    {{ .Values.image.configure.name }}\
-                    :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
-            imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-            env:
-              - name: SERVICE
-                value: {{ include "myapp.fullname" . }}-zookeeper-service
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ include "myapp.fullname" . }}-zookeeper-service
       containers:
         - name: apache-solr
           image: "{{ if (.Values.image.solr.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.solr.registry | default .Values.imageDefaults.registry }}/{{ end }}\

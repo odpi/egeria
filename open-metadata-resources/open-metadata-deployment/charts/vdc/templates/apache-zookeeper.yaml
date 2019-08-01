@@ -69,23 +69,18 @@ spec:
     spec:
       hostname: {{ include "myapp.fullname" . }}-zookeeper-service
       containers:
-          - name: apache-zookeeper
-            image: "{{ if (.Values.image.zookeeper.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.zookeeper.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+        - name: apache-zookeeper
+          image: "{{ if (.Values.image.zookeeper.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.zookeeper.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.zookeeper.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.zookeeper.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.zookeeper.name }}\
                   :{{ .Values.image.zookeeper.tag | default .Values.imageDefaults.tag }}"
-            imagePullPolicy: {{ .Values.image.zookeeper.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-            ports:
-              - containerPort: 2181
-              - containerPort: 2888
-              - containerPort: 3888
-              - containerPort: 8080
-            resources: {}
-#            env:
-#              - name: "ZOO_MY_ID"
-#                value: "1"
-#              - name: "ZOO_SERVERS"
-#                value: "server.1=zoo:2888:3888"
+          imagePullPolicy: {{ .Values.image.zookeeper.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+            - containerPort: 8080
+          resources: {}
       restartPolicy: Always
 
 status: {}
