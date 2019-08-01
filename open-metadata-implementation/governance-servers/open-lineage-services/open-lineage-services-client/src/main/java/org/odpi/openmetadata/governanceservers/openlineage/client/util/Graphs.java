@@ -3,18 +3,9 @@
 package org.odpi.openmetadata.governanceservers.openlineage.client.util;
 
 public enum Graphs {
-
-    main("main"),
-    buffer("buffer"),
-    history("history"),
-    mock("mock");
-
-    private String name;
-
-    Graphs(String name) {
-        this.name = name;
-    }
-
-
+    MAIN,
+    BUFFER,
+    HISTORY,
+    MOCK,
 }
 

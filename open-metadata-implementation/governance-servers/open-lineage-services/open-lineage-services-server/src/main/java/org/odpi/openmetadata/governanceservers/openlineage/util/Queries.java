@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.util;
 
-public enum Graphs {
-    MAIN,
-    BUFFER,
-    HISTORY,
-    MOCK,
+public enum Queries {
+    ULTIMATESOURCE,
+    ULTIMATEDESTINATION,
+    GLOSSARY
 }
 
