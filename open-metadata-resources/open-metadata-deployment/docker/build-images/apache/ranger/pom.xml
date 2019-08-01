@@ -7,21 +7,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-docker</artifactId>
+        <artifactId>open-metadata-docker-apache-build</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker image - Ranger</name>
+    <name>Docker build-time image - Apache Ranger</name>
     <description>
-        Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
+        Build image for Apache Ranger
     </description>
 
-    <artifactId>open-metadata-docker-ranger</artifactId>
+    <artifactId>open-metadata-docker-apache-ranger-build</artifactId>
 
     <packaging>pom</packaging>
+
+    <properties>
+        <dockerfile.build.noCache>false</dockerfile.build.noCache>
+    </properties>
     <build>
         <plugins>
             <!-- Setup the docker build.
@@ -38,19 +42,13 @@
                             <goal>build</goal>
                         </goals>
                         <configuration>
-                            <dockerfile>Docker.build</dockerfile>
+                            <dockerfile>Dockerfile</dockerfile>
                             <buildArgs>
-                                <REPO>${docker.repo}</REPO>
-                             </buildArgs>                            
-                            <tag>build</tag>
+                                <RANGER_VERSION>${apache.ranger.version}</RANGER_VERSION>
+                                <SOLR_VERSION>${apache.solr.version}</SOLR_VERSION>
+                            </buildArgs>
+                            <tag>${docker.build.tag}</tag>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-and-tag-latest</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
                     </execution>
                     <execution>
                         <id>tag-version</id>
@@ -59,17 +57,17 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <tag>${project.version}</tag>
+                            <tag>${apache.ranger.version}-${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>push-latest</id>
+                        <id>push-build</id>
                         <phase>install</phase>
                         <goals>
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>latest</tag>
+                            <tag>${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                     <execution>
@@ -79,12 +77,12 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>${project.version}</tag>
+                            <tag>${apache.ranger.version}-${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.registry}/${docker.repo}/ranger-admin-egeriavdc</repository>
+                    <repository>${docker.registry}/${docker.repo}/apache-ranger</repository>
                     <buildArgs>
                     </buildArgs>
                 </configuration>
