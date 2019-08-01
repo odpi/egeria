@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+{{ if or .Values.zookeeper.enabled .Values.solr.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: zookeeper-service
+  annotations:
+    {{ if .Values.istio.enabled }}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
+  name: {{ include "myapp.fullname" . }}-zookeeper-service
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - name: client
+      port: 2181
+      targetPort: 2181
+      nodePort: {{ .Values.service.nodeport.zookeeper }}
+    - name: follower
+      port: 2888
+      targetPort: 2888
+    - name: election
+      port: 3888
+      targetPort: 3888
+    - name: admin
+      port: 8080
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: zookeeper-service
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-zookeeper
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: zookeeper-service
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: zookeeper-service
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: zookeeper-service
+    spec:
+      hostname: {{ include "myapp.fullname" . }}-zookeeper-service
+      containers:
+          - name: apache-zookeeper
+            image: "{{ if (.Values.image.zookeeper.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.zookeeper.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.zookeeper.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.zookeeper.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.zookeeper.name }}\
+                  :{{ .Values.image.zookeeper.tag | default .Values.imageDefaults.tag }}"
+            imagePullPolicy: {{ .Values.image.zookeeper.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+            ports:
+              - containerPort: 2181
+              - containerPort: 2888
+              - containerPort: 3888
+              - containerPort: 8080
+            resources: {}
+#            env:
+#              - name: "ZOO_MY_ID"
+#                value: "1"
+#              - name: "ZOO_SERVERS"
+#                value: "server.1=zoo:2888:3888"
+      restartPolicy: Always
+
+status: {}
+{{ end }}
