@@ -9,32 +9,32 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-core-service
-  name: {{ include "myapp.fullname" . }}-egeria-core-service
+    app.kubernetes.io/component: egeria-dev-service
+  name: {{ include "myapp.fullname" . }}-egeria-dev-service
 
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: {{ .Values.service.nodeport.egeria_core }}
+      nodePort: {{ .Values.service.nodeport.egeria_dev }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: egeria-core-service
+    app.kubernetes.io/component: egeria-dev-service
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-egeria-core
+  name: {{ include "myapp.fullname" . }}-egeria-dev
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-core-service
+    app.kubernetes.io/component: egeria-dev-service
 
 spec:
   replicas: 1
@@ -42,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: egeria-core-service
+      app.kubernetes.io/component: egeria-dev-service
   strategy: {}
   template:
     metadata:
@@ -50,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: egeria-core-service
+        app.kubernetes.io/component: egeria-dev-service
     spec:
       containers:
         - name: egeria
@@ -67,9 +67,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          envFrom:
-            - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
           resources: {}
       restartPolicy: Always
 

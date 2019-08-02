@@ -67,9 +67,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          envFrom:
-            - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
           resources: {}
       restartPolicy: Always
 

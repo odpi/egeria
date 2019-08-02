@@ -73,7 +73,10 @@ spec:
                 git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-labs/*' >> .git/info/sparse-checkout &&
-                git pull --depth=1 origin master
+                git pull --depth=1 origin master &&
+                mv open-metadata-resources/open-metadata-labs/* . &&
+                rm -rf open-metadata-resources &&
+                rm -rf .git
           volumeMounts:
             - mountPath: /opt/egeria/labs
               name: egeria-lab-notebooks
@@ -98,9 +101,6 @@ spec:
             initialDelaySeconds: 10
             periodSeconds: 10
             failureThreshold: 6
-          envFrom:
-            - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
           resources: {}
           volumeMounts:
             - mountPath: /home/jovyan/open-metadata-labs
