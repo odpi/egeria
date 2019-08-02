@@ -1,0 +1,77 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: egeria-lake-service
+  name: {{ include "myapp.fullname" . }}-egeria-lake-service
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.egeria_lake }}
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: egeria-lake-service
+...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-egeria-lake
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: egeria-lake-service
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: egeria-lake-service
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: egeria-lake-service
+    spec:
+      containers:
+        - name: egeria
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.egeria.name }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
+          resources: {}
+      restartPolicy: Always
+
+status: {}
+...
