@@ -13,11 +13,8 @@ metadata:
   name: {{ include "myapp.fullname" . }}-egeria-core-service
 
 spec:
-  type: {{ .Values.service.type }}
   ports:
     - port: 8080
-      targetPort: 8080
-      nodePort: {{ .Values.service.nodeport.egeria_core }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
