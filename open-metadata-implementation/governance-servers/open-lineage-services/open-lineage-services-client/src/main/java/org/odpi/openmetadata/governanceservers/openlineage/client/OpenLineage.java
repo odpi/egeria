@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
-
-import org.odpi.openmetadata.governanceservers.openlineage.client.util.Graphs;
-import org.odpi.openmetadata.governanceservers.openlineage.client.util.Queries;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.InvalidParameterException;

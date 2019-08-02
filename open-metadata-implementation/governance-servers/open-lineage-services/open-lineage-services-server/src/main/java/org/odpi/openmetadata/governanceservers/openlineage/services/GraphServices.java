@@ -9,9 +9,9 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
-import org.odpi.openmetadata.governanceservers.openlineage.util.Graphs;
-import org.odpi.openmetadata.governanceservers.openlineage.util.Queries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +93,7 @@ public class GraphServices {
         graphString = reformatArg(graphString);
         JanusGraph graph = getJanusGraph(graphString);
         try {
-            graph.io(IoCore.graphml()).writeGraph("graph-" + Graphs.valueOf(graphString) + ".graphml");
+            graph.io(IoCore.graphml()).writeGraph("graph-" + graphString + ".graphml");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
