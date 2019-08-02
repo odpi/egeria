@@ -43,15 +43,11 @@ cp-helm-charts:
     brokers: 1
     configurationOverrides:
       auto.create.topics.enable: true
-    persistence:
-      enabled: false
     prometheus:
       jmx:
         enabled: false
   cp-zookeeper:
     servers: 1
-    persistence:
-      enabled: false
     prometheus:
       jmx:
         enabled: false
