@@ -3,7 +3,7 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
+
 import './spinner.js';
 
 
@@ -17,16 +17,15 @@ class TokenAjax extends PolymerElement {
         
         </style>
         <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
-
         <iron-ajax id="ajax" url="[[url]]"
-                   headers="[[headers]]"
                    handle-as="json"
                    last-response="{{lastResponse}}"
                    on-error="_handleErrorResponse"
-                   body="{{body}}"
+                   body="[[body]]"
                    loading="{{loading}}"
-                   method="{{method}}"
+                   method="[[method]]"
                    on-loading-changed="_onLoadingChanged"
+                   headers="{{headers}}"
                    >
         </iron-ajax>
         <spinner-overlay id="backdrop" with-backdrop scroll-action="lock" 
@@ -49,85 +48,74 @@ class TokenAjax extends PolymerElement {
                 notify: true
             },
             url: String,
-            headers: {
-                type: Object,
-                computed: 'computeHeaders(token,method)',
-                notify: true
-            },
             lastResponse: {
                 notify: true
             },
             method: {
-                type: String
+                type: String,
+                value: 'GET'
             },
             body: {
                 type: Object
             },
+            headers: {
+                type: Object,
+                value: {'content-type' : 'application/json'},
+                notify: true
+            },
 
             /**
-            * If true, automatically performs an Ajax request when either `url` or
-            * `params` changes.
-            */
+             * If true, automatically performs an Ajax request when either `url` or
+             * `params` changes.
+             */
             auto: {type: Boolean, value: false}
-            
-            };
+
+        };
     }
 
     static get observers() {
-      return [
+        return [
             // Observer method name, followed by a list of dependencies, in parenthesis
             '_requestOptionsChanged(auto)',
             '_loadingChanged(loading)']
     }
-    ready() {
-        super.ready();
-        this.$.ajax.addEventListener('on-error', this._onError);
-    }
 
     _go(){
-        this.$.ajax.generateRequest();
+        console.log('going with token:'+this.token);
+        if( typeof this.token !== 'undefined'){
+            this.$.ajax.headers['content-type'] = 'application/json';
+            this.$.ajax.headers['x-auth-token'] = this.token;
+            this.$.ajax.generateRequest();
+        }else{
+            console.debug('No token set to token-ajax: no _go');
+        }
     }
 
     _tokenUpdated(){
-        console.debug('token updated with:'+this.token)
-    }
-   /*
-    * Compute the headers for the rest call. The authentication token (tok) is used as the value of the authentication header
-    * The method name (the operation) is passed through so that the content type header id only sent when there could be content
-    * associated with the request (i.e. post and put).
-    */
-    computeHeaders(tok,meth) {
-        var computedHeaders = {};
-        computedHeaders['x-auth-token'] = tok;
-        // only need to the content type in the header if there is content
-        if (meth == 'post' || meth == 'put') {
-            computedHeaders['content-type'] = 'application/json';
-        }
-
-        console.log("computing header with token: " + tok);
-        return computedHeaders;
+        console.log(this.id + ' -- token updated with:'+this.token)
+        this.$.ajax.headers['x-auth-token'] = this.token;
     }
 
     _requestOptionsChanged(auto){
-       if (this.auto) {
-            this.$.ajax.generateRequest();
-       }
+        if (this.auto) {
+            this._go();
+        }
     }
 
     _handleErrorResponse(evt){
-         var status = evt.detail.request.xhr.status;
-         var resp   = evt.detail.request.xhr.response;
-         console.log('Error response with status code: '+ status);
-         // Token is not valid, log out.
-          if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
-              console.log('Token invalid, logging out.');
-              this.dispatchEvent(new CustomEvent('logout', {
-                  bubbles: true,
-                  composed: true,
-                  detail: {greeted: "Bye!", status: status}}));
-          }else{
-              console.debug('Unknown error!');
-          }
+        var status = evt.detail.request.xhr.status;
+        var resp   = evt.detail.request.xhr.response;
+        console.log('Error response with status code: '+ status);
+        // Token is not valid, log out.
+        if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
+            console.log('Token invalid:'+ this.token);
+            this.dispatchEvent(new CustomEvent('logout', {
+                bubbles: true,
+                composed: true,
+                detail: {greeted: "Bye!", status: status}}));
+        }else{
+            console.debug('Unknown error!');
+        }
     }
 
     _onLoadingChanged(){

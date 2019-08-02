@@ -2,22 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import '@polymer/paper-input/paper-input.js';
-import '@polymer/paper-material/paper-material.js';
 import '@polymer/iron-form/iron-form.js';
 import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-input/paper-input-behavior.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
 import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
+import '@vaadin/vaadin-button/vaadin-button.js';
+import '@polymer/paper-dialog/paper-dialog.js';
+import '@polymer/paper-dialog-behavior/paper-dialog-behavior.js';
 
+import {AppLocalizeBehavior} from "@polymer/app-localize-behavior/app-localize-behavior.js";
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '../shared-styles.js';
+import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class";
 
 
-class AssetSearchView extends PolymerElement {
+class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
         return html`
       <style include="shared-styles">
@@ -31,6 +34,7 @@ class AssetSearchView extends PolymerElement {
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
+
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
@@ -47,7 +51,11 @@ class AssetSearchView extends PolymerElement {
                 <template class="header">
                     <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
                 </template>
-                <template>[[item.properties.displayName]][[item.properties.name]]</template>
+                <template>
+                    <vaadin-button theme="tertiary" on-tap="_showItemDetails">
+                        [[item.properties.displayName]][[item.properties.name]]
+                    </vaadin-button>
+                </template>
             </vaadin-grid-column>
             
              <vaadin-grid-column width="6em" resizable>
@@ -72,7 +80,7 @@ class AssetSearchView extends PolymerElement {
             </vaadin-grid-column>
   
         </vaadin-grid>
-       
+               
     `;
     }
 
@@ -85,9 +93,12 @@ class AssetSearchView extends PolymerElement {
             searchResp: {
                 type: Array,
                 notify: true
-            }
+            },
+            item: Object
         };
     }
+
+
 
     _search() {
         this.$.searchForm.validate();
@@ -96,7 +107,32 @@ class AssetSearchView extends PolymerElement {
         this.$.tokenAjax._go();
     }
 
+    _showItemDetails(e){
+        // alert(e.model.item.properties.name + e.model.item.properties.displayName);
+        var  properties = e.model.item.properties;
+        for(var key in properties) {
+            var value = properties[key];
+            console.log(key + ' is ' + value);
+        }
+        this.dispatchEvent(new CustomEvent('open-page', {
+            bubbles: true,
+            composed: true,
+            detail: {page: "asset-lineage"}}));
+    }
+
+
+    attached() {
+        this.loadResources(
+            // The specified file only contains the flattened translations for that language:
+            'locales/'+this.language+'.json',  //e.g. for es {"hi": "hola"}
+            this.language,               // unflatten -> {"es": {"hi": "hola"}}
+            true                // merge so existing resources won't be clobbered
+        );
+    }
+
 
 }
+
+
 
 window.customElements.define('asset-search-view', AssetSearchView);
