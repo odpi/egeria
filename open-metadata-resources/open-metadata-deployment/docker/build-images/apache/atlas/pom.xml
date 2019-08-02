@@ -7,19 +7,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-metadata-docker</artifactId>
+        <artifactId>open-metadata-docker-apache-build</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker runtime image - Apache Atlas</name>
+    <name>Docker build-time image - Apache Atlas</name>
     <description>
-        Apache Atlas runtime container image
+        Build image for Apache Atlas
     </description>
 
-    <artifactId>open-metadata-docker-apache-atlas</artifactId>
+    <artifactId>open-metadata-docker-apache-atlas-build</artifactId>
 
     <packaging>pom</packaging>
 
@@ -36,7 +36,7 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>runtime-image-build</id>
+                        <id>base-image-build</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
@@ -44,10 +44,9 @@
                         <configuration>
                             <dockerfile>Dockerfile</dockerfile>
                             <buildArgs>
-                                <REGISTRY>${docker.registry}</REGISTRY>
-                                <REPO>${docker.repo}</REPO>
-                             </buildArgs>
-                            <tag>latest</tag>
+                                <ATLAS_VERSION>${apache.atlas.version}</ATLAS_VERSION>
+                            </buildArgs>
+                            <tag>${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                     <execution>
@@ -57,17 +56,17 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <tag>${apache.atlas.version}</tag>
+                            <tag>${apache.atlas.version}-${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>push-latest</id>
+                        <id>push-build</id>
                         <phase>install</phase>
                         <goals>
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>latest</tag>
+                            <tag>${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                     <execution>
@@ -77,7 +76,7 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>${apache.atlas.version}</tag>
+                            <tag>${apache.atlas.version}-${docker.build.tag}</tag>
                         </configuration>
                     </execution>
                 </executions>
