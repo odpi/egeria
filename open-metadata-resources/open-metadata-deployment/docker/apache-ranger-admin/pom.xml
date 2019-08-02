@@ -14,12 +14,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker runtime image - Apache Atlas</name>
+    <name>Docker runtime image - Apache Ranger (admin)</name>
     <description>
-        Apache Atlas runtime container image
+        Admin runtime container image for Apache Ranger
     </description>
 
-    <artifactId>open-metadata-docker-apache-atlas</artifactId>
+    <artifactId>open-metadata-docker-ranger</artifactId>
 
     <packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
                             <buildArgs>
                                 <REGISTRY>${docker.registry}</REGISTRY>
                                 <REPO>${docker.repo}</REPO>
-                             </buildArgs>
+                             </buildArgs>                            
                             <tag>latest</tag>
                         </configuration>
                     </execution>
@@ -57,7 +57,7 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <tag>${apache.atlas.version}</tag>
+                            <tag>${apache.ranger.version}</tag>
                         </configuration>
                     </execution>
                     <execution>
@@ -77,12 +77,12 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>${apache.atlas.version}</tag>
+                            <tag>${apache.ranger.version}</tag>
                         </configuration>
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.registry}/${docker.repo}/apache-atlas</repository>
+                    <repository>${docker.registry}/${docker.repo}/apache-ranger-admin</repository>
                     <buildArgs>
                     </buildArgs>
                 </configuration>

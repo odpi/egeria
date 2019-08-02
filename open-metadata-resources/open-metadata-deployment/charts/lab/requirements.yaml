@@ -1,0 +1,7 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+dependencies:
+  - name: cp-helm-charts
+    version: 0.1.0
+    repository: https://confluentinc.github.io/cp-helm-charts/
