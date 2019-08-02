@@ -10,7 +10,8 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
     <style>
         :root{
         
-            --egeria-primary-color: 	#71ccdc;
+            /*--egeria-primary-color: #FF6200;*/
+            --egeria-primary-color: #71ccdc;
             --egeria-secondary-color: #24272a;          
             --egeria-icon-color: var(--egeria-primary-color);          
           
@@ -19,6 +20,9 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             
             --paper-spinner-color: var(--egeria-primary-color);
             --paper-spinner-stroke-width: 5px;
+           
+            --app-primary-color: var(--egeria-primary-color);
+            --app-secondary-color: var(--egeria-secondary-color);
         }
         
         .icon {

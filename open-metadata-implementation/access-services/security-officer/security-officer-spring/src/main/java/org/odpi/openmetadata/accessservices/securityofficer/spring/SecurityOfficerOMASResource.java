@@ -28,8 +28,36 @@ public class SecurityOfficerOMASResource {
      * @param schemaElementId unique identifier of the schema element
      */
     @RequestMapping(method = RequestMethod.GET, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SecurityOfficerOMASAPIResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String schemaElementId) {
+    public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String schemaElementId) {
         return service.getSecurityTagBySchemaElementId(serverName, userId, schemaElementId);
+    }
+
+    /**
+     * Save or update the security tag for the given schema element
+     *
+     * @param serverName                name of the server instances for this request
+     * @param userId                    String - userId of user making request.
+     * @param securityTagClassification security tag assigned to the schema element
+     * @param schemaElementId           unique identifier of the schema element
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId,
+                                                                                  @PathVariable String schemaElementId,
+                                                                                  @RequestBody SecurityClassification securityTagClassification) {
+        return service.updateSecurityTag(serverName, userId, schemaElementId, securityTagClassification);
+    }
+
+    /**
+     * Delete the security tag for the given schema element
+     *
+     * @param serverName      name of the server instances for this request
+     * @param userId          String - userId of user making request.
+     * @param schemaElementId unique identifier of the schema element
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public SecurityOfficerOMASAPIResponse deleteSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId,
+                                                                                     @PathVariable String schemaElementId) {
+        return service.deleteSecurityTag(serverName, userId, schemaElementId);
     }
 
     /**
@@ -39,22 +67,7 @@ public class SecurityOfficerOMASResource {
      * @param userId     String - userId of user making request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/security-tag", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SecurityOfficerOMASAPIResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId) {
+    public SecurityOfficerOMASAPIResponse getSecurityTagBySchemaElementIdentifier(@PathVariable String serverName, @PathVariable String userId) {
         return service.getSecurityTags(serverName, userId);
-    }
-
-    /**
-     * Save or update the security tag for the given schema element
-     *
-     * @param serverName                name of the server instances for this request
-     * @param userId                    String - userId of user making request.
-     * @param securityTagClassification security tag assigned to the asset
-     * @param schemaElementId           unique identifier of the schema element
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/security-tag/element/{schemaElementId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public SecurityOfficerOMASAPIResponse getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId,
-                                                                          @PathVariable String schemaElementId,
-                                                                          @RequestBody SecurityClassification securityTagClassification) {
-        return service.updateSecurityTag(serverName, userId, schemaElementId, securityTagClassification);
     }
 }

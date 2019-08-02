@@ -7,7 +7,7 @@ package org.odpi.openmetadata.securityofficerservices.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
-import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerNewTagEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.securityofficerservices.processor.SecurityOfficerEventProcessor;
 import org.slf4j.Logger;
@@ -28,9 +28,12 @@ public class SecurityOfficerEventListener implements OpenMetadataTopicListener {
         log.info("[Security Officer Server] Event Received");
 
         try {
-            SecurityOfficerNewTagEvent event = objectMapper.readValue(receivedEvent, SecurityOfficerNewTagEvent.class);
-            if (event.getEventType() == SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT) {
+            SecurityOfficerTagEvent event = objectMapper.readValue(receivedEvent, SecurityOfficerTagEvent.class);
+            if (event.getEventType() == SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT ||
+                    event.getEventType() == SecurityOfficerEventType.UPDATED_SECURITY_ASSIGNMENT) {
                 securityOfficerEventProcessor.processNewAssignment(event.getSchemaElementEntity());
+            } else if (event.getEventType() == SecurityOfficerEventType.DELETED_SECURITY_ASSIGNMENT) {
+                securityOfficerEventProcessor.processDeletedSecurityTag(event.getSchemaElementEntity());
             } else {
                 log.debug("Unknown event type");
             }
