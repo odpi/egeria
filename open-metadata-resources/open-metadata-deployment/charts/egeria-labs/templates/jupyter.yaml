@@ -52,6 +52,8 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: jupyter-service
     spec:
+      securityContext:
+        fsGroup: 100
       volumes:
         - name: egeria-lab-notebooks
           emptyDir: {}
@@ -82,6 +84,12 @@ spec:
                   {{ .Values.image.jupyter.name }}\
                   :{{ .Values.image.jupyter.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.jupyter.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          command:
+            - "start.sh"
+          args:
+            - jupyter
+            - notebook
+            - "--NotebookApp.token=''"
           ports:
             - containerPort: 8888
           readinessProbe:
