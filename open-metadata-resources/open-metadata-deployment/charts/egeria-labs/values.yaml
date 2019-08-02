@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+---
+
+service:
+  type: NodePort
+  externalName: default.svc.cluster.local
+  nodeport:
+    egeria_core: 30080
+    egeria_lake: 30081
+    egeria_dev: 30082
+    jupyter: 30888
+
+# Defaults for the images (can be overridden here or individually, see comment below)
+imageDefaults:
+  registry: docker.io
+  namespace: odpi
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
+#
+#  To build from egeria source - (example)
+#  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
+image:
+  egeria:
+    name: egeria
+  configure:
+    name: egeria-configure
+  jupyter:
+    namespace: jupyter
+    name: base-notebook
+
+# When using the k8s-internal Kafka (from Confluent), enable auto-topic creation
+# (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
+cp-kafka:
+  brokers: 1
+  configurationOverrides:
+    auto.create.topics.enable: true
+  prometheus:
+    jmx:
+      enabled: false
+
+# When using the k8s-internal Kafka (from Confluent), configure Zookeeper options
+# (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper)
+cp-zookeeper:
+  enabled: true
+  persistence:
+    enabled: false
+  servers: 1
+  prometheus:
+    jmx:
+      enabled: false
