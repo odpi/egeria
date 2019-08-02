@@ -30,7 +30,29 @@ From one directory level above the location of this README, run the following:
 
 ```shell script
 $ helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
+
+"confluentinc" has been added to your repositories
+
 $ helm repo update
+
+Hang tight while we grab the latest from your chart repositories...
+...Skip local chart repository
+...Successfully got an update from the "confluentinc" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
+
+$ helm dependency update egeria-labs
+
+Hang tight while we grab the latest from your chart repositories...
+...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
+	Get http://127.0.0.1:8879/charts/index.yaml: dial tcp 127.0.0.1:8879: connect: connection refused
+...Successfully got an update from the "confluentinc" chart repository
+...Successfully got an update from the "stable" chart repository
+Update Complete.
+Saving 1 charts
+Downloading cp-helm-charts from repo https://confluentinc.github.io/cp-helm-charts/
+Deleting outdated charts
+
 $ helm install egeria-labs --name labs
 ```
 
