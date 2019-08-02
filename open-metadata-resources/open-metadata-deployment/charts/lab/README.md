@@ -41,7 +41,7 @@ Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "stable" chart repository
 Update Complete.
 
-$ helm dependency update egeria-labs
+$ helm dependency update lab
 
 Hang tight while we grab the latest from your chart repositories...
 ...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
@@ -53,7 +53,7 @@ Saving 1 charts
 Downloading cp-helm-charts from repo https://confluentinc.github.io/cp-helm-charts/
 Deleting outdated charts
 
-$ helm install egeria-labs --name labs
+$ helm install lab --name labs
 ```
 
 Note: If name is not specified an auto-generated name like `slippery-lizard` will be used.
