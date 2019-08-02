@@ -27,17 +27,32 @@ public class SecurityTagConnector extends ConnectorBase implements SecurityOffic
         List<Classification> classifications = schemaElementEntity.getClassifications();
         List<Classification> existingClassifications = getExistingClassifications(schemaElementEntity, classifications);
 
+        SecurityClassification securityClassification;
         if (!existingClassifications.isEmpty()) {
-            return getMoreRestrictiveClassification(existingClassifications);
+             securityClassification = getMoreRestrictiveClassification(existingClassifications);
+
+        } else {
+            securityClassification = getDefaultSecurityTags();
         }
 
-        return getDefaultSecurityTags();
+        Map<String, Object> properties = securityClassification.getSecurityProperties();
+        if(properties == null) {
+            properties = new HashMap<>();
+        }
+        properties.put("source", schemaElementEntity.getType());
+        securityClassification.setSecurityProperties(properties);
+
+        return securityClassification;
     }
 
     private SecurityClassification getDefaultSecurityTags() {
         SecurityClassification securityClassification = new SecurityClassification();
-        securityClassification.setSecurityLabels(Collections.singletonList("C3"));
-        securityClassification.setSecurityProperties(Collections.singletonMap("user", "SecurityTagConnector"));
+        securityClassification.setSecurityLabels(Collections.singletonList("C99"));
+
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("user", "SecurityTagConnector");
+        properties.put("label", "Secret");
+        securityClassification.setSecurityProperties(properties);
         return securityClassification;
     }
 
@@ -112,6 +127,7 @@ public class SecurityTagConnector extends ConnectorBase implements SecurityOffic
                 securityProperties.put(key, value);
             }
         });
+
         return securityProperties;
     }
 
