@@ -29,7 +29,8 @@ import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNANCE_ENGINE_OMAS_URL;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_SYNC_SERVER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 
 public class SecuritySyncEventProcessor {
@@ -42,7 +43,7 @@ public class SecuritySyncEventProcessor {
     public SecuritySyncEventProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
         this.securitySyncConfig = securitySyncConfig;
-        rangerOpenConnector = new RangerSecurityServiceConnector(securitySyncConfig.getSecurityServerConnection());
+        rangerOpenConnector = new RangerSecurityServiceConnector(securitySyncConfig.getSecuritySyncServerConnection());
     }
 
     public void processExistingGovernedAssetsFromRepository() {
@@ -123,7 +124,7 @@ public class SecuritySyncEventProcessor {
     }
 
     private GovernedAssetListAPIResponse getGovernedAssets() {
-        String governanceEngineURL = getGovernanceEngineURL(GOVERNED_ASSETS);
+        String governanceEngineURL = getGovernanceEngineURL();
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -140,9 +141,13 @@ public class SecuritySyncEventProcessor {
         return null;
     }
 
-    private String getGovernanceEngineURL(String endpoint) {
-        String geBaseURL = securitySyncConfig.getGovernanceEngineServerURL();
-        return MessageFormat.format(endpoint, geBaseURL, SECURITY_TAGS);
+    private String getGovernanceEngineURL() {
+
+        return MessageFormat.format(GOVERNANCE_ENGINE_OMAS_URL,
+                securitySyncConfig.getAccessServiceRootURL(),
+                securitySyncConfig.getAccessServiceServerName(),
+                SECURITY_SYNC_SERVER,
+                SECURITY_TAGS);
     }
 
     private Object mapToObject(ResponseEntity<String> result, Class className) {

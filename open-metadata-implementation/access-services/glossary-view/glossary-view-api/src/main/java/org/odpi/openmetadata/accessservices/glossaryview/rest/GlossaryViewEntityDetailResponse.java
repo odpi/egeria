@@ -2,16 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.rest;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,43 +19,34 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GlossaryViewEntityDetailResponse extends GlossaryViewOMASAPIResponse {
+public class GlossaryViewEntityDetailResponse extends FFDCResponseBase {
 
-    private static Map<String, List<GlossaryViewEntityDetail>> defaultMap = Collections.singletonMap("entities", null);
-    private static Map<String, String> singularToPlural = new HashMap<>();
-    static{
-        singularToPlural.put("Glossary", "glossaries");
-        singularToPlural.put("GlossaryCategory", "categories");
-        singularToPlural.put("GlossaryTerm", "terms");
-        singularToPlural.put("ExternalGlossaryLink", "externalGlossaryLinks");
-    }
+    private List<GlossaryViewEntityDetail> result = new ArrayList<>();
+    private String actionDescription;
 
-    private List<GlossaryViewEntityDetail> glossaryViewEntityDetails = new ArrayList<>();
-
-    @JsonAnyGetter
-    public Map<String, List<GlossaryViewEntityDetail>> getGlossaryViewEntityDetails() {
-        if(glossaryViewEntityDetails.isEmpty()){
-            return defaultMap;
-        }
-        String key = singularToPlural.get( glossaryViewEntityDetails.get(0).getEntityType() ) ;
-        if(key == null){
-            return defaultMap;
-        }
-        return Collections.singletonMap(key, glossaryViewEntityDetails);
+    public List<GlossaryViewEntityDetail> getResult() {
+        return result;
     }
 
     public void addEntityDetails(List<GlossaryViewEntityDetail> glossaryViewEntityDetails) {
-        if(this.glossaryViewEntityDetails == null){
-            this.glossaryViewEntityDetails = new ArrayList<>();
+        if(this.result == null){
+            this.result = new ArrayList<>();
         }
-        this.glossaryViewEntityDetails.addAll(glossaryViewEntityDetails);
+        this.result.addAll(glossaryViewEntityDetails);
     }
 
     public void addEntityDetail(GlossaryViewEntityDetail glossaryViewEntityDetail){
-        if(this.glossaryViewEntityDetails == null){
-            this.glossaryViewEntityDetails = new ArrayList<>();
+        if(this.result == null){
+            this.result = new ArrayList<>();
         }
-        this.glossaryViewEntityDetails.add(glossaryViewEntityDetail);
+        this.result.add(glossaryViewEntityDetail);
     }
 
+    public String getActionDescription() {
+        return actionDescription;
+    }
+
+    public void setActionDescription(String actionDescription) {
+        this.actionDescription = actionDescription;
+    }
 }

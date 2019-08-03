@@ -9,7 +9,8 @@ public enum Graphs {
     history("history"),
     mock("mock"),
     ultimatesource("ultimate-source"),
-    ultimatedestination("ultimate-destination");
+    ultimatedestination("ultimate-destination"),
+    glossary("glossary");
 
     private String name;
 
