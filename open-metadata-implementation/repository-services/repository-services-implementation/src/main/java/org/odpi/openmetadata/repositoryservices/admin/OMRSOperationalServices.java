@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.admin;
 
 import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogDestination;
+import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventPublisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
@@ -354,6 +355,20 @@ public class OMRSOperationalServices
                                                                                        localRepositoryConfig.getSelectedTypesToSend()),
                                                    new OMRSRepositoryContentValidator(localRepositoryContentManager),
                                                    new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.REPOSITORY_EVENT_MANAGER));
+
+            /*
+             * If the enterprise repositoryservices topic is active, then register an event publisher for it.
+             * This topic is active if the Open Metadata Access Services (OMASs) are active.
+             */
+            if (enterpriseOMRSTopicConnector != null)
+            {
+                OMRSRepositoryEventPublisher
+                        enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Local Repository to Enterprise",
+                                                                                    enterpriseOMRSTopicConnector,
+                                                                                    auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
+
+                this.localRepositoryEventManager.registerRepositoryEventProcessor(enterpriseEventPublisher);
+            }
 
             /*
              * Pass the local metadata collectionId to the AuditLog
