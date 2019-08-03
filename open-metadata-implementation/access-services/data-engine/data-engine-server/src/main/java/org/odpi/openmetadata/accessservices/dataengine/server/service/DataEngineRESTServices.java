@@ -125,11 +125,11 @@ public class DataEngineRESTServices {
             response.setGUID(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
 
         } catch (InvalidParameterException error) {
-            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
+            restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
-            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
+            restExceptionHandler.capturePropertyServerException(response, error);
         } catch (UserNotAuthorizedException error) {
-            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
@@ -305,7 +305,7 @@ public class DataEngineRESTServices {
 
     private void createProcesses(String userId, String serverName, List<Process> processes, GUIDListResponse response) {
         List<String> processGUIDs = new ArrayList<>();
-        processes.parallelStream().forEach(process -> {
+        processes.stream().forEach(process -> {
             try {
                 processGUIDs.add(createProcess(userId, serverName, process, response));
             } catch (InvalidParameterException error) {

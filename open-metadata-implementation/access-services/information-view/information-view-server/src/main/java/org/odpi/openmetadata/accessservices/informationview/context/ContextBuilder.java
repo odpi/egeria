@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.informationview.context;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -90,6 +92,37 @@ public abstract class ContextBuilder<T> {
     protected List<Relationship> getAssetSchemaTypeRelationships(String guid) {
         return entityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, guid);
     }
+
+
+    protected List<Source> getSources(String guid) {
+        List<Relationship> relationships = entityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, guid);
+        List<EntityDetail> entities = Optional.ofNullable(relationships)
+                                                .map(Collection::stream)
+                                                .orElseGet(Stream::empty)
+                                                .map(r -> entityDao.getEntityByGuid(r.getEntityTwoProxy().getGUID()))
+                                                .collect(Collectors.toList());
+
+        List<Source> sources = Optional.ofNullable(entities)
+                                        .map(Collection::stream)
+                                        .orElseGet(Stream::empty)
+                                        .map(e -> buildSource(e))
+                                        .collect(Collectors.toList());
+
+
+        return sources;
+    }
+
+    protected Source buildSource(EntityDetail entityDetail) {
+        String methodName = "buildSource";
+        if(omrsRepositoryHelper.isTypeOf(Constants.INFORMATION_VIEW_OMAS_NAME, entityDetail.getType().getTypeDefName(), Constants.RELATIONAL_COLUMN)){
+            Source columnSource = new DatabaseColumnSource();
+            columnSource.setGuid(entityDetail.getGUID());
+            columnSource.setQualifiedName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, entityDetail.getProperties(), methodName));
+            return columnSource;
+        }
+        return null;
+    }
+
 
 
 }

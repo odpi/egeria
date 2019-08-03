@@ -12,6 +12,7 @@ public class GlossaryViewEntityDetailFactory {
     private final static String GLOSSARY = "Glossary";
     private final static String CATEGORY = "GlossaryCategory";
     private final static String TERM = "GlossaryTerm";
+    private final static String CONTROLLED_TERM = "ControlledGlossaryTerm";
     private final static String EXTERNAL_GLOSSARY_LINK = "ExternalGlossaryLink";
 
     private final static Map<String, Supplier<GlossaryViewEntityDetail>> workers = new HashMap<>();
@@ -20,6 +21,7 @@ public class GlossaryViewEntityDetailFactory {
         workers.put(GLOSSARY, () -> new Glossary());
         workers.put(CATEGORY, () -> new Category());
         workers.put(TERM, () -> new Term());
+        workers.put(CONTROLLED_TERM, () -> new ControlledTerm());
         workers.put(EXTERNAL_GLOSSARY_LINK, () -> new GlossaryViewEntityDetail());
     }
 
