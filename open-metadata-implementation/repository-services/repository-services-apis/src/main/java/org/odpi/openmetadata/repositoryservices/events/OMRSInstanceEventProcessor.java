@@ -13,6 +13,30 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public abstract class OMRSInstanceEventProcessor implements OMRSInstanceEventProcessorInterface
 {
+    protected String  eventProcessorName;
+
+    /**
+     * Return the name of the event processor.
+     *
+     * @return event processor name
+     */
+    public String getEventProcessorName()
+    {
+        return eventProcessorName;
+    }
+
+
+    /**
+     * Constructor to initialize the name of the processor.
+     *
+     * @param eventProcessorName string name
+     */
+    protected OMRSInstanceEventProcessor(String eventProcessorName)
+    {
+        this.eventProcessorName = eventProcessorName;
+    }
+
+
     /**
      * Process the instance event directly.
      *
