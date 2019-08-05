@@ -15,21 +15,24 @@ Replace the <serverURLRoot>, <userName> and <serverName> with the values appropr
 The interface to the graph repository is the OMRS MetadataCollection API. The graph repository supports almost all of the MetadataCollection API apart from historical queries and undo.
 
 ## Using the find methods
-The find methods (listed below) use regular expression (regexp) syntax and can be divided into two groups:
-
-Three of the methods are intended for retrieval of specific entities or relationships. In these methods the regexp is matched to the whole value of the property or the whole classification name.
+The find methods (listed below) use regular expression (regexp) syntax. They are intended for retrieval of specific entities or relationships and the regexp is always matched to the whole of the property value or classification name.
 * findEntitiesByProperty()
-* findEntitiesByClassification()
 * findRelationshipsByProperty()
-For example, to find an entity with a property value of "coco-asset-123" you would need to specify a regexp that will match the whole string value, e.g. "coco-asset-.*"
-If you only specify a regexp of "coco-asset", it will not match the entity.
-
-The other methods are for broader search. They operate over all string properties of an entity or relationship and will return all entities or relationships for which the regexp matches a substring of the property value.
 * findEntitiesByPropertyValue()
 * findRelationshipsByPropertyValue()
-For example, to find entities with property values of "coco-asset-123", "coco-asset-456", "coco-asset-789" you could specify a regexp e.g. "-asset-"
-The regexp only needs to specify a possible substring of the value to match.
+* findEntitiesByClassification()
 
+The first two methods accept a map of property names and values that acts as a filter.
+The next pair of methods accept a string that is matched against the values of any string properties.
+The last method accepts a string that is matched against the names of classifications associated with an entity.
+
+In all cases the string value(s) provided are treated as a regular expression that is matched against the whole property value or classification name.
+
+To find entities with property values of "coco-asset-123", "coco-asset-456", "coco-asset-789" you could specify a regexp e.g. "coco-asset-.*"
+
+To find an entity or relationship with a property value of "coco-asset-123" you need to specify a regexp that will match the whole string value, e.g. "coco-asset-.*", a substring is not sufficient. If you were to only specify a regexp of "coco-asset", it would not match the entity or relationship.
+
+Similarly, to find an entity with a classification with name "coco-classification-abc" you would need to to specify a regexp that will match the whole string value, e.g. "coco-classification-.*"
 
 
 ## Under the hood
