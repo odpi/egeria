@@ -20892,8 +20892,8 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "SchemaType";
-        final String                     end1AttributeName            = "targetElement";
-        final String                     end1AttributeDescription     = "Target Schema.";
+        final String                     end1AttributeName            = "sourceElement";
+        final String                     end1AttributeDescription     = "Source Schema.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -20909,8 +20909,8 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "SchemaType";
-        final String                     end2AttributeName            = "sourceElement";
-        final String                     end2AttributeDescription     = "Source Schema.";
+        final String                     end2AttributeName            = "targetElement";
+        final String                     end2AttributeDescription     = "Target Schema.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 

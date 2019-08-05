@@ -29,8 +29,8 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
 
         GlossaryViewEntityDetailResponse response = underTest.getCategory(USER_ID, SERVER_NAME, categories.get(0).getGUID());
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().size());
-        assertEquals(categories.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(0).getGuid());
+        assertEquals(1, response.getResult().size());
+        assertEquals(categories.get(0).getGUID(), response.getResult().get(0).getGuid());
     }
 
     @Test
@@ -42,10 +42,15 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getCategoriesViaCategoryAnchorRelationships(USER_ID, SERVER_NAME,
                 glossaries.get(0).getGUID(), 0, 10000);
 
-        assertEquals(3, response.getGlossaryViewEntityDetails().get("categories").size());
-        assertEquals(categories.get(0).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(0).getGuid() );
-        assertEquals(categories.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(1).getGuid() );
-        assertEquals(categories.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(2).getGuid() );
+        assertEquals(3, response.getResult().size());
+
+        assertEquals(categories.get(0).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(categories.get(1).getGUID(), response.getResult().get(1).getGuid() );
+        assertEquals(categories.get(2).getGUID(), response.getResult().get(2).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
+        assertEquals(true, isEffective.test(response.getResult().get(2)));
     }
 
     @Test
@@ -57,9 +62,13 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getSubcategories(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(), 0, 10000);
 
-        assertEquals(2, response.getGlossaryViewEntityDetails().get("categories").size());
-        assertEquals(categories.get(1).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(0).getGuid() );
-        assertEquals(categories.get(2).getGUID(), response.getGlossaryViewEntityDetails().get("categories").get(1).getGuid() );
+        assertEquals(2, response.getResult().size());
+
+        assertEquals(categories.get(1).getGUID(), response.getResult().get(0).getGuid() );
+        assertEquals(categories.get(2).getGUID(), response.getResult().get(1).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
+        assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
 
     @Test
@@ -71,8 +80,11 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
         GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(),0, 10);
 
-        assertEquals(1, response.getGlossaryViewEntityDetails().size());
-        assertEquals(externalGlossaryLink.getGUID(), response.getGlossaryViewEntityDetails().get("externalGlossaryLinks").get(0).getGuid() );
+        assertEquals(1, response.getResult().size());
+
+        assertEquals(externalGlossaryLink.getGUID(), response.getResult().get(0).getGuid() );
+
+        assertEquals(true, isEffective.test(response.getResult().get(0)));
     }
 
 }

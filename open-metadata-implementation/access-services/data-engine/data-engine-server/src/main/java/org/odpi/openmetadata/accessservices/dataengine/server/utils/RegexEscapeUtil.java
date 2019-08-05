@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.utils;
 public class RegexEscapeUtil {
 
     public static String escapeSpecialGraphRegexCharacters(String inputString) {
-        final String[] specialCharacters = {"(", ")", ".", "="};
+        final String[] specialCharacters = {"(", ")", ".", "=", ":"};
 
         for (String metaCharacter : specialCharacters) {
             if (inputString.contains(metaCharacter)) {
