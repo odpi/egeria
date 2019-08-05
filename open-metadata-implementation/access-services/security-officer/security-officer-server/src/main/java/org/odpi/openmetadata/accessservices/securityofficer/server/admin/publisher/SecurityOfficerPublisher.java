@@ -7,12 +7,14 @@ package org.odpi.openmetadata.accessservices.securityofficer.server.admin.publis
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode.SecurityOfficerErrorCode;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor.SecurityOfficerEventProcessor;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
@@ -23,6 +25,14 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.CONFIDENTIALITY;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
@@ -56,14 +66,58 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+        if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
+            List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processClassifiedGlossaryTerm(entity);
+
+            if (securityOfficerEvents.isEmpty()) {
+                return;
+            }
+
+            try {
+                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
+                    sendEvent(securityOfficerEvent);
+                }
+            } catch (JsonProcessingException e) {
+                log.debug("Unable to build the event for classified glossary term.");
+            }
+        } else {
+            log.debug("No processing needed");
+        }
     }
 
     @Override
     public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+
+        if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
+            List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processDeClassifiedGlossaryTerm(entity);
+
+            try {
+                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
+                    sendEvent(securityOfficerEvent);
+                }
+            } catch (JsonProcessingException e) {
+                log.debug("Unable to build the event for de-classified glossary term.");
+            }
+        } else {
+            log.debug("No processing needed");
+        }
     }
 
     @Override
     public void processReclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+        if (isGlossaryTerm(entity.getType()) && containsGovernanceConfidentialityClassification(entity.getClassifications())) {
+            List<SecurityOfficerTagEvent> securityOfficerEvents = securityOfficerEventProcessor.processReClassifiedGlossaryTerm(entity);
+
+            try {
+                for (SecurityOfficerTagEvent securityOfficerEvent : securityOfficerEvents) {
+                    sendEvent(securityOfficerEvent);
+                }
+            } catch (JsonProcessingException e) {
+                log.debug("Unable to build the event for re-classified glossary term.");
+            }
+        } else {
+            log.debug("No processing needed");
+        }
     }
 
     @Override
@@ -100,21 +154,17 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processNewRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
-        if (relationship.getType().getTypeDefName().equals("SemanticAssignment") && isSchemaElement(relationship.getEntityOneProxy().getType())) {
+        if (relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && isSchemaElement(relationship.getEntityOneProxy().getType())) {
             SecurityOfficerEvent securityOfficerEvent = securityOfficerEventProcessor.processSemanticAssignmentForSchemaElement(relationship);
 
             try {
                 sendEvent(securityOfficerEvent);
             } catch (JsonProcessingException e) {
-                log.debug("Unable to build the event");
+                log.debug("Unable to build the event for semantic assigment between a glossary term and a schema element.");
             }
         } else {
             log.debug("No processing needed");
         }
-    }
-
-    private boolean isSchemaElement(InstanceType type) {
-        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
     }
 
     @Override
@@ -187,5 +237,18 @@ public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
                     auditCode.getUserAction(),
                     e);
         }
+    }
+
+    private boolean isSchemaElement(InstanceType type) {
+        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ELEMENT));
+    }
+
+    private boolean isGlossaryTerm(InstanceType type) {
+        return type.getTypeDefName().equals(GLOSSARY_TERM);
+    }
+
+    private boolean containsGovernanceConfidentialityClassification(List<Classification> classifications) {
+        Optional<Classification> confidentialityClassification = classifications.stream().filter(classification -> classification.getType().getTypeDefName().equals(CONFIDENTIALITY)).findAny();
+        return confidentialityClassification.isPresent();
     }
 }

@@ -14,14 +14,18 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker image - Apache Atlas</name>
+    <name>Docker runtime image - Apache Atlas</name>
     <description>
-        Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
+        Apache Atlas runtime container image
     </description>
 
     <artifactId>open-metadata-docker-apache-atlas</artifactId>
 
     <packaging>pom</packaging>
+
+    <properties>
+        <dockerfile.build.noCache>false</dockerfile.build.noCache>
+    </properties>
     <build>
         <plugins>
             <!-- Setup the docker build.
@@ -32,25 +36,19 @@
                 <artifactId>dockerfile-maven-plugin</artifactId>
                 <executions>
                     <execution>
-                        <id>base-image-build</id>
+                        <id>runtime-image-build</id>
                         <phase>package</phase>
                         <goals>
                             <goal>build</goal>
                         </goals>
                         <configuration>
-                            <dockerfile>Docker.build</dockerfile>
+                            <dockerfile>Dockerfile</dockerfile>
                             <buildArgs>
+                                <REGISTRY>${docker.registry}</REGISTRY>
                                 <REPO>${docker.repo}</REPO>
-                             </buildArgs>                            
-                            <tag>build</tag>
+                             </buildArgs>
+                            <tag>latest</tag>
                         </configuration>
-                    </execution>
-                    <execution>
-                        <id>build-and-tag-latest</id>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>build</goal>
-                        </goals>
                     </execution>
                     <execution>
                         <id>tag-version</id>
@@ -59,7 +57,7 @@
                             <goal>tag</goal>
                         </goals>
                         <configuration>
-                            <tag>${project.version}</tag>
+                            <tag>${apache.atlas.version}</tag>
                         </configuration>
                     </execution>
                     <execution>
@@ -79,7 +77,7 @@
                             <goal>push</goal>
                         </goals>
                         <configuration>
-                            <tag>${project.version}</tag>
+                            <tag>${apache.atlas.version}</tag>
                         </configuration>
                     </execution>
                 </executions>
