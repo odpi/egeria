@@ -15,6 +15,30 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProcessorInterface
 {
+    protected String  eventProcessorName;
+
+    /**
+     * Return the name of the event processor.
+     *
+     * @return event processor name
+     */
+    public String getEventProcessorName()
+    {
+        return eventProcessorName;
+    }
+
+
+    /**
+     * Constructor to initialize the name of the processor.
+     *
+     * @param eventProcessorName string name
+     */
+    protected OMRSTypeDefEventProcessor(String eventProcessorName)
+    {
+        this.eventProcessorName = eventProcessorName;
+    }
+
+
     /**
      * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
      *
