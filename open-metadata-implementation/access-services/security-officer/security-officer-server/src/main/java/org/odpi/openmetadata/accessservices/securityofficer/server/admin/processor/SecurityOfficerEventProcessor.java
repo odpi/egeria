@@ -5,7 +5,7 @@
 package org.odpi.openmetadata.accessservices.securityofficer.server.admin.processor;
 
 import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerEventType;
-import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerNewTagEvent;
+import org.odpi.openmetadata.accessservices.securityofficer.api.events.SecurityOfficerTagEvent;
 import org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.handler.SecurityOfficerHandler;
 import org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Builder;
@@ -14,6 +14,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SecurityOfficerEventProcessor {
 
@@ -30,14 +34,81 @@ public class SecurityOfficerEventProcessor {
         }
     }
 
-    public SecurityOfficerNewTagEvent processSemanticAssignmentForSchemaElement(Relationship relationship) {
-        SecurityOfficerNewTagEvent securityOfficerEvent = new SecurityOfficerNewTagEvent();
+    public SecurityOfficerTagEvent processSemanticAssignmentForSchemaElement(Relationship relationship) {
+        EntityDetail glossaryTerm = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityTwoProxy().getGUID());
+        EntityDetail schemaElement = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityOneProxy().getGUID());
+
+       return buildSecurityOfficerNewTagEvent(schemaElement, glossaryTerm);
+    }
+
+    public List<SecurityOfficerTagEvent> processClassifiedGlossaryTerm(EntityDetail glossaryTerm) {
+        List<EntityDetail> schemaElementsAssignedToBusinessTerms = securityOfficerHandler.getSchemaElementsAssignedToBusinessTerms(SECURITY_OFFICER_OMAS, glossaryTerm.getGUID());
+        if (schemaElementsAssignedToBusinessTerms.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
+        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+            SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerNewTagEvent(schemaElement, glossaryTerm);
+            securityOfficerEvents.add(securityOfficerTagEvent);
+        }
+
+        return securityOfficerEvents;
+    }
+
+    public List<SecurityOfficerTagEvent> processReClassifiedGlossaryTerm(EntityDetail glossaryTerm) {
+        List<EntityDetail> schemaElementsAssignedToBusinessTerms = securityOfficerHandler.getSchemaElementsAssignedToBusinessTerms(SECURITY_OFFICER_OMAS, glossaryTerm.getGUID());
+        if (schemaElementsAssignedToBusinessTerms.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
+        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+            SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerUpdatedTagEvent(schemaElement, glossaryTerm);
+            securityOfficerEvents.add(securityOfficerTagEvent);
+        }
+
+        return securityOfficerEvents;
+    }
+
+    public List<SecurityOfficerTagEvent> processDeClassifiedGlossaryTerm(EntityDetail glossaryTerm) {
+        List<EntityDetail> schemaElementsAssignedToBusinessTerms = securityOfficerHandler.getSchemaElementsAssignedToBusinessTerms(SECURITY_OFFICER_OMAS, glossaryTerm.getGUID());
+        if (schemaElementsAssignedToBusinessTerms.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
+        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+            SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerDeletedTagEvent(schemaElement, glossaryTerm);
+            securityOfficerEvents.add(securityOfficerTagEvent);
+        }
+
+        return securityOfficerEvents;
+    }
+
+    private SecurityOfficerTagEvent buildSecurityOfficerNewTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+        SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
 
         securityOfficerEvent.setEventType(SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT);
+        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTerm));
 
-        EntityDetail glossaryTermDetails = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityTwoProxy().getGUID());
-        EntityDetail schemaElement = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityOneProxy().getGUID());
-        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTermDetails));
+        return securityOfficerEvent;
+    }
+
+    private SecurityOfficerTagEvent buildSecurityOfficerUpdatedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+        SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
+
+        securityOfficerEvent.setEventType(SecurityOfficerEventType.UPDATED_SECURITY_ASSIGNMENT);
+        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTerm));
+
+        return securityOfficerEvent;
+    }
+
+    private SecurityOfficerTagEvent buildSecurityOfficerDeletedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+        SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
+
+        securityOfficerEvent.setEventType(SecurityOfficerEventType.DELETED_SECURITY_ASSIGNMENT);
+        securityOfficerEvent.setSchemaElementEntity(builder.buildSchemaElementContext(schemaElement, glossaryTerm));
 
         return securityOfficerEvent;
     }

@@ -13,15 +13,11 @@ import java.util.Map;
 
 public interface ViewGenerationInterface {
 
-   boolean deleteLogicalTable(String tableName);
-
-   List<LogicTable> getAllLogicTables();
-
     /**
      * Process the serialized  information view event
      *
      * @param tableContextEvent event
-     * @return the table sent to Gaian
+     * @return the table of created views for generating the kafka events
      */
     Map<String, String> processInformationViewEvent(TableContextEvent tableContextEvent);
 

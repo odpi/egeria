@@ -27,7 +27,7 @@ spec:
     spec:
       restartPolicy: OnFailure
       initContainers:
-        - name: wait-for-egeria
+        - name: wait-for-atlasproxy
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
@@ -35,7 +35,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ include "myapp.fullname" . }}-egeria-service
+              value: {{ include "myapp.fullname" . }}-atlas-service
 {{ if .Values.kafka.internal.enabled }}
         - name: wait-for-kafka
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -81,15 +81,15 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/server-url-root?url=${ATLASPROXY_ENDPOINT}
                 &&
 {{- if .Values.cts.enabled }}
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/event-bus
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/event-bus
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
@@ -100,24 +100,24 @@ spec:
                 {{- end -}}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories/${ATLAS_SERVER}
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories/${ATLAS_SERVER}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
                 &&
 {{- end }}
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/server-type?typeName=Apache%20Atlas
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/server-type?typeName=Apache%20Atlas
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/organization-name?name=ODPi
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/organization-name?name=ODPi
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/event-bus
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
@@ -129,16 +129,16 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.apache.atlas.repositoryconnector.ApacheAtlasOMRSRepositoryConnectorProvider
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.apache.atlas.repositoryconnector.ApacheAtlasOMRSRepositoryConnectorProvider
                 --data '{"apache.atlas.rest.url": "'"${ATLAS_ENDPOINT}"'", "apache.atlas.username": "'"${ATLAS_USER}"'", "apache.atlas.password": "'"${ATLAS_PASS}"'"}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/cohorts/${EGERIA_COHORT}
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.apache.atlas.eventmapper.ApacheAtlasOMRSRepositoryEventMapperProvider&eventSource=${ATLAS_KAFKA_ENDPOINT}"
+                "${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.apache.atlas.eventmapper.ApacheAtlasOMRSRepositoryEventMapperProvider&eventSource=${ATLAS_KAFKA_ENDPOINT}"
                 &&
                 curl -f --verbose --basic admin:admin -X POST --max-time 300
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/instance
+                ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${ATLAS_SERVER}/instance
 ...
 {{ end }}
