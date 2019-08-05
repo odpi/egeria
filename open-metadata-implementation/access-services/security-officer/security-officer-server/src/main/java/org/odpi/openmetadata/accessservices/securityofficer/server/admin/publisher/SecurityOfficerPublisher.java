@@ -37,12 +37,15 @@ import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.
 public class SecurityOfficerPublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecurityOfficerPublisher.class);
+    private static final String eventPublisherName = "Security Officer OMAS Event Publisher";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private SecurityOfficerEventProcessor securityOfficerEventProcessor;
     private OpenMetadataTopicConnector openMetadataTopicConnector;
     private OMRSAuditLog auditLog;
 
     public SecurityOfficerPublisher(SecurityOfficerEventProcessor securityOfficerEventProcessor, OpenMetadataTopicConnector openMetadataTopicConnector, OMRSAuditLog auditLog) {
+        super(eventPublisherName);
+
         this.securityOfficerEventProcessor = securityOfficerEventProcessor;
         this.openMetadataTopicConnector = openMetadataTopicConnector;
         this.auditLog = auditLog;
