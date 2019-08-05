@@ -30,11 +30,18 @@ import "../../node_modules/@polymer/paper-checkbox/paper-checkbox.js";
 import "../../node_modules/@polymer/paper-radio-button/paper-radio-button.js";
 import "../../node_modules/@polymer/paper-radio-group/paper-radio-group.js";
 
-import './type-explorer.js';
+import './type-manager.js';
+import './connection-manager.js';
+import './focus-manager.js';
+import './diagram-manager.js';
+import './details-panel.js';
 
 /**
 *
-* TypeExplorerView is the top level web component for the type explorer UI component.
+* TypeExplorerView is the top level web component for the Type Explorer UI component.
+* It implements the controller component of the design.
+* It is responsible for creating the ConnectionManager, TypeManager components
+* It is responsible for creating the FocusManager, DiagramManager and DetailsPanel components
 */
 
 class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
@@ -53,330 +60,118 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
                 }
 
                 .vl { border-left: 1px solid black; }
+
+
+
             </style>
 
 
             <body>
 
-
                 <b style=" font-size:18px; font-family:sans-serif; ">Type Explorer</b>
 
-
-                <!-- initial language is set in initialise -->
-                <paper-radio-group id="radio_language"  on-paper-radio-group-changed="languageChanged">
-                    <paper-radio-button name="en">English</paper-radio-button>
-                    <paper-radio-button name="fr">French</paper-radio-button>
-                </paper-radio-group>
+                <type-manager id="typeManager"></type-manager>
 
 
 
-                <!-- left hand side -->
+                <div>   <!-- left hand side -->
 
-                <div style=" position:absolute; left:10px;top:150px; height:1300px; width:1000px; background-color:#FFFFFF; " >
+                    <connection-manager id="connectionManager" type-manager="[[theTypeManager]]"></connection-manager>
 
-                    <!-- Server controls -->
+                    <focus-manager id="focusManager" type-manager="[[theTypeManager]]"></focus-manager>
 
-                    <div style=" position:absolute;left:10px;top:10px; height:150px; width:250px; background-color:#FFFFFF">
-                        <p style="text-align:center;">
-                        Load type information from metadata repository server:
-                        </p>
+                    <diagram-manager id="diagramManager" type-manager="[[theTypeManager]]"></diagram-manager>
 
-                        <paper-input
-                            id = 'serverNameInput'
-                            class='user-input'
-                            label = "Server Name"
-                            value={{serverName}}
-                            on-change="serverNameChanged">
-                        </paper-input>
-
-                        <paper-input
-                            class='user-input'
-                            label = "Server URL Root"
-                            value={{serverURLRoot}}
-                            on-change="serverURLRootChanged">
-                        </paper-input>
-
-                        <paper-checkbox
-                             id="enterpriseQuery"
-                             checked="{{enterpriseQuery}}"
-                             on-change="enterpriseQueryChanged">
-                             Enterprise Query
-                        </paper-checkbox>
-
-                        <p>
-
-                        <!-- TODO Consider moving button into type-explorer.js DOM -->
-                        <type-explorer id="typeGetter"></type-explorer>
-                        <paper-button
-                            id = "loadButton"
-                            raised
-                            on-click="doLoad" >
-                            Load!
-                        </paper-button>
-
-                    </div> <!-- End of Server Controls -->
-
-                    <div class="vl" style=" position:absolute; left:260px; top:10px; height:145px; "></div>
-
-                    <div style=" position:absolute;left:270px;top:10px; height:120px; width:300px; background-color:#FFFFFF">
-                        <p style="text-align:center;">
-                        Jump to Entity Type:
-                        <p>
-                        <select id="entityTypeSelector" style="width: 300px; float:right;  left: 150px" onchange="typeSelected('Entity',this.value)" >
-                            <option value="" disabled selected>None</option>
-                            <!-- options will be added dynamically -->
-                        </select>
-                    </div>
-
-                    <div class="vl" style=" position:absolute; left:580px; top:10px; height:145px; "></div>
-
-                    <div style=" position:absolute;left:600px;top:10px; height:120px; width:250px; background-color:#FFFFFF">
-                        <p style="text-align:center;">
-                        Switch Diagram Type:
-                        <p>
-                        <select id="diagramTypeSelector" style="width: 150px; float:right;  left: 50px" onchange="diagramSelected(this.value)">
-                            <option>Inheritance</option>
-                            <option>Neighbourhood</option>
-                            <!-- <option>Connectivity</option> -- NOT YET IMPLEMENTED -->
-                        </select>
-                    </div>
-
-                    <div class="vl" style=" position:absolute; left:860px; top:15px; height: 145px; "></div>
+                    <details-panel id="detailsPanel" type-manager="[[theTypeManager]]"></details-panel>
 
                 </div> <!-- end of LHS -->
-
-
-                <!-- right hand side -->
-
-                <div style=" position:absolute; left:900px;top:150px; height:1300px; width:470px;  background-color:#FFFFFF; " >
-
-                    <div style=" position:absolute;left:10px;top:10px; height:180px; width:450px; background-color:#FFFFFF">
-                        <p style="text-align:center;">
-                        Show properties for the following type:
-                        <p>
-                        Entity Types:
-                        <select id="entityTypeSelector2" style="width: 300px; float:right;  left: 150px" onchange="typeSelected('Entity',this.value)" >
-                            <option value="" disabled selected>None</option>
-                            <!-- options will be added dynamically -->
-                        </select>
-
-                        <p>
-                        Relationship Types:
-                        <select id="relationshipTypeSelector" style="width: 300px; float:right;  left: 150px" onchange="typeSelected('Relationship',this.value)">
-                            <option value="" disabled selected>None</option>
-                            <!-- options will be added dynamically -->
-                        </select>
-
-                        <p>
-                        Classification Types:
-                        <select id="classificationTypeSelector" style="width: 300px; float:right;  left: 150px" onchange="typeSelected('Classification',this.value)">
-                            <option value="" disabled selected>None</option>
-                            <!-- options will be added dynamically -->
-                        </select>
-                    </div>
-
-                    <div id="details" style="position:absolute;left:10px;top:200px;  height:100px; width:450px; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF">
-                        <p style="text-align:center;">
-                        Details of a type will be displayed here when a type is selected
-                        </p>
-                    </div>
-
-                </div> <!-- end of RHS -->
 
             </body>
 
 
-            <!-- TODO - add localization (NLS) support like the following :
-
-              <div>
-               [[localize('type-explorer_prototypeLabel')]]
-              </div>
-
-            -->
 
         `;
     }
 
     static get properties() {
         return {
-            // language - currently uses an explicit on-xxx-changed callback
-            language: {
-                type              : String,   // TODO string or String??
-                value             : 'en'      // default value
-            },
-            //  user-specified serverName - using bi-directional databind
-            serverName: {
-                type               : String,
-                value              : "cocoMDS1",
-                notify             : true,
-                reflectToAttribute : true
-            },
-            //  user-specified serverURLRoot
-            serverURLRoot: {
-                type               : String,
-                value              : "http://localhost:8080",
-                notify             : true,
-                reflectToAttribute : true
-            },
-            //  user-specified enterprise query option (it is true | false)
-            enterpriseQuery: {
-                type               : Boolean,   // TODO boolean??
-                value              : false,
-                notify             : true,
-                reflectToAttribute : true
-            }
+
+
+            theTypeManager: Object
         };
     }
 
-    attached() {
-        this.loadResources(                                             // The specified file only contains the flattened translations for that language:
-            "locales/type-explorer/" + this.language + ".json",         // e.g. for es {"hi": "hola"} unflatten -> {"es": {"hi": "hola"}}
-            this.language,
-            true                                                        // merge so existing resources won't be clobbered
-        );
-    }
+    //attached() {
+    //    this.loadResources(                                             // The specified file only contains the flattened translations for that language:
+    //        "locales/type-explorer/" + this.language + ".json",         // e.g. for es {"hi": "hola"} unflatten -> {"es": {"hi": "hola"}}
+    //        this.language,
+    //        true                                                        // merge so existing resources won't be clobbered
+    //    );
+    //}
 
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-
         console.log("ready called");
-
         this.initialise();
 
+        // EXPERIMENT: explicitly set a local typeManager property...
+        this.theTypeManager = this.$.typeManager;
 
-        this.addEventListener('tex-updated', function (e) {
-            // If you get a text-updated event it means you can populate the type selectors
-            alert(
-                "Event Received!" + "\n" +
-                "e.target.id: " + e.target.id + "\n" +
-                "e.detail.something: " + e.detail.something + "\n" +
-                "e.bubbles: " + e.bubbles + "\n" +
-                "e.composed: " + e.composed
-            );
-            this.tex_updated();
-        })
 
-        console.log("tex-explorer-view ready function complete");
+        console.log("tex-explorer-interface ready...");
 
     }
 
     initialise() {
+
         console.log("initialise called");
 
-        // Language
-        var default_language = 'en';
-        var prg = this.$.radio_language;
-        prg.selected = default_language;
-
-    }
-
-    languageChanged(event) {
-
-        console.log("language changed callback event: "+event);
-        console.log("language changed callback event.target: "+event.target);
-
-        console.log("language changed callback this: "+this);
-        console.log("language changed callback this.$.radio_language: "+this.$.radio_language);
-        console.log("language changed callback this.$.radio_language.selected: "+this.$.radio_language.selected);
-
-        var langName = this.$.radio_language.selected;
-        alert('Language changed to '+langName);
-        this.language = langName;
-        console.log("New value of language property: "+this.language);
-    }
-
-    serverNameChanged() {
-        console.log("Do nothing but log that serverName has changed....: "+ this.serverName);
-    }
-
-    serverURLRootChanged() {
-        console.log("Do nothing but log that serverURLRoot has changed....: "+ this.serverURLRoot);
-    }
-
-    enterpriseQueryChanged() {
-        console.log("Do nothing but log that enterpriseQuery has changed....: "+ this.enterpriseQuery);
-    }
 
 
+        // This class implements the event listeners that orchestrate via function calls to the child components.
+        // The events are as follows:
 
-    doLoad() {
-        console.log("doLoad called");
+        this.addEventListener('types-loaded', function (e) {
+            alert( "Event :" + 'types-loaded' + ' from ' + e.detail.source);
+            this.$.focusManager.inEvtTypesLoaded();
+            this.$.diagramManager.inEvtTypesLoaded();
+        });
 
-        console.log("In doLoad, this is "+this);
-        console.log("In doLoad, this has id  "+this.id);
-        console.log("In doLoad, this has className  "+this.className);
+        this.addEventListener('focus-changed', function (e) {
+             alert( "Event :" + 'focus-changed' + ' from ' + e.detail.source);
+             var focusType = e.detail.focusType;
+             console.log("focus-changed: will be sent to diagram manager and detail panel: focusType "+focusType);
+             this.$.diagramManager.inEvtFocusChanged(focusType);
+             this.$.detailsPanel.inEvtFocusChanged(focusType);
+        });
 
-        //var tex = document.createElement('type-explorer');
-        var tex = this.$.typeGetter;
-        console.log("In doLoad, tex is "+tex);
-        console.log("In doLoad, tex has id  "+tex.id);
-        console.log("In doLoad, tex has className  "+tex.className);
-
-        tex.texLoad(this.serverName, this.serverURLRoot, this.enterpriseQuery);
-    }
-
-
-    /*
-     * Observer to invoke when new type information has been retrieved by the child type-explorer element
-     */
-    tex_updated() {
-
-        var tex = this.$.typeGetter;
-
-
-        // Add entity types to entity type selectors
-        var entities = tex.getEntities();
-        var entityTypesUnsorted = Object.keys(entities);
-        var entityTypesSorted = entityTypesUnsorted.sort();
-
-        entityTypesSorted.forEach(entityExpl => {
-            var typeName = entities[entityExpl].entityDef.name
-            this.addTypeToSelector("entityTypeSelector", typeName);
-            this.addTypeToSelector("entityTypeSelector2", typeName);
+        this.addEventListener('view-changed', function (e) {
+             alert( "Event :" + 'view-changed' + ' from ' + e.detail.source);
+             var viewCategory = e.detail.viewCategory;
+             var viewType = e.detail.viewType;
+             console.log("view-changed: will be sent to detail panel: viewCategory "+viewCategory+", viewType "+viewType);
+             this.$.detailsPanel.inEvtViewChanged(viewCategory,viewType);
         });
 
 
-        // Add relationship types to relationship type selector
-        var relationships = tex.getRelationships();
-        var relationshipTypesUnsorted = Object.keys(relationships);
-        var relationshipTypesSorted = relationshipTypesUnsorted.sort();
+        this.addEventListener('change-focus', function (e) {
+             alert( "Event :" + 'change-focus' + ' from ' + e.detail.source);
+             var focusType = e.detail.focusType;
+             console.log("change-focus: will be sent to focus manager: focusType "+focusType);
+             this.$.focusManager.inEvtChangeFocus(focusType);
+        });
 
-        relationshipTypesSorted.forEach(relationshipExpl => {
-            var typeName = relationships[relationshipExpl].relationshipDef.name
-            this.addTypeToSelector("relationshipTypeSelector", typeName);
+        this.addEventListener('change-view', function (e) {
+             alert( "Event :" + 'change-view' + ' from ' + e.detail.source);
+             var viewCategory = e.detail.viewCategory;
+             var viewType = e.detail.viewType;
+             console.log("change-view: will be sent to focus manager: viewCategory "+viewCategory+" viewType "+viewType);
+             this.$.focusManager.inEvtChangeView(viewCategory, viewType);
         });
 
 
-        // Add classification types to classification type selector
-        var classifications = tex.getClassifications();
-        var classificationTypesUnsorted = Object.keys(classifications);
-        var classificationTypesSorted = classificationTypesUnsorted.sort();
-
-        classificationTypesSorted.forEach(classificationExpl => {
-            var typeName = classifications[classificationExpl].classificationDef.name
-            this.addTypeToSelector("classificationTypeSelector", typeName);
-        });
-
-
-        //  console.log("_loadTypeExplorerRespChanged: would call diagram except there isn't one yet....")
-        //renderSelectedDiagram();
     }
-
-
-    /*
-     * Helper function to add a type to the specified type selector
-     */
-    addTypeToSelector(selectorName, typeName) {
-
-        var select = this.$[selectorName];
-        var opt = document.createElement('option');
-        opt.value = typeName;
-        opt.innerHTML = typeName;
-        select.appendChild(opt);
-    }
-
-
 
 
 }

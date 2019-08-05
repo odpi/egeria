@@ -11,10 +11,20 @@ import '../token-ajax.js';
 
 /**
 *
-* TypeExplorer is the model web component for the type explorer UI component.
+* TypeManager is the implementation of a web component for the retrieval and management of type information for the type explorer UI component.
+*
+*
+* The TypeManager component API has a loadTypes() function, which accepts server connection details and attempts to connect to the server
+* to retrieve type information.
+* On success it updates its internal type store; and fires the typesLoaded event.
+* On failure it TODO - NEEDS TO DO SOMETHING ELSE
+*
+* The TypeManager API also has getter functions for retrieving entity, relationship or classification type names from the loaded type information.
+* The TypeManager API also has getter functions for retrieving detailed entity, relationship or classification type information from the loaded type information.
+*
 */
 
-class TypeExplorer extends PolymerElement {
+class TypeManager extends PolymerElement {
 
     static get template() {
         return html`
@@ -41,13 +51,13 @@ class TypeExplorer extends PolymerElement {
             },
 
             //
-            selectedEntityType: {
+            selectedEntityType: {  // TODO - this should not be part of this component
                 type    : String,
                 value   : undefined
             },
 
              //
-             diagramType: {
+             diagramType: {  // TODO - this should not be part of this component
                  type    : String,
                  value   : "Inheritance"    // initial diagram is entity inheritance
              }
@@ -68,8 +78,8 @@ class TypeExplorer extends PolymerElement {
     /*
      *  Ask the UI Aoplication to retrieve the type information from the named OMAG Server
      */
-    texLoad(serverName, serverURLRoot, enterpriseQuery) {
-        console.log("texLoad called");
+    loadTypes(serverName, serverURLRoot, enterpriseQuery) {
+        console.log("TypeManager loadTypes called");
 
         if (serverName !== undefined && serverName !== null  && serverURLRoot !== undefined && serverURLRoot !== null ) {
 
@@ -78,7 +88,7 @@ class TypeExplorer extends PolymerElement {
                 /*
                  * Requesting new type information so clear wat we already had...
                  */
-                this.selectedEntityType = undefined;
+                this.selectedEntityType = undefined;   // TODO - this should not be part of this component, but does need to be reset (elsewhere) on a new load
                 this.tex                = undefined;
 
                 /*
@@ -138,13 +148,9 @@ class TypeExplorer extends PolymerElement {
         if (newValue !== undefined && newValue !== null) {
             this.tex = newValue;
 
-            alert("TEX object updated!");
+            alert("Type information has been updated!");
 
-            var customEvent = new CustomEvent('tex-updated', {
-              bubbles: true,
-              composed: true,
-              detail: {something: "else"}
-            });
+            var customEvent = new CustomEvent('types-loaded', { bubbles: true, composed: true, detail: {source: "type-manager"}  });
             this.dispatchEvent(customEvent);
         }
     }
@@ -170,6 +176,23 @@ class TypeExplorer extends PolymerElement {
         return this.tex.classifications;
     }
 
+    getEntity(typeName) {
+        return this.tex.entities[typeName];
+    }
+
+    getRelationship(typeName) {
+        return this.tex.relationships[typeName];
+    }
+
+    getClassification(typeName) {
+        return this.tex.classifications[typeName];
+    }
+
+
+    getEnum(typeName) {
+        return this.tex.enums[typeName];
+    }
+
 }
 
-window.customElements.define('type-explorer', TypeExplorer);
+window.customElements.define('type-manager', TypeManager);

@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.accessservices.api;
+package org.odpi.openmetadata.userinterface.accessservices.api.tex;
 
 
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.userinterface.accessservices.api.SecureController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -147,7 +149,7 @@ public class TypeExplorerController extends SecureController
             tex.resolve();
             return tex;
 
-        } catch (UserNotAuthorizedException | RepositoryErrorException e) {
+        } catch (UserNotAuthorizedException | RepositoryErrorException | InvalidParameterException e) {
 
             // TODO - when merged, integrate into Egeria error handling
             System.out.println("Failed to get TDG!! exception " + e.getMessage());
