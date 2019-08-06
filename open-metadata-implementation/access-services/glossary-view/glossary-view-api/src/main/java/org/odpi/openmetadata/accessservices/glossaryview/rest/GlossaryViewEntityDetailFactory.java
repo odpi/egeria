@@ -17,12 +17,12 @@ public class GlossaryViewEntityDetailFactory {
 
     private final static Map<String, Supplier<GlossaryViewEntityDetail>> workers = new HashMap<>();
     static{
-        workers.put(DEFAULT, () -> new GlossaryViewEntityDetail());
-        workers.put(GLOSSARY, () -> new Glossary());
-        workers.put(CATEGORY, () -> new Category());
-        workers.put(TERM, () -> new Term());
-        workers.put(CONTROLLED_TERM, () -> new ControlledTerm());
-        workers.put(EXTERNAL_GLOSSARY_LINK, () -> new GlossaryViewEntityDetail());
+        workers.put(DEFAULT, GlossaryViewEntityDetail::new);
+        workers.put(GLOSSARY, Glossary::new);
+        workers.put(CATEGORY, Category::new);
+        workers.put(TERM, Term::new);
+        workers.put(CONTROLLED_TERM, ControlledTerm::new);
+        workers.put(EXTERNAL_GLOSSARY_LINK, GlossaryViewEntityDetail::new);
     }
 
     public static GlossaryViewEntityDetail build(String entityType){

@@ -234,9 +234,7 @@ public abstract class BasicOperation {
      */
     public void addSemanticAssignments(String userId, String registrationGuid, String registrationQualifiedName, List<BusinessTerm> businessTerms, EntityDetail derivedColumnEntity){
         if(!CollectionUtils.isEmpty(businessTerms)) {
-            businessTerms.stream().forEach(bt -> {
-                addSemanticAssignment(userId, registrationGuid, registrationQualifiedName, bt, derivedColumnEntity);
-            });
+            businessTerms.forEach(bt -> addSemanticAssignment(userId, registrationGuid, registrationQualifiedName, bt, derivedColumnEntity));
         }
     }
 
@@ -323,7 +321,7 @@ public abstract class BasicOperation {
         List<String> validRelationships = sources.stream().map(source -> addQueryTarget(columnGuid, source,
                 existingRelationships).getGUID()).collect(Collectors.toList());
         if (!CollectionUtils.isEmpty(existingRelationships) ) {
-            existingRelationships.stream().filter(r -> !validRelationships.contains(r.getGUID())).forEach(r -> omEntityDao.purgeRelationship(r));
+            existingRelationships.stream().filter(r -> !validRelationships.contains(r.getGUID())).forEach(omEntityDao::purgeRelationship);
         }
     }
 
