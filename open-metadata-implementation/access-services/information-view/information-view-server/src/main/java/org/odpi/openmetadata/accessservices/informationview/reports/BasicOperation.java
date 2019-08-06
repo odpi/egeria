@@ -370,8 +370,7 @@ public abstract class BasicOperation {
         if (CollectionUtils.isEmpty(businessTerms)) {
             omEntityDao.purgeRelationships(existingAssignments);
         } else {
-            businessTerms.stream().map( bt -> createOrUpdateSemanticAssignment(userId, registrationGuid, registrationQualifiedName, columnGuid, bt, existingAssignments));
+            businessTerms.forEach( bt -> createOrUpdateSemanticAssignment(userId, registrationGuid, registrationQualifiedName, columnGuid, bt, existingAssignments));
         }
     }
-
 }
