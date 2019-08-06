@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
-
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
 import org.springframework.web.client.RestTemplate;
 
 import java.security.InvalidParameterException;
@@ -26,27 +27,26 @@ public class OpenLineage  {
         this.restTemplate = new RestTemplate();
     }
 
-    public String initialGraph(String userId, String lineageQuery, String graph, String guid) throws InvalidParameterException {
+    public String initialGraph(String userId, Queries lineageQuery, Graphs graph, String guid) throws InvalidParameterException {
         String methodName = "initialGraph";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/initial-graph/{2}/{3}/{4}";
         return getRestCall(url, String.class, userId, serverName, lineageQuery, graph, guid);
 
     }
 
-    public String dumpGraph(String userId, String graph) throws InvalidParameterException {
+    public String dumpGraph(String userId, Graphs graph) throws InvalidParameterException {
         String methodName = "dumpGraph";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/dump/{2}";
         return getRestCall(url, String.class, userId, serverName, graph);
 
     }
 
-    public String exportGraph(String userId, String graph) throws InvalidParameterException {
+    public String exportGraph(String userId, Graphs graph) throws InvalidParameterException {
         String methodName = "exportGraph";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/export/{2}";
         return getRestCall(url, String.class, userId, serverName, graph);
 
     }
-
 
     public String generateMockGraph(String userId) throws InvalidParameterException {
         String methodName = "generateMockGraph";
