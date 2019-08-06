@@ -7,10 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -70,32 +67,7 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public String valueAsString()
     {
-        Map<String, Object> objectValue = new HashMap<>();
-
-        if (mapValues != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertyValueMap = mapValues.getInstanceProperties();
-
-            if (instancePropertyValueMap != null)
-            {
-                Set<String> propertyValues = instancePropertyValueMap.keySet();
-
-                for (String propertyName : propertyValues)
-                {
-                    if (propertyName != null)
-                    {
-                        objectValue.put(propertyName, instancePropertyValueMap.get(propertyName).valueAsString());
-                    }
-                }
-            }
-        }
-
-        if (objectValue.isEmpty())
-        {
-            return null;
-        }
-
-        return objectValue.toString();
+      return mapValuesAsString(mapValues.getInstanceProperties()).toString();
     }
 
 
@@ -106,32 +78,7 @@ public class MapPropertyValue extends InstancePropertyValue
      */
     public Object valueAsObject()
     {
-        Map<String, Object> objectValue = new HashMap<>();
-
-        if (mapValues != null)
-        {
-            Map<String, InstancePropertyValue> instancePropertyValueMap = mapValues.getInstanceProperties();
-
-            if (instancePropertyValueMap != null)
-            {
-                Set<String> indicies = instancePropertyValueMap.keySet();
-
-                for (String propertyName : indicies)
-                {
-                    if (propertyName != null)
-                    {
-                        objectValue.put(propertyName, instancePropertyValueMap.get(propertyName).valueAsObject());
-                    }
-                }
-            }
-        }
-
-        if (objectValue.isEmpty())
-        {
-            return null;
-        }
-
-        return objectValue;
+        return mapValuesAsObject(mapValues.getInstanceProperties());
     }
 
 
