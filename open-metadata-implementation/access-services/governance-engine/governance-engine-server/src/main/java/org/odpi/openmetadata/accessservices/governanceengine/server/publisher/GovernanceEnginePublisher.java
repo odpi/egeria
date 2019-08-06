@@ -29,10 +29,14 @@ import org.slf4j.LoggerFactory;
  */
 public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
+    private static final String eventPublisherName = "Governance Engine OMAS Event Publisher";
+
     private static final Logger log = LoggerFactory.getLogger(GovernanceEnginePublisher.class);
     private GovernanceEngineEventProcessor governanceEngineEventProcessor;
 
     public GovernanceEnginePublisher(GovernanceEngineEventProcessor governanceEngineEventProcessor) {
+        super(eventPublisherName);
+
         this.governanceEngineEventProcessor = governanceEngineEventProcessor;
     }
 

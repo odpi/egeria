@@ -76,6 +76,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      */
     public OMRSRepositoryContentManager(OMRSAuditLog   auditLog)
     {
+        super("Local Repository Content (TypeDef) Manager");
         this.auditLog = auditLog;
     }
 
