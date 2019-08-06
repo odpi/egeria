@@ -4,46 +4,21 @@ package org.odpi.openmetadata.accessservices.informationview.context;
 
 
 import org.apache.commons.collections4.CollectionUtils;
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
-import org.odpi.openmetadata.accessservices.informationview.events.EndpointSource;
-import org.odpi.openmetadata.accessservices.informationview.events.ForeignKey;
-import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -282,7 +257,7 @@ public class ColumnContextBuilder {
         if (foreignKeys.size() > 1) {
             String allReferencedColumns = foreignKeys.stream().map(ForeignKey::getColumnGuid).collect(Collectors.joining(", "));
             log.error("Column {} is referencing more than one column from another table: {}", columnEntity.getGUID(),
-                                                                                                allReferencedColumns);
+                    allReferencedColumns);
         }
         return null;
 
@@ -293,14 +268,14 @@ public class ColumnContextBuilder {
                 relationshipTypeName).getGUID();
         try {
             return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                                                                                        guid,
-                                                                                        relationshipTypeGuid,
-                                                                                        0,
-                                                                                        Arrays.asList(InstanceStatus.ACTIVE),
-                                                                                        null,
-                                                                                        null,
-                                                                                        null,
-                                                                                        0);
+                    guid,
+                    relationshipTypeGuid,
+                    0,
+                    Arrays.asList(InstanceStatus.ACTIVE),
+                    null,
+                    null,
+                    null,
+                    0);
         } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
             throw buildRetrieveEntityException(Constants.GUID, guid, e, this.getClass().getName());
         }
@@ -381,7 +356,7 @@ public class ColumnContextBuilder {
                     Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
             List<Relationship> dbSchemaTypeToTableRelationships =
                     enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                    dbSchemaTypeEntity.getGUID(), relationshipTypeGuid, startFrom,
+                            dbSchemaTypeEntity.getGUID(), relationshipTypeGuid, startFrom,
                             Arrays.asList(InstanceStatus.ACTIVE), null, null, null, pageSize);
 
             return Optional.ofNullable(dbSchemaTypeToTableRelationships)
@@ -419,8 +394,11 @@ public class ColumnContextBuilder {
         if (columnEntity.getClassifications() == null || columnEntity.getClassifications().isEmpty()) {
             return null;
         }
-        Classification classification =
-                columnEntity.getClassifications().stream().filter(e -> e.getName().equals(Constants.PRIMARY_KEY)).findFirst().orElse(null);
+        Classification classification = columnEntity.getClassifications().stream()
+                .filter(e -> e.getName().equals(Constants.PRIMARY_KEY))
+                .findFirst()
+                .orElse(null);
+
         return classification != null ? omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME,
                 Constants.NAME, classification.getProperties(), BUILD_CONTEXT_METHOD_NAME) : null;
     }
@@ -590,14 +568,14 @@ public class ColumnContextBuilder {
         try {
             relationshipToEndpoint =
                     enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                    connectionEntityGuid,
-                    relationshipTypeGuid,
-                    0,
-                    Arrays.asList(InstanceStatus.ACTIVE),
-                    null,
-                    null,
-                    null,
-                    0).get(0);
+                            connectionEntityGuid,
+                            relationshipTypeGuid,
+                            0,
+                            Arrays.asList(InstanceStatus.ACTIVE),
+                            null,
+                            null,
+                            null,
+                            0).get(0);
         } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
             throw buildRetrieveContextException(connectionEntityGuid, e, this.getClass().getName());
         }
@@ -617,18 +595,18 @@ public class ColumnContextBuilder {
     private EntityDetail getConnectorTypeProviderName(String connectionEntityGuid) {
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID,
                 Constants.CONNECTION_CONNECTOR_TYPE).getGUID();
-        Relationship relationshipToConnectorType ;
+        Relationship relationshipToConnectorType;
         try {
             relationshipToConnectorType =
                     enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                    connectionEntityGuid,
-                    relationshipTypeGuid,
-                    0,
-                    Arrays.asList(InstanceStatus.ACTIVE),
-                    null,
-                    null,
-                    null,
-                    0).get(0);
+                            connectionEntityGuid,
+                            relationshipTypeGuid,
+                            0,
+                            Arrays.asList(InstanceStatus.ACTIVE),
+                            null,
+                            null,
+                            null,
+                            0).get(0);
             return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID,
                     relationshipToConnectorType.getEntityTwoProxy().getGUID());
         } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException | EntityProxyOnlyException e) {
