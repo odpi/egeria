@@ -345,6 +345,7 @@ public class RepositoryHandler
      * @param entityGUID unique identifier of entity to update
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
+     * @param instanceStatus initial status (needs to be valid for type)
      * @param methodName name of calling method
      *
      * @throws PropertyServerException problem accessing property server
