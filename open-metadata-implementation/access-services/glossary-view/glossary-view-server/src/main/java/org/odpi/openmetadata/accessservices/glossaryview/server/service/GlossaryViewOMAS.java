@@ -68,10 +68,8 @@ public class GlossaryViewOMAS extends OMRSClient {
         glossaryViewClassification.setStatus(classification.getStatus().getName());
 
         if(classification.getProperties().getInstanceProperties() != null) {
-            classification.getProperties().getInstanceProperties().entrySet().stream()
-                    .forEach(incoming -> {
-                        glossaryViewClassification.addProperty(incoming.getKey(), incoming.getValue().valueAsString());
-                    });
+            classification.getProperties().getInstanceProperties()
+                    .forEach((key, value) -> glossaryViewClassification.addProperty(key, value.valueAsString()));
         }
 
         return glossaryViewClassification;
@@ -103,10 +101,8 @@ public class GlossaryViewOMAS extends OMRSClient {
             glossaryViewEntityDetail.setEffectiveFromTime(optionalProperties.get().getEffectiveFromTime());
             glossaryViewEntityDetail.setEffectiveToTime(optionalProperties.get().getEffectiveToTime());
 
-            optionalProperties.get().getInstanceProperties().entrySet()
-                    .forEach( incoming -> {
-                        glossaryViewEntityDetail.putProperty(incoming.getKey(), incoming.getValue().valueAsString());
-                    });
+            optionalProperties.get().getInstanceProperties()
+                    .forEach((key, value) -> glossaryViewEntityDetail.putProperty(key, value.valueAsString()));
         }
 
         if(entityDetail.getClassifications() != null) {
