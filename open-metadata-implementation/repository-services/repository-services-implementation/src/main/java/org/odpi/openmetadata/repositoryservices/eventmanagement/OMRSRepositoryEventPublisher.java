@@ -36,7 +36,7 @@ public class OMRSRepositoryEventPublisher extends OMRSRepositoryEventBuilder
                                         OMRSTopicConnector topicConnector,
                                         OMRSAuditLog       auditLog)
     {
-        super();
+        super(publisherName);
 
         String actionDescription = "Initialize event publisher";
 

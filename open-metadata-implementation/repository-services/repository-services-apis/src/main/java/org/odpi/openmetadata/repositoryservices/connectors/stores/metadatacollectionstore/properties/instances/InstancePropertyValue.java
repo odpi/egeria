@@ -4,7 +4,10 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -12,9 +15,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * InstancePropertyValue provides a common class for holding an instance type and value.
  */
-@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -26,21 +29,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = PrimitivePropertyValue.class, name = "PrimitivePropertyValue"),
         @JsonSubTypes.Type(value = StructPropertyValue.class, name = "StructPropertyValue")
 })
-public abstract class InstancePropertyValue extends InstanceElementHeader
-{
+public abstract class InstancePropertyValue extends InstanceElementHeader {
     /*
      * Common type information that is this is augmented by the subclasses
      */
-    private   InstancePropertyCategory   instancePropertyCategory = null;
-    private   String                     typeGUID  = null;
-    private   String                     typeName  = null;
+    private InstancePropertyCategory instancePropertyCategory = null;
+    private String typeGUID = null;
+    private String typeName = null;
 
 
     /**
      * Default constructor for Jackson
      */
-    protected InstancePropertyValue()
-    {
+    protected InstancePropertyValue() {
     }
 
     /**
@@ -48,8 +49,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @param instancePropertyCategory InstancePropertyCategory Enum
      */
-    protected InstancePropertyValue(InstancePropertyCategory   instancePropertyCategory)
-    {
+    protected InstancePropertyValue(InstancePropertyCategory instancePropertyCategory) {
         super();
         this.instancePropertyCategory = instancePropertyCategory;
     }
@@ -60,12 +60,10 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @param template InstancePropertyValue
      */
-    protected InstancePropertyValue(InstancePropertyValue  template)
-    {
+    protected InstancePropertyValue(InstancePropertyValue template) {
         super(template);
 
-        if (template != null)
-        {
+        if (template != null) {
             this.instancePropertyCategory = template.getInstancePropertyCategory();
             this.typeGUID = template.getTypeGUID();
             this.typeName = template.getTypeName();
@@ -96,13 +94,51 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      */
     public abstract Object valueAsObject();
 
+    /**
+     * Default method for "valueAsString".
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return Map object values
+     */
+    protected <K, V extends InstancePropertyValue>
+    Map<K, Object> mapValuesAsObject(Map<K, V> valMap) {
+        return convertValues(valMap, entry -> entry.getValue().valueAsObject());
+    }
+
+    /**
+     * Default method for "valueAsObject".
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return Map string values
+     */
+    protected <K, V extends InstancePropertyValue>
+    Map<K, String> mapValuesAsString(Map<K, V> valMap) {
+        return convertValues(valMap, entry -> entry.getValue().valueAsString());
+    }
+
+    /**
+     * Converts an InstancePropertyValue to the values ​​we need.
+     * Object, String or whatever.
+     *
+     * @return Map with new values
+     */
+    private <K, V extends InstancePropertyValue, R>
+    Map<K, R> convertValues(Map<K, V> valMap, Function<Map.Entry<K, V>, R> mapper) {
+        return Optional.ofNullable(valMap)
+                .map(Map::entrySet)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .collect(Collectors.toMap(Map.Entry::getKey, mapper));
+    }
 
     /**
      * Return the category of this instance property's type.
      *
      * @return TypeDefCategory enum value
      */
-    public InstancePropertyCategory getInstancePropertyCategory() { return instancePropertyCategory; }
+    public InstancePropertyCategory getInstancePropertyCategory() {
+        return instancePropertyCategory;
+    }
 
 
     /**
@@ -110,8 +146,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @param instancePropertyCategory new category
      */
-    public void setInstancePropertyCategory(InstancePropertyCategory instancePropertyCategory)
-    {
+    public void setInstancePropertyCategory(InstancePropertyCategory instancePropertyCategory) {
         this.instancePropertyCategory = instancePropertyCategory;
     }
 
@@ -121,7 +156,9 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @return String unique identifier
      */
-    public String getTypeGUID() { return typeGUID; }
+    public String getTypeGUID() {
+        return typeGUID;
+    }
 
 
     /**
@@ -129,7 +166,9 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @param typeGUID String unique identifier
      */
-    public void setTypeGUID(String typeGUID) { this.typeGUID = typeGUID; }
+    public void setTypeGUID(String typeGUID) {
+        this.typeGUID = typeGUID;
+    }
 
 
     /**
@@ -137,7 +176,9 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @return String type name
      */
-    public String getTypeName() { return typeName; }
+    public String getTypeName() {
+        return typeName;
+    }
 
 
     /**
@@ -145,7 +186,9 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      *
      * @param typeName String type name
      */
-    public void setTypeName(String typeName) { this.typeName = typeName; }
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
 
 
     /**
@@ -154,8 +197,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      * @return JSON style description of variables.
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "InstancePropertyValue{" +
                 "instancePropertyCategory=" + instancePropertyCategory +
                 ", typeGUID='" + typeGUID + '\'' +
@@ -171,14 +213,11 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      * @return boolean result
      */
     @Override
-    public boolean equals(Object objectToCompare)
-    {
-        if (this == objectToCompare)
-        {
+    public boolean equals(Object objectToCompare) {
+        if (this == objectToCompare) {
             return true;
         }
-        if (!(objectToCompare instanceof InstancePropertyValue))
-        {
+        if (!(objectToCompare instanceof InstancePropertyValue)) {
             return false;
         }
         InstancePropertyValue that = (InstancePropertyValue) objectToCompare;
@@ -194,8 +233,7 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
      * @return int hash code
      */
     @Override
-    public int hashCode()
-    {
+    public int hashCode() {
 
         return Objects.hash(getInstancePropertyCategory(), getTypeGUID(), getTypeName());
     }
