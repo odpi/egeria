@@ -213,7 +213,7 @@ public class OMRSCohortManager
              */
             if (enterpriseTopicConnector != null)
             {
-                OMRSRepositoryEventPublisher enterpriseEventPublisher = new OMRSRepositoryEventPublisher("OMAS Enterprise Access",
+                OMRSRepositoryEventPublisher enterpriseEventPublisher = new OMRSRepositoryEventPublisher("Cohort to Enterprise",
                                                                                                          enterpriseTopicConnector,
                                                                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 

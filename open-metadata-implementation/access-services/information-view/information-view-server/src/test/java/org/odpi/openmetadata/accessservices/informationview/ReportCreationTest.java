@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.informationview;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
+import org.junit.Test;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -12,9 +14,6 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Ignore;
-import org.testng.annotations.Test;
 
 import java.io.File;
 import java.util.List;
@@ -29,7 +28,7 @@ public class ReportCreationTest extends InMemoryRepositoryTest{
     private ReportHandler reportHandler;
     private LookupHelper lookupHelper;
 
-    @BeforeClass
+    @Before
     public void setup() throws Exception {
         super.setup();
         lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);

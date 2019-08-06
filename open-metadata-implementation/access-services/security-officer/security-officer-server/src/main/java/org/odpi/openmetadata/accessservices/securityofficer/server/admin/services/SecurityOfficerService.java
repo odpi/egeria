@@ -71,4 +71,19 @@ public class SecurityOfficerService {
         return response;
     }
 
+    public SecurityOfficerSchemaElementListResponse deleteSecurityTag(String serverName, String userId, String schemaElementId) {
+        SecurityOfficerSchemaElementListResponse response = new SecurityOfficerSchemaElementListResponse();
+
+        try {
+            response.setSchemaElementEntityList(instanceHandler.deleteSecurityTagBySchemaElementId(serverName, userId, schemaElementId));
+        } catch (ClassificationErrorException | EntityNotKnownException | InvalidParameterException | EntityProxyOnlyException
+                | UserNotAuthorizedException | RepositoryErrorException | TypeErrorException | PagingErrorException
+                | TypeDefNotKnownException | PropertyErrorException | FunctionNotSupportedException e) {
+            exceptionHandler.captureOMRSException(response, e);
+        } catch (PropertyServerException e) {
+            exceptionHandler.captureCheckedException(response, e, e.getClass().getName());
+        }
+
+        return response;
+    }
 }
