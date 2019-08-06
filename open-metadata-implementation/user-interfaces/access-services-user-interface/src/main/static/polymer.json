@@ -11,7 +11,8 @@
     "node_modules/@webcomponents/webcomponentsjs/*.js",
     "node_modules/web-animations-js/*.js",
     "!node_modules/@webcomponents/webcomponentsjs/gulpfile.js",
-    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
+    "node_modules/@webcomponents/webcomponentsjs/bundles/*.js",
+    "node_modules/vis/dist/vis-network.min.css"
   ],
   "builds": [
     {

@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_LABELS;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
@@ -35,9 +36,7 @@ public class Builder {
 
     public SecuritySchemaElement buildSecuritySchemaElement(EntityDetail entityDetail, OMRSRepositoryHelper omrsRepositoryHelper) {
         Entity securitySchemaElement = new SecuritySchemaElement();
-
         buildEntity(entityDetail, securitySchemaElement);
-
 
         SecurityClassification securityClassification = getSecurityClassification(entityDetail, omrsRepositoryHelper);
         if (securityClassification != null && securitySchemaElement instanceof SecuritySchemaElement) {
@@ -80,11 +79,14 @@ public class Builder {
         return securityClassification;
     }
 
+    public List<SecuritySchemaElement> buildSecuritySchemaElementList(List<EntityDetail> entityDetailList, OMRSRepositoryHelper repositoryHelper) {
+        return entityDetailList.stream().map(entityDetail -> buildSecuritySchemaElement(entityDetail, repositoryHelper)).collect(Collectors.toList());
+    }
+
     private SchemaElementEntity buildSchemaElement(EntityDetail entityDetail) {
         Entity schemaElementEntity = new SchemaElementEntity();
 
         buildEntity(entityDetail, schemaElementEntity);
-
 
         schemaElementEntity.setClassifications(getClassifications(entityDetail.getClassifications()));
         return (SchemaElementEntity) schemaElementEntity;
