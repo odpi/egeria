@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * OMRSRepositoryContentHelper provides methods to repository connectors and repository event mappers to help
@@ -3239,6 +3240,66 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+    /**
+     * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
+     * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal).
+     *
+     * @param s - the string to escape to avoid being interpreted as a regular expression
+     * @return string that is interpreted literally rather than as a regular expression
+     * @see #isLiteral(String)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    public String getQualifiedLiteralString(String s)
+    {
+        if (s == null)
+        {
+            return null;
+        }
+        return Pattern.quote(s);
+    }
+
+    /**
+     * Determine whether the provided string should be interpreted literally (true) or as a regular expression (false).
+     * Primarily a helper method for methods that do not directly handle regular expressions (for those it
+     * should be possible to just directly use the string as-is and it will be correctly interpreted).
+     *
+     * @param s - the string to check whether it should be interpreted literally or as as a regular expression
+     * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
+     * @see #getQualifiedLiteralString(String)
+     * @see #getUnqualifiedLiteralString(String)
+     */
+    public boolean isLiteral(String s)
+    {
+        if (s == null)
+        {
+            return true;
+        }
+        return s.startsWith("\\Q") && s.endsWith("\\E");
+    }
+
+    /**
+     * Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).
+     * Primarily a helper method for methods that do not directly leverage regular expressions: so that they have a string
+     * they can treat as a literal without needing to un-escape every potentially regex-meaningful character.
+     *
+     * @param s - the (potentially escaped) string to un-escape
+     * @return the un-escaped literal string
+     * @see #isLiteral(String)
+     * @see #getQualifiedLiteralString(String)
+     */
+    public String getUnqualifiedLiteralString(String s)
+    {
+        if (s == null)
+        {
+            return null;
+        }
+        if (isLiteral(s))
+        {
+            return s.substring(2, s.length() - 2);
+        }
+        return s;
     }
 
     /**
