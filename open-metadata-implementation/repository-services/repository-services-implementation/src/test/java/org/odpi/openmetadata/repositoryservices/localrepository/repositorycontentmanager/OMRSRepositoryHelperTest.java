@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static org.testng.Assert.*;
 
@@ -115,17 +116,24 @@ public class OMRSRepositoryHelperTest
     @Test
     void testRegexHelpers() {
 
-        // Start with a regex
+        // Start with a regex and a string that it will match
         String testRegex = ".*[A-Za-z].*";
+        String testMatch = "somethingABCelse";
 
-        // test 1 ensure that it is not recognized as a literal (non-regex)
+        // test 1 ensure that the regular expression is match-able
+        assertTrue(Pattern.matches(testRegex, testMatch));
+
+        // test 2 ensure that it is not recognized as a literal (non-regex)
         assertFalse(createHelper().isLiteral(testRegex));
 
-        // test 2 ensure that getting the qualified literal IS recognized as a literal (not a regex)
+        // test 3 ensure that getting the qualified literal IS recognized as a literal (not a regex)
         String testLiteral = createHelper().getQualifiedLiteralString(testRegex);
         assertTrue(createHelper().isLiteral(testLiteral));
 
-        // test 3 ensure that unqualifying the literal gives us our original string back
+        // test 4 ensure that the qualified literal does NOT match the test match any more
+        assertFalse(Pattern.matches(testLiteral, testMatch));
+
+        // test 5 ensure that unqualifying the literal gives us our original string back
         String testBack = createHelper().getUnqualifiedLiteralString(testLiteral);
         assertTrue(testBack.equals(testRegex));
 
