@@ -205,7 +205,7 @@ public class ColumnContextBuilder {
                     code.getSystemAction(), code.getUserAction(), e);
         }
         if (CollectionUtils.isNotEmpty(relationshipsToColumns)) {
-            allColumns.addAll(relationshipsToColumns.parallelStream().map(r -> buildTableColumn(r)).collect(Collectors.toList()));
+            allColumns.addAll(relationshipsToColumns.parallelStream().map(this::buildTableColumn).collect(Collectors.toList()));
         }
         return allColumns;
     }
@@ -280,7 +280,7 @@ public class ColumnContextBuilder {
             return foreignKeys.get(0);
         }
         if (foreignKeys.size() > 1) {
-            String allReferencedColumns = foreignKeys.stream().map(key -> key.getColumnGuid()).collect(Collectors.joining(", "));
+            String allReferencedColumns = foreignKeys.stream().map(ForeignKey::getColumnGuid).collect(Collectors.joining(", "));
             log.error("Column {} is referencing more than one column from another table: {}", columnEntity.getGUID(),
                                                                                                 allReferencedColumns);
         }
@@ -680,7 +680,10 @@ public class ColumnContextBuilder {
         List<Relationship> columnsAssigned = null;
         columnsAssigned = getRelationships(Constants.SEMANTIC_ASSIGNMENT, businessTermGuid);
         if (columnsAssigned != null && !columnsAssigned.isEmpty()) {
-            return columnsAssigned.stream().filter(r -> Constants.RELATIONAL_COLUMN.equals(r.getEntityOneProxy().getType().getTypeDefName())).map(e -> e.getEntityOneProxy()).collect(Collectors.toList());
+            return columnsAssigned.stream()
+                    .filter(r -> Constants.RELATIONAL_COLUMN.equals(r.getEntityOneProxy().getType().getTypeDefName()))
+                    .map(Relationship::getEntityOneProxy)
+                    .collect(Collectors.toList());
         }
         return entities;
     }

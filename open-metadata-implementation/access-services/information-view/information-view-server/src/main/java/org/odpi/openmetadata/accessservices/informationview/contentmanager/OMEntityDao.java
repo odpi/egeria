@@ -531,7 +531,7 @@ public class OMEntityDao {
     public void purgeRelationships(List<Relationship> relationship) {
         Optional.ofNullable(relationship).map(Collection::stream)
                 .orElseGet(Stream::empty)
-                .forEach(r -> purgeRelationship(r));
+                .forEach(this::purgeRelationship);
     }
     public void purgeRelationship(Relationship relationship) {
         if (relationship == null || relationship.getGUID() == null || relationship.getType() == null) {
@@ -577,8 +577,8 @@ public class OMEntityDao {
         Set<String> allLinkedEntitiesGuids = Optional.ofNullable(relationships)
                                                     .map(Collection::stream)
                                                     .orElseGet(Stream::empty)
-                                                    .map(e -> relationshipEndFunction.apply(e))
+                                                    .map(relationshipEndFunction)
                                                     .collect(Collectors.toSet());
-        return allLinkedEntitiesGuids.stream().map(guid -> getEntityByGuid(guid)).collect(Collectors.toList());
+        return allLinkedEntitiesGuids.stream().map(this::getEntityByGuid).collect(Collectors.toList());
     }
 }

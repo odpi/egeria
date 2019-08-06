@@ -111,7 +111,7 @@ public class GlossaryViewOMAS extends OMRSClient {
 
         if(entityDetail.getClassifications() != null) {
             glossaryViewEntityDetail.addClassifications(entityDetail.getClassifications().stream()
-                    .map(c -> classificationConverter.apply(c)).collect(Collectors.toList()));
+                    .map(classificationConverter).collect(Collectors.toList()));
         }
         return glossaryViewEntityDetail;
     };
@@ -132,11 +132,9 @@ public class GlossaryViewOMAS extends OMRSClient {
 
         try {
             Optional<EntityDetail> entityDetail = getEntityDetail(userId, serverName, entityGUID, entityTypeName, methodName);
+            entityDetail.ifPresent(detail -> response.addEntityDetail(entityDetailConverter.apply(detail)));
 
-            if( entityDetail.isPresent() ) {
-                response.addEntityDetail(entityDetailConverter.apply(entityDetail.get()));
-            }
-        }catch (OMRSExceptionWrapper ew){
+        } catch (OMRSExceptionWrapper ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
                     ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
@@ -172,7 +170,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             response.addEntityDetails(entities.stream()
                     .filter(entity -> !entity.getGUID().equals(entityGUID))
                     .filter(effectivePredicate)
-                    .map(entity -> entityDetailConverter.apply(entity))
+                    .map(entityDetailConverter)
                     .collect(Collectors.toList()));
         }catch (OMRSExceptionWrapper ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
@@ -206,7 +204,7 @@ public class GlossaryViewOMAS extends OMRSClient {
 
             response.addEntityDetails(entities.stream()
                     .filter(effectivePredicate)
-                    .map(entity -> entityDetailConverter.apply(entity) )
+                    .map(entityDetailConverter)
                     .collect(Collectors.toList()));
         }catch (OMRSExceptionWrapper ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
@@ -258,5 +256,4 @@ public class GlossaryViewOMAS extends OMRSClient {
         }
         return helper.get().getTypeDefByName(GLOSSARY_VIEW_OMAS, typeDefName).getGUID();
     }
-
 }
