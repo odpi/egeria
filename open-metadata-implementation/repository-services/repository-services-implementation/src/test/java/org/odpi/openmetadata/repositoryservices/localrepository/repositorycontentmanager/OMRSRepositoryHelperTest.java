@@ -12,8 +12,7 @@ import org.testng.annotations.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 public class OMRSRepositoryHelperTest
 {
@@ -112,6 +111,26 @@ public class OMRSRepositoryHelperTest
 
 
     }
+
+    @Test
+    void testRegexHelpers() {
+
+        // Start with a regex
+        String testRegex = ".*[A-Za-z].*";
+
+        // test 1 ensure that it is not recognized as a literal (non-regex)
+        assertFalse(createHelper().isLiteral(testRegex));
+
+        // test 2 ensure that getting the qualified literal IS recognized as a literal (not a regex)
+        String testLiteral = createHelper().getQualifiedLiteralString(testRegex);
+        assertTrue(createHelper().isLiteral(testLiteral));
+
+        // test 3 ensure that unqualifying the literal gives us our original string back
+        String testBack = createHelper().getUnqualifiedLiteralString(testLiteral);
+        assertTrue(testBack.equals(testRegex));
+
+    }
+
     private OMRSRepositoryHelper createHelper() {
         return new OMRSRepositoryContentHelper(null);
     }
