@@ -1086,6 +1086,11 @@ public interface OMRSRepositoryHelper
 
     /**
      * Determine whether the provided string should be interpreted literally (true) or as a regular expression (false).
+     * Note that this method relies on the use of the getQualifiedLiteralString helper method having been used to
+     * qualify a string when it should be treated as a literal. That is, this method relies on the presence of the
+     * escape sequences used by Java's Pattern.quote() method. The method is not intended to work on all strings in
+     * general to arbitrarily detect whether they might be a regular expression or not.
+     *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
