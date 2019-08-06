@@ -157,10 +157,10 @@ public class DataEngineSchemaTypeHandler {
         String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
 
         if (sourceSchemaAttributeGUID == null) {
-            thrownNoSchemaAttributeException(sourceSchemaAttributeQualifiedName);
+            throwNoSchemaAttributeException(sourceSchemaAttributeQualifiedName);
         }
         if (targetSchemaAttributeGUID == null) {
-            thrownNoSchemaAttributeException(targetSchemaAttributeQualifiedName);
+            throwNoSchemaAttributeException(targetSchemaAttributeQualifiedName);
         }
 
         SchemaType sourceSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID,
@@ -172,8 +172,8 @@ public class DataEngineSchemaTypeHandler {
                 sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
     }
 
-    private void thrownNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {
-        final String methodName = "thrownNoSchemaAttributeException";
+    private void throwNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {
+        final String methodName = "throwNoSchemaAttributeException";
 
         DataEngineErrorCode errorCode = DataEngineErrorCode.NO_SCHEMA_ATTRIBUTE;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(qualifiedName);

@@ -198,7 +198,7 @@ class DataEngineSchemaTypeHandlerTest {
     }
 
     @Test
-    void addLineageMappingRelationship_thrownNoSchemaAttributeException() throws UserNotAuthorizedException,
+    void addLineageMappingRelationship_throwsNoSchemaAttributeException() throws UserNotAuthorizedException,
                                                                                  PropertyServerException,
                                                                                  InvalidParameterException {
         final String methodName = "addLineageMappingRelationship";
