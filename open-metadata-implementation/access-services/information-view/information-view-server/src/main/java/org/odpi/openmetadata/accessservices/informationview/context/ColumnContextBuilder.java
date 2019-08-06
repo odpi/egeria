@@ -143,11 +143,10 @@ public class ColumnContextBuilder {
                         enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableEntity.getGUID(), attributeForSchemaTypeGuid, 0, Arrays.asList(InstanceStatus.ACTIVE), null, null, null, 0)) {
                     List<TableContextEvent> events =
                             getDatabaseSchemaTypeContext(parentSchemaTypeRelationship.getEntityOneProxy().getGUID());
-                    tableContexts.addAll(events.stream().map(e -> {
+                    tableContexts.addAll(events.stream().peek(e -> {
                         e.getTableSource().setName(tableName);
                         e.getTableSource().setGuid(tableGuid);
                         e.setTableColumns(columns);
-                        return e;
                     }).collect(Collectors.toList()));
                 }
             } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException | PagingErrorException e) {
@@ -530,10 +529,7 @@ public class ColumnContextBuilder {
                     deployedDatabaseSchemaGuid);
             for (Relationship relationship : dbRelationships) {
                 List<TableContextEvent> events = getDatabaseContext(relationship.getEntityOneProxy().getGUID());
-                allEvents.addAll(events.stream().map(e -> {
-                    e.getTableSource().setSchemaName(schemaName);
-                    return e;
-                }).collect(Collectors.toList()));
+                allEvents.addAll(events.stream().peek(e -> e.getTableSource().setSchemaName(schemaName)).collect(Collectors.toList()));
             }
             return allEvents;
         } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
