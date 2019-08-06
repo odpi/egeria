@@ -55,7 +55,7 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
             DataEngineErrorCode errorCode = DataEngineErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
-            throw new NewInstanceException(errorCode.getHttpErrorCode(), this.getClass().getName(), methodName,
+            throw new NewInstanceException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
                     errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
         }
     }
