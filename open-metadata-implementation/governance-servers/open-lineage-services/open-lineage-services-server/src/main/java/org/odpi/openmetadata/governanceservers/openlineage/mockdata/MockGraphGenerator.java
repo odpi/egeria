@@ -34,10 +34,10 @@ public class MockGraphGenerator {
 
     private void setProperties() {
 
-        this.numberGlossaryTerms = 1;
-        this.numberFlows = 1;
-        this.processesPerFlow = 2;
-        this.columnsPerTable = 3;
+        this.numberGlossaryTerms = 20;
+        this.numberFlows = 3;
+        this.processesPerFlow = 4;
+        this.columnsPerTable = 4;
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;
