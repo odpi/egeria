@@ -137,7 +137,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
-                    <type-explorer-view name="typeExplorer"></type-explorer-view>
+                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
 
 
@@ -180,6 +180,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-view language="[[language]]" name="subject-area"></subject-area-view>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"></asset-lineage-view>
+                    <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
 
@@ -208,7 +209,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             subroute: Object,
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage', 'typeExplorer']
+                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
             },
             feedback: {
                 type: Object,
@@ -303,8 +304,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             case 'asset-lineage':
                 import('./asset-search/asset-lineage-view.js');
                 break;
-            case 'typeExplorer':
+            case 'type-explorer':
                 import('./type-explorer/type-explorer-view.js');
+                break;
             case 'view404':
                 import('./asset-search/my-view404.js');
                 break;

@@ -92,7 +92,7 @@ class DetailsPanel extends PolymerElement {
 
                 <body>
 
-                    <div id="detailsDiv">
+                    <div id="detailsDiv" style="padding:20px;">
                         Type details will be displayed here when a type is selected
                     </div>
               </body>

@@ -39,32 +39,32 @@ class FocusManager extends PolymerElement {
     static get template() {
         return html`
 
+             <div style="padding:20px;">
 
              Focus Entity Type:
-             <p>
-                  <select id="entityTypeSelector"  on-change="focusSelectorHandler">
-                      <option value="dummy" disabled selected>No types to display</option>
-                      <!-- options will be added dynamically -->
-                  </select>
+
+             <select id="entityTypeSelector" style="width: 300px; float:right;  left: 150px" on-change="focusSelectorHandler">
+                 <option value="dummy" disabled selected>No types to display</option>
+                 <!-- options will be added dynamically -->
+             </select>
 
              <p>
              Relationship Types:
-             <p>
 
-                  <select id="relationshipTypeSelector"  on-change="viewSelectorHandler">
-                      <option value="dummy" disabled selected>No types to display</option>
-                      <!-- options will be added dynamically -->
-                  </select>
+             <select id="relationshipTypeSelector" style="width: 300px; float:right;  left: 150px" on-change="viewSelectorHandler">
+                 <option value="dummy" disabled selected>No types to display</option>
+                 <!-- options will be added dynamically -->
+             </select>
 
              <p>
              Classification Types:
-             <p>
 
-                  <select id="classificationTypeSelector"  on-change="viewSelectorHandler">
-                      <option value="dummy" disabled selected>No types to display</option>
-                      <!-- options will be added dynamically -->
-                  </select>
+             <select id="classificationTypeSelector" style="width: 300px; float:right;  left: 150px" on-change="viewSelectorHandler">
+                 <option value="dummy" disabled selected>No types to display</option>
+                 <!-- options will be added dynamically -->
+             </select>
 
+             </div>
         `; }
 
 

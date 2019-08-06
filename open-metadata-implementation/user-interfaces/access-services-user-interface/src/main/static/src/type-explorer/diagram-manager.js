@@ -45,16 +45,13 @@ class DiagramManager extends PolymerElement {
 
                 <body>
 
-                    <div>
+                    <div style="padding:20px;">
+                        Diagram type:
 
-                    <p>
-                    Diagram type:
-                    <p>
-                    <select id="diagramSelector"  on-change="diagramSelectorHandler">
-                        <option value="dummy" disabled selected>No diagrams possible - please load type information</option>
-                        <!-- options will be added dynamically -->
-                    </select>
-
+                        <select id="diagramSelector"  on-change="diagramSelectorHandler">
+                            <option value="dummy" disabled selected>No diagrams possible - please load type information</option>
+                            <!-- options will be added dynamically -->
+                        </select>
                     </div>
 
                     <div id='drawingArea'>

@@ -68,23 +68,28 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
 
             <body>
 
-                <b style=" font-size:18px; font-family:sans-serif; ">Type Explorer</b>
+                <!-- <b style=" font-size:18px; font-family:sans-serif; ">Type Explorer</b>  -->
 
                 <type-manager id="typeManager"></type-manager>
 
 
 
-                <div>   <!-- left hand side -->
+                <div>
 
                     <connection-manager id="connectionManager" type-manager="[[theTypeManager]]"></connection-manager>
 
-                    <focus-manager id="focusManager" type-manager="[[theTypeManager]]"></focus-manager>
+                    <!-- LHS-->
+                    <div id="lhs" style="position:absolute;left:0px;top:200px; height:1200px; width:400px; overflow-x: hidden;  overflow: auto; background-color:#CCCCCC">
+                       <focus-manager id="focusManager" type-manager="[[theTypeManager]]"></focus-manager>
+                       <details-panel id="detailsPanel" type-manager="[[theTypeManager]]"></details-panel>
+                    </div>
 
-                    <diagram-manager id="diagramManager" type-manager="[[theTypeManager]]"></diagram-manager>
+                    <!-- RHS-->
+                    <div id="rhs" style="position:absolute;left:400px;top:200px; height:1200px; width:1200px; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF">
+                        <diagram-manager id="diagramManager" type-manager="[[theTypeManager]]"></diagram-manager>
+                    </div>
 
-                    <details-panel id="detailsPanel" type-manager="[[theTypeManager]]"></details-panel>
-
-                </div> <!-- end of LHS -->
+                </div>
 
             </body>
 
