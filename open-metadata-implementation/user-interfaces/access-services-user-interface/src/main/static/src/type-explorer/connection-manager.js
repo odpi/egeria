@@ -41,16 +41,20 @@ class ConnectionManager extends PolymerElement {
 
                    * { font-size: 12px ; font-family: sans-serif; }
 
+                   .inline-element {
+                       display: inline-block;
+                   }
+
                 </style>
 
                 <body>
 
                     <div>
-                        <p>
-                        Load type information from metadata repository server:
-                        </p>
+
+                        Load types from:
 
                         <paper-input
+                            class="inline-element"
                             style="width:150px"
                             id = 'serverNameInput'
                             class='user-input'
@@ -60,7 +64,8 @@ class ConnectionManager extends PolymerElement {
                         </paper-input>
 
                         <paper-input
-                            style="width:150px"
+                            class="inline-element"
+                            style="width:150px; padding:20px;"
                             class='user-input'
                             label = "Server URL Root"
                             value={{serverURLRoot}}
@@ -68,16 +73,17 @@ class ConnectionManager extends PolymerElement {
                         </paper-input>
 
                         <paper-checkbox
+                             class="inline-element"
+                             style="padding:20px;"
                              id="enterpriseQuery"
                              checked="{{enterpriseQuery}}"
                              on-change="enterpriseQueryChanged">
                              Enterprise Query
                         </paper-checkbox>
 
-                        <p>
-
-
                         <paper-button
+                            class="inline-element"
+                            style="padding:20px;"
                             id = "loadButton"
                             raised
                             on-click="doLoad" >

@@ -127,6 +127,9 @@ class InheritanceDiagram extends PolymerElement {
     inEvtFocusChanged(focusType) {
         this.focusType = focusType;
         // TODO - more to do here   - e.g. highlight, scrolling
+        var drawingArea = this.$.inh;
+        console.log("focus-changed: drawingArea is "+drawingArea);   // TODO - remove
+        this.updateRoot(drawingArea);
     }
 
     render() {
@@ -154,27 +157,30 @@ class InheritanceDiagram extends PolymerElement {
 
         d3.select('#inh').selectAll("svg").remove();
 
-        this.$.inh.innerHTML = "Cleared down - ready for trees....";  // TODO - remove
+        // Clear the introductory text...
+        this.$.inh.innerHTML = "";
+
+        //this.$.inh.innerHTML = "Cleared down - ready for trees....";  // TODO - remove
 
         // Experimental TODO - clean up
-        var svg = d3.select(this.shadowRoot.querySelector('#inh'))
-                    .append("svg")
-                    .attr("width",100)
-                    .attr("height",100);
+        //var svg = d3.select(this.shadowRoot.querySelector('#inh'))
+        //            .append("svg")
+        //            .attr("width",100)
+        //            .attr("height",100);
 
         //console.log('svg = '+svg+" width is "+svg.width+" top is "+svg.top);
 
         //var exSvg = d3.select('#inh').selectAll("svg");
         //console.log('exSVg = '+exSvg+" width is "+exSvg.width+" top is "+exSvg.top);
         //
-        var circle = svg.append("circle")
-                       .attr('id','test-circle')
-                       .attr("r", 20)
-                       .attr("cx", 50)
-                       .attr("cy", 50)
-                       .attr("stroke-width",3)
-                       .attr("stroke", "#000")
-                       .attr("fill", "#F00");
+        //var circle = svg.append("circle")
+        //               .attr('id','test-circle')
+        //               .attr("r", 20)
+        //               .attr("cx", 50)
+        //               .attr("cy", 50)
+        //               .attr("stroke-width",3)
+        //               .attr("stroke", "#000")
+        //               .attr("fill", "#F00");
 
         // Check you have nuked everything    TODO - redundant
         //var elem = document.getElementById("elem"+selectedTypeName);  // TODO - redundant
@@ -549,33 +555,48 @@ class InheritanceDiagram extends PolymerElement {
      */
     scrollSelectedIntoView(typeToView) {
 
+        console.log("ssiv, focusType is "+typeToView);
+
         if (this.scrolled === false) {
 
             this.scrolled = true;
 
             if (typeToView !== undefined && typeToView !== "") {
-                var elem = document.getElementById("elem"+typeToView);
+                //var elem = document.getElementById("elem"+typeToView);  // TODO - clean up
+                //var elem = this.shadowRoot.querySelector('elem'+typeToView);
+                //console.log("no hash i get "+elem);
+                var elem = this.shadowRoot.querySelector('#elem'+typeToView);
+                console.log("with hash i get "+elem);
                 var brect = elem.getBoundingClientRect();
-                var drg = document.getElementById('drawing');
+                //var drg = document.getElementById('drawing');  // TODO - clean up
+                //var drg = this.shadowRoot.querySelector('#inh');
+                var drg = this.$.inh;
+                console.log("for inh i get "+drg);
                 var togo = brect.top-500;
                 var inc = 10;
+                console.log("call incScroll, drg "+drg+" togo "+togo+" inc "+inc);
                 this.incrementalscroll(drg, togo, inc);   // TODO - fix case
             }
         }
     }
 
     incrementalscroll(drg, togo, inc) {
+        console.log("in incScroll");
         if (Math.abs(togo) < inc) {
             inc = Math.abs(togo);
         }
         var rate = Math.abs(togo) / (10 * inc);
         if (Math.abs(togo) > 0) {
             var dirinc = Math.sign(togo) * inc * rate;
-            drg.scrollBy(0, dirinc);
+            console.log("try to scroll drg by "+dirinc);
+            //drg.scrollBy(0, dirinc);
+            drg.scrollIntoView();
+
             togo = togo - dirinc;
         }
         if (Math.abs(togo) > inc) {
-            setTimeout(function() { this.incrementalscroll(drg,togo,inc); }, 10);
+            console.log("schedule call to incScroll");
+            setTimeout( () => this.incrementalscroll(drg,togo,inc) , 10);
         }
     }
 
@@ -595,6 +616,7 @@ class InheritanceDiagram extends PolymerElement {
     transitionComplete() {
 
         // Earliest opportunity to scroll accurately
+        console.log("transitionComplete, focusType is "+this.focusType);
         if (this.focusType !== undefined && this.focusType !== "") {
             this.scrollSelectedIntoView(this.focusType);
         }
