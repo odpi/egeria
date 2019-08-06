@@ -28,9 +28,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildAddRelationshipException;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildEntityNotFoundException;
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildNoRegistrationDetailsProvided;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.*;
 
 public abstract class BasicOperation {
 
