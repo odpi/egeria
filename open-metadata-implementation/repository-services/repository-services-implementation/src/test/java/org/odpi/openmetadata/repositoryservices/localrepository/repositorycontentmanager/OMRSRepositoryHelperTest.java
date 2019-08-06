@@ -133,7 +133,10 @@ public class OMRSRepositoryHelperTest
         // test 4 ensure that the qualified literal does NOT match the test match any more
         assertFalse(Pattern.matches(testLiteral, testMatch));
 
-        // test 5 ensure that unqualifying the literal gives us our original string back
+        // test 5 ensure that the qualified literal matches the original string
+        assertTrue(Pattern.matches(testLiteral, testRegex));
+
+        // test 6 ensure that unqualifying the literal gives us our original string back
         String testBack = createHelper().getUnqualifiedLiteralString(testLiteral);
         assertTrue(testBack.equals(testRegex));
 
