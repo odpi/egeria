@@ -31,6 +31,8 @@ import java.util.UUID;
  */
 public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor implements OMRSInstanceRetrievalEventProcessor
 {
+    final private static String  localOMRSInstanceEventProcessorName = "Local Repository Inbound Instance Events";
+
     private String                          localMetadataCollectionId;
     private String                          localServerName;
     private OMRSRepositoryConnector         localRepositoryConnector;
@@ -71,6 +73,8 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                     OMRSRepositoryEventProcessor    outboundRepositoryEventProcessor,
                                     OMRSAuditLog                    auditLog)
     {
+        super(localOMRSInstanceEventProcessorName);
+
         final String methodName = "LocalOMRSInstanceEventProcessor constructor";
 
         this.localMetadataCollectionId = localMetadataCollectionId;

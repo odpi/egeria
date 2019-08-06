@@ -23,11 +23,15 @@ import org.slf4j.LoggerFactory;
 public class EventPublisher  extends OMRSInstanceEventProcessor  {
 
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
+    private static final String eventPublisherName = "Data Platform OMAS Event Publisher";
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic dataPlatformOutTopicConnector;
     private OMRSAuditLog auditLog;
 
     public EventPublisher(OpenMetadataTopic dataPlatformOutTopicConnector, OMRSAuditLog auditLog) {
+        super(eventPublisherName);
+
         this.dataPlatformOutTopicConnector = dataPlatformOutTopicConnector;
         this.auditLog = auditLog;
     }
