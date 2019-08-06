@@ -19,12 +19,16 @@ import org.odpi.openmetadata.repositoryservices.events.*;
  */
 public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProcessor
 {
-
     /**
-     * Default constructor sets up the local metadata collection id for events.
+     * Constructor to update the event processor name.
+     *
+     * @param eventProcessorName string name
      */
-    OMRSRepositoryEventBuilder()
+    OMRSRepositoryEventBuilder(String eventProcessorName)
     {
+        super(eventProcessorName);
+
+        this.eventProcessorName = eventProcessorName;
     }
 
 
@@ -45,7 +49,7 @@ public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProc
                                        String       originatorServerName,
                                        String       originatorServerType,
                                        String       originatorOrganizationName,
-                                       TypeDef typeDef)
+                                       TypeDef      typeDef)
     {
         OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
 
