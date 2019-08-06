@@ -1247,10 +1247,9 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
 
                 }
-                // Extract the type guid and invoke a type specific search...
 
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, matchCriteria);
-
+                // Invoke a type specific search. The search will expect the regexp to match fully to the value.
+                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, matchCriteria, true);
 
                 if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty()) {
                     if (returnEntities == null) {
@@ -1361,7 +1360,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
             log.info("{}: search relationship type {}", methodName, specifiedTypeName);
 
-            returnRelationships = graphStore.findRelationshipsByProperty(specifiedTypeName, matchProperties, matchCriteria);
+            returnRelationships = graphStore.findRelationshipsByProperty(specifiedTypeName, matchProperties, matchCriteria, true);
 
         }
         else {
@@ -1380,7 +1379,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     // For this type, invoke a type specific search...
 
-                    List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(actualTypeName, matchProperties, matchCriteria);
+                    List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(actualTypeName, matchProperties, matchCriteria, true);
 
                     if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty()) {
                         if (returnRelationships == null) {
@@ -1544,7 +1543,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteria(typeDef, searchCriteria, GraphOMRSConstants.ElementType.Vertex);
 
 
-                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, MatchCriteria.ANY);
+                // Do not tolerate substring matches - instead always the regex must match the whole value - i.e. set fullMatch parameter to true.
+                List<EntityDetail> entitiesForCurrentType = graphStore.findEntitiesByProperty(actualTypeName, matchProperties, MatchCriteria.ANY, true);
 
 
                 if (entitiesForCurrentType != null && !entitiesForCurrentType.isEmpty()) {
@@ -1684,7 +1684,8 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
             InstanceProperties matchProperties = graphStore.constructMatchPropertiesForSearchCriteria(typeDef, searchCriteria, GraphOMRSConstants.ElementType.Edge);
 
-            List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(currentTypeName, matchProperties, MatchCriteria.ANY);
+            // Expect the regex to fully match the value
+            List<Relationship> relationshipsForCurrentType = graphStore.findRelationshipsByProperty(currentTypeName, matchProperties, MatchCriteria.ANY, true);
 
             if (relationshipsForCurrentType != null && !relationshipsForCurrentType.isEmpty()) {
                 if (returnRelationships == null) {
