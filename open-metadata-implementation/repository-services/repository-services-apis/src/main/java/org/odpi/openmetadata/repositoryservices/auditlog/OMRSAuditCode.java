@@ -196,11 +196,16 @@ public enum OMRSAuditCode
                                 "open metadata repository cohort.",
                       "No action is required.  This is part of the normal operation of the server."),
 
+    INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0029",
+                               OMRSAuditLogRecordSeverity.INFO,
+                               "The {0} event manager is initializing",
+                               "The event manager is ready for internal OMRS event consumers to register with it.",
+                               "No action is required.  This is part of the normal operation of the server."),
 
-    INITIALIZING_EVENT_MANAGER("OMRS-AUDIT-0030",
+    REGISTERING_EVENT_PROCESSOR("OMRS-AUDIT-0030",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The {0} event manager is initializing",
-                      "The event manager is ready for internal OMRS event consumers to register with it.",
+                      "Registering the {0} event consumer with the {1} event manager",
+                      "A consumer of events has been registered with the event manager.  This consumer will distribute events to its associated components.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     STARTING_EVENT_MANAGER("OMRS-AUDIT-0031",
