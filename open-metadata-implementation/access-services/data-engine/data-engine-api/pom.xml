@@ -32,5 +32,9 @@
             <artifactId>open-connector-framework</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
     </dependencies>
 </project>
