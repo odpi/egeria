@@ -6,10 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -138,7 +135,7 @@ public class ConnectionRequestBody extends OCFOMASAPIRequestBody
         }
         ConnectionRequestBody that = (ConnectionRequestBody) objectToCompare;
         return Objects.equals(getShortDescription(), that.getShortDescription()) &&
-                Objects.equals(getConnection(), that.getConnection());
+               Objects.equals(getConnection(), that.getConnection());
     }
 
 
