@@ -59,7 +59,7 @@ public class GovernanceEngineImplTest {
      * Class under test requiring mock injection - note - not used in tests of constructor
      */
     @InjectMocks
-    private GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(defaultServerName, defaultOMASServerURL);
+    private GovernanceEngine governanceEngineImpl = new GovernanceEngine(defaultServerName, defaultOMASServerURL);
 
     private Throwable thrown = assertThrows(InvalidParameterException.class, () ->
     {
@@ -69,7 +69,7 @@ public class GovernanceEngineImplTest {
     @Test
     @DisplayName("GovernanceEngineImpl Constructor - Check empty handlers URL")
     void testGetGovernedAssetComponentListBadConstructorEmpty() {
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName, ""); // local
+        GovernanceEngine governanceEngineImplalt = new GovernanceEngine(defaultServerName, ""); // local
 
         // Mockito assertion for exception that would be thrown after using a poor constructor parameter - actual method is arbitrary
         thrown = assertThrows(InvalidParameterException.class, () ->
@@ -87,7 +87,7 @@ public class GovernanceEngineImplTest {
     @DisplayName("GovernanceEngineImp Constructor - Check null handlers URL")
     void testGetGovernedAssetComponentListBadConstructorNull() {
 
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName, null);
+        GovernanceEngine governanceEngineImplalt = new GovernanceEngine(defaultServerName, null);
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
             List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");

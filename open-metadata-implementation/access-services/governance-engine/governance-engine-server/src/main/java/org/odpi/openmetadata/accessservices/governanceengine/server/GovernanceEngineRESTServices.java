@@ -8,6 +8,8 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.util.ExceptionHandler;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -17,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -124,6 +127,40 @@ public class GovernanceEngineRESTServices {
                 | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
                 | EntityProxyOnlyException | PropertyErrorException | UserNotAuthorizedException
                 | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
+            exceptionHandler.captureOMRSException(response, e);
+        }
+
+        return response;
+    }
+
+    public SoftwareServerCapabilityResponse createSoftwareServer(String serverName, String userId, SoftwareServerCapabilityRequestBody requestBody) {
+        SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
+
+        try {
+            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
+            response.setServerCapability(governedAssetHandler.createSoftwareServerCapability(userId, requestBody.getSoftwareServerCapability()));
+        } catch (MetadataServerException e) {
+            exceptionHandler.captureMetadataServerException(response, e);
+        } catch (PropertyServerException e) {
+            exceptionHandler.capturePropertyServerException(response, e);
+        } catch (UserNotAuthorizedException | FunctionNotSupportedException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | ClassificationErrorException | TypeErrorException | RepositoryErrorException | StatusNotSupportedException e) {
+            exceptionHandler.captureOMRSException(response, e);
+        }
+
+        return response;
+    }
+
+    public SoftwareServerCapabilityResponse getSoftwareServerByGUID(String serverName, String userId, String guid) {
+        SoftwareServerCapabilityResponse response = new SoftwareServerCapabilityResponse();
+
+        try {
+            GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
+            response.setServerCapability(governedAssetHandler.getSoftwareServerCapabilityByGUID(userId, guid));
+        } catch (MetadataServerException e) {
+            exceptionHandler.captureMetadataServerException(response, e);
+        } catch (PropertyServerException e) {
+            exceptionHandler.capturePropertyServerException(response, e);
+        } catch (EntityProxyOnlyException | UserNotAuthorizedException | RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | EntityNotKnownException e) {
             exceptionHandler.captureOMRSException(response, e);
         }
 
