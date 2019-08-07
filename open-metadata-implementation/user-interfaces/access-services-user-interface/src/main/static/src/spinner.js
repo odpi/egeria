@@ -5,14 +5,13 @@ import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import {mixinBehaviors} from '@polymer/polymer/lib/legacy/class.js';
 import {IronOverlayBehavior} from '@polymer/iron-overlay-behavior/iron-overlay-behavior.js';
 import '@polymer/paper-spinner/paper-spinner-lite.js';
-import '@polymer/paper-spinner/paper-spinner-lite.js';
 
 class SpinnerOverlay extends mixinBehaviors(IronOverlayBehavior, PolymerElement)  {
     static get template() {
         return html`
           <style>
             :host {
-              background: white;
+              background: transparent;
             }
             
             paper-spinner-lite {

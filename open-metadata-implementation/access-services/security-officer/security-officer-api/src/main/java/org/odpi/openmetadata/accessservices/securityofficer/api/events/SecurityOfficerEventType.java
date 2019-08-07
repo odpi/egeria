@@ -10,8 +10,9 @@ import java.io.Serializable;
 public enum SecurityOfficerEventType implements Serializable {
 
     NEW_SECURITY_ASSIGNMENT(0, "NewSecurityAssignment", "A Security Tags assigment should be processed."),
-    UPDATED_SECURITY_ASSIGNMENT(1, "UpdatedSecurityAssigment", "A Security Tags assignment has been done at schema element level"),
-    UNKNOWN_SECURITY_OFFICER_EVENT(4, "UnknownSecurityOfficerEvent", "A Security Officer event that is not recognized by the local handlers.");
+    UPDATED_SECURITY_ASSIGNMENT(1, "UpdatedSecurityAssigment", "A Security Tags assignment has been updated for schema element."),
+    DELETED_SECURITY_ASSIGNMENT(2, "DeletedSecurityAssigment", "A Security Tags assignment has been deleted from schema element."),
+    UNKNOWN_SECURITY_OFFICER_EVENT(100, "UnknownSecurityOfficerEvent", "A Security Officer event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
 

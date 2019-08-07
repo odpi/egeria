@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * LogicTable is a POJO which stores Logical Table information in Gaian
+ * LogicTable is a POJO which stores Logical Table information
  */
 public class LogicTable {
 
     private String logicalTableName;
-    private String gaianNode;
+    private String nodeName;
     private Map<String, String> logicalTableDefinition;
 
     /**
@@ -34,16 +34,16 @@ public class LogicTable {
      * Provide the node name
      * @return Node name
      */
-    public String getGaianNode() {
-        return gaianNode;
+    public String getNodeName() {
+        return nodeName;
     }
 
     /**
      * Set the node name
-     * @param gaianNode String
+     * @param nodeName String
      */
-    public void setGaianNode(String gaianNode) {
-        this.gaianNode = gaianNode;
+    public void setNodeName(String nodeName) {
+        this.nodeName = nodeName;
     }
 
 
@@ -74,7 +74,7 @@ public class LogicTable {
         if (!(o instanceof LogicTable)) return false;
         LogicTable that = (LogicTable) o;
         return Objects.equals(getLogicalTableName(), that.getLogicalTableName()) &&
-                Objects.equals(getGaianNode(), that.getGaianNode()) &&
+                Objects.equals(getNodeName(), that.getNodeName()) &&
                 Objects.equals(getLogicalTableDefinition(), that.getLogicalTableDefinition());
     }
 
@@ -84,6 +84,6 @@ public class LogicTable {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(getLogicalTableName(), getGaianNode(), getLogicalTableDefinition());
+        return Objects.hash(getLogicalTableName(), getNodeName(), getLogicalTableDefinition());
     }
 }
