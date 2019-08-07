@@ -118,12 +118,15 @@ public class MockGraphGenerator {
             //For each table in a flow
             for (int tableIndex = 0; tableIndex < tablesPerFlow - 1; tableIndex++) {
 
+                final List<Vertex> table1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex);
+                final List<Vertex> table2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
+                final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
+
                 //For each column in a table
                 for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
 
-                    final Vertex column1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex).get(columnIndex);
-                    final Vertex column2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1).get(columnIndex);
-                    final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
+                    final Vertex column1 = table1.get(columnIndex);
+                    final Vertex column2 = table2.get(columnIndex);
 
                     column1.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process);
                     process.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column2);
