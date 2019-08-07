@@ -29,20 +29,6 @@ public class ViewGeneratorConnectorBase extends ConnectorBase implements ViewGen
         super.initialize(connectorInstanceId, connectionProperties);
     }
 
-    @Override
-    public boolean deleteLogicalTable(String tableName){
-        return false;
-    }
-
-    /**
-     * Provide all logical table
-     * @return List of logical tables
-     */
-    @Override
-    public List<LogicTable> getAllLogicTables() {
-        return null;
-    }
-
     /**
      * Process the serialized  information view event
      *

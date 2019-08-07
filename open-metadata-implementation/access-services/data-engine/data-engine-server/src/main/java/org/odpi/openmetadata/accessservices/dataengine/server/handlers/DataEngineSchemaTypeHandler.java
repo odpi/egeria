@@ -54,14 +54,13 @@ public class DataEngineSchemaTypeHandler {
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName,
                                        InvalidParameterHandler invalidParameterHandler,
-                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                                       SchemaTypeHandler schemaTypeHandler) {
         this.serviceName = serviceName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-
-        schemaTypeHandler = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                repositoryHelper);
+        this.schemaTypeHandler = schemaTypeHandler;
     }
 
     /**

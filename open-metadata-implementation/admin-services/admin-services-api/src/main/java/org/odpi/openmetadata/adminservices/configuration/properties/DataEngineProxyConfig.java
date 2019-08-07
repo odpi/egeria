@@ -25,8 +25,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class DataEngineProxyConfig extends AdminServicesConfigHeader {
 
-    private String dataEngineProxyProvider       = null;
+    /* Properties needed to call the access service REST APIs */
+    private String     accessServiceRootURL      = null;
+    private String     accessServiceServerName   = null;
+
+    private String     dataEngineProxyProvider   = null;
     private Connection dataEngineProxyConnection = null;
+    private boolean    pollForChanges            = true;
+    private int        pollIntervalInSeconds     = 60;
+
     private Map<String, Object> dataEngineConfig = null;
 
     /**
@@ -43,11 +50,39 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
      */
     public DataEngineProxyConfig(DataEngineProxyConfig template) {
         if (template != null) {
+            this.accessServiceRootURL      = template.accessServiceRootURL;
+            this.accessServiceServerName   = template.accessServiceServerName;
             this.dataEngineProxyProvider   = template.dataEngineProxyProvider;
             this.dataEngineProxyConnection = template.dataEngineProxyConnection;
+            this.pollForChanges            = template.pollForChanges;
+            this.pollIntervalInSeconds     = template.pollIntervalInSeconds;
             this.dataEngineConfig          = template.dataEngineConfig;
         }
     }
+
+    /**
+     * Provide the root URL of the Data Engine OMAS
+     * @return String
+     */
+    public String getAccessServiceRootURL() { return accessServiceRootURL; }
+
+    /**
+     * Set the root URL of the Data Engine OMAS
+     * @param accessServiceRootURL
+     */
+    public void setAccessServiceRootURL(String accessServiceRootURL) { this.accessServiceRootURL = accessServiceRootURL; }
+
+    /**
+     * Provide the server name of the Data Engine OMAS
+     * @return String
+     */
+    public String getAccessServiceServerName() { return accessServiceServerName; }
+
+    /**
+     * Set the server name of the Data Engine OMAS
+     * @param accessServiceServerName
+     */
+    public void setAccessServiceServerName(String accessServiceServerName) { this.accessServiceServerName = accessServiceServerName; }
 
     /**
      * Provide the name of the Data Engine provider class
@@ -78,6 +113,30 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     public void setDataEngineProxyConnection(Connection dataEngineProxyConnection) { this.dataEngineProxyConnection = dataEngineProxyConnection; }
 
     /**
+     * Indicate whether to poll for changes (true) or not (false).
+     * @return boolean
+     */
+    public boolean pollForChanges() { return pollForChanges; }
+
+    /**
+     * Define whether to poll for changes (true) or not (false).
+     * @param pollForChanges
+     */
+    public void setPollForChanges(boolean pollForChanges) { this.pollForChanges = pollForChanges; }
+
+    /**
+     * Provide the seconds to wait between each polling of the data engine for changes
+     * @return int
+     */
+    public int getPollIntervalInSeconds() { return pollIntervalInSeconds; }
+
+    /**
+     * Set the number of seconds to wait between each polling of the data engine for changes
+     * @param pollIntervalInSeconds
+     */
+    public void setPollIntervalInSeconds(int pollIntervalInSeconds) { this.pollIntervalInSeconds = pollIntervalInSeconds; }
+
+    /**
      * Provide the configuration for the Data Engine proxy
      * @return {@code Map<String, Object>}
      */
@@ -98,14 +157,19 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
         if (this == o) return true;
         if (!(o instanceof DataEngineProxyConfig)) return false;
         DataEngineProxyConfig that = (DataEngineProxyConfig) o;
-        return Objects.equals(getDataEngineProxyProvider(), that.getDataEngineProxyProvider()) &&
+        return Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
+                Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
+                Objects.equals(getDataEngineProxyProvider(), that.getDataEngineProxyProvider()) &&
                 Objects.equals(getDataEngineProxyConnection(), that.getDataEngineProxyConnection()) &&
+                Objects.equals(pollForChanges(), that.pollForChanges()) &&
+                Objects.equals(getPollIntervalInSeconds(), that.getPollIntervalInSeconds()) &&
                 Objects.equals(getDataEngineConfig(), that.getDataEngineConfig());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getDataEngineProxyProvider(), getDataEngineProxyConnection(), getDataEngineConfig());
+        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(), getDataEngineProxyProvider(),
+                getDataEngineProxyConnection(), pollForChanges(), getPollIntervalInSeconds(), getDataEngineConfig());
     }
 
 }

@@ -30,8 +30,8 @@ public class VirtualizationOperationalServices {
     private String localServerURL;                /* Initialized in constructor */
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector ivOutTopicConnector;
-    private OpenMetadataTopicConnector ivInTopicConnector;
+    private OpenMetadataTopicConnector virtualizerInboundTopicConnector;
+    private OpenMetadataTopicConnector virtualizerOutboundTopicConnector;
     private DerbyConnector virtualizationSolutionConnector;
 
     /**
@@ -80,11 +80,11 @@ public class VirtualizationOperationalServices {
             /*
              Configuring the kafka connector for IV Out Topic
              */
-            Connection ivOutTopicConnection = virtualizationConfig.getIvOutTopic();
+            Connection virtualizerInboundTopicConnection = virtualizationConfig.getVirtualizerInboundTopic();
 
-            if (ivOutTopicConnection != null) {
+            if (virtualizerInboundTopicConnection != null) {
                 try {
-                    ivOutTopicConnector = getTopicConnector(ivOutTopicConnection);
+                    virtualizerInboundTopicConnector = getTopicConnector(virtualizerInboundTopicConnection);
                 } catch (Exception e) {
                     auditCode = VirtualizationAuditCode.ERROR_INITIALIZING_IV_OUT_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
@@ -100,11 +100,11 @@ public class VirtualizationOperationalServices {
             /*
              Configuring the Kafka connector for IV In Topic
              */
-            Connection ivInTopicConnection = virtualizationConfig.getIvInTopic();
+            Connection ivInTopicConnection = virtualizationConfig.getVirtualizerOutboundTopic();
 
             if (ivInTopicConnection != null) {
                 try {
-                    ivInTopicConnector = getTopicConnector(ivInTopicConnection);
+                    virtualizerOutboundTopicConnector = getTopicConnector(ivInTopicConnection);
                 } catch (Exception e) {
                     auditCode = VirtualizationAuditCode.ERROR_INITIALIZING_IV_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
@@ -134,9 +134,9 @@ public class VirtualizationOperationalServices {
             /*
              Starting the In Topic Connector
              */
-            if (ivInTopicConnector != null) {
+            if (virtualizerOutboundTopicConnector != null) {
                 try {
-                    ivInTopicConnector.start();
+                    virtualizerOutboundTopicConnector.start();
 
                     EndpointSource endpointSource = new EndpointSource();
                     String connectorProviderName = virtualizationSolutionConnection.getEndpoint().getAdditionalProperties().get("connectorProviderName");
@@ -149,12 +149,12 @@ public class VirtualizationOperationalServices {
                      /*
                      Binding the In Topic connector to the Topic Listener for generating In Topic
                      */
-                    VirtualizerTopicListener virtualizerTopicListener = new VirtualizerTopicListener(ivInTopicConnector,
+                    VirtualizerTopicListener virtualizerTopicListener = new VirtualizerTopicListener(virtualizerOutboundTopicConnector,
                             virtualizationSolutionConnector,
                             endpointSource,
                             virtualizationSolutionConnection.getAdditionalProperties().get("databaseName"),
                             virtualizationSolutionConnection.getAdditionalProperties().get("dataSchema"));
-                    ivOutTopicConnector.registerListener(virtualizerTopicListener);
+                    virtualizerInboundTopicConnector.registerListener(virtualizerTopicListener);
 
                 } catch (Exception e) {
                     auditCode = VirtualizationAuditCode.ERROR_INITIALIZING_IV_IN_TOPIC_CONNECTION;
@@ -171,10 +171,10 @@ public class VirtualizationOperationalServices {
             /*
              Starting the Out Topic Connector
              */
-            if (ivOutTopicConnector != null) {
+            if (virtualizerInboundTopicConnector != null) {
                 try {
-                    ivOutTopicConnector.start();
-                    auditCode = VirtualizationAuditCode.IV_OUT_TOPIC_CONNECTOR_INITIALIZED;
+                    virtualizerInboundTopicConnector.start();
+                    auditCode = VirtualizationAuditCode.INBOUND_TOPIC_CONNECTOR_INITIALIZED;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -204,8 +204,8 @@ public class VirtualizationOperationalServices {
 
         }
 
-        if ((ivOutTopicConnector != null) && (ivInTopicConnector != null) && (virtualizationSolutionConnector != null) &&
-                (ivInTopicConnector.isActive()) && (ivOutTopicConnector.isActive()) && (virtualizationSolutionConnector.isActive())) {
+        if ((virtualizerInboundTopicConnector != null) && (virtualizerOutboundTopicConnector != null) && (virtualizationSolutionConnector != null) &&
+                (virtualizerOutboundTopicConnector.isActive()) && (virtualizerInboundTopicConnector.isActive()) && (virtualizationSolutionConnector.isActive())) {
             VirtualizationAuditCode auditCode = VirtualizationAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
@@ -266,8 +266,8 @@ public class VirtualizationOperationalServices {
     public boolean disconnect(boolean permanent) {
         VirtualizationAuditCode auditCode;
         try {
-            ivInTopicConnector.disconnect();
-            ivOutTopicConnector.disconnect();
+            virtualizerOutboundTopicConnector.disconnect();
+            virtualizerInboundTopicConnector.disconnect();
             virtualizationSolutionConnector.disconnect();
             auditCode = VirtualizationAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
