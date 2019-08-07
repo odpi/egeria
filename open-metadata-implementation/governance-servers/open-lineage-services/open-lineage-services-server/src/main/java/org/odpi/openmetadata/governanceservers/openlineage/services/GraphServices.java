@@ -9,8 +9,9 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONMapper;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
-import org.odpi.openmetadata.governanceservers.openlineage.util.Graphs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,19 +29,32 @@ public class GraphServices {
 
     private static final Logger log = LoggerFactory.getLogger(GraphServices.class);
 
+    /**
+     * Returns the graph that the user will initially see when querying lineage. In the future, this method will be
+     * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
+     * the condensed path by querying a different method.
+     *
+     * @param lineageQuery ultimate-source, ultimate-destination, glossary.
+     * @param graphString main, buffer, mock, history.
+     * @param guid The guid of the node of which the lineage is queried from.
+     * @return A subgraph containing all relevant paths, in graphSON format.
+     */
     public String getInitialGraph(String lineageQuery, String graphString, String guid) {
-
         String response = "";
+
+        graphString = reformatArg(graphString);
+        lineageQuery = reformatArg(lineageQuery);
+
         Graph graph = getJanusGraph(graphString);
-        switch (Graphs.valueOf(lineageQuery)) {
-            case ultimatesource:
-                response = ultimateSource(guid, graph);
+        switch (Queries.valueOf(lineageQuery)) {
+            case ULTIMATESOURCE:
+                response = ultimateSource(graph, guid);
                 break;
-            case ultimatedestination:
-                response = ultimateDestination(guid, graph);
+            case ULTIMATEDESTINATION:
+                response = ultimateDestination(graph, guid);
                 break;
-            case glossary:
-                response = glossary(guid, graph);
+            case GLOSSARY:
+                response = glossary(graph, guid);
                 break;
             default:
                 log.error(lineageQuery + " is not a valid lineage query");
@@ -48,7 +62,27 @@ public class GraphServices {
         return response;
     }
 
-    private String glossary(String guid, Graph graph) {
+    /**
+     * Map http parameter to enum value by converting to uppercase and removing - characters.
+     *
+     * @param string main, buffer, mock, history.
+     * @return String which corresponds to enum format.
+     */
+    private String reformatArg(String string) {
+        string = string.toUpperCase();
+        string = string.replaceAll("-", "");
+        return string;
+    }
+
+
+    /**
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid The guid of the glossary term of which the lineage is queried of.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
@@ -57,7 +91,15 @@ public class GraphServices {
         return janusGraphToGraphson(subGraph);
     }
 
-    private String ultimateSource(String guid, Graph graph) {
+    /**
+     * Returns a subgraph containing all paths leading from any root node to the queried node. The queried node can be a
+     * column, table, or host.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String ultimateSource(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
@@ -67,7 +109,15 @@ public class GraphServices {
         return janusGraphToGraphson(subGraph);
     }
 
-    private String ultimateDestination(String guid, Graph graph) {
+    /**
+     * Returns a subgraph containing all paths leading from the queried node to any leaf nodes. The queried node can be a
+     * column, table, or host.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String ultimateDestination(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
@@ -78,20 +128,37 @@ public class GraphServices {
         return janusGraphToGraphson(subGraph);
     }
 
+    /**
+     * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
+     * @param graphString MAIN, BUFFER, MOCK, HISTORY.
+     */
     public void dumpGraph(String graphString) {
+        graphString = reformatArg(graphString);
         JanusGraph graph = getJanusGraph(graphString);
         try {
-            graph.io(IoCore.graphml()).writeGraph("graph-" + Graphs.valueOf(graphString) + ".graphml");
+            graph.io(IoCore.graphml()).writeGraph("graph-" + graphString + ".graphml");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
+    /**
+     * Return an entire graph, in GraphSon format.
+     *
+     * @param graphString MAIN, BUFFER, MOCK, HISTORY.
+     * @return The queried graph, in graphSON format.
+     */
     public String exportGraph(String graphString) {
+        graphString = reformatArg(graphString);
         JanusGraph graph = getJanusGraph(graphString);
         return janusGraphToGraphson(graph);
     }
 
+    /**
+     * Convert a Graph object which is originally created by a Janusgraph writer to a String in GraphSON format.
+     * @param graph The Graph object to be converted.
+     * @return The provided Graph as a String, in the GraphSON format.
+     */
     private String janusGraphToGraphson(Graph graph) {
         OutputStream out = new ByteArrayOutputStream();
         GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
@@ -104,19 +171,24 @@ public class GraphServices {
         return out.toString();
     }
 
+    /**
+     * Retrieve an Open Lineage Services graph.
+     * @param graphString The name of the queried graph.
+     * @return The Graph object.
+     */
     private JanusGraph getJanusGraph(String graphString) {
         JanusGraph graph = null;
         switch (Graphs.valueOf(graphString)) {
-            case main:
+            case MAIN:
                 graph = mainGraph;
                 break;
-            case buffer:
+            case BUFFER:
                 graph = bufferGraph;
                 break;
-            case history:
+            case HISTORY:
                 graph = historyGraph;
                 break;
-            case mock:
+            case MOCK:
                 graph = mockGraph;
                 break;
             default:
