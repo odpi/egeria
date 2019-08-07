@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.connectedasset.ffdc;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.ffdc;
 
 /**
  * This package provides the first failure data capture support for the OCF Metadata Management module.
