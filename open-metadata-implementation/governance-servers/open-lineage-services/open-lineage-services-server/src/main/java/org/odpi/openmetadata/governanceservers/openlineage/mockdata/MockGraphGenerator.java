@@ -113,21 +113,20 @@ public class MockGraphGenerator {
         //Create the lineage flows by connecting columns to processes and connecting processes to the columns of the next table.
 
         //For each flow
-        for (int k = 0; k < numberFlows; k++) {
+        for (int flowIndex = 0; flowIndex < numberFlows; flowIndex++) {
 
             //For each table in a flow
-            for (int j = 0; j < tablesPerFlow; j++) {
+            for (int tableIndex = 0; tableIndex < tablesPerFlow - 1; tableIndex++) {
 
                 //For each column in a table
-                for (int i = 0; i < columnsPerTable; i++) {
+                for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
 
-                    //Connect the column to a process
-                    if (j + 1 < tablesPerFlow)
-                        tableNodes.get(k * tablesPerFlow + j).get(i).addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, processNodes.get(k * processesPerFlow + j));
+                    final Vertex column1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex).get(columnIndex);
+                    final Vertex column2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1).get(columnIndex);
+                    final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
 
-                    //Connect the process to a column within the next table.
-                    if (j + 1 < tablesPerFlow)
-                        processNodes.get(k * processesPerFlow + j).addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, tableNodes.get(k * tablesPerFlow + j + 1).get(i));
+                    column1.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process);
+                    process.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column2);
                 }
             }
         }
