@@ -18,7 +18,7 @@ public class OpenLineageRestServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageRestServices.class);
     private final OpenLineageInstanceHandler instanceHandler = new OpenLineageInstanceHandler();
 
-    public OpenLineageAPIResponse dumpGraph(String serverName, String userId, String graph) {
+    public VoidResponse dumpGraph(String serverName, String userId, String graph) {
         VoidResponse response = new VoidResponse();
 
         try {
@@ -57,7 +57,7 @@ public class OpenLineageRestServices {
         return response;
     }
 
-    public OpenLineageAPIResponse generateGraph(String serverName, String userId) {
+    public VoidResponse generateGraph(String serverName, String userId) {
         VoidResponse response = new VoidResponse();
 
         try {
