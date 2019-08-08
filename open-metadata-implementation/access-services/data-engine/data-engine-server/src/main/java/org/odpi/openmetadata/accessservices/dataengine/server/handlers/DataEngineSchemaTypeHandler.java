@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeException;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
@@ -141,7 +143,8 @@ public class DataEngineSchemaTypeHandler {
                                               String targetSchemaAttributeQualifiedName) throws
                                                                                          InvalidParameterException,
                                                                                          UserNotAuthorizedException,
-                                                                                         PropertyServerException {
+                                                                                         PropertyServerException,
+                                                                                         NoSchemaAttributeException {
         final String methodName = "addLineageMappingRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -153,6 +156,13 @@ public class DataEngineSchemaTypeHandler {
         String sourceSchemaAttributeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
         String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
 
+        if (sourceSchemaAttributeGUID == null) {
+            throwNoSchemaAttributeException(sourceSchemaAttributeQualifiedName);
+        }
+        if (targetSchemaAttributeGUID == null) {
+            throwNoSchemaAttributeException(targetSchemaAttributeQualifiedName);
+        }
+
         SchemaType sourceSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID,
                 methodName);
         SchemaType targetSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, targetSchemaAttributeGUID,
@@ -160,6 +170,16 @@ public class DataEngineSchemaTypeHandler {
 
         repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
                 sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
+    }
+
+    private void throwNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {
+        final String methodName = "throwNoSchemaAttributeException";
+
+        DataEngineErrorCode errorCode = DataEngineErrorCode.NO_SCHEMA_ATTRIBUTE;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(qualifiedName);
+
+        throw new NoSchemaAttributeException(errorCode.getHTTPErrorCode(), this.getClass().getName(), methodName,
+                errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), qualifiedName);
     }
 
     private String findSchemaAttribute(String userId, String qualifiedName) throws

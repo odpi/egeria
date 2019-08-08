@@ -179,13 +179,13 @@ public class RepositoryHandler
 
 
     /**
-     * Create a new entity in the open metadata repository with the ACTIVE instance status.
+     * Create a new entity in the open metadata repository with the specified instance status.
      *
      * @param userId calling user
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
      * @param properties properties for the entity
-     * @param instanceStatus initial status (needs ot be valid for type.
+     * @param instanceStatus initial status (needs to be valid for type)
      * @param methodName name of calling method
      *
      * @return unique identifier of new entity
@@ -325,6 +325,52 @@ public class RepositoryHandler
                                             entityTypeName,
                                             properties,
                                             methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+    }
+
+
+    /**
+     * Update an existing entity status in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param instanceStatus initial status (needs to be valid for type)
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void    updateEntityStatus(String                  userId,
+                                      String                  entityGUID,
+                                      String                  entityTypeGUID,
+                                      String                  entityTypeName,
+                                      InstanceStatus          instanceStatus,
+                                      String                  methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        try
+        {
+            EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
+                    entityGUID,
+                    instanceStatus);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntity(entityTypeGUID,
+                        entityTypeName,
+                        null,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
