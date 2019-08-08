@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
-import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSExceptionWrapper;
+import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewClassification;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailFactory;
@@ -136,7 +136,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             if( entityDetail.isPresent() ) {
                 response.addEntityDetail(entityDetailConverter.apply(entityDetail.get()));
             }
-        }catch (OMRSExceptionWrapper ew){
+        }catch (GlossaryViewOmasException ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
                     ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
@@ -174,7 +174,7 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectivePredicate)
                     .map(entity -> entityDetailConverter.apply(entity))
                     .collect(Collectors.toList()));
-        }catch (OMRSExceptionWrapper ew){
+        }catch (GlossaryViewOmasException ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
                     ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
@@ -208,7 +208,7 @@ public class GlossaryViewOMAS extends OMRSClient {
                     .filter(effectivePredicate)
                     .map(entity -> entityDetailConverter.apply(entity) )
                     .collect(Collectors.toList()));
-        }catch (OMRSExceptionWrapper ew){
+        }catch (GlossaryViewOmasException ew){
             prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
                     ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
         }
@@ -248,12 +248,12 @@ public class GlossaryViewOMAS extends OMRSClient {
      * @return guid
      *
      */
-    private String getTypeDefGUID(String typeDefName, String userId, String serverName) throws OMRSExceptionWrapper{
+    private String getTypeDefGUID(String typeDefName, String userId, String serverName) throws GlossaryViewOmasException {
         String getTypeDefGUID = "getTypeDefGUID";
         Optional<OMRSRepositoryHelper> helper = getOMRSRepositoryHelper(userId, serverName, getTypeDefGUID);
 
         if(!helper.isPresent()){
-            throw new OMRSExceptionWrapper(500, getClass().getSimpleName(), getTypeDefGUID, "Unable to retrieve repository helper",
+            throw new GlossaryViewOmasException(500, getClass().getSimpleName(), getTypeDefGUID, "Unable to retrieve repository helper",
                     getTypeDefGUID, null);
         }
         return helper.get().getTypeDefByName(GLOSSARY_VIEW_OMAS, typeDefName).getGUID();
