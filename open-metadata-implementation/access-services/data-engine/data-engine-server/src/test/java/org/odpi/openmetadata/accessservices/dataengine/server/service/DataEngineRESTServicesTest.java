@@ -11,6 +11,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeException;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -31,13 +33,13 @@ import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandl
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.util.ReflectionUtils;
 
 import java.lang.reflect.Field;
@@ -46,6 +48,8 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -426,19 +430,21 @@ class DataEngineRESTServicesTest {
         mockPortHandler("createPortImplementationWithSchemaType");
         mockPortHandler("createPortAliases");
         mockProcessHandler("createProcess");
+        mockProcessHandler("updateProcessStatus");
 
         when(processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
                 null, NAME, FORMULA, OWNER, OwnerType.USER_ID)).thenReturn(GUID);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        GUIDListResponse response = dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
+        ProcessListResponse response = dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
         verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT);
         verify(portHandler, times(1)).createPortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 DELEGATED_QUALIFIED_NAME);
+        verify(processHandler, times(1)).updateProcessStatus(USER, GUID, InstanceStatus.ACTIVE);
         assertEquals(GUID, response.getGUIDs().get(0));
     }
 
@@ -454,6 +460,7 @@ class DataEngineRESTServicesTest {
         mockSchemaTypeHandler("createLineageMappings");
         mockPortHandler("createPortImplementationWithSchemaType");
         mockPortHandler("createPortAliases");
+        mockProcessHandler("updateProcessStatus");
 
         String methodName = "createProcess";
         mockProcessHandler(methodName);
@@ -464,7 +471,7 @@ class DataEngineRESTServicesTest {
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        GUIDListResponse response = dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
@@ -472,7 +479,8 @@ class DataEngineRESTServicesTest {
         verify(portHandler, times(1)).createPortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 DELEGATED_QUALIFIED_NAME);
 
-        verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
+        verify(restExceptionHandler, times(1)).captureInvalidParameterException(any(GUIDResponse.class),
+                eq(mockedException));
     }
 
     @Test
@@ -487,6 +495,7 @@ class DataEngineRESTServicesTest {
         mockSchemaTypeHandler("createLineageMappings");
         mockPortHandler("createPortImplementationWithSchemaType");
         mockPortHandler("createPortAliases");
+        mockProcessHandler("updateProcessStatus");
 
         String methodName = "createProcess";
         mockProcessHandler(methodName);
@@ -497,7 +506,7 @@ class DataEngineRESTServicesTest {
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
-        GUIDListResponse response = dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineRESTServices.createProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
@@ -505,7 +514,8 @@ class DataEngineRESTServicesTest {
         verify(portHandler, times(1)).createPortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 DELEGATED_QUALIFIED_NAME);
 
-        verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
+        verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(any(GUIDResponse.class),
+                eq(mockedException));
     }
 
     @Test
@@ -568,7 +578,8 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void addLineageMappings() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void addLineageMappings() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException,
+                                     NoSchemaAttributeException {
         mockSchemaTypeHandler("createLineageMappings");
 
         LineageMappingsRequestBody requestBody = mockLineageMappingsRequestBody();
@@ -586,7 +597,8 @@ class DataEngineRESTServicesTest {
                                                                                    InvocationTargetException,
                                                                                    NoSuchMethodException,
                                                                                    InstantiationException,
-                                                                                   IllegalAccessException {
+                                                                                   IllegalAccessException,
+                                                                                   NoSchemaAttributeException {
         String methodName = "createLineageMappings";
         mockSchemaTypeHandler(methodName);
 
@@ -610,7 +622,8 @@ class DataEngineRESTServicesTest {
                                                                                     InvocationTargetException,
                                                                                     NoSuchMethodException,
                                                                                     InstantiationException,
-                                                                                    IllegalAccessException {
+                                                                                    IllegalAccessException,
+                                                                                    NoSchemaAttributeException {
         String methodName = "createLineageMappings";
         mockSchemaTypeHandler(methodName);
 
