@@ -883,7 +883,8 @@ public abstract class OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties Optional list of entity properties to match (contains wildcards).
+     * @param matchProperties Optional list of entity properties to match (where any String property's value should
+     *                        be defined as a Java regular expression, even if it should be an exact match).
      * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -908,8 +909,9 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<EntityDetail> findEntitiesByProperty(String                    userId,
                                                                String                    entityTypeGUID,
@@ -937,7 +939,9 @@ public abstract class OMRSMetadataCollection
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
      *                       (but could be slow so not recommended.
      * @param classificationName name of the classification, note a null is not valid.
-     * @param matchClassificationProperties list of classification properties used to narrow the search.
+     * @param matchClassificationProperties list of classification properties used to narrow the search (where any String
+     *                                      property's value should be defined as a Java regular expression, even if it
+     *                                      should be an exact match).
      * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -962,8 +966,9 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException the properties specified are not valid for the requested type of
      *                                  classification.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                                      String                    entityTypeGUID,
@@ -992,8 +997,9 @@ public abstract class OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
      *                       be searched (could be slow so not recommended).
-     * @param searchCriteria String expression contained in any of the property values within the entities
-     *                       of the supplied type.
+     * @param searchCriteria String Java regular expression used to match against any of the String property values
+     *                       within the entities of the supplied type, even if it should be an exact match.
+     *                       (Retrieve all entities of the supplied type if this is either null or an empty string.)
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -1017,8 +1023,10 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
      *                                  entity.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
+     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     public abstract List<EntityDetail> findEntitiesByPropertyValue(String                userId,
                                                                    String                entityTypeGUID,
@@ -1105,8 +1113,8 @@ public abstract class OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param matchProperties list of properties used to narrow the search.  The property values may include
-     *                        regex style wild cards.
+     * @param matchProperties Optional list of relationship properties to match (where any String property's value should
+     *                        be defined as a Java regular expression, even if it should be an exact match).
      * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -1130,8 +1138,9 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
      *                                  relationships.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
      */
     public  abstract List<Relationship> findRelationshipsByProperty(String                    userId,
                                                                     String                    relationshipTypeGUID,
@@ -1158,8 +1167,8 @@ public abstract class OMRSMetadataCollection
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID GUID of the type of entity to search for. Null means all types will
      *                       be searched (could be slow so not recommended).
-     * @param searchCriteria String expression contained in any of the property values within the entities
-     *                       of the supplied type.
+     * @param searchCriteria String Java regular expression used to match against any of the String property values
+     *                       within the relationships of the supplied type, even if it should be an exact match.
      * @param fromRelationshipElement Element number of the results to skip to when building the results list
      *                                to return.  Zero means begin at the start of the results.  This is used
      *                                to retrieve the results over a number of pages.
@@ -1181,8 +1190,10 @@ public abstract class OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws PropertyErrorException there is a problem with one of the other parameters.
      * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws FunctionNotSupportedException the repository does not support one of the provided parameters.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @see OMRSRepositoryHelper#getExactMatchRegex(String)
+     * @see OMRSRepositoryHelper#getContainsRegex(String)
      */
     public abstract List<Relationship> findRelationshipsByPropertyValue(String                    userId,
                                                                         String                    relationshipTypeGUID,
