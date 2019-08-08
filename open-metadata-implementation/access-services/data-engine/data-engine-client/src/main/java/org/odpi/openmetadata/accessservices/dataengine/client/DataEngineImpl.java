@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -20,7 +21,6 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBod
 import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
@@ -36,7 +36,7 @@ import java.util.List;
  * The Data Engine Open Metadata Access Service (OMAS) provides an interface for data engine tools to create
  * processes with ports, schemas and relationships. See interface definition for more explanation.
  */
-public class DataEngineImpl implements DataEngineClient {
+public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     private static final String QUALIFIED_NAME_PARAMETER = "qualifiedName";
     private static final String PROCESS_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-engine/users/{1}/processes";
@@ -56,7 +56,6 @@ public class DataEngineImpl implements DataEngineClient {
     private String serverName;
     private String serverPlatformRootURL;
 
-    private OCFRESTClient restClient;
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
@@ -73,11 +72,10 @@ public class DataEngineImpl implements DataEngineClient {
      */
     public DataEngineImpl(String serverName, String serverPlatformRootURL, String userId, String password) throws
                                                                                                            InvalidParameterException {
+        super(serverName, serverPlatformRootURL, userId, password);
 
         this.serverName = serverName;
         this.serverPlatformRootURL = serverPlatformRootURL;
-
-        this.restClient = new OCFRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
     @Override
@@ -98,7 +96,7 @@ public class DataEngineImpl implements DataEngineClient {
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
                 portAliases, lineageMappings)));
 
-        return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
+        return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
     }
 
     @Override
@@ -112,13 +110,13 @@ public class DataEngineImpl implements DataEngineClient {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(Collections.singletonList(process));
 
-         return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
+        return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
     }
 
     @Override
     public List<String> createProcesses(String userId, List<Process> processes) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException {
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException {
         final String methodName = "createProcesses";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -126,7 +124,7 @@ public class DataEngineImpl implements DataEngineClient {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(processes);
 
-        return callGUIDListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
+        return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -291,7 +289,7 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                                   PropertyServerException,
                                                                                                   InvalidParameterException,
                                                                                                   UserNotAuthorizedException {
-        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName, serverPlatformRootURL
+        VoidResponse restResult = super.callVoidPostRESTCall(methodName, serverPlatformRootURL
                 + urlTemplate, requestBody, serverName, userId, params);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -304,7 +302,7 @@ public class DataEngineImpl implements DataEngineClient {
                                                                                                     PropertyServerException,
                                                                                                     InvalidParameterException,
                                                                                                     UserNotAuthorizedException {
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+        GUIDResponse restResult = super.callGUIDPostRESTCall(methodName,
                 serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -314,12 +312,12 @@ public class DataEngineImpl implements DataEngineClient {
         return restResult.getGUID();
     }
 
-    private List<String> callGUIDListPostRESTCall(String userId, String methodName, String urlTemplate,
-                                                  DataEngineOMASAPIRequestBody requestBody, Object... params) throws
-                                                                                                              PropertyServerException,
-                                                                                                              InvalidParameterException,
-                                                                                                              UserNotAuthorizedException {
-        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+    private List<String> callProcessListPostRESTCall(String userId, String methodName, String urlTemplate,
+                                                     ProcessesRequestBody requestBody, Object... params) throws
+                                                                                                                PropertyServerException,
+                                                                                                                InvalidParameterException,
+                                                                                                                UserNotAuthorizedException {
+        ProcessListResponse restResult = super.callPostRESTCall(methodName, ProcessListResponse.class,
                 serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
