@@ -12,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -76,7 +77,8 @@ public class ProcessHandler {
         final String methodName = "createProcess";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(qualifiedName, ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,
@@ -86,7 +88,7 @@ public class ProcessHandler {
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         return repositoryHandler.createEntity(userId, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, methodName);
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, InstanceStatus.DRAFT, methodName);
     }
 
 
@@ -111,4 +113,30 @@ public class ProcessHandler {
         repositoryHandler.createRelationship(userId, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, processGUID,
                 portGUID, null, methodName);
     }
+
+    /**
+     * Update the process instance status to
+     *
+     * @param userId         the name of the calling user
+     * @param guid           the guid name of the process
+     * @param instanceStatus the status of the process
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public void updateProcessStatus(String userId, String guid, InstanceStatus instanceStatus) throws
+                                                                                               org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException {
+
+        final String methodName = "createProcess";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(guid, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+
+        repositoryHandler.updateEntityStatus(userId, guid, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, instanceStatus, methodName);
+    }
+
 }
