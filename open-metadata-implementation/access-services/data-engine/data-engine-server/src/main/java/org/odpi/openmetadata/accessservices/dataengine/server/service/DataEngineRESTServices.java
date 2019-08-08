@@ -40,6 +40,7 @@ import org.springframework.http.HttpStatus;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -290,21 +291,18 @@ public class DataEngineRESTServices {
             List<GUIDResponse> guidResponses = createProcesses(userId, serverName, processesRequestBody.getProcesses());
 
             Predicate<? super GUIDResponse> processStatusPredicate =
-                    (guidResponse -> guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value());
+                    guidResponse -> guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value();
             Map<Boolean, List<GUIDResponse>> mappedResponses =
                     guidResponses.parallelStream().collect(Collectors.partitioningBy(processStatusPredicate));
-            List<GUIDResponse> createdProcesses = mappedResponses.get(Boolean.TRUE);
-            List<GUIDResponse> failedProcesses = mappedResponses.get(Boolean.FALSE);
 
-            response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
-            response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
+            List<GUIDResponse> createdProcesses = getGuidResponses(response, mappedResponses);
+
+            handleFailedProcesses(response, mappedResponses);
 
             createLineageMappings(userId, serverName, processesRequestBody.getLineageMappings(), response);
 
             createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
                     guidResponse.getGUID(), InstanceStatus.ACTIVE));
-            failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
-
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -316,6 +314,21 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
+    }
+
+    private void handleFailedProcesses(ProcessListResponse response, Map<Boolean, List<GUIDResponse>> mappedResponses) {
+        List<GUIDResponse> failedProcesses = mappedResponses.get(Boolean.FALSE);
+
+        response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
+        failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
+    }
+
+    private List<GUIDResponse> getGuidResponses(ProcessListResponse response, Map<Boolean, List<GUIDResponse>> mappedResponses) {
+        List<GUIDResponse> createdProcesses = mappedResponses.get(Boolean.TRUE);
+
+        response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
+
+        return createdProcesses;
     }
 
     private void captureException(FFDCResponseBase guidResponse, GUIDListResponse response) {
@@ -353,10 +366,16 @@ public class DataEngineRESTServices {
     }
 
     private List<GUIDResponse> createProcesses(String userId, String serverName, List<Process> processes) {
+        Predicate<? super Process> hasPortImplementationsPredicate =
+                process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
+        Map<Boolean, List<Process>> partitionedProcesses =
+                processes.parallelStream().collect(Collectors.partitioningBy(hasPortImplementationsPredicate));
+
         List<GUIDResponse> guidResponses = new ArrayList<>();
 
-        //TODO create processes in parallel, processes with port implementations before the processes with port aliases
-        processes.forEach(process -> guidResponses.add(createProcess(userId, serverName, process)));
+        Consumer<Process> processConsumer = process -> guidResponses.add(createProcess(userId, serverName, process));
+        partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
+        partitionedProcesses.get(Boolean.FALSE).parallelStream().forEach(processConsumer);
 
         return guidResponses;
     }
