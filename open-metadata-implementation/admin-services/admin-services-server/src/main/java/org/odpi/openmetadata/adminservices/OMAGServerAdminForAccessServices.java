@@ -356,30 +356,37 @@ public class OMAGServerAdminForAccessServices
     private List<AccessServiceConfig>  updateAccessServiceConfig(AccessServiceConfig         accessServiceConfig,
                                                                  List<AccessServiceConfig>   currentList)
     {
-        List<AccessServiceConfig> newList = currentList;
-
-        if (accessServiceConfig != null)
+        if (accessServiceConfig == null)
         {
-            if (newList == null)
-            {
-                newList = new ArrayList<>();
-            }
+            return currentList;
+        }
+        else
+        {
+            List<AccessServiceConfig> newList = new ArrayList<>();
 
-            for (AccessServiceConfig existingConfig : newList)
+            if (currentList != null)
             {
-                if (existingConfig != null)
+                for (AccessServiceConfig existingConfig : currentList)
                 {
-                    if (accessServiceConfig.getAccessServiceId() == existingConfig.getAccessServiceId())
+                    if (existingConfig != null)
                     {
-                        newList.remove(existingConfig);
+                        if (accessServiceConfig.getAccessServiceId() != existingConfig.getAccessServiceId())
+                        {
+                            newList.add(existingConfig);
+                        }
                     }
                 }
             }
 
             newList.add(accessServiceConfig);
-        }
 
-        return newList;
+            if (newList.isEmpty())
+            {
+                return null;
+            }
+
+            return newList;
+        }
     }
 
 
