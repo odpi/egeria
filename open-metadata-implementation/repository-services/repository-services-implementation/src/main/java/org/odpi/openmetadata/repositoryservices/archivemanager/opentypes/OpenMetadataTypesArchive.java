@@ -612,6 +612,14 @@ public class OpenMetadataTypesArchive
 
         entityDef.setPropertiesDefinition(properties);
 
+        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+        validInstanceStatusList.add(InstanceStatus.DRAFT);
+        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+        validInstanceStatusList.add(InstanceStatus.APPROVED);
+        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+        validInstanceStatusList.add(InstanceStatus.DELETED);
+        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+        entityDef.setInitialStatus(InstanceStatus.DRAFT);
         return entityDef;
     }
 
