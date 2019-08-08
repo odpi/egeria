@@ -31,7 +31,6 @@ import java.util.List;
  */
 public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 {
-    private String                                    eventManagerName;
     private boolean                                   isActive               = false;
     private List<OMRSTypeDefEvent>                    typeDefEventBuffer     = new ArrayList<>();
     private List<OMRSInstanceEvent>                   instanceEventBuffer    = new ArrayList<>();
@@ -62,14 +61,12 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                       OMRSRepositoryContentValidator  repositoryValidator,
                                       OMRSAuditLog                    auditLog)
     {
-        super();
+        super(eventManagerName);
 
         this.auditLog = auditLog;
 
         final String actionDescription = "Initialize OMRS Event Manager";
         final String methodName        = "OMRSRepositoryEventManager";
-
-        this.eventManagerName = eventManagerName;
 
         OMRSAuditCode auditCode = OMRSAuditCode.INITIALIZING_EVENT_MANAGER;
 
@@ -129,6 +126,19 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     public void registerTypeDefProcessor(OMRSTypeDefEventProcessor typeDefEventConsumer)
     {
+        final String actionDescription = "Register TypeDef Event Processor";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
+
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(typeDefEventConsumer.getEventProcessorName(),
+                                                            super.getEventProcessorName()),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
         typeDefEventConsumers.add(typeDefEventConsumer);
     }
 
@@ -141,6 +151,19 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     public void registerInstanceProcessor(OMRSInstanceEventProcessor instanceEventConsumer)
     {
+        final String actionDescription = "Register Instance Event Processor";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
+
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(instanceEventConsumer.getEventProcessorName(),
+                                                            super.getEventProcessorName()),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
         instanceEventConsumers.add(instanceEventConsumer);
     }
 
@@ -153,6 +176,19 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      */
     public void registerRepositoryEventProcessor(OMRSRepositoryEventProcessor repositoryEventProcessor)
     {
+        final String actionDescription = "Register Instance Event Processor";
+
+        OMRSAuditCode auditCode = OMRSAuditCode.REGISTERING_EVENT_PROCESSOR;
+
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(repositoryEventProcessor.getEventProcessorName(),
+                                                            super.getEventProcessorName()),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
         instanceEventConsumers.add(repositoryEventProcessor);
         typeDefEventConsumers.add(repositoryEventProcessor);
     }
@@ -171,7 +207,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(eventManagerName,
+                           auditCode.getFormattedLogMessage(super.eventProcessorName,
                                                             Integer.toString(typeDefEventConsumers.size()),
                                                             Integer.toString(instanceEventConsumers.size())),
                            null,
@@ -216,7 +252,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(eventManagerName,
+                               auditCode.getFormattedLogMessage(super.eventProcessorName,
                                                                 Integer.toString(typeDefEventBuffer.size())),
                                null,
                                auditCode.getSystemAction(),
@@ -239,7 +275,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(eventManagerName,
+                               auditCode.getFormattedLogMessage(super.eventProcessorName,
                                                                 Integer.toString(instanceEventBuffer.size())),
                                null,
                                auditCode.getSystemAction(),
@@ -268,7 +304,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         {
             for (OMRSTypeDefEventProcessorInterface consumer : typeDefEventConsumers)
             {
-                consumer.sendTypeDefEvent(eventManagerName, event);
+                consumer.sendTypeDefEvent(super.eventProcessorName, event);
             }
         }
     }
@@ -339,7 +375,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     	{
             for (OMRSInstanceEventProcessorInterface consumer : instanceEventConsumers)
             {
-                consumer.sendInstanceEvent(eventManagerName, event);
+                consumer.sendInstanceEvent(super.eventProcessorName, event);
             }
 
     	}

@@ -45,6 +45,7 @@ import static org.odpi.openmetadata.accessservices.informationview.utils.Constan
 public class EventPublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
+    private static final String eventPublisherName = "Information View OMAS Event Publisher";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic informationViewOutTopicConnector;
     private OMRSRepositoryConnector enterpriseConnector;
@@ -55,6 +56,8 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
 
 
     public EventPublisher(OpenMetadataTopicConnector informationViewOutTopicConnector, OMRSRepositoryConnector enterpriseConnector, List<String> zones, OMRSAuditLog auditLog) {
+        super (eventPublisherName);
+
         this.columnContextBuilder = new ColumnContextBuilder(enterpriseConnector);
         this.informationViewOutTopicConnector = informationViewOutTopicConnector;
         this.enterpriseConnector  = enterpriseConnector;

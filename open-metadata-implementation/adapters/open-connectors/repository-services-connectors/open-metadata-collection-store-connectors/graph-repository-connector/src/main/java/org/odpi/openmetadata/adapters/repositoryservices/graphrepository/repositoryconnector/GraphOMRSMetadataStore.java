@@ -1549,9 +1549,10 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByProperty
-    List<EntityDetail> findEntitiesByProperty(String typeDefName,
+    List<EntityDetail> findEntitiesByProperty(String             typeDefName,
                                               InstanceProperties matchProperties,
-                                              MatchCriteria matchCriteria)
+                                              MatchCriteria      matchCriteria,
+                                              Boolean            fullMatch)
             throws
             RepositoryErrorException,
             InvalidParameterException
@@ -1634,8 +1635,15 @@ class GraphOMRSMetadataStore {
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
                                 t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
-                                String ANYCHARS = ".*";
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                if (!fullMatch) {
+                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                    String ANYCHARS = ".*";
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                }
+                                else {
+                                    // Must be a full match...
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue ));
+                                }
                             }
                             break;
                         default:
@@ -1708,9 +1716,10 @@ class GraphOMRSMetadataStore {
 
 
     // findRelationshipsByProperty
-    List<Relationship> findRelationshipsByProperty(String typeDefName,
+    List<Relationship> findRelationshipsByProperty(String             typeDefName,
                                                    InstanceProperties matchProperties,
-                                                   MatchCriteria matchCriteria)
+                                                   MatchCriteria      matchCriteria,
+                                                   Boolean            fullMatch)
             throws
             RepositoryErrorException,
             InvalidParameterException
@@ -1763,8 +1772,14 @@ class GraphOMRSMetadataStore {
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
                                 t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
-                                String ANYCHARS = ".*";
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                if (!fullMatch) {
+                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                    String ANYCHARS = ".*";
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                } else {
+                                    // Must be a full match...
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue));
+                                }
                             }
                             break;
                         default:
@@ -2124,10 +2139,10 @@ class GraphOMRSMetadataStore {
 
 
     // findEntitiesByClassification
-    public List<EntityDetail> findEntitiesByClassification(String classificationName,
+    public List<EntityDetail> findEntitiesByClassification(String             classificationName,
                                                            InstanceProperties classificationProperties,
-                                                           MatchCriteria matchCriteria,
-                                                           String entityTypeName)
+                                                           MatchCriteria      matchCriteria,
+                                                           String             entityTypeName)
             throws
             InvalidParameterException,
             RepositoryErrorException
@@ -2188,8 +2203,10 @@ class GraphOMRSMetadataStore {
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
                                 t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
-                                String ANYCHARS = ".*";
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                // Pattern given for classification name is assumed to be a full match
+                                //String ANYCHARS = ".*";
+                                //t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue));         // for a field indexed using String mapping use textRegex
                             }
                             break;
                         default:
