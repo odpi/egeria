@@ -221,7 +221,7 @@ public class OpenLineageOperationalServices {
         try {
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
-            auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION;
+            auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),

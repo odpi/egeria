@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- *  * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
+ * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
  */
 @RestController
 @RequestMapping("/open-metadata/open-lineage/users/{userId}/servers/{serverName}/")
@@ -20,11 +20,50 @@ public class OpenLineageResource {
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
 
     /**
+     * Returns the graph that the user will initially see when querying lineage. In the future, this method will be
+     * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
+     * the condensed path by querying a different method.
+     *
+     * @param userId       calling user.
+     * @param serverName   name of the server instance to connect to.
+     * @param scope        The scope queried by the user: hostview, tableview, columnview.
+     * @param lineageQuery ultimate-source, ultimate-destination, glossary.
+     * @param graph        main, buffer, mock, history.
+     * @param guid         The guid of the node of which the lineage is queried of.
+     * @return A subgraph containing all relevant paths, in graphSON format.
+     */
+    @GetMapping(path = "/initial-graph/{scope}/{lineageQuery}/{graph}/{guid}")
+    public String initialGraph(
+            @PathVariable("userId") String userId,
+            @PathVariable("serverName") String serverName,
+            @PathVariable("scope") String scope,
+            @PathVariable("lineageQuery") String lineageQuery,
+            @PathVariable("graph") String graph,
+            @PathVariable("guid") String guid) {
+        return restAPI.initialGraph(serverName, userId, scope, lineageQuery, graph, guid);
+    }
+
+    /**
+     * Generate the MOCK graph, which can be used for performance testing, or demoing lineage with large amounts of
+     * data.
+     *
+     * @param userId     calling user.
+     * @param serverName name of the server instance to connect to.
+     * @return Voidresponse.
+     */
+    @GetMapping(path = "/generate-mock-graph")
+    public VoidResponse generateGraph(@PathVariable("userId") String userId,
+                                      @PathVariable("serverName") String serverName) {
+        return restAPI.generateGraph(serverName, userId);
+    }
+
+
+    /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
      *
-     * @param userId calling user.
+     * @param userId     calling user.
      * @param serverName name of the server instance to connect to.
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param graph      MAIN, BUFFER, MOCK, HISTORY.
      * @return Voidresponse
      */
     @GetMapping(path = "/dump/{graph}")
@@ -37,50 +76,15 @@ public class OpenLineageResource {
     /**
      * Return an entire graph, in GraphSON format.
      *
-     * @param userId calling user.
+     * @param userId     calling user.
      * @param serverName name of the server instance to connect to.
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param graph      MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
     @GetMapping(path = "/export/{graph}")
     public String exportGraph(@PathVariable("userId") String userId,
-                                              @PathVariable("serverName") String serverName,
-                                              @PathVariable("graph") String graph) {
+                              @PathVariable("serverName") String serverName,
+                              @PathVariable("graph") String graph) {
         return restAPI.exportGraph(serverName, userId, graph);
     }
-
-    /**
-     *  Generate the MOCK graph, which can be used for performance testing, or demoing lineage with large amounts of
-     *  data.
-     * @param userId calling user.
-     * @param serverName name of the server instance to connect to.
-     * @return Voidresponse.
-     */
-    @GetMapping(path = "/generate-mock-graph")
-    public VoidResponse generateGraph(@PathVariable("userId") String userId,
-                                                @PathVariable("serverName") String serverName) {
-        return restAPI.generateGraph(serverName, userId);
-    }
-
-    /**
-     * Returns the graph that the user will initially see when querying lineage. In the future, this method will be
-     * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
-     * the condensed path by querying a different method.
-     *
-     * @param userId calling user.
-     * @param serverName name of the server instance to connect to.
-     * @param lineageQuery ultimate-source, ultimate-destination, glossary.
-     * @param graph main, buffer, mock, history.
-     * @param guid The guid of the node of which the lineage is queried of.
-     * @return A subgraph containing all relevant paths, in graphSON format.
-     */
-    @GetMapping(path = "/initial-graph/{lineageQuery}/{graph}/{guid}")
-    public String initialGraph(@PathVariable("userId") String userId,
-                                               @PathVariable("serverName") String serverName,
-                                               @PathVariable("lineageQuery") String lineageQuery,
-                                               @PathVariable("graph") String graph,
-                                               @PathVariable("guid") String guid) {
-        return restAPI.initialGraph(serverName, userId, lineageQuery, graph, guid);
-    }
-
 }
