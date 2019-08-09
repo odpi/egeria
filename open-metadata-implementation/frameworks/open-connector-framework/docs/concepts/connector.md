@@ -4,7 +4,7 @@
 # Connector - part of the [Open Connector Framework (OCF)](../README.md)
 
 A connector is a java client object that provides applications with access to
-an [asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets),
+an [asset](../../../../../open-metadata-implementation/access-services/docs/concepts/assets/README.md),
 along with its related metadata.
 
 The OCF connector provides two APIs.
