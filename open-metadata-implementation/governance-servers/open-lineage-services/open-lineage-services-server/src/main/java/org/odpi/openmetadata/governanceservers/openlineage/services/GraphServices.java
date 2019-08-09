@@ -90,7 +90,7 @@ public class GraphServices {
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                         inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-                        inE(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM).subgraph("subGraph").outV().
+                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
                         cap("subGraph").next();
         return janusGraphToGraphson(subGraph);
     }
