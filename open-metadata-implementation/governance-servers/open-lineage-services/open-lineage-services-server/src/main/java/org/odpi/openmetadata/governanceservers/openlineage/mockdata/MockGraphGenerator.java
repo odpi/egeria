@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.governanceservers.openlineage.mockdata;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mockGraph;
@@ -98,7 +100,8 @@ public class MockGraphGenerator {
             Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
             hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
 
-            tableVertex.addEdge(EDGE_LABEL_TABLE_TO_HOST, hostVertex);
+            addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex, hostVertex);
+
             hostNodes.add(hostVertex);
 
             //Create all Column nodes.
@@ -106,13 +109,13 @@ public class MockGraphGenerator {
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
                 columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
-                columnVertex.addEdge(EDGE_LABEL_COLUMN_TO_TABLE, tableVertex);
+                addEdge(EDGE_LABEL_INCLUDED_IN, columnVertex, tableVertex);
 
                 //Randomly connect Column nodes with Glossary Term nodes.
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
                     Vertex glossaryNode = glossaryNodes.get(randomNum);
-                    columnVertex.addEdge(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM, glossaryNode);
+                    addEdge(EDGE_LABEL_SEMANTIC, columnVertex, glossaryNode);
                 }
                 columnNodesPerTable.add(columnVertex);
             }
@@ -138,11 +141,11 @@ public class MockGraphGenerator {
                 final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
-                host1.addEdge(EDGE_LABEL_HOST_AND_PROCESS, process);
-                table1.addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process);
+                addEdge(EDGE_LABEL_HOST_AND_PROCESS, host1, process);
+                addEdge(EDGE_LABEL_HOST_AND_PROCESS, process, host2);
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
 
-                process.addEdge(EDGE_LABEL_HOST_AND_PROCESS, host2);
-                process.addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table2);
 
 
                 //For each column in a table
@@ -151,12 +154,18 @@ public class MockGraphGenerator {
                     final Vertex column1 = columnsOfTable1.get(columnIndex);
                     final Vertex column2 = columnsOfTable2.get(columnIndex);
 
-                    column1.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process);
-                    process.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column2);
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column1, process);
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process, column2);
                 }
             }
         }
         g.tx().commit();
+    }
+
+    private void addEdge(String edgeLabel, Vertex fromVertex, Vertex toVertex) {
+        Edge edge = fromVertex.addEdge(edgeLabel, toVertex);
+        String uuid = UUID.randomUUID().toString();
+        edge.property(PROPERTY_KEY_ENTITY_GUID, uuid);
     }
 
 }
