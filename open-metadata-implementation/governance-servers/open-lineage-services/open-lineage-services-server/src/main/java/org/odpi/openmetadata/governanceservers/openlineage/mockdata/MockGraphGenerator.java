@@ -99,6 +99,7 @@ public class MockGraphGenerator {
 
             Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
             hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
+
             addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex, hostVertex);
 
             hostNodes.add(hostVertex);
@@ -144,6 +145,8 @@ public class MockGraphGenerator {
                 addEdge(EDGE_LABEL_HOST_AND_PROCESS, process, host2);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
+
+
 
                 //For each column in a table
                 for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
