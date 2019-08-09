@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeException;
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -142,7 +143,7 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
-                                                InvalidParameterException {
+                                                InvalidParameterException, NoSchemaAttributeException {
         final String methodName = "addLineageMappingRelationship";
 
         mockFindSchemaAttribute(SOURCE_QUALIFIED_NAME, SOURCE_GUID);
@@ -196,6 +197,24 @@ class DataEngineSchemaTypeHandlerTest {
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
 
+    @Test
+    void addLineageMappingRelationship_throwsNoSchemaAttributeException() throws UserNotAuthorizedException,
+                                                                                 PropertyServerException,
+                                                                                 InvalidParameterException {
+        final String methodName = "addLineageMappingRelationship";
+
+        mockFindSchemaAttribute(SOURCE_QUALIFIED_NAME, SOURCE_GUID);
+
+        SchemaType sourceSchemaType = Mockito.mock(SchemaType.class);
+        when(sourceSchemaType.getGUID()).thenReturn(SOURCE_GUID);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, methodName)).thenReturn(sourceSchemaType);
+
+        NoSchemaAttributeException thrown = assertThrows(NoSchemaAttributeException.class, () ->
+                dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
+                        TARGET_QUALIFIED_NAME));
+
+        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-002 "));
+    }
 
     private void mockFindSchemaAttribute(String qualifiedName, String guid) throws UserNotAuthorizedException,
                                                                                    PropertyServerException {
