@@ -24,7 +24,7 @@ public class LogicTable {
 
     /**
      *  Set the content of the logical table
-     * @param logicalTableDefinition Map<String, String>
+     * @param logicalTableDefinition {@code Map<String, String>}
      */
     public void setLogicalTableDefinition(Map<String, String> logicalTableDefinition) {
         this.logicalTableDefinition = logicalTableDefinition;

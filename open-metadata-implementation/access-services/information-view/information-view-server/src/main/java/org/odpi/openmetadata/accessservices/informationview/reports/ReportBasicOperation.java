@@ -173,17 +173,6 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportColumn object describing the current column in the report
      * @return entity representing column
-     * @throws InvalidParameterException
-     * @throws TypeErrorException
-     * @throws TypeDefNotKnownException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws ClassificationErrorException
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws StatusNotSupportedException
      */
     protected EntityDetail addReportColumn(String userId,
                                            String qualifiedNameForParent,
