@@ -12,7 +12,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_GUID = "guid";
     public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
     public static final String PROPERTY_NAME_NAME = "name";
-
+  
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_HOST = "host";
     public static final String NODE_LABEL_TABLE = "table";
@@ -28,11 +28,6 @@ public class GraphConstants {
 
     public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
-
-
-    /*
-     *  Elements
-     */
 
     public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
 

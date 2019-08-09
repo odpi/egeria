@@ -34,7 +34,8 @@ public class GraphServices {
      * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
      * the condensed path by querying a different method.
      *
-     * @param scope        The scope queried by the user: hostview, tableview, columnview.
+     *
+     * @param scope The scope queried by the user: hostview, tableview, columnview.
      * @param lineageQuery ultimate-source, ultimate-destination, glossary.
      * @param graphString  main, buffer, mock, history.
      * @param guid         The guid of the node of which the lineage is queried from.
@@ -89,6 +90,7 @@ public class GraphServices {
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                         inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
+                        inE(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM).subgraph("subGraph").outV().
                         cap("subGraph").next();
         return janusGraphToGraphson(subGraph);
     }
