@@ -5,6 +5,8 @@
 
 The Community Profile OMAS will send an event indicating that an individual has
 reached a multiple of the karma point threshold.  This threshold is set up in the
+`KarmaPointsThreshold` property set up in the the Community Profile OMAS's
+options map.
 
 
 
