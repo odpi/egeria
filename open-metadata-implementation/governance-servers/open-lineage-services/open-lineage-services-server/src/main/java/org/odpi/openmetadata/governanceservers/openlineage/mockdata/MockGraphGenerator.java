@@ -98,7 +98,7 @@ public class MockGraphGenerator {
             Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
             hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
 
-            tableVertex.addEdge(EDGE_LABEL_TABLE_TO_HOST, hostVertex);
+            tableVertex.addEdge(EDGE_LABEL_INCLUDED_IN, hostVertex);
             hostNodes.add(hostVertex);
 
             //Create all Column nodes.
@@ -106,13 +106,13 @@ public class MockGraphGenerator {
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
                 columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
-                columnVertex.addEdge(EDGE_LABEL_COLUMN_TO_TABLE, tableVertex);
+                columnVertex.addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex);
 
                 //Randomly connect Column nodes with Glossary Term nodes.
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
                     Vertex glossaryNode = glossaryNodes.get(randomNum);
-                    columnVertex.addEdge(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM, glossaryNode);
+                    columnVertex.addEdge(EDGE_LABEL_SEMANTIC, glossaryNode);
                 }
                 columnNodesPerTable.add(columnVertex);
             }
