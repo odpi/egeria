@@ -139,9 +139,9 @@ public class MockGraphGenerator {
                 final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
                 host1.addEdge(EDGE_LABEL_HOST_AND_PROCESS, process);
-                table1.addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process);
-
                 process.addEdge(EDGE_LABEL_HOST_AND_PROCESS, host2);
+
+                table1.addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process);
                 process.addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table2);
 
 
