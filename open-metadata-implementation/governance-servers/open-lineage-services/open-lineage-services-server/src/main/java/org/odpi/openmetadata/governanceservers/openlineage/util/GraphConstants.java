@@ -14,6 +14,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_NAME = "name";
 
     public static final String NODE_LABEL_PROCESS = "Process";
+    public static final String NODE_LABEL_HOST = "Host";
     public static final String NODE_LABEL_TABLE = "Table";
     public static final String NODE_LABEL_COLUMN = "Column";
     public static final String NODE_LABEL_GLOSSARYTERM = "Glossary Term";
@@ -26,7 +27,7 @@ public class GraphConstants {
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "Process associated with table";
     public static final String EDGE_LABEL_HOST_AND_PROCESS = "Process associated with host";
 
-    public static final String EDGE_LABEL_ENTITY_TO_GLOSSARYTERM = "Column is associated with business term";
+    public static final String EDGE_LABEL_ENTITY_TO_GLOSSARYTERM = "Entity is associated with business term";
 
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "Synonym";
 
