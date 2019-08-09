@@ -3526,7 +3526,6 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
-     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     protected TypeDef addExternalEntityParameterValidation(String                     userId,
