@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Connected Asset Open Metadata Access Service (OMAS) with Spring
+# OCF metadata management with Spring
 
-The Connected Asset OMAS spring module uses spring to create the server-side support for the REST services.
+The OCF metadata management spring module uses spring to create the server-side support for the REST services
+needed to support the retrieval of metadata about an [asset](../../../access-services/docs/concepts/assets).

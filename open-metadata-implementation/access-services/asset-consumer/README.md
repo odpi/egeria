@@ -35,7 +35,7 @@ Framework (OCF)](../../frameworks/open-connector-framework) connectors.
 The caller can use the connector to access
 the contents of the asset itself and the properties about the
 asset it is accessing.   This service is provided by the
-[Connected Asset OMAS](../connected-asset).
+[OCF Metadata Management Common Service](../../common-services/ocf-metadata-management).
 
 ## Digging Deeper
 
