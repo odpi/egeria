@@ -46,11 +46,11 @@ public class OpenLineageRestServices {
     }
 
 
-    public String initialGraph(String serverName, String userId, String lineageQuery, String graph, String guid) {
+    public String initialGraph(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
             GraphServices graphServices = instanceHandler.queryHandler(serverName);
-            response = graphServices.getInitialGraph(lineageQuery, graph, guid);
+            response = graphServices.getInitialGraph(scope, lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
