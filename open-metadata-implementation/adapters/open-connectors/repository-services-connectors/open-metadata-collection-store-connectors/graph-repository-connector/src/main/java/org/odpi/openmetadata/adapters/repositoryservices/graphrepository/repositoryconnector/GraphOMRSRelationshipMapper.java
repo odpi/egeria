@@ -62,10 +62,32 @@ public class GraphOMRSRelationshipMapper {
             return ep.value();
     }
 
+    private void addProperty(Edge edge, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
+        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+            // Primitives are stored directly in the graph
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            if (primValue != null) {
+                edge.property(getPropertyKeyRelationship(qualifiedPropName), primValue);
+            } else {
+                removeProperty(edge, qualifiedPropName);
+            }
+        } else {
+            log.debug("{} non-primitive instance property {}", propertyName);
+        }
+    }
+
+    private void removeProperty(Edge edge, String qualifiedPropName) {
+        // no value has been specified - remove the property from the edge
+        Property ep = edge.property(getPropertyKeyRelationship(qualifiedPropName));
+        if (ep != null) {
+            ep.remove();
+        }
+    }
+
 
     // Inbound methods - i.e. writing to store
-
-
 
 
     public void mapRelationshipToEdge(Relationship relationship, Edge edge)
@@ -302,25 +324,12 @@ public class GraphOMRSRelationshipMapper {
                 InstancePropertyValue ipv = instanceProperties.getPropertyValue(propertyName);
                 if (ipv != null) {
                     // a value has been specified
-
                     // This uses the qualified property name - so that graph index property keys are finer grained which speeds up index enablement and
                     // will also make lookups faster.
-                    InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-                        // Primitives are stored directly in the graph
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-                        Object primValue = ppv.getPrimitiveValue();
-                        edge.property(qualifiedPropName, primValue);
-                    } else {
-                        log.debug("{} non-primitive instance property {}", propertyName);
-                    }
-
-                } else {
-                    // no value has been specified - remove the property from the edge
-                    Property ep = edge.property(qualifiedPropName);
-                    if (ep != null) {
-                        ep.remove();
-                    }
+                    addProperty(edge, propertyName, qualifiedPropName, ipv);
+                }
+                else {
+                    removeProperty(edge, qualifiedPropName);
                 }
             }
         }
