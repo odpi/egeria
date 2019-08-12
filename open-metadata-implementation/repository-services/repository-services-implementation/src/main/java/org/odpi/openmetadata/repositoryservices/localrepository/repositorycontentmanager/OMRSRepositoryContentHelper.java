@@ -3427,11 +3427,14 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
         if (isStartsWithRegex(s))
         {
-            return s.substring(0, s.length() - 2);
+            return s.substring(2, s.length() - 4);
         }
         if (isEndsWithRegex(s))
         {
-            return s.substring(2);
+            return s.substring(4, s.length() - 2);
+        }
+        if (isContainsRegex(s)) {
+            return s.substring(4, s.length() - 4);
         }
         return s;
     }
