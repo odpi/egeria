@@ -53,7 +53,6 @@ public class FindEntitiesByPropertyExecutor extends PageableRepositoryExecutorBa
      *                 unrestricted return results size.
      * @param localMetadataCollectionId unique identifier for the local repository - may be null if no local repository
      * @param auditLog logging destination
-     * @param enterpriseRepositoryConnector enterprise connector
      * @param repositoryValidator validator for resulting relationships
      * @param methodName calling method
      */

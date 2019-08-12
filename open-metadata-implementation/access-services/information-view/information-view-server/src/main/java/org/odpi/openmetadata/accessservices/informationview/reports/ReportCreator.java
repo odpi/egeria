@@ -32,7 +32,6 @@ public class ReportCreator extends ReportBasicOperation {
      * @param userId
      * @param payload object describing the report
      * @param reportEntity entity describing the report
-     * @throws Exception
      */
     public void createReport(String userId, ReportRequestBody payload, EntityDetail reportEntity) throws InvalidParameterException,
                                                                                                          StatusNotSupportedException,

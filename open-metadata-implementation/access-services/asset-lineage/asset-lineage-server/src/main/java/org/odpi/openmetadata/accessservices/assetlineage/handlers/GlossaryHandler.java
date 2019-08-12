@@ -58,9 +58,6 @@ public class GlossaryHandler {
      * @param entityProxy entityProxy
      * @param userID  String - userId of user making request.
      * @return Glossary Term retrieved from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID){
 

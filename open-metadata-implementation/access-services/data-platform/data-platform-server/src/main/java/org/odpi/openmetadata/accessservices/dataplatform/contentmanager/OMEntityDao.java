@@ -421,7 +421,6 @@ public class OMEntityDao {
      * @return the existing relationship with the given qualified name or the newly created relationship with the given qualified name
      * @throws InvalidParameterException
      * @throws TypeErrorException
-     * @throws TypeDefNotKnownException
      * @throws PropertyErrorException
      * @throws EntityNotKnownException
      * @throws FunctionNotSupportedException
