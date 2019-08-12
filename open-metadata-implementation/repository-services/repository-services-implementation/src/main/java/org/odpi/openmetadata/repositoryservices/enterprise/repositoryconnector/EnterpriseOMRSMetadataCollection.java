@@ -509,7 +509,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (allTypes != null)
         {
-            TypeDef  result = super.filterTypeDefsByName(repositoryHelper.getActiveTypeDefs(), name);
+            TypeDef  result = super.filterTypeDefsByName(allTypes.getTypeDefs(), name);
 
             if (result == null)
             {

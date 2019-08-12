@@ -27,13 +27,11 @@ public class GraphConstants {
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
 
     //Edge can go in either direction
-    public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
-    public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
-    public static final String EDGE_LABEL_HOST_AND_PROCESS = "processHost";
-
-    public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
-    public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
-
+    public static final String NODE_LABEL_PROCESS = "process";
+    public static final String NODE_LABEL_HOST = "host";
+    public static final String NODE_LABEL_TABLE = "table";
+    public static final String NODE_LABEL_COLUMN = "column";
+    public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";
 
     public static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID,                           "java.lang.String");
@@ -48,16 +46,12 @@ public class GraphConstants {
 
     }};
 
-    public static final String NODE_LABEL_PROCESS = "Process";
-    public static final String NODE_LABEL_TABLE = "Table";
-    public static final String NODE_LABEL_COLUMN = "Column";
-    public static final String NODE_LABEL_GLOSSARYTERM = "Glossary Term";
+    public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
+    public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
+    public static final String EDGE_LABEL_HOST_AND_PROCESS = "processHost";
 
-    public static final String EDGE_LABEL_COLUMN_TO_TABLE = "Column included in table";
-    public static final String EDGE_LABEL_TABLE_TO_HOST = "Table included in host";
-
-    public static final String EDGE_LABEL_ENTITY_TO_GLOSSARYTERM = "Column is associated with business term";
-
+    public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
+    public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
 
 
     /*
