@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeException;
 import org.odpi.openmetadata.accessservices.dataengine.model.LineageMapping;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortAlias;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
@@ -30,12 +32,17 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The DataEngineRESTServices provides the server-side implementation of the Data Engine Open Metadata Assess Service
@@ -267,13 +274,13 @@ public class DataEngineRESTServices {
      *
      * @return a list unique identifiers (GUIDs) of the created processes
      */
-    public GUIDListResponse createProcesses(String userId, String serverName,
-                                            ProcessesRequestBody processesRequestBody) {
+    public ProcessListResponse createProcesses(String userId, String serverName,
+                                               ProcessesRequestBody processesRequestBody) {
         final String methodName = "createProcesses";
 
         log.debug("Calling method: {}", methodName);
 
-        GUIDListResponse response = new GUIDListResponse();
+        ProcessListResponse response = new ProcessListResponse();
 
         try {
             if (processesRequestBody == null || CollectionUtils.isEmpty(processesRequestBody.getProcesses())) {
@@ -281,15 +288,21 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            createProcesses(userId, serverName, processesRequestBody.getProcesses(), response);
+            List<GUIDResponse> guidResponses = createProcesses(userId, serverName, processesRequestBody.getProcesses());
 
-            // Check that the status is still ok. Process creation might fail, and the exceptions are captured in the
-            // response. This is due to the parallel processing done with streams.
-            if (response.getRelatedHTTPCode() != HttpStatus.OK.value()) {
-                return response;
-            }
+            Predicate<? super GUIDResponse> processStatusPredicate =
+                    guidResponse -> guidResponse.getRelatedHTTPCode() == HttpStatus.OK.value();
+            Map<Boolean, List<GUIDResponse>> mappedResponses =
+                    guidResponses.parallelStream().collect(Collectors.partitioningBy(processStatusPredicate));
+
+            List<GUIDResponse> createdProcesses = getGuidResponses(response, mappedResponses);
+
+            handleFailedProcesses(response, mappedResponses);
+
             createLineageMappings(userId, serverName, processesRequestBody.getLineageMappings(), response);
 
+            createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
+                    guidResponse.getGUID(), InstanceStatus.ACTIVE));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -303,21 +316,68 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void createProcesses(String userId, String serverName, List<Process> processes, GUIDListResponse response) {
-        List<String> processGUIDs = new ArrayList<>();
-        processes.stream().forEach(process -> {
-            try {
-                processGUIDs.add(createProcess(userId, serverName, process, response));
-            } catch (InvalidParameterException error) {
-                restExceptionHandler.captureInvalidParameterException(response, error);
-            } catch (PropertyServerException error) {
-                restExceptionHandler.capturePropertyServerException(response, error);
-            } catch (UserNotAuthorizedException error) {
-                restExceptionHandler.captureUserNotAuthorizedException(response, error);
-            }
-        });
+    private void handleFailedProcesses(ProcessListResponse response, Map<Boolean, List<GUIDResponse>> mappedResponses) {
+        List<GUIDResponse> failedProcesses = mappedResponses.get(Boolean.FALSE);
 
-        response.setGUIDs(processGUIDs);
+        response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
+        failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
+    }
+
+    private List<GUIDResponse> getGuidResponses(ProcessListResponse response, Map<Boolean, List<GUIDResponse>> mappedResponses) {
+        List<GUIDResponse> createdProcesses = mappedResponses.get(Boolean.TRUE);
+
+        response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
+
+        return createdProcesses;
+    }
+
+    private void captureException(FFDCResponseBase guidResponse, GUIDListResponse response) {
+        response.setExceptionErrorMessage(guidResponse.getExceptionErrorMessage());
+        response.setExceptionClassName(guidResponse.getExceptionClassName());
+        response.setExceptionSystemAction(guidResponse.getExceptionSystemAction());
+        response.setExceptionUserAction(guidResponse.getExceptionUserAction());
+        response.setRelatedHTTPCode(guidResponse.getRelatedHTTPCode());
+        response.setExceptionProperties(guidResponse.getExceptionProperties());
+    }
+
+    private VoidResponse updateProcessStatus(String userId, String serverName, String processGuid,
+                                             InstanceStatus instanceStatus) {
+        final String methodName = "updateProcessStatus";
+
+        log.debug("Calling method: {}", methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try {
+            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+
+            processHandler.updateProcessStatus(userId, processGuid, instanceStatus);
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+
+        return response;
+    }
+
+    private List<GUIDResponse> createProcesses(String userId, String serverName, List<Process> processes) {
+        Predicate<? super Process> hasPortImplementationsPredicate =
+                process -> CollectionUtils.isNotEmpty(process.getPortImplementations());
+        Map<Boolean, List<Process>> partitionedProcesses =
+                processes.parallelStream().collect(Collectors.partitioningBy(hasPortImplementationsPredicate));
+
+        List<GUIDResponse> guidResponses = new ArrayList<>();
+
+        Consumer<Process> processConsumer = process -> guidResponses.add(createProcess(userId, serverName, process));
+        partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
+        partitionedProcesses.get(Boolean.FALSE).parallelStream().forEach(processConsumer);
+
+        return guidResponses;
     }
 
     /**
@@ -408,10 +468,7 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created process
      */
-    private String createProcess(String userId, String serverName, Process process, GUIDListResponse response) throws
-                                                                                                               InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException {
+    private GUIDResponse createProcess(String userId, String serverName, Process process) {
         final String methodName = "createProcess";
 
         log.debug("Calling method: {}", methodName);
@@ -429,26 +486,39 @@ public class DataEngineRESTServices {
         List<PortAlias> portAliases = process.getPortAliases();
         List<LineageMapping> lineageMappings = process.getLineageMappings();
 
-        List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
+        GUIDResponse response = new GUIDResponse();
 
-        portGUIDs.addAll(createPortAliases(userId, portAliases, serverName));
+        try {
+            List<String> portGUIDs = createPortImplementations(userId, serverName, portImplementations);
 
-        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
+            portGUIDs.addAll(createPortAliases(userId, portAliases, serverName));
 
-        String processGuUID = processHandler.createProcess(userId, qualifiedName, processName, description,
-                latestChange, zoneMembership, displayName, formula, owner, ownerType);
+            ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-        for (String portGUID : portGUIDs) {
-            processHandler.addProcessPortRelationship(userId, processGuUID, portGUID);
+            String processGuUID = processHandler.createProcess(userId, qualifiedName, processName, description,
+                    latestChange, zoneMembership, displayName, formula, owner, ownerType);
+
+            for (String portGUID : portGUIDs) {
+                processHandler.addProcessPortRelationship(userId, processGuUID, portGUID);
+            }
+
+            createLineageMappings(userId, serverName, lineageMappings, response);
+
+            response.setGUID(processGuUID);
+
+            log.debug("Returning from method: {1} with response: {2}", methodName, response);
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        createLineageMappings(userId, serverName, lineageMappings, response);
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, processGuUID);
-
-        return processGuUID;
-
-
+        return response;
     }
 
     private List<String> createPortImplementations(String userId, String serverName,
@@ -513,8 +583,21 @@ public class DataEngineRESTServices {
                 restExceptionHandler.capturePropertyServerException(response, error);
             } catch (UserNotAuthorizedException error) {
                 restExceptionHandler.captureUserNotAuthorizedException(response, error);
+            } catch (NoSchemaAttributeException error) {
+                captureNoSchemaAttributeException(response, error);
             }
         });
+    }
+
+    private void captureNoSchemaAttributeException(FFDCResponseBase response, NoSchemaAttributeException error) {
+        {
+            response.setRelatedHTTPCode(error.getReportedHTTPCode());
+            response.setExceptionClassName(NoSchemaAttributeException.class.getName());
+            response.setExceptionErrorMessage(error.getErrorMessage());
+            response.setExceptionSystemAction(error.getReportedSystemAction());
+            response.setExceptionUserAction(error.getReportedUserAction());
+        }
+
     }
 
     private String createSchemaType(String userId, String serverName, SchemaType schemaType) throws
