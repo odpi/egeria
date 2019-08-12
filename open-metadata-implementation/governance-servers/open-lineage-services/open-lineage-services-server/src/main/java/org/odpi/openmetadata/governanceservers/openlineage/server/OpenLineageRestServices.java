@@ -18,7 +18,7 @@ public class OpenLineageRestServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageRestServices.class);
     private final OpenLineageInstanceHandler instanceHandler = new OpenLineageInstanceHandler();
 
-    public OpenLineageAPIResponse dumpGraph(String serverName, String userId, String graph) {
+    public VoidResponse dumpGraph(String serverName, String userId, String graph) {
         VoidResponse response = new VoidResponse();
 
         try {
@@ -46,18 +46,18 @@ public class OpenLineageRestServices {
     }
 
 
-    public String initialGraph(String serverName, String userId, String lineageQuery, String graph, String guid) {
+    public String initialGraph(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
             GraphServices graphServices = instanceHandler.queryHandler(serverName);
-            response = graphServices.getInitialGraph(lineageQuery, graph, guid);
+            response = graphServices.getInitialGraph(scope, lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }
         return response;
     }
 
-    public OpenLineageAPIResponse generateGraph(String serverName, String userId) {
+    public VoidResponse generateGraph(String serverName, String userId) {
         VoidResponse response = new VoidResponse();
 
         try {
