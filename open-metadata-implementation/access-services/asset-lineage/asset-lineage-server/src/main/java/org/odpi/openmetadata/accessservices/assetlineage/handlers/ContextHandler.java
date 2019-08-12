@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
@@ -32,10 +33,9 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
 public class ContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ContextHandler.class);
-
+    private static final String guidParameter = "guid";
     private Converter converter = new Converter();
     private TypeDefGallery allTypes = new TypeDefGallery();
-    private static final String guidParameter = "guid";
     private String serviceName;
     private String serverName;
     private RepositoryHandler repositoryHandler;
@@ -64,7 +64,7 @@ public class ContextHandler {
         this.repositoryHandler = repositoryHandler;
     }
 
-    public ConvertedAssetContext getAssetContext(String serverName, String userId, String GUID){
+    public ConvertedAssetContext getAssetContext(String serverName, String userId, String GUID) {
         AssetContext assetContext = new AssetContext();
         ConvertedAssetContext convertedAssetContext = new ConvertedAssetContext();
 
@@ -72,7 +72,7 @@ public class ContextHandler {
 
             this.allTypes = repositoryHandler.getMetadataCollection().getAllTypes(userId);
 
-            EntityDetail entityDetail = getEntityDetails(serverName, userId, GUID);
+            EntityDetail entityDetail = getEntityDetails(userId, GUID);
             Map<String, List<Connection>> knownAssetConnection = new HashMap<>();
 
             String typeDefName = entityDetail.getType().getTypeDefName();
@@ -86,6 +86,7 @@ public class ContextHandler {
                 if (isAsset(typeDefName).isPresent()) {
                     getAsset(userId, assetElement, knownAssetConnection, entityDetail);
                 } else {
+                    getColumnTypeEntity(userId, assetElement, entityDetail);
                     buildContextForAsset(userId, assetElement, knownAssetConnection, entityDetail);
                 }
 
@@ -99,13 +100,18 @@ public class ContextHandler {
 
             }
         } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | TypeDefNotKnownException | EntityNotKnownException | EntityProxyOnlyException e) {
-            log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection. Excpetion message is: " + e.getErrorMessage());
+            log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection. Excpetion message is: {}", e.getErrorMessage());
+            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            log.error("OMAS throws an error because input parameter is null or invalid. Exception message is " + e.getErrorMessage());
+            log.error("OMAS throws an error because input parameter is null or invalid. Exception message is {}" ,e.getErrorMessage());
+            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
+
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
-            log.error("UserId passed is not authorized to perform the action. Exception message is " + e.getMessage());
+            log.error("UserId passed is not authorized to perform the action. Exception message is {}" ,e.getMessage());
+            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         } catch (PropertyServerException e) {
-            log.error("Error when trying to connect in a repository to retrieve information about the connenction. Exception message is " + e.getMessage());
+            log.error("Error when trying to connect in a repository to retrieve information about the connenction. Exception message is {}", e.getMessage());
+            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
 
         return convertedAssetContext;
@@ -120,14 +126,13 @@ public class ContextHandler {
             return typeDefStream.map(typeDef -> allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(
                     superType.get().getName()) && t.getSuperType().getName().equals(ASSET)).findAny()).orElse(null);
         }
-        return null;
+        return Optional.empty();
     }
 
 
-    private EntityDetail getEntityDetails(String serverName, String userId, String GUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private EntityDetail getEntityDetails(String userId, String GUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         String methodname = "getEntityDetails";
-        EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userId, GUID, guidParameter, "Any entity type", methodname);
-        return entityDetail;
+       return repositoryHandler.getEntityByGUID(userId, GUID, guidParameter, "Any entity type", methodname);
     }
 
     private Term getStructureForGlossaryTerm(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail glossaryTerm) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
@@ -182,6 +187,7 @@ public class ContextHandler {
             setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
             return;
         } else {
+
             List<EntityDetail> attributeForSchemas = getTheEndsRelationship(userId, entityDetail.getGUID(), ATTRIBUTE_FOR_SCHEMA);
             for (EntityDetail attributeForSchema : attributeForSchemas) {
                 Element element = buildElement(attributeForSchema);
@@ -198,6 +204,8 @@ public class ContextHandler {
                 }
             }
         }
+
+
     }
 
     private Optional<TypeDef> isComplexSchemaType(String typeDefName) {
@@ -217,7 +225,7 @@ public class ContextHandler {
 
     private void getSubElements(AssetElement assetElement, List<EntityDetail> schemaAttributeTypeEntities) {
         List<Element> elements = getElements(schemaAttributeTypeEntities);
-        if (elements == null || elements.isEmpty()) {
+        if (elements.isEmpty()) {
             return;
         }
         List<Element> existingElements = assetElement.getContext();
@@ -240,8 +248,14 @@ public class ContextHandler {
         return elements;
     }
 
-    private void getAsset(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail dataSet) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
-        List<Relationship> relationshipsToColumnTypes = getRelationshipsByAssetId(userId, dataSet.getGUID(), DATA_CONTENT_FOR_DATA_SET);
+    private void getAsset(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail dataSet) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+        List<Relationship> relationshipsToColumnTypes;
+        if (dataSet.getType().getTypeDefName().equals(DATA_FILE)) {
+            relationshipsToColumnTypes = getRelationshipsByAssetId(userId, dataSet.getGUID(), NESTED_FILE);
+        } else {
+            relationshipsToColumnTypes = getRelationshipsByAssetId(userId, dataSet.getGUID(), DATA_CONTENT_FOR_DATA_SET);
+
+        }
 
         if (!relationshipsToColumnTypes.isEmpty() && relationshipsToColumnTypes.size() == 1) {
             if (relationshipsToColumnTypes.get(0).getEntityOneProxy().getGUID().equals(dataSet.getGUID())) {
@@ -256,7 +270,7 @@ public class ContextHandler {
         }
     }
 
-    private void setConnections(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail asset) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private void setConnections(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail asset) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         if (knownAssetConnection.containsKey(asset.getGUID())) {
             assetElement.setConnections(knownAssetConnection.get(asset.getGUID()));
         } else {
@@ -266,7 +280,7 @@ public class ContextHandler {
         }
     }
 
-    private List<Connection> getConnections(String userId, String dataSetGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private List<Connection> getConnections(String userId, String dataSetGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         List<EntityDetail> connections = getTheEndsRelationship(userId, dataSetGuid, Constants.CONNECTION_TO_ASSET);
 
         if (!connections.isEmpty()) {
@@ -278,9 +292,10 @@ public class ContextHandler {
         return Collections.emptyList();
     }
 
-    private List<EntityDetail> getTheEndsRelationship(String userId, String GUID, String relationshipType) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private List<EntityDetail> getTheEndsRelationship(String userId, String GUID, String relationshipType) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
 
         List<Relationship> relationships = getRelationshipsByAssetId(userId, GUID, relationshipType);
+
 
         if (relationships.isEmpty()) {
             return Collections.emptyList();
@@ -301,7 +316,7 @@ public class ContextHandler {
         assetElement.setProperties(converter.getMapProperties(asset.getProperties()));
     }
 
-    private void setAssetDetails(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail entity) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private void setAssetDetails(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail entity) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         EntityDetail dataSet = getTheEndOfRelationship(userId, entity.getGUID(), ASSET_SCHEMA_TYPE);
         if (assetElement.getContext() != null) {
             assetElement.getContext().add(buildElement(dataSet));
@@ -310,6 +325,17 @@ public class ContextHandler {
         }
 
         getAsset(userId, assetElement, knownAssetConnection, dataSet);
+    }
+
+    private void getColumnTypeEntity(String userId, AssetElement assetElement, EntityDetail entityDetail) throws InvalidParameterException, TypeDefNotKnownException, PropertyServerException, PropertyErrorException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, RepositoryErrorException {
+
+        List<EntityDetail> schemaAttributeType = getTheEndsRelationship(userId, entityDetail.getGUID(), SCHEMA_ATTRIBUTE_TYPE);
+        for (EntityDetail schemaType : schemaAttributeType) {
+            Element element = buildElement(schemaType);
+            addElement(assetElement, element);
+
+        }
+
     }
 
     private Element buildElement(EntityDetail entityDetail) {
@@ -325,7 +351,7 @@ public class ContextHandler {
         return term;
     }
 
-    private EntityDetail getTheEndOfRelationship(String userId, String GUID, String relationshipType) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
+    private EntityDetail getTheEndOfRelationship(String userId, String GUID, String relationshipType) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
 
         List<Relationship> relationshipsToColumnTypes = getRelationshipsByAssetId(userId, GUID, relationshipType);
 
@@ -339,11 +365,9 @@ public class ContextHandler {
     private EntityDetail getThePairEntity(String userId, String entityDetailGUID, Relationship relationship) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException {
         String methodname = "getThePairEntity";
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
-            EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userId, relationship.getEntityTwoProxy().getGUID(), guidParameter, "Any entity type", methodname);
-            return entityDetail;
+            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityTwoProxy().getGUID(), guidParameter, "Any entity type", methodname);
         } else {
-            EntityDetail entityDetail = repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), guidParameter, "Any entity type", methodname);
-            return entityDetail;
+            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), guidParameter, "Any entity type", methodname);
         }
     }
 
@@ -387,5 +411,6 @@ public class ContextHandler {
         }
         return null;
     }
+
 
 }

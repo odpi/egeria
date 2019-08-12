@@ -11,6 +11,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.services.BufferGraphFactory;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphFactory;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
@@ -93,7 +94,7 @@ public class OpenLineageOperationalServices {
 
             try {
                 this.mainGraph = GraphFactory.openMainGraph();
-                this.bufferGraph = GraphFactory.openBufferGraph();
+                this.bufferGraph = BufferGraphFactory.openBufferGraph();
                 this.historyGraph = GraphFactory.openHistoryGraph();
                 this.mockGraph = GraphFactory.openMockGraph();
 
