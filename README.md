@@ -31,6 +31,31 @@ The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
 
 
+## Call schedule
+
+The Egeria team run two calls every Thursday and all are welcome
+
+* **Developers call** - one hour - 
+  Discussion on code development - not minuted -
+  
+  10 am (UK); 11 am (Amsterdam/CET); 12pm (Bucharest)
+  
+  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
+  
+* **Community call** - one hour - 
+  Demos, meet-ups and other activities going on in the Egeria community
+  
+  2pm (UK); 3pm (Amsterdam/CET); 4pm (Bucharest)
+  
+  Zoom Conference [https://zoom.us/j/523629111](https://zoom.us/j/523629111)
+ 
+  Meeting Agenda and Minutes are here [https://github.com/odpi/data-governance/wiki](https://github.com/odpi/data-governance/wiki)
+  
+
+## Monthly maintainers face-to-face meetings
+
+The Egeria maintainers have a face-to-face meeting every month.
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
