@@ -70,6 +70,29 @@ public class GraphOMRSEntityMapper {
             return vp.value();
     }
 
+    private void addProperty(Vertex vertex, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
+        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+            // Primitives are stored directly in the graph
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            if (primValue != null) {
+                vertex.property(getPropertyKeyEntity(qualifiedPropName), primValue);
+            } else {
+                removeProperty(vertex, qualifiedPropName);
+            }
+        } else {
+            log.debug("{} non-primitive instance property {}", propertyName);
+        }
+    }
+
+    private void removeProperty(Vertex vertex, String qualifiedPropName) {
+        // no value has been specified - remove the property from the vertex
+        VertexProperty vp = vertex.property(getPropertyKeyEntity(qualifiedPropName));
+        if (vp != null) {
+            vp.remove();
+        }
+    }
 
 
     // Inbound methods - i.e. writing to store
@@ -138,13 +161,7 @@ public class GraphOMRSEntityMapper {
         }
     }
 
-    private void removeProperty(Vertex vertex, String qualifiedPropName) {
-        // no value has been specified - remove the property from the vertex
-        VertexProperty vp = vertex.property(qualifiedPropName);
-        if (vp != null) {
-            vp.remove();
-        }
-    }
+
 
 
     public void mapEntityProxyToVertex(EntityProxy entity, Vertex vertex)
@@ -210,21 +227,6 @@ public class GraphOMRSEntityMapper {
         }
     }
 
-    private void addProperty(Vertex vertex, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
-        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-            // Primitives are stored directly in the graph
-            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-            Object primValue = ppv.getPrimitiveValue();
-            if (primValue != null) {
-                vertex.property(qualifiedPropName, primValue);
-            } else {
-                removeProperty(vertex, qualifiedPropName);
-            }
-        } else {
-            log.debug("{} non-primitive instance property {}", propertyName);
-        }
-    }
 
 
     // mapEntitySummaryToVertex
