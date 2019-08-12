@@ -189,7 +189,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * and publishes an event.
      *
      * @param relationship - details of the new relationship
-     * @return
      */
     private void processSemanticAssignment(Relationship relationship,
                                            String serviceOperationName) {
@@ -245,7 +244,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * and publishes an event for deletion.
      *
      * @param relationship - details of the new relationship
-     * @return
      */
     private void processSemanticAssignmentDeletion(Relationship relationship, String serviceOperationName) {
         DeletePurgedRelationshipEvent deletionEvent = new DeletePurgedRelationshipEvent();

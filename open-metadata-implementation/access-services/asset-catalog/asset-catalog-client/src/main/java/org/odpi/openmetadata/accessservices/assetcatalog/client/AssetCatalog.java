@@ -333,7 +333,7 @@ public class AssetCatalog implements AssetCatalogInterface {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     @Override
     public AssetResponse searchForAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException {
