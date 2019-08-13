@@ -45,7 +45,6 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param registrationGuid guid of software server capability source
      * @param registrationQualifiedName qualified name of software server capability source
      * @param reportEntity - entity describing the report
-     * @throws Exception
      */
     public void updateReport(String userId,
                              ReportRequestBody payload,
@@ -97,7 +96,6 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param registrationQualifiedName
      * @param parentGuid - guid of the parent element
      * @param reportElements - elements describing the report
-     * @throws Exception
      */
     private void createOrUpdateElements(String userId,
                                         String qualifiedNameForParent,
@@ -123,7 +121,6 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param relationships - list of existing relationships linking to report elements
      * @param reportElements - list of report elements
      * @return - list of entities matching the report elements
-     * @throws Exception
      */
     private List<EntityDetail> filterMatchingEntities(List<Relationship> relationships,
                                                       List<ReportElement> reportElements) throws UserNotAuthorizedException,
@@ -227,7 +224,6 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param registrationQualifiedName
      * @param reportSection section in the report
      * @param existingElements entities already defined
-     * @throws Exception
      */
     private void createOrUpdateReportSection(String userId, String qualifiedNameForParent, String parentGuid,
                                              String registrationGuid,

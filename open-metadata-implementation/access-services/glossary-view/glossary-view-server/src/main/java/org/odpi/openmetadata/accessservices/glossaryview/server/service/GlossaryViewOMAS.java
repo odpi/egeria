@@ -52,10 +52,6 @@ public class GlossaryViewOMAS extends OMRSClient {
     /**
      * Converts a {@code Classification} into a {@code GlossaryViewClassification} with the help of a {@code OMRSRepositoryHelper}
      *
-     * @param classification
-     * @param helper
-     *
-     * @return glossaryViewClassification
      */
     private final Function<Classification, GlossaryViewClassification> classificationConverter = (classification) -> {
         GlossaryViewClassification glossaryViewClassification = new GlossaryViewClassification();
@@ -78,10 +74,6 @@ public class GlossaryViewOMAS extends OMRSClient {
     /**
      * Converts an {@code EntityDetail} into a {@code GlossaryViewEntityDetail} with the help of a {@code OMRSRepositoryHelper}
      *
-     * @param entityDetail
-     * @param helper
-     *
-     * @return glossaryViewEntityDetail
      */
     private final Function<EntityDetail, GlossaryViewEntityDetail> entityDetailConverter = (entityDetail) -> {
         Optional<InstanceProperties> optionalProperties = Optional.ofNullable(entityDetail.getProperties());
