@@ -63,4 +63,5 @@ open-metadata-test @mandy-chessell
 open-metadata-test/open-metadata-fvt/access-services-fvt @davidradl
 open-metadata-test/open-metadata-fvt/open-types-fvt @davidradl
 
-
+# POMs
+pom.xml @planetf1 @mandy-chessell
