@@ -32,7 +32,6 @@ public class DataViewCreator extends DataViewBasicOperation{
      * @param userId
      * @param requestBody json describing the data view
      * @param dataViewEntity the entity describing the data view
-     * @throws Exception
      */
     public void createDataView(String userId, DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
                                                                                              InvalidParameterException,
