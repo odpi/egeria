@@ -75,7 +75,6 @@ public class TypeExplorer {
     }
 
     public void addEnumExplorer(String enumTypeName, EnumDef enumDef) {
-        System.out.println("Add enum "+enumTypeName);
         enums.put(enumTypeName, enumDef);
     }
 

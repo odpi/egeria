@@ -14,7 +14,6 @@ import '../token-ajax.js';
 
 
 
-
 /**
 *
 * InheritanceDiagram implements a web component for drawing an Entity inheritance diagram
@@ -26,6 +25,7 @@ import '../token-ajax.js';
 *
 * This component is based on the D3 collapsible tree by Michael Bostock
 */
+
 
 class InheritanceDiagram extends PolymerElement {
 
@@ -40,7 +40,7 @@ class InheritanceDiagram extends PolymerElement {
 
             <body>
 
-                <div id="inh">
+                <div id="inh" style="position:relative; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF"">
                      <p>
                      Placeholder for inheritance diagram...
                      </p>
@@ -62,13 +62,11 @@ class InheritanceDiagram extends PolymerElement {
 
             typeManager: Object,
 
-
             renderedTrees: {
                  type: Array,
                  value: () => { return [];},
                  notify : true
             },
-
 
             scrolled : {
                 type : Boolean,
@@ -77,15 +75,12 @@ class InheritanceDiagram extends PolymerElement {
                 reflectToAttribute : true
             },
 
-
-
             margin   :  {
                  type : Object,
                  value : () => { return {top: 30, right: 30, bottom: 30, left: 30}; },
                  notify : true,
                  reflectToAttribute : true
              },
-
 
 
             focusType : {
@@ -114,45 +109,53 @@ class InheritanceDiagram extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        console.log("inheritance-diagram ready");   // TODO - remove
     }
 
 
-    // TODO - not needed if you adopt property push down instead
     setTypeManager(typeManager) {
-        console.log("inheritance-diagram: setting typeManager");   // TODO - remove
         this.typeManager = typeManager;
     }
 
+
+
+    // Input events
+
+
     inEvtFocusChanged(focusType) {
         this.focusType = focusType;
-        // TODO - more to do here   - e.g. highlight, scrolling
         var drawingArea = this.$.inh;
-        console.log("focus-changed: drawingArea is "+drawingArea);   // TODO - remove
         this.updateRoot(drawingArea);
     }
 
-    render() {
-        console.log("render inheritance diagram");   // TODO - remove
+
+
+    /*
+     * This method initialises the diagram, creates and renders all trees
+     */
+    render(focusType) {
+
+        // Render inheritance diagram
 
         this.initialiseInheritanceDiagram();
 
+        // Record the focus type passed by the diagram manager - for cases where the focus is already
+        // set and the diagram is created.
+        this.focusType = focusType;
 
-        var drawingArea = this.$.inh;
-        console.log("drawingArea is set to: "+drawingArea);   // TODO - remove
+        var diagram = this.$.inh;
 
-        this.createInheritanceTrees(drawingArea);
+        this.createInheritanceTrees(diagram);
 
+        // call updateRoot - for all trees
+        this.updateRoot(diagram);
 
-        console.log("render: call updateRoot - for all trees");   // TODO - remove
-        this.updateRoot(drawingArea);
-
-         //scrollSelectedIntoView();  -- TODO look at transitionComplete and work out when to initiate scroll
     }
 
 
 
-
+    /*
+     * This method clears any introductory text or previous rendering of the diagram, and resets control properties
+     */
     initialiseInheritanceDiagram() {
 
         d3.select('#inh').selectAll("svg").remove();
@@ -160,38 +163,18 @@ class InheritanceDiagram extends PolymerElement {
         // Clear the introductory text...
         this.$.inh.innerHTML = "";
 
-        //this.$.inh.innerHTML = "Cleared down - ready for trees....";  // TODO - remove
-
-        // Experimental TODO - clean up
-        //var svg = d3.select(this.shadowRoot.querySelector('#inh'))
-        //            .append("svg")
-        //            .attr("width",100)
-        //            .attr("height",100);
-
-        //console.log('svg = '+svg+" width is "+svg.width+" top is "+svg.top);
-
-        //var exSvg = d3.select('#inh').selectAll("svg");
-        //console.log('exSVg = '+exSvg+" width is "+exSvg.width+" top is "+exSvg.top);
-        //
-        //var circle = svg.append("circle")
-        //               .attr('id','test-circle')
-        //               .attr("r", 20)
-        //               .attr("cx", 50)
-        //               .attr("cy", 50)
-        //               .attr("stroke-width",3)
-        //               .attr("stroke", "#000")
-        //               .attr("fill", "#F00");
-
-        // Check you have nuked everything    TODO - redundant
-        //var elem = document.getElementById("elem"+selectedTypeName);  // TODO - redundant
-
+        // Initialise control properties...
         this.renderedTrees = [];
         this.scrolled = false;
 
-        console.log("inheritance diagram initialised");  // TODO - remove
     }
 
 
+    /*
+     * This method iterates over the known entity types and creates a separate tree for
+     * any that have no supertype (i.e. the entity is itself a root)
+     * For each such root, create the inheritance tree and render it
+     */
     createInheritanceTrees(drawingArea) {
 
         /*
@@ -200,9 +183,8 @@ class InheritanceDiagram extends PolymerElement {
          */
 
 
-
         /*
-         * The inheritance tree needs to be formatted as follows:
+         * Each inheritance tree needs to be formatted as follows:
          *
          * {
          *   "name": "alpha",
@@ -236,16 +218,19 @@ class InheritanceDiagram extends PolymerElement {
                 var typeName = entities[entityExpl].entityDef.name;
                 this.treeDepth = 0;
                 var tree = this.createInheritanceTree(typeName);
-                this.renderInheritanceDiagram(tree, drawingArea, typeName, this.treeDepth);
+                this.renderInheritanceTree(tree, drawingArea, typeName, this.treeDepth);
             }
         })
     }
 
 
+    /*
+     * This method creates the inheritance tree for a single root entity
+     */
     createInheritanceTree(typeName) {
 
-        console.log("create inheritance tree for type :"+typeName);  // TODO - remove
         var inheritanceTree = {};
+
         // Start at the type with typeName and follow subtype links to compose children
         var node = this.typeManager.getEntity(typeName);
         var childNames = node.subTypeNames;
@@ -254,6 +239,9 @@ class InheritanceDiagram extends PolymerElement {
     }
 
 
+    /*
+     * Recursively work down the tree adding subtrees...
+     */
     addSubTree(tree, name, childNames, nodeDepth) {
 
         // Add the current node then recurse for the children
@@ -278,12 +266,12 @@ class InheritanceDiagram extends PolymerElement {
     }
 
 
-    renderInheritanceDiagram(typeHierarchy, drawingArea, typeName, treeDepth) {
+    /*
+     * Render one inheritance tree
+     */
+    renderInheritanceTree(typeHierarchy, drawingArea, typeName, treeDepth) {
 
         var width = drawingArea.offsetWidth;
-        console.log("renderInheritanceDiagram: for type :"+typeName+" width is "+width);   // TODO - remove
-
-
         var margin = this.margin;
 
         var thisTree     = {};
@@ -306,8 +294,6 @@ class InheritanceDiagram extends PolymerElement {
                          .style("font", "12px sans-serif")
                          .style("user-select", "none");
 
-        console.log("renderInheritanceDiagram: svg is: "+thisTree.svg);   // TODO - remove
-
         thisTree.gLink = thisTree.svg
                                  .append("g")
                                  .attr("fill", "none")
@@ -319,20 +305,21 @@ class InheritanceDiagram extends PolymerElement {
                                  .append("g")
                                  .attr("cursor", "pointer");
 
+        // Remember this tree
         this.renderedTrees[typeName] = thisTree;
 
     }
 
 
     /*
-     * Called when this diagram type is selected - it will refresh all trees in the drawing area.
+     * Refresh all trees in the diagram.
+     * This method is called on initial rendering and if the focus type is changed
      */
     updateRoot(drawingArea) {
 
         var treeNames = Object.keys(this.renderedTrees);
 
         treeNames.forEach(treeName => {
-            console.log("updateRoot for type: "+treeName);   // TODO - remove
             var thisTree = this.renderedTrees[treeName];
             var root = thisTree.root;
             if (root !== undefined) {
@@ -361,12 +348,13 @@ class InheritanceDiagram extends PolymerElement {
      */
     update(drawingArea, tree, subtree) {
 
+        // Since an update is being performed, unset scrolled so that on transition completion
+        // the code will re-evaluate the scroll position
+        this.scrolled = false;
 
         var width = drawingArea.offsetWidth;
         var thisTree = tree;
         var sourceTypeName = subtree.data.name;
-
-        console.log("perform update for tree: "+sourceTypeName);   // TODO - remove
 
         var margin = this.margin;
         var duration = d3.event && d3.event.altKey ? 2500 : 250;
@@ -376,18 +364,11 @@ class InheritanceDiagram extends PolymerElement {
         treeLayout.nodeSize([thisTree.dx, thisTree.dy])
         treeLayout(thisTree.root);
 
-
         var root = thisTree.root;
 
         // Get the lists of nodes and links
         var nodes = root.descendants();
         var links = root.links();
-
-
-        // debug   // TODO - remove
-        nodes.forEach(node => {
-            console.log("node has name: "+node.data.name);
-        });
 
         // Calculate the overall height of the tree (across all the nodes - the tree is drawn horizontally)
         var left  = root;
@@ -397,8 +378,6 @@ class InheritanceDiagram extends PolymerElement {
             if (node.x > right.x) right = node;
         });
         var height = right.x - left.x + margin.top + margin.bottom;
-
-        console.log("height is "+height);  // TODO - remove
 
         const transition = thisTree.svg
                                    .transition()
@@ -413,8 +392,6 @@ class InheritanceDiagram extends PolymerElement {
         /*
          * Update the nodes…
          */
-
-        console.log("update the nodes");  // TODO - remove
 
         const node = thisTree.gNode
                              .selectAll("g")
@@ -499,8 +476,6 @@ class InheritanceDiagram extends PolymerElement {
           * Update the links…
           */
 
-         console.log("update the links");  // TODO - remove
-
          const link = thisTree.gLink
                               .selectAll("path")
                               .data(links, d => d.target.id);
@@ -514,7 +489,6 @@ class InheritanceDiagram extends PolymerElement {
                                     return curve;
                                });
 
-          console.log("links entered");
 
          // Transition links to their new position.
          link.merge(linkEnter)
@@ -525,8 +499,6 @@ class InheritanceDiagram extends PolymerElement {
                   var curve = this.curvedPath( {source : s , target : t } );
                   return curve;
              });
-
-         console.log("links merged");
 
 
          // Transition exiting nodes to the parent's new position.
@@ -539,7 +511,6 @@ class InheritanceDiagram extends PolymerElement {
                   return curve;
              });
 
-         console.log("links transitioned");
 
          // Remember the current positions as prior positions - they will be used to calculate transitions
          root.eachBefore(d => {
@@ -555,48 +526,49 @@ class InheritanceDiagram extends PolymerElement {
      */
     scrollSelectedIntoView(typeToView) {
 
-        console.log("ssiv, focusType is "+typeToView);
 
         if (this.scrolled === false) {
 
             this.scrolled = true;
 
             if (typeToView !== undefined && typeToView !== "") {
-                //var elem = document.getElementById("elem"+typeToView);  // TODO - clean up
-                //var elem = this.shadowRoot.querySelector('elem'+typeToView);
-                //console.log("no hash i get "+elem);
+
                 var elem = this.shadowRoot.querySelector('#elem'+typeToView);
-                console.log("with hash i get "+elem);
+
+                // scrollIntoView almost works but the options do not work across browsers,
+                // including Safari, so it does not center and is not smooth. The lack of centering
+                // means it doesn't unscroll a scrolled diagram
+                // The following is what we might *like* to do:
+                // elem.scrollIntoView({behavior: "smooth", block:"center", inline:"center"});
+
+                // Instead of scrollIntoView - try to persist with the incremental scrolling
+                // which does work outside of a web component...
                 var brect = elem.getBoundingClientRect();
-                //var drg = document.getElementById('drawing');  // TODO - clean up
-                //var drg = this.shadowRoot.querySelector('#inh');
-                var drg = this.$.inh;
-                console.log("for inh i get "+drg);
                 var togo = brect.top-500;
                 var inc = 10;
-                console.log("call incScroll, drg "+drg+" togo "+togo+" inc "+inc);
-                this.incrementalscroll(drg, togo, inc);   // TODO - fix case
+
+                var drg = this.$.inh;
+                this.incrementalScroll(drg, togo, inc);
+
             }
         }
     }
 
-    incrementalscroll(drg, togo, inc) {
-        console.log("in incScroll");
+    incrementalScroll(drg, togo, inc) {
         if (Math.abs(togo) < inc) {
             inc = Math.abs(togo);
         }
         var rate = Math.abs(togo) / (10 * inc);
         if (Math.abs(togo) > 0) {
             var dirinc = Math.sign(togo) * inc * rate;
-            console.log("try to scroll drg by "+dirinc);
-            //drg.scrollBy(0, dirinc);
-            drg.scrollIntoView();
-
+            // scrollBy does not seem to work when in a web component
+            // scrollIntoView (which could be called from scrollSelectedIntoView() almost works
+            // but the center and smooth options are not well-supported across browsers
+            drg.scrollBy(0, dirinc);
             togo = togo - dirinc;
         }
         if (Math.abs(togo) > inc) {
-            console.log("schedule call to incScroll");
-            setTimeout( () => this.incrementalscroll(drg,togo,inc) , 10);
+            setTimeout( () => this.incrementalScroll(drg,togo,inc) , 10);
         }
     }
 
@@ -616,14 +588,16 @@ class InheritanceDiagram extends PolymerElement {
     transitionComplete() {
 
         // Earliest opportunity to scroll accurately
-        console.log("transitionComplete, focusType is "+this.focusType);
         if (this.focusType !== undefined && this.focusType !== "") {
             this.scrollSelectedIntoView(this.focusType);
         }
     }
 
 
-
+    /*
+     * Because all types in the inheritance diagram are entity types, the selection of a
+     * type will request a change of focus.
+     */
     typeSelected(cat, typeName) {
         this.outEvtChangeFocus(typeName);
     }
@@ -633,7 +607,13 @@ class InheritanceDiagram extends PolymerElement {
      *  Outbound event: change-focus
      */
     outEvtChangeFocus(typeName) {
-        var customEvent = new CustomEvent('change-focus', { bubbles: true, composed: true, detail: {source: "inheritance-diagram", focusType: typeName} });
+        var customEvent = new CustomEvent('change-focus',
+            {   bubbles: true,
+                composed: true,
+                detail: {source: "inheritance-diagram",
+                focusType: typeName}
+            }
+        );
         this.dispatchEvent(customEvent);
     }
 
