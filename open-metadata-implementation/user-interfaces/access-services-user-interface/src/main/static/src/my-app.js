@@ -75,7 +75,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           color: var(--app-secondary-color);
           background-color: var(--app-primary-color);
         };
-        
+
         paper-input.custom:hover {
           border: 1px solid #29B6F6;
         };
@@ -87,12 +87,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           --paper-input-container-invalid-color: black;
           border: 1px solid #BDBDBD;
           border-radius: 5px;
-    
+
           /* Reset some defaults */
           --paper-input-container: { padding: 0;};
           --paper-input-container-underline: { display: none; height: 0;};
           --paper-input-container-underline-focus: { display: none; };
-    
+
           /* New custom styles */
           --paper-input-container-input: {
             box-sizing: border-box;
@@ -128,18 +128,19 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         </template>
       
         <template is="dom-if" if="[[token]]"  restamp="true">
-        
+
             <app-drawer-layout id="drawerLayout" flex forceNarrow  narrow="{{narrow}}" fullbleed="">
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
-                  <iron-selector selected="[[page]]" attr-for-selected="name" 
-                        class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">                  
+                  <iron-selector selected="[[page]]" attr-for-selected="name"
+                        class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
+                    <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
-                 
-                 
+
+
                 </app-drawer>
     
                 <!-- Main content-->
@@ -157,7 +158,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                         </template>
                         [[page]]
                       </div>
-                      
+
                       <div main-title="">
 <!--                        <div style="margin-left: 100pt; width: 300pt">-->
 <!--                            <iron-form id="searchForm">-->
@@ -171,7 +172,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 <!--                        </div>-->
                       </div>
                       <div style="float: right"><user-options token="[[token]]"></user-options></div>
-                      
+
                     </app-toolbar>
                   </app-header>
         
@@ -179,12 +180,13 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-view language="[[language]]" name="subject-area"></subject-area-view>
                     <asset-lineage-view language="[[language]]" name="asset-lineage"></asset-lineage-view>
+                    <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
-                  
+
                 </app-header-layout>
             </app-drawer-layout>
-            
+
          </template>
     `;
     }
@@ -207,7 +209,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             subroute: Object,
             pages: {
                 type: Array,
-                value: ['asset-search', 'subject-area', 'asset-lineage']
+                value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
             },
             feedback: {
                 type: Object,
@@ -301,6 +303,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
             case 'asset-lineage':
                 import('./asset-search/asset-lineage-view.js');
+                break;
+            case 'type-explorer':
+                import('./type-explorer/type-explorer-view.js');
                 break;
             case 'view404':
                 import('./asset-search/my-view404.js');
