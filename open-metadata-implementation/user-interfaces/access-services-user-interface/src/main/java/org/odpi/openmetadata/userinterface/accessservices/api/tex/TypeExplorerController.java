@@ -3,6 +3,9 @@
 package org.odpi.openmetadata.userinterface.accessservices.api.tex;
 
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.userinterface.accessservices.api.SecureController;
 import org.slf4j.Logger;
@@ -57,7 +60,6 @@ public class TypeExplorerController extends SecureController
      *
      */
     public TypeExplorerController() {
-        System.out.println("TypeExplorerController default ctor called");
         metadataCollectionId = null;
         metadataCollection = null;
     }
@@ -72,21 +74,51 @@ public class TypeExplorerController extends SecureController
      */
 
     @RequestMapping(method = RequestMethod.POST, path = "/api/types/typeExplorer")
-    public TypeExplorer typeExplorer(@RequestBody Map<String,String> body, HttpServletRequest request)
+    public TypeExplorerResponse typeExplorer(@RequestBody Map<String,String> body, HttpServletRequest request)
     {
-
-        System.out.println("Server-side typeExplorer API invoked");
 
         String serverName        = body.get("serverName");
         String serverURLRoot     = body.get("serverURLRoot");
-        boolean enterpriseOption = body.get("enterpriseOption").equals("true") ? true : false;
+        boolean enterpriseOption = body.get("enterpriseOption").equals("true");
 
         String userId = getUser(request);
 
         // Look up types in server and construct TEX
-        TypeExplorer tex = this.getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
+        TypeExplorerResponse texResp;
+        String exceptionMessage;
 
-        return tex;
+        try {
+
+            TypeExplorer tex = this.getTypeExplorer(userId, serverName, serverURLRoot, enterpriseOption);
+
+            if (tex != null) {
+                texResp = new TypeExplorerResponse(200, "", tex);
+            } else {
+                texResp = new TypeExplorerResponse(400, "Could not retrieve type information", null);
+            }
+            return texResp;
+        }
+        catch (ConnectionCheckedException | ConnectorCheckedException e) {
+
+            exceptionMessage = "Connector error occurred, please check the server name and URL root parameters";
+        }
+        catch (UserNotAuthorizedException e) {
+
+            exceptionMessage = "Sorry - this username was not authorized to perform the request";
+        }
+        catch (RepositoryErrorException e) {
+
+            exceptionMessage = "The repository could not be reached, please check the server name and URL root and verify that the server is running ";
+        }
+        catch (InvalidParameterException e) {
+
+            exceptionMessage = "The request to load type information reported an invalid parameter, please check the server name and URL root parameters";
+        }
+        // For any of the above exceptions, incorporate the exception message into a response object
+        texResp = new TypeExplorerResponse(400, exceptionMessage, null);
+
+        return texResp;
+
     }
 
 
@@ -95,14 +127,19 @@ public class TypeExplorerController extends SecureController
                                          String  serverName,
                                          String  serverURLRoot,
                                          boolean enterpriseOption)
+        throws
+            ConnectionCheckedException,
+            ConnectorCheckedException,
+            UserNotAuthorizedException,
+            RepositoryErrorException,
+            InvalidParameterException
     {
 
-        this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
-
-        System.out.println("getTypeExplorer with userId "+userId+" serverName "+serverName+" serverURLRoot "+serverURLRoot+" entOpt "+enterpriseOption);
-
-        TypeExplorer tex = new TypeExplorer();
         try {
+
+            this.getMetadataCollection(userId, serverName, serverURLRoot, enterpriseOption);
+
+            TypeExplorer tex = new TypeExplorer();
 
             TypeDefGallery typeDefGallery = metadataCollection.getAllTypes(userId);
 
@@ -124,7 +161,6 @@ public class TypeExplorerController extends SecureController
                         break;
                     default:
                         // Ignore this typeDef and continue with next
-                        //System.out.println("Unrecognised type category ignored " + tdCat);
                         break;
                 }
             }
@@ -135,12 +171,10 @@ public class TypeExplorerController extends SecureController
                 AttributeTypeDefCategory tdCat = attributeTypeDef.getCategory();
                 switch (tdCat) {
                     case ENUM_DEF:
-                        //System.out.println("Add enum "+attributeTypeDef.getName()+" to TEX");
                         tex.addEnumExplorer(attributeTypeDef.getName(), (EnumDef)attributeTypeDef);
                         break;
                     default:
                         // Ignore this AttributeTypeDef and continue with next
-                        //System.out.println("Ignored attribute type category " + tdCat);
                         break;
                 }
             }
@@ -149,12 +183,13 @@ public class TypeExplorerController extends SecureController
             tex.resolve();
             return tex;
 
-        } catch (UserNotAuthorizedException | RepositoryErrorException | InvalidParameterException e) {
-
-            // TODO - when merged, integrate into Egeria error handling
-            System.out.println("Failed to get TDG!! exception " + e.getMessage());
-
-            return null;
+        }
+        catch (ConnectionCheckedException |
+               ConnectorCheckedException  |
+               UserNotAuthorizedException |
+               RepositoryErrorException   |
+               InvalidParameterException e ) {
+            throw e;
         }
 
     }
@@ -165,13 +200,24 @@ public class TypeExplorerController extends SecureController
                                        String  serverName,
                                        String  serverURLRoot,
                                        boolean enterpriseOption)
+        throws
+            ConnectionCheckedException,
+            ConnectorCheckedException,
+            RepositoryErrorException
+
     {
 
-        // TODO - take heed of Enterprise Option once it is supported.
-        System.out.println("WARNING!!  Enterprise Option is ignored for now!! ");
+        // TODO - act on the Enterprise Option once it is supported.
 
+        OMRSRepositoryConnector repositoryConnector;
+        try {
 
-        OMRSRepositoryConnector repositoryConnector = this.getRepositoryConnector(serverName, serverURLRoot);
+            repositoryConnector = this.getRepositoryConnector(serverName, serverURLRoot);
+
+        }
+        catch (ConnectionCheckedException | ConnectorCheckedException e) {
+            throw e;
+        }
 
         if (repositoryConnector != null)  {
 
@@ -194,11 +240,9 @@ public class TypeExplorerController extends SecureController
                         try {
                             metadataCollection = repositoryConnector.getMetadataCollection();
 
-                        } catch (RepositoryErrorException e) {
-
-                            // TODO - when merged, integrate into Egeria error handling
-                            System.out.println("Error! could not get MDC from connector!!");
-                            return;
+                        }
+                        catch (RepositoryErrorException e) {
+                            throw e;
                         }
                     }
                 }
@@ -210,31 +254,45 @@ public class TypeExplorerController extends SecureController
          */
         try {
 
+            boolean error = false;
             if (metadataCollectionId == null) {
-                // TODO - when merged, integrate into Egeria error handling
-                System.out.println("Error! - metadataCollectionId is null");
+                error = true;
+            }
+            else if (!(metadataCollectionId.equals(metadataCollection.getMetadataCollectionId()))) {
+                error = true;
+            }
+
+            if (!error) {
+                // Successfully located metadataCollection and id matches
                 return;
             }
-            if (!(metadataCollectionId.equals(metadataCollection.getMetadataCollectionId()))) {
-                // TODO - when merged, integrate into Egeria error handling
-                System.out.println("Error! - local metadataCollectionId is "+metadataCollectionId
-                        +" BUT actual is "+metadataCollection.getMetadataCollectionId());
-                return;
+            else {
+                final String methodName = "getMetadataCollection";
+
+                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
+                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
-            System.out.println("Successfully located metadataCollection - id is "+metadataCollectionId);
-            return;
 
         }
         catch (RepositoryErrorException e) {
-            // TODO - when merged, integrate into Egeria error handling
-            System.out.println("Give it up!");
-            return;
+            throw e;
         }
 
     }
 
 
     private OMRSRepositoryConnector getRepositoryConnector(String serverName, String serverURLRoot)
+
+            throws
+            ConnectionCheckedException,
+            ConnectorCheckedException
     {
         try
         {
@@ -263,11 +321,9 @@ public class TypeExplorerController extends SecureController
             return repositoryConnector;
 
         }
-        catch (Throwable  exc)
+        catch (ConnectionCheckedException | ConnectorCheckedException e)
         {
-            // TODO - when merged, integrate into Egeria error handling
-            System.out.println("Unable to create connector " + exc.getMessage());
-            return null;
+            throw e;
         }
     }
 

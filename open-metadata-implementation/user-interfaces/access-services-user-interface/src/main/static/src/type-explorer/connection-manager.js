@@ -21,7 +21,7 @@ import '../token-ajax.js';
 *   * server URL Root    - a string
 *   * enterprise scope   - a boolean
 *   * a Load! button     - a button to initiate a connection using the displayed settings
-*   * status             - a string - displays either success/failure or the last used details (TODO - think about how to display this)
+*   * status             - a string - displays if a load failure occurs
 *
 * The user can change the details at any time; they will take effect when Load! button is pressed.
 * This will initiate a connection attempt by the TypeManager - which will either succeed (causing the
@@ -49,7 +49,7 @@ class ConnectionManager extends PolymerElement {
 
                 <body>
 
-                    <div>
+                    <div id='connectionParmeters'>
 
                         Load types from:
 
@@ -72,7 +72,7 @@ class ConnectionManager extends PolymerElement {
                             on-change="serverURLRootChanged">
                         </paper-input>
 
-                        <paper-checkbox
+                        <paper-checkbox disabled
                              class="inline-element"
                              style="padding:20px;"
                              id="enterpriseQuery"
@@ -90,6 +90,8 @@ class ConnectionManager extends PolymerElement {
                             Load!
                         </paper-button>
 
+                         <div class="inline-element" id='statusMsg'></div>
+
                     </div>
               </body>
 
@@ -102,7 +104,7 @@ class ConnectionManager extends PolymerElement {
             //  user-specified serverName - using bi-directional databind
             serverName: {
                 type               : String,
-                value              : "cocoMDS1",
+                value              : "",
                 notify             : true,
                 reflectToAttribute : true
             },
@@ -110,7 +112,7 @@ class ConnectionManager extends PolymerElement {
             //  user-specified serverURLRoot
             serverURLRoot: {
                 type               : String,
-                value              : "http://localhost:8080",
+                value              : "",
                 notify             : true,
                 reflectToAttribute : true
             },
@@ -142,39 +144,54 @@ class ConnectionManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        console.log("connection-manager ready");
     }
 
+
+    // Inbound events
+
+    /*
+     *  Inbound event: types-loaded
+     */
+    inEvtTypesLoaded() {
+        this.clearStaleConnectionWarning();
+    }
+
+    /*
+     *  Inbound event: types-loaded
+     */
+    inEvtTypesNotLoaded() {
+        this.displayStaleConnectionWarning();
+    }
+
+
+
     serverNameChanged() {
-            console.log("Do nothing but log that serverName has changed....: "+ this.serverName);
+        // No action
     }
 
     serverURLRootChanged() {
-            console.log("Do nothing but log that serverURLRoot has changed....: "+ this.serverURLRoot);
+        // No action
     }
 
     enterpriseScopeChanged() {
-            console.log("Do nothing but log that enterpriseScope has changed....: "+ this.enterpriseScope);
+        // No action
     }
 
     doLoad() {
-        console.log("doLoad called");
-
-        console.log("In doLoad, this is "+this);
-        console.log("In doLoad, this has id  "+this.id);
-        console.log("In doLoad, this has className  "+this.className);
-
         var typeManager = this.typeManager;
-
-        console.log("In doLoad, typeManager is "+typeManager);
-        console.log("In doLoad, typeManager has id  "+typeManager.id);
-        console.log("In doLoad, typeManager has className  "+typeManager.className);
-
         typeManager.loadTypes(this.serverName, this.serverURLRoot, this.enterpriseScope);
     }
 
 
+    displayStaleConnectionWarning() {
+      var statusMsg = this.$.statusMsg;
+      statusMsg.innerHTML = "Warning: types did not load; switching to offline mode; previously loaded type information may be stale";
+    }
 
+    clearStaleConnectionWarning() {
+       var statusMsg = this.$.statusMsg;
+       statusMsg.innerHTML = "";
+    }
 
 
 }

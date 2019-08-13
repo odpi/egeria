@@ -86,7 +86,7 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
 
                     <!-- RHS-->
                     <div id="rhs" style="position:absolute;left:400px;top:200px; height:1200px; width:1200px; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF">
-                        <diagram-manager id="diagramManager" type-manager="[[theTypeManager]]"></diagram-manager>
+                        <diagram-manager id="diagramManager" style="overflow:auto;" type-manager="[[theTypeManager]]"></diagram-manager>
                     </div>
 
                 </div>
@@ -101,77 +101,65 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
     static get properties() {
         return {
 
-
             theTypeManager: Object
+
         };
     }
 
-    //attached() {
-    //    this.loadResources(                                             // The specified file only contains the flattened translations for that language:
-    //        "locales/type-explorer/" + this.language + ".json",         // e.g. for es {"hi": "hola"} unflatten -> {"es": {"hi": "hola"}}
-    //        this.language,
-    //        true                                                        // merge so existing resources won't be clobbered
-    //    );
-    //}
-
     ready() {
-        // Ensure you call super.ready() first to initialise node hash...
+        // Call super.ready() first to initialise node hash...
         super.ready();
-        console.log("ready called");
         this.initialise();
-
-        // EXPERIMENT: explicitly set a local typeManager property...
         this.theTypeManager = this.$.typeManager;
-
-
-        console.log("tex-explorer-interface ready...");
 
     }
 
     initialise() {
 
-        console.log("initialise called");
-
-
-
         // This class implements the event listeners that orchestrate via function calls to the child components.
         // The events are as follows:
 
         this.addEventListener('types-loaded', function (e) {
-            alert( "Event :" + 'types-loaded' + ' from ' + e.detail.source);
+            //alert( "Event :" + 'types-loaded' + ' from ' + e.detail.source);
+            this.$.connectionManager.inEvtTypesLoaded();
             this.$.focusManager.inEvtTypesLoaded();
             this.$.diagramManager.inEvtTypesLoaded();
+            this.$.detailsPanel.inEvtTypesLoaded();
+        });
+
+        this.addEventListener('types-not-loaded', function (e) {
+            //alert( "Event :" + 'types-not-loaded' + ' from ' + e.detail.source);
+            this.$.connectionManager.inEvtTypesNotLoaded();
         });
 
         this.addEventListener('focus-changed', function (e) {
-             alert( "Event :" + 'focus-changed' + ' from ' + e.detail.source);
+             //alert( "Event :" + 'focus-changed' + ' from ' + e.detail.source);
              var focusType = e.detail.focusType;
-             console.log("focus-changed: will be sent to diagram manager and detail panel: focusType "+focusType);
+
              this.$.diagramManager.inEvtFocusChanged(focusType);
              this.$.detailsPanel.inEvtFocusChanged(focusType);
         });
 
         this.addEventListener('view-changed', function (e) {
-             alert( "Event :" + 'view-changed' + ' from ' + e.detail.source);
+             //alert( "Event :" + 'view-changed' + ' from ' + e.detail.source);
              var viewCategory = e.detail.viewCategory;
              var viewType = e.detail.viewType;
-             console.log("view-changed: will be sent to detail panel: viewCategory "+viewCategory+", viewType "+viewType);
+
              this.$.detailsPanel.inEvtViewChanged(viewCategory,viewType);
         });
 
-
         this.addEventListener('change-focus', function (e) {
-             alert( "Event :" + 'change-focus' + ' from ' + e.detail.source);
+             //alert( "Event :" + 'change-focus' + ' from ' + e.detail.source);
              var focusType = e.detail.focusType;
-             console.log("change-focus: will be sent to focus manager: focusType "+focusType);
+
              this.$.focusManager.inEvtChangeFocus(focusType);
         });
 
         this.addEventListener('change-view', function (e) {
-             alert( "Event :" + 'change-view' + ' from ' + e.detail.source);
+             //alert( "Event :" + 'change-view' + ' from ' + e.detail.source);
              var viewCategory = e.detail.viewCategory;
              var viewType = e.detail.viewType;
-             console.log("change-view: will be sent to focus manager: viewCategory "+viewCategory+" viewType "+viewType);
+
              this.$.focusManager.inEvtChangeView(viewCategory, viewType);
         });
 

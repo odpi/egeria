@@ -58,10 +58,10 @@ class DetailsPanel extends PolymerElement {
                 * { font-size: 12px ; font-family: sans-serif; }
 
                 .linkable {
-                    background-color: #FFF;
+                    background-color: #CCCCCC;
                     color: black;
                     cursor: pointer;
-                    padding: 5px;
+                    padding: 0px;
                     width: 200px;
                     border: none;
                     text-align: left;
@@ -70,11 +70,11 @@ class DetailsPanel extends PolymerElement {
                 }
 
                 .collapsible {
-                    background-color: #FFF;
+                    background-color: #CCCCCC;
                     color: black;
                     cursor: pointer;
                     padding: 5px;
-                    width: 200px;
+                    width: 300px;
                     border: none;
                     text-align: left;
                     outline: none;
@@ -85,7 +85,7 @@ class DetailsPanel extends PolymerElement {
                     padding: 10px 18px;
                     display: none;
                     overflow: hidden;
-                    background-color: #f1f1f1;
+                    background-color: #CCCCCC;
                 }
 
                 </style>
@@ -130,26 +130,29 @@ class DetailsPanel extends PolymerElement {
      * Element is ready
      */
     ready() {
-        // Ensure you call super.ready() first to initialise node hash...
+        // Call super.ready() first to initialise node hash...
         super.ready();
-
         this.focusType = undefined;
-        console.log("details-panel ready");
     }
 
 
     // Inter-component event handlers
 
+    /*
+     *  Inbound event: types-loaded
+     */
+    inEvtTypesLoaded(e) {
+       // New type information is available - clear the cached focus type and the details...
+       this.focusType = undefined;
+       this.clearDetails();
+    }
 
     /*
      *  Inbound event: focus-changed
      */
     inEvtFocusChanged(focusType) {
-
          this.focusType = focusType;
-
          this.clearDetails();
-
          this.displayEntityDetails(focusType);
     }
 
@@ -157,9 +160,7 @@ class DetailsPanel extends PolymerElement {
      *  Inbound event: view-changed
      */
     inEvtViewChanged(category,viewType) {
-
         this.clearDetails();
-
 
         if (category === "Relationship") {
             this.displayRelationshipDetails(viewType);
@@ -347,13 +348,7 @@ class DetailsPanel extends PolymerElement {
         relationshipNamesSorted.forEach(relName => {
 
             var itemnode = document.createElement("li");
-            //if (relationshipEntries[relName].inherited === true) {  // TODO can simplify - pass the predicate
             this.appendRelationshipLink(itemnode, relName, relationshipEntries[relName].inherited);
-            //}
-            //else {
-            //    this.appendRelationshipLink(itemnode, relName, relationshipEntries[relName].inherited);
-            //}
-
             listnode.appendChild(itemnode);
 
         });
@@ -402,12 +397,7 @@ class DetailsPanel extends PolymerElement {
         classificationNamesSorted.forEach(clsName => {
 
             var itemnode = document.createElement("li");
-            //if (classificationEntries[clsName].inherited === true) {  // TODO can simplify - pass the predicate
             this.appendClassificationLink(itemnode, clsName, classificationEntries[clsName].inherited === true);
-            //}
-            //else {
-            //    this.appendClassificationLink(itemnode, clsName, classificationEntries[clsName].inherited === true);
-            //}
             listnode.appendChild(itemnode);
 
         });
@@ -436,9 +426,8 @@ class DetailsPanel extends PolymerElement {
             var button = document.createElement("button");
             button.className = "linkable";
             button.innerHTML = this.focusType;
-            console.log("Add event listener for entity link "+this.focusType);
             button.addEventListener('click', () => this.entityLinkHandler(this.focusType) );
-            details.append(button);
+            para.append(button);
         }
 
         var textnode = document.createTextNode("Relationship Type: "+typeName);
@@ -631,9 +620,8 @@ class DetailsPanel extends PolymerElement {
             var button = document.createElement("button");
             button.className = "linkable";
             button.innerHTML = this.focusType;
-            console.log("Add event listener for entity link "+this.focusType);
             button.addEventListener('click', () => this.entityLinkHandler(this.focusType) );
-            details.append(button);
+            para.append(button);
         }
 
         var textnode = document.createTextNode("Classification Type: "+typeName);
@@ -780,9 +768,8 @@ class DetailsPanel extends PolymerElement {
              var button = document.createElement("button");
              button.className = "linkable";
              button.innerHTML = this.focusType;
-             console.log("Add event listener for entity link "+this.focusType);
              button.addEventListener('click', () => this.entityLinkHandler(this.focusType) );
-             details.append(button);
+             para.append(button);
          }
 
          var textnode = document.createTextNode("Enum Type: "+typeName);
@@ -839,19 +826,11 @@ class DetailsPanel extends PolymerElement {
 
 
     appendEntityLink(itemnode, itemName) {
-        //var linknode = document.createElement("a");
-        //linknode.innerHTML="Type: "+itemName;
-        //linknode.setAttribute('href','#');
-        //linknode.setAttribute('data-typeName',itemName);
-        //linknode.setAttribute('onclick','entityLinkHandler'); // TODO correct handler
-        //linknode.setAttribute('style','text-decoration : none');
-        //itemnode.appendChild(linknode);
 
         var button = document.createElement("button");
         button.className = "linkable";
         button.innerHTML = "Type: "+itemName;
         itemnode.appendChild(button);
-        console.log("Add event listener for entity link "+itemName);
         button.addEventListener('click', () => this.entityLinkHandler(itemName) );
 
     }
@@ -876,27 +855,15 @@ class DetailsPanel extends PolymerElement {
         var paranode = document.createElement("p");
         div.appendChild(paranode);
 
-        //var linknode = document.createElement("a");
-        //linknode.innerHTML="More Details";
-        //linknode.setAttribute('href','#');
-        //linknode.setAttribute('data-typeName',itemName);
-        //linknode.setAttribute( 'onclick' , 'updateDetailView("Relationship", this.getAttribute("data-typeName"))');  // TODO event handler
-        //linknode.setAttribute('style','text-decoration : none');
-        //div.appendChild(linknode);
-
         var detailButton = document.createElement("button");
         detailButton.className = "linkable";
         detailButton.innerHTML = "More Details";
         div.appendChild(detailButton);
-        console.log("Add event listener for detail button for "+itemName);
         detailButton.addEventListener('click', () => this.relationshipLinkHandler(itemName) );
-
-
-        // original from here on ...
 
         itemnode.append(button);
         itemnode.append(div);
-        button.addEventListener("click", function() {   // TODO expandable section handler
+        button.addEventListener("click", function() {
             this.classList.toggle("active");
             var content = this.nextElementSibling;
             if (content.style.display === "block") {
@@ -927,26 +894,15 @@ class DetailsPanel extends PolymerElement {
         var paranode = document.createElement("p");
         div.appendChild(paranode);
 
-
-        //var linknode = document.createElement("a");
-        //linknode.innerHTML="More Details";
-        //linknode.setAttribute('href','#');
-        //linknode.setAttribute('data-typeName',itemName);
-        //linknode.setAttribute('onclick','updateDetailView("Classification",this.getAttribute("data-typeName"))');  // TODO event handler
-        //linknode.setAttribute('style','text-decoration : none');
-        //div.appendChild(linknode);
-
         var detailButton = document.createElement("button");
         detailButton.className = "linkable";
         detailButton.innerHTML = "More Details";
         div.appendChild(detailButton);
-        console.log("Add event listener for detail button for "+itemName);
         detailButton.addEventListener('click', () => this.classificationLinkHandler(itemName) );
-
 
         itemnode.append(button);
         itemnode.append(div);
-        button.addEventListener("click", function() {   // TODO expandable section handler
+        button.addEventListener("click", function() {
             this.classList.toggle("active");
             var content = this.nextElementSibling;
             if (content.style.display === "block") {
@@ -958,44 +914,31 @@ class DetailsPanel extends PolymerElement {
     }
 
     appendEnumLink(itemnode, itemName) {
-        //var linknode = document.createElement("a");
-        //linknode.innerHTML=itemName;
-        //linknode.setAttribute('href','#');
-        //linknode.setAttribute('onclick','updateDetailView("Enum",this.innerHTML);'); // TODO correct handler
-        //linknode.setAttribute('style','text-decoration : none');
-        //itemnode.appendChild(linknode);
         var button = document.createElement("button");
         button.className = "linkable";
-        button.innerHTML = "Type: "+itemName;
+        button.innerHTML = itemName;
         itemnode.appendChild(button);
-        console.log("Add event listener for enum link "+itemName);
         button.addEventListener('click', () => this.enumLinkHandler(itemName) );
-        itemnode.appendChild(button);
     }
 
 
-
     entityLinkHandler(typeName) {
-        console.log("entityLinkHandler typeName "+typeName);
         // Generate the outbound change focus event...
         this.outEvtChangeFocus(typeName);
     }
 
 
    relationshipLinkHandler(typeName) {
-        console.log("relationshipLinkHandler typeName "+typeName);
         // Generate the outbound change view event...
         this.outEvtChangeView("Relationship",typeName);
    }
 
    classificationLinkHandler(typeName) {
-        console.log("classificationLinkHandler typeName "+typeName);
         // Generate the outbound change view event...
         this.outEvtChangeView("Classification",typeName);
    }
 
    enumLinkHandler(typeName) {
-        console.log("enumLinkHandler typeName "+typeName);
         // Generate the outbound change view event...
         this.outEvtChangeView("Enum",typeName);
    }
@@ -1005,15 +948,33 @@ class DetailsPanel extends PolymerElement {
      *  Outbound event: change-focus
      */
     outEvtChangeFocus(typeName) {
-        var customEvent = new CustomEvent('change-focus', { bubbles: true, composed: true, detail: {source: "details-panel", focusType: typeName} });
+        var customEvent = new CustomEvent('change-focus',
+            {   bubbles: true,
+                composed: true,
+                detail: {
+                    source: "details-panel",
+                    focusType: typeName
+                }
+            }
+        );
         this.dispatchEvent(customEvent);
     }
 
- /*
+    /*
      *  Outbound event: change-focus
      */
     outEvtChangeView(cat, typeName) {
-        var customEvent = new CustomEvent('change-view', { bubbles: true, composed: true, detail: {source: "details-panel", viewCategory: cat, viewType: typeName} });
+        var customEvent = new CustomEvent('change-view',
+            {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    source: "details-panel",
+                    viewCategory: cat,
+                    viewType: typeName
+                }
+            }
+        );
         this.dispatchEvent(customEvent);
     }
 

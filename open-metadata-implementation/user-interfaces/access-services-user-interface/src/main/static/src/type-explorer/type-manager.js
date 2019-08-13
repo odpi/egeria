@@ -17,7 +17,6 @@ import '../token-ajax.js';
 * The TypeManager component API has a loadTypes() function, which accepts server connection details and attempts to connect to the server
 * to retrieve type information.
 * On success it updates its internal type store; and fires the typesLoaded event.
-* On failure it TODO - NEEDS TO DO SOMETHING ELSE
 *
 * The TypeManager API also has getter functions for retrieving entity, relationship or classification type names from the loaded type information.
 * The TypeManager API also has getter functions for retrieving detailed entity, relationship or classification type information from the loaded type information.
@@ -38,7 +37,6 @@ class TypeManager extends PolymerElement {
 
         return {
 
-            //  last response - TODO this might be redundant and you could bind directly to the tex property???
             lastLoadTypeExplorerResp: {
                 type: Object,
                 observer: '_loadTypeExplorerRespChanged'    // Observer called  when this property changes
@@ -48,19 +46,8 @@ class TypeManager extends PolymerElement {
             tex: {
                 type  : Object,
                 value : undefined
-            },
+            }
 
-            //
-            selectedEntityType: {  // TODO - this should not be part of this component
-                type    : String,
-                value   : undefined
-            },
-
-             //
-             diagramType: {  // TODO - this should not be part of this component
-                 type    : String,
-                 value   : "Inheritance"    // initial diagram is entity inheritance
-             }
         };
     }
 
@@ -70,7 +57,6 @@ class TypeManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        console.log("tex-explorer ready function complete");
     }
 
 
@@ -79,17 +65,15 @@ class TypeManager extends PolymerElement {
      *  Ask the UI Aoplication to retrieve the type information from the named OMAG Server
      */
     loadTypes(serverName, serverURLRoot, enterpriseQuery) {
-        console.log("TypeManager loadTypes called");
 
-        if (serverName !== undefined && serverName !== null  && serverURLRoot !== undefined && serverURLRoot !== null ) {
+        if (this.validate(serverName) && this.validate(serverURLRoot)) {
 
             if (serverName.length > 0 && serverURLRoot.length > 0) {
 
                 /*
-                 * Requesting new type information so clear wat we already had...
+                 * Requesting new type information but do not clear what was previously loaded.
+                 * It is retained for use during offline mode.
                  */
-                this.selectedEntityType = undefined;   // TODO - this should not be part of this component, but does need to be reset (elsewhere) on a new load
-                this.tex                = undefined;
 
                 /*
                  * Format the body for the AJAX query to retrieve the type information from the server
@@ -98,7 +82,6 @@ class TypeManager extends PolymerElement {
                 serverDetails.serverName       = serverName;
                 serverDetails.serverURLRoot    = serverURLRoot;
                 serverDetails.enterpriseOption =  enterpriseQuery ? "true" : "false";
-                console.log("Server Details: "+serverDetails);
 
 
                 /*
@@ -106,7 +89,6 @@ class TypeManager extends PolymerElement {
                  * The userId under which the back-end REST call will be made is retrieved in the UI Application from the HTTP request's session context
                  */
 
-                console.log("Issue AJAX query");
                 this.$.loadTypeExplorerAjaxId.method ="post";
                 this.$.loadTypeExplorerAjaxId.body = serverDetails;
                 this.$.loadTypeExplorerAjaxId.url = "/api/types/typeExplorer";
@@ -115,9 +97,15 @@ class TypeManager extends PolymerElement {
             }
         }
         else {
-            alert("Please check serverName and serverURLRoot fields are set");
+            alert("Please check serverName and serverURLRoot fields are set - then retry");
         }
 
+    }
+
+    validate(parameter) {
+        if (parameter === undefined || parameter === null || parameter === "" || parameter.length <= 0)
+            return false;
+        return true;
     }
 
 
@@ -127,33 +115,41 @@ class TypeManager extends PolymerElement {
      */
     _loadTypeExplorerRespChanged(newValue,oldValue) {
 
-        // TODO : format and parse response to handle error cases
-        //        if (newValue.relatedHTTPCode == 200) {
-        //            console.log("_loadTypeExplorerRespChanged response status code 200");
-        //
-        //            this.getGlossaries();
-        //                                // close the dialog - a glossary was successfully created
-        //                                            this.$.createGlossaryDialog.close();
-        //        } else {
-        //            if (newValue.exceptionErrorMessage) {
-        //                alert('Error occurred: ' +newValue.exceptionErrorMessage + ',user action: ' + newValue.exceptionUserAction);
-        //            } else {
-        //                alert('Error occurred resp :' +  newValue);
-        //            }
-        //        }
-
-
-        console.log("_loadTypeExplorerRespChanged called, oldValue was "+oldValue+", newValue is "+newValue);
 
         if (newValue !== undefined && newValue !== null) {
-            this.tex = newValue;
 
-            alert("Type information has been updated!");
+            if (newValue.httpStatusCode == 200) {
 
-            var customEvent = new CustomEvent('types-loaded', { bubbles: true, composed: true, detail: {source: "type-manager"}  });
-            this.dispatchEvent(customEvent);
+                // Success
+
+                this.tex = newValue.typeExplorer;
+
+                var customEvent = new CustomEvent('types-loaded', { bubbles: true, composed: true, detail: {source: "type-manager"}  });
+                this.dispatchEvent(customEvent);
+
+            }
+            else {
+
+                // Failure
+
+                if (newValue.exceptionText) {
+
+                    alert('Error occurred: ' +newValue.exceptionText);
+
+                }
+                else {
+
+                    alert('Error occurred: no exception message given');
+
+                }
+
+                // Generate a failure to load event - this will allow the status to be reported
+                var customEvent = new CustomEvent('types-not-loaded', { bubbles: true, composed: true, detail: {source: "type-manager"}  });
+                this.dispatchEvent(customEvent);
+            }
         }
     }
+
 
     /*
      * Helper function to retrieve entities from TEX
@@ -176,6 +172,10 @@ class TypeManager extends PolymerElement {
         return this.tex.classifications;
     }
 
+    /*
+     * Helper functions to retrieve specific objects from TEX
+     */
+
     getEntity(typeName) {
         return this.tex.entities[typeName];
     }
@@ -187,7 +187,6 @@ class TypeManager extends PolymerElement {
     getClassification(typeName) {
         return this.tex.classifications[typeName];
     }
-
 
     getEnum(typeName) {
         return this.tex.enums[typeName];

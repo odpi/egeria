@@ -17,7 +17,7 @@ import './neighbourhood-diagram.js';
 *
 * DiagramManager implements a web component for creation of diagrams and selection of displayed diagram
 *
-* It should present to the user a selector control for selecting between the avaiulable diagrans.
+* It should present to the user a selector control for selecting between the available diagrams.
 * The set of diagrams that is available depends on the state of the interface:
 *
 *   * initial load       - no diagrams are available (because there is no type information yet):
@@ -54,7 +54,8 @@ class DiagramManager extends PolymerElement {
                         </select>
                     </div>
 
-                    <div id='drawingArea'>
+
+                    <div id='drawingArea' style="overflow: scroll; background-color:#FFFFFF">
                     </div>
               </body>
 
@@ -80,12 +81,23 @@ class DiagramManager extends PolymerElement {
 
             typeManager: Object,
 
+            // diagram-manager keeps a note of focus type because the diagrams are dynamic and
+            // may be created/rendered after a focus type has been selected, so the diagram-manager
+            // caches the current focus so it can inform te diagrams when they are created.
 
-            availableDiagramTypes: {     // TODO - you could polymerize this fully by binding it to dom-repeat in paper-dropdown
+            cachedFocusType: {
+                type               : String,
+                value              : undefined,
+                notify             : true,
+                reflectToAttribute : true
+            },
+
+
+            // Consider using polymer dom-repeat for this in a paper-dropdown
+            availableDiagramTypes: {
                 type: Array,
                 value: () => { return [];},
                 notify : true
-
             }
 
         };
@@ -100,7 +112,6 @@ class DiagramManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        console.log("diagram-manager ready");   // TODO - remove
     }
 
 
@@ -112,34 +123,29 @@ class DiagramManager extends PolymerElement {
      */
     inEvtTypesLoaded(e) {
 
-        // If not already available, add the inheritance option
-        var inhIdx = this.availableDiagramTypes.indexOf("Inheritance");
-        console.log("diagram-manager: inhIdx is "+inhIdx);   // TODO - remove
-        if (inhIdx === -1) {
-            // Clear down the preliminary text
-            this.clearDiagramSelector();
-            this.addInheritanceOption();
-        }
+        // Clear the cached focusType...it may no longer be a valid type
+        this.cachedFocusType = undefined;
+
+        // Clear down the selector - removing either preliminary text or diagram types from earlier load
+        this.clearDiagramSelector();
 
         // As soon as types are loaded it is possible to draw the inheritance diagram - it does not need
         // a type to be selected as the focus type.
 
-        // Create it...
-        console.log("ID: types-loaded, auto-create the inheritance diagram");  // TODO - remove
+        // Add it to the selector
+        this.addInheritanceOption();
 
         // Clear the area
-        console.log("ID: types-loaded, clear");
         var drawingArea = this.$.drawingArea;
         while (drawingArea.firstChild) {
             drawingArea.removeChild(drawingArea.firstChild);
         }
-        // Add the inheritance diagram
-        console.log("ID: types-loaded, create");   // TODO - remove
+
+        // Create the inheritance diagram ...
         var inheritanceDiagram = document.createElement("inheritance-diagram");
         this.$.drawingArea.appendChild(inheritanceDiagram);
 
-        // ... then select it
-        console.log("ID: types-loaded, select");   // TODO - remove
+        // ... and automatically select it
         this.selectedDiagramType = "Inheritance";
         this.diagramSelected();
 
@@ -151,9 +157,12 @@ class DiagramManager extends PolymerElement {
      */
     inEvtFocusChanged(focusType) {
 
+        // Cache the new value of focus type
+        this.cachedFocusType = focusType;
+
         // If not already available, add the neighbourhood option
         var nhbIdx = this.availableDiagramTypes.indexOf("Neighbourhood");
-        console.log("diagram-manager: nhbIdx is "+nhbIdx);   // TODO - remove
+
         if (nhbIdx === -1) {
             this.addNeighbourhoodOption();
         }
@@ -170,10 +179,13 @@ class DiagramManager extends PolymerElement {
 
     // Clear down the selector and replace the 'no diagram...' entry with 'inheritance'...
     clearDiagramSelector() {
+
+        this.availableDiagramTypes = [];
         var selector = this.$.diagramSelector;
         while (selector.firstChild) {
             selector.removeChild(selector.firstChild);
         }
+
     }
 
     /*
@@ -194,6 +206,7 @@ class DiagramManager extends PolymerElement {
         opt.innerHTML = "Inheritance";
         opt.selected = true;
         diagSelector.appendChild(opt);
+
     }
 
 
@@ -215,15 +228,14 @@ class DiagramManager extends PolymerElement {
         opt.innerHTML = "Neighbourhood";
         opt.selected = false;
         diagSelector.appendChild(opt);
-    }
 
+    }
 
 
 
     diagramSelectorHandler(e) {
 
         var diagramType = e.target.value;
-        console.log("diagramSelectorHandler called, diagramType "+diagramType);   // TODO - remove
         this.selectedDiagramType = diagramType;
         this.diagramSelected();
 
@@ -232,13 +244,12 @@ class DiagramManager extends PolymerElement {
     diagramSelected() {
 
         // Clear the area
-        console.log("ID: diagram-selected, clear");   // TODO - remove
+
         var drawingArea = this.$.drawingArea;
         while (drawingArea.firstChild) {
             drawingArea.removeChild(drawingArea.firstChild);
         }
 
-        console.log("ID: diagram-selected, render");   // TODO - remove
         this.renderSelectedDiagram();
     }
 
@@ -248,31 +259,30 @@ class DiagramManager extends PolymerElement {
     renderSelectedDiagram() {
 
 
-
         switch(this.selectedDiagramType) {
 
             case "Inheritance" :
-                console.log("ID: render inheritance diagram");   // TODO - remove
 
-                console.log("ID: render create");   // TODO - remove
                 var inheritanceDiagram = document.createElement("inheritance-diagram");
                 this.$.drawingArea.appendChild(inheritanceDiagram);
-                console.log("ID: render set type manager");   // TODO - remove
-                inheritanceDiagram.setTypeManager(this.typeManager);  // TODO - use Polymer property push down instead
-                console.log("ID: render inh-diagr");   // TODO - remove
-                inheritanceDiagram.render();
+
+                // Consider using polymer property push-down for these...
+                inheritanceDiagram.setTypeManager(this.typeManager);
+
+                inheritanceDiagram.render(this.cachedFocusType);
                 break;
 
            case "Neighbourhood" :
-               console.log("Draw the neighbourhood diagram");   // TODO - remove
+
                var neighbourhoodDiagram = document.createElement("neighbourhood-diagram");
                this.$.drawingArea.appendChild(neighbourhoodDiagram);
-               neighbourhoodDiagram.setTypeManager(this.typeManager);  // TODO - use Polymer property push down instead
-               neighbourhoodDiagram.render();
+
+               // Consider using polymer property push-down for these...
+               neighbourhoodDiagram.setTypeManager(this.typeManager);
+
+               neighbourhoodDiagram.render(this.cachedFocusType);
                break;
 
-           default :
-               console.log("ERROR - I should not be here");
         }
     }
 

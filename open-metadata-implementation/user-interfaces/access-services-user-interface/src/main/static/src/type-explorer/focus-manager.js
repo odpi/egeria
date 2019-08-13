@@ -30,7 +30,6 @@ import '../token-ajax.js';
 * the selectors are updated to reflect the newly selected type. The listening and event handling is actually confined to the controller so this
 * focus-manager component only needs to support an API for externally requested changeFocus and changeView requests.
 *
-* The FocusManager also supports an API to indicate whether a type is selected. TODO - for both focus and view???
 *
 */
 
@@ -100,7 +99,6 @@ class FocusManager extends PolymerElement {
     ready() {
         // Ensure you call super.ready() first to initialise node hash...
         super.ready();
-        console.log("focus-manager ready...");
     }
 
 
@@ -155,8 +153,6 @@ class FocusManager extends PolymerElement {
     focusSelectorHandler(e) {
 
         var typeName = e.target.value;
-        console.log("changeFocus called, typeName "+typeName);
-
         this.changeFocus(typeName);
     }
 
@@ -184,10 +180,6 @@ class FocusManager extends PolymerElement {
      */
     populateSelectors() {
 
-        console.log("focus manager: populateSelectors() called");
-
-       //var typeManager = this.$.typeManager;
-
        // Enpty the selectors before adding new types...
        this.prepareSelectors();
 
@@ -196,7 +188,6 @@ class FocusManager extends PolymerElement {
         var entities = this.typeManager.getEntities();
         var entityTypesUnsorted = Object.keys(entities);
         var entityTypesSorted = entityTypesUnsorted.sort();
-        console.log("focus manager: add entities "+entityTypesSorted);
 
         entityTypesSorted.forEach(entityExpl => {
             var typeName = entities[entityExpl].entityDef.name
@@ -226,7 +217,6 @@ class FocusManager extends PolymerElement {
         });
 
 
-        console.log("focus manager: populateSelectors() complete");
     }
 
     /*
@@ -335,8 +325,6 @@ class FocusManager extends PolymerElement {
 
 
     changeView(category, typeName) {
-
-        console.log("changeView called, category "+category+", typeName "+typeName);
 
 
         // This function is called:
