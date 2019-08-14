@@ -2017,8 +2017,22 @@ public class AssetHandler
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
-        // todo - not sure this relationship exists
-        return 0;
+        List<RelatedAsset>  relatedAssets = this.getRelatedAssets(userId,
+                                                                  supportedZones,
+                                                                  anchorGUID,
+                                                                  0,
+                                                                  500,
+                                                                  serviceName,
+                                                                  methodName);
+
+        if (relatedAssets == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return relatedAssets.size();
+        }
     }
 
 
