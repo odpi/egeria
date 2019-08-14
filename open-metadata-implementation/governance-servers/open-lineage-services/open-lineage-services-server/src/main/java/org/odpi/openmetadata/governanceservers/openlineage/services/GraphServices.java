@@ -34,21 +34,20 @@ public class GraphServices {
      * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
      * the condensed path by querying a different method.
      *
-     *
      * @param scope The scope queried by the user: hostview, tableview, columnview.
      * @param lineageQuery ultimate-source, ultimate-destination, glossary.
-     * @param graphString  main, buffer, mock, history.
+     * @param graphName  main, buffer, mock, history.
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public String getInitialGraph(String scope, String lineageQuery, String graphString, String guid) {
+    public String initialGraph(String scope, String lineageQuery, String graphName, String guid) {
         String response = "";
 
         scope = reformatArg(scope);
         lineageQuery = reformatArg(lineageQuery);
-        graphString = reformatArg(graphString);
+        graphName = reformatArg(graphName);
 
-        Graph graph = getJanusGraph(graphString);
+        Graph graph = getJanusGraph(graphName);
         switch (Queries.valueOf(lineageQuery)) {
             case ULTIMATESOURCE:
                 response = ultimateSource(scope, graph, guid);
@@ -209,12 +208,12 @@ public class GraphServices {
     /**
      * Retrieve an Open Lineage Services graph.
      *
-     * @param graphString The name of the queried graph.
+     * @param graphName The name of the queried graph.
      * @return The Graph object.
      */
-    private JanusGraph getJanusGraph(String graphString) {
+    private JanusGraph getJanusGraph(String graphName) {
         JanusGraph graph = null;
-        switch (Graphs.valueOf(graphString)) {
+        switch (Graphs.valueOf(graphName)) {
             case MAIN:
                 graph = mainGraph;
                 break;
@@ -228,7 +227,7 @@ public class GraphServices {
                 graph = mockGraph;
                 break;
             default:
-                log.error(graphString + " is not a valid graph");
+                log.error(graphName + " is not a valid graph");
         }
         return graph;
     }
