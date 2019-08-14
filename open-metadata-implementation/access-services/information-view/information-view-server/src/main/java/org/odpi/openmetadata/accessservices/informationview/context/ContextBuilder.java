@@ -44,10 +44,10 @@ public abstract class ContextBuilder<T> {
         elementsRelationship = entityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, guid);
 
         return Optional.ofNullable(elementsRelationship).
-                        map(Collection::stream).
-                        orElseGet(Stream::empty).
-                        map(e -> buildElement( entityDao.getEntityByGuid(e.getEntityTwoProxy().getGUID()))).
-                        collect(Collectors.toList());
+                map(Collection::stream).
+                orElseGet(Stream::empty).
+                map(e -> buildElement(entityDao.getEntityByGuid(e.getEntityTwoProxy().getGUID()))).
+                collect(Collectors.toList());
     }
 
     abstract T buildElement(EntityDetail entity);
@@ -55,16 +55,17 @@ public abstract class ContextBuilder<T> {
 
     /**
      * Return the business term associated to the entity
+     *
      * @param entityGuid unique identifier of the entity for which we want to retrieve the business term
      * @return bean describing the business term associated
      */
     protected List<BusinessTerm> getAssignedBusinessTerms(String entityGuid) {
         List<Relationship> semanticAssignments = entityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, entityGuid);
-       return Optional.ofNullable(semanticAssignments)
-               .map(Collection::stream)
-               .orElseGet(Stream::empty)
-               .map(r -> retrieveBusinessTerm(r.getEntityTwoProxy().getGUID()))
-               .collect(Collectors.toList());
+        return Optional.ofNullable(semanticAssignments)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(r -> retrieveBusinessTerm(r.getEntityTwoProxy().getGUID()))
+                .collect(Collectors.toList());
     }
 
     private BusinessTerm retrieveBusinessTerm(String businessTermGuid) {
@@ -86,6 +87,7 @@ public abstract class ContextBuilder<T> {
 
     /**
      * Return the list of asset schema type
+     *
      * @param guid - unique identifier of the entity representing an asset
      * @return the list of asset schema type relationships linked to the entity
      */
@@ -97,24 +99,23 @@ public abstract class ContextBuilder<T> {
     protected List<Source> getSources(String guid) {
         List<Relationship> relationships = entityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, guid);
         List<EntityDetail> entities = Optional.ofNullable(relationships)
-                                                .map(Collection::stream)
-                                                .orElseGet(Stream::empty)
-                                                .map(r -> entityDao.getEntityByGuid(r.getEntityTwoProxy().getGUID()))
-                                                .collect(Collectors.toList());
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(r -> entityDao.getEntityByGuid(r.getEntityTwoProxy().getGUID()))
+                .collect(Collectors.toList());
 
         List<Source> sources = Optional.ofNullable(entities)
-                                        .map(Collection::stream)
-                                        .orElseGet(Stream::empty)
-                                        .map(e -> buildSource(e))
-                                        .collect(Collectors.toList());
-
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(this::buildSource)
+                .collect(Collectors.toList());
 
         return sources;
     }
 
     protected Source buildSource(EntityDetail entityDetail) {
         String methodName = "buildSource";
-        if(omrsRepositoryHelper.isTypeOf(Constants.INFORMATION_VIEW_OMAS_NAME, entityDetail.getType().getTypeDefName(), Constants.RELATIONAL_COLUMN)){
+        if (omrsRepositoryHelper.isTypeOf(Constants.INFORMATION_VIEW_OMAS_NAME, entityDetail.getType().getTypeDefName(), Constants.RELATIONAL_COLUMN)) {
             Source columnSource = new DatabaseColumnSource();
             columnSource.setGuid(entityDetail.getGUID());
             columnSource.setQualifiedName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, entityDetail.getProperties(), methodName));
@@ -122,7 +123,6 @@ public abstract class ContextBuilder<T> {
         }
         return null;
     }
-
 
 
 }
