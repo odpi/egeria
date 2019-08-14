@@ -24,7 +24,6 @@ public class PersonalProfile extends ActorHeader
     private String              fullName             = null;
     private String              jobTitle             = null;
     private List<UserIdentity>  associatedUserIds    = null;
-    private int                 karmaPoints          = 0;
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;
 
@@ -52,7 +51,6 @@ public class PersonalProfile extends ActorHeader
             this.fullName = template.getFullName();
             this.jobTitle = template.getJobTitle();
             this.associatedUserIds = template.getAssociatedUserIds();
-            this.karmaPoints = template.getKarmaPoints();
             this.extendedProperties = template.getExtendedProperties();
             this.additionalProperties = template.getAdditionalProperties();
         }
@@ -136,28 +134,6 @@ public class PersonalProfile extends ActorHeader
 
 
     /**
-     * Return the karma points awarded to this person.
-     *
-     * @return count
-     */
-    public int getKarmaPoints()
-    {
-        return karmaPoints;
-    }
-
-
-    /**
-     * Set up the karma points for this person.
-     *
-     * @param karmaPoints count
-     */
-    public void setKarmaPoints(int karmaPoints)
-    {
-        this.karmaPoints = karmaPoints;
-    }
-
-
-    /**
      * Return any properties associated with the subclass of this element.
      *
      * @return map of property names to property values
@@ -235,7 +211,6 @@ public class PersonalProfile extends ActorHeader
                 "fullName='" + fullName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", associatedUserIds=" + associatedUserIds +
-                ", karmaPoints=" + karmaPoints +
                 ", extendedProperties=" + extendedProperties +
                 ", additionalProperties=" + additionalProperties +
                 ", contactDetails=" + getContactDetails() +
@@ -276,8 +251,7 @@ public class PersonalProfile extends ActorHeader
             return false;
         }
         PersonalProfile that = (PersonalProfile) objectToCompare;
-        return getKarmaPoints() == that.getKarmaPoints() &&
-                Objects.equals(getAssociatedUserIds(), that.getAssociatedUserIds()) &&
+        return Objects.equals(getAssociatedUserIds(), that.getAssociatedUserIds()) &&
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
@@ -291,7 +265,7 @@ public class PersonalProfile extends ActorHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAssociatedUserIds(), getKarmaPoints(),
+        return Objects.hash(super.hashCode(), getAssociatedUserIds(),
                             getExtendedProperties(), getAdditionalProperties());
     }
 }

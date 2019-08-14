@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -817,6 +818,103 @@ public class RepositoryHandler
 
 
     /**
+     * Return the list of entity proxies for the entities at the far end of the relationships linked to the
+     * anchor entity.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName calling method
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     * @return list of entity proxies
+     */
+    public List<EntityProxy>  getRelatedEntityProxies(String                 userId,
+                                                      String                 anchorEntityGUID,
+                                                      String                 anchorEntityTypeName,
+                                                      String                 relationshipTypeGUID,
+                                                      String                 relationshipTypeName,
+                                                      int                    startingFrom,
+                                                      int                    pageSize,
+                                                      String                 methodName) throws UserNotAuthorizedException,
+                                                                                                PropertyServerException
+    {
+        List<Relationship> relationships = this.getRelationshipsByType(userId,
+                                                                       anchorEntityGUID,
+                                                                       anchorEntityTypeName,
+                                                                       relationshipTypeGUID,
+                                                                       relationshipTypeName,
+                                                                       startingFrom,
+                                                                       pageSize,
+                                                                       methodName);
+
+        if (relationships != null)
+        {
+            List<EntityProxy>  entityProxies = new ArrayList<>();
+
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy relatedEntityProxy = this.getOtherEnd(anchorEntityGUID, relationship);
+
+                    if (relatedEntityProxy != null)
+                    {
+                        entityProxies.add(relatedEntityProxy);
+                    }
+                }
+            }
+
+            if (entityProxies.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return entityProxies;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the entity proxy for the related entity.
+     *
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    public  EntityProxy  getOtherEnd(String                 anchorEntityGUID,
+                                     Relationship           relationship)
+    {
+        if (relationship != null)
+        {
+            // todo this is a good place to add validation that the entity proxies are ok
+
+            EntityProxy entityProxy = relationship.getEntityOneProxy();
+
+            if (entityProxy != null)
+            {
+                if (anchorEntityGUID.equals(entityProxy.getGUID()))
+                {
+                    entityProxy = relationship.getEntityTwoProxy();
+                }
+            }
+
+            return entityProxy;
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the list of entities at the other end of the requested relationship type.
      *
      * @param userId  user making the request
@@ -846,6 +944,8 @@ public class RepositoryHandler
 
         return null;
     }
+
+
 
 
     /**
@@ -1176,6 +1276,7 @@ public class RepositoryHandler
 
     /**
      * Return the list of relationships of the requested type connected to the anchor entity.
+     * The list is expected to be small.
      *
      * @param userId  user making the request
      * @param anchorEntityGUID  starting entity's GUID
@@ -1197,17 +1298,56 @@ public class RepositoryHandler
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
+        return this.getRelationshipsByType(userId,
+                                           anchorEntityGUID,
+                                           anchorEntityTypeName,
+                                           relationshipTypeGUID,
+                                           relationshipTypeName,
+                                           0,
+                                           100,
+                                           methodName);
+    }
+
+
+    /**
+     * Return the list of relationships of the requested type connected to the anchor entity.
+     * The list is expected to be small.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationships or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRelationshipsByType(String                 userId,
+                                                     String                 anchorEntityGUID,
+                                                     String                 anchorEntityTypeName,
+                                                     String                 relationshipTypeGUID,
+                                                     String                 relationshipTypeName,
+                                                     int                    startingFrom,
+                                                     int                    pageSize,
+                                                     String                 methodName) throws UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
                                                                                             anchorEntityGUID,
                                                                                             relationshipTypeGUID,
-                                                                                            0,
+                                                                                            startingFrom,
                                                                                             null,
                                                                                             null,
                                                                                             null,
                                                                                             null,
-                                                                                            100);
+                                                                                            pageSize);
 
             if ((relationships == null) || (relationships.isEmpty()))
             {

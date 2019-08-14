@@ -1212,10 +1212,18 @@ public class OCFMetadataRESTServices
 
         try
         {
+            List<String>  supportedZones = instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName);
+
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getRelatedAssets(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getRelatedAssets(userId,
+                                                      supportedZones,
+                                                      assetGUID,
+                                                      elementStart,
+                                                      maxElements,
+                                                      serviceURLName,
+                                                      methodName));
         }
         catch (InvalidParameterException error)
         {

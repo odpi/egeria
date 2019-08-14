@@ -205,11 +205,10 @@ public class RESTExceptionHandler
                                                 String expectedType) throws InvalidParameterException
     {
         OMAGCommonErrorCode errorCode = OMAGCommonErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID;
-        String                     errorMessage = errorCode.getErrorMessageId()
-                                                + errorCode.getFormattedErrorMessage(methodName,
-                                                                                     guid,
-                                                                                     actualType,
-                                                                                     expectedType);
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                              guid,
+                                                                                                              actualType,
+                                                                                                              expectedType);
 
         throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),
@@ -229,9 +228,9 @@ public class RESTExceptionHandler
      * @param error returned response.
      * @param exceptionClassName  class name of the exception to recreate
      */
-    private  void captureCheckedException(FFDCResponseBase        response,
-                                          OCFCheckedExceptionBase error,
-                                          String                  exceptionClassName)
+    protected  void captureCheckedException(FFDCResponseBase        response,
+                                            OCFCheckedExceptionBase error,
+                                            String                  exceptionClassName)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
@@ -249,10 +248,10 @@ public class RESTExceptionHandler
      * @param exceptionClassName  class name of the exception to recreate
      * @param exceptionProperties map of properties stored in the exception to help with diagnostics
      */
-    private  void captureCheckedException(FFDCResponseBase             response,
-                                          OCFCheckedExceptionBase      error,
-                                          String                       exceptionClassName,
-                                          Map<String, Object>          exceptionProperties)
+    protected  void captureCheckedException(FFDCResponseBase             response,
+                                            OCFCheckedExceptionBase      error,
+                                            String                       exceptionClassName,
+                                            Map<String, Object>          exceptionProperties)
     {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);

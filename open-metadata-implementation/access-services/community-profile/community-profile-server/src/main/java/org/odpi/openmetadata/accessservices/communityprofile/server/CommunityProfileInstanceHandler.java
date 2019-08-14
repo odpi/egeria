@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.MyProfileHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -38,20 +39,51 @@ class CommunityProfileInstanceHandler extends OCFOMASServiceInstanceHandler
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    MyProfileHandler getMyProfileHandler(String userId,
-                                         String serverName,
-                                         String serviceOperationName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+    PersonalProfileHandler getPersonalProfileHandler(String userId,
+                                                     String serverName,
+                                                     String serviceOperationName) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException
     {
-        CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
+        CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                     serverName,
+                                                                                                                     serviceOperationName);
 
         if (instance != null)
         {
-            return instance.getMyProfileHandler();
+            return instance.getPersonalProfileHandler();
         }
 
         return null;
     }
 
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException the service name is not known - indicating a logic error
+     */
+    UserIdentityHandler getUserIdentityHandler(String userId,
+                                               String serverName,
+                                               String serviceOperationName) throws InvalidParameterException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   PropertyServerException
+    {
+        CommunityProfileServicesInstance instance = (CommunityProfileServicesInstance)super.getServerServiceInstance(userId,
+                                                                                                                     serverName,
+                                                                                                                     serviceOperationName);
+
+        if (instance != null)
+        {
+            return instance.getUserIdentityHandler();
+        }
+
+        return null;
+    }
 }

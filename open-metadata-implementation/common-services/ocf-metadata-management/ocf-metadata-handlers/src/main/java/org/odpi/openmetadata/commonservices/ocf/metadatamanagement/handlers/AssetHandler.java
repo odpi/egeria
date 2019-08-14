@@ -1649,12 +1649,14 @@ public class AssetHandler
 
 
     /**
-     * Return the assets attached to an anchor entity.
+     * Return the assets attached to an anchor asset.
      *
      * @param userId     calling user
-     * @param anchorGUID identifier for the entity that the feedback is attached to
+     * @param supportedZones override the default supported zones.
+     * @param anchorGUID identifier for the asset that the related assets are attached to
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param serviceName calling service
      * @param methodName calling method
      *
      * @return list of retrieved objects
@@ -1663,18 +1665,64 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public List<RelatedAsset>  getRelatedAssets(String   userId,
-                                                String   anchorGUID,
-                                                int      startFrom,
-                                                int      pageSize,
-                                                String   methodName) throws InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException
+    public List<RelatedAsset>  getRelatedAssets(String       userId,
+                                                List<String> supportedZones,
+                                                String       anchorGUID,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                String       serviceName,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        // todo
+        List<Relationship>  assetRelationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                          anchorGUID,
+                                                                                          AssetMapper.ASSET_TYPE_NAME,
+                                                                                          null,
+                                                                                          "all",
+                                                                                          startFrom,
+                                                                                          pageSize,
+                                                                                          methodName);
+
+        if (assetRelationships != null)
+        {
+            List<RelatedAsset>  relatedAssets = new ArrayList<>();
+
+            for (Relationship  relationship : assetRelationships)
+            {
+                if (relationship != null)
+                {
+                    EntityProxy relatedEntityProxy = repositoryHandler.getOtherEnd(anchorGUID, relationship);
+
+                    if (relatedEntityProxy != null)
+                    {
+                        RelatedAsset relatedAsset = new RelatedAsset();
+
+                        relatedAsset.setTypeName(relatedEntityProxy.getType().getTypeDefName());
+                        relatedAsset.setAttributeName(repositoryHelper.getOtherEndName(serviceName, anchorGUID, relationship));
+                        relatedAsset.setRelatedAsset(this.getAsset(userId,
+                                                                   supportedZones,
+                                                                   relatedEntityProxy.getGUID(),
+                                                                   serviceName,
+                                                                   methodName));
+
+                        relatedAssets.add(relatedAsset);
+                    }
+                }
+            }
+
+            if (relatedAssets.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                return relatedAssets;
+            }
+        }
+
         return null;
     }
-
 
 
     /**

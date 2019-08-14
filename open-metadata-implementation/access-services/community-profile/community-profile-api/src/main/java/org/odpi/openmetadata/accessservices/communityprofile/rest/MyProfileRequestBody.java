@@ -62,7 +62,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the the unique employee number for this governance officer.
+     * Return the unique name for this person - may be employee identifier.
      *
      * @return String identifier
      */
@@ -73,7 +73,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Set up the unique employee number for this governance officer.
+     * Set up the unique name for this person - may be employee identifier.
      *
      * @param qualifiedName String identifier
      */
@@ -84,7 +84,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the full name for this governance officer.
+     * Return the full name for this person.
      *
      * @return string name
      */
@@ -95,7 +95,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Set up the full name for this governance officer.
+     * Set up the full name for this person.
      *
      * @param fullName string name
      */
@@ -106,7 +106,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the preferred name for this governance officer.
+     * Return the preferred name for this person.
      *
      * @return string name
      */
@@ -117,7 +117,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Set up the preferred name for this governance officer.
+     * Set up the preferred name for this person.
      *
      * @param knownName string name
      */
@@ -128,7 +128,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the primary job title for this governance officer.  This may relate to the specific
+     * Return the primary job title for this person.  This may relate to the specific
      * governance responsibilities, or may be their main role if the governance responsibilities are
      * just an adjunct to their main role.
      *
@@ -141,7 +141,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Set up the primary job title for this governance officer.  This may relate to the specific
+     * Set up the primary job title for this person.  This may relate to the specific
      * governance responsibilities, or may be their main role if the governance responsibilities are
      * just an adjunct to their main role.
      *
@@ -154,7 +154,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Return the description of the job role for this governance officer.  This may relate to the specific
+     * Return the description of the job role for this person.  This may relate to the specific
      * governance responsibilities, or may be their main role if the governance responsibilities are
      * just an adjunct to their main role.
      *
@@ -167,7 +167,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
 
     /**
-     * Set up the description of the job role for this governance officer.  This may relate to the specific
+     * Set up the description of the job role for this person.  This may relate to the specific
      * governance responsibilities, or may be their main role if the governance responsibilities are
      * just an adjunct to their main role.
      *

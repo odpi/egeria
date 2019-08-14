@@ -124,6 +124,45 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Return the attribute name for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    public  String  getOtherEndName(String                 sourceName,
+                                    String                 anchorEntityGUID,
+                                    Relationship           relationship)
+    {
+        if (relationship != null)
+        {
+            RelationshipDef relationshipTypeDef = (RelationshipDef)this.getTypeDefByName(sourceName,
+                                                                                         relationship.getType().getTypeDefName());
+
+            String          endOneName = relationshipTypeDef.getEndDef1().getAttributeName();
+            String          endTwoName = relationshipTypeDef.getEndDef2().getAttributeName();
+
+            EntityProxy     entityProxy = relationship.getEntityOneProxy();
+
+            if (entityProxy != null)
+            {
+                if (anchorEntityGUID.equals(entityProxy.getGUID()))
+                {
+                    return endTwoName;
+                }
+                else
+                {
+                    return endOneName;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Return the AttributeTypeDef identified by the name supplied by the caller.  This is used in the connectors when
      * validating the actual types of the repository with the known open metadata types.  It is looking specifically
      * for types of the same name but with different content.
