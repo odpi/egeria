@@ -46,11 +46,11 @@ public class ExceptionHandler {
     }
 
     public static InformationViewExceptionBase buildAddRelationshipException(String relationshipName,
-                                                                             OMRSCheckedExceptionBase e,
+                                                                             String message,
                                                                              String reportingClassName) {
         InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_RELATIONSHIP_EXCEPTION;
         return new AddRelationshipException(errorCode.getHttpErrorCode(), reportingClassName,
-                errorCode.getFormattedErrorMessage(relationshipName, e.getMessage()),
+                errorCode.getFormattedErrorMessage(relationshipName, message),
                 errorCode.getSystemAction(),
                 errorCode.getUserAction(),
                 null);

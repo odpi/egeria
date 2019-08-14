@@ -12,7 +12,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,16 +32,7 @@ public class ReportCreator extends ReportBasicOperation {
      * @param payload object describing the report
      * @param reportEntity entity describing the report
      */
-    public void createReport(String userId, ReportRequestBody payload, EntityDetail reportEntity) throws InvalidParameterException,
-                                                                                                         StatusNotSupportedException,
-                                                                                                         PropertyErrorException,
-                                                                                                         EntityNotKnownException,
-                                                                                                         TypeErrorException,
-                                                                                                         FunctionNotSupportedException,
-                                                                                                         PagingErrorException,
-                                                                                                         ClassificationErrorException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         RepositoryErrorException {
+    public void createReport(String userId, ReportRequestBody payload, EntityDetail reportEntity) {
         String qualifiedNameForComplexSchemaType =  QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getReport().getId()  + Constants.TYPE_SUFFIX);
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
@@ -68,9 +58,4 @@ public class ReportCreator extends ReportBasicOperation {
 
         addElements(userId, helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getRegistrationGuid(), payload.getRegistrationQualifiedName(), payload.getReport().getReportElements());
     }
-
-
-
-
-
 }

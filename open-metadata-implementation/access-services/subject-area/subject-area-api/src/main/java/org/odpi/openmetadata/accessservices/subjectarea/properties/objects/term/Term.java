@@ -36,7 +36,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
+        property = "class",
+        defaultImpl = Term.class
+)
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = Term.class, name = "Term")

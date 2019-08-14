@@ -42,6 +42,7 @@ public class EgeriaUIApplication {
     }
 
 
+
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
                                         @Value("${omas.server.name}") String serverName) {
@@ -52,5 +53,7 @@ public class EgeriaUIApplication {
                                       @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new SubjectAreaImpl(serverName, serverUrl);
     }
+
+
 
 }

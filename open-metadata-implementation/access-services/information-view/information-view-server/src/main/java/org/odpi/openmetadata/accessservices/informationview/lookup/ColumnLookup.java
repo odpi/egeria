@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
                                                                                 Constants.SCHEMA_ATTRIBUTE_TYPE,
                                                                                 r -> r.getEntityTwoProxy().getGUID());
             if (!CollectionUtils.isEmpty(relatedEntities)) {
-                List<EntityDetail> allColumns = omEntityDao.getRelatedEntities(relatedEntities.stream().map(e -> e.getGUID()).collect(Collectors.toList()),
+                List<EntityDetail> allColumns = omEntityDao.getRelatedEntities(relatedEntities.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()),
                                                                                 Constants.ATTRIBUTE_FOR_SCHEMA,
                                                                                 r -> r.getEntityTwoProxy().getGUID());
                 return filterEntities(Arrays.asList(Constants.RELATIONAL_COLUMN,
