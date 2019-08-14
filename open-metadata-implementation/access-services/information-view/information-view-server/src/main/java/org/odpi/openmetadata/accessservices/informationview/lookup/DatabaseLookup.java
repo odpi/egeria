@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandle
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
@@ -47,7 +48,7 @@ public class DatabaseLookup extends EntityLookup<DatabaseSource> {
 
     private EntityDetail filterBasedOnMatchingProperties(DatabaseSource source, EntityDetail endpointEntity) {
         List<EntityDetail> allConnection = omEntityDao.getRelatedEntities(Arrays.asList(endpointEntity.getGUID()), Constants.CONNECTION_TO_ENDPOINT, r -> r.getEntityTwoProxy().getGUID());
-        List<EntityDetail> allLinkedDatabasesList = omEntityDao.getRelatedEntities(allConnection.stream().map(e -> e.getGUID()).collect(Collectors.toList()),
+        List<EntityDetail> allLinkedDatabasesList = omEntityDao.getRelatedEntities(allConnection.stream().map(InstanceHeader::getGUID).collect(Collectors.toList()),
                                                                                     Constants.CONNECTION_TO_ASSET,
                                                                                     r -> r.getEntityTwoProxy().getGUID());
         return filterEntities(Arrays.asList(Constants.DATABASE), source, allLinkedDatabasesList);

@@ -44,7 +44,7 @@ public enum OpenLineageAuditCode {
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION("OPEN-LINEAGE-0006",
+    ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION("OPEN-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Open Lineage Services  instance for server {1} ",
             "The connection to open lineage topic could not be initialized.",

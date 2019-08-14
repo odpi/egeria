@@ -34,7 +34,7 @@ to the OMRS so it can be distributed to the other metadata repositories who are 
 ### Setup a project
 
 Egeria has been designed to allow connectors to be developed in independent projects from the core itself.
-As an example, the [IBM InfoSphere Information Governance Catalog Repository Connector](https://github.com/odpi/egeria-connector-ibm-igc)
+As an example, the [IBM InfoSphere Information Governance Catalog Repository Connector](https://github.com/odpi/egeria-connector-ibm-information-server)
 is available in its own separate GitHub repository, and could be a useful reference point when following the
 remainder of these instructions.
 
@@ -179,7 +179,7 @@ Platform and configured through the REST calls covered above.
 by different.)
 
 For a more detailed example of this minimal packaging to make use of the proxy, refer to the
-[IBM InfoSphere Information Governance Catalog Repository Connector's distribution module](https://github.com/odpi/egeria-connector-ibm-igc/tree/master/distribution).
+[IBM InfoSphere Information Governance Catalog Repository Connector's distribution module](https://github.com/odpi/egeria-connector-ibm-information-server/tree/master/distribution).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
