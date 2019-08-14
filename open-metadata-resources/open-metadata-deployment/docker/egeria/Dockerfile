@@ -32,8 +32,11 @@ RUN apk --no-cache add bash shadow && apk --no-cache update && apk --no-cache up
 
 RUN groupadd -r egeria -g 1000 && useradd --no-log-init -r -g egeria -u 1000 -d /opt/egeria egeria
 
-COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
-COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
+COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /opt/egeria/
+COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /opt/egeria/
+RUN rm /opt/egeria/*javadoc*jar /opt/egeria/*sources*jar
+RUN mv /opt/egeria/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
+RUN mv /opt/egeria/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
 COPY --from=build --chown=egeria:egeria /root/egeria/git.* /opt/egeria/details/
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
