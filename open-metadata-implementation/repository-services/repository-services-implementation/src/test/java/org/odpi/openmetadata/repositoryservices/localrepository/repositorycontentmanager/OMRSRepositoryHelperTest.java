@@ -143,19 +143,25 @@ public class OMRSRepositoryHelperTest
         String testString = "a-b-c-d-e-f-g";
 
         // test 7 test that "contains" works
-        String testContains = createHelper().getContainsRegex("c-d-e");
+        String contains = "c-d-e";
+        String testContains = createHelper().getContainsRegex(contains);
         assertTrue(Pattern.matches(testContains, testString));
         assertFalse(Pattern.matches(testContains, "d"));
+        assertTrue(createHelper().getUnqualifiedLiteralString(testContains).equals(contains));
 
         // test 8 test that "startswith" works
-        String testStartsWith = createHelper().getStartsWithRegex("a-b-c");
+        String startsWith = "a-b-c";
+        String testStartsWith = createHelper().getStartsWithRegex(startsWith);
         assertTrue(Pattern.matches(testStartsWith, testString));
         assertFalse(Pattern.matches(testStartsWith, "x" + testString));
+        assertTrue(createHelper().getUnqualifiedLiteralString(testStartsWith).equals(startsWith));
 
         // test 9 test that "endswith" works
-        String testEndsWith = createHelper().getEndsWithRegex("e-f-g");
+        String endsWith = "e-f-g";
+        String testEndsWith = createHelper().getEndsWithRegex(endsWith);
         assertTrue(Pattern.matches(testEndsWith, testString));
         assertFalse(Pattern.matches(testEndsWith, testString + "x"));
+        assertTrue(createHelper().getUnqualifiedLiteralString(testEndsWith).equals(endsWith));
 
     }
 

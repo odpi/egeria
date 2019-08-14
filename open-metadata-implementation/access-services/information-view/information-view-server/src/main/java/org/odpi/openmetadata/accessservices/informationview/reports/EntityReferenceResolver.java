@@ -3,16 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.Source;
-import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnDataView;
-import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnDatabaseColumn;
-import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnReportColumn;
-import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
-import org.odpi.openmetadata.accessservices.informationview.lookup.LookupStrategy;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.lookup.*;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.springframework.util.StringUtils;
@@ -26,7 +18,7 @@ public class EntityReferenceResolver {
 
 
     private OMEntityDao omEntityDao;
-    private Map<String, LookupStrategy> strategies = new HashMap();
+    private Map<String, LookupStrategy> strategies = new HashMap<>();
     private LookupBasedOnDatabaseColumn lookupBasedOnDatabaseColumn;
     private LookupBasedOnReportColumn lookupBasedOnReportColumn;
     private LookupBasedOnDataView lookupBasedOnDataView;

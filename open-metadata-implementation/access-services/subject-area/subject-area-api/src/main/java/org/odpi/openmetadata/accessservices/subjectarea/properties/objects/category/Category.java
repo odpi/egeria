@@ -3,9 +3,6 @@
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalTaxonomy;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
@@ -19,7 +16,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
+        property = "class",
+        defaultImpl = Category.class
+)
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = SubjectAreaDefinition.class, name = "SubjectAreaDefinition")

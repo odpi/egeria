@@ -13,7 +13,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,19 +31,8 @@ public class DataViewCreator extends DataViewBasicOperation{
      * @param userId
      * @param requestBody json describing the data view
      * @param dataViewEntity the entity describing the data view
-     * @throws Exception
      */
-    public void createDataView(String userId, DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws
-                                                                                             InvalidParameterException,
-                                                                                             StatusNotSupportedException,
-                                                                                             TypeErrorException,
-                                                                                             PropertyErrorException,
-                                                                                             EntityNotKnownException,
-                                                                                             FunctionNotSupportedException,
-                                                                                             PagingErrorException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             RepositoryErrorException,
-                                                                                             ClassificationErrorException {
+    public void createDataView(String userId, DataViewRequestBody requestBody, EntityDetail dataViewEntity) {
             String methodName = "createDataView";
             String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName(requestBody.getDataView().getEndpointAddress(), Constants.COMPLEX_SCHEMA_TYPE, requestBody.getDataView().getId() + Constants.TYPE_SUFFIX);
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
@@ -68,7 +56,5 @@ public class DataViewCreator extends DataViewBasicOperation{
 
         String qualifiedNameForDataView = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, dataViewEntity.getProperties(), methodName);
             addElements(userId, qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getRegistrationGuid(), requestBody.getRegistrationQualifiedName(), requestBody.getDataView().getElements());
-
-
     }
 }
