@@ -1748,11 +1748,6 @@
                 </configuration>
              </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-
             <!-- Validates maven & java versions -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1952,7 +1947,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
