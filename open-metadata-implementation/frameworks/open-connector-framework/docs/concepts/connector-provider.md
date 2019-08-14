@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Connector Provider - part of the [Open Connector Framework (OCF)](../README.md)
+# Connector Provider - part of the [Open Connector Framework (OCF)](../../README.md)
 
 A Connector Provider is the factory for a particular type of [Connector](connector.md).  It is typically
 called from the [Connector Broker](connector-broker.md), although it may be called directly.
