@@ -124,7 +124,7 @@ committers:
 
 
 tsc:
-    approval: ''
+    approval: 'https://github.com/odpi/tsc'
     changes:
         - type: ''
           name: ''
