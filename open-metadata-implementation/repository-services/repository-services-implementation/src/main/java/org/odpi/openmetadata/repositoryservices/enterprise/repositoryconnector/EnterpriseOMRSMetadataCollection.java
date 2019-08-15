@@ -509,7 +509,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (allTypes != null)
         {
-            TypeDef  result = super.filterTypeDefsByName(repositoryHelper.getActiveTypeDefs(), name);
+            TypeDef  result = super.filterTypeDefsByName(repositoryHelper.getKnownTypeDefs(), name);
 
             if (result == null)
             {
@@ -556,7 +556,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (allTypes != null)
         {
-            AttributeTypeDef  result = super.filterAttributeTypeDefsByName(repositoryHelper.getActiveAttributeTypeDefs(), name);
+            AttributeTypeDef  result = super.filterAttributeTypeDefsByName(repositoryHelper.getKnownAttributeTypeDefs(), name);
 
             if (result == null)
             {

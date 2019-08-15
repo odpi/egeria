@@ -1055,29 +1055,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
 
 
     /**
-     * Return the list of typedefs known by the local repository.
-     *
-     * @return TypeDef gallery
-     */
-    public TypeDefGallery   getKnownTypeDefGallery()
-    {
-        TypeDefGallery               typeDefGallery               = new TypeDefGallery();
-
-        if (! knownAttributeTypeDefNames.isEmpty())
-        {
-            typeDefGallery.setAttributeTypeDefs(new ArrayList<>(knownAttributeTypeDefNames.values()));
-        }
-
-        if (! knownTypeDefNames.isEmpty())
-        {
-            typeDefGallery.setTypeDefs(new ArrayList<>(knownTypeDefNames.values()));
-        }
-
-        return typeDefGallery;
-    }
-
-
-    /**
      * Return the list of typeDefs active in the local repository.
      *
      * @return TypeDef list
@@ -1105,6 +1082,65 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         List<AttributeTypeDef> results = null;
 
         if (! activeAttributeTypeDefGUIDs.isEmpty())
+        {
+            results = new ArrayList<>(activeAttributeTypeDefGUIDs.values());
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return the list of typedefs active in the connected cohorts.
+     *
+     * @return TypeDef gallery
+     */
+    public TypeDefGallery   getKnownTypeDefGallery()
+    {
+        TypeDefGallery               typeDefGallery               = new TypeDefGallery();
+
+        if (! knownAttributeTypeDefNames.isEmpty())
+        {
+            typeDefGallery.setAttributeTypeDefs(new ArrayList<>(knownAttributeTypeDefNames.values()));
+        }
+
+        if (! knownTypeDefNames.isEmpty())
+        {
+            typeDefGallery.setTypeDefs(new ArrayList<>(knownTypeDefNames.values()));
+        }
+
+        return typeDefGallery;
+    }
+
+
+    /**
+     * Return the list of typeDefs active in the connected cohorts.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getKnownTypeDefs()
+    {
+        List<TypeDef> results = null;
+
+        if (! activeTypeDefGUIDs.isEmpty())
+        {
+            results = new ArrayList<>(activeTypeDefGUIDs.values());
+        }
+
+        return results;
+    }
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getKnownAttributeTypeDefs()
+    {
+        List<AttributeTypeDef> results = null;
+
+        if (!activeAttributeTypeDefGUIDs.isEmpty())
         {
             results = new ArrayList<>(activeAttributeTypeDefGUIDs.values());
         }

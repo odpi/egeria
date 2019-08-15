@@ -46,11 +46,27 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Return the list of typedefs known by the local repository.
+     * Return the list of types active in the connected cohorts.
      *
      * @return TypeDef gallery
      */
     TypeDefGallery getKnownTypeDefGallery();
+
+
+    /**
+     * Return the list of typeDefs active in the connected cohorts.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getKnownTypeDefs();
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the connected cohorts.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getKnownAttributeTypeDefs();
 
 
     /**

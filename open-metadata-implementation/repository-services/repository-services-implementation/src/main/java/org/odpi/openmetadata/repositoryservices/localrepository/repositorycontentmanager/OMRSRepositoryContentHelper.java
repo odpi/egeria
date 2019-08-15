@@ -73,6 +73,21 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    public List<TypeDef>  getKnownTypeDefs()
+    {
+        final String methodName = "getKnownTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getKnownTypeDefs();
+    }
+
+
+    /**
      * Return the list of attributeTypeDefs active in the local repository.
      *
      * @return AttributeTypeDef list
@@ -84,6 +99,21 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         validateRepositoryContentManager(methodName);
 
         return repositoryContentManager.getActiveAttributeTypeDefs();
+    }
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    public List<AttributeTypeDef>  getKnownAttributeTypeDefs()
+    {
+        final String methodName = "getKnownAttributeTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getKnownAttributeTypeDefs();
     }
 
 
