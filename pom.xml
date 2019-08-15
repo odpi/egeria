@@ -1971,10 +1971,10 @@
                         <id>createemptydocsource</id>
                         <phase>process-resources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
