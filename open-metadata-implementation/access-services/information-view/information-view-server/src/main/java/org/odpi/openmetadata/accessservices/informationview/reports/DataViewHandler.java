@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.SoftwareServerCapabilitySource;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -16,19 +15,6 @@ import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameU
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,7 +50,6 @@ public class DataViewHandler {
         requestBody.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
         requestBody.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
 
-        try {
             String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getRegistrationQualifiedName(), Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
@@ -97,18 +82,5 @@ public class DataViewHandler {
 //                dataViewUpdater.updateDataView(requestBody, dataViewWrapper.getEntityDetail());
 //            } TODO update not implemented yet
 
-
-        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException  e) {
-            throw new DataViewCreationException(InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getHttpErrorCode(),
-                                               DataViewHandler.class.getName(),
-                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.getDataView().toString(), e.getMessage()),
-                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getUserAction(),
-                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getSystemAction(),
-                                                e,
-                                                requestBody.getDataView().getId());
         }
-
     }
-
-
-}

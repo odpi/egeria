@@ -5,9 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proj
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalGlossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.CanonicalTaxonomy;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
@@ -27,7 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
+        property = "class",
+        defaultImpl = Project.class
+)
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = GlossaryProject.class, name = "GlossaryProject")
