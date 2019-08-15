@@ -66,6 +66,7 @@ public enum DataEngineProxyAuditCode {
      * This will expand out to the 4 parameters shown below.
      *
      * @param messageId    - unique Id for the message
+     * @param severity     - the severity of the message
      * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any

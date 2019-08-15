@@ -30,7 +30,7 @@ public interface DataEngineInterface {
     /**
      * Persist the date and time at which changes were last successfully synchronized.
      *
-     * @param time
+     * @param time the time to record for the last synchronization
      * @throws OCFRuntimeException if there is any problem persisting the date and time
      */
     void setChangesLastSynced(Date time) throws OCFRuntimeException;
