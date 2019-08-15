@@ -372,6 +372,7 @@
                         <exclude>**/resources/**</exclude>
                         <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
+                        <exclude>**/docs/**</exclude>
                         <exclude>**/build/**</exclude>
                         <!--<exclude>**/src/*</exclude>-->
                         <!--<exclude>**/*.json</exclude>-->
