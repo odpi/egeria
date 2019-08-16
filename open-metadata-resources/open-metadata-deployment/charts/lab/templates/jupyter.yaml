@@ -100,6 +100,8 @@ spec:
               value: "http://lab-egeria-lake-service:8080"
             - name: devPlatformURL
               value: "http://lab-egeria-dev-service:8080"
+            - name: eventBusURLroot
+              value: "lab-cp-kafka:9092"
           ports:
             - containerPort: 8888
           readinessProbe:
