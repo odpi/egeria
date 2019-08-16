@@ -6,9 +6,6 @@ service:
   type: NodePort
   externalName: default.svc.cluster.local
   nodeport:
-    egeria_core: 30080
-    egeria_lake: 30081
-    egeria_dev: 30082
     jupyter: 30888
 
 # Defaults for the images (can be overridden here or individually, see comment below)
