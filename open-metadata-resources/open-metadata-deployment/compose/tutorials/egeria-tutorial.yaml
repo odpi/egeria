@@ -60,6 +60,9 @@ services:
             - egeriadl
         networks:
             - egerianet
+        volumes:
+            - ./notebook-start.d:/usr/local/bin/start-notebook.d
+        user: root
 
     egeriacore:
         depends_on:
