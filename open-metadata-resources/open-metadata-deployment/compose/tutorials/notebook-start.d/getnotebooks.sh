@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project
 echo 'Starting to load open metadata labs from github'
 sudo  apt-get -y update && sudo apt-get -y install git
 cd 
