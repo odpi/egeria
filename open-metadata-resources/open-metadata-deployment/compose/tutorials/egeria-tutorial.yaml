@@ -45,6 +45,9 @@ services:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
+            - corePlatformURL=http://egeriacore:8080
+            - dataLakePlatformURL=http://egeriadev:8080
+            - devPlatformURL=http://egeriadl:8080
         command: start.sh jupyter lab --LabApp.token=''
         ports:
             - '18888:8888'
