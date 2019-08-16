@@ -2,18 +2,31 @@
 # Copyright Contributors to the Egeria project.
 
 FROM maven:3.6.0-jdk-8 AS build
-RUN apt-get update && apt-get install git-extras
 ARG branch
 ARG pr
+
 ENV branch ${branch:-master}
-WORKDIR /root/
+
+WORKDIR /opt
+
+# Force Docker layer cache invalidation if there have been changes to the Egeria branch
 ADD https://api.github.com/repos/odpi/egeria/git/refs/heads/$branch version.json
-RUN git clone http://github.com/odpi/egeria.git -b ${branch}
-WORKDIR /root/egeria/
-# Add Pull request if specified (requires git-extras package)
-RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi
-RUN mvn clean install -DskipTests
-RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.remote
+
+RUN set -e; \
+    apt-get update && \
+    apt-get install -y git-extras && \
+    git clone https://github.com/odpi/egeria.git -b ${branch}
+
+WORKDIR /opt/egeria
+
+# Add Pull request if specified (requires git-extras package), build, and then place distributable files
+RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi && \
+    mvn clean install -DskipTests && \
+    git log > git.log && echo ${branch} > git.branch && \
+    git remote -v >> git.remote && \
+    mkdir /opt/egeria/binaries && \
+    mv /opt/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-[1-9]\.[0-9]\-SNAPSHOT\.jar /opt/egeria/binaries/ && \
+    mv /opt/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-[1-9]\.[0-9]\-SNAPSHOT\.jar /opt/egeria/binaries/
 
 FROM openjdk:8-jre-alpine
 
@@ -28,16 +41,15 @@ LABEL org.label-schema.docker.cmd.devel = "docker run -d -p 8080:8080 -p 5005:50
 LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
 LABEL org.label-schema.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
 
-RUN apk --no-cache add bash shadow && apk --no-cache update && apk --no-cache upgrade
+RUN apk --no-cache add bash shadow && \
+    apk --no-cache update && \
+    apk --no-cache upgrade && \
+    groupadd -r egeria -g 8080 && \
+    useradd --no-log-init -r -g egeria -u 8080 -d /opt/egeria egeria
 
-RUN groupadd -r egeria -g 1000 && useradd --no-log-init -r -g egeria -u 1000 -d /opt/egeria egeria
-
-COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /opt/egeria/
-COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /opt/egeria/
-RUN rm /opt/egeria/*javadoc*jar /opt/egeria/*sources*jar
-RUN mv /opt/egeria/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
-RUN mv /opt/egeria/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
-COPY --from=build --chown=egeria:egeria /root/egeria/git.* /opt/egeria/details/
+COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
+COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
+COPY --from=build --chown=egeria:egeria /opt/egeria/git.* /opt/egeria/details/
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
