@@ -502,12 +502,15 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "attachmentGUID";
         final String attribute3Description     = "Unique identifier of the attached entity.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "attachmentOwner";
-        final String attribute4Description     = "User identifier of the person/engine/process that created the attachment.";
+        final String attribute4Name            = "attachmentType";
+        final String attribute4Description     = "Type name of the attached entity.";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "description";
-        final String attribute5Description     = "Description of the attachment.";
+        final String attribute5Name            = "attachmentOwner";
+        final String attribute5Description     = "User identifier of the person/engine/process that created the attachment.";
         final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "description";
+        final String attribute6Description     = "Description of the attachment.";
+        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -528,6 +531,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
