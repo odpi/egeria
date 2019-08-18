@@ -18,12 +18,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.CollectionUtils;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.*;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildAddEntityRelationship;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildAddRelationshipException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildDeleteRelationshipException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildEntityNotFoundException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildIllegalUpdateEntityException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildRetrieveEntityException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildRetrieveRelationshipException;
+import static org.odpi.openmetadata.accessservices.informationview.ffdc.ExceptionHandler.buildUpdateEntityException;
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.PAGE_SIZE;
 
 public class OMEntityDao {
@@ -371,6 +384,9 @@ public class OMEntityDao {
             }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.debug("Updating entity with qualified name {} ", qualifiedName);
+                if(!externalSourceGuid.equals(entityDetail.getMetadataCollectionId())){
+                    throw buildIllegalUpdateEntityException(null, this.getClass().getName());
+                }
                 entityDetail = updateEntity(entityDetail, userId, properties,  zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
