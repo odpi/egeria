@@ -105,5 +105,21 @@ services:
         networks:
             - egerianet
 
+    egeriaui:
+        depends_on:
+            - egeriacore
+        image: 'odpi/egeria:latest'
+        command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
+        environment:
+            - OMAS_SERVER_URL=http://egeriacore:8080
+            - OMAS_SERVER_NAME=cocoMDS1
+        ports:
+            - '18443:8443'
+        links:
+            - egeriacore
+        networks:
+            egerianet:
+                aliases:
+                    - ui
 networks:
     egerianet:
