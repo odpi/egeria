@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -28,9 +30,22 @@ public class OpenLineageController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/export")
     public Map<String, Object> exportGraph(String userId, @RequestParam Graphs graph){
-        Map<String, Object> exportedGraph = openLineageService.exportGraph(userId, graph);
+        Map<String, Object> exportedGraph = null;
+        try {
+            exportedGraph = openLineageService.exportGraph(userId, graph);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
         return exportedGraph;
     }
 
+    //TODO use global exception handler
+    private void handleException(Exception e){
+        if(e instanceof InvalidParameterException){
+            throw new IllegalArgumentException(e.getMessage());
+        }
+        throw new RuntimeException("Unknown exception! " + e.getMessage());
+    }
 
 }

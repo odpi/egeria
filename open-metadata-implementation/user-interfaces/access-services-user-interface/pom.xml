@@ -245,30 +245,6 @@
             <artifactId>open-lineage-services-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-core</artifactId>
-            <scope>compile</scope>
-            <version>${gremlin.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-core</artifactId>
-            <scope>compile</scope>
-            <version>${janus.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-shaded</artifactId>
-            <version>${gremlin.version}</version>
-        </dependency>
 
     </dependencies>
 
