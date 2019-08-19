@@ -3,12 +3,14 @@
 package org.odpi.openmetadata.governanceservers.openlineage.mockdata;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mockGraph;
@@ -39,14 +41,14 @@ public class MockGraphGenerator {
     /**
      * The parameters for the graph that is to be generated are hardcoded for now.
      * A "flow" constitutes of a path between columns of different tables, connected together by process nodes.
-     * I.E. columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3.
+     * I.E. {@code columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3}.
      * The length of this path is specified by the number of proccesses within the flow.
      */
     private void setProperties() {
         this.numberGlossaryTerms = 20;
-        this.numberFlows = 3;
-        this.processesPerFlow = 4;
-        this.columnsPerTable = 4;
+        this.numberFlows = 1;
+        this.processesPerFlow = 2;
+        this.columnsPerTable = 2;
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;
@@ -66,9 +68,11 @@ public class MockGraphGenerator {
      * Generate the graph based on the parameters specified in setProperties().
      */
     private void generateVerbose() {
-        List<Vertex> columnNodes;
+        List<Vertex> columnNodesPerTable;
         List<Vertex> glossaryNodes = new ArrayList<>();
-        List<List<Vertex>> tableNodes = new ArrayList<>();
+        List<Vertex> hostNodes = new ArrayList<>();
+        List<Vertex> tableNodes = new ArrayList<>();
+        List<List<Vertex>> columnNodes = new ArrayList<>();
 
         GraphTraversalSource g = mockGraph.traversal();
 
@@ -87,27 +91,35 @@ public class MockGraphGenerator {
             processNodes.add(processVertex);
         }
 
-        //Create all Table nodes.
+        //Create all Table nodes and a Host node for each table.
         for (int j = 0; j < numberTables; j++) {
             Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
             tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
-            columnNodes = new ArrayList<>();
+            tableNodes.add(tableVertex);
+
+            Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
+            hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
+
+            addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex, hostVertex);
+
+            hostNodes.add(hostVertex);
 
             //Create all Column nodes.
+            columnNodesPerTable = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
                 columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
-                columnVertex.addEdge(EDGE_LABEL_COLUMN_TO_TABLE, tableVertex);
+                addEdge(EDGE_LABEL_INCLUDED_IN, columnVertex, tableVertex);
 
                 //Randomly connect Column nodes with Glossary Term nodes.
                 if (numberGlossaryTerms != 0) {
                     int randomNum = ThreadLocalRandom.current().nextInt(0, numberGlossaryTerms);
                     Vertex glossaryNode = glossaryNodes.get(randomNum);
-                    columnVertex.addEdge(EDGE_LABEL_ENTITY_TO_GLOSSARYTERM, glossaryNode);
+                    addEdge(EDGE_LABEL_SEMANTIC, columnVertex, glossaryNode);
                 }
-                columnNodes.add(columnVertex);
+                columnNodesPerTable.add(columnVertex);
             }
-            tableNodes.add(columnNodes);
+            columnNodes.add(columnNodesPerTable);
         }
 
         //Create the lineage flows by connecting columns to processes and connecting processes to the columns of the next table.
@@ -118,22 +130,42 @@ public class MockGraphGenerator {
             //For each table in a flow
             for (int tableIndex = 0; tableIndex < tablesPerFlow - 1; tableIndex++) {
 
-                final List<Vertex> table1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex);
-                final List<Vertex> table2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
                 final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
+
+                final Vertex host1 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex);
+                final Vertex host2 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
+
+                final Vertex table1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex);
+                final Vertex table2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
+
+                final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex);
+                final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
+
+                addEdge(EDGE_LABEL_HOST_AND_PROCESS, host1, process);
+                addEdge(EDGE_LABEL_HOST_AND_PROCESS, process, host2);
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
+
+
 
                 //For each column in a table
                 for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
 
-                    final Vertex column1 = table1.get(columnIndex);
-                    final Vertex column2 = table2.get(columnIndex);
+                    final Vertex column1 = columnsOfTable1.get(columnIndex);
+                    final Vertex column2 = columnsOfTable2.get(columnIndex);
 
-                    column1.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process);
-                    process.addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column2);
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column1, process);
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process, column2);
                 }
             }
         }
         g.tx().commit();
+    }
+
+    private void addEdge(String edgeLabel, Vertex fromVertex, Vertex toVertex) {
+        Edge edge = fromVertex.addEdge(edgeLabel, toVertex);
+        String uuid = UUID.randomUUID().toString();
+        edge.property(PROPERTY_KEY_ENTITY_GUID, uuid);
     }
 
 }

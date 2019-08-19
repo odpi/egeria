@@ -85,6 +85,7 @@ POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb/.
 ```console
 POST localhost:8080/servers/myservera/open-metadata/access-services/subject-area/users/david/glossaries
 {
+"class":"Taxonomy",
 "name":"Glossary2",
 "description":"test glossary 1 ",
 "usage":"usage A",

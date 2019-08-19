@@ -8,13 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoriesResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.GlossaryResponse;
 
-
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -29,7 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
-        property = "class")
+        property = "class",
+        defaultImpl = Glossary.class
+)
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = Taxonomy.class, name = "Taxonomy"),

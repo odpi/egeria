@@ -45,6 +45,10 @@ services:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
+            - corePlatformURL=http://egeriacore:8080
+            - dataLakePlatformURL=http://egeriadev:8080
+            - devPlatformURL=http://egeriadl:8080
+            - eventBusURLroot=kafka:9092
         command: start.sh jupyter lab --LabApp.token=''
         ports:
             - '18888:8888'
@@ -60,6 +64,9 @@ services:
             - egeriadl
         networks:
             - egerianet
+        volumes:
+            - ./notebook-start.d:/usr/local/bin/start-notebook.d
+        user: root
 
     egeriacore:
         depends_on:
@@ -98,5 +105,21 @@ services:
         networks:
             - egerianet
 
+    egeriaui:
+        depends_on:
+            - egeriacore
+        image: 'odpi/egeria:latest'
+        command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
+        environment:
+            - OMAS_SERVER_URL=http://egeriacore:8080
+            - OMAS_SERVER_NAME=cocoMDS1
+        ports:
+            - '18443:8443'
+        links:
+            - egeriacore
+        networks:
+            egerianet:
+                aliases:
+                    - ui
 networks:
     egerianet:
