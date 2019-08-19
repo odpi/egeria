@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +23,7 @@ public class RepositoryHandler
 {
     private RepositoryErrorHandler errorHandler;
     private OMRSMetadataCollection metadataCollection;
+    private int                    maxPageSize;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -33,12 +33,15 @@ public class RepositoryHandler
      *
      * @param errorHandler  generates error messages and exceptions
      * @param metadataCollection  access to the repository content.
+     * @param maxPageSize maximum number of instances that can be returned on a single call
      */
     public RepositoryHandler(RepositoryErrorHandler  errorHandler,
-                             OMRSMetadataCollection  metadataCollection)
+                             OMRSMetadataCollection  metadataCollection,
+                             int                     maxPageSize)
     {
-       this.errorHandler = errorHandler;
-       this.metadataCollection = metadataCollection;
+        this.errorHandler = errorHandler;
+        this.metadataCollection = metadataCollection;
+        this.maxPageSize = maxPageSize;
     }
 
 
@@ -806,6 +809,162 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName);
         }
 
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param attachedEntityTypeGUID  identifier for the relationship to follow
+     * @param attachedEntityTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntityDetail getAttachedEntityFromUser(String  userId,
+                                                  String  anchorEntityGUID,
+                                                  String  anchorEntityTypeName,
+                                                  String  relationshipTypeGUID,
+                                                  String  relationshipTypeName,
+                                                  String  attachedEntityTypeGUID,// todo error message
+                                                  String  attachedEntityTypeName,// todo error message
+                                                  String  methodName) throws UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        try
+        {
+            // todo this method needs to loop to ensure the maximum number of elements can be returned
+
+            List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
+                                                                              anchorEntityGUID,
+                                                                              anchorEntityTypeName,
+                                                                              relationshipTypeGUID,
+                                                                              relationshipTypeName,
+                                                                              0,
+                                                                              maxPageSize,
+                                                                              methodName);
+
+            if (entities != null)
+            {
+                for (EntityDetail entity : entities)
+                {
+                    if (entity != null)
+                    {
+                        if ((userId.equals(entity.getCreatedBy()) ||
+                                     (userId.equals(entity.getUpdatedBy())) ||
+                                     ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                        {
+                            return entity;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No entities of type " + attachedEntityTypeName +
+                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param attachedEntityTypeGUID  identifier for the relationship to follow
+     * @param attachedEntityTypeName  type name for the relationship to follow
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getAttachedEntitiesFromUser(String  userId,
+                                                          String  anchorEntityGUID,
+                                                          String  anchorEntityTypeName,
+                                                          String  relationshipTypeGUID,
+                                                          String  relationshipTypeName,
+                                                          String  attachedEntityTypeGUID,// todo error message
+                                                          String  attachedEntityTypeName,// todo error message
+                                                          int     startingFrom,
+                                                          int     pageSize,
+                                                          String  methodName) throws UserNotAuthorizedException,
+                                                                                                     PropertyServerException
+    {
+        List<EntityDetail> results = new ArrayList<>();
+
+        // todo this method needs to loop to ensure the maximum number of elements can be returned
+
+        try
+        {
+            List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
+                                                                              anchorEntityGUID,
+                                                                              anchorEntityTypeName,
+                                                                              relationshipTypeGUID,
+                                                                              relationshipTypeName,
+                                                                              startingFrom,
+                                                                              pageSize,
+                                                                              methodName);
+
+            if (entities != null)
+            {
+                for (EntityDetail entity : entities)
+                {
+                    if (entity != null)
+                    {
+                        if ((userId.equals(entity.getCreatedBy()) ||
+                            (userId.equals(entity.getUpdatedBy())) ||
+                            ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                        {
+                            results.add(entity);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No entities of type " + attachedEntityTypeName +
+                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        // todo this method needs to loop to ensure the maximum number of elements can be returned
         if (results.isEmpty())
         {
             return null;

@@ -70,7 +70,9 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
 
             this.instance = new AssetConsumerServicesInstance(repositoryConnector,
                                                               supportedZones,
-                                                              auditLog);
+                                                              auditLog,
+                                                              serverUserName,
+                                                              repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             /*

@@ -30,16 +30,22 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that the community profile is allowed to serve Assets from.
      * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                             List<String>            supportedZones,
-                                            OMRSAuditLog            auditLog) throws NewInstanceException
+                                            OMRSAuditLog            auditLog,
+                                            String                  localServerUserId,
+                                            int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

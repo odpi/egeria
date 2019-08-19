@@ -454,7 +454,6 @@ public class OCFMetadataRESTServices
                                                                        instanceHandler.getSupportedZones(userId, serverName, serviceURLName, methodName),
                                                                        assetGUID,
                                                                        anchorGUID,
-                                                                       instanceHandler.getServiceName(serviceURLName),
                                                                        elementStart,
                                                                        maxElements,
                                                                        methodName);

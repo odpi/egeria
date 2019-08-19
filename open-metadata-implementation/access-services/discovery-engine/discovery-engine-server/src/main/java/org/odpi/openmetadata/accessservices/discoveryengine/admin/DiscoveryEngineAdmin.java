@@ -76,7 +76,9 @@ public class DiscoveryEngineAdmin extends AccessServiceAdmin
             this.instance = new DiscoveryEngineServicesInstance(repositoryConnector,
                                                                 supportedZones,
                                                                 defaultZones,
-                                                                auditLog);
+                                                                auditLog,
+                                                                serverUserName,
+                                                                repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
 

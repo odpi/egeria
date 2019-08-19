@@ -273,7 +273,7 @@ public class AssetConsumerRESTServices
                 isPublic = requestBody.isPublic();
             }
 
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addRatingToAsset(userId, guid, starRating, review, isPublic, methodName);
@@ -329,7 +329,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeRatingFromAsset(userId, guid, methodName);
@@ -392,7 +392,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addLikeToAsset(userId, guid, isPublic, methodName);
@@ -448,7 +448,7 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLikeFromAsset(userId, guid, methodName);
@@ -515,7 +515,7 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.addCommentToAsset(userId, guid, commentType, commentText, isPublic, methodName));
@@ -584,10 +584,10 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setGUID(handler.addCommentReply(userId, commentGUID, commentType, commentText, isPublic, methodName));
+            response.setGUID(handler.addCommentReply(userId, assetGUID, commentGUID, commentType, commentText, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
         {
@@ -652,10 +652,10 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.updateComment(userId, commentGUID, commentType, commentText, isPublic, methodName);
+            handler.updateAssetComment(userId, assetGUID, commentGUID, commentType, commentText, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
         {
@@ -701,7 +701,7 @@ public class AssetConsumerRESTServices
                                                String          commentGUID,
                                                NullRequestBody requestBody)
     {
-        final String        methodName = "removeComment";
+        final String        methodName = "removeAssetComment";
 
         log.debug("Calling method: " + methodName);
 
@@ -710,10 +710,10 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            handler.removeComment(userId, commentGUID, methodName);
+            handler.removeAssetComment(userId, assetGUID, commentGUID, methodName);
         }
         catch (InvalidParameterException  error)
         {

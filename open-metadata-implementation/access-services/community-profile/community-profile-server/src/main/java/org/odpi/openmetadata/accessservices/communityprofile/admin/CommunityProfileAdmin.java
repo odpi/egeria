@@ -66,7 +66,9 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                  this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                                                                                             accessServiceConfig.getAccessServiceName(),
                                                                                             auditLog),
-                                                                 auditLog);
+                                                                 auditLog,
+                                                                 serverUserName,
+                                                                 repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
             this.accessServiceConfig = accessServiceConfigurationProperties;
