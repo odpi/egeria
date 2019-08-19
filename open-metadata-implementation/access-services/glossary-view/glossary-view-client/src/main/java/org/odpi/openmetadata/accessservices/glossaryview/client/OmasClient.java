@@ -18,6 +18,11 @@ class OmasClient extends FFDCRESTClient {
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private GlossaryViewClientExceptionHandler exceptionHandler = new GlossaryViewClientExceptionHandler();
 
+    protected OmasClient(String serverName, String serverPlatformRootURL) throws
+            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException{
+        super(serverName, serverPlatformRootURL);
+    }
+
     protected OmasClient(String serverName, String serverPlatformRootURL, String userId, String password) throws
             org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException{
         super(serverName, serverPlatformRootURL, userId, password);
@@ -36,7 +41,7 @@ class OmasClient extends FFDCRESTClient {
         GlossaryViewEntityDetailResponse response = callGetRESTCall(methodName, GlossaryViewEntityDetailResponse.class,
                 serverPlatformURLRoot + path, serverName, userId, entityGUID);
 
-        exceptionHandler.detectAndThrowOMRSException(methodName, response);
+        exceptionHandler.detectAndThrowGlossaryViewOmasException(methodName, response);
 
         return response;
     }
@@ -54,7 +59,7 @@ class OmasClient extends FFDCRESTClient {
         GlossaryViewEntityDetailResponse response = callGetRESTCall(methodName, GlossaryViewEntityDetailResponse.class,
                 serverPlatformURLRoot + path, serverName, userId, entityGUID, from, size);
 
-        exceptionHandler.detectAndThrowOMRSException(methodName, response);
+        exceptionHandler.detectAndThrowGlossaryViewOmasException(methodName, response);
 
         return response;
     }
@@ -71,7 +76,7 @@ class OmasClient extends FFDCRESTClient {
         GlossaryViewEntityDetailResponse response = callGetRESTCall(methodName, GlossaryViewEntityDetailResponse.class,
                 serverPlatformURLRoot + path, serverName, userId, from, size);
 
-        exceptionHandler.detectAndThrowOMRSException(methodName, response);
+        exceptionHandler.detectAndThrowGlossaryViewOmasException(methodName, response);
 
         return response;
     }

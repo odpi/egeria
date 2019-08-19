@@ -6,36 +6,21 @@ import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewO
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 
-import java.util.Map;
-
 public class GlossaryViewClientExceptionHandler extends RESTExceptionHandler {
 
     /**
      * Throw an InvalidParameterException if it is encoded in the REST response.
      *
      * @param methodName  name of the method called
-     * @param restResult  response from the rest call.  This generated in the remote server.
+     * @param restResult  response from the rest call
      *
      * @throws GlossaryViewOmasException encoded exception from the server
      */
-    public void detectAndThrowOMRSException(String methodName, GlossaryViewEntityDetailResponse restResult) throws GlossaryViewOmasException {
-        final String   exceptionClassName = GlossaryViewOmasException.class.getName();
+    public void detectAndThrowGlossaryViewOmasException(String methodName, GlossaryViewEntityDetailResponse restResult) throws GlossaryViewOmasException {
+        final String exceptionClassName = GlossaryViewOmasException.class.getName();
 
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
-            String parameterName = null;
-
-            Map<String, Object> exceptionProperties = restResult.getExceptionProperties();
-
-            if (exceptionProperties != null)
-            {
-                Object  nameObject = exceptionProperties.get("parameterName");
-
-                if (nameObject != null)
-                {
-                    parameterName = (String)nameObject;
-                }
-            }
             throw new GlossaryViewOmasException(restResult.getRelatedHTTPCode(), this.getClass().getName(), restResult.getActionDescription(),
                     restResult.getExceptionErrorMessage(), restResult.getExceptionSystemAction(), restResult.getExceptionUserAction() );
         }
