@@ -56,9 +56,6 @@ public class GraphServices {
 
         Graph graph = getJanusGraph(graphName);
         switch (Queries.valueOf(lineageQuery)) {
-            case ENDTOEND:
-                //         response = endToEnd(scope, graph, guid);
-                break;
             case ULTIMATESOURCE:
                 response = ultimateSource(scope, graph, guid);
                 break;
@@ -73,24 +70,6 @@ public class GraphServices {
         }
         return response;
     }
-
-//    private String endToEnd(String scope, Graph graph, String guid) {
-//        GraphTraversalSource g = graph.traversal();
-//        String edgeLabel = getEdgeLabel(scope);
-//
-//        Graph endToEndGraph = (Graph)
-//                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).union(
-//                        __.until((inE(edgeLabel).count().is(0)).
-//                                repeat(inE(edgeLabel).subgraph("subGraph").outV()).
-//                                cap("subGraph"),
-//                        __.until(outE(edgeLabel).count().is(0)).
-//                                repeat(outE(edgeLabel).subgraph("subGraph").inV()).
-//                                cap("subGraph")
-//                ).next();
-//
-//
-//        return janusGraphToGraphson(endToEndGraph);
-//    }
 
     /**
      * Map http parameter to enum value by converting to uppercase and removing - characters.
