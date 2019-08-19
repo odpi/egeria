@@ -25,14 +25,14 @@ public class TeamLeaderConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    TeamLeaderConverter(EntityDetail         entity,
-                        Relationship         relationship,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               componentName)
+    public TeamLeaderConverter(EntityDetail         entity,
+                               Relationship         relationship,
+                               OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName)
     {
-        super(entity, relationship, repositoryHelper, componentName);
+        super(entity, relationship, repositoryHelper, serviceName);
     }
 
 
@@ -62,6 +62,7 @@ public class TeamLeaderConverter extends CommonHeaderConverter
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, TeamLeaderMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setName(repositoryHelper.removeStringProperty(serviceName, TeamLeaderMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setDescription(repositoryHelper.removeStringProperty(serviceName, TeamLeaderMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
+                bean.setScope(repositoryHelper.removeStringProperty(serviceName, TeamLeaderMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, TeamLeaderMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
             }

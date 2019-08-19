@@ -19,9 +19,39 @@ public class OCFMetadataOperationalServices
     private String       serverName;
     private OMRSAuditLog auditLog;
 
+
+    /**
+     * Constructor
+     *
+     * @param serverName this server
+     * @param repositoryConnector connector to repository
+     * @param auditLog logging destination
+     * @throws NewInstanceException unable to initialize
+     */
+    @Deprecated
     public OCFMetadataOperationalServices(String                   serverName,
                                           OMRSRepositoryConnector  repositoryConnector,
                                           OMRSAuditLog             auditLog) throws NewInstanceException
+    {
+        this(serverName, repositoryConnector, auditLog, null, 500);
+    }
+
+
+    /**
+     * Constructor
+     *
+     * @param serverName this server
+     * @param repositoryConnector connector to repository
+     * @param auditLog logging destination
+     * @param localServerUserId userId for server initiated requests
+     * @param maxPageSize max number of results to return on single request.
+     * @throws NewInstanceException unable to initialize
+     */
+    public OCFMetadataOperationalServices(String                   serverName,
+                                          OMRSRepositoryConnector  repositoryConnector,
+                                          OMRSAuditLog             auditLog,
+                                          String                   localServerUserId,
+                                          int                      maxPageSize) throws NewInstanceException
     {
         this.serverName = serverName;
         this.auditLog = auditLog;
@@ -49,7 +79,7 @@ public class OCFMetadataOperationalServices
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            new OCFMetadataServicesInstance(repositoryConnector, auditLog);
+            new OCFMetadataServicesInstance(repositoryConnector, auditLog, localServerUserId, maxPageSize);
         }
         catch (Throwable error)
         {

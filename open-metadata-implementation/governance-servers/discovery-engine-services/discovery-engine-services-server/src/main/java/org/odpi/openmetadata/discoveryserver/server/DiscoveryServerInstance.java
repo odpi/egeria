@@ -25,6 +25,8 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
      * @param serverName name of this server
      * @param serviceName name of this service
      * @param auditLog link to the repository responsible for servicing the REST calls.
+     * @param localServerUserId userId to use for local server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      * @param accessServiceRootURL URL root for server platform where the access service is running.
      * @param accessServiceServerName name of the server where the access service is running.
      * @param discoveryEngineInstances active discovery engines in this server.
@@ -32,11 +34,13 @@ public class DiscoveryServerInstance extends GovernanceServerServiceInstance
     public DiscoveryServerInstance(String                              serverName,
                                    String                              serviceName,
                                    OMRSAuditLog                        auditLog,
+                                   String                              localServerUserId,
+                                   int                                 maxPageSize,
                                    String                              accessServiceRootURL,
                                    String                              accessServiceServerName,
                                    Map<String, DiscoveryEngineHandler> discoveryEngineInstances)
     {
-        super(serverName, serviceName, auditLog, accessServiceRootURL, accessServiceServerName);
+        super(serverName, serviceName, auditLog, localServerUserId, maxPageSize, accessServiceRootURL, accessServiceServerName);
 
         this.discoveryEngineInstances = discoveryEngineInstances;
     }

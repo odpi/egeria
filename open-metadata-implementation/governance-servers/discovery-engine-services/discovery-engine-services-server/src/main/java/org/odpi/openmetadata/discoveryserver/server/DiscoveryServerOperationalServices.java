@@ -273,6 +273,8 @@ public class DiscoveryServerOperationalServices
             discoveryServerInstance = new DiscoveryServerInstance(localServerName,
                                                                   GovernanceServicesDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
                                                                   auditLog,
+                                                                  localServerUserId,
+                                                                  maxPageSize,
                                                                   discoveryServerConfig.getAccessServiceRootURL(),
                                                                   discoveryServerConfig.getAccessServiceServerName(),
                                                                   discoveryEngineHandlers);

@@ -22,7 +22,6 @@ public class PersonalProfileConverter extends CommonHeaderConverter
 {
     private static final Logger log = LoggerFactory.getLogger(PersonalProfileConverter.class);
 
-    private EntityDetail         contributionEntity;
     private List<UserIdentity>   associatedUserIds;
     private List<ContactMethod>  contactDetails;
 
@@ -30,22 +29,19 @@ public class PersonalProfileConverter extends CommonHeaderConverter
      * Constructor captures the initial content
      *
      * @param personEntity properties to convert
-     * @param contributionEntity properties to convert
      * @param associatedUserIds userIds to be linked to the profile
      * @param contactDetails contact methods for the profile
      * @param repositoryHelper helper object to parse entities
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    PersonalProfileConverter(EntityDetail         personEntity,
-                             EntityDetail         contributionEntity,
-                             List<UserIdentity>   associatedUserIds,
-                             List<ContactMethod>  contactDetails,
-                             OMRSRepositoryHelper repositoryHelper,
-                             String               componentName)
+    public PersonalProfileConverter(EntityDetail         personEntity,
+                                    List<UserIdentity>   associatedUserIds,
+                                    List<ContactMethod>  contactDetails,
+                                    OMRSRepositoryHelper repositoryHelper,
+                                    String               serviceName)
     {
-        super(personEntity, repositoryHelper, componentName);
+        super(personEntity, repositoryHelper, serviceName);
 
-        this.contributionEntity = contributionEntity;
         this.associatedUserIds = associatedUserIds;
         this.contactDetails = contactDetails;
     }
@@ -82,16 +78,6 @@ public class PersonalProfileConverter extends CommonHeaderConverter
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
                 bean.setClassifications(super.getClassificationsFromEntity());
-            }
-        }
-
-        if (contributionEntity != null)
-        {
-            InstanceProperties instanceProperties = contributionEntity.getProperties();
-
-            if (instanceProperties != null)
-            {
-                bean.setKarmaPoints(repositoryHelper.getIntProperty(serviceName, PersonalProfileMapper.KARMA_POINTS_PROPERTY_NAME, instanceProperties, methodName));
             }
         }
 

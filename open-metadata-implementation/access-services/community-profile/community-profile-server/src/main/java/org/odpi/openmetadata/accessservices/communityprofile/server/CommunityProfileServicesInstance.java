@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.handlers.MyProfileHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -20,7 +21,8 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private MyProfileHandler myProfileHandler;
+    private PersonalProfileHandler personalProfileHandler;
+    private UserIdentityHandler    userIdentityHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -28,16 +30,22 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that the community profile is allowed to serve Assets from.
      * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                            List<String> supportedZones,
-                                            OMRSAuditLog auditLog) throws NewInstanceException
+                                            List<String>            supportedZones,
+                                            OMRSAuditLog            auditLog,
+                                            String                  localServerUserId,
+                                            int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 
@@ -45,12 +53,18 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
 
         if (repositoryHandler != null)
         {
-            this.myProfileHandler = new MyProfileHandler(serviceName,
-                                                         serverName,
-                                                         invalidParameterHandler,
-                                                         repositoryHelper,
-                                                         repositoryHandler,
-                                                         errorHandler);
+            this.personalProfileHandler = new PersonalProfileHandler(serviceName,
+                                                                     serverName,
+                                                                     invalidParameterHandler,
+                                                                     repositoryHelper,
+                                                                     repositoryHandler,
+                                                                     errorHandler);
+
+            this.userIdentityHandler = new UserIdentityHandler(serviceName,
+                                                               invalidParameterHandler,
+                                                               repositoryHelper,
+                                                               repositoryHandler,
+                                                               errorHandler);
         }
         else
         {
@@ -68,14 +82,24 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
     }
 
 
-
     /**
-     * Return the handler for my profile requests.
+     * Return the handler for personal profile requests.
      *
      * @return handler object
      */
-    MyProfileHandler getMyProfileHandler()
+    PersonalProfileHandler getPersonalProfileHandler()
     {
-        return myProfileHandler;
+        return personalProfileHandler;
+    }
+
+
+    /**
+     * Return the handler for user identity requests.
+     *
+     * @return handler object
+     */
+    UserIdentityHandler getUserIdentityHandler()
+    {
+        return userIdentityHandler;
     }
 }

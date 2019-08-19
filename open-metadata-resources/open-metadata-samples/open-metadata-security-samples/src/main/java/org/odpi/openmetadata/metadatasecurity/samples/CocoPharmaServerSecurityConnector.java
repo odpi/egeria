@@ -74,6 +74,9 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String governanceZoneName      = "governance";
         final String trashCanZoneName        = "trash-can";
 
+        /*
+         * Coco Pharmaceuticals personnel
+         */
         final String zachNowUserId        = "zach";
         final String steveStarterUserId   = "steves";
         final String terriDaringUserId    = "terri";
@@ -102,8 +105,18 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         final String julesKeeperUserId    = "jukeskeeper";
         final String stewFasterUserId     = "stewFaster";
 
+        /*
+         * System (NPA) accounts
+         */
         final String archiverUserId    = "archiver01";
         final String etlEngineUserId   = "dlETL";
+        final String cocoMDS1UserId    = "cocoMDS1npa";
+        final String cocoMDS2UserId    = "cocoMDS2npa";
+        final String cocoMDS3UserId    = "cocoMDS3npa";
+        final String cocoMDS4UserId    = "cocoMDS4npa";
+        final String cocoMDS5UserId    = "cocoMDS5npa";
+        final String cocoMDS6UserId    = "cocoMDS6npa";
+        final String cocoMDSxUserId    = "cocoMDSxnpa";
 
         /*
          * Set up default zone membership
@@ -142,6 +155,13 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         allUsers.add(stewFasterUserId);
         allUsers.add(archiverUserId);
         allUsers.add(etlEngineUserId);
+        allUsers.add(cocoMDS1UserId);
+        allUsers.add(cocoMDS2UserId);
+        allUsers.add(cocoMDS3UserId);
+        allUsers.add(cocoMDS4UserId);
+        allUsers.add(cocoMDS5UserId);
+        allUsers.add(cocoMDS6UserId);
+        allUsers.add(cocoMDSxUserId);
 
         allEmployees.add(zachNowUserId);
         allEmployees.add(steveStarterUserId);
@@ -178,6 +198,13 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
 
         npaAccounts.add(archiverUserId);
         npaAccounts.add(etlEngineUserId);
+        npaAccounts.add(cocoMDS1UserId);
+        npaAccounts.add(cocoMDS2UserId);
+        npaAccounts.add(cocoMDS3UserId);
+        npaAccounts.add(cocoMDS4UserId);
+        npaAccounts.add(cocoMDS5UserId);
+        npaAccounts.add(cocoMDS6UserId);
+        npaAccounts.add(cocoMDSxUserId);
 
         List<String> zoneSetUp = new ArrayList<>();
 
@@ -420,8 +447,9 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     }
 
 
+
     /**
-     * Tests for whether a specific user should have access to an assets based on its zones.
+     * Tests for whether a specific user should have access to an asset based on its zones.
      *
      * @param userId identifier of user
      * @param assetZones name of the zones
@@ -930,6 +958,36 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
             if (userHasAccessToAssetZones(userId,
                                           asset.getZoneMembership(),
                                           true,
+                                          false,
+                                          this.isUserAssetOwner(userId, asset)))
+            {
+                return;
+            }
+        }
+
+        /*
+         * Any other conditions, use superclass to throw user not authorized exception
+         */
+        super.validateUserForAssetAttachmentUpdate(userId, asset);
+    }
+
+
+    /**
+     * Tests for whether a specific user should have the right to attach feedback - such as comments,
+     * ratings, tags and likes, to the asset.
+     *
+     * @param userId identifier of user
+     * @param asset original asset details
+     * @throws UserNotAuthorizedException the user is not authorized to change this asset
+     */
+    public void  validateUserForAssetFeedback(String     userId,
+                                              Asset      asset) throws UserNotAuthorizedException
+    {
+        if (asset != null)
+        {
+            if (userHasAccessToAssetZones(userId,
+                                          asset.getZoneMembership(),
+                                          false,
                                           false,
                                           this.isUserAssetOwner(userId, asset)))
             {
