@@ -33,7 +33,6 @@ class VisGraph extends PolymerElement {
               width: 100%; height: 100%;">
               <canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; 
                       -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
-                      
                        width="600" height="400"></canvas>
           </div>
         </div>
@@ -50,9 +49,34 @@ class VisGraph extends PolymerElement {
         type: Object,
         observer: '_optionsChanged',
         value: {
-          autoResize: true,
-          height: '100%',
-          width: '100%'
+          // autoResize: true,
+          // height: '100%',
+          // width: '100%',
+          nodes: {
+            fixed: false
+          },
+          edges: {
+            width: 0.15,
+            smooth: {
+              type: 'continuous'
+            }
+          },
+          layout: {    improvedLayout: false  },
+          interaction: {
+            tooltipDelay: 200,
+            hideEdgesOnDrag: true
+          },
+          physics: {
+            stabilization: false
+            // barnesHut: {
+            //   gravitationalConstant: -10000,
+            //   springConstant: 0.002,
+            //   springLength: 150
+            // }
+          },
+          groups: {
+
+          }
         }
       },
       dotcontent: {
@@ -68,6 +92,10 @@ class VisGraph extends PolymerElement {
         type: String,
         value: '100%',
         observer: '_heightChanged'
+      },
+      data: {
+        nodes: {type: vis.DataSet},
+        edges: {type: vis.DataSet}
       }
     };
   }
@@ -78,12 +106,20 @@ class VisGraph extends PolymerElement {
   }
 
   setData(data) {
+    console.log('data: ' + data);
+    console.log('this: ' + this);
+    this.data.nodes = data.nodes;
+    this.data.edges = data.edges;
+
+
     var container = this.$.vis_container;
     this.network = new vis.Network(container, data, this.options);
     var thisElement = this;
     this.network.on('selectNode', function(params) {
       thisElement.handleSelectNode(params);
     });
+    this.network.fit();
+    //this.network.stabilize();
   }
 
   networkChanged(newNetwork) {
@@ -116,12 +152,13 @@ class VisGraph extends PolymerElement {
     this.setData(data);
   }
 
-  setOptions(options) {
+  setOptions(value) {
     if (this.network === undefined) {
       console.log('network is undefined');
       return false;
     }
-    this.network.setOptions = value;
+    this.options = value;
+    this.network.setOptions = this.options;
   }
 
   handleSelectNode(params) {

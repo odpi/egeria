@@ -70,7 +70,7 @@
                     <execution>
                         <phase>generate-sources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <unzip src="${project.build.directory}/GAIANDB_V2.1.8_20160523.zip"
                                        dest="${project.build.directory}">
                                     <patternset>
@@ -78,7 +78,7 @@
                                         <include name="**/derby.jar"/>
                                     </patternset>
                                 </unzip>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>
