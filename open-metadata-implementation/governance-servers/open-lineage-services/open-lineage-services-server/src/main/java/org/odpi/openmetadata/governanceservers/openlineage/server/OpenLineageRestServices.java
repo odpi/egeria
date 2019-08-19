@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 public class OpenLineageRestServices {
 
-
     private static final Logger log = LoggerFactory.getLogger(OpenLineageRestServices.class);
     private final OpenLineageInstanceHandler instanceHandler = new OpenLineageInstanceHandler();
 
@@ -45,11 +44,11 @@ public class OpenLineageRestServices {
     }
 
 
-    public String initialGraph(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
+    public String queryLineage(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
             GraphServices graphServices = instanceHandler.queryHandler(serverName);
-            response = graphServices.initialGraph(scope, lineageQuery, graph, guid);
+            response = graphServices.queryLineage(scope, lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }

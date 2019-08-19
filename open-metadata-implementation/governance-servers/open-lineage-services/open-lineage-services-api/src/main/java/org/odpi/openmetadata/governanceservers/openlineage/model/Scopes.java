@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 public enum Scopes {
-    HOSTVIEW,
     TABLEVIEW,
     COLUMNVIEW
 }
