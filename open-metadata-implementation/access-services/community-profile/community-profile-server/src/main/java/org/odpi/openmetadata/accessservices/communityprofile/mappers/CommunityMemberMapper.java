@@ -10,6 +10,7 @@ public class CommunityMemberMapper
     public static final String QUALIFIED_NAME_PROPERTY_NAME        = "qualifiedName";        /* from Referenceable entity */
     public static final String NAME_PROPERTY_NAME                  = "name";                 /* from PersonRole entity */
     public static final String DESCRIPTION_PROPERTY_NAME           = "description";          /* from PersonRole entity */
+    public static final String SCOPE_PROPERTY_NAME                 = "scope";                /* from PersonRole entity */
     public static final String ADDITIONAL_PROPERTIES_PROPERTY_NAME = "additionalProperties"; /* from Referenceable entity */
     public static final String MEMBERSHIP_TYPE_PROPERTY_NAME       = "membershipType";       /* from CommunityMembership relationship */
 }

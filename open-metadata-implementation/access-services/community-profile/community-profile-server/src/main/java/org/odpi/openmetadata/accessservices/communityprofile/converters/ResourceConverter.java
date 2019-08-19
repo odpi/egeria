@@ -23,13 +23,13 @@ public class ResourceConverter extends CommonHeaderConverter
      *
      * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
-     * @param componentName component associated with the resource
+     * @param serviceName component associated with the resource
      */
-    ResourceConverter(EntityDetail         entity,
-                      OMRSRepositoryHelper repositoryHelper,
-                      String               componentName)
+    public ResourceConverter(EntityDetail         entity,
+                             OMRSRepositoryHelper repositoryHelper,
+                             String               serviceName)
     {
-        super(entity, repositoryHelper, componentName);
+        super(entity, repositoryHelper, serviceName);
     }
 
 

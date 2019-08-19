@@ -30,6 +30,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class PersonalRole extends ReferenceableHeader
 {
+    private String              scope                = null;
     private Map<String, Object> extendedProperties   = null;
     private Map<String, String> additionalProperties = null;
 
@@ -54,9 +55,32 @@ public class PersonalRole extends ReferenceableHeader
 
         if (template != null)
         {
+            this.scope = template.getScope();
             this.additionalProperties = template.getAdditionalProperties();
             this.extendedProperties = template.getExtendedProperties();
         }
+    }
+
+
+    /**
+     * Return the scope of the role.
+     *
+     * @return string
+     */
+    public String getScope()
+    {
+        return scope;
+    }
+
+
+    /**
+     * Set up the scope of the role.
+     *
+     * @param scope string
+     */
+    public void setScope(String scope)
+    {
+        this.scope = scope;
     }
 
 
@@ -137,6 +161,7 @@ public class PersonalRole extends ReferenceableHeader
         return "PersonalRole{" +
                 "extendedProperties=" + extendedProperties +
                 ", additionalProperties=" + additionalProperties +
+                ", scope=" + scope +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +
@@ -170,8 +195,9 @@ public class PersonalRole extends ReferenceableHeader
             return false;
         }
         PersonalRole that = (PersonalRole) objectToCompare;
-        return Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+        return Objects.equals(getScope(), that.getScope()) &&
+               Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+               Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
 
 
@@ -183,6 +209,6 @@ public class PersonalRole extends ReferenceableHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getExtendedProperties(), getAdditionalProperties());
+        return Objects.hash(super.hashCode(), getScope(), getExtendedProperties(), getAdditionalProperties());
     }
 }

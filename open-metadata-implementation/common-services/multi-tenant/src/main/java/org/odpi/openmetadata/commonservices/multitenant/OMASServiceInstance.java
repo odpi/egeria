@@ -42,13 +42,75 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
      * @param auditLog logging destination
      * @throws NewInstanceException a problem occurred during initialization
      */
+    @Deprecated
     public OMASServiceInstance(String                  serviceName,
                                OMRSRepositoryConnector repositoryConnector,
                                List<String>            supportedZones,
                                List<String>            defaultZones,
                                OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(null, serviceName, auditLog);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param auditLog logging destination
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    @Deprecated
+    public OMASServiceInstance(String                  serviceName,
+                               OMRSRepositoryConnector repositoryConnector,
+                               OMRSAuditLog            auditLog) throws NewInstanceException
+    {
+        this( serviceName, repositoryConnector, null, null, auditLog, null, 500);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize maximum page size
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    public OMASServiceInstance(String                  serviceName,
+                               OMRSRepositoryConnector repositoryConnector,
+                               OMRSAuditLog            auditLog,
+                               String                  localServerUserId,
+                               int                     maxPageSize) throws NewInstanceException
+    {
+        this(serviceName, repositoryConnector, null, null, auditLog, localServerUserId, maxPageSize);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
+     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize maximum page size
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    public OMASServiceInstance(String                  serviceName,
+                               OMRSRepositoryConnector repositoryConnector,
+                               List<String>            supportedZones,
+                               List<String>            defaultZones,
+                               OMRSAuditLog            auditLog,
+                               String                  localServerUserId,
+                               int                     maxPageSize) throws NewInstanceException
+    {
+        super(null, serviceName, auditLog, localServerUserId, maxPageSize);
 
         final String methodName = "new ServiceInstance";
 
@@ -62,7 +124,7 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                 this.repositoryHelper = repositoryConnector.getRepositoryHelper();
 
                 this.errorHandler = new RepositoryErrorHandler(serviceName, serverName);
-                this.repositoryHandler = new RepositoryHandler(errorHandler, metadataCollection);
+                this.repositoryHandler = new RepositoryHandler(errorHandler, metadataCollection, maxPageSize);
                 this.supportedZones = supportedZones;
                 this.defaultZones = defaultZones;
             }
@@ -93,22 +155,6 @@ public class OMASServiceInstance extends AuditableServerServiceInstance
                                            errorCode.getUserAction());
 
         }
-    }
-
-
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param auditLog logging destination
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public OMASServiceInstance(String                  serviceName,
-                               OMRSRepositoryConnector repositoryConnector,
-                               OMRSAuditLog            auditLog) throws NewInstanceException
-    {
-        this( serviceName, repositoryConnector, null, null, auditLog);
     }
 
 

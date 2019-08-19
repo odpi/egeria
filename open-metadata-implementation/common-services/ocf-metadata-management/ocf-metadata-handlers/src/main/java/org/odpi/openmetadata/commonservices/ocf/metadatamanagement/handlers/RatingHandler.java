@@ -34,6 +34,8 @@ public class RatingHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private LastAttachmentHandler   lastAttachmentHandler;
+    private int                     maxPageSize;
 
 
     /**
@@ -44,18 +46,24 @@ public class RatingHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
+     * @param maxPageSize maximum page size
      */
     public RatingHandler(String                  serviceName,
                          String                  serverName,
                          InvalidParameterHandler invalidParameterHandler,
                          RepositoryHandler       repositoryHandler,
-                         OMRSRepositoryHelper    repositoryHelper)
+                         OMRSRepositoryHelper    repositoryHelper,
+                         LastAttachmentHandler   lastAttachmentHandler,
+                         int                     maxPageSize)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
+        this.lastAttachmentHandler = lastAttachmentHandler;
+        this.maxPageSize = maxPageSize;
     }
 
 
@@ -94,23 +102,41 @@ public class RatingHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public int countRatings(String   userId,
-                            String   anchorGUID,
-                            String   methodName) throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException
+    int countRatings(String   userId,
+                     String   anchorGUID,
+                     String   methodName) throws InvalidParameterException,
+                                                 PropertyServerException,
+                                                 UserNotAuthorizedException
     {
         final String guidParameterName      = "anchorGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
 
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  anchorGUID,
-                                                                  ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                  RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                                  RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
-                                                                  methodName);
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
+                                                                                    anchorGUID,
+                                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                                    methodName);
+
+        int count = 0;
+
+        if (relationships != null)
+        {
+            for (Relationship relationship : relationships)
+            {
+                if (relationship != null)
+                {
+                    if (this.visibleToUser(userId, relationship, methodName))
+                    {
+                        count ++;
+                    }
+                }
+            }
+        }
+
+        return count;
     }
 
 
@@ -158,25 +184,10 @@ public class RatingHandler
             {
                 if (relationship != null)
                 {
-                    if (this.visibleToUser(userId, relationship, methodName))
+                    Rating bean = this.getRating(userId, relationship, methodName);
+                    if (bean != null)
                     {
-                        EntityProxy entityProxy = relationship.getEntityTwoProxy();
-
-                        if (entityProxy != null)
-                        {
-                            final String  entityParameterName = "entityProxyTwo.getGUID";
-                            EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                                    entityProxy.getGUID(),
-                                                                                    entityParameterName,
-                                                                                    RatingMapper.RATING_TYPE_NAME,
-                                                                                    methodName);
-
-                            RatingConverter converter = new RatingConverter(entity,
-                                                                            relationship,
-                                                                            repositoryHelper,
-                                                                            serviceName);
-                            results.add(converter.getBean());
-                        }
+                        results.add(bean);
                     }
                 }
             }
@@ -196,6 +207,54 @@ public class RatingHandler
 
 
     /**
+     * Retrieve the requested rating object.
+     *
+     * @param userId       calling user
+     * @param relationship relationship between referenceable and rating
+     * @param methodName   calling method
+     * @return new bean
+     * @throws InvalidParameterException  the parameters are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    private Rating getRating(String       userId,
+                             Relationship relationship,
+                             String       methodName) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
+    {
+        final String guidParameterName = "referenceableRatingRelationship.end2.guid";
+
+
+        if (relationship != null)
+        {
+            if (this.visibleToUser(userId, relationship, methodName))
+            {
+                EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+                if (entityProxy != null)
+                {
+                    EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                            entityProxy.getGUID(),
+                                                                            guidParameterName,
+                                                                            RatingMapper.RATING_TYPE_NAME,
+                                                                            methodName);
+
+                    RatingConverter converter = new RatingConverter(entity,
+                                                                    relationship,
+                                                                    repositoryHelper,
+                                                                    serviceName);
+
+                    return converter.getBean();
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
      * Add or replace and existing Rating for this user.
      *
      * @param userId      userId of user making request.
@@ -203,41 +262,51 @@ public class RatingHandler
      * @param starRating  StarRating enumeration for not recommended, one to five stars.
      * @param review      user review of asset.  This can be null.
      * @param isPublic   indicates whether the feedback should be shared or only be visible to the originating user
+     * @param methodName calling method
+     * @return unique identifier of the rating
      *
      * @throws InvalidParameterException  the endpoint bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void   saveRating(String     userId,
-                             String     anchorGUID,
-                             StarRating starRating,
-                             String     review,
-                             boolean    isPublic) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+    private String saveRating(String     userId,
+                              String     anchorGUID,
+                              StarRating starRating,
+                              String     review,
+                              boolean    isPublic,
+                              String     methodName) throws InvalidParameterException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
     {
-        final String methodName = "saveRating";
-
-        this.removeRating(userId, anchorGUID);
+        try
+        {
+            this.removeRating(userId, anchorGUID, methodName);
+        }
+        catch (Throwable error)
+        {
+            /*
+             * Exception means this is the first rating from user.
+             */
+        }
 
         RatingBuilder builder = new RatingBuilder(starRating,
                                                   review,
                                                   isPublic,
+                                                  anchorGUID,
                                                   repositoryHelper,
                                                   serviceName,
                                                   serverName);
 
-        repositoryHandler.addUniqueAttachedEntityToAnchor(userId,
-                                                          anchorGUID,
-                                                          ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                          RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                          RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
-                                                          builder.getRelationshipInstanceProperties(methodName),
-                                                          RatingMapper.RATING_TYPE_GUID,
-                                                          RatingMapper.RATING_TYPE_NAME,
-                                                          builder.getEntityInstanceProperties(methodName),
-                                                          methodName);
-
+        return repositoryHandler.addUniqueAttachedEntityToAnchor(userId,
+                                                                 anchorGUID,
+                                                                 ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                                                 RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                                                 RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                 builder.getRelationshipInstanceProperties(methodName),
+                                                                 RatingMapper.RATING_TYPE_GUID,
+                                                                 RatingMapper.RATING_TYPE_NAME,
+                                                                 builder.getEntityInstanceProperties(methodName),
+                                                                 methodName);
     }
 
 
@@ -246,17 +315,18 @@ public class RatingHandler
      *
      * @param userId       calling user
      * @param anchorGUID   anchor object where rating is attached
+     * @param methodName   calling method
+     *
      * @throws InvalidParameterException  the entity guid is not known
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    public void removeRating(String userId,
-                             String anchorGUID) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException
+    private void removeRating(String userId,
+                              String anchorGUID,
+                              String methodName) throws InvalidParameterException,
+                                                        PropertyServerException,
+                                                        UserNotAuthorizedException
     {
-        final String methodName        = "removeRating";
-
         repositoryHandler.deleteUniqueEntityTypeFromAnchor(userId,
                                                            anchorGUID,
                                                            ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
@@ -268,47 +338,6 @@ public class RatingHandler
     }
 
 
-    /**
-     * Retrieve the requested rating object.
-     *
-     * @param userId       calling user
-     * @param relationship relationship between referenceable and rating
-     * @return new bean
-     * @throws InvalidParameterException  the parameters are invalid
-     * @throws UserNotAuthorizedException user not authorized to issue this request
-     * @throws PropertyServerException    problem accessing the property server
-     */
-    public Rating getRating(String       userId,
-                            Relationship relationship) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        final String methodName        = "getRating";
-        final String guidParameterName = "referenceableRatingRelationship.end2.guid";
-
-        if (relationship != null)
-        {
-            EntityProxy entityProxy = relationship.getEntityTwoProxy();
-
-            if (entityProxy != null)
-            {
-                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                        entityProxy.getGUID(),
-                                                                        guidParameterName,
-                                                                        RatingMapper.RATING_TYPE_NAME,
-                                                                        methodName);
-
-                RatingConverter converter = new RatingConverter(entity,
-                                                                relationship,
-                                                                repositoryHelper,
-                                                                serviceName);
-
-                return converter.getBean();
-            }
-        }
-
-        return null;
-    }
 
 
     /**
@@ -316,7 +345,8 @@ public class RatingHandler
      * a rating then the original one is over-ridden.
      *
      * @param userId      userId of user making request.
-     * @param assetGUID   unique identifier for the asset.
+     * @param anchorGUID  unique identifier of referenceable
+     * @param anchorType  type name of referenceable.
      * @param starRating  StarRating enumeration for not recommended, one to five stars.
      * @param review      user review of asset.  This can be null.
      * @param isPublic    indicates whether the feedback should be shared or only be visible to the originating user
@@ -326,25 +356,35 @@ public class RatingHandler
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void addRatingToAsset(String     userId,
-                                 String     assetGUID,
-                                 StarRating starRating,
-                                 String     review,
-                                 boolean    isPublic,
-                                 String     methodName) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public void addRatingToReferenceable(String     userId,
+                                         String     anchorGUID,
+                                         String     anchorType,
+                                         StarRating starRating,
+                                         String     review,
+                                         boolean    isPublic,
+                                         String     methodName) throws InvalidParameterException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
-        final String guidParameter = "assetGUID";
+        final String anchorGUIDParameter = "anchorGUID";
         final String ratingParameter = "starRating";
+        final String ratingDescription = "New rating from ";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+        invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameter, methodName);
         invalidParameterHandler.validateEnum(starRating, ratingParameter, methodName);
 
-        repositoryHandler.validateEntityGUID(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, methodName, guidParameter);
+        repositoryHandler.validateEntityGUID(userId, anchorGUID, anchorType, methodName, anchorGUIDParameter);
 
-        this.saveRating(userId, assetGUID, starRating, review, isPublic);
+        String ratingGUID = this.saveRating(userId, anchorGUID, starRating, review, isPublic, methodName);
+
+        lastAttachmentHandler.updateLastAttachment(anchorGUID,
+                                                   anchorType,
+                                                   ratingGUID,
+                                                   RatingMapper.RATING_TYPE_NAME,
+                                                   userId,
+                                                   ratingDescription + userId,
+                                                   methodName);
     }
 
 
@@ -352,26 +392,36 @@ public class RatingHandler
      * Removes of a review that was added to the asset by this user.
      *
      * @param userId      userId of user making request.
-     * @param assetGUID   unique identifier for the asset where the rating is attached.
+     * @param anchorGUID   unique identifier for the asset where the rating is attached.
      * @param methodName  calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void removeRatingFromAsset(String     userId,
-                                      String     assetGUID,
-                                      String     methodName) throws InvalidParameterException,
+    public void removeRatingFromReferencable(String     userId,
+                                             String     anchorGUID,
+                                             String     anchorType,
+                                             String     methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
-        final String guidParameter = "reviewGUID";
+        final String guidParameter = "anchorGUID";
+        final String ratingDescription = "Removed rating from ";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+        invalidParameterHandler.validateGUID(anchorGUID, guidParameter, methodName);
 
-        repositoryHandler.validateEntityGUID(userId, assetGUID, AssetMapper.ASSET_TYPE_NAME, methodName, guidParameter);
+        repositoryHandler.validateEntityGUID(userId, anchorGUID, anchorType, methodName, guidParameter);
 
-        this.removeRating(userId, assetGUID);
+        removeRating(userId, anchorGUID, methodName);
+
+        lastAttachmentHandler.updateLastAttachment(anchorGUID,
+                                                   anchorType,
+                                                   null,
+                                                   RatingMapper.RATING_TYPE_NAME,
+                                                   userId,
+                                                   ratingDescription + userId,
+                                                   methodName);
     }
 }

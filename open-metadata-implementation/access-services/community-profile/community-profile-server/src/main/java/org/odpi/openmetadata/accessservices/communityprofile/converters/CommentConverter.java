@@ -31,15 +31,15 @@ public class CommentConverter extends CommonHeaderConverter
      * @param attachedCommentRelationship properties to convert
      * @param acceptedAnswersRelationships properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    CommentConverter(EntityDetail         entity,
-                     Relationship         attachedCommentRelationship,
-                     List<Relationship>   acceptedAnswersRelationships,
-                     OMRSRepositoryHelper repositoryHelper,
-                     String               componentName)
+    public CommentConverter(EntityDetail         entity,
+                            Relationship         attachedCommentRelationship,
+                            List<Relationship>   acceptedAnswersRelationships,
+                            OMRSRepositoryHelper repositoryHelper,
+                            String               serviceName)
     {
-        super(entity, attachedCommentRelationship, repositoryHelper, componentName);
+        super(entity, attachedCommentRelationship, repositoryHelper, serviceName);
         this.acceptedAnswersRelationships = acceptedAnswersRelationships;
     }
 

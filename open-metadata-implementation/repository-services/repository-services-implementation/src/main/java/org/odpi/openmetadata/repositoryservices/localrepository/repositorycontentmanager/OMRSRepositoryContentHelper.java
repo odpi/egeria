@@ -73,6 +73,21 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Return the list of typeDefs active in the local repository.
+     *
+     * @return TypeDef list
+     */
+    public List<TypeDef>  getKnownTypeDefs()
+    {
+        final String methodName = "getKnownTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getKnownTypeDefs();
+    }
+
+
+    /**
      * Return the list of attributeTypeDefs active in the local repository.
      *
      * @return AttributeTypeDef list
@@ -84,6 +99,21 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         validateRepositoryContentManager(methodName);
 
         return repositoryContentManager.getActiveAttributeTypeDefs();
+    }
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the local repository.
+     *
+     * @return AttributeTypeDef list
+     */
+    public List<AttributeTypeDef>  getKnownAttributeTypeDefs()
+    {
+        final String methodName = "getKnownAttributeTypeDefs";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getKnownAttributeTypeDefs();
     }
 
 
@@ -120,6 +150,45 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         validateRepositoryContentManager(methodName);
 
         return repositoryContentManager.getTypeDefByName(sourceName, typeDefName);
+    }
+
+
+    /**
+     * Return the attribute name for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    public  String  getOtherEndName(String                 sourceName,
+                                    String                 anchorEntityGUID,
+                                    Relationship           relationship)
+    {
+        if (relationship != null)
+        {
+            RelationshipDef relationshipTypeDef = (RelationshipDef)this.getTypeDefByName(sourceName,
+                                                                                         relationship.getType().getTypeDefName());
+
+            String          endOneName = relationshipTypeDef.getEndDef1().getAttributeName();
+            String          endTwoName = relationshipTypeDef.getEndDef2().getAttributeName();
+
+            EntityProxy     entityProxy = relationship.getEntityOneProxy();
+
+            if (entityProxy != null)
+            {
+                if (anchorEntityGUID.equals(entityProxy.getGUID()))
+                {
+                    return endTwoName;
+                }
+                else
+                {
+                    return endOneName;
+                }
+            }
+        }
+
+        return null;
     }
 
 

@@ -46,11 +46,27 @@ public interface OMRSRepositoryHelper
 
 
     /**
-     * Return the list of typedefs known by the local repository.
+     * Return the list of types active in the connected cohorts.
      *
      * @return TypeDef gallery
      */
     TypeDefGallery getKnownTypeDefGallery();
+
+
+    /**
+     * Return the list of typeDefs active in the connected cohorts.
+     *
+     * @return TypeDef list
+     */
+    List<TypeDef>  getKnownTypeDefs();
+
+
+    /**
+     * Return the list of attributeTypeDefs active in the connected cohorts.
+     *
+     * @return AttributeTypeDef list
+     */
+    List<AttributeTypeDef>  getKnownAttributeTypeDefs();
 
 
     /**
@@ -64,6 +80,19 @@ public interface OMRSRepositoryHelper
      */
     TypeDef getTypeDefByName(String sourceName,
                              String typeDefName);
+
+
+    /**
+     * Return the attribute name for the related entity.
+     *
+     * @param sourceName  source of the request (used for logging)
+     * @param anchorEntityGUID unique identifier of the anchor entity
+     * @param relationship relationship to another entity
+     * @return proxy to the other entity.
+     */
+    String  getOtherEndName(String                 sourceName,
+                            String                 anchorEntityGUID,
+                            Relationship           relationship);
 
 
     /**

@@ -54,7 +54,8 @@ The Egeria team run two calls every Thursday and all are welcome
 
 ## Monthly maintainers face-to-face meetings
 
-The Egeria maintainers have a face-to-face meeting every month.
+The Egeria maintainers have a face-to-face meeting every month.  Details of these meetings are on the
+[Egeria wiki](https://github.com/odpi/egeria/wiki).
 
 
 ----

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.CommentMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.LikeMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -17,6 +18,7 @@ public class CommentBuilder extends RootBuilder
     private CommentType commentType;
     private String      commentText;
     private boolean     isPublic;
+    private String      anchorGUID;
 
     /**
      * Constructor.
@@ -24,6 +26,7 @@ public class CommentBuilder extends RootBuilder
      * @param commentType   type of comment enum.
      * @param commentText   String - the text of the comment.
      * @param isPublic      should this be visible to all or private to the caller
+     * @param anchorGUID unique identifier of the anchor entity
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -31,6 +34,7 @@ public class CommentBuilder extends RootBuilder
     public CommentBuilder(CommentType          commentType,
                           String               commentText,
                           boolean              isPublic,
+                          String               anchorGUID,
                           OMRSRepositoryHelper repositoryHelper,
                           String               serviceName,
                           String               serverName)
@@ -40,6 +44,7 @@ public class CommentBuilder extends RootBuilder
         this.commentText = commentText;
         this.commentType = commentType;
         this.isPublic = isPublic;
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -64,14 +69,29 @@ public class CommentBuilder extends RootBuilder
      *
      * @param methodName name of the calling method
      * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
      */
-    public InstanceProperties getEntityInstanceProperties(String  methodName)
+    public InstanceProperties getEntityInstanceProperties(String  methodName) throws InvalidParameterException
     {
-        InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                                     null,
-                                                                                     CommentMapper.TEXT_PROPERTY_NAME,
-                                                                                     commentText,
-                                                                                     methodName);
+        InstanceProperties properties = super.getInstanceProperties(methodName);
+
+        if (commentText != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      CommentMapper.TEXT_PROPERTY_NAME,
+                                                                      commentText,
+                                                                      methodName);
+        }
+
+        if (anchorGUID != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      CommentMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                      anchorGUID,
+                                                                      methodName);
+        }
 
         return this.addCommentTypePropertyToInstance(properties, commentType, methodName);
     }
