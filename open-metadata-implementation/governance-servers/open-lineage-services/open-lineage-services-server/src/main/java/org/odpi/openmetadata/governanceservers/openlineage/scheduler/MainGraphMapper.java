@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
@@ -26,15 +27,28 @@ public class MainGraphMapper {
 
         Iterator<Vertex> columnInVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnInGuid);
         Iterator<Vertex> columnOutVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnOutGuid);
+//        Iterator<Vertex> processVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, extractProperty(process,PROPERTY_KEY_ENTITY_GUID));
 
-        if(columnInVertex.hasNext() && columnOutVertex.hasNext()){
 
-           Vertex vertex = main.addV(extractProperty(process,PROPERTY_KEY_ENTITY_GUID)).next();
-           vertex.property(PROPERTY_KEY_ENTITY_NAME,extractProperty(process,PROPERTY_KEY_ENTITY_NAME));
-           vertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME,extractProperty(process,PROPERTY_KEY_NAME_QUALIFIED_NAME));
 
-           columnInVertex.next().addEdge(LINEAGE_MAPPING, vertex);
-           vertex.addEdge(LINEAGE_MAPPING, columnOutVertex.next());
+//        if(columnInVertex.hasNext() && columnOutVertex.hasNext() && !processVertex.hasNext()){
+            if(columnInVertex.hasNext() && columnOutVertex.hasNext()){
+
+//                Iterator<Vertex> processVertex = main.V().has("id", extractProperty(process,PROPERTY_KEY_ENTITY_GUID));
+
+//                if(processVertex.hasNext()) {
+                    Vertex vertex = main.addV("Process").next();
+                    vertex.property("id", UUID.randomUUID());
+                    vertex.property(PROPERTY_KEY_ENTITY_GUID, extractProperty(process, PROPERTY_KEY_ENTITY_GUID));
+                    vertex.property(PROPERTY_KEY_ENTITY_NAME, extractProperty(process, PROPERTY_KEY_ENTITY_NAME));
+//           vertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME,extractProperty(process,PROPERTY_KEY_NAME_QUALIFIED_NAME));
+
+                    columnInVertex.next().addEdge(LINEAGE_MAPPING, vertex);
+                    vertex.addEdge(LINEAGE_MAPPING, columnOutVertex.next());
+//                }
+
+
+           main.tx().commit();
 
         }else{
             log.debug("Columns does not exist in maingraph");
@@ -42,7 +56,6 @@ public class MainGraphMapper {
 
         }
 
-        main.tx().commit();
     }
 
 

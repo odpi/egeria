@@ -64,7 +64,7 @@ public class JobConfiguration {
     private static Trigger buildSimpleSchedulerTrigger() {
 
         //TODO change seconds now is used for developing
-        int INTERVAL_SECONDS = 10;
+        int INTERVAL_SECONDS = 100;
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
                 .withSchedule(

@@ -322,7 +322,7 @@ public class GraphBuilder {
             v.property(PROPERTY_KEY_ENTITY_NAME, term.getDisplayName());
             g.tx().commit();
         } else {
-            log.info("{} createVertex found existing vertex {}", "createGlossaryVertex", vertexIt.next());
+            log.debug("{} createVertex found existing vertex {}", "createGlossaryVertex", vertexIt.next());
             g.tx().rollback();
         }
 
@@ -351,7 +351,7 @@ public class GraphBuilder {
                 }
                 else {
 
-                    log.info("{} createVertex found existing vertex {}", "createElementVertex", vertexIt.next());
+                    log.debug("{} createVertex found existing vertex {}", "createElementVertex", vertexIt.next());
                     g.tx().rollback();
                 }
         }
