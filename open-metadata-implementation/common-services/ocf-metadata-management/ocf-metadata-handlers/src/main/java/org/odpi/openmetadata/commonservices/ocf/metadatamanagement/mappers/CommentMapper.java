@@ -13,6 +13,7 @@ public class CommentMapper
 
     public static final String TEXT_PROPERTY_NAME                        = "text";          /* from Comment entity */
     public static final String TYPE_PROPERTY_NAME                        = "type";          /* from Comment entity */
+    public static final String ANCHOR_GUID_PROPERTY_NAME                 = "anchorGUID";    /* from Comment entity */
 
     public static final String REFERENCEABLE_TO_COMMENT_TYPE_GUID        = "0d90501b-bf29-4621-a207-0c8c953bdac9";
     public static final String REFERENCEABLE_TO_COMMENT_TYPE_NAME        = "AttachedComment";

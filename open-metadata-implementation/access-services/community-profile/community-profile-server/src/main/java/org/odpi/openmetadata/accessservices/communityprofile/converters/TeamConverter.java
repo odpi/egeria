@@ -31,14 +31,14 @@ public class TeamConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationships properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    TeamConverter(EntityDetail         entity,
-                  List<Relationship>   relationships,
-                  OMRSRepositoryHelper repositoryHelper,
-                  String               componentName)
+    public TeamConverter(EntityDetail         entity,
+                         List<Relationship>   relationships,
+                         OMRSRepositoryHelper repositoryHelper,
+                         String               serviceName)
     {
-        super(entity, repositoryHelper, componentName);
+        super(entity, repositoryHelper, serviceName);
         this.teamRelationships = relationships;
     }
 

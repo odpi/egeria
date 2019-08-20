@@ -30,14 +30,14 @@ public class CollectionConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    CollectionConverter(EntityDetail         entity,
-                        Relationship         relationship,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               componentName)
+    public CollectionConverter(EntityDetail         entity,
+                               Relationship         relationship,
+                               OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName)
     {
-        super(entity, relationship, repositoryHelper, componentName);
+        super(entity, relationship, repositoryHelper, serviceName);
     }
 
 
