@@ -778,7 +778,7 @@ public class GovernanceOfficerHandler
         List<EntityDetail> governanceOfficerEntities = repositoryHandler.getEntityByType(userId,
                                                                                          governanceOfficerTypeGUID,
                                                                                          0,
-                                                                                         500,
+                                                                                         invalidParameterHandler.getMaxPagingSize(),
                                                                                          methodName);
 
         if (governanceOfficerEntities != null)

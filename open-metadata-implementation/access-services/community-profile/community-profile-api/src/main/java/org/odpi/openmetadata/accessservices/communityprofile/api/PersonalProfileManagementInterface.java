@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.accessservices.communityprofile.api;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -29,7 +31,6 @@ public interface PersonalProfileManagementInterface
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
-     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @return Unique identifier for the personal profile.
@@ -45,7 +46,6 @@ public interface PersonalProfileManagementInterface
                                  String              knownName,
                                  String              jobTitle,
                                  String              jobRoleDescription,
-                                 Map<String, Object> profileProperties,
                                  Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException;
@@ -101,6 +101,91 @@ public interface PersonalProfileManagementInterface
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException;
 
+
+    /**
+     * Return the total karma points for this user.
+     *
+     * @param userId userId of the user making the request.
+     * @param profileUserId userId of the profile to update.
+     *
+     * @return int count of karma points
+     *
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    long getKarmaPoints(String userId,
+                        String profileUserId) throws InvalidParameterException,
+                                                     NoProfileForUserException,
+                                                     PropertyServerException,
+                                                     UserNotAuthorizedException;
+
+    /**
+     * Return the list of contact methods for this user.
+     *
+     * @param userId userId of the user making the request.
+     * @param profileUserId userId of the profile to update.
+     *
+     * @return list of contact methods
+     *
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<ContactMethod> getContactDetails(String userId,
+                                          String profileUserId) throws InvalidParameterException,
+                                                                       NoProfileForUserException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException;
+
+    /**
+     * Add a new contact method to the requesting user's profile.
+     *
+     * @param userId the name of the calling user.
+     * @param profileUserId userId of the profile to update.
+     * @param type type of contact method.
+     * @param service service for the contact method.
+     * @param value account name for the service.
+     *
+     * @return unique identifier (guid) for the new contact method.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    String addContactMethod(String              userId,
+                            String              profileUserId,
+                            ContactMethodType   type,
+                            String              service,
+                            String              value) throws InvalidParameterException,
+                                                              NoProfileForUserException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
+
+
+    /**
+     * Remove an obsolete contact method from the requesting user's profile.
+     *
+     * @param userId the name of the calling user.
+     * @param profileUserId userId of the profile to update.
+     * @param contactMethodGUID unique identifier (guid) for the obsolete contact method.
+     * @param type type of contact method. This is used to confirm that the GUID is the right one.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    void   deleteContactMethod(String            userId,
+                               String            profileUserId,
+                               String            contactMethodGUID,
+                               ContactMethodType type) throws InvalidParameterException,
+                                                              NoProfileForUserException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
 
     /**
      * Retrieve a personal profile by guid.

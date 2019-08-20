@@ -25,14 +25,14 @@ public class CommunityMemberConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    CommunityMemberConverter(EntityDetail         entity,
-                             Relationship         relationship,
-                             OMRSRepositoryHelper repositoryHelper,
-                             String               componentName)
+    public CommunityMemberConverter(EntityDetail         entity,
+                                    Relationship         relationship,
+                                    OMRSRepositoryHelper repositoryHelper,
+                                    String               serviceName)
     {
-        super(entity, relationship, repositoryHelper, componentName);
+        super(entity, relationship, repositoryHelper, serviceName);
     }
 
 
@@ -62,6 +62,7 @@ public class CommunityMemberConverter extends CommonHeaderConverter
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, CommunityMemberMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setName(repositoryHelper.removeStringProperty(serviceName, CommunityMemberMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setDescription(repositoryHelper.removeStringProperty(serviceName, CommunityMemberMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
+                bean.setScope(repositoryHelper.removeStringProperty(serviceName, CommunityMemberMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, CommunityMemberMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
             }

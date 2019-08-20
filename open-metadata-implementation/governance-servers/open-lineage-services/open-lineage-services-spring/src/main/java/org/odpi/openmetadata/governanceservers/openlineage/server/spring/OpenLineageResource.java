@@ -32,15 +32,15 @@ public class OpenLineageResource {
      * @param guid         The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    @GetMapping(path = "/initial-graph/{scope}/{lineageQuery}/{graph}/{guid}")
-    public String initialGraph(
+    @GetMapping(path = "/query-lineage/{scope}/{lineageQuery}/{graph}/{guid}")
+    public String queryLineage(
             @PathVariable("userId") String userId,
             @PathVariable("serverName") String serverName,
             @PathVariable("scope") String scope,
             @PathVariable("lineageQuery") String lineageQuery,
             @PathVariable("graph") String graph,
             @PathVariable("guid") String guid) {
-        return restAPI.initialGraph(serverName, userId, scope, lineageQuery, graph, guid);
+        return restAPI.queryLineage(serverName, userId, scope, lineageQuery, graph, guid);
     }
 
     /**

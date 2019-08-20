@@ -348,10 +348,13 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEnumDef(getAssetOwnerTypeEnum());
 
         this.archiveBuilder.addEntityDef(getReferenceableEntity());
+        this.archiveBuilder.addEntityDef(getLastAttachmentEntity());
         this.archiveBuilder.addEntityDef(getAssetEntity());
         this.archiveBuilder.addEntityDef(getInfrastructureEntity());
         this.archiveBuilder.addEntityDef(getProcessEntity());
         this.archiveBuilder.addEntityDef(getDataSetEntity());
+
+        this.archiveBuilder.addRelationshipDef(getLastAttachmentLinkRelationship());
     }
 
     private EnumDef getAssetOwnerTypeEnum()
@@ -453,6 +456,85 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
                                                                     attribute2Description,
                                                                     attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    /**
+     * The LastAttachment entity provides a place to record that last entity to be directly (or more importantly
+     * indirectly attached to the referenceable.  Its use is optional but enables more efficient notification
+     * of important attachments to the referenceables by the OMASs.
+     *
+     * @return LastAttachment EntityDef
+     */
+    private EntityDef getLastAttachmentEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "ba3c8dfa-42a5-492c-bebc-88fa7492e75a";
+        final String name            = "LastAttachment";
+        final String description     = "A description of the last entity to be attached to the referenceable.";
+        final String descriptionGUID = null;
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                null,
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "anchorGUID";
+        final String attribute1Description     = "Unique identifier for the referenceable.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "anchorType";
+        final String attribute2Description     = "Type name of the referenceable.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "attachmentGUID";
+        final String attribute3Description     = "Unique identifier of the attached entity.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "attachmentType";
+        final String attribute4Description     = "Type name of the attached entity.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "attachmentOwner";
+        final String attribute5Description     = "User identifier of the person/engine/process that created the attachment.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "description";
+        final String attribute6Description     = "Description of the attachment.";
+        final String attribute6DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                                                           attribute4Description,
+                                                           attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -646,6 +728,62 @@ public class OpenMetadataTypesArchive
                                                  description,
                                                  descriptionGUID);
     }
+
+
+    private RelationshipDef getLastAttachmentLinkRelationship()
+    {
+        final String guid            = "57e3687e-393e-4c0c-a4f1-a6634075465b";
+        final String name            = "LastAttachmentLink";
+        final String description     = "Link the last attachment record.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Referenceable";
+        final String                     end1AttributeName            = "anchorHead";
+        final String                     end1AttributeDescription     = "Referenceable at the head of the attachment chain.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "LastAttachment";
+        final String                     end2AttributeName            = "attachmentNotice";
+        final String                     end2AttributeDescription     = "Link to description of the last significant attachment.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -4278,9 +4416,13 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Brief description of the role.";
         final String attribute2DescriptionGUID = null;
 
-        final String attribute3Name            = "headCount";
-        final String attribute3Description     = "Number of people that can be appointed to the role.";
+        final String attribute3Name            = "scope";
+        final String attribute3Description     = "Breadth of responsibility.";
         final String attribute3DescriptionGUID = null;
+
+        final String attribute4Name            = "headCount";
+        final String attribute4Description     = "Number of people that can be appointed to the role.";
+        final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -4292,9 +4434,14 @@ public class OpenMetadataTypesArchive
                                                            attribute2DescriptionGUID);
         properties.add(property);
 
-        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
-                                                        attribute3Description,
-                                                        attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
+                                                        attribute4Description,
+                                                        attribute4DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -13316,9 +13463,6 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addEntityDef(getGovernanceDefinitionEntity());
         this.archiveBuilder.addEntityDef(getGovernanceOfficerEntity());
-
-        this.archiveBuilder.addRelationshipDef(getGovernancePostRelationship());
-
     }
 
 
@@ -13554,7 +13698,7 @@ public class OpenMetadataTypesArchive
         final String description     = "Person responsible for a governance domain.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = "PersonRole";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                                                                 name,
@@ -13568,28 +13712,14 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "title";
-        final String attribute1Description     = "Title describing the governance officer.";
+        final String attribute1Name            = "domain";
+        final String attribute1Description     = "Governance domain for this governance officer.";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "scope";
-        final String attribute2Description     = "Scope of responsibility for this governance officer.";
-        final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "domain";
-        final String attribute3Description     = "Governance domain for this governance officer.";
-        final String attribute3DescriptionGUID = null;
 
-        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
-                                                           attribute1Description,
-                                                           attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
         property = archiveHelper.getEnumTypeDefAttribute("GovernanceDomain",
-                                                         attribute3Name,
-                                                         attribute3Description,
-                                                         attribute3DescriptionGUID);
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -13597,61 +13727,6 @@ public class OpenMetadataTypesArchive
         return entityDef;
     }
 
-
-    private RelationshipDef getGovernancePostRelationship()
-    {
-        final String guid            = "4c4d1d0c-a9fc-4305-8b71-4e691c0f9ae0";
-        final String name            = "GovernancePost";
-        final String description     = "Shows the appointment of a person to a governance officer position.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "GovernanceOfficer";
-        final String                     end1AttributeName            = "governancePosts";
-        final String                     end1AttributeDescription     = "The governance positions that this person holds.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Person";
-        final String                     end2AttributeName            = "personAppointed";
-        final String                     end2AttributeDescription     = "The individual appointed as a governance officer.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
 
     /*
      * -------------------------------------------------------------------------------------------------------

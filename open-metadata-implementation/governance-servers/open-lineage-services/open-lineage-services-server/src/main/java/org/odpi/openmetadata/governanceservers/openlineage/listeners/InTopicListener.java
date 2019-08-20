@@ -16,14 +16,14 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class inTopicListener implements OpenMetadataTopicListener {
+public class InTopicListener implements OpenMetadataTopicListener {
 
-    private static final Logger log = LoggerFactory.getLogger(inTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(InTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
     private GraphBuilder graphBuilder;
 
-    public inTopicListener(GraphBuilder gremlinBuilder, OMRSAuditLog auditLog) {
+    public InTopicListener(GraphBuilder gremlinBuilder, OMRSAuditLog auditLog) {
 
         this.graphBuilder = gremlinBuilder;
         this.auditLog = auditLog;

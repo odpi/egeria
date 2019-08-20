@@ -91,8 +91,8 @@ public class GraphBuilder {
                 log.info("{} createVertex found existing vertex {}", "createVertex", vertexIt.next());
                 g.tx().rollback();
             }
-
     }
+
     private void createElementVertex(Map<String,Element> context) {
         GraphTraversalSource g = mainGraph.traversal();
 

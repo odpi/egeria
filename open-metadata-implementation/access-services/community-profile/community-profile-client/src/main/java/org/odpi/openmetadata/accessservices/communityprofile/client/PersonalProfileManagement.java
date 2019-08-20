@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.communityprofile.client;
 
 import org.odpi.openmetadata.accessservices.communityprofile.api.PersonalProfileManagementInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
@@ -91,7 +93,6 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
-     * @param extendedProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @return Unique identifier for the personal profile.
@@ -107,7 +108,6 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                         String              knownName,
                                         String              jobTitle,
                                         String              jobRoleDescription,
-                                        Map<String, Object> extendedProperties,
                                         Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -126,13 +126,12 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
         invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
 
         PersonalProfileRequestBody requestBody = new PersonalProfileRequestBody();
-        requestBody.setUserId(profileUserId);
+        requestBody.setProfileUserId(profileUserId);
         requestBody.setQualifiedName(qualifiedName);
         requestBody.setFullName(fullName);
         requestBody.setKnownName(knownName);
         requestBody.setJobTitle(jobTitle);
         requestBody.setJobRoleDescription(jobRoleDescription);
-        requestBody.setProfileProperties(extendedProperties);
         requestBody.setAdditionalProperties(additionalProperties);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
@@ -210,6 +209,7 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                                                   profileGUID);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
     }
@@ -255,8 +255,108 @@ public class PersonalProfileManagement implements PersonalProfileManagementInter
                                                                   profileGUID);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    }
+
+
+    /**
+     * Return the total karma points for this user.
+     *
+     * @param userId userId of the user making the request.
+     * @param profileUserId userId of the profile to update.
+     *
+     * @return int count of karma points
+     *
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public long getKarmaPoints(String userId,
+                               String profileUserId) throws InvalidParameterException,
+                                                            NoProfileForUserException,
+                                                            PropertyServerException,
+                                                            UserNotAuthorizedException
+    {
+        return 0;
+    }
+
+
+    /**
+     * Return the list of contact methods for this user.
+     *
+     * @param userId userId of the user making the request.
+     * @param profileUserId userId of the profile to update.
+     *
+     * @return list of contact methods
+     *
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<ContactMethod> getContactDetails(String userId,
+                                                 String profileUserId) throws InvalidParameterException,
+                                                                              NoProfileForUserException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Add a new contact method to the requesting user's profile.
+     *
+     * @param userId the name of the calling user.
+     * @param profileUserId userId of the profile to update.
+     * @param type type of contact method.
+     * @param service service for the contact method.
+     * @param value account name for the service.
+     *
+     * @return unique identifier (guid) for the new contact method.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addContactMethod(String            userId,
+                                   String            profileUserId,
+                                   ContactMethodType type,
+                                   String            service,
+                                   String            value) throws InvalidParameterException,
+                                                                   NoProfileForUserException,
+                                                                   PropertyServerException,
+                                                                   UserNotAuthorizedException
+    {
+        return null;
+    }
+
+
+    /**
+     * Remove an obsolete contact method from the requesting user's profile.
+     *
+     * @param userId the name of the calling user.
+     * @param profileUserId userId of the profile to update.
+     * @param contactMethodGUID unique identifier (guid) for the obsolete contact method.
+     * @param type type of contact method. This is used to confirm that the GUID is the right one.
+     *
+     * @throws InvalidParameterException the userId is null or invalid.  Another property is invalid.
+     * @throws NoProfileForUserException the user does not have a profile.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void   deleteContactMethod(String            userId,
+                                      String            profileUserId,
+                                      String            contactMethodGUID,
+                                      ContactMethodType type) throws InvalidParameterException,
+                                                                     NoProfileForUserException,
+                                                                     PropertyServerException,
+                                                                     UserNotAuthorizedException
+    {
     }
 
 

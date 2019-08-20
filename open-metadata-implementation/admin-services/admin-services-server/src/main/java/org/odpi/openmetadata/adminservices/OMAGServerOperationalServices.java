@@ -143,6 +143,8 @@ public class OMAGServerOperationalServices
                                                         errorCode.getUserAction());
             }
 
+            int maxPageSize = configuration.getMaxPageSize();
+
             /*
              * Next verify that there are services configured.
              */
@@ -218,7 +220,8 @@ public class OMAGServerOperationalServices
              * in response to subsequent REST calls for the server
              */
             OMAGOperationalServicesInstance instance = new OMAGOperationalServicesInstance(serverName,
-                                                                                           CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+                                                                                           CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName(),
+                                                                                           maxPageSize);
 
             /*
              * Save the configuration that is going to be used to start the server.
@@ -289,7 +292,9 @@ public class OMAGServerOperationalServices
                                                                                             CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
                                                                                             CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
                                                                                             CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()));
+                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()),
+                                                                                    configuration.getLocalServerUserId(),
+                                                                                    maxPageSize);
 
                 instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
                 activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
