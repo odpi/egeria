@@ -47,8 +47,8 @@ public class MockGraphGenerator {
     private void setProperties() {
         this.numberGlossaryTerms = 20;
         this.numberFlows = 1;
-        this.processesPerFlow = 2;
-        this.columnsPerTable = 2;
+        this.processesPerFlow = 5;
+        this.columnsPerTable = 5;
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;
@@ -70,7 +70,6 @@ public class MockGraphGenerator {
     private void generateVerbose() {
         List<Vertex> columnNodesPerTable;
         List<Vertex> glossaryNodes = new ArrayList<>();
-        List<Vertex> hostNodes = new ArrayList<>();
         List<Vertex> tableNodes = new ArrayList<>();
         List<List<Vertex>> columnNodes = new ArrayList<>();
 
@@ -96,13 +95,6 @@ public class MockGraphGenerator {
             Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
             tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
             tableNodes.add(tableVertex);
-
-            Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
-            hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
-
-            addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex, hostVertex);
-
-            hostNodes.add(hostVertex);
 
             //Create all Column nodes.
             columnNodesPerTable = new ArrayList<>();
@@ -132,21 +124,14 @@ public class MockGraphGenerator {
 
                 final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
 
-                final Vertex host1 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex);
-                final Vertex host2 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
-
                 final Vertex table1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final Vertex table2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
                 final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
-                addEdge(EDGE_LABEL_HOST_AND_PROCESS, host1, process);
-                addEdge(EDGE_LABEL_HOST_AND_PROCESS, process, host2);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
-
-
 
                 //For each column in a table
                 for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
