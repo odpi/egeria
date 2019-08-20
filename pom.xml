@@ -798,7 +798,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>discovery-engine-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>discovery-engine-services-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -812,7 +826,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>discovery-engine-spring</artifactId>
+                <artifactId>discovery-engine-services-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1748,11 +1762,6 @@
                 </configuration>
              </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-            </plugin>
-
             <!-- Validates maven & java versions -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -1952,7 +1961,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
                 <configuration>
                     <additionalJOption>-J-Xmx1536m</additionalJOption>
                     <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
@@ -1977,10 +1985,10 @@
                         <id>createemptydocsource</id>
                         <phase>process-resources</phase>
                         <configuration>
-                            <tasks>
+                            <target>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
                                 <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
-                            </tasks>
+                            </target>
                         </configuration>
                         <goals>
                             <goal>run</goal>

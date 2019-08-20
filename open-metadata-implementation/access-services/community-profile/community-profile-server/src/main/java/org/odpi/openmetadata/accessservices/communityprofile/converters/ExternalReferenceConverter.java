@@ -26,14 +26,14 @@ public class ExternalReferenceConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationship properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    ExternalReferenceConverter(EntityDetail         entity,
-                               Relationship         relationship,
-                               OMRSRepositoryHelper repositoryHelper,
-                               String               componentName)
+    public ExternalReferenceConverter(EntityDetail         entity,
+                                      Relationship         relationship,
+                                      OMRSRepositoryHelper repositoryHelper,
+                                      String               serviceName)
     {
-        super(entity, relationship, repositoryHelper, componentName);
+        super(entity, relationship, repositoryHelper, serviceName);
     }
 
 

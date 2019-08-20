@@ -6,8 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -22,7 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfileRequestBody extends MyProfileRequestBody
 {
-    private String              userId               = null;
+    private String profileUserId         = null;
+    private String originatingSystemGUID = null;
 
 
     /**
@@ -44,8 +43,20 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
 
         if (template != null)
         {
-            this.userId = template.getUserId();
+            this.profileUserId = template.getProfileUserId();
+            this.originatingSystemGUID = template.getOriginatingSystemGUID();
         }
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public PersonalProfileRequestBody(MyProfileRequestBody template)
+    {
+        super(template);
     }
 
 
@@ -54,20 +65,32 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
      *
      * @return string
      */
-    public String getUserId()
+    public String getProfileUserId()
     {
-        return userId;
+        return profileUserId;
     }
 
 
     /**
      * Set up the anchoring userId for this profile.
      *
-     * @param userId string
+     * @param profileUserId string
      */
-    public void setUserId(String userId)
+    public void setProfileUserId(String profileUserId)
     {
-        this.userId = userId;
+        this.profileUserId = profileUserId;
+    }
+
+
+    public String getOriginatingSystemGUID()
+    {
+        return originatingSystemGUID;
+    }
+
+
+    public void setOriginatingSystemGUID(String originatingSystemGUID)
+    {
+        this.originatingSystemGUID = originatingSystemGUID;
     }
 
 
@@ -80,7 +103,8 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
     public String toString()
     {
         return "PersonalProfileRequestBody{" +
-                "userId='" + userId + '\'' +
+                "profileUserId='" + profileUserId + '\'' +
+                "originatingSystemGUID='" + originatingSystemGUID + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", fullName='" + getFullName() + '\'' +
                 ", knownName='" + getKnownName() + '\'' +
@@ -93,10 +117,10 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
 
 
     /**
-     * Equals method that returns true if containing properties are the same.
+     * Standard method.
      *
      * @param objectToCompare object to compare
-     * @return boolean result of comparison
+     * @return
      */
     @Override
     public boolean equals(Object objectToCompare)
@@ -114,18 +138,19 @@ public class PersonalProfileRequestBody extends MyProfileRequestBody
             return false;
         }
         PersonalProfileRequestBody that = (PersonalProfileRequestBody) objectToCompare;
-        return Objects.equals(getUserId(), that.getUserId());
+        return Objects.equals(getProfileUserId(), that.getProfileUserId()) &&
+                       Objects.equals(getOriginatingSystemGUID(), that.getOriginatingSystemGUID());
     }
 
 
     /**
-     * Return hash code for this object
+     * Standard method
      *
-     * @return int hash code
+     * @return hashcode
      */
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getUserId());
+        return Objects.hash(super.hashCode(), getProfileUserId(), getOriginatingSystemGUID());
     }
 }

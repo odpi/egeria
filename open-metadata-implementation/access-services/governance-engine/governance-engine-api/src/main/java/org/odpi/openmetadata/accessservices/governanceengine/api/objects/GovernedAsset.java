@@ -17,6 +17,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GovernedAsset implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private String guid;
     private String fullQualifiedName;
     private String name;

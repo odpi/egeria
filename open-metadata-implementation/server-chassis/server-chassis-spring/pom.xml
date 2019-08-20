@@ -94,8 +94,13 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>community-profile-spring</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-services-spring</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>

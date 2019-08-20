@@ -24,13 +24,13 @@ public class PersonalRoleConverter extends CommonHeaderConverter
      *
      * @param entity properties to convert
      * @param repositoryHelper helper object to parse entity
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    PersonalRoleConverter(EntityDetail         entity,
-                          OMRSRepositoryHelper repositoryHelper,
-                          String               componentName)
+    public PersonalRoleConverter(EntityDetail         entity,
+                                 OMRSRepositoryHelper repositoryHelper,
+                                 String               serviceName)
     {
-        super(entity, repositoryHelper, componentName);
+        super(entity, repositoryHelper, serviceName);
     }
 
 
@@ -60,6 +60,7 @@ public class PersonalRoleConverter extends CommonHeaderConverter
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setName(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
+                bean.setScope(repositoryHelper.removeStringProperty(serviceName, PersonalRoleMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, PersonalRoleMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
                 bean.setClassifications(super.getClassificationsFromEntity());

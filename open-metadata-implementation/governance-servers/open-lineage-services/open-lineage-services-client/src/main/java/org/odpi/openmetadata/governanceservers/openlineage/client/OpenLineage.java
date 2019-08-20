@@ -36,7 +36,7 @@ public class OpenLineage  {
      *
      * @param userId calling user.
      * @param scope TABLEVIEW, COLUMNVIEW.
-     * @param lineageQuery ENDTOEND, ULTIMATESOURCE, ULTIMATEDESTINATION, GLOSSARY.
+     * @param lineageQuery ULTIMATESOURCE, ULTIMATEDESTINATION, GLOSSARY.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param guid The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.

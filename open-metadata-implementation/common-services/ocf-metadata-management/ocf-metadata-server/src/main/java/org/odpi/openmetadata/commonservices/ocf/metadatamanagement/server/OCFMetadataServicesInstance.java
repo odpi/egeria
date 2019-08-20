@@ -22,12 +22,20 @@ public class OCFMetadataServicesInstance extends OCFOMASServiceInstance
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param auditLog destination for audit log events.
+     * @param localServerUserId userId for server initialed calls.
+     * @param maxPageSize max number of results to return on single request.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public OCFMetadataServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                       OMRSAuditLog            auditLog) throws NewInstanceException
+                                       OMRSAuditLog            auditLog,
+                                       String                  localServerUserId,
+                                       int                     maxPageSize) throws NewInstanceException
     {
-        super(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(), repositoryConnector, auditLog);
+        super(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
+              repositoryConnector,
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

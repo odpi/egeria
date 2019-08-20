@@ -6,8 +6,6 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -16,17 +14,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,21 +54,11 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @param element object describing the current element
      */
     public void addReportElement(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportElement element) {
-        try {
             if (element instanceof ReportSection) {
                 addReportSection(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportSection) element);
             } else if (element instanceof ReportColumn) {
                 addReportColumn(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, (ReportColumn) element);
             }
-        } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException e) {
-            log.error("Exception creating report element", e);
-            throw new ReportElementCreationException(ReportBasicOperation.class.getName(),
-                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getFormattedErrorMessage(element.toString(), e.getMessage()),
-                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getSystemAction(),
-                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getUserAction(),
-                                                    e);
-
-        }
     }
 
     /**
@@ -92,19 +69,8 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @param registrationGuid - guid of software server capability
      * @param registrationQualifiedName  - qualified name of software server capability
      * @param reportSection object describing the current section in the report
-     * @throws InvalidParameterException
-     * @throws PropertyErrorException
-     * @throws TypeDefNotKnownException
-     * @throws RepositoryErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws ClassificationErrorException
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws StatusNotSupportedException
      */
-    private void addReportSection(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+    private void addReportSection(String userId, String qualifiedNameForParent, String parentGuid, String registrationGuid, String registrationQualifiedName, ReportSection reportSection){
         EntityDetail typeEntity = addSectionAndSectionType(userId, qualifiedNameForParent, parentGuid, registrationGuid, registrationQualifiedName, reportSection);
         String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
         addElements(userId, qualifiedNameForSection, typeEntity.getGUID(), registrationGuid, registrationQualifiedName, reportSection.getElements());
@@ -120,20 +86,9 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @param registrationQualifiedName qualified name of software server capability source
      * @param reportSection object describing the current section in the report
      * @return
-     * @throws InvalidParameterException
-     * @throws StatusNotSupportedException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws ClassificationErrorException
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws RepositoryErrorException
-     * @throws TypeDefNotKnownException
      */
     protected EntityDetail addSectionAndSectionType(String userId, String qualifiedNameForParent, String parentGuid,
-                                                    String registrationGuid, String registrationQualifiedName, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
+                                                    String registrationGuid, String registrationQualifiedName, ReportSection reportSection) {
 
         String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
@@ -214,5 +169,4 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         return derivedColumnEntity;
     }
-
 }
