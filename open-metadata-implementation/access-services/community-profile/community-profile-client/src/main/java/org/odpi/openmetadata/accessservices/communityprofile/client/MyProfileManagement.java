@@ -87,12 +87,10 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @return profile object
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public PersonalProfile getMyProfile(String userId) throws InvalidParameterException,
-                                                              NoProfileForUserException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException
     {
@@ -107,7 +105,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
                                                                                        userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowNoProfileForUserException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
@@ -160,7 +157,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
-     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -173,12 +169,11 @@ public class MyProfileManagement implements MyPersonalProfileInterface
                                String              knownName,
                                String              jobTitle,
                                String              jobRoleDescription,
-                               Map<String, Object> profileProperties,
                                Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        final String   methodName = "updateMyProfile";
+        final String   methodName = "setUpMyProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile";
 
         final String   qualifiedNameParameterName = "qualifiedName";
@@ -196,7 +191,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         requestBody.setJobTitle(jobTitle);
         requestBody.setJobRoleDescription(jobRoleDescription);
         requestBody.setAdditionalProperties(additionalProperties);
-        requestBody.setProfileProperties(profileProperties);
 
 
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
@@ -317,13 +311,13 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String addContactMethod(String              userId,
-                                   ContactMethodType   type,
-                                   String              service,
-                                   String              value) throws InvalidParameterException,
-                                                                     NoProfileForUserException,
-                                                                     PropertyServerException,
-                                                                     UserNotAuthorizedException
+    public String addMyContactMethod(String              userId,
+                                     ContactMethodType   type,
+                                     String              service,
+                                     String              value) throws InvalidParameterException,
+                                                                       NoProfileForUserException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         return null;
     }
@@ -341,7 +335,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   deleteContactMethod(String            userId,
+    public void deleteMyContactMethod(String            userId,
                                       String            contactMethodGUID,
                                       ContactMethodType type) throws InvalidParameterException,
                                                                      NoProfileForUserException,

@@ -34,6 +34,16 @@ public class InvalidParameterHandler
         this.maxPagingSize = maxPagingSize;
     }
 
+    /**
+     * Get the maximum paging size.
+     *
+     * @return maxPagingSize new value
+     */
+    public int getMaxPagingSize()
+    {
+        return maxPagingSize;
+    }
+
 
     /**
      * Throw an exception if a server URL or  has not been supplied.  It is typically

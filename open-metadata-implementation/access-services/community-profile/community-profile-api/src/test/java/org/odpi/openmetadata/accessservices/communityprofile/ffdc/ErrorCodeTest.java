@@ -67,27 +67,13 @@ public class ErrorCodeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.SERVER_URL_MALFORMED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_USER_ID);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_GUID);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.USER_NOT_AUTHORIZED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.PROPERTY_SERVER_ERROR);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_ENUM);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_TEXT);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NEGATIVE_START_FROM);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NEGATIVE_PAGE_SIZE);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.SERVER_NOT_AVAILABLE);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_OTHER_IDENTITY);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.QUALIFIED_NAME_NOT_UNIQUE);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.UNKNOWN_IDENTITY);
         testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_INITIALIZED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_AVAILABLE);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.MULTIPLE_INSTANCES_FOUND);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_END2_RETURNED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_RESPONSE_FROM_API);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.SERVICE_NOT_INITIALIZED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.EXCEPTION_RESPONSE_FROM_API);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.UNABLE_TO_CREATE_CONTRIBUTION_RECORD);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE);
     }
 
 
@@ -103,7 +89,7 @@ public class ErrorCodeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR);
+            jsonString = objectMapper.writeValueAsString(CommunityProfileErrorCode.NO_OTHER_IDENTITY);
         }
         catch (Throwable  exc)
         {
@@ -112,7 +98,7 @@ public class ErrorCodeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, CommunityProfileErrorCode.class) == CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR);
+            assertTrue(objectMapper.readValue(jsonString, CommunityProfileErrorCode.class) == CommunityProfileErrorCode.NO_OTHER_IDENTITY);
         }
         catch (Throwable  exc)
         {
@@ -135,8 +121,8 @@ public class ErrorCodeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED.equals(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED));
-        assertFalse(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED.equals(CommunityProfileErrorCode.SERVICE_NOT_INITIALIZED));
+        assertTrue(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.equals(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY));
+        assertFalse(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.equals(CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE));
     }
 
 
@@ -145,7 +131,7 @@ public class ErrorCodeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode() == CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode());
-        assertFalse(CommunityProfileErrorCode.SERVER_URL_NOT_SPECIFIED.hashCode() == CommunityProfileErrorCode.SERVICE_NOT_INITIALIZED.hashCode());
+        assertTrue(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.hashCode() == CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.hashCode());
+        assertFalse(CommunityProfileErrorCode.UNABLE_TO_CREATE_USER_IDENTITY.hashCode() == CommunityProfileErrorCode.NO_IDENTITY_FOR_PROFILE.hashCode());
     }
 }
