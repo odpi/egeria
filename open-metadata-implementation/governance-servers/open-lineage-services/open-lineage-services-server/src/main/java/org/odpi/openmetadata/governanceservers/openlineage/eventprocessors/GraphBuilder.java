@@ -41,7 +41,11 @@ public class GraphBuilder {
         this.jobConfiguration = new JobConfiguration();
     }
 
-    //TODO make this generic for all entities for all uses cases
+    /**
+     * Creates new Entities in bufferGraph related to Lineage
+     *
+     * @return
+     */
     public void createEntity(AssetLineageEntityEvent entity) {
 
         final String methodName = "createEntity";
@@ -140,6 +144,11 @@ public class GraphBuilder {
 
 
 
+    /**
+     * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
+     *
+     * @return
+     */
     public void createRelationship(RelationshipEvent event) {
 
         String methodName = "createRelationship";
