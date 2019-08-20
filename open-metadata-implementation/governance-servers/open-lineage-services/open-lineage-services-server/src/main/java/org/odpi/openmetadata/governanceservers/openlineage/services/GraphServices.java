@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
@@ -42,7 +42,7 @@ public class GraphServices {
      * the condensed path by querying a different method.
      *
      * @param scope        The scope queried by the user: hostview, tableview, columnview.
-     * @param lineageQuery ultimate-source, ultimate-destination, glossary.
+     * @param lineageQuery end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param graphName    main, buffer, mock, history.
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
@@ -57,7 +57,7 @@ public class GraphServices {
         Graph graph = getJanusGraph(graphName);
         switch (Queries.valueOf(lineageQuery)) {
             case ENDTOEND:
-                //         response = endToEnd(scope, graph, guid);
+                response = endToEnd(scope, graph, guid);
                 break;
             case ULTIMATESOURCE:
                 response = ultimateSource(scope, graph, guid);
@@ -74,52 +74,31 @@ public class GraphServices {
         return response;
     }
 
-//    private String endToEnd(String scope, Graph graph, String guid) {
-//        GraphTraversalSource g = graph.traversal();
-//        String edgeLabel = getEdgeLabel(scope);
-//
-//        Graph endToEndGraph = (Graph)
-//                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).union(
-//                        __.until((inE(edgeLabel).count().is(0)).
-//                                repeat(inE(edgeLabel).subgraph("subGraph").outV()).
-//                                cap("subGraph"),
-//                        __.until(outE(edgeLabel).count().is(0)).
-//                                repeat(outE(edgeLabel).subgraph("subGraph").inV()).
-//                                cap("subGraph")
-//                ).next();
-//
-//
-//        return janusGraphToGraphson(endToEndGraph);
-//    }
-
     /**
-     * Map http parameter to enum value by converting to uppercase and removing - characters.
+     * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
+     * leading from the queried node to any leaf nodes.
      *
-     * @param string main, buffer, mock, history.
-     * @return String which corresponds to enum format.
-     */
-    private String reformatArg(String string) {
-        string = string.toUpperCase();
-        string = string.replaceAll("-", "");
-        return string;
-    }
-
-
-    /**
-     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
-     *
+     * @param scope The scope queried by the user: tableview, columnview.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param guid  The guid of the glossary term of which the lineage is queried of.
+     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String glossary(Graph graph, String guid) {
+    private String endToEnd(String scope, Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
-        Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-                        cap("subGraph").next();
-        return janusGraphToGraphson(subGraph);
+        String edgeLabel = getEdgeLabel(scope);
+
+        final GraphTraversal<Vertex, Vertex> queriedNode = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
+
+        Graph endToEndGraph = (Graph)
+                queriedNode.union(
+                        queriedNode.
+                                until(inE(edgeLabel).count().is(0)).
+                                repeat(inE(edgeLabel).subgraph("subGraph").outV()),
+                        queriedNode.
+                                until(outE(edgeLabel).count().is(0)).
+                                repeat(outE(edgeLabel).subgraph("subGraph").inV())
+                ).cap("subGraph").next();
+        return janusGraphToGraphson(endToEndGraph);
     }
 
     /**
@@ -195,6 +174,36 @@ public class GraphServices {
             log.error(e.getMessage());
         }
         return janusGraphToGraphson(responseGraph);
+    }
+
+    /**
+     * Map http parameter to enum value by converting to uppercase and removing - characters.
+     *
+     * @param string main, buffer, mock, history.
+     * @return String which corresponds to enum format.
+     */
+    private String reformatArg(String string) {
+        string = string.toUpperCase();
+        string = string.replaceAll("-", "");
+        return string;
+    }
+
+
+    /**
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid  The guid of the glossary term of which the lineage is queried of.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String glossary(Graph graph, String guid) {
+        GraphTraversalSource g = graph.traversal();
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
+                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
+                        cap("subGraph").next();
+        return janusGraphToGraphson(subGraph);
     }
 
     /**
