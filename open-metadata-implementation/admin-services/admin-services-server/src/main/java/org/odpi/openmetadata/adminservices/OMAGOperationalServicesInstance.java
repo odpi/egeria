@@ -40,15 +40,29 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 
 
     /**
+     * Obsolete constructor
+     *
+     * @param serverName name of the new server
+     * @param serviceName name of the new service instance
+     */
+    @Deprecated
+    public OMAGOperationalServicesInstance(String   serverName,
+                                           String   serviceName)
+    {
+        super(serverName, serviceName);
+    }
+
+    /**
      * Default constructor
      *
      * @param serverName name of the new server
      * @param serviceName name of the new service instance
      */
     public OMAGOperationalServicesInstance(String   serverName,
-                                           String   serviceName)
+                                           String   serviceName,
+                                           int      maxPageSize)
     {
-        super(serverName, serviceName);
+        super(serverName, serviceName, maxPageSize);
     }
 
 

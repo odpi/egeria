@@ -32,15 +32,21 @@ public class GovernanceProgramServicesInstance extends OMASServiceInstance
      *
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param auditLog logging destination
+     * @param localServerUserId userId to use for server initiated requests
+     * @param maxPageSize maximum number of results on a single request
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public GovernanceProgramServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                             OMRSAuditLog auditLog) throws NewInstanceException
+                                             OMRSAuditLog            auditLog,
+                                             String                  localServerUserId,
+                                             int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

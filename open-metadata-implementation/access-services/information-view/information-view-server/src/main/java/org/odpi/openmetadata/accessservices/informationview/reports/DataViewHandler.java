@@ -50,7 +50,7 @@ public class DataViewHandler {
         requestBody.setRegistrationGuid(softwareServerCapabilitySource.getGuid());
         requestBody.setRegistrationQualifiedName(softwareServerCapabilitySource.getQualifiedName());
 
-            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getRegistrationQualifiedName(), Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
+            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName("", Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
                     .withStringProperty(Constants.NAME, requestBody.getDataView().getName())

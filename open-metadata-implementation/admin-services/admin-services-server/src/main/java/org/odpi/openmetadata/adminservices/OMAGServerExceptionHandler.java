@@ -128,23 +128,4 @@ class OMAGServerExceptionHandler extends RESTExceptionHandler
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName - class name of the exception to recreate
-     */
-    private void captureCheckedException(FFDCResponseBase         response,
-                                         OCFCheckedExceptionBase  error,
-                                         String                   exceptionClassName)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-    }
 }

@@ -30,17 +30,23 @@ public class AssetConsumerServicesInstance extends OCFOMASServiceInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that AssetConsumer is allowed to serve Assets from.
      * @param auditLog destination for audit log events.
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize maximum number of results that can be returned on a single call
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetConsumerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                          List<String>            supportedZones,
-                                         OMRSAuditLog            auditLog) throws NewInstanceException
+                                         OMRSAuditLog            auditLog,
+                                         String                  localServerUserId,
+                                         int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               supportedZones,
               null,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

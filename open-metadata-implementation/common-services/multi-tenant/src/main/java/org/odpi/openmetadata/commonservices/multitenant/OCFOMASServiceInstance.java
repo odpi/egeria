@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.multitenant;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
-import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityVerifier;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -41,21 +40,95 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
      *
      * @param serviceName name of this service
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param auditLog logging destination
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    @Deprecated
+    public OCFOMASServiceInstance(String                  serviceName,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  OMRSAuditLog            auditLog) throws NewInstanceException
+    {
+        this(serviceName, repositoryConnector, null, null, auditLog, null, 500);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
      * @param auditLog logging destination
      * @throws NewInstanceException a problem occurred during initialization
      */
+    @Deprecated
     public OCFOMASServiceInstance(String                  serviceName,
                                   OMRSRepositoryConnector repositoryConnector,
                                   List<String>            supportedZones,
                                   List<String>            defaultZones,
                                   OMRSAuditLog            auditLog) throws NewInstanceException
     {
-        super(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog);
+        this(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, null, 500);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    public OCFOMASServiceInstance(String                  serviceName,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  OMRSAuditLog            auditLog,
+                                  String                  localServerUserId,
+                                  int                     maxPageSize) throws NewInstanceException
+    {
+        this(serviceName,
+             repositoryConnector,
+             null,
+             null,
+             auditLog,
+             localServerUserId,
+             maxPageSize);
+    }
+
+
+    /**
+     * Set up the local repository connector that will service the REST Calls.
+     *
+     * @param serviceName name of this service
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
+     * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
+     * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
+     * @throws NewInstanceException a problem occurred during initialization
+     */
+    public OCFOMASServiceInstance(String                  serviceName,
+                                  OMRSRepositoryConnector repositoryConnector,
+                                  List<String>            supportedZones,
+                                  List<String>            defaultZones,
+                                  OMRSAuditLog            auditLog,
+                                  String                  localServerUserId,
+                                  int                     maxPageSize) throws NewInstanceException
+    {
+        super(serviceName, repositoryConnector, supportedZones, defaultZones, auditLog, localServerUserId, maxPageSize);
+
+        LastAttachmentHandler lastAttachmentHandler = new LastAttachmentHandler(serviceName,
+                                                                                serverName,
+                                                                                localServerUserId,
+                                                                                repositoryHandler,
+                                                                                repositoryHelper);
 
         this.certificationHandler      = new CertificationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.commentHandler            = new CommentHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+        this.commentHandler            = new CommentHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
         this.connectionHandler         = new ConnectionHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.connectorTypeHandler      = new ConnectorTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.endpointHandler           = new EndpointHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
@@ -63,17 +136,18 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+        this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
         this.locationHandler           = new LocationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.meaningHandler            = new MeaningHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.noteHandler               = new NoteHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.noteLogHandler            = new NoteLogHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+        this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
         this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
 
         this.assetHandler              = new AssetHandler(serviceName,
                                                           serverName,
+                                                          localServerUserId,
                                                           invalidParameterHandler,
                                                           repositoryHandler,
                                                           repositoryHelper,
@@ -91,7 +165,8 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           relatedMediaHandler,
                                                           schemaTypeHandler,
                                                           supportedZones,
-                                                          defaultZones);
+                                                          defaultZones,
+                                                          maxPageSize);
 
 
         if (securityVerifier != null)
@@ -99,22 +174,6 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
             assetHandler.setSecurityVerifier(securityVerifier);
             connectionHandler.setSecurityVerifier(securityVerifier);
         }
-    }
-
-
-    /**
-     * Set up the local repository connector that will service the REST Calls.
-     *
-     * @param serviceName name of this service
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
-     * @param auditLog logging destination
-     * @throws NewInstanceException a problem occurred during initialization
-     */
-    public OCFOMASServiceInstance(String                  serviceName,
-                                  OMRSRepositoryConnector repositoryConnector,
-                                  OMRSAuditLog            auditLog) throws NewInstanceException
-    {
-        this(serviceName, repositoryConnector, null, null, auditLog);
     }
 
 

@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.rest;
 
@@ -12,20 +12,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * GUIDRequestBody provides a structure for passing a unique identifier (guid) as a request body over a REST API.
+ * UserIdentityRequestBody provides the request body payload for working on UserIdentity entities and their
+ * link to profiles.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
+public class UserIdentityRequestBody extends CommunityProfileOMASAPIRequestBody
 {
-    private String guid = null;
+    private String qualifiedName = null;
 
 
     /**
      * Default constructor
      */
-    public GUIDRequestBody()
+    public UserIdentityRequestBody()
     {
     }
 
@@ -35,13 +36,13 @@ public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
      *
      * @param template object to copy
      */
-    public GUIDRequestBody(GUIDRequestBody template)
+    public UserIdentityRequestBody(UserIdentityRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            this.guid = template.getGUID();
+            this.qualifiedName = template.getQualifiedName();
         }
     }
 
@@ -51,20 +52,20 @@ public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
      *
      * @return String identifier
      */
-    public String getGUID()
+    public String getQualifiedName()
     {
-        return guid;
+        return qualifiedName;
     }
 
 
     /**
      * Set up the unique employee number for this governance officer.
      *
-     * @param guid String identifier
+     * @param qualifiedName String identifier
      */
-    public void setGUID(String guid)
+    public void setQualifiedName(String qualifiedName)
     {
-        this.guid = guid;
+        this.qualifiedName = qualifiedName;
     }
 
 
@@ -76,9 +77,9 @@ public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "GUIDRequestBody{" +
-                ", guid='" + guid +
-                '}';
+        return "UserIdentityRequestBody{" +
+                       "qualifiedName='" + qualifiedName + '\'' +
+                       '}';
     }
 
 
@@ -95,12 +96,12 @@ public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
         {
             return true;
         }
-        if (!(objectToCompare instanceof GUIDRequestBody))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
-        GUIDRequestBody that = (GUIDRequestBody) objectToCompare;
-        return  Objects.equals(getGUID(), that.getGUID());
+        UserIdentityRequestBody that = (UserIdentityRequestBody) objectToCompare;
+        return Objects.equals(getQualifiedName(), that.getQualifiedName());
     }
 
 
@@ -112,6 +113,6 @@ public class GUIDRequestBody extends CommunityProfileOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid);
+        return Objects.hash(getQualifiedName());
     }
 }

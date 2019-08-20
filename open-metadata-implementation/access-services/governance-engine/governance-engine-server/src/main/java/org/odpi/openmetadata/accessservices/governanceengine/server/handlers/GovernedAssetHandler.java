@@ -8,13 +8,16 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.ContextBuilder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -22,6 +25,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -33,14 +37,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DESCRIPTION;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DISPLAY_NAME;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.NAME;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.PATCH_LEVEL;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.QUALIFIED_NAME;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_LABELS;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_PROPERTIES;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_TAG;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SOFTWARE_SERVER_CAPABILITY;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SOFTWARE_SERVER_CAPABILITY_GUID;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SOURCE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.TYPE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.VERSION;
 
 /**
  * ConnectionHandler retrieves Connection objects from the property handlers.  It runs handlers-side in the AssetConsumer
@@ -150,6 +162,45 @@ public class GovernedAssetHandler {
         return entityDetail.getType().getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
     }
 
+    public GovernedAsset getGovernedAsset(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
+        GovernedAsset governedAsset = new GovernedAsset();
+
+        governedAsset.setGuid(entity.getGUID());
+        governedAsset.setType(entity.getType().getTypeDefName());
+        governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
+        governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
+        governedAsset.setContext(buildContext(entity));
+
+        if (entity.getClassifications() != null && !entity.getClassifications().isEmpty()) {
+            governedAsset.setAssignedGovernanceClassification(getGovernanceClassification(entity.getClassifications()));
+        }
+
+        return governedAsset;
+    }
+
+    public SoftwareServerCapability createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
+
+        InstanceProperties initialProperties = getSoftwareServerCapabilityProperties(softwareServerCapability);
+
+        EntityDetail entityDetail = metadataCollection.addEntity(userId,
+                SOFTWARE_SERVER_CAPABILITY_GUID,
+                initialProperties,
+                Collections.emptyList(),
+                InstanceStatus.ACTIVE);
+
+        return getSoftwareServer(entityDetail);
+    }
+
+    public SoftwareServerCapability getSoftwareServerCapabilityByGUID(String userId, String guid) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
+
+        EntityDetail entityDetail = metadataCollection.getEntityDetail(userId, guid);
+        if (entityDetail.getType().getTypeDefName().equals(SOFTWARE_SERVER_CAPABILITY)) {
+            return getSoftwareServer(entityDetail);
+        }
+
+        return null;
+    }
+
     private GovernanceClassification getGovernanceClassification(List<Classification> allClassifications) {
         Optional<Classification> classification = filterGovernedClassification(allClassifications);
 
@@ -212,22 +263,6 @@ public class GovernedAssetHandler {
         return governedAssets;
     }
 
-    public GovernedAsset getGovernedAsset(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
-        GovernedAsset governedAsset = new GovernedAsset();
-
-        governedAsset.setGuid(entity.getGUID());
-        governedAsset.setType(entity.getType().getTypeDefName());
-        governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-        governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
-        governedAsset.setContext(buildContext(entity));
-
-        if (entity.getClassifications() != null && !entity.getClassifications().isEmpty()) {
-            governedAsset.setAssignedGovernanceClassification(getGovernanceClassification(entity.getClassifications()));
-        }
-
-        return governedAsset;
-    }
-
     private Context buildContext(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         switch (entity.getType().getTypeDefName()) {
             case RELATIONAL_COLUMN:
@@ -263,5 +298,48 @@ public class GovernedAssetHandler {
 
     private EntityDetail getEntityDetailById(String userId, String assetGuid) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
         return metadataCollection.getEntityDetail(userId, assetGuid);
+    }
+
+    private SoftwareServerCapability getSoftwareServer(EntityDetail entityDetail) {
+        InstanceProperties properties = entityDetail.getProperties();
+        OMRSRepositoryHelper repositoryHelper = repositoryConnector.getRepositoryHelper();
+
+        SoftwareServerCapability softwareServerCapability = new SoftwareServerCapability();
+        softwareServerCapability.setGUID(entityDetail.getGUID());
+        softwareServerCapability.setOpenTypeGUID(entityDetail.getType().getTypeDefName());
+        softwareServerCapability.setName(getStringProperty(properties, NAME, repositoryHelper));
+        softwareServerCapability.setDescription(getStringProperty(properties, DESCRIPTION, repositoryHelper));
+        softwareServerCapability.setType(getStringProperty(properties, TYPE, repositoryHelper));
+        softwareServerCapability.setPatchLevel(getStringProperty(properties, PATCH_LEVEL, repositoryHelper));
+        softwareServerCapability.setVersion(getStringProperty(properties, VERSION, repositoryHelper));
+        softwareServerCapability.setSource(getStringProperty(properties, SOURCE, repositoryHelper));
+
+        return softwareServerCapability;
+    }
+
+    private InstanceProperties getSoftwareServerCapabilityProperties(SoftwareServerCapability softwareServerCapability) {
+        InstanceProperties properties = new InstanceProperties();
+        OMRSRepositoryHelper repositoryHelper = repositoryConnector.getRepositoryHelper();
+
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getName(), NAME, properties, repositoryHelper);
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getDescription(), DESCRIPTION, properties, repositoryHelper);
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getType(), TYPE, properties, repositoryHelper);
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getVersion(), VERSION, properties, repositoryHelper);
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getPatchLevel(), PATCH_LEVEL, properties, repositoryHelper);
+        addSoftwareServerCapabilityProperty(softwareServerCapability.getSource(), SOURCE, properties, repositoryHelper);
+
+        return properties;
+    }
+
+    private void addSoftwareServerCapabilityProperty(String propertyValue, String propertyName, InstanceProperties properties, OMRSRepositoryHelper repositoryHelper) {
+        String methodName = "addSoftwareServerCapabilityProperty";
+
+        if (propertyValue != null) {
+            repositoryHelper.addStringPropertyToInstance(GOVERNANCE_ENGINE, properties, propertyName, propertyValue, methodName);
+        }
+    }
+
+    private String getStringProperty(InstanceProperties properties, String propertyName, OMRSRepositoryHelper repositoryHelper) {
+        return repositoryHelper.getStringProperty(GOVERNANCE_ENGINE, propertyName, properties, "getStringProperty");
     }
 }

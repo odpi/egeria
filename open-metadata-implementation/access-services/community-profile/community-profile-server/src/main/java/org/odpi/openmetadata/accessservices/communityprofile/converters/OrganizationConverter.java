@@ -19,13 +19,13 @@ public class OrganizationConverter extends TeamConverter
      * @param entity properties to convert
      * @param relationships properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    OrganizationConverter(EntityDetail         entity,
-                          List<Relationship>   relationships,
-                          OMRSRepositoryHelper repositoryHelper,
-                          String               componentName)
+    public OrganizationConverter(EntityDetail         entity,
+                                 List<Relationship>   relationships,
+                                 OMRSRepositoryHelper repositoryHelper,
+                                 String               serviceName)
     {
-        super(entity, relationships, repositoryHelper, componentName);
+        super(entity, relationships, repositoryHelper, serviceName);
     }
 }

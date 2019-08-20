@@ -39,7 +39,7 @@ public class ExceptionHandler {
                                                                           String reportingClassName) {
         InformationViewErrorCode errorCode = InformationViewErrorCode.ADD_ENTITY_EXCEPTION;
         return new AddEntityException(errorCode.getHttpErrorCode(), reportingClassName,
-                errorCode.getFormattedErrorMessage(typeName, e.getMessage()),
+                errorCode.getFormattedErrorMessage(typeName, getBaseExceptionMessage(e)),
                 errorCode.getSystemAction(),
                 errorCode.getUserAction(),
                 null);
@@ -109,7 +109,7 @@ public class ExceptionHandler {
         InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
         return new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
                 reportingClassName,
-                auditCode.getFormattedErrorMessage(relationshipTypeName, entityGuid, e.getMessage()),
+                auditCode.getFormattedErrorMessage(relationshipTypeName, entityGuid, getBaseExceptionMessage(e)),
                 auditCode.getSystemAction(),
                 auditCode.getUserAction(),
                 e);
@@ -152,6 +152,24 @@ public class ExceptionHandler {
 
     public static InformationViewExceptionBase buildRetrieveContextException(String entityGuid, OMRSCheckedExceptionBase e, String reportingClassName) {
         InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
-        return new ContextLoadException(code.getHttpErrorCode(), reportingClassName, code.getFormattedErrorMessage(entityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        return new ContextLoadException(code.getHttpErrorCode(), reportingClassName, code.getFormattedErrorMessage(entityGuid, getBaseExceptionMessage(e)), code.getSystemAction(), code.getUserAction(), e);
     }
+
+
+    public static InformationViewExceptionBase buildIllegalUpdateEntityException(Throwable exception,
+                                                                                 String reportingClassName) {
+        InformationViewErrorCode errorCode = InformationViewErrorCode.ILLEGAL_UPDATE_EXCEPTION;
+        return new NoRegistrationDetailsProvided(errorCode.getHttpErrorCode(),
+                                                reportingClassName,
+                                                errorCode.getFormattedErrorMessage(),
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                exception);
+    }
+
+
+    private static String getBaseExceptionMessage(OMRSCheckedExceptionBase e) {
+        return e != null ? e.getMessage() : "";
+    }
+
 }

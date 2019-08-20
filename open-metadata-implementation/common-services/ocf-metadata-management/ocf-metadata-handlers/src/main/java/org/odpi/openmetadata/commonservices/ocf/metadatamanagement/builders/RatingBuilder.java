@@ -17,6 +17,7 @@ public class RatingBuilder extends RootBuilder
     private StarRating starRating;
     private String     review;
     private boolean    isPublic;
+    private String     anchorGUID;
 
     /**
      * Constructor.
@@ -24,6 +25,7 @@ public class RatingBuilder extends RootBuilder
      * @param starRating stars parameter
      * @param review review comments
      * @param isPublic should this feedback be shareable?
+     * @param anchorGUID unique identifier of the anchor entity
      * @param repositoryHelper helper methods
      * @param serviceName name of this OMAS
      * @param serverName name of local server
@@ -31,6 +33,7 @@ public class RatingBuilder extends RootBuilder
     public RatingBuilder(StarRating           starRating,
                          String               review,
                          boolean              isPublic,
+                         String               anchorGUID,
                          OMRSRepositoryHelper repositoryHelper,
                          String               serviceName,
                          String               serverName)
@@ -40,6 +43,7 @@ public class RatingBuilder extends RootBuilder
         this.starRating = starRating;
         this.review = review;
         this.isPublic = isPublic;
+        this.anchorGUID = anchorGUID;
     }
 
 
@@ -83,6 +87,15 @@ public class RatingBuilder extends RootBuilder
                                                                       properties,
                                                                       RatingMapper.REVIEW_PROPERTY_NAME,
                                                                       review,
+                                                                      methodName);
+        }
+
+        if (anchorGUID != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      RatingMapper.ANCHOR_GUID_PROPERTY_NAME,
+                                                                      anchorGUID,
                                                                       methodName);
         }
 

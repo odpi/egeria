@@ -291,7 +291,7 @@ public class DerbyConnector extends ViewGeneratorConnectorBase {
                 return createTableDefinitions(tableContextEvent, gaianNodeName, technicalTableName, businessTableName, logicalTableName, mappedColumns);
             }
         } catch (Exception e){
-            log.error("Unable to process the event.");
+            log.error("Unable to process the event.", e);
         }
 
 

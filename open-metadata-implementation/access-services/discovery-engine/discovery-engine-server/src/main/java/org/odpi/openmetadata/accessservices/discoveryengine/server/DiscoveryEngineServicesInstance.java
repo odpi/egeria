@@ -32,19 +32,25 @@ public class DiscoveryEngineServicesInstance extends ODFOMASServiceInstance
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
      * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
     public DiscoveryEngineServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                            List<String>            supportedZones,
                                            List<String>            defaultZones,
-                                           OMRSAuditLog            auditLog) throws NewInstanceException
+                                           OMRSAuditLog            auditLog,
+                                           String                  localServerUserId,
+                                           int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               supportedZones,
               defaultZones,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         final String methodName = "new ServiceInstance";
 

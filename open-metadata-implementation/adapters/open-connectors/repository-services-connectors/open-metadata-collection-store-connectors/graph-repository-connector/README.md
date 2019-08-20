@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-  
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
 # Graph Repository
 
 The Graph Repository provides a local repository that uses a graph store as its persistence store.
