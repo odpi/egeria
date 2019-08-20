@@ -2,12 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.client;
 
+import org.odpi.openmetadata.accessservices.glossaryview.converters.GlossaryViewEntityDetailToSubClass;
+import org.odpi.openmetadata.accessservices.glossaryview.converters.ToSubClass;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
-import org.odpi.openmetadata.accessservices.glossaryview.rest.Category;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
-import org.odpi.openmetadata.accessservices.glossaryview.rest.Term;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -29,17 +32,17 @@ public class GlossaryViewClient extends OmasClient {
     private static final String GET_GLOSSARIES = PATH_ROOT + "/glossaries" + PARAM_DELIMITER + "from={2}&size={3}";
     private static final String GET_TERM_HOME_GLOSSARY = PATH_ROOT + "/terms/{2}/home-glossary";
     private static final String GET_CATEGORY_HOME_GLOSSARY = PATH_ROOT + "/categories/{2}/home-glossary";
-    private static final String GET_GLOSSARY_EXTERNAL_GLOSSARIES = PATH_ROOT + "/glossaries/{2}/external-glossaries" + PARAM_DELIMITER + PAGINATION;
+    private static final String GET_GLOSSARY_EXTERNAL_GLOSSARY_LINKS = PATH_ROOT + "/glossaries/{2}/external-glossary-links" + PARAM_DELIMITER + PAGINATION;
 
     private static final String GET_CATEGORY = PATH_ROOT + "/categories/{2}";
     private static final String GET_CATEGORIES_OF_GLOSSARY = PATH_ROOT + "/glossaries/{2}/categories";
     private static final String GET_SUBCATEGORIES = PATH_ROOT + "/categories/{2}/subcategories";
-    private static final String GET_CATEGORY_EXTERNAL_GLOSSARIES = PATH_ROOT + "/categories/{2}/external-glossaries" + PARAM_DELIMITER + PAGINATION;
+    private static final String GET_CATEGORY_EXTERNAL_GLOSSARY_LINKS = PATH_ROOT + "/categories/{2}/external-glossary-links" + PARAM_DELIMITER + PAGINATION;
 
     private static final String GET_TERM = PATH_ROOT + "/terms/{2}";
     private static final String GET_TERMS_OF_GLOSSARY = PATH_ROOT + "/glossaries/{2}/terms";
     private static final String GET_TERMS_OF_CATEGORY = PATH_ROOT + "/categories/{2}/terms";
-    private static final String GET_TERM_EXTERNAL_GLOSSARIES = PATH_ROOT + "/terms/{2}/external-glossaries" + PARAM_DELIMITER + PAGINATION;
+    private static final String GET_TERM_EXTERNAL_GLOSSARY_LINKS = PATH_ROOT + "/terms/{2}/external-glossary-links" + PARAM_DELIMITER + PAGINATION;
     private static final String GET_RELATED_TERMS = PATH_ROOT + "/terms/{2}/see-also" + PARAM_DELIMITER + PAGINATION;
     private static final String GET_SYNONYMS = PATH_ROOT + "/terms/{2}/synonyms" + PARAM_DELIMITER + PAGINATION;
     private static final String GET_ANTONYMS = PATH_ROOT + "/terms/{2}/antonyms" + PARAM_DELIMITER + PAGINATION;
@@ -102,7 +105,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleEntitiesPagedResponse("getAllGlossaries",
                 GET_GLOSSARIES, serverName, userId, from, size);
 
-        return castOmasResult(response.getResult(), Glossary.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary());
     }
 
     /**
@@ -123,7 +126,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getGlossary", GET_GLOSSARY,
                 serverName, userId, glossaryGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), Glossary.class));
+        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
     }
 
     /**
@@ -144,7 +147,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getTermHomeGlossary",
                 GET_TERM_HOME_GLOSSARY, serverName, userId, termGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), Glossary.class));
+        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
     }
 
     /**
@@ -166,11 +169,11 @@ public class GlossaryViewClient extends OmasClient {
                 GET_CATEGORY_HOME_GLOSSARY, serverName, userId, categoryGUID);
 
 
-        return firstEntity(castOmasResult(response.getResult(), Glossary.class));
+        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
     }
 
     /**
-     * Extract a glossaries's external glossaries
+     * Extract a glossaries's external glossary links
      *
      * @param userId calling user
      * @param glossaryGUID glossary GUID
@@ -183,14 +186,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Glossary> getExternalGlossariesOfGlossary(String userId, String glossaryGUID,
-                                                          Integer from, Integer size)
+    public List<ExternalGlossaryLink> getExternalGlossaryLinksOfGlossary(String userId, String glossaryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
-        GlossaryViewEntityDetailResponse response =  getMultipleRelatedEntitiesPagedResponse("getExternalGlossariesOfGlossary",
-                GET_GLOSSARY_EXTERNAL_GLOSSARIES, serverName, userId, glossaryGUID, from, size);
+        GlossaryViewEntityDetailResponse response =  getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfGlossary",
+                GET_GLOSSARY_EXTERNAL_GLOSSARY_LINKS, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Glossary.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
     }
 
     /**
@@ -205,13 +207,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public Category getCategory(String userId, String categoryGUID)
+    public GlossaryCategory getCategory(String userId, String categoryGUID)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getCategory", GET_CATEGORY,
                 serverName, userId, categoryGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), Category.class));
+        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory()));
     }
 
     /**
@@ -228,13 +230,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Category> getCategories(String userId, String glossaryGUID, Integer from, Integer size)
+    public List<GlossaryCategory> getCategories(String userId, String glossaryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getCategories",
                 GET_CATEGORIES_OF_GLOSSARY, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Category.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory());
     }
 
     /**
@@ -251,17 +253,17 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Category> getSubcategories(String userId, String categoryGUID, Integer from, Integer size)
+    public List<GlossaryCategory> getSubcategories(String userId, String categoryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSubcategories",
                 GET_SUBCATEGORIES, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Category.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory());
     }
 
     /**
-     * Extract a category's external glossaries
+     * Extract a category's external glossary links
      *
      * @param userId calling user
      * @param categoryGUID category GUID
@@ -274,14 +276,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Glossary> getExternalGlossariesOfCategory(String userId, String categoryGUID,
-                                                                            Integer from, Integer size)
+    public List<ExternalGlossaryLink> getExternalGlossaryLinksOfCategory(String userId, String categoryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
-        GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossariesOfCategory",
-                GET_CATEGORY_EXTERNAL_GLOSSARIES, serverName, userId, categoryGUID, from, size);
+        GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfCategory",
+                GET_CATEGORY_EXTERNAL_GLOSSARY_LINKS, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Glossary.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
     }
 
     /**
@@ -296,13 +297,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public Term getTerm(String userId, String termGUID)
+    public GlossaryTerm getTerm(String userId, String termGUID)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getSingleEntityResponse("getTerm", GET_TERM, serverName,
                 userId, termGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), Term.class));
+        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm()));
     }
 
     /**
@@ -319,13 +320,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getTermsOfGlossary(String userId, String glossaryGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getTermsOfGlossary(String userId, String glossaryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTermsOfGlossary",
                 GET_TERMS_OF_GLOSSARY, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -342,17 +343,17 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getTermsOfCategory(String userId, String categoryGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getTermsOfCategory(String userId, String categoryGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTermsOfCategory",
                 GET_TERMS_OF_CATEGORY, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
-     * Extract a term's external glossaries
+     * Extract a term's external glossary links
      *
      * @param userId calling user
      * @param termGUID term GUID
@@ -365,13 +366,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Glossary> getExternalGlossariesOfTerm(String userId, String termGUID, Integer from, Integer size)
+    public List<ExternalGlossaryLink> getExternalGlossaryLinksOfTerm(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
-        GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossariesOfTerm",
-                GET_TERM_EXTERNAL_GLOSSARIES, serverName, userId, termGUID, from, size);
+        GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfTerm",
+                GET_TERM_EXTERNAL_GLOSSARY_LINKS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Glossary.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
     }
 
     /**
@@ -388,13 +389,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getRelatedTerms(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getRelatedTerms(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getRelatedTerms",
                 GET_RELATED_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -411,13 +412,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getSynonyms(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getSynonyms(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSynonyms",
                 GET_SYNONYMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -434,13 +435,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getAntonyms(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getAntonyms(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAntonyms",
                 GET_ANTONYMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -457,13 +458,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getPreferredTerms(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getPreferredTerms(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getPreferredTerms",
                 GET_PREFERRED_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -480,13 +481,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getReplacementTerms(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getReplacementTerms(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getReplacementTerms",
                 GET_REPLACEMENT_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -503,13 +504,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getTranslations(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getTranslations(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTranslations",
                 GET_TRANSLATIONS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -526,13 +527,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getIsA(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getIsA(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getIsA", GET_IS_A,
                 serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -549,13 +550,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getValidValues(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getValidValues(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getValidValues",
                 GET_VALID_VALUES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -572,13 +573,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getUsedInContexts(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getUsedInContexts(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getUsedInContexts",
                 GET_USED_IN_CONTEXTS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -595,13 +596,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getAssignedElements(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getAssignedElements(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAssignedElements",
                 GET_ASSIGNED_ELEMENTS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -618,13 +619,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getAttributes(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getAttributes(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAttributes",
                 GET_ATTRIBUTES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -641,13 +642,13 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getSubtypes(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getSubtypes(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSubtypes",
                 GET_SUBTYPES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
     /**
@@ -664,17 +665,21 @@ public class GlossaryViewClient extends OmasClient {
      * @throws InvalidParameterException if parameter validation fails
      * @throws GlossaryViewOmasException if a problem occurs on the omas backend
      */
-    public List<Term> getTypes(String userId, String termGUID, Integer from, Integer size)
+    public List<GlossaryTerm> getTypes(String userId, String termGUID, Integer from, Integer size)
             throws PropertyServerException, InvalidParameterException, GlossaryViewOmasException {
 
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTypes",
                 GET_TYPES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), Term.class);
+        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
     }
 
-    private <T extends GlossaryViewEntityDetail> List<T> castOmasResult(List<GlossaryViewEntityDetail> omasResult, Class<T> targetClass){
-        return omasResult.stream().filter(targetClass::isInstance).map(targetClass::cast).collect(Collectors.toList());
+    /*
+    * In order to have meaning, extracted into a separate method the 'casting' instructions
+    */
+    private <T extends GlossaryViewEntityDetail> List<T> castOmasResult(List<GlossaryViewEntityDetail> omasResult,
+                                                                        ToSubClass<T> toSubclass){
+        return omasResult.stream().map(toSubclass).collect(Collectors.toList());
     }
 
     private <T extends GlossaryViewEntityDetail> T firstEntity(List<T> entities){

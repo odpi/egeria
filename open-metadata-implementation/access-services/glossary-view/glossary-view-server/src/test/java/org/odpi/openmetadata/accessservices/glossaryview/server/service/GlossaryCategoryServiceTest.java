@@ -13,7 +13,7 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
+public class GlossaryCategoryServiceTest extends GlossaryViewOmasBaseTest{
 
     private final CategoryService underTest = new CategoryService();
 
@@ -75,9 +75,9 @@ public class CategoryServiceTest extends GlossaryViewOmasBaseTest{
     public void getExternalGlossaries() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
                 eq(LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_GUID), eq(LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaries"))).thenReturn(Arrays.asList(externalGlossaryLink));
+                eq("getExternalGlossaryLinks"))).thenReturn(Arrays.asList(externalGlossaryLink));
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME,
+        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME,
                 categories.get(0).getGUID(),0, 10);
 
         assertEquals(1, response.getResult().size());

@@ -89,9 +89,9 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
     public void getExternalGlossaries() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
                 eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_GUID), eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaries"))).thenReturn(Arrays.asList(externalGlossaryLink));
+                eq("getExternalGlossaryLinks"))).thenReturn(Arrays.asList(externalGlossaryLink));
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
 
         assertEquals(1, response.getResult().size());
 
@@ -141,9 +141,9 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
                 "systemAction--getEntitiesForRelationshipType", "userAction--getEntitiesForRelationshipType");
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(glossaries.get(0).getGUID()), eq(GLOSSARY_TYPE_NAME),
                 eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_GUID), eq(EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaries"))).thenThrow(exception);
+                eq("getExternalGlossaryLinks"))).thenThrow(exception);
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, glossaries.get(0).getGUID(),0, 10);
 
         assertEquals(exception.getReportedHTTPCode(), response.getRelatedHTTPCode());
         assertEquals(exception.getReportingClassName(), response.getExceptionClassName());

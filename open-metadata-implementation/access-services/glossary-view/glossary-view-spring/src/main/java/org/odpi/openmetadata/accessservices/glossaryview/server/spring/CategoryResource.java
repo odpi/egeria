@@ -119,7 +119,7 @@ public class CategoryResource {
     }
 
     /**
-     * Extract external glossary definitions for the given category
+     * Extract external glossary link definitions for the given category
      *
      * @param serverName instance to call
      * @param userId calling user
@@ -127,20 +127,20 @@ public class CategoryResource {
      * @param from from
      * @param size size
      *
-     * @return external glossaries
+     * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/external-glossaries")
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
-                                                                  @PathVariable("userId") String userId,
-                                                                  @PathVariable("categoryGUID") @NotBlank String categoryGUID,
-                                                                  @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/external-glossary-links")
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
+                                                                     @PathVariable("userId") String userId,
+                                                                     @PathVariable("categoryGUID") @NotBlank String categoryGUID,
+                                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response = categoryService.getExternalGlossaries(userId, serverName, categoryGUID, from, size);
+        GlossaryViewEntityDetailResponse response = categoryService.getExternalGlossaryLinks(userId, serverName, categoryGUID, from, size);
 
         watch.stop();
-        log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
+        log.debug("Method: getExternalGlossaryLinks; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }

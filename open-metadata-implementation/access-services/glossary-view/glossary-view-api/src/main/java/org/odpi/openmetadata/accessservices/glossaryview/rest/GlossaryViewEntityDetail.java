@@ -17,16 +17,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Simple POJO that holds the data of any entity queried from the OMRS, that needs to be returned to the client
+ * Simple POJO that represents any entity queried from the OMRS, and needs to be returned to the client
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes({
                 @JsonSubTypes.Type(value = Glossary.class, name = "Glossary"),
-                @JsonSubTypes.Type(value = Category.class, name = "Category"),
-                @JsonSubTypes.Type(value = Term.class, name = "Term"),
-                @JsonSubTypes.Type(value = Term.class, name = "ControlledTerm")
+                @JsonSubTypes.Type(value = GlossaryCategory.class, name = "GlossaryCategory"),
+                @JsonSubTypes.Type(value = GlossaryTerm.class, name = "GlossaryTerm"),
+                @JsonSubTypes.Type(value = ControlledGlossaryTerm.class, name = "ControlledGlossaryTerm"),
+                @JsonSubTypes.Type(value = ExternalGlossaryLink.class, name = "ExternalGlossaryLink")
         })
 public class GlossaryViewEntityDetail{
 
@@ -86,6 +87,10 @@ public class GlossaryViewEntityDetail{
     }
 
     protected Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public Map<String, String> allProperties() {
         return properties;
     }
 

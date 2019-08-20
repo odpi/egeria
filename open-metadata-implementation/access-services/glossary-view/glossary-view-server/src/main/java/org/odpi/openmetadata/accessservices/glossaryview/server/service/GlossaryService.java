@@ -77,7 +77,7 @@ public class GlossaryService extends GlossaryViewOMAS {
     }
 
     /**
-     * Extract external glossary definitions
+     * Extract external glossary link definitions
      *
      * @param userId calling user
      * @param serverName instance to call
@@ -85,12 +85,12 @@ public class GlossaryService extends GlossaryViewOMAS {
      * @param from from
      * @param size size
      *
-     * @return EntityDetailResponse all external glossaries
+     * @return EntityDetailResponse all external glossary links
      */
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(String userId, String serverName, String glossaryGUID,
-                                                                  Integer from, Integer size){
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(String userId, String serverName, String glossaryGUID,
+                                                                     Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, glossaryGUID, GLOSSARY_TYPE_NAME,
-                EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME, from, size, "getExternalGlossaries");
+                EXTERNALLY_SOURCED_GLOSSARY_RELATIONSHIP_NAME, from, size, "getExternalGlossaryLinks");
     }
 
 }

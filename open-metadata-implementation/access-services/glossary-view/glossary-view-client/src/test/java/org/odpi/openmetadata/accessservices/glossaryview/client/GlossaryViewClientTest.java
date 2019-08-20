@@ -7,6 +7,9 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
@@ -99,10 +102,9 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID), eq(glossaries.get(0).getGuid()))).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getGlossary(SERVER_NAME, USER_ID, glossaries.get(0).getGuid());
+        Glossary glossary = underTest.getGlossary(USER_ID, glossaries.get(0).getGuid());
 
-        assertEquals( 1, response.getResult().size());
-        assertEquals(glossaries.get(0).getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(glossaries.get(0).getGuid(), glossary.getGuid());
     }
 
     @Test
@@ -112,10 +114,9 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getCategory"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID), eq(categories.get(0).getGuid()))).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getCategory(SERVER_NAME, USER_ID, categories.get(0).getGuid());
+        GlossaryCategory category = underTest.getCategory(USER_ID, categories.get(0).getGuid());
 
-        assertEquals( 1, response.getResult().size());
-        assertEquals(categories.get(0).getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(categories.get(0).getGuid(), category.getGuid());
     }
 
     @Test
@@ -125,12 +126,12 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getCategories"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(glossaries.get(0).getGuid()), anyInt(), anyInt())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getCategories(SERVER_NAME, USER_ID, glossaries.get(0).getGuid(), 0, 10);
+        List<GlossaryCategory> categories = underTest.getCategories(USER_ID, glossaries.get(0).getGuid(), 0, 10);
 
-        assertEquals(3, response.getResult().size());
-        assertEquals(categories.get(0).getGuid(), response.getResult().get(0).getGuid());
-        assertEquals(categories.get(1).getGuid(), response.getResult().get(1).getGuid());
-        assertEquals(categories.get(2).getGuid(), response.getResult().get(2).getGuid());
+        assertEquals(3, categories.size());
+        assertEquals(categories.get(0).getGuid(), categories.get(0).getGuid());
+        assertEquals(categories.get(1).getGuid(), categories.get(1).getGuid());
+        assertEquals(categories.get(2).getGuid(), categories.get(2).getGuid());
     }
 
     @Test
@@ -140,12 +141,12 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getAllGlossaries"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID), anyInt(), anyInt())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getAllGlossaries(SERVER_NAME, USER_ID,0, 10);
+        List<Glossary> glossaries = underTest.getAllGlossaries(USER_ID,0, 10);
 
-        assertEquals(3, response.getResult().size());
-        assertEquals(glossaries.get(0).getGuid(), response.getResult().get(0).getGuid());
-        assertEquals(glossaries.get(1).getGuid(), response.getResult().get(1).getGuid());
-        assertEquals(glossaries.get(2).getGuid(), response.getResult().get(2).getGuid());
+        assertEquals(3, glossaries.size());
+        assertEquals(glossaries.get(0).getGuid(), glossaries.get(0).getGuid());
+        assertEquals(glossaries.get(1).getGuid(), glossaries.get(1).getGuid());
+        assertEquals(glossaries.get(2).getGuid(), glossaries.get(2).getGuid());
     }
 
     @Test
@@ -155,10 +156,9 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getCategoryHomeGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(categories.get(0).getGuid()))).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getCategoryHomeGlossary(SERVER_NAME, USER_ID, categories.get(0).getGuid());
+        Glossary glossary = underTest.getCategoryHomeGlossary(USER_ID, categories.get(0).getGuid());
 
-        assertEquals(1, response.getResult().size());
-        assertEquals(glossaries.get(0).getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(glossaries.get(0).getGuid(), glossary.getGuid());
     }
 
     @Test
@@ -168,49 +168,48 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getTermHomeGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(terms.get(3).getGuid()))).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getTermHomeGlossary(SERVER_NAME, USER_ID, terms.get(3).getGuid());
+        Glossary glossary = underTest.getTermHomeGlossary(USER_ID, terms.get(3).getGuid());
 
-        assertEquals(1, response.getResult().size());
-        assertEquals(glossaries.get(1).getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(glossaries.get(1).getGuid(), glossary.getGuid());
     }
 
     @Test
-    public void getExternalGlossariesOfGlossary() throws Exception{
+    public void getExternalGlossaryLinksOfGlossary() throws Exception{
         response.addEntityDetail(externalGlossaryLink);
 
-        when(connector.callGetRESTCall(eq("getExternalGlossariesOfGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+        when(connector.callGetRESTCall(eq("getExternalGlossaryLinksOfGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(glossaries.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossariesOfGlossary(SERVER_NAME, USER_ID, glossaries.get(0).getGuid(), null, null);
+        List<ExternalGlossaryLink> externalGlossaryLinks = underTest.getExternalGlossaryLinksOfGlossary(USER_ID, glossaries.get(0).getGuid(), null, null);
 
-        assertEquals(1, response.getResult().size());
-        assertEquals(externalGlossaryLink.getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(1, externalGlossaryLinks.size());
+        assertEquals(externalGlossaryLink.getGuid(), externalGlossaryLinks.get(0).getGuid());
     }
 
     @Test
-    public void getExternalGlossariesOfCategory() throws Exception{
+    public void getExternalGlossaryLinksOfCategory() throws Exception{
         response.addEntityDetail(externalGlossaryLink);
 
-        when(connector.callGetRESTCall(eq("getExternalGlossariesOfCategory"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+        when(connector.callGetRESTCall(eq("getExternalGlossaryLinksOfCategory"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(categories.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossariesOfCategory(SERVER_NAME, USER_ID, categories.get(0).getGuid(), null, null);
+        List<ExternalGlossaryLink> externalGlossaryLinks = underTest.getExternalGlossaryLinksOfCategory(USER_ID, categories.get(0).getGuid(), null, null);
 
-        assertEquals(1, response.getResult().size());
-        assertEquals(externalGlossaryLink.getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(1, externalGlossaryLinks.size());
+        assertEquals(externalGlossaryLink.getGuid(), externalGlossaryLinks.get(0).getGuid());
     }
 
     @Test
-    public void getExternalGlossariesOfTerm() throws Exception{
+    public void getExternalGlossaryLinksOfTerm() throws Exception{
         response.addEntityDetail(externalGlossaryLink);
 
-        when(connector.callGetRESTCall(eq("getExternalGlossariesOfTerm"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
+        when(connector.callGetRESTCall(eq("getExternalGlossaryLinksOfTerm"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(terms.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossariesOfTerm(SERVER_NAME, USER_ID, terms.get(0).getGuid(), null, null);
+        List<ExternalGlossaryLink> externalGlossaryLinks = underTest.getExternalGlossaryLinksOfTerm(USER_ID, terms.get(0).getGuid(), null, null);
 
-        assertEquals(1, response.getResult().size());
-        assertEquals(externalGlossaryLink.getGuid(), response.getResult().get(0).getGuid());
+        assertEquals(1, externalGlossaryLinks.size());
+        assertEquals(externalGlossaryLink.getGuid(), externalGlossaryLinks.get(0).getGuid());
     }
 
     @Test
@@ -220,11 +219,11 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getSubcategories"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(categories.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        GlossaryViewEntityDetailResponse response = underTest.getSubcategories(SERVER_NAME, USER_ID, categories.get(0).getGuid(), null, null);
+        List<GlossaryCategory> subcategories = underTest.getSubcategories(USER_ID, categories.get(0).getGuid(), null, null);
 
-        assertEquals(2, response.getResult().size());
-        assertEquals(categories.get(3).getGuid(), response.getResult().get(0).getGuid());
-        assertEquals(categories.get(4).getGuid(), response.getResult().get(1).getGuid());
+        assertEquals(2, subcategories.size());
+        assertEquals(categories.get(3).getGuid(), subcategories.get(0).getGuid());
+        assertEquals(categories.get(4).getGuid(), subcategories.get(1).getGuid());
     }
 
     @Test(expected = GlossaryViewOmasException.class)
@@ -239,7 +238,7 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getTermsOfGlossary"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(glossaries.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        underTest.getTermsOfGlossary(SERVER_NAME, USER_ID, glossaries.get(0).getGuid(), null, null);
+        underTest.getTermsOfGlossary(USER_ID, glossaries.get(0).getGuid(), null, null);
     }
 
     @Test(expected = GlossaryViewOmasException.class)
@@ -258,7 +257,25 @@ public class GlossaryViewClientTest {
         when(connector.callGetRESTCall(eq("getRelatedTerms"), eq(GlossaryViewEntityDetailResponse.class), anyString(), eq(SERVER_NAME),
                 eq(USER_ID),eq(terms.get(0).getGuid()), isNull(), isNull())).thenReturn(response);
 
-        underTest.getRelatedTerms(SERVER_NAME, USER_ID, terms.get(0).getGuid(), null, null);
+        underTest.getRelatedTerms(USER_ID, terms.get(0).getGuid(), null, null);
     }
+
+//    @Test
+//    public void coco() throws Exception{
+//        GlossaryViewClient client = new GlossaryViewClient("omas", "http://localhost:8080");
+//
+//        List<Glossary> glossaries = client.getAllGlossaries("demo", null, null);
+//
+//        List<GlossaryCategory> categories = client.getCategories("demo", glossaries.get(0).getGuid(), null , null);
+//
+//        List<GlossaryTerm> terms = client.getTermsOfGlossary("demo", glossaries.get(0).getGuid(), null , null);
+//
+//        GlossaryTerm term1 = client.getTerm("demo", terms.get(0).getGuid());
+//        GlossaryTerm term2 = client.getTerm("demo", terms.get(1).getGuid());
+//        GlossaryTerm term3 = client.getTerm("demo", terms.get(2).getGuid());
+//        GlossaryTerm term4 = client.getTerm("demo", terms.get(3).getGuid());
+//
+//        int size = glossaries.size();
+//    }
 
 }

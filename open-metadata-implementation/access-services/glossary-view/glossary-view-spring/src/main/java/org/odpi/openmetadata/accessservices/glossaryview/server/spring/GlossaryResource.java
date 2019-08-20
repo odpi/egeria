@@ -136,7 +136,7 @@ public class GlossaryResource {
     }
 
     /**
-     * Extract the external glossary definitions
+     * Extract the external glossary link definitions
      *
      * @param serverName instance to call
      * @param userId calling user
@@ -144,20 +144,20 @@ public class GlossaryResource {
      * @param from from
      * @param size size
      *
-     * @return external glossaries
+     * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossaries")
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
-                                                                  @PathVariable("userId") String userId,
-                                                                  @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
-                                                                  @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossary-links")
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
+                                                                     @PathVariable("userId") String userId,
+                                                                     @PathVariable("glossaryGUID") @NotBlank String glossaryGUID,
+                                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response = glossaryService.getExternalGlossaries(userId, serverName, glossaryGUID, from, size);
+        GlossaryViewEntityDetailResponse response = glossaryService.getExternalGlossaryLinks(userId, serverName, glossaryGUID, from, size);
 
         watch.stop();
-        log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
+        log.debug("Method: getExternalGlossaryLinks; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }

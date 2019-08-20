@@ -3,14 +3,11 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
+import org.odpi.openmetadata.accessservices.glossaryview.converters.EntityDetailToGlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
-import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewClassification;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
-import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailFactory;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.Calendar;
@@ -34,7 +31,7 @@ public class GlossaryViewOMAS extends OMRSClient {
      * Predicate to test the current time between effectiveFrom and effectiveTo properties of an entity detail. Will return
      * false if now is outside the interval given by effectiveFromTime and effectiveToTime, true otherwise
      */
-    private final Predicate<EntityDetail> effectivePredicate = (entityDetail -> {
+    private final Predicate<EntityDetail> effectiveTimePredicate = entityDetail -> {
         if(entityDetail.getProperties() == null){
             return true;
         }
@@ -47,62 +44,9 @@ public class GlossaryViewOMAS extends OMRSClient {
 
         long now = Calendar.getInstance().getTimeInMillis();
         return effectiveFromTime.getTime() <= now && now <= effectiveToTime.getTime();
-    });
-
-    /**
-     * Converts a {@code Classification} into a {@code GlossaryViewClassification} with the help of a {@code OMRSRepositoryHelper}
-     *
-     */
-    private final Function<Classification, GlossaryViewClassification> classificationConverter = (classification) -> {
-        GlossaryViewClassification glossaryViewClassification = new GlossaryViewClassification();
-        glossaryViewClassification.setName(classification.getName());
-        glossaryViewClassification.setClassificationType(classification.getType().getTypeDefName());
-        glossaryViewClassification.setCreatedBy(classification.getCreatedBy());
-        glossaryViewClassification.setUpdatedBy(classification.getUpdatedBy());
-        glossaryViewClassification.setCreateTime(classification.getCreateTime());
-        glossaryViewClassification.setUpdateTime(classification.getUpdateTime());
-        glossaryViewClassification.setStatus(classification.getStatus().getName());
-
-        if(classification.getProperties().getInstanceProperties() != null) {
-            classification.getProperties().getInstanceProperties()
-                    .forEach((key, value) -> glossaryViewClassification.addProperty(key, value.valueAsString()));
-        }
-
-        return glossaryViewClassification;
     };
 
-    /**
-     * Converts an {@code EntityDetail} into a {@code GlossaryViewEntityDetail} with the help of a {@code OMRSRepositoryHelper}
-     *
-     */
-    private final Function<EntityDetail, GlossaryViewEntityDetail> entityDetailConverter = (entityDetail) -> {
-        Optional<InstanceProperties> optionalProperties = Optional.ofNullable(entityDetail.getProperties());
-
-        GlossaryViewEntityDetail glossaryViewEntityDetail = GlossaryViewEntityDetailFactory.build(entityDetail.getType().getTypeDefName())
-            .setTypeDefName(entityDetail.getType().getTypeDefName())
-            .setCreatedBy(entityDetail.getCreatedBy())
-            .setUpdatedBy(entityDetail.getUpdatedBy())
-            .setCreateTime(entityDetail.getCreateTime())
-            .setUpdateTime(entityDetail.getUpdateTime())
-            .setVersion(entityDetail.getVersion())
-            .setGuid(entityDetail.getGUID())
-            .setStatus(entityDetail.getStatus().getName());
-
-        /*Encountered a case where an entity did not have properties. However, this should not be possible in non-dev envs*/
-        if(optionalProperties.isPresent()){
-            glossaryViewEntityDetail.setEffectiveFromTime(optionalProperties.get().getEffectiveFromTime());
-            glossaryViewEntityDetail.setEffectiveToTime(optionalProperties.get().getEffectiveToTime());
-
-            optionalProperties.get().getInstanceProperties()
-                    .forEach((key, value) -> glossaryViewEntityDetail.putProperty(key, value.valueAsString()));
-        }
-
-        if(entityDetail.getClassifications() != null) {
-            glossaryViewEntityDetail.addClassifications(entityDetail.getClassifications().stream()
-                    .map(classificationConverter).collect(Collectors.toList()));
-        }
-        return glossaryViewEntityDetail;
-    };
+    private final Function<EntityDetail, GlossaryViewEntityDetail> entityDetailConverter = new EntityDetailToGlossaryViewEntityDetail();
 
     /**
      * Extract an entity based on provided GUID and convert it to this omas's type
@@ -157,7 +101,7 @@ public class GlossaryViewOMAS extends OMRSClient {
 
             response.addEntityDetails(entities.stream()
                     .filter(entity -> !entity.getGUID().equals(entityGUID))
-                    .filter(effectivePredicate)
+                    .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
         }catch (GlossaryViewOmasException ew){
@@ -191,7 +135,7 @@ public class GlossaryViewOMAS extends OMRSClient {
             }
 
             response.addEntityDetails(entities.stream()
-                    .filter(effectivePredicate)
+                    .filter(effectiveTimePredicate)
                     .map(entityDetailConverter)
                     .collect(Collectors.toList()));
         }catch (GlossaryViewOmasException ew){
