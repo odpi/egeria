@@ -260,22 +260,4 @@ public class GlossaryViewClientTest {
         underTest.getRelatedTerms(USER_ID, terms.get(0).getGuid(), null, null);
     }
 
-//    @Test
-//    public void coco() throws Exception{
-//        GlossaryViewClient client = new GlossaryViewClient("omas", "http://localhost:8080");
-//
-//        List<Glossary> glossaries = client.getAllGlossaries("demo", null, null);
-//
-//        List<GlossaryCategory> categories = client.getCategories("demo", glossaries.get(0).getGuid(), null , null);
-//
-//        List<GlossaryTerm> terms = client.getTermsOfGlossary("demo", glossaries.get(0).getGuid(), null , null);
-//
-//        GlossaryTerm term1 = client.getTerm("demo", terms.get(0).getGuid());
-//        GlossaryTerm term2 = client.getTerm("demo", terms.get(1).getGuid());
-//        GlossaryTerm term3 = client.getTerm("demo", terms.get(2).getGuid());
-//        GlossaryTerm term4 = client.getTerm("demo", terms.get(3).getGuid());
-//
-//        int size = glossaries.size();
-//    }
-
 }

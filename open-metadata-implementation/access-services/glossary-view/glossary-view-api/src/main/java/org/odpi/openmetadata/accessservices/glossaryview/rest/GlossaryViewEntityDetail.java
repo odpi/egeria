@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = ControlledGlossaryTerm.class, name = "ControlledGlossaryTerm"),
                 @JsonSubTypes.Type(value = ExternalGlossaryLink.class, name = "ExternalGlossaryLink")
         })
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        property = "typeDefName")
 public class GlossaryViewEntityDetail{
 
     private String typeDefName;

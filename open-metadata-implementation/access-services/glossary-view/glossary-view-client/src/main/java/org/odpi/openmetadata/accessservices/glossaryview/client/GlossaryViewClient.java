@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.glossaryview.client;
 
-import org.odpi.openmetadata.accessservices.glossaryview.converters.GlossaryViewEntityDetailToSubClass;
-import org.odpi.openmetadata.accessservices.glossaryview.converters.ToSubClass;
 import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
@@ -105,7 +103,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleEntitiesPagedResponse("getAllGlossaries",
                 GET_GLOSSARIES, serverName, userId, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -126,7 +124,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getGlossary", GET_GLOSSARY,
                 serverName, userId, glossaryGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
+        return firstEntity(castOmasResult(response.getResult()));
     }
 
     /**
@@ -147,7 +145,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getTermHomeGlossary",
                 GET_TERM_HOME_GLOSSARY, serverName, userId, termGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
+        return firstEntity(castOmasResult(response.getResult()));
     }
 
     /**
@@ -169,7 +167,7 @@ public class GlossaryViewClient extends OmasClient {
                 GET_CATEGORY_HOME_GLOSSARY, serverName, userId, categoryGUID);
 
 
-        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToGlossary()));
+        return firstEntity(castOmasResult(response.getResult()));
     }
 
     /**
@@ -192,7 +190,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfGlossary",
                 GET_GLOSSARY_EXTERNAL_GLOSSARY_LINKS, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -213,7 +211,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response =  getSingleEntityResponse("getCategory", GET_CATEGORY,
                 serverName, userId, categoryGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory()));
+        return firstEntity(castOmasResult(response.getResult()));
     }
 
     /**
@@ -236,7 +234,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getCategories",
                 GET_CATEGORIES_OF_GLOSSARY, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -259,7 +257,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSubcategories",
                 GET_SUBCATEGORIES, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToCategory());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -282,7 +280,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfCategory",
                 GET_CATEGORY_EXTERNAL_GLOSSARY_LINKS, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -303,7 +301,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getSingleEntityResponse("getTerm", GET_TERM, serverName,
                 userId, termGUID);
 
-        return firstEntity(castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm()));
+        return (GlossaryTerm) castOmasResult(response.getResult()).get(0);
     }
 
     /**
@@ -326,7 +324,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTermsOfGlossary",
                 GET_TERMS_OF_GLOSSARY, serverName, userId, glossaryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -349,7 +347,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTermsOfCategory",
                 GET_TERMS_OF_CATEGORY, serverName, userId, categoryGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -372,7 +370,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getExternalGlossaryLinksOfTerm",
                 GET_TERM_EXTERNAL_GLOSSARY_LINKS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToExternalGlossaryLink());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -395,7 +393,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getRelatedTerms",
                 GET_RELATED_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -418,7 +416,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSynonyms",
                 GET_SYNONYMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -441,7 +439,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAntonyms",
                 GET_ANTONYMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -464,7 +462,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getPreferredTerms",
                 GET_PREFERRED_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -487,7 +485,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getReplacementTerms",
                 GET_REPLACEMENT_TERMS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -510,7 +508,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTranslations",
                 GET_TRANSLATIONS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -533,7 +531,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getIsA", GET_IS_A,
                 serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -556,7 +554,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getValidValues",
                 GET_VALID_VALUES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -579,7 +577,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getUsedInContexts",
                 GET_USED_IN_CONTEXTS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -602,7 +600,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAssignedElements",
                 GET_ASSIGNED_ELEMENTS, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -625,7 +623,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getAttributes",
                 GET_ATTRIBUTES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -648,7 +646,7 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getSubtypes",
                 GET_SUBTYPES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /**
@@ -671,15 +669,14 @@ public class GlossaryViewClient extends OmasClient {
         GlossaryViewEntityDetailResponse response = getMultipleRelatedEntitiesPagedResponse("getTypes",
                 GET_TYPES, serverName, userId, termGUID, from, size);
 
-        return castOmasResult(response.getResult(), new GlossaryViewEntityDetailToSubClass.ToTerm());
+        return castOmasResult(response.getResult());
     }
 
     /*
     * In order to have meaning, extracted into a separate method the 'casting' instructions
     */
-    private <T extends GlossaryViewEntityDetail> List<T> castOmasResult(List<GlossaryViewEntityDetail> omasResult,
-                                                                        ToSubClass<T> toSubclass){
-        return omasResult.stream().map(toSubclass).collect(Collectors.toList());
+    private <T extends GlossaryViewEntityDetail> List<T> castOmasResult(List<GlossaryViewEntityDetail> omasResult){
+        return omasResult.stream().map(e -> (T)e).collect(Collectors.toList());
     }
 
     private <T extends GlossaryViewEntityDetail> T firstEntity(List<T> entities){
