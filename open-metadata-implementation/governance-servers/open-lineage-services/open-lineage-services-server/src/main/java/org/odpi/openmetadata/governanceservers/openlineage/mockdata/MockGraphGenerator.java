@@ -78,29 +78,29 @@ public class MockGraphGenerator {
         //Create all Glossary Term nodes
         for (int i = 0; i < numberGlossaryTerms; i++) {
             Vertex glossaryVertex = g.addV(NODE_LABEL_GLOSSARYTERM).next();
-            glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
+            addGlossaryTermProperties(i, glossaryVertex);
             glossaryNodes.add(glossaryVertex);
         }
 
         //Create all Process nodes
         List<Vertex> processNodes = new ArrayList<>();
         for (int i = 0; i < numberProcesses; i++) {
-            Vertex processVertex = g.addV(NODE_LABEL_PROCESS).next();
-            processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+            Vertex processVertex = g.addV(NODE_LABEL_SUB_PROCESS).next();
+            addProcessProperties(i, processVertex);
             processNodes.add(processVertex);
         }
 
         //Create all Table nodes and a Host node for each table.
         for (int j = 0; j < numberTables; j++) {
             Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
-            tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
+            extractTableProperties(j, tableVertex);
             tableNodes.add(tableVertex);
 
             //Create all Column nodes.
             columnNodesPerTable = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
-                columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
+                addColumnProperties(j, i, columnVertex);
                 addEdge(EDGE_LABEL_INCLUDED_IN, columnVertex, tableVertex);
 
                 //Randomly connect Column nodes with Glossary Term nodes.
@@ -145,6 +145,46 @@ public class MockGraphGenerator {
             }
         }
         g.tx().commit();
+    }
+
+    private void addGlossaryTermProperties(int i, Vertex glossaryVertex) {
+        glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
+        glossaryVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.g" + i);
+        glossaryVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + i);
+        glossaryVertex.property(PROPERTY_KEY_GLOSSARY, "glossary");
+    }
+
+    private void addProcessProperties(int i, Vertex processVertex) {
+        processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+        processVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.p" + i);
+        processVertex.property(PROPERTY_KEY_CREATE_TIME, "createTime");
+        processVertex.property(PROPERTY_KEY_UPDATE_TIME, "updateTime");
+        processVertex.property(PROPERTY_KEY_FORMULA, "formula");
+        processVertex.property(PROPERTY_KEY_PROCESS_DESCRIPTION_URI, "processDescriptionURI");
+        processVertex.property(PROPERTY_KEY_VERSION, "version");
+        processVertex.property(PROPERTY_KEY_PROCESS_TYPE, "processType");
+        processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+    }
+
+    private void extractTableProperties(int j, Vertex tableVertex) {
+        tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
+        tableVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j);
+        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + j);
+        tableVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
+        tableVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
+        tableVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
+        tableVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME, "schema.displayName");
+    }
+
+    private void addColumnProperties(int j, int i, Vertex columnVertex) {
+        columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
+        columnVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
+        columnVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
+        columnVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME, "schema.displayName");
+        columnVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME, "table.displayName");
     }
 
     private void addEdge(String edgeLabel, Vertex fromVertex, Vertex toVertex) {
