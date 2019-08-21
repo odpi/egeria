@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewO
 import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetailResponse;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
@@ -87,12 +88,34 @@ public class GlossaryViewClientTest {
     }
 
     private GlossaryViewEntityDetail createGlossaryViewEntityDetail(String typeDefName, String guid){
-        GlossaryViewEntityDetail glossaryViewEntityDetail = new GlossaryViewEntityDetail();
+        GlossaryViewEntityDetail glossaryViewEntityDetail = createConcreteObject(typeDefName);
         glossaryViewEntityDetail.setTypeDefName(typeDefName);
         glossaryViewEntityDetail.setGuid(guid);
         glossaryViewEntityDetail.setStatus("ACTIVE");
 
         return glossaryViewEntityDetail;
+    }
+
+    private GlossaryViewEntityDetail createConcreteObject(String typeDefName){
+        GlossaryViewEntityDetail glossaryViewEntityDetail;
+        switch (typeDefName) {
+            case GLOSSARY:
+                glossaryViewEntityDetail = new Glossary();
+                break;
+            case CATEGORY:
+                glossaryViewEntityDetail = new GlossaryCategory();
+                break;
+            case TERM:
+                glossaryViewEntityDetail = new GlossaryTerm();
+                break;
+            case EXTERNAL_GLOSSARY_LINK:
+                glossaryViewEntityDetail = new ExternalGlossaryLink();
+                break;
+            default:
+                glossaryViewEntityDetail = new GlossaryViewEntityDetail();
+        }
+        return glossaryViewEntityDetail;
+
     }
 
     @Test
