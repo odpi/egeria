@@ -56,6 +56,9 @@ public class GraphServices {
 
         Graph graph = getJanusGraph(graphName);
         switch (Queries.valueOf(lineageQuery)) {
+            case SOURCEANDDESTINATION:
+                response = sourceAndDestination(scope, graph, guid);
+                break;
             case ENDTOEND:
                 response = endToEnd(scope, graph, guid);
                 break;
@@ -72,6 +75,10 @@ public class GraphServices {
                 log.error(lineageQuery + " is not a valid lineage query");
         }
         return response;
+    }
+
+    private String sourceAndDestination(String scope, Graph graph, String guid) {
+
     }
 
     /**
