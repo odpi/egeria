@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 public enum Queries {
+    SOURCEANDDESTINATION,
+    ENDTOEND,
     ULTIMATESOURCE,
     ULTIMATEDESTINATION,
     GLOSSARY
