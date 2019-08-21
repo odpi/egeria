@@ -163,7 +163,6 @@ public class MockGraphGenerator {
         processVertex.property(PROPERTY_KEY_PROCESS_DESCRIPTION_URI, "processDescriptionURI");
         processVertex.property(PROPERTY_KEY_VERSION, "version");
         processVertex.property(PROPERTY_KEY_PROCESS_TYPE, "processType");
-        processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
     }
 
     private void addTableProperties(int j, Vertex tableVertex) {
