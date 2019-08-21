@@ -37,7 +37,7 @@ public class GraphServices {
     private static final Logger log = LoggerFactory.getLogger(GraphServices.class);
 
     /**
-     * Returns a lineage subgraph. 
+     * Returns a lineage subgraph.
      *
      * @param scope        The scope queried by the user: hostview, tableview, columnview.
      * @param lineageQuery source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
@@ -115,15 +115,11 @@ public class GraphServices {
             copyVertexProperties(originalVertex, vertex);
             vertex.addEdge(EDGE_LABEL_CONDENSED, sourceCondensation);
         }
+
         for (Vertex originalVertex : destinationsList) {
             Vertex vertex = g.addV(originalVertex.label()).next();
             copyVertexProperties(originalVertex, vertex);
             destinationCondensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-        }
-        try {
-            responseGraph.io(IoCore.graphml()).writeGraph("graph-" + "WOLOLO" + ".graphml");
-        } catch (IOException e) {
-            log.error(e.getMessage());
         }
         return janusGraphToGraphson(responseGraph);
     }
