@@ -14,7 +14,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_NAME = "name";
   
     public static final String NODE_LABEL_PROCESS = "process";
-    public static final String NODE_LABEL_SUB_PROCESS = "subprocess";
+    public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
     public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";

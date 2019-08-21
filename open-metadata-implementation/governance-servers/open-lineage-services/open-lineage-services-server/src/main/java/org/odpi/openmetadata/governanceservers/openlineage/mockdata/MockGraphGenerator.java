@@ -93,7 +93,7 @@ public class MockGraphGenerator {
         //Create all Table nodes and a Host node for each table.
         for (int j = 0; j < numberTables; j++) {
             Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
-            extractTableProperties(j, tableVertex);
+            addTableProperties(j, tableVertex);
             tableNodes.add(tableVertex);
 
             //Create all Column nodes.
@@ -166,7 +166,7 @@ public class MockGraphGenerator {
         processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
     }
 
-    private void extractTableProperties(int j, Vertex tableVertex) {
+    private void addTableProperties(int j, Vertex tableVertex) {
         tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
         tableVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j);
         tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + j);
