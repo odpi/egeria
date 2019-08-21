@@ -30,7 +30,7 @@ public class LookupBasedOnDataView implements LookupStrategy{
             return null;
         } else {
             String qualifiedName;
-            if (!StringUtils.isEmpty(source.getQualifiedName())) {
+            if (StringUtils.isEmpty(source.getQualifiedName())) {
                 qualifiedName = buildQualifiedName((DataViewColumnSource) source);
             } else {
                 qualifiedName = source.getQualifiedName();

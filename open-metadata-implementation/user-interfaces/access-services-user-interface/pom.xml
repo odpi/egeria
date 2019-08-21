@@ -142,6 +142,22 @@
             <artifactId>http-helper</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>connector-configuration-factory</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-connector-framework</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -218,6 +234,16 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-lineage-services-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-lineage-services-api</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
@@ -356,6 +382,7 @@
                         <exclude>**/resources/**</exclude>
                         <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
+                        <exclude>**/docs/**</exclude>
                         <exclude>**/build/**</exclude>
                         <!--<exclude>**/src/*</exclude>-->
                         <!--<exclude>**/*.json</exclude>-->

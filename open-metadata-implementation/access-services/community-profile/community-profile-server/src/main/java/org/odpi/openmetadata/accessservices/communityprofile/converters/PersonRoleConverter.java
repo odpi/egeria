@@ -30,14 +30,14 @@ public class PersonRoleConverter extends CommonHeaderConverter
      * @param entity properties to convert
      * @param relationships properties to convert
      * @param repositoryHelper helper object to parse entity/relationship
-     * @param componentName name of this component
+     * @param serviceName name of this component
      */
-    PersonRoleConverter(EntityDetail         entity,
-                        List<Relationship>   relationships,
-                        OMRSRepositoryHelper repositoryHelper,
-                        String               componentName)
+    public PersonRoleConverter(EntityDetail         entity,
+                               List<Relationship>   relationships,
+                               OMRSRepositoryHelper repositoryHelper,
+                               String               serviceName)
     {
-        super(entity, repositoryHelper, componentName);
+        super(entity, repositoryHelper, serviceName);
         this.personRoleRelationships = relationships;
     }
 
@@ -68,6 +68,7 @@ public class PersonRoleConverter extends CommonHeaderConverter
                 bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.QUALIFIED_NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setName(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.NAME_PROPERTY_NAME, instanceProperties, methodName));
                 bean.setDescription(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.DESCRIPTION_PROPERTY_NAME, instanceProperties, methodName));
+                bean.setScope(repositoryHelper.removeStringProperty(serviceName, PersonRoleMapper.SCOPE_PROPERTY_NAME, instanceProperties, methodName));
 
                 if (instanceProperties.getPropertyValue(PersonRoleMapper.HEAD_COUNT_PROPERTY_NAME) != null)
                 {

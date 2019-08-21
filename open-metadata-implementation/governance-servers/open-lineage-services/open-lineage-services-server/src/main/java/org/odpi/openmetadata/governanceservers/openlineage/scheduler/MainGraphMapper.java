@@ -14,43 +14,32 @@ import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.LINEAGE_MAPPING;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_NAME_QUALIFIED_NAME;
 
 public class MainGraphMapper {
 
     private static final Logger log = LoggerFactory.getLogger(MainGraphMapper.class);
 
 
-    public void mapStructure(String columnInGuid, Vertex process,String columnOutGuid){
+    public void mapStructure(String columnInGuid, Vertex process, String columnOutGuid) {
 
         GraphTraversalSource main = mainGraph.traversal();
 
         Iterator<Vertex> columnInVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnInGuid);
         Iterator<Vertex> columnOutVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnOutGuid);
-//        Iterator<Vertex> processVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, extractProperty(process,PROPERTY_KEY_ENTITY_GUID));
 
+        if (columnInVertex.hasNext() && columnOutVertex.hasNext()) {
 
+            Vertex vertex = main.addV("Process").next();
+            vertex.property("id", UUID.randomUUID());
+            vertex.property(PROPERTY_KEY_ENTITY_GUID, extractProperty(process, PROPERTY_KEY_ENTITY_GUID));
+            vertex.property(PROPERTY_KEY_ENTITY_NAME, extractProperty(process, PROPERTY_KEY_ENTITY_NAME));
 
-//        if(columnInVertex.hasNext() && columnOutVertex.hasNext() && !processVertex.hasNext()){
-            if(columnInVertex.hasNext() && columnOutVertex.hasNext()){
+            columnInVertex.next().addEdge(LINEAGE_MAPPING, vertex);
+            vertex.addEdge(LINEAGE_MAPPING, columnOutVertex.next());
 
-//                Iterator<Vertex> processVertex = main.V().has("id", extractProperty(process,PROPERTY_KEY_ENTITY_GUID));
+            main.tx().commit();
 
-//                if(processVertex.hasNext()) {
-                    Vertex vertex = main.addV("Process").next();
-                    vertex.property("id", UUID.randomUUID());
-                    vertex.property(PROPERTY_KEY_ENTITY_GUID, extractProperty(process, PROPERTY_KEY_ENTITY_GUID));
-                    vertex.property(PROPERTY_KEY_ENTITY_NAME, extractProperty(process, PROPERTY_KEY_ENTITY_NAME));
-//           vertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME,extractProperty(process,PROPERTY_KEY_NAME_QUALIFIED_NAME));
-
-                    columnInVertex.next().addEdge(LINEAGE_MAPPING, vertex);
-                    vertex.addEdge(LINEAGE_MAPPING, columnOutVertex.next());
-//                }
-
-
-           main.tx().commit();
-
-        }else{
+        } else {
             log.debug("Columns does not exist in maingraph");
             main.tx().rollback();
 
@@ -58,10 +47,7 @@ public class MainGraphMapper {
 
     }
 
-
-    public void deleteNodes(){}
-
-    private String extractProperty(Vertex process, String propertyName){
+    private String extractProperty(Vertex process, String propertyName) {
 
         return process.values(propertyName).next().toString();
     }

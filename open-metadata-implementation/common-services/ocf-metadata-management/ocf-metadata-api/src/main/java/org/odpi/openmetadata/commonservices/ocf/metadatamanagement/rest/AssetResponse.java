@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.properties.LastAttachment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
@@ -27,21 +28,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetResponse extends OCFOMASAPIResponse
 {
-    private Asset      asset                      = null;
-    private int        certificationCount         = 0;
-    private int        commentCount               = 0;
-    private int        connectionCount            = 0;
-    private int        externalIdentifierCount    = 0;
-    private int        externalReferencesCount    = 0;
-    private int        informalTagCount           = 0;
-    private int        licenseCount               = 0;
-    private int        likeCount                  = 0;
-    private int        knownLocationsCount        = 0;
-    private int        noteLogsCount              = 0;
-    private int        ratingsCount               = 0;
-    private int        relatedAssetCount          = 0;
-    private int        relatedMediaReferenceCount = 0;
-    private SchemaType schemaType                 = null;
+    private Asset          asset                      = null;
+    private int            certificationCount         = 0;
+    private int            commentCount               = 0;
+    private int            connectionCount            = 0;
+    private int            externalIdentifierCount    = 0;
+    private int            externalReferencesCount    = 0;
+    private int            informalTagCount           = 0;
+    private int            licenseCount               = 0;
+    private int            likeCount                  = 0;
+    private int            knownLocationsCount        = 0;
+    private int            noteLogsCount              = 0;
+    private int            ratingsCount               = 0;
+    private int            relatedAssetCount          = 0;
+    private int            relatedMediaReferenceCount = 0;
+    private SchemaType     schemaType                 = null;
+    private LastAttachment lastAttachment             = null;
 
 
     /**
@@ -79,6 +81,7 @@ public class AssetResponse extends OCFOMASAPIResponse
             this.relatedAssetCount          = template.getRelatedAssetCount();
             this.relatedMediaReferenceCount = template.getRelatedMediaReferenceCount();
             this.schemaType                 = template.getSchemaType();
+            this.lastAttachment             = template.getLastAttachment();
         }
     }
 
@@ -414,6 +417,28 @@ public class AssetResponse extends OCFOMASAPIResponse
 
 
     /**
+     * Return the record of the last attachment to be made to the asset.
+     *
+     * @return last attachment details
+     */
+    public LastAttachment getLastAttachment()
+    {
+        return lastAttachment;
+    }
+
+
+    /**
+     * Set up the record of the last attachment to be made to the asset.
+     *
+     * @param lastAttachment last attachment details
+     */
+    public void setLastAttachment(LastAttachment lastAttachment)
+    {
+        this.lastAttachment = lastAttachment;
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -437,6 +462,7 @@ public class AssetResponse extends OCFOMASAPIResponse
                 ", relatedAssetCount=" + relatedAssetCount +
                 ", relatedMediaReferenceCount=" + relatedMediaReferenceCount +
                 ", schemaType=" + schemaType +
+                ", lastAttachment=" + lastAttachment +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -483,6 +509,7 @@ public class AssetResponse extends OCFOMASAPIResponse
                 getRelatedAssetCount() == that.getRelatedAssetCount() &&
                 getRelatedMediaReferenceCount() == that.getRelatedMediaReferenceCount() &&
                 getSchemaType() == that.getSchemaType() &&
+                getLastAttachment() == that.getLastAttachment() &&
                 Objects.equals(getAsset(), that.getAsset());
     }
 
@@ -500,6 +527,6 @@ public class AssetResponse extends OCFOMASAPIResponse
                             getConnectionCount(), getExternalIdentifierCount(), getExternalReferencesCount(),
                             getInformalTagCount(), getLicenseCount(), getLikeCount(), getKnownLocationsCount(),
                             getNoteLogsCount(), getRatingsCount(), getRelatedAssetCount(),
-                            getRelatedMediaReferenceCount(), getSchemaType());
+                            getRelatedMediaReferenceCount(), getSchemaType(), getLastAttachment());
     }
 }

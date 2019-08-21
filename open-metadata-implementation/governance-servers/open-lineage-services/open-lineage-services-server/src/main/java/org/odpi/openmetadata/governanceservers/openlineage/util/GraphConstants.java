@@ -28,10 +28,10 @@ public class GraphConstants {
 
     //Edge can go in either direction
     public static final String NODE_LABEL_PROCESS = "process";
-    public static final String NODE_LABEL_HOST = "host";
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
     public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";
+    public static final String NODE_LABEL_CONDENSED = "condensedNode";
 
     public static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID,                           "java.lang.String");
@@ -48,7 +48,6 @@ public class GraphConstants {
 
     public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
-    public static final String EDGE_LABEL_HOST_AND_PROCESS = "processHost";
 
     public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
@@ -57,6 +56,8 @@ public class GraphConstants {
     /*
      *  Elements
      */
+
+    public static final String EDGE_LABEL_CONDENSED = "condensed";
 
     public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
 

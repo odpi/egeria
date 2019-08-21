@@ -44,7 +44,7 @@ public class GraphBuilder {
     /**
      * Creates new Entities in bufferGraph related to Lineage
      *
-     * @return
+     * @param entity  Entity event for creation coming from Asset Lineage OMAS
      */
     public void createEntity(AssetLineageEntityEvent entity) {
 
@@ -147,7 +147,7 @@ public class GraphBuilder {
     /**
      * Creates new Relationships and it's properties in bufferGraph and mainGraph related to Lineage.
      *
-     * @return
+     * @param event Relationship event coming from Asset Lineage OMAS
      */
     public void createRelationship(RelationshipEvent event) {
 

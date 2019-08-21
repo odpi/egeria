@@ -49,8 +49,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param componentName        name of component
      * @param supportedZones       list of zones covered by this instance of the access service.
      * @param auditLog             log for errors and information messages
-     * @param serverUserName
-     * @param serverName
+     * @param serverUserName       name of the user of the server instance
+     * @param serverName           name of this server instance
      */
     public AssetLineageOMRSTopicListener(Connection assetLineageOutTopic,
                                          OMRSRepositoryValidator repositoryValidator,
@@ -65,7 +65,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         this.repositoryHelper = repositoryHelper;
         this.componentName = componentName;
         this.supportedZones = supportedZones;
-
         this.serverName = serverName;
         this.serverUserName = serverUserName;
         publisher = new AssetLineagePublisher(assetLineageOutTopic, auditLog);
@@ -278,7 +277,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * and publishes an event.
      *
      * @param relationship - details of the new relationship
-     * @return
      */
     private void processSemanticAssignment(Relationship relationship,
                                            String serviceOperationName) {

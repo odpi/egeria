@@ -35,15 +35,15 @@ public class OpenLineage  {
      * the condensed path by querying a different method.
      *
      * @param userId calling user.
-     * @param scope HOSTVIEW, TABLEVIEW, COLUMNVIEW.
+     * @param scope TABLEVIEW, COLUMNVIEW.
      * @param lineageQuery ULTIMATESOURCE, ULTIMATEDESTINATION, GLOSSARY.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param guid The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public String initialGraph(String userId, Scopes scope, Queries lineageQuery, Graphs graph, String guid) throws InvalidParameterException {
-        String methodName = "initialGraph";
+    public String queryLineage(String userId, Scopes scope, Queries lineageQuery, Graphs graph, String guid) throws InvalidParameterException {
+        String methodName = "queryLineage";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/initial-graph/{2}{3}/{4}/{5}";
         return getRestCall(url, String.class, userId, serverName, scope, lineageQuery, graph, guid);
 

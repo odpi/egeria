@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageAPIResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 import org.slf4j.Logger;
@@ -13,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 
 public class OpenLineageRestServices {
-
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageRestServices.class);
     private final OpenLineageInstanceHandler instanceHandler = new OpenLineageInstanceHandler();
@@ -46,11 +44,11 @@ public class OpenLineageRestServices {
     }
 
 
-    public String initialGraph(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
+    public String queryLineage(String serverName, String userId, String scope, String lineageQuery, String graph, String guid) {
         String response = "";
         try {
             GraphServices graphServices = instanceHandler.queryHandler(serverName);
-            response = graphServices.getInitialGraph(scope, lineageQuery, graph, guid);
+            response = graphServices.queryLineage(scope, lineageQuery, graph, guid);
         } catch (PropertyServerException e) {
             log.error(e.getMessage());
         }

@@ -24,7 +24,7 @@ public class JobConfiguration {
 
     public void schedule() {
         final String methodName = "schedule";
-        log.debug(" QuartzSchedulerApp main thread: " + Thread.currentThread().getName());
+        log.debug(" QuartzSchedulerApp main thread: {}",Thread.currentThread().getName());
 
         try {
             scheduler = new StdSchedulerFactory().getScheduler();

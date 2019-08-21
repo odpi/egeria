@@ -24,12 +24,10 @@ public interface MyPersonalProfileInterface
      * @return profile object
      *
      * @throws InvalidParameterException the userId is null or invalid.
-     * @throws NoProfileForUserException the user does not have a profile.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     PersonalProfile getMyProfile(String userId) throws InvalidParameterException,
-                                                       NoProfileForUserException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException;
 
@@ -55,7 +53,7 @@ public interface MyPersonalProfileInterface
     /**
      * Return the list of contact methods for this user.
      *
-     * @param UserId userId of the user making the request.
+     * @param userId userId of the user making the request.
      *
      * @return list of contact methods
      *
@@ -64,7 +62,7 @@ public interface MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<ContactMethod> getMyContactDetails(String UserId) throws InvalidParameterException,
+    List<ContactMethod> getMyContactDetails(String userId) throws InvalidParameterException,
                                                                   NoProfileForUserException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException;
@@ -80,7 +78,6 @@ public interface MyPersonalProfileInterface
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
-     * @param contactDetails list of contact methods for the person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -93,7 +90,6 @@ public interface MyPersonalProfileInterface
                          String              knownName,
                          String              jobTitle,
                          String              jobRoleDescription,
-                         List<ContactMethod> contactDetails,
                          Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException;
@@ -114,10 +110,10 @@ public interface MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String addContactMethod(String              userId,
-                            ContactMethodType   type,
-                            String              service,
-                            String              value) throws InvalidParameterException,
+    String addMyContactMethod(String              userId,
+                              ContactMethodType   type,
+                              String              service,
+                              String              value) throws InvalidParameterException,
                                                               NoProfileForUserException,
                                                               PropertyServerException,
                                                               UserNotAuthorizedException;
@@ -135,7 +131,7 @@ public interface MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void   deleteContactMethod(String            userId,
+    void deleteMyContactMethod(String            userId,
                                String            contactMethodGUID,
                                ContactMethodType type) throws InvalidParameterException,
                                                               NoProfileForUserException,

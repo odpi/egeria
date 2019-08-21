@@ -556,7 +556,7 @@ class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
         if (allTypes != null)
         {
-            AttributeTypeDef  result = super.filterAttributeTypeDefsByName(repositoryHelper.getActiveAttributeTypeDefs(), name);
+            AttributeTypeDef  result = super.filterAttributeTypeDefsByName(repositoryHelper.getKnownAttributeTypeDefs(), name);
 
             if (result == null)
             {

@@ -21,8 +21,7 @@ public class GraphEntityMapper {
     private static final Logger log = LoggerFactory.getLogger(GraphEntityMapper.class);
 
 
-    public void  mapEntityToVertex(AssetLineageEntityEvent entity, Vertex vertex)throws OpenLineageException{
-        final String methodName = "mapEntityDetailToVertex";
+    public void  mapEntityToVertex(AssetLineageEntityEvent entity, Vertex vertex){
 
         mapEntitySummaryToVertex(entity, vertex);
 
@@ -34,34 +33,13 @@ public class GraphEntityMapper {
 
                 vertex.property(entry.getKey(),entry.getValue());
             }
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            String jsonString;
-//            try {
-//                jsonString = objectMapper.writeValueAsString(instanceProperties);
-//                log.debug("{} entity has serialized properties {}", methodName, jsonString);
-//                vertex.property("instanceProperties", jsonString);
-//            } catch (Throwable exc) {
-//                log.error("{} Caught exception from entity mapper", methodName);
-//                OpenLineageErrorCode errorCode = OpenLineageErrorCode.ENTITY_PROPERTIES_ERROR;
-//                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
-//                        this.getClass().getName());
-//                throw new OpenLineageException(400,
-//                        this.getClass().getName(),
-//                        methodName,
-//                        errorMessage,
-//                        errorCode.getSystemAction(),
-//                        errorCode.getUserAction());
-//            }
-
         }
 
     }
 
 
 
-    public void mapEntitySummaryToVertex(AssetLineageEntityEvent entity, Vertex vertex)
-            throws OpenLineageException
-    {
+    public void mapEntitySummaryToVertex(AssetLineageEntityEvent entity, Vertex vertex){
         String methodName = "mapEntitySummaryToVertex";
 
 
@@ -129,11 +107,7 @@ public class GraphEntityMapper {
         else {
             removeProperty(vertex, PROPERTY_KEY_ENTITY_UPDATE_TIME);
         }
-
-
-
     }
-
 
     private void removeProperty(Vertex vertex, String qualifiedPropName) {
         // no value has been specified - remove the property from the vertex

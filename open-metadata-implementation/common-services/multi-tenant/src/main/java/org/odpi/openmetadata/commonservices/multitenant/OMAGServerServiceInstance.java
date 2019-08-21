@@ -15,10 +15,11 @@ public abstract class OMAGServerServiceInstance
 {
     protected String serverName;
     protected String serviceName;
+    protected int    maxPageSize = 500;
 
     protected InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
-    private OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
+    private   OMAGServerPlatformInstanceMap platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     protected OpenMetadataServerSecurityVerifier securityVerifier = new OpenMetadataServerSecurityVerifier();
 
@@ -28,11 +29,38 @@ public abstract class OMAGServerServiceInstance
      * @param serverName name of the new server
      * @param serviceName name of the new service instance
      */
+    @Deprecated
     public OMAGServerServiceInstance(String   serverName,
                                      String   serviceName)
     {
         this.serverName = serverName;
         this.serviceName = serviceName;
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
+
+        if (serverName != null)
+        {
+            platformInstanceMap.addServiceInstanceToPlatform(serverName, serviceName, this);
+        }
+    }
+
+
+    /**
+     * Default constructor
+     *
+     * @param serverName name of the new server
+     * @param serviceName name of the new service instance
+     * @param maxPageSize maximum number of results that can be returned on a single call.
+     */
+    public OMAGServerServiceInstance(String   serverName,
+                                     String   serviceName,
+                                     int      maxPageSize)
+    {
+        this.serverName = serverName;
+        this.serviceName = serviceName;
+        this.maxPageSize = maxPageSize;
+
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
 
         if (serverName != null)
         {
@@ -80,11 +108,12 @@ public abstract class OMAGServerServiceInstance
     /**
      * Override the default maximum paging size.
      *
-     * @param maxPagingSize new value
+     * @param maxPageSize new value
      */
-    public void setMaxPagingSize(int maxPagingSize)
+    public void setMaxPageSize(int maxPageSize)
     {
-        invalidParameterHandler.setMaxPagingSize(maxPagingSize);
+        this.maxPageSize = maxPageSize;
+        invalidParameterHandler.setMaxPagingSize(maxPageSize);
     }
 
 

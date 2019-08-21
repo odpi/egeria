@@ -18,12 +18,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
@@ -59,7 +55,7 @@ public class GovernanceEngineImplTest {
      * Class under test requiring mock injection - note - not used in tests of constructor
      */
     @InjectMocks
-    private GovernanceEngineImpl governanceEngineImpl = new GovernanceEngineImpl(defaultServerName, defaultOMASServerURL);
+    private GovernanceEngine governanceEngineImpl = new GovernanceEngine(defaultServerName, defaultOMASServerURL);
 
     private Throwable thrown = assertThrows(InvalidParameterException.class, () ->
     {
@@ -69,7 +65,7 @@ public class GovernanceEngineImplTest {
     @Test
     @DisplayName("GovernanceEngineImpl Constructor - Check empty handlers URL")
     void testGetGovernedAssetComponentListBadConstructorEmpty() {
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName, ""); // local
+        GovernanceEngine governanceEngineImplalt = new GovernanceEngine(defaultServerName, ""); // local
 
         // Mockito assertion for exception that would be thrown after using a poor constructor parameter - actual method is arbitrary
         thrown = assertThrows(InvalidParameterException.class, () ->
@@ -87,7 +83,7 @@ public class GovernanceEngineImplTest {
     @DisplayName("GovernanceEngineImp Constructor - Check null handlers URL")
     void testGetGovernedAssetComponentListBadConstructorNull() {
 
-        GovernanceEngineImpl governanceEngineImplalt = new GovernanceEngineImpl(defaultServerName, null);
+        GovernanceEngine governanceEngineImplalt = new GovernanceEngine(defaultServerName, null);
         thrown = assertThrows(InvalidParameterException.class, () ->
         {
             List<GovernedAsset> result = governanceEngineImplalt.getGovernedAssetList("", "rootClassificationType", "rootType");
@@ -147,7 +143,7 @@ public class GovernanceEngineImplTest {
 
         try {
             List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, "rootClassificationType", "rootType");
-        } catch (InvalidParameterException | TypeNotFoundException | ClassificationNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
+        } catch (InvalidParameterException e) {
             log.error("Unable to fetch the governed assets list");
         }
 
@@ -166,7 +162,7 @@ public class GovernanceEngineImplTest {
 
         try {
             List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, defaultClassificationType, defaultRootType);
-        } catch (InvalidParameterException | TypeNotFoundException | ClassificationNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
+        } catch (InvalidParameterException e) {
             log.error("Unable to fetch the governed assets list");
         }
 
@@ -250,7 +246,7 @@ public class GovernanceEngineImplTest {
 
         try {
             GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
-        } catch (InvalidParameterException | GuidNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
+        } catch (InvalidParameterException e) {
             log.debug("unable to fetch the governed asset");
         }
 
@@ -268,7 +264,7 @@ public class GovernanceEngineImplTest {
 
         try {
             GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
-        } catch (InvalidParameterException | GuidNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
+        } catch (InvalidParameterException e) {
             log.debug("unable to fetch the governed asset");
         }
 
