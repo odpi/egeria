@@ -36,7 +36,7 @@ class OpenLineageInstanceHandler
                 errorCode.getUserAction());
     }
 
-    public MockGraphGenerator testGraphGenerator(String serverName) throws PropertyServerException {
+    public MockGraphGenerator mockGraphGenerator(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
