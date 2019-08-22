@@ -44,7 +44,7 @@ public class OpenLineage  {
      */
     public String queryLineage(String userId, Scopes scope, Queries lineageQuery, Graphs graph, String guid) throws InvalidParameterException {
         String methodName = "queryLineage";
-        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/initial-graph/{2}{3}/{4}/{5}";
+        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/query-lineage/{2}/{3}/{4}/{5}";
         return getRestCall(url, String.class, userId, serverName, scope, lineageQuery, graph, guid);
 
     }
