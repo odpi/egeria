@@ -415,12 +415,12 @@ public class GraphBuilder {
         Collections.sort(elementsByRelationship, Comparator.comparing(
                 (Element e) -> order.indexOf(e.getType())).thenComparing(Element::getType));
 
-        createRelationshpBasedOnType(g,elementsByRelationship,edgesForRelationships);
+        createRelationshipBasedOnType(g,elementsByRelationship,edgesForRelationships);
 
         return  elementsByRelationship;
     }
 
-    private void createRelationshpBasedOnType(GraphTraversalSource g,List<Element> elementsByRelationship,List<String> edgesForRelationships){
+    private void createRelationshipBasedOnType(GraphTraversalSource g,List<Element> elementsByRelationship,List<String> edgesForRelationships){
 
         for (int i = 0; i < elementsByRelationship.size() - 1; i++) {
 
@@ -434,6 +434,7 @@ public class GraphBuilder {
                 Vertex to = g.V().has(elementsByRelationship.get(i + 1).getType(), PROPERTY_KEY_ENTITY_GUID, elementsByRelationship.get(i + 1).getGuid()).next();
 
                 from.addEdge(relationship, to);
+//                g.addE('knows').from(marko).to(peter) //
             }
 
         }

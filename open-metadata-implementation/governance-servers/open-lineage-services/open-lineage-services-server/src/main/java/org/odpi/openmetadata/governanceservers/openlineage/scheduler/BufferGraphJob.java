@@ -16,7 +16,7 @@ public class BufferGraphJob implements Job {
     @Override
     public void execute(JobExecutionContext context) {
         LocalDateTime localTime = LocalDateTime.now();
-        log.debug("Run QuartzJob at {}",localTime);
+        System.out.println("Run QuartzJob at " + localTime);
 
         BufferGraphJobTask mytask = new BufferGraphJobTask();
         mytask.perform();

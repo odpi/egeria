@@ -26,29 +26,33 @@ public class BufferGraphJobTask {
 
         for (String guid : guidList) {
 
-            List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "portType", "INPUT_PORT")
-                    .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").in("LineageMapping").out("SchemaAttributeType").toList();
+            if(guid.equals("ff8c3fb7-885d-4f4a-83aa-135b2f2774ec")) {
+                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "portType", "INPUT_PORT")
+                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").in("LineageMapping").in("SchemaAttributeType")
+                        .toList();
 
-            for (Vertex vertex : inputPath) {
-                String a = vertex.value(PROPERTY_KEY_ENTITY_GUID);
-                Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, a).in("SchemaAttributeType").out("LineageMapping");
+                Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+                for (Vertex vertex : inputPath) {
+                    String a = vertex.value(PROPERTY_KEY_ENTITY_GUID);
+                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, a).out("SchemaAttributeType").out("LineageMapping");
 
-                Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(), g);
+                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(), g);
 
-                if (columnOut.hasNext()) {
-                    String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
-                    String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+                    if (columnOut.hasNext()) {
+                        String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+                        String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
 
 
-                    if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
-                        MainGraphMapper mainGraphMapper = new MainGraphMapper();
+                        if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
+                            MainGraphMapper mainGraphMapper = new MainGraphMapper();
 
-                        Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
-                        mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid);
+//                            Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid);
+                        }
                     }
                 }
             }
-        }
+            }
         g.tx().commit();
     }
 
@@ -60,6 +64,8 @@ public class BufferGraphJobTask {
             Iterator<Vertex> next = g.V(v.id()).out("LineageMapping");
             return findPathForOutputAsset(next.next(), g);
         }
+//        System.out.println(end.next().value(PROPERTY_KEY_ENTITY_GUID).toString());
+
         return end;
     }
 }

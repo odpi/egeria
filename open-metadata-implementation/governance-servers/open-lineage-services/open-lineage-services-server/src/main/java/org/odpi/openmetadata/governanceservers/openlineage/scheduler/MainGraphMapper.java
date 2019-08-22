@@ -12,8 +12,7 @@ import java.util.UUID;
 
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_KEY_ENTITY_GUID;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.mainGraph;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.LINEAGE_MAPPING;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.PROPERTY_KEY_ENTITY_NAME;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
 public class MainGraphMapper {
 
@@ -24,18 +23,42 @@ public class MainGraphMapper {
 
         GraphTraversalSource main = mainGraph.traversal();
 
+        final String processGuid = process.value(PROPERTY_KEY_ENTITY_GUID);
+        final String processName = process.value(PROPERTY_NAME_NAME);
+
         Iterator<Vertex> columnInVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnInGuid);
         Iterator<Vertex> columnOutVertex = main.V().has(PROPERTY_KEY_ENTITY_GUID, columnOutGuid);
+        Iterator<Vertex> processVertex = main.V().has("id",processGuid);
 
         if (columnInVertex.hasNext() && columnOutVertex.hasNext()) {
 
-            Vertex vertex = main.addV("Process").next();
+            Vertex vertex = main.addV("SubProcess").next();
             vertex.property("id", UUID.randomUUID());
-            vertex.property(PROPERTY_KEY_ENTITY_GUID, extractProperty(process, PROPERTY_KEY_ENTITY_GUID));
-            vertex.property(PROPERTY_KEY_ENTITY_NAME, extractProperty(process, PROPERTY_KEY_ENTITY_NAME));
+            vertex.property(PROPERTY_KEY_ENTITY_GUID, processGuid);
+            vertex.property(PROPERTY_KEY_ENTITY_NAME, processName);
 
-            columnInVertex.next().addEdge(LINEAGE_MAPPING, vertex);
-            vertex.addEdge(LINEAGE_MAPPING, columnOutVertex.next());
+            Vertex columnIn = columnInVertex.next();
+            Vertex columnOut = columnOutVertex.next();
+
+            columnIn.addEdge(NODE_LABEL_PROCESS, vertex);
+            vertex.addEdge(NODE_LABEL_PROCESS,columnOut);
+
+            if(processVertex.hasNext()){
+                Vertex processTopLevel = processVertex.next();
+                vertex.addEdge(NODE_LABEL_PROCESS,processTopLevel);
+
+//                columnIn.addEdge(NODE_LABEL_PROCESS, processTopLevel);
+//                processTopLevel.addEdge(NODE_LABEL_PROCESS,columnOut);
+            }
+            else {
+                Vertex mainProcess = main.addV("Process").next();
+                mainProcess.property("id", processGuid);
+                mainProcess.property(PROPERTY_KEY_ENTITY_NAME, processName);
+
+                vertex.addEdge(NODE_LABEL_PROCESS,mainProcess);
+//                columnIn.addEdge(NODE_LABEL_PROCESS, mainProcess);
+//                mainProcess.addEdge(NODE_LABEL_PROCESS,columnOut);
+            }
 
             main.tx().commit();
 
@@ -49,6 +72,8 @@ public class MainGraphMapper {
 
     private String extractProperty(Vertex process, String propertyName) {
 
-        return process.values(propertyName).next().toString();
+        return process.value(propertyName);
     }
+
+
 }
