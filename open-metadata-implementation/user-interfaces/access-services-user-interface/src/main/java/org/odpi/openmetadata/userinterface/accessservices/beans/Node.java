@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.beans;
 
+import java.util.Map;
+
 public class Node {
 
     private String id;
     private String label;
     private String group;
+    private Map<String, String> properties;
 
     public Node(String id, String label) {
         this.id = id;
@@ -35,5 +38,13 @@ public class Node {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public Map<String, String> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, String> properties) {
+        this.properties = properties;
     }
 }

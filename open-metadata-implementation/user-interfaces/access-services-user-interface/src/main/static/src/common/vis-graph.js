@@ -35,7 +35,15 @@ class VisGraph extends PolymerElement {
                       -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
                        width="600" height="400"></canvas>
           </div>
+          
+         
         </div>
+        
+         <div class="node_content">
+          <h4>Node Properties:</h4>
+          <pre id="node_content">{}</pre>
+          </div>
+       
     `;
   }
 
@@ -59,7 +67,8 @@ class VisGraph extends PolymerElement {
             width: 0.15,
             smooth: {
               type: 'continuous'
-            }
+            },
+            arrows:'from'
           },
           layout: {    improvedLayout: false  },
           interaction: {
@@ -115,7 +124,7 @@ class VisGraph extends PolymerElement {
     var container = this.$.vis_container;
     this.network = new vis.Network(container, data, this.options);
     var thisElement = this;
-    this.network.on('selectNode', function(params) {
+    this.network.on('click', function(params) {
       thisElement.handleSelectNode(params);
     });
     this.network.fit();
@@ -163,9 +172,14 @@ class VisGraph extends PolymerElement {
 
   handleSelectNode(params) {
     var eventDetail = {};
-    eventDetail.selectedNode = params.nodes[0];
-    eventDetail.pointer = params.pointer;
-    this.fire('node-selected', eventDetail);
+    if (params.nodes.length > 0) {
+      eventDetail.selectedNode = params.nodes[0];
+      eventDetail.pointer = params.pointer;
+      var nodeContent = this.data.nodes.get(params.nodes[0]);
+      this.$.node_content.innerHTML = JSON.stringify(nodeContent, undefined, 3);
+      // this.fire('node-selected', eventDetail);
+      // this.network.fit();
+    }
   }
 
   _widthChanged(value) {

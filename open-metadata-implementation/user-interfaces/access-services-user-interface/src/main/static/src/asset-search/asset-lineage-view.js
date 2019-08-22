@@ -24,9 +24,29 @@ class AssetLineageView extends PolymerElement {
       
     
       
-        <token-ajax id="tokenAjax"  last-response="{{graphData}}" token="[[token]]" ></token-ajax>
+        <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
 
         <paper-button on-click="_loadData"> Go </paper-button>
+      
+        <iron-form id="ultimateSourceForm">
+        <form method="get">
+            <iron-a11y-keys keys="enter" on-keys-pressed="_ultimateSource"></iron-a11y-keys>
+            <paper-input label="Ultimate Source" value="{{guid1}}" no-label-float required autofocus>
+                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
+            </paper-input>
+        </form>
+       </iron-form>
+      
+      
+        <iron-form id="end2EndLineageForm">
+        <form method="get">
+            <iron-a11y-keys keys="enter" on-keys-pressed="_endToEndLineage"></iron-a11y-keys>
+            <paper-input label="End to End Lineage" value="{{guid2}}" no-label-float required autofocus>
+                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
+            </paper-input>
+        </form>
+       </iron-form>
+      
       
         <div class="container" id="container">
         
@@ -44,6 +64,27 @@ class AssetLineageView extends PolymerElement {
             graphData: {
                 type: Object,
                 observer: '_graphDataChanged'
+            },
+            groups : {
+                type: Object,
+                value:{
+                    glossaryTerm: {
+                            shape: 'diamond',
+                            color: 'yellowgreen'
+                        },
+                        column: {
+                            color: 'mediumpurple'
+                        },
+                        table: {
+                            shape: 'box',
+                        },
+                        process: {
+                            shape: 'parallelogram'
+                        },
+                        condensedNode: {
+                            color: 'turquoise'
+                        }
+            }
             }
         }
     }
@@ -54,25 +95,26 @@ class AssetLineageView extends PolymerElement {
     }
 
       _loadData(){
-          var groups = {
-              'Glossary Term': {
-                  shape: 'diamond',
-                  color: 'yellowgreen'
-              },
-              Column: {
-                  color: 'mediumpurple'
-              },
-              Table: {
-                  shape: 'box',
-              },
-              Process: {
-                  shape: 'parallelogram'
-              }
-          };
-          this.$.visgraph.options.groups = groups;
+          this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/export?graph=MOCK';
           this.$.tokenAjax._go();
 
+      }
+
+
+      _ultimateSource(){
+
+          this.$.visgraph.options.groups = this.groups;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid1 + '/ultimate-source?scope=COLUMNVIEW&graph=MOCK';
+          this.$.tokenAjax._go();
+      }
+
+
+      _endToEndLineage(){
+
+          this.$.visgraph.options.groups = this.groups;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid2+ '/end2end?scope=COLUMNVIEW&graph=MOCK';
+          this.$.tokenAjax._go();
       }
 
 }
