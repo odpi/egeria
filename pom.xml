@@ -123,8 +123,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-	    <!-- Versions of dependent libraries -->
-	    <junit.platform.version>1.4.2</junit.platform.version>
+        <!-- Versions of dependent libraries -->
+        <junit.platform.version>1.4.2</junit.platform.version>
         <junit.jupiter.version>5.4.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
@@ -156,6 +156,8 @@
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.2.0</plexus.version>
+        <quartz.version>2.3.1</quartz.version>
+        <tinkergraph.version>3.3.3</tinkergraph.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -188,13 +190,13 @@
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-	    <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
-	    <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
-	    <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
-	    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-	    <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
-	    <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
-	    <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
+        <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+        <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
+        <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
+        <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
 
     </properties>
 
@@ -381,6 +383,20 @@
                 <artifactId>plexus-utils</artifactId>
                 <scope>compile</scope>
                 <version>${plexus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <scope>compile</scope>
+                <version>${quartz.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>tinkergraph-gremlin</artifactId>
+                <scope>compile</scope>
+                <version>${tinkergraph.version}</version>
             </dependency>
 
             <dependency>
@@ -1546,7 +1562,7 @@
         </repository>
     </distributionManagement>
 
-    <!-- Most dependencies pushed down to keep components minimal --> 
+    <!-- Most dependencies pushed down to keep components minimal -->
     <dependencies>
         <!-- Use logback anywhere as logging implementation in TEST scope only -->
         <dependency>
@@ -1580,18 +1596,18 @@
                 </plugin>
 
                 <plugin>
-                   <groupId>org.jacoco</groupId>
-                   <artifactId>jacoco-maven-plugin</artifactId>
-                   <version>${jacoco-plugin.version}</version>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-plugin.version}</version>
                 </plugin>
 
-	            <plugin>
+                <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-	    	        <version>${spring-boot.version}</version>
+                    <version>${spring-boot.version}</version>
                 </plugin>
 
-	            <plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
@@ -1752,15 +1768,15 @@
             </testResource>
         </testResources>
 
-	<!-- Default compiler options - enable deprecation information -->
-	<plugins>
-	    <plugin>
+        <!-- Default compiler options - enable deprecation information -->
+        <plugins>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <compilerArgument>-Xlint:deprecation</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
-             </plugin>
+            </plugin>
 
             <!-- Validates maven & java versions -->
             <plugin>
@@ -1926,9 +1942,9 @@
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                    <!-- Used with sl44j as default implementaion in test scope only -->
+                                <!-- Used with sl44j as default implementaion in test scope only -->
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
-                                    <!-- These exceptions should be removed once code is clean -->
+                                <!-- These exceptions should be removed once code is clean -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>

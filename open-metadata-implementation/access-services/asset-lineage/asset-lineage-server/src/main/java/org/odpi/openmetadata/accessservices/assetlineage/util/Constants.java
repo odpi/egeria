@@ -1,10 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class Constants {
 
     private Constants() {
     }
+
+    public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
 
     public static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
@@ -19,6 +24,15 @@ public final class Constants {
     public static final String DEPLOYED_DB_SCHEMA_TYPE = "DeployedDatabaseSchema";
     public static final String DATA_STORE = "DataStore";
 
+
+    public static final String PROCESS = "Process";
+    public static final String PORT_ALIAS = "PortAlias";
+    public static final String PORT_IMPLEMENTATION = "PortImplementation";
+    public static final String TABULAR_SCHEMA_TYPE = "TabularSchemaType";
+    public static final String TABULAR_COLUMN_TYPE = "TabularColumnType";
+    public static final String TABULAR_COLUMN = "TabularColumn";
+    public static final String DATA_FILE = "DataFile";
+
     //Relationships Type
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
@@ -31,6 +45,12 @@ public final class Constants {
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
     public static final String TERM_CATEGORIZATION = "TermCategorization";
+    public static final String PORT_DELEGATION = "PortDelegation";
+    public static final String PROCESS_PORT = "ProcessPort";
+    public static final String LINEAGE_MAPPING = "LineageMapping";
+    public static final String SCHEMA_TYPE = "SchemaType";
+    public static final String PORT_SCHEMA = "PortSchema";
+    public static final String NESTED_FILE = "NestedFile";
 
     //Instance Properties fields
     public static final String DISPLAY_NAME = "displayName";
@@ -49,4 +69,5 @@ public final class Constants {
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
+
 }
