@@ -59,7 +59,7 @@ public class OpenLineageRestServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            MockGraphGenerator mockGraphGenerator = instanceHandler.testGraphGenerator(serverName);
+            MockGraphGenerator mockGraphGenerator = instanceHandler.mockGraphGenerator(serverName);
             mockGraphGenerator.generate();
         } catch (PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());
