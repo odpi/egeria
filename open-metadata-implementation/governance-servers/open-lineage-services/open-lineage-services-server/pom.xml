@@ -78,6 +78,12 @@
             <artifactId>gremlin-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>tinkergraph-gremlin</artifactId>
+            <version>3.3.3</version>
+        </dependency>
+
     </dependencies>
 
 </project>
