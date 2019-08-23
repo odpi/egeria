@@ -25,6 +25,33 @@ class VisGraph extends PolymerElement {
             @apply(--layout-center-center);
           }
           
+          .nodeContent {
+            position: relative;
+            border: 1px solid lightgray;
+            /*width: 30%;*/
+            height: 100%;
+            padding: 10px;
+          }
+          
+          div.vis-tooltip {
+            position: absolute;
+            visibility: hidden;
+            padding: 5px;
+            white-space: nowrap;
+            font-family: verdana;
+            font-size: 14px;
+            color: #000000;
+            background-color: #f5f4ed;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            border: 1px solid #808074;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            pointer-events: none;
+            z-index: 5;
+        }
+          
+          
         </style>
         
         <div id="vis_container">
@@ -34,15 +61,30 @@ class VisGraph extends PolymerElement {
               <canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; 
                       -webkit-tap-highlight-color: rgba(0, 0, 0, 0); 
                        width="600" height="400"></canvas>
+                       
+               <div class="vis-tooltip" style="left: 239px; top: 119px; visibility: hidden; box-sizing: border-box;"><div style="text-align:center;">test</div></div>
           </div>
           
          
+         
+         <div style="position: fixed; visibility: visible; padding: 5px; white-space: nowrap; font-family: cursive; font-size: 12px; background-color: rgb(230, 230, 230); border-radius: 15px; top: 132px; left: 900px; box-sizing: border-box;">
+           <div style="text-align:center;"><hr class="rPartvisNetwork">
+                <div class="showOnMe2"><div style="text-align:center;"></div>
+                <div class="showMeRpartTTp2" style="display:none;">
+                 setosa<script type="text/javascript">$(document).ready(function(){
+                $(".showOnMe2").click(function(){
+                $(".showMeRpartTTp2").toggle();
+                $.sparkline_display_visible();
+                });
+                  });</script></div></div>
+                
+           </div>
+         </div>
+         
+      
         </div>
         
-         <div class="node_content">
-          <h4>Node Properties:</h4>
-          <pre id="node_content">{}</pre>
-          </div>
+       
        
     `;
   }
@@ -105,6 +147,11 @@ class VisGraph extends PolymerElement {
       data: {
         nodes: {type: vis.DataSet},
         edges: {type: vis.DataSet}
+      },
+      interaction: {
+        tooltipDelay: 200,
+        selectable: true,
+        hover: true
       }
     };
   }
@@ -172,14 +219,14 @@ class VisGraph extends PolymerElement {
 
   handleSelectNode(params) {
     var eventDetail = {};
-    if (params.nodes.length > 0) {
-      eventDetail.selectedNode = params.nodes[0];
-      eventDetail.pointer = params.pointer;
-      var nodeContent = this.data.nodes.get(params.nodes[0]);
-      this.$.node_content.innerHTML = JSON.stringify(nodeContent, undefined, 3);
-      // this.fire('node-selected', eventDetail);
-      // this.network.fit();
-    }
+    // if (params.nodes.length > 0) {
+    //   eventDetail.selectedNode = params.nodes[0];
+    //   eventDetail.pointer = params.pointer;
+    //   var nodeContent = this.data.nodes.get(params.nodes[0]);
+    //   this.$.node_content.innerHTML = JSON.stringify(nodeContent, undefined, 3);
+    //   // this.fire('node-selected', eventDetail);
+    //   // this.network.fit();
+    // }
   }
 
   _widthChanged(value) {

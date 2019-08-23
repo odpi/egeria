@@ -90,8 +90,16 @@ class AssetLineageView extends PolymerElement {
     }
 
 
-    _graphDataChanged(data){
-       this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
+    _graphDataChanged(data) {
+        if (data === null || data === undefined) {
+            data.nodes = {};
+            data.edges = {};
+        } else {
+            for (var i = 0; i < data.nodes.length; i++) {
+                data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
+            }
+        }
+        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
     }
 
       _loadData(){
