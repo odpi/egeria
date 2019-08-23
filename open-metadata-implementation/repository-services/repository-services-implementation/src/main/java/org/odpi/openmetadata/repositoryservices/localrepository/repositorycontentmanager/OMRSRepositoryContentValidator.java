@@ -527,7 +527,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param sourceName name of source of request.
      * @param userId userId passed on call to this metadata collection.
      * @param methodName name of method requesting the validation.
-     * @throws UserNotAuthorizedException the userId is invalid
+     * @throws InvalidParameterException the userId is invalid
      */
     public  void validateUserId(String  sourceName,
                                 String  userId,

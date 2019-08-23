@@ -24,6 +24,8 @@ or a public cloud service that provides Kubernetes (and is Helm-compatible).
 If you are using the Docker Desktop-embedded Kubernetes, just remember to install
 Helm into it as well before following the installation instructions below.
 
+If you can't meet these requirements, an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
+
 ## Installation
 
 From one directory level above the location of this README, run the following:
@@ -157,7 +159,12 @@ with:
 ```text
 http://localhost:30888
 ```
+If you are using a cloud service, you will need to know what external ip address or name is exposed. This may be called 'Ingress Domain' or similar, but will typically not be seen in the output above. For example:
+```
+http://mycluster.mydomain.mycloud.com:30888
+```
 
+You will find the egeria open metadata lab notebooks already populated in the notebook server.
 ## Starting over
 
 Because the environment is entirely self-contained, you can easily start over the labs simply

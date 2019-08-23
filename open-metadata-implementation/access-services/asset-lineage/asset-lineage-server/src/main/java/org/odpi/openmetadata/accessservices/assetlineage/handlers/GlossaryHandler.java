@@ -3,6 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetLineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -14,8 +16,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.ASSET_LINEAGE_OMAS;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GLOSSARY_TERM_TYPE_NAME;
 
 public class GlossaryHandler {
@@ -58,45 +63,38 @@ public class GlossaryHandler {
      * @param entityProxy entityProxy
      * @param userID  String - userId of user making request.
      * @return Glossary Term retrieved from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy, String userID){
 
 
         final  String   guidParameter = "guid";
         final  String   methodName = "getGlossaryTerm";
-        GlossaryTerm glossaryTerm = new GlossaryTerm();
+
         String GUID = entityProxy.getGUID();
+        GlossaryTerm glossaryTerm = new GlossaryTerm();
 
-        InstancePropertyValue qualifiedNameInstancePropertyValue = entityProxy.getUniqueProperties().getInstanceProperties().get("qualifiedName");
-        PrimitivePropertyValue qualifiedNamePrimitivePropertyValue = (PrimitivePropertyValue) qualifiedNameInstancePropertyValue;
-        String qualifiedName = qualifiedNamePrimitivePropertyValue.getPrimitiveValue().toString();
+        String qualifiedName = repositoryHelper.getStringProperty(ASSET_LINEAGE_OMAS,"qualifiedName",entityProxy.getUniqueProperties(),methodName);
 
-        glossaryTerm.setGuid(GUID);
-        glossaryTerm.setQualifiedName(qualifiedName);
+
         EntityDetail entityDetail = null;
         try {
             entityDetail = repositoryHandler.getEntityByGUID(userID, GUID, guidParameter, GLOSSARY_TERM_TYPE_NAME, methodName);
-        } catch (InvalidParameterException e) {
-            log.error("OMAS throws an error because input parameter is null or invalid. Exception message is " + e.getErrorMessage());
-        } catch (UserNotAuthorizedException e) {
-            log.error("UserId passed is not authorized to perform the action. Exception message is " + e.getMessage());
-        } catch (PropertyServerException e) {
-            log.error("Error when trying to connect in a repository to retrieve information about the connenction. Exception message is " + e.getMessage());
+        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
+
+            throw new AssetLineageException(e.getReportedHTTPCode(),e.getReportingClassName(),e.getReportingActionDescription(),e.getErrorMessage(),e.getReportedSystemAction(),e.getReportedUserAction());
         }
 
-        InstancePropertyValue displayNameInstancePropertyValue = entityDetail.getProperties().getPropertyValue("displayName");
-        PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
-        String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
-
+        String displayName = repositoryHelper.getStringProperty(ASSET_LINEAGE_OMAS,"displayName",entityDetail.getProperties(),methodName);
         List<Classification> classifications = entityDetail.getClassifications();
+
+        glossaryTerm.setGuid(GUID);
+        glossaryTerm.setQualifiedName(qualifiedName);
 
         glossaryTerm.setType(entityProxy.getType().getTypeDefName());
         glossaryTerm.setDisplayName(displayName);
 
         glossaryTerm.setClassifications(classifications);
+
         return glossaryTerm;
     }
 }

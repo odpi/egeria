@@ -123,8 +123,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-	    <!-- Versions of dependent libraries -->
-	    <junit.platform.version>1.4.2</junit.platform.version>
+        <!-- Versions of dependent libraries -->
+        <junit.platform.version>1.4.2</junit.platform.version>
         <junit.jupiter.version>5.4.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
@@ -134,6 +134,7 @@
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.9.9</jackson.version>
+        <jackson.databind.version>2.9.9.3</jackson.databind.version>
         <kafka.version>2.1.1</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
@@ -155,10 +156,12 @@
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.2.0</plexus.version>
+        <quartz.version>2.3.1</quartz.version>
+        <tinkergraph.version>3.3.3</tinkergraph.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
-        <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.1</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
@@ -180,17 +183,20 @@
         <rat-plugin.version>0.13</rat-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
+        <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
+        <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
+        <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
 
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-	    <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
-	    <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
-	    <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
-	    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-	    <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
-	    <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
-	    <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
+        <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+        <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
+        <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.exclusions>**/open-metadata-fvt/**</sonar.exclusions>
+        <sonar.coverage.exclusions>**/generated/**</sonar.coverage.exclusions>
+        <sonar.cpd.exclusions>**/generated/**</sonar.cpd.exclusions>
 
     </properties>
 
@@ -222,7 +228,7 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <scope>compile</scope>
-                <version>${jackson.version}</version>
+                <version>${jackson.databind.version}</version>
             </dependency>
 
             <dependency>
@@ -377,6 +383,20 @@
                 <artifactId>plexus-utils</artifactId>
                 <scope>compile</scope>
                 <version>${plexus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <scope>compile</scope>
+                <version>${quartz.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.tinkerpop</groupId>
+                <artifactId>tinkergraph-gremlin</artifactId>
+                <scope>compile</scope>
+                <version>${tinkergraph.version}</version>
             </dependency>
 
             <dependency>
@@ -1542,7 +1562,7 @@
         </repository>
     </distributionManagement>
 
-    <!-- Most dependencies pushed down to keep components minimal --> 
+    <!-- Most dependencies pushed down to keep components minimal -->
     <dependencies>
         <!-- Use logback anywhere as logging implementation in TEST scope only -->
         <dependency>
@@ -1576,18 +1596,18 @@
                 </plugin>
 
                 <plugin>
-                   <groupId>org.jacoco</groupId>
-                   <artifactId>jacoco-maven-plugin</artifactId>
-                   <version>${jacoco-plugin.version}</version>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-plugin.version}</version>
                 </plugin>
 
-	            <plugin>
+                <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
-	    	        <version>${spring-boot.version}</version>
+                    <version>${spring-boot.version}</version>
                 </plugin>
 
-	            <plugin>
+                <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>${maven-jar-plugin.version}</version>
@@ -1673,6 +1693,7 @@
                     <configuration>
                         <forkCount>3</forkCount>
                         <reuseForks>true</reuseForks>
+                        <!--suppress UnresolvedMavenProperty -->
                         <argLine>-Xmx1024m ${argLine}</argLine>
                         <includes>
                             <include>**/*Test.java</include>
@@ -1716,7 +1737,20 @@
                     <version>${maven-pmd.version}</version>
                 </plugin>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-gpg-plugin</artifactId>
+                    <version>${maven-gpg-plugin.version}</version>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.sonatype.plugins</groupId>
+                    <artifactId>nexus-staging-maven-plugin</artifactId>
+                    <version>${nexus-staging-maven-plugin}</version>
+                </plugin>
             </plugins>
+
+
 
         </pluginManagement>
 
@@ -1734,19 +1768,14 @@
             </testResource>
         </testResources>
 
-	<!-- Default compiler options - enable deprecation information -->
-	<plugins>
-	    <plugin>
+        <!-- Default compiler options - enable deprecation information -->
+        <plugins>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <compilerArgument>-Xlint:deprecation</compilerArgument>
                     <failOnWarning>false</failOnWarning>
                 </configuration>
-             </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
             </plugin>
 
             <!-- Validates maven & java versions -->
@@ -1913,9 +1942,9 @@
                                 <ignoredUnusedDeclaredDependency>org.testng:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>junit:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.junit.platform:*</ignoredUnusedDeclaredDependency>
-                                    <!-- Used with sl44j as default implementaion in test scope only -->
+                                <!-- Used with sl44j as default implementaion in test scope only -->
                                 <ignoredUnusedDeclaredDependency>ch.qos.logback:*</ignoredUnusedDeclaredDependency>
-                                    <!-- These exceptions should be removed once code is clean -->
+                                <!-- These exceptions should be removed once code is clean -->
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
@@ -1932,7 +1961,58 @@
                     </execution>
                 </executions>
             </plugin>
-        
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${maven-source-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <additionalJOption>-J-Xmx1536m</additionalJOption>
+                    <excludePackageNames>org.odpi.openmetadata.fvt.*</excludePackageNames>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- always create empty javadoc and source jars for every project           -->
+            <!-- Needed for Maven central release process for all components of type jar -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>createemptydocsource</id>
+                        <phase>process-resources</phase>
+                        <configuration>
+                            <target>
+                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-sources.jar"/>
+                                <touch file="${project.build.directory}/${project.artifactId}-${project.version}-javadoc.jar"/>
+                            </target>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -1945,44 +2025,11 @@
             <build>
                 <plugins>
 
-                    <!-- Generate and attach source to Maven Central distributions -->
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <!-- Generate and attach javadoc to Maven Central distributions -->
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
                     <!-- Request that distributed artifacts are signed before flowing to Maven Central distributions -->
 
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -1994,13 +2041,11 @@
                         </executions>
                     </plugin>
 
-
                     <!-- Request that the artifacts are pushed to Maven Central's staging area -->
 
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
                         <extensions>true</extensions>
                         <configuration>
                             <serverId>ossrh</serverId>
@@ -2036,7 +2081,9 @@
                             <effort>Max</effort>
                             <threshold>Low</threshold>
                             <failOnError>false</failOnError>
+                            <!--suppress UnresolvedMavenProperty -->
                             <includeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-include.xml</includeFilterFile>
+                            <!--suppress UnresolvedMavenProperty -->
                             <excludeFilterFile>${maven.multiModuleProjectDirectory}/spotbugs-security-exclude.xml</excludeFilterFile>
                             <plugins>
                                 <plugin>

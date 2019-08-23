@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapability;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ import java.util.List;
  * - root classification - the node in the classification tree of where we are interested (for example all governance classifications)
  * - root type           - the base type that we are interested in
  */
-public interface GovernanceEngineClient {
+public interface GovernanceEngineInterface {
     /**
      * @param userId         - String - userId of user making request.
      * @param classification - String - name of base classification type (can be null)
@@ -51,4 +52,9 @@ public interface GovernanceEngineClient {
      */
     GovernedAsset getGovernedAsset(String userId, String assetGuid)
             throws InvalidParameterException, UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
+
+
+    SoftwareServerCapability createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws InvalidParameterException, MetadataServerException;
+
+    SoftwareServerCapability getSoftwareServerCapabilityByGUID(String userId, String guid) throws InvalidParameterException;
 }

@@ -28,13 +28,6 @@ public class GraphFactory {
         return getJanusGraph(storagePath, indexPath);
     }
 
-    public static JanusGraph openBufferGraph() throws RepositoryErrorException {
-        final String storagePath = "./egeria-lineage-repositories/buffer/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/buffer/searchindex";
-
-        return getJanusGraph(storagePath, indexPath);
-    }
-
     public static JanusGraph openHistoryGraph() throws RepositoryErrorException {
         final String storagePath = "./egeria-lineage-repositories/history/berkeley";
         final String indexPath = "./egeria-lineage-repositories/history/searchindex";

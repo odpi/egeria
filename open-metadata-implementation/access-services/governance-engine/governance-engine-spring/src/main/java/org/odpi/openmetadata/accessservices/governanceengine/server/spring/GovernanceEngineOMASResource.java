@@ -4,9 +4,14 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.spring;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.SoftwareServerCapabilityResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +68,37 @@ public class GovernanceEngineOMASResource {
                                                      @PathVariable String userId,
                                                      @PathVariable String assetGuid) {
         return restAPI.getGovernedAsset(serverName, userId, assetGuid);
+    }
+
+    /**
+     * Create a Software Server Capability entity
+     *
+     * @param serverName  - String - the name of server instance to call
+     * @param userId      - String - userId of user making request.
+     * @param requestBody - SoftwareServerCapabilityRequestBody
+     * @return the Software Server entity created
+     */
+    @PostMapping(path = "/software-server-capabilities")
+    public SoftwareServerCapabilityResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
+                                                                           @PathVariable("userId") String userId,
+                                                                           @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
+        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Fetch the Software Server Capability entity by global identifier
+     *
+     * @param serverName name of server instance to call
+     * @param userId     the name of the calling user
+     * @param guid       guid of the software server
+     * @return unique identifier of the created process
+     */
+    @GetMapping(path = "/software-server-capabilities/{guid}")
+    public SoftwareServerCapabilityResponse getSoftwareServerCapabilityByGUID(@PathVariable String serverName,
+                                                                              @PathVariable String userId,
+                                                                              @PathVariable String guid) {
+        return restAPI.getSoftwareServerByGUID(serverName, userId, guid);
     }
 
 }
