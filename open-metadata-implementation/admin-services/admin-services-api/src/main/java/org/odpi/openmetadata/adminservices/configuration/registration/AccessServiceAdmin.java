@@ -232,7 +232,7 @@ public abstract class AccessServiceAdmin
             {
                 try
                 {
-                    Integer plateauThreshold =  (Integer) plateauThresholdObject;
+                    Integer plateauThreshold =  Integer.parseInt(plateauThresholdObject.toString());
 
                     auditCode = OMAGAuditCode.PLATEAU_THRESHOLD;
                     auditLog.logRecord(methodName,
