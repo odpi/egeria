@@ -1,49 +1,38 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
-import org.janusgraph.core.schema.JanusGraphManagement;
+import org.janusgraph.core.schema.*;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.OpenLineageException;
+import org.odpi.openmetadata.governanceservers.openlineage.util.EdgeLabels;
+import org.odpi.openmetadata.governanceservers.openlineage.util.VertexLabels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
-
-public class GraphFactory {
-
-    private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
+import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.PROPERTY_NAME_GUID;
+import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
 
-    public static JanusGraph openMainGraph() throws RepositoryErrorException {
-        final String storagePath = "./egeria-lineage-repositories/main/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/main/searchindex";
+public class BufferGraphFactory extends IndexingFactory {
 
-        return getJanusGraph(storagePath, indexPath);
-    }
+    private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
 
-    public static JanusGraph openHistoryGraph() throws RepositoryErrorException {
-        final String storagePath = "./egeria-lineage-repositories/history/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/history/searchindex";
 
-        return getJanusGraph(storagePath, indexPath);
-    }
+    public static JanusGraph openBufferGraph(){
 
-    public static JanusGraph openMockGraph() throws RepositoryErrorException {
-        final String storagePath = "./egeria-lineage-repositories/mock/berkeley";
-        final String indexPath = "./egeria-lineage-repositories/mock/searchindex";
-
-        return getJanusGraph(storagePath, indexPath);
-    }
-
-    private static JanusGraph getJanusGraph(String storagePath, String indexPath) throws RepositoryErrorException {
+        final String methodName = "open";
         JanusGraph janusGraph;
+
+        final String storagePath = "./egeria-lineage-repositories/buffer/berkeley";
+        final String indexPath = "./egeria-lineage-repositories/buffer/searchindex";
+
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend", "berkeleyje").
                 set("storage.directory", storagePath).
@@ -58,22 +47,23 @@ public class GraphFactory {
             log.error("{} could not open graph stored at {}", "open", storagePath);
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, "open", GraphFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, BufferGraphFactory.class.getName());
 
-            throw new RepositoryErrorException(400,
-                    GraphFactory.class.getName(),
-                    "open",
+            throw new OpenLineageException(400,
+                    BufferGraphFactory.class.getName(),
+                    methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
 
 
+
         try {
             log.info("Updating graph schema, if necessary");
             initializeGraph(janusGraph);
         }
-        catch (RepositoryErrorException e) {
+        catch (OpenLineageException e) {
             log.error("{} Caught exception during graph initialize operation", "open");
             throw e;
         }
@@ -82,7 +72,7 @@ public class GraphFactory {
         return janusGraph;
     }
 
-    private static void initializeGraph(JanusGraph graph) throws RepositoryErrorException {
+    private static void initializeGraph(JanusGraph graph){
 
         final String methodName = "initializeGraph";
         /*
@@ -92,11 +82,14 @@ public class GraphFactory {
         try {
             JanusGraphManagement management = graph.openManagement();
 
-            Set<String> vertexLabels = new HashSet<>(Arrays.asList(GLOSSARY_TERM, RELATIONAL_COLUMN, RELATIONAL_TABLE_TYPE,
-                    RELATIONAL_TABLE, RELATIONAL_DB_SCHEMA_TYPE, DEPLOYED_DB_SCHEMA_TYPE, DATABASE));
+            Set<String> vertexLabels = Stream.of(VertexLabels.values())
+                                            .map(Enum::name)
+                                            .collect(Collectors.toSet());
 
-            Set<String> relationshipsLabels = new HashSet<>(Arrays.asList(SCHEMA_ATTRIBUTE_TYPE, ATTRIBUTE_FOR_SCHEMA,
-                    GLOSSARY_TERM, SEMANTIC_ASSIGNMENT, DEPLOYED_DB_SCHEMA_TYPE, DATABASE));
+
+            Set<String> relationshipsLabels = Stream.of(EdgeLabels.values())
+                                                        .map(Enum::name)
+                                                        .collect(Collectors.toSet());
 
             // Each vertex has a label that reflects the Asset
             management = checkAndAddLabelVertexOrEdge(vertexLabels, management);
@@ -104,12 +97,19 @@ public class GraphFactory {
             management = checkAndAddLabelVertexOrEdge(relationshipsLabels, management);
 
             management.commit();
+
+            createCompositeIndexForVertexProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph);
+            createCompositeIndexForVertexProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph);
+
+            createCompositeIndexForEdgeProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,graph);
+
+
         } catch (Exception e) {
 
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
-            throw new RepositoryErrorException(400,
-                    GraphFactory.class.getName(),
+            throw new OpenLineageException(400,
+                    BufferGraphFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -119,11 +119,17 @@ public class GraphFactory {
 
     private static JanusGraphManagement checkAndAddLabelVertexOrEdge(Set<String> labels, JanusGraphManagement management){
         for (String label: labels) {
+
             if (management.getVertexLabel(label) == null)
                 management.makeVertexLabel(label).make();
         }
 
-       return management;
+        return management;
 
     }
+
+
+
 }
+
+

@@ -27,6 +27,12 @@
     </properties>
     <dependencies>
 
+
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>graph-repository-connector</artifactId>
@@ -78,6 +84,18 @@
             <artifactId>gremlin-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>tinkergraph-gremlin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers-common</artifactId>
+            <version>7.0.0</version>
+        </dependency>
+
     </dependencies>
+
 
 </project>

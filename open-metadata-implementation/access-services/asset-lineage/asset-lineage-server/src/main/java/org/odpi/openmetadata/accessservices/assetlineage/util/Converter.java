@@ -366,19 +366,17 @@ public class Converter {
             if (instanceProperties != null) {
                 for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
                     if (property.getValue() != null) {
+
                         String propertyValue = getStringForPropertyValue(property.getValue());
                         if (!propertyValue.equals("")) {
 
-                            if(property.getKey().equals("name") || property.getKey().equals("displayName"))
-                            {
+                            if (property.getKey().equals("name") || property.getKey().equals("displayName")) {
                                 attributes.put("displayName", propertyValue);
 
-                            }
-                            else{
+                            } else {
                                 attributes.put(property.getKey(), propertyValue);
                             }
                         }
-
 
 
                     }
@@ -408,7 +406,12 @@ public class Converter {
                 case OM_PRIMITIVE_TYPE_FLOAT:
                 case OM_PRIMITIVE_TYPE_LONG:
                 case OM_PRIMITIVE_TYPE_SHORT:
-                    return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
+                    PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) ipv;
+                    if (primitivePropertyValue.getPrimitiveValue() != null) {
+                        return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
+                    } else {
+                        return "null";
+                    }
                 case OM_PRIMITIVE_TYPE_UNKNOWN:
                 default:
                     return "";
@@ -447,8 +450,14 @@ public class Converter {
         newAssetContext.setContext(listOfElements.stream().collect(
                 Collectors.toMap(Element::getType, element -> element)
         ));
-        newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
+        if (term.getElements().get(0).getConnections().isEmpty()) {
+            newAssetContext.setConnection(null);
+
+        } else {
+            newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
+        }
 
         return newAssetContext;
+
     }
 }

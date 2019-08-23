@@ -11,9 +11,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.services.BufferGraphFactory;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphFactory;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -93,7 +94,7 @@ public class OpenLineageOperationalServices {
 
             try {
                 this.mainGraph = GraphFactory.openMainGraph();
-                this.bufferGraph = GraphFactory.openBufferGraph();
+                this.bufferGraph = BufferGraphFactory.openBufferGraph();
                 this.historyGraph = GraphFactory.openHistoryGraph();
                 this.mockGraph = GraphFactory.openMockGraph();
 
@@ -112,7 +113,7 @@ public class OpenLineageOperationalServices {
             inTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
 
             if (inTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new inTopicListener(graphBuilder, auditLog);
+                OpenMetadataTopicListener ALOutTopicListener = new InTopicListener(graphBuilder, auditLog);
                 this.inTopicConnector.registerListener(ALOutTopicListener);
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
             }

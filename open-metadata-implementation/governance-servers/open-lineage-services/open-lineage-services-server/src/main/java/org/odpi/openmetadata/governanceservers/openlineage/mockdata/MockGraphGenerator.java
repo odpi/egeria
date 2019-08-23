@@ -41,14 +41,14 @@ public class MockGraphGenerator {
     /**
      * The parameters for the graph that is to be generated are hardcoded for now.
      * A "flow" constitutes of a path between columns of different tables, connected together by process nodes.
-     * I.E. {@code columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3}.
-     * The length of this path is specified by the number of proccesses within the flow.
+     * I.E. columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3.
+     * The length of this path is specified by the number of processes within the flow.
      */
     private void setProperties() {
         this.numberGlossaryTerms = 20;
         this.numberFlows = 1;
-        this.processesPerFlow = 2;
-        this.columnsPerTable = 2;
+        this.processesPerFlow = 5;
+        this.columnsPerTable = 5;
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;
@@ -70,7 +70,6 @@ public class MockGraphGenerator {
     private void generateVerbose() {
         List<Vertex> columnNodesPerTable;
         List<Vertex> glossaryNodes = new ArrayList<>();
-        List<Vertex> hostNodes = new ArrayList<>();
         List<Vertex> tableNodes = new ArrayList<>();
         List<List<Vertex>> columnNodes = new ArrayList<>();
 
@@ -79,36 +78,29 @@ public class MockGraphGenerator {
         //Create all Glossary Term nodes
         for (int i = 0; i < numberGlossaryTerms; i++) {
             Vertex glossaryVertex = g.addV(NODE_LABEL_GLOSSARYTERM).next();
-            glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
+            addGlossaryTermProperties(i, glossaryVertex);
             glossaryNodes.add(glossaryVertex);
         }
 
         //Create all Process nodes
         List<Vertex> processNodes = new ArrayList<>();
         for (int i = 0; i < numberProcesses; i++) {
-            Vertex processVertex = g.addV(NODE_LABEL_PROCESS).next();
-            processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+            Vertex processVertex = g.addV(NODE_LABEL_SUB_PROCESS).next();
+            addProcessProperties(i, processVertex);
             processNodes.add(processVertex);
         }
 
         //Create all Table nodes and a Host node for each table.
         for (int j = 0; j < numberTables; j++) {
             Vertex tableVertex = g.addV(NODE_LABEL_TABLE).next();
-            tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
+            addTableProperties(j, tableVertex);
             tableNodes.add(tableVertex);
-
-            Vertex hostVertex = g.addV(NODE_LABEL_HOST).next();
-            hostVertex.property(PROPERTY_KEY_ENTITY_GUID, "h" + j);
-
-            addEdge(EDGE_LABEL_INCLUDED_IN, tableVertex, hostVertex);
-
-            hostNodes.add(hostVertex);
 
             //Create all Column nodes.
             columnNodesPerTable = new ArrayList<>();
             for (int i = 0; i < columnsPerTable; i++) {
                 Vertex columnVertex = g.addV(NODE_LABEL_COLUMN).next();
-                columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
+                addColumnProperties(j, i, columnVertex);
                 addEdge(EDGE_LABEL_INCLUDED_IN, columnVertex, tableVertex);
 
                 //Randomly connect Column nodes with Glossary Term nodes.
@@ -132,21 +124,14 @@ public class MockGraphGenerator {
 
                 final Vertex process = processNodes.get(flowIndex * processesPerFlow + tableIndex);
 
-                final Vertex host1 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex);
-                final Vertex host2 = hostNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
-
                 final Vertex table1 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final Vertex table2 = tableNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
                 final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
 
-                addEdge(EDGE_LABEL_HOST_AND_PROCESS, host1, process);
-                addEdge(EDGE_LABEL_HOST_AND_PROCESS, process, host2);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
-
-
 
                 //For each column in a table
                 for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
@@ -160,6 +145,45 @@ public class MockGraphGenerator {
             }
         }
         g.tx().commit();
+    }
+
+    private void addGlossaryTermProperties(int i, Vertex glossaryVertex) {
+        glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
+        glossaryVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.g" + i);
+        glossaryVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + i);
+        glossaryVertex.property(PROPERTY_KEY_GLOSSARY, "glossary");
+    }
+
+    private void addProcessProperties(int i, Vertex processVertex) {
+        processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
+        processVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.p" + i);
+        processVertex.property(PROPERTY_KEY_CREATE_TIME, "createTime");
+        processVertex.property(PROPERTY_KEY_UPDATE_TIME, "updateTime");
+        processVertex.property(PROPERTY_KEY_FORMULA, "formula");
+        processVertex.property(PROPERTY_KEY_PROCESS_DESCRIPTION_URI, "processDescriptionURI");
+        processVertex.property(PROPERTY_KEY_VERSION, "version");
+        processVertex.property(PROPERTY_KEY_PROCESS_TYPE, "processType");
+    }
+
+    private void addTableProperties(int j, Vertex tableVertex) {
+        tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
+        tableVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j);
+        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + j);
+        tableVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
+        tableVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
+        tableVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
+        tableVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME, "schema.displayName");
+    }
+
+    private void addColumnProperties(int j, int i, Vertex columnVertex) {
+        columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
+        columnVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
+        columnVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
+        columnVertex.property(PROPERTY_KEY_SCHEMA_DISPLAY_NAME, "schema.displayName");
+        columnVertex.property(PROPERTY_KEY_TABLE_DISPLAY_NAME, "table.displayName");
     }
 
     private void addEdge(String edgeLabel, Vertex fromVertex, Vertex toVertex) {
