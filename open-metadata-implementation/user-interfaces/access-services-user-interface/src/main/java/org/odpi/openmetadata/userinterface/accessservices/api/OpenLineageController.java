@@ -4,8 +4,8 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scopes;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,7 +31,7 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/export")
-    public Map<String, Object> exportGraph(String userId, @RequestParam Graphs graph){
+    public Map<String, Object> exportGraph(String userId, @RequestParam Graph graph){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.exportGraph(userId, graph);
@@ -43,7 +43,7 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
-    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam Scopes scope, @RequestParam Graphs graph){
+    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope, @RequestParam Graph graph){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.getUltimateSource(userId, scope, graph, guid);
@@ -54,7 +54,7 @@ public class OpenLineageController {
         return exportedGraph;
     }
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
-    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scopes scope, @RequestParam Graphs graph){
+    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope, @RequestParam Graph graph){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.getEndToEndLineage(userId, scope, graph, guid);
