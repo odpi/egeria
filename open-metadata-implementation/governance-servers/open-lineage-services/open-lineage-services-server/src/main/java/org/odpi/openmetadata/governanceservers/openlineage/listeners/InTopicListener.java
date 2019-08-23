@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetLineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
@@ -58,23 +59,12 @@ public class InTopicListener implements OpenMetadataTopicListener {
         try {
             switch (event.getOmrsInstanceEventType()) {
                 case NEW_ENTITY_EVENT:
-                    log.error("A NEW_ENTITY_EVENT was received but this should never be published by Asset Lineage OMAS. Ignoring.");
-                    break;
-                case UPDATED_ENTITY_EVENT:
-                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                    //            graphBuilder.processEvent(updatedEntityEvent);
-                    break;
-                case DELETED_ENTITY_EVENT: //TODO Check the difference between delete and purged events
-                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                    //            graphBuilder.processEvent(updatedEntityEvent);
+                    AssetLineageEntityEvent newEntityEvent = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEntityEvent.class);
+                    graphBuilder.createEntity(newEntityEvent);
                     break;
                 case NEW_RELATIONSHIP_EVENT:
                         RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
-                        graphBuilder.addAsset(relationshipEvent);
-                    break;
-                case UPDATED_RELATIONSHIP_EVENT:
-                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                    //            graphBuilder.processEvent(updatedEntityEvent);;
+                    graphBuilder.createRelationship(relationshipEvent);
                     break;
                 case DELETE_PURGED_RELATIONSHIP_EVENT:
                          DeletePurgedRelationshipEvent deletePurgedRelationshipEvent =OBJECT_MAPPER.readValue(eventAsString, DeletePurgedRelationshipEvent.class);
