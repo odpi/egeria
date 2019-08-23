@@ -24,7 +24,7 @@ The current Egeria maintainers are:
 | Chris Grote | chris@thegrotes.net |
 | Raluca Popa | raluca.popa2@ing.com |
 | Cong Chen | cong.chen@ing.com |
-| Ernie Ostic | eostic@us.ibm.com |
+| Ernie Ostic | ernie.ostic@getmanta.com |
 | Chris Replogle | Chris.Replogle@sas.com |
 | Dimitrios Maimaris | dimi.maim@gmail.com |
 
