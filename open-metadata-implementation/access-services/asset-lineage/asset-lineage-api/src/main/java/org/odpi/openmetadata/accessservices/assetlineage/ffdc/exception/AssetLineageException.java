@@ -9,7 +9,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
  * The AssetLineageErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
-public class AssetLineageException extends Exception {
+public class AssetLineageException extends RuntimeException {
 
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.

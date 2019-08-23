@@ -41,8 +41,8 @@ public class MockGraphGenerator {
     /**
      * The parameters for the graph that is to be generated are hardcoded for now.
      * A "flow" constitutes of a path between columns of different tables, connected together by process nodes.
-     * I.E. {@code columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3}.
-     * The length of this path is specified by the number of proccesses within the flow.
+     * I.E. columnnode1 -> processnode1 -> columnnode2 -> processnode2 -> columnnode3.
+     * The length of this path is specified by the number of processes within the flow.
      */
     private void setProperties() {
         this.numberGlossaryTerms = 20;

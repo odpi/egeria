@@ -9,7 +9,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Asset;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+
+import java.util.List;
+import java.util.Map;
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -17,12 +23,13 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Asse
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class")
-public class RelationshipEvent extends AssetLineageEvent {
+public class RelationshipEvent extends AssetLineageEntityEvent {
 
-    private GlossaryTerm glossaryTerm;
-    private String typeDefName;
-    private String typeDefGUID;
-    private ConvertedAssetContext assetContext;
+    private GlossaryTerm glossaryTerm = null;
+    private String relationshipGuid = null;
+    private String typeDefName = null;
+    private ConvertedAssetContext assetContext = null;
+    private Map<String,AssetLineageEntityEvent> proxies = null;
 
     public GlossaryTerm getGlossaryTerm() {
         return glossaryTerm;
@@ -40,12 +47,12 @@ public class RelationshipEvent extends AssetLineageEvent {
         this.typeDefName = typeDefName;
     }
 
-    public String getTypeDefGUID() {
-        return typeDefGUID;
+    public String getRelationshipGuid() {
+        return relationshipGuid;
     }
 
-    public void setTypeDefGUID(String typeDefGUID) {
-        this.typeDefGUID = typeDefGUID;
+    public void setRelationshipGuid(String typeDefGUID) {
+        this.relationshipGuid = typeDefGUID;
     }
 
     public ConvertedAssetContext getAssetContext() {
@@ -54,5 +61,13 @@ public class RelationshipEvent extends AssetLineageEvent {
 
     public void setAssetContext(ConvertedAssetContext assetContext) {
         this.assetContext = assetContext;
+    }
+
+    public Map<String,AssetLineageEntityEvent> getProxies() {
+        return proxies;
+    }
+
+    public void setProxies(Map<String,AssetLineageEntityEvent> proxies) {
+        this.proxies = proxies;
     }
 }

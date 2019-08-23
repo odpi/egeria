@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions;
 
 
-public abstract class OpenLineageException extends Exception {
+public class OpenLineageException extends RuntimeException {
     private int reportedHTTPCode;
     private String reportingClassName;
     private String reportingActionDescription;
