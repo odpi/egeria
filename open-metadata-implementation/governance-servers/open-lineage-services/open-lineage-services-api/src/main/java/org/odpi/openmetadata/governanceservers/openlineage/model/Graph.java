@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
-public enum Graphs {
+public enum Graph {
     MAIN,
     BUFFER,
     HISTORY,
