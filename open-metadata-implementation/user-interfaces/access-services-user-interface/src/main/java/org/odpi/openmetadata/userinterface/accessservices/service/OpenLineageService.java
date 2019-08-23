@@ -5,8 +5,13 @@ package org.odpi.openmetadata.userinterface.accessservices.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Edge;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Node;
+import org.odpi.openmetadata.userinterface.accessservices.service.response.Property;
+import org.odpi.openmetadata.userinterface.accessservices.service.response.Response;
+import org.odpi.openmetadata.userinterface.accessservices.service.response.Vertice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,19 +19,16 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class OpenLineageService {
 
     private final OpenLineage openLineageClient;
     //TODO add authentication
-    private final String user = "demo-repo";
+    private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
@@ -42,40 +44,65 @@ public class OpenLineageService {
 
     public Map<String, Object> exportGraph(String userId, Graph graph) throws IOException {
         String exportedGraph = openLineageClient.exportGraph(user, graph);
+        Map<String, Object> graphData = processResponse(exportedGraph);
+        return graphData;
+    }
+
+    public Map<String, Object> getUltimateSource(String userId, Scope scope, Graph graph, String guid) throws IOException {
+        String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATESOURCE, graph, guid);
+        Map<String, Object> graphData = processResponse(response);
+        return graphData;
+    }
+
+    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, Graph graph, String guid) throws IOException {
+        String response = openLineageClient.queryLineage(user, scope, Query.ENDTOEND, graph, guid);
+        Map<String, Object> graphData = processResponse(response);
+        return graphData;
+    }
+
+    private Map<String, Object> processResponse(String response) throws IOException {
         final ObjectMapper mapper = this.mapper;
         Map<String, Object> graphObject;
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
         try {
-            List<String> lines = Arrays.asList(exportedGraph.split("\n"));
-            for(String line: lines) {
-                graphObject = (Map<String, Object>) mapper.readValue(line, Object.class);
-                String idRoot = String.valueOf(mapper.readTree(line).get("id").get("@value"));
-                String labelRoot = (String) graphObject.get("label");
+            Response responseObj = mapper.readValue(response, Response.class);
 
-                if(graphObject.get("inE") != null) {
-                    //TODO adjust depending on format
-                    Object newEdges =
-                            ((LinkedHashMap) graphObject.get("inE")).values().stream().map(e -> ((List) e)).flatMap(
-                                    e -> ((List) e).stream()).map(e -> ((LinkedHashMap) e).get("outV")).map(e -> new Edge(idRoot, String.valueOf(((Map)e).get("@value")))).collect(Collectors.toList());
-                    listEdges.addAll((List) newEdges);
-                }
-
+            for(Vertice vertice : responseObj.getVertices()){
+                String labelRoot = vertice.getLabel();
+                String idRoot = String.valueOf(vertice.getId().getValue());
                 Node node = new Node(idRoot, labelRoot + idRoot);
                 node.setGroup(labelRoot);
+                Map<String, String> properties = new HashMap<>();
+                if(vertice.getProperties()!= null && !vertice.getProperties().isEmpty()){
+                    for(Map.Entry<String, List<Property>> propertyEntry: vertice.getProperties().entrySet()){
+                        properties.put(propertyEntry.getKey(), propertyEntry.getValue().get(0).getValue());
+                    }
+                }
+                node.setProperties(properties);
+                node.setLabel(properties.get("displayName"));
                 listNodes.add(node);
+                if(vertice.getInE()!= null && !vertice.getInE().isEmpty()) {
+                    for (Map.Entry<String, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge>> entry :  vertice.getInE().entrySet()) {
+
+                        for(org.odpi.openmetadata.userinterface.accessservices.service.response.Edge edge: entry.getValue()) {
+                            String value = String.valueOf(edge.getOutV().getValue());
+                            Edge newEdge = new Edge(idRoot, value);
+                            newEdge.setLabel(entry.getKey());
+                            listEdges.add(newEdge);
+                        }
+                    }
+                }
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw e;
         }
-
 
         Map<String, Object> graphData = new HashMap<>();
         graphData.put("edges", listEdges);
         graphData.put("nodes", listNodes);
         return graphData;
-
     }
 
 
