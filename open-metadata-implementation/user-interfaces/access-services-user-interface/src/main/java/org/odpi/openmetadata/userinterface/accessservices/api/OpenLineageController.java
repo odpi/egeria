@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +29,7 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/export")
-    public Map<String, Object> exportGraph(String userId, @RequestParam Graphs graph){
+    public Map<String, Object> exportGraph(String userId, @RequestParam Graph graph){
         Map<String, Object> exportedGraph = null;
         try {
             exportedGraph = openLineageService.exportGraph(userId, graph);

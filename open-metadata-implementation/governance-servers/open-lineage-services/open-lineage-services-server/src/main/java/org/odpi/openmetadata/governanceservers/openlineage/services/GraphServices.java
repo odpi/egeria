@@ -5,7 +5,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.VertexProperty;
 import org.apache.tinkerpop.gremlin.structure.io.IoCore;
@@ -14,9 +13,9 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scopes;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,8 +51,8 @@ public class GraphServices {
         lineageQuery = reformatArg(lineageQuery);
         graphName = reformatArg(graphName);
 
-        Graph graph = getJanusGraph(graphName);
-        switch (Queries.valueOf(lineageQuery)) {
+        org.apache.tinkerpop.gremlin.structure.Graph graph = getJanusGraph(graphName);
+        switch (Query.valueOf(lineageQuery)) {
             case SOURCEANDDESTINATION:
                 response = sourceAndDestination(scope, graph, guid);
                 break;
@@ -84,7 +83,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String sourceAndDestination(String scope, Graph graph, String guid) {
+    private String sourceAndDestination(String scope, org.apache.tinkerpop.gremlin.structure.Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(scope);
 
@@ -98,7 +97,7 @@ public class GraphServices {
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        Graph responseGraph = TinkerGraph.open();
+        org.apache.tinkerpop.gremlin.structure.Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
         Vertex sourceCondensation = g.addV(NODE_LABEL_CONDENSED).next();
@@ -133,21 +132,24 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String endToEnd(String scope, Graph graph, String guid) {
+    private String endToEnd(String scope, org.apache.tinkerpop.gremlin.structure.Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(scope);
 
         final GraphTraversal<Vertex, Vertex> queriedNode = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
+        final GraphTraversal<Vertex, Vertex> queriedNode2 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
+        final GraphTraversal<Vertex, Vertex> queriedNode3 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
 
-        Graph endToEndGraph = (Graph)
+        org.apache.tinkerpop.gremlin.structure.Graph endToEndGraph = (org.apache.tinkerpop.gremlin.structure.Graph)
                 queriedNode.union(
-                        queriedNode.
+                        queriedNode2.
                                 until(inE(edgeLabel).count().is(0)).
                                 repeat(inE(edgeLabel).subgraph("subGraph").outV()),
-                        queriedNode.
+                        queriedNode3.
                                 until(outE(edgeLabel).count().is(0)).
                                 repeat(outE(edgeLabel).subgraph("subGraph").inV())
                 ).cap("subGraph").next();
+
         return janusGraphToGraphson(endToEndGraph);
     }
 
@@ -160,7 +162,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateSource(String scope, Graph graph, String guid) {
+    private String ultimateSource(String scope, org.apache.tinkerpop.gremlin.structure.Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(scope);
 
@@ -169,7 +171,7 @@ public class GraphServices {
                 repeat(inE(edgeLabel).outV()).dedup().toList();
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        Graph responseGraph = TinkerGraph.open();
+        org.apache.tinkerpop.gremlin.structure.Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
         Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
@@ -195,7 +197,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateDestination(String scope, Graph graph, String guid) {
+    private String ultimateDestination(String scope, org.apache.tinkerpop.gremlin.structure.Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(scope);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
@@ -204,7 +206,7 @@ public class GraphServices {
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
-        Graph responseGraph = TinkerGraph.open();
+        org.apache.tinkerpop.gremlin.structure.Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
         Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
@@ -241,9 +243,9 @@ public class GraphServices {
      * @param guid  The guid of the glossary term of which the lineage is queried of.
      * @return a subgraph in the GraphSON format.
      */
-    private String glossary(Graph graph, String guid) {
+    private String glossary(org.apache.tinkerpop.gremlin.structure.Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
-        Graph subGraph = (Graph)
+        org.apache.tinkerpop.gremlin.structure.Graph subGraph = (org.apache.tinkerpop.gremlin.structure.Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                         inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
                         cap("subGraph").next();
@@ -258,7 +260,7 @@ public class GraphServices {
      */
     private String getEdgeLabel(String scope) {
         String edgeLabel = "";
-        switch (Scopes.valueOf(scope)) {
+        switch (Scope.valueOf(scope)) {
             case TABLEVIEW:
                 edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
                 break;
@@ -318,7 +320,7 @@ public class GraphServices {
      * @param graph The Graph object to be converted.
      * @return The provided Graph as a String, in the GraphSON format.
      */
-    private String janusGraphToGraphson(Graph graph) {
+    private String janusGraphToGraphson(org.apache.tinkerpop.gremlin.structure.Graph graph) {
         OutputStream out = new ByteArrayOutputStream();
         GraphSONMapper mapper = GraphSONMapper.build().addCustomModule(JanusGraphSONModuleV2d0.getInstance()).create();
         GraphSONWriter writer = GraphSONWriter.build().mapper(mapper).wrapAdjacencyList(true).create();
@@ -339,7 +341,7 @@ public class GraphServices {
      */
     private JanusGraph getJanusGraph(String graphName) {
         JanusGraph graph = null;
-        switch (Graphs.valueOf(graphName)) {
+        switch (Graph.valueOf(graphName)) {
             case MAIN:
                 graph = mainGraph;
                 break;

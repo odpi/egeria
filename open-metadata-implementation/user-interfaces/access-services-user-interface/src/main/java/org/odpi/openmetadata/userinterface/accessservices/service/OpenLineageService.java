@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.accessservices.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Edge;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Node;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public class OpenLineageService {
         return openLineageClient.generateMockGraph(user);
     }
 
-    public Map<String, Object> exportGraph(String userId, Graphs graph) throws IOException {
+    public Map<String, Object> exportGraph(String userId, Graph graph) throws IOException {
         String exportedGraph = openLineageClient.exportGraph(user, graph);
         final ObjectMapper mapper = this.mapper;
         Map<String, Object> graphObject;
