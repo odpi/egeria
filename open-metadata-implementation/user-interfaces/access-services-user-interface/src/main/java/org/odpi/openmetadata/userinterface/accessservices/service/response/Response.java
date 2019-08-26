@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Response {
 
-   List<Vertice> vertices;
+   private List<Vertice> vertices;
 
     @JsonProperty("vertices")
     public List<Vertice> getVertices() {

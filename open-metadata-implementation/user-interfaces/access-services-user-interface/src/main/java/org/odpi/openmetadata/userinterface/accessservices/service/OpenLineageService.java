@@ -68,6 +68,7 @@ public class OpenLineageService {
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
         try {
+            LOG.debug(" Received response:{}", response);
             Response responseObj = mapper.readValue(response, Response.class);
 
             for(Vertice vertice : responseObj.getVertices()){
@@ -82,7 +83,11 @@ public class OpenLineageService {
                     }
                 }
                 node.setProperties(properties);
-                node.setLabel(properties.get("displayName"));
+                String displayName = properties.get("vedisplayName");
+                if(displayName == null || displayName.isEmpty()) {
+                    displayName = properties.get("displayName");
+                }
+                node.setLabel(displayName);
                 listNodes.add(node);
                 if(vertice.getInE()!= null && !vertice.getInE().isEmpty()) {
                     for (Map.Entry<String, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge>> entry :  vertice.getInE().entrySet()) {
