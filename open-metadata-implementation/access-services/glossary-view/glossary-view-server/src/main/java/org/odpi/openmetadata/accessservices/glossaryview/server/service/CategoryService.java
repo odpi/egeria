@@ -77,10 +77,10 @@ public class CategoryService extends GlossaryViewOMAS {
      *
      * @return EntityDetailResponse all external glossaries
      */
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(String userId, String serverName, String categoryGUID,
-                                                                  Integer from, Integer size){
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(String userId, String serverName, String categoryGUID,
+                                                                     Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, categoryGUID, CATEGORY_TYPE_NAME,
-                LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME, from, size,"getExternalGlossaries");
+                LIBRARY_CATEGORY_REFERENCE_RELATIONSHIP_NAME, from, size,"getExternalGlossaryLinks");
     }
 
 }

@@ -43,19 +43,17 @@ public class EgeriaUIApplication {
     }
 
 
-
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
                                         @Value("${omas.server.name}") String serverName) {
         return new AssetCatalog(serverName, serverUrl);
     }
+
     @Bean
     public SubjectArea getSubjectArea(@Value("${omas.server.url}") String serverUrl,
                                       @Value("${omas.server.name}") String serverName) throws InvalidParameterException {
         return new SubjectAreaImpl(serverName, serverUrl);
     }
-
-
 
     @Bean
     public OpenLineage getOpenLineage(@Value("${omas.server.url}") String serverUrl,

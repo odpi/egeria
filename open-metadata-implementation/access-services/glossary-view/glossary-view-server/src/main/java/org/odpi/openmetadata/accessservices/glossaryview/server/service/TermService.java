@@ -91,10 +91,10 @@ public class TermService extends GlossaryViewOMAS {
      *
      * @return EntityDetailResponse all external glossaries
      */
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(String userId, String serverName, String termGUID,
-                                                                  Integer from, Integer size){
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(String userId, String serverName, String termGUID,
+                                                                     Integer from, Integer size){
         return getRelatedEntitiesResponse(userId, serverName, termGUID, TERM_TYPE_NAME,
-                LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME, from, size,"getExternalGlossaries");
+                LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME, from, size,"getExternalGlossaryLinks");
     }
 
     /**
