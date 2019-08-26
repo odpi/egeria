@@ -1,12 +1,19 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.glossaryview.rest;
+package org.odpi.openmetadata.accessservices.glossaryview.converters;
+
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ControlledGlossaryTerm;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.ExternalGlossaryLink;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.Glossary;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryCategory;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntityDetail;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class GlossaryViewEntityDetailFactory {
+class GlossaryViewEntityDetailFactory {
 
     private final static String DEFAULT = "Default";
     private final static String GLOSSARY = "Glossary";
@@ -19,10 +26,10 @@ public class GlossaryViewEntityDetailFactory {
     static{
         workers.put(DEFAULT, GlossaryViewEntityDetail::new);
         workers.put(GLOSSARY, Glossary::new);
-        workers.put(CATEGORY, Category::new);
-        workers.put(TERM, Term::new);
-        workers.put(CONTROLLED_TERM, ControlledTerm::new);
-        workers.put(EXTERNAL_GLOSSARY_LINK, GlossaryViewEntityDetail::new);
+        workers.put(CATEGORY, GlossaryCategory::new);
+        workers.put(TERM, GlossaryTerm::new);
+        workers.put(CONTROLLED_TERM, ControlledGlossaryTerm::new);
+        workers.put(EXTERNAL_GLOSSARY_LINK, ExternalGlossaryLink::new);
     }
 
     public static GlossaryViewEntityDetail build(String entityType){

@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class TermServiceTest extends GlossaryViewOmasBaseTest{
+public class GlossaryTermServiceTest extends GlossaryViewOmasBaseTest{
 
     private final TermService underTest = new TermService();
 
@@ -92,9 +92,9 @@ public class TermServiceTest extends GlossaryViewOmasBaseTest{
     public void getExternalGlossaries() throws Exception{
         when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(terms.get(0).getGUID()), eq(TERM_TYPE_NAME),
                 eq(LIBRARY_TERM_REFERENCE_RELATIONSHIP_GUID), eq(LIBRARY_TERM_REFERENCE_RELATIONSHIP_NAME), anyInt(), anyInt(),
-                eq("getExternalGlossaries"))).thenReturn(Arrays.asList(externalGlossaryLink));
+                eq("getExternalGlossaryLinks"))).thenReturn(Arrays.asList(externalGlossaryLink));
 
-        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaries(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
+        GlossaryViewEntityDetailResponse response = underTest.getExternalGlossaryLinks(USER_ID, SERVER_NAME, terms.get(0).getGUID(),0, 10);
 
         assertEquals(1, response.getResult().size());
 
