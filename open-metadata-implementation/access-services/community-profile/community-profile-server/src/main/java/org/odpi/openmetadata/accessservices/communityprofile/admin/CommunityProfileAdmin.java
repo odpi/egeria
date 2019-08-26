@@ -50,6 +50,8 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
         final String              actionDescription = "initialize";
         CommunityProfileAuditCode auditCode;
 
+
+
         auditCode = CommunityProfileAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
@@ -61,6 +63,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
 
         try
         {
+            this.accessServiceConfig = accessServiceConfigurationProperties;
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
             this.instance = new CommunityProfileServicesInstance(repositoryConnector,
                                                                  this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),

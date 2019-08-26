@@ -2,8 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
-public enum Scopes {
-    TABLEVIEW,
-    COLUMNVIEW
+public enum Graph {
+    MAIN,
+    BUFFER,
+    HISTORY,
+    MOCK,
 }
 
