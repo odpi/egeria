@@ -311,8 +311,8 @@ public class GraphBuilder {
         createGlossaryVertex(glossaryTerm,mainGraph);
         createGlossaryVertex(glossaryTerm,bufferGraph);
 
-        createElementVertex(context,mainGraph,true);
-        createElementVertex(context,bufferGraph,false);
+        createElementVertex(context,mainGraph,glossaryTerm,true);
+        createElementVertex(context,bufferGraph,glossaryTerm,false);
 
         semanticAssignmentCreateRelationshipsBuffer(context, glossaryTerm, technicalTermType);
         semanticAssignmentCreateRelationshipsMain(context, glossaryTerm, technicalTermType);
@@ -337,7 +337,7 @@ public class GraphBuilder {
 
     }
 
-    private void createElementVertex(Map<String, Element> context, JanusGraph graph, boolean mainGraph) {
+    private void createElementVertex(Map<String, Element> context, JanusGraph graph, GlossaryTerm glossaryTerm,  boolean mainGraph) {
         GraphTraversalSource g = graph.traversal();
         List<String> mainGraphVertex = new ArrayList<>(Arrays.asList(RELATIONAL_COLUMN,RELATIONAL_TABLE,TABULAR_COLUMN,DATA_FILE));
 
@@ -349,12 +349,12 @@ public class GraphBuilder {
                 if (!vertexIt.hasNext()) {
 
                     if(mainGraphVertex.contains(key) && mainGraph){
-                        addPropertiesToElementVertex(g,key,value);
+                        addPropertiesToElementVertex(g,key,value,glossaryTerm);
 
                     }
 
                     if(!mainGraph) {
-                        addPropertiesToElementVertex(g,key,value);
+                        addPropertiesToElementVertex(g,key,value,glossaryTerm);
 
                     }
                 }
@@ -366,12 +366,21 @@ public class GraphBuilder {
         }
     }
 
-    private void addPropertiesToElementVertex(GraphTraversalSource g, String key, Element value){
+    private void addPropertiesToElementVertex(GraphTraversalSource g, String key, Element value,GlossaryTerm glossaryTerm){
 
         Vertex v = g.addV(key).next();
         v.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, value.getQualifiedName());
         v.property(PROPERTY_KEY_ENTITY_GUID, value.getGuid());
-        v.property(PROPERTY_KEY_ENTITY_NAME, value.getProperties().get("displayName"));
+        v.property(PROPERTY_KEY_DISPLAY_NAME, value.getProperties().get("displayName"));
+        v.property(PROPERTY_KEY_GLOSSARY_TERM, glossaryTerm.getDisplayName());
+
+        if(value.getType().equals(RELATIONAL_COLUMN) || value.getType().equals(TABULAR_COLUMN)) {
+            v.property(PROPERTY_KEY_ENTITY_NAME, "Column");
+        }
+
+        if(value.getType().equals(RELATIONAL_TABLE) || value.getType().equals(DATA_FILE)) {
+            v.property(PROPERTY_KEY_ENTITY_NAME, "Table");
+        }
 
         g.tx().commit();
     }
@@ -434,7 +443,6 @@ public class GraphBuilder {
                 Vertex to = g.V().has(elementsByRelationship.get(i + 1).getType(), PROPERTY_KEY_ENTITY_GUID, elementsByRelationship.get(i + 1).getGuid()).next();
 
                 from.addEdge(relationship, to);
-//                g.addE('knows').from(marko).to(peter) //
             }
 
         }
