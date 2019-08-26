@@ -92,8 +92,9 @@ class AssetLineageView extends PolymerElement {
 
     _graphDataChanged(data) {
         if (data === null || data === undefined) {
-            data.nodes = {};
-            data.edges = {};
+            data ={ nodes : {},
+                    edges  : {}
+                    };
         } else {
             for (var i = 0; i < data.nodes.length; i++) {
                 data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
@@ -113,7 +114,7 @@ class AssetLineageView extends PolymerElement {
       _ultimateSource(){
 
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid1 + '/ultimate-source?scope=COLUMNVIEW&graph=MOCK';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid1 + '/ultimate-source?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
@@ -121,7 +122,7 @@ class AssetLineageView extends PolymerElement {
       _endToEndLineage(){
 
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid2+ '/end2end?scope=COLUMNVIEW&graph=MOCK';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid2+ '/end2end?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
