@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graphs;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Queries;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scopes;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,7 +42,7 @@ public class OpenLineage  {
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public String queryLineage(String userId, Scopes scope, Queries lineageQuery, Graphs graph, String guid) throws InvalidParameterException {
+    public String queryLineage(String userId, Scope scope, Query lineageQuery, Graph graph, String guid) throws InvalidParameterException {
         String methodName = "queryLineage";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/query-lineage/{2}/{3}/{4}/{5}";
         return getRestCall(url, String.class, userId, serverName, scope, lineageQuery, graph, guid);
@@ -57,7 +57,7 @@ public class OpenLineage  {
      * @return Voidresponse.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public VoidResponse dumpGraph(String userId, Graphs graph) throws InvalidParameterException {
+    public VoidResponse dumpGraph(String userId, Graph graph) throws InvalidParameterException {
         String methodName = "dumpGraph";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/dump/{2}";
         return getRestCall(url, VoidResponse.class, userId, serverName, graph);
@@ -72,7 +72,7 @@ public class OpenLineage  {
      * @return The queried graph, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      */
-    public String exportGraph(String userId, Graphs graph) throws InvalidParameterException {
+    public String exportGraph(String userId, Graph graph) throws InvalidParameterException {
         String methodName = "exportGraph";
         String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/export/{2}";
         return getRestCall(url, String.class, userId, serverName, graph);

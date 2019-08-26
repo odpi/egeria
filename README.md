@@ -30,6 +30,10 @@ All participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/
 The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
 
+The Egeria team is working towards their Core Infrastructure Initiative (CII)
+Best Practices Badge
+ 
+ [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3044/badge)](https://bestpractices.coreinfrastructure.org/projects/3044).
 
 ## Call schedule
 

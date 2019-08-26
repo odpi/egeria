@@ -22,7 +22,6 @@ import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.Gl
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_DEFAULT_VALUE;
 import static org.odpi.openmetadata.accessservices.glossaryview.server.spring.GlossaryResource.PAGE_SIZE_MAX_VALUE;
 
-
 /**
  * Spring Rest Controller defining 'GlossaryTerm' oriented endpoints
  */
@@ -121,7 +120,7 @@ public class TermResource {
     }
 
     /**
-     * Extract external glossary definitions for the given term
+     * Extract external glossary link definitions for the given term
      *
      * @param serverName instance to call
      * @param userId calling user
@@ -129,20 +128,20 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return external glossaries
+     * @return external glossary links
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/external-glossaries")
-    public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
-                                                                  @PathVariable("userId") String userId,
-                                                                  @PathVariable("termGUID") @NotBlank String termGUID,
-                                                                  @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                  @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/external-glossary-links")
+    public GlossaryViewEntityDetailResponse getExternalGlossaryLinks(@PathVariable("serverName") String serverName,
+                                                                     @PathVariable("userId") String userId,
+                                                                     @PathVariable("termGUID") @NotBlank String termGUID,
+                                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
-        GlossaryViewEntityDetailResponse response = termService.getExternalGlossaries(userId, serverName, termGUID, from, size);
+        GlossaryViewEntityDetailResponse response = termService.getExternalGlossaryLinks(userId, serverName, termGUID, from, size);
 
         watch.stop();
-        log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
+        log.debug("Method: getExternalGlossaryLinks; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }
@@ -295,10 +294,10 @@ public class TermResource {
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/translations")
     public GlossaryViewEntityDetailResponse getTranslations(@PathVariable("serverName") String serverName,
-                                                                @PathVariable("userId") String userId,
-                                                                @PathVariable("termGUID") @NotBlank String termGUID,
-                                                                @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+                                                            @PathVariable("userId") String userId,
+                                                            @PathVariable("termGUID") @NotBlank String termGUID,
+                                                            @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                            @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getTranslations(userId, serverName, termGUID, from, size);
@@ -372,7 +371,7 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return valid values
+     * @return "used in contexts"
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/used-in-contexts")
     public GlossaryViewEntityDetailResponse getUsedInContexts(@PathVariable("serverName") String serverName,
@@ -399,14 +398,14 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return valid values
+     * @return assigned elements
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/assigned-elements")
     public GlossaryViewEntityDetailResponse getAssignedElements(@PathVariable("serverName") String serverName,
-                                                              @PathVariable("userId") String userId,
-                                                              @PathVariable("termGUID") @NotBlank String termGUID,
-                                                              @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                              @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+                                                                @PathVariable("userId") String userId,
+                                                                @PathVariable("termGUID") @NotBlank String termGUID,
+                                                                @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                                @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getAssignedElements(userId, serverName, termGUID, from, size);
@@ -426,7 +425,7 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return valid values
+     * @return attributes
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/attributes")
     public GlossaryViewEntityDetailResponse getAttributes(@PathVariable("serverName") String serverName,
@@ -453,14 +452,14 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return valid values
+     * @return subtypes
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/subtypes")
     public GlossaryViewEntityDetailResponse getSubtypes(@PathVariable("serverName") String serverName,
-                                                          @PathVariable("userId") String userId,
-                                                          @PathVariable("termGUID") @NotBlank String termGUID,
-                                                          @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                          @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+                                                        @PathVariable("userId") String userId,
+                                                        @PathVariable("termGUID") @NotBlank String termGUID,
+                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getSubtypes(userId, serverName, termGUID, from, size);
@@ -480,14 +479,14 @@ public class TermResource {
      * @param from from
      * @param size size
      *
-     * @return valid values
+     * @return types
      */
     @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/types")
     public GlossaryViewEntityDetailResponse getTypes(@PathVariable("serverName") String serverName,
-                                                        @PathVariable("userId") String userId,
-                                                        @PathVariable("termGUID") @NotBlank String termGUID,
-                                                        @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
-                                                        @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
+                                                     @PathVariable("userId") String userId,
+                                                     @PathVariable("termGUID") @NotBlank String termGUID,
+                                                     @RequestParam(name="from", defaultValue=PAGE_FROM_DEFAULT_VALUE) @PositiveOrZero Integer from,
+                                                     @RequestParam(name="size", defaultValue=PAGE_SIZE_DEFAULT_VALUE) @PositiveOrZero @Max(PAGE_SIZE_MAX_VALUE) Integer size) {
         StopWatch watch = StopWatch.createStarted();
 
         GlossaryViewEntityDetailResponse response = termService.getTypes(userId, serverName, termGUID, from, size);

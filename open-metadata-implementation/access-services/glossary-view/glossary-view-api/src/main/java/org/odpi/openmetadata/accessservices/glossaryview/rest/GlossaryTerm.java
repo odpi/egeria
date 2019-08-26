@@ -10,12 +10,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Simple POJO that holds the data of a Term
+ * Simple POJO that represents a Term
  */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Term extends GlossaryViewEntityDetail {
+public class GlossaryTerm extends GlossaryViewEntityDetail {
 
     private static String DISPLAY_NAME = "displayName";
     private static String DESCRIPTION = "description";

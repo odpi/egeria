@@ -1,32 +1,39 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.glossaryview.rest;
+package org.odpi.openmetadata.userinterface.accessservices.service.response;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-/**
- * Simple POJO that holds the data of a Category
- */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Category extends GlossaryViewEntityDetail {
+public class Id {
 
-    private static String DISPLAY_NAME = "displayName";
-    private static String DESCRIPTION = "description";
+    private String type;
 
-    public String getDisplayName(){
-        return getProperties().get(DISPLAY_NAME);
+    private int value;
+
+    @JsonProperty("@type")
+    public String getType() {
+        return type;
     }
 
-    public String getDescription(){
-        return getProperties().get(DESCRIPTION);
+    public void setType(String type) {
+        this.type = type;
     }
 
+    @JsonProperty("@value")
+    public int getValue() {
+        return value;
+    }
 
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
