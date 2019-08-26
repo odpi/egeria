@@ -56,8 +56,8 @@ public class EgeriaUIApplication {
     }
 
     @Bean
-    public OpenLineage getOpenLineage(@Value("${omas.server.url}") String serverUrl,
-                                      @Value("${omas.server.name}") String serverName)  {
+    public OpenLineage getOpenLineage(@Value("${open.lineage.server.url}") String serverUrl,
+                                      @Value("${open.lineage.server.name}") String serverName)  {
         return new OpenLineage(serverName, serverUrl);
     }
 

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.userinterface.accessservices.service.response.Verti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class OpenLineageService {
     //TODO add authentication
     private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
+    private @Value("${open.lineage.graph.source}") Graph graph;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     @Autowired
@@ -42,19 +44,19 @@ public class OpenLineageService {
         return openLineageClient.generateMockGraph(user);
     }
 
-    public Map<String, Object> exportGraph(String userId, Graph graph) throws IOException {
+    public Map<String, Object> exportGraph(String userId) throws IOException {
         String exportedGraph = openLineageClient.exportGraph(user, graph);
         Map<String, Object> graphData = processResponse(exportedGraph);
         return graphData;
     }
 
-    public Map<String, Object> getUltimateSource(String userId, Scope scope, Graph graph, String guid) throws IOException {
+    public Map<String, Object> getUltimateSource(String userId, Scope scope, String guid) throws IOException {
         String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATESOURCE, graph, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, Graph graph, String guid) throws IOException {
+    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, String guid) throws IOException {
         String response = openLineageClient.queryLineage(user, scope, Query.ENDTOEND, graph, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;

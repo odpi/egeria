@@ -34,7 +34,7 @@ public class OpenLineageController {
     public Map<String, Object> exportGraph(String userId, @RequestParam Graph graph){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.exportGraph(userId, graph);
+            exportedGraph = openLineageService.exportGraph(userId);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -43,10 +43,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
-    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope, @RequestParam Graph graph){
+    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getUltimateSource(userId, scope, graph, guid);
+            exportedGraph = openLineageService.getUltimateSource(userId, scope, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -54,10 +54,10 @@ public class OpenLineageController {
         return exportedGraph;
     }
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
-    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope, @RequestParam Graph graph){
+    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getEndToEndLineage(userId, scope, graph, guid);
+            exportedGraph = openLineageService.getEndToEndLineage(userId, scope, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
