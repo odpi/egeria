@@ -46,9 +46,6 @@ public class MainGraphMapper {
             if(processVertex.hasNext()){
                 Vertex processTopLevel = processVertex.next();
                 vertex.addEdge(NODE_LABEL_PROCESS,processTopLevel);
-
-//                columnIn.addEdge(NODE_LABEL_PROCESS, processTopLevel);
-//                processTopLevel.addEdge(NODE_LABEL_PROCESS,columnOut);
             }
             else {
                 Vertex mainProcess = main.addV("Process").next();
@@ -56,14 +53,12 @@ public class MainGraphMapper {
                 mainProcess.property(PROPERTY_KEY_ENTITY_NAME, processName);
 
                 vertex.addEdge(NODE_LABEL_PROCESS,mainProcess);
-//                columnIn.addEdge(NODE_LABEL_PROCESS, mainProcess);
-//                mainProcess.addEdge(NODE_LABEL_PROCESS,columnOut);
             }
 
             main.tx().commit();
 
         } else {
-            log.debug("Columns does not exist in maingraph");
+            log.debug("Columns does not exist in maingraph with guidIn {} and out {}",columnInGuid,columnOutGuid);
             main.tx().rollback();
 
         }
@@ -77,3 +72,4 @@ public class MainGraphMapper {
 
 
 }
+
