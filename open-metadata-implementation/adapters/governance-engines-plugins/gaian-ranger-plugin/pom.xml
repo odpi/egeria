@@ -91,7 +91,7 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <executions>
                     <execution>
-			<id>assemble></id>
+			            <id>assemble></id>
                         <phase>package</phase>
                         <goals>
                             <goal>shade</goal>

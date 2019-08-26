@@ -29,7 +29,7 @@ public class SecuritySyncOperationalServices {
     private String localOrganizationName;         /* Initialized in constructor */
     private String localServerUserId;             /* Initialized in constructor */
     private String localServerURL;                /* Initialized in constructor */
-    private int maxPageSize;                   /* Initialized in constructor */
+    private int maxPageSize;                      /* Initialized in constructor */
     private OMRSAuditLog auditLog;
 
     /**
@@ -72,6 +72,8 @@ public class SecuritySyncOperationalServices {
             startTopic(inTopic, securitySyncConfig.getSecuritySyncInTopicName());
 
             securitySyncEventProcessor.processExistingGovernedAssetsFromRepository();
+            securitySyncEventProcessor.processSecurityServicePolicies();
+            securitySyncEventProcessor.syncSecurityPolicies();
             logAudit(SecuritySyncAuditCode.SERVICE_INITIALIZED, actionDescription);
         }
     }

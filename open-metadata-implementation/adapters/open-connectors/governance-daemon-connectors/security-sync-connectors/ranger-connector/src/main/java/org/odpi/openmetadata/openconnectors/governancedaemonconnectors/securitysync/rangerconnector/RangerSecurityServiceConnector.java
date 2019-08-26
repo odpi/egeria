@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerPolicyResource;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerSecurityServicePolicies;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTagDef;
@@ -21,6 +22,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -47,6 +49,7 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.se
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SCHEMA;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_SERVER_AUTHORIZATION;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SERVICE_POLICIES;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SERVICE_TAGS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SERVICE_TAGS_MAP_TAG_GUID_RESOURCE_GUI;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SERVICE_TAGS_RESOURCES;
@@ -97,6 +100,30 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         syncAssociations(tagToResource, existingAssoc);
     }
 
+    @Override
+    public RangerSecurityServicePolicies getSecurityServicePolicies(String serviceName, Long lastKnownVersion) {
+        if (serviceName == null) {
+            return null;
+        }
+        String servicePoliciesURL = MessageFormat.format(SERVICE_POLICIES, connection.getEndpoint().getAddress(), serviceName, lastKnownVersion);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            ResponseEntity<RangerSecurityServicePolicies> result = restTemplate.exchange(servicePoliciesURL, HttpMethod.GET, entity, RangerSecurityServicePolicies.class);
+            if (result.getStatusCode().value() == HttpStatus.OK.value()) {
+                return result.getBody();
+            } else if (result.getStatusCode().value() == HttpStatus.NOT_MODIFIED.value()) {
+                log.debug("Policies list not modified since last known version {}", lastKnownVersion);
+                return null;
+            }
+            return result.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.debug("Unable to fetch the security service policies for service = {} with last known version {}", serviceName, lastKnownVersion);
+        }
+        return null;
+    }
 
     @Override
     public RangerServiceResource createResource(GovernedAsset governedAsset) {
