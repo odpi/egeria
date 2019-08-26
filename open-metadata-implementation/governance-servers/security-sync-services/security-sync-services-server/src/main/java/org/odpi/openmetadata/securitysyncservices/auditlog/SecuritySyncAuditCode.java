@@ -52,6 +52,16 @@ public enum SecuritySyncAuditCode {
             OMRSAuditLogRecordSeverity.INFO,
             "The Security Sync received an event for deleted governed asset",
             "The Security Sync instance should synchronize the Ranger Server instance with the repository.",
+            "No action is required.  This is part of the normal flow."),
+    SYNCHRONIZE_POLICIES_STARTED("SECURITY-SYNC--0010",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Security Sync Server started the synchronization of policies from external policies enforcement tool",
+            "The Security Sync instance should synchronize the policies defined in the external policies enforcement tool the repository.",
+            "No action is required.  This is part of the normal flow."),
+    SYNCHRONIZE_POLICIES_FINISHED("SECURITY-SYNC--0011",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Security Sync Server finished the synchronization of policies from external policies enforcement tool",
+            "The Security Sync instance synchronized the policies defined in the external policies enforcement tool the repository.",
             "No action is required.  This is part of the normal flow.");
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;

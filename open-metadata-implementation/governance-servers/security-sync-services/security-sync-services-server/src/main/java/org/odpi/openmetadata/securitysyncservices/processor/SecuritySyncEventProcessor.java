@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnector;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerSecurityServicePolicies;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.ResourceTagMapper;
@@ -28,7 +29,10 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNANCE_ENGINE_OMAS_URL;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_SYNC_SERVER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
@@ -36,9 +40,14 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.se
 public class SecuritySyncEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecuritySyncEventProcessor.class);
+    private static final Long DEFAULT_POLLING_INTERVAL = 360L;
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     private OMRSAuditLog auditLog;
     private SecuritySyncConfig securitySyncConfig;
     private RangerSecurityServiceConnector rangerOpenConnector;
+    private Long tagPoliciesLastKnownVersion = 0L;
+    private Long accessPoliciesLastKnownVersion = 0L;
 
     public SecuritySyncEventProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
@@ -57,6 +66,28 @@ public class SecuritySyncEventProcessor {
         List<GovernedAsset> governedAssets = governedAssetResponse.getGovernedAssetList();
 
         rangerOpenConnector.importTaggedResources(governedAssets);
+    }
+
+    public void syncSecurityPolicies() {
+        final Runnable syncSecurityServicePolicies = () ->
+        {
+            log.debug("Re-sync policies from external tool");
+            processSecurityServicePolicies();
+        };
+        scheduler.scheduleAtFixedRate(syncSecurityServicePolicies,
+                securitySyncConfig.getPollingInterval() != null ? securitySyncConfig.getPollingInterval() : DEFAULT_POLLING_INTERVAL,
+                securitySyncConfig.getPollingInterval() != null ? securitySyncConfig.getPollingInterval() : DEFAULT_POLLING_INTERVAL,
+                SECONDS);
+    }
+
+    public void processSecurityServicePolicies() {
+        String methodName = "processSecurityServicePolicies";
+        logProcessing(methodName, SecuritySyncAuditCode.SYNCHRONIZE_POLICIES_STARTED);
+
+        syncSecurityServicePolicies(securitySyncConfig.getSecuritySyncTagServiceName(), tagPoliciesLastKnownVersion);
+        syncSecurityServicePolicies(securitySyncConfig.getSecuritySyncAccessResourceServiceName(), accessPoliciesLastKnownVersion);
+
+        logProcessing(methodName, SecuritySyncAuditCode.SYNCHRONIZE_POLICIES_FINISHED);
     }
 
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
@@ -182,5 +213,25 @@ public class SecuritySyncEventProcessor {
         }
 
         return resource;
+    }
+
+    private void syncSecurityServicePolicies(String securitySyncServiceName, Long tagPoliciesLastKnownVersion) {
+        if (securitySyncServiceName == null) {
+            return;
+        }
+
+        RangerSecurityServicePolicies securityServicePolicies = rangerOpenConnector.getSecurityServicePolicies(securitySyncServiceName, tagPoliciesLastKnownVersion);
+        if (securityServicePolicies != null) {
+            setLastKnownVersion(securitySyncServiceName, securityServicePolicies);
+            //TODO: process the policies and sync MR
+        }
+    }
+
+    private void setLastKnownVersion(String securitySyncTagServiceName, RangerSecurityServicePolicies securityServicePolicies) {
+        if (securitySyncTagServiceName.startsWith("tag")) {
+            tagPoliciesLastKnownVersion = securityServicePolicies.getPolicyVersion();
+        } else {
+            accessPoliciesLastKnownVersion = securityServicePolicies.getPolicyVersion();
+        }
     }
 }
