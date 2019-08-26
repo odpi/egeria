@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.glossaryview.server.service;
 
-import org.odpi.openmetadata.accessservices.glossaryview.exception.OMRSExceptionWrapper;
+import org.odpi.openmetadata.accessservices.glossaryview.exception.GlossaryViewOmasException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -32,17 +32,17 @@ public class OMRSClient {
      *
      * @return optional with entity details if found, empty optional if not found
      *
-     * @throws OMRSExceptionWrapper if any exception is thrown from repository level
+     * @throws GlossaryViewOmasException if any exception is thrown from repository level
      */
     protected Optional<EntityDetail> getEntityDetail(String userId, String serverName, String guid, String entityTypeName, String methodName)
-            throws OMRSExceptionWrapper {
+            throws GlossaryViewOmasException {
 
         Optional<EntityDetail> entityDetail ;
         try {
             entityDetail = Optional.ofNullable( instanceHandler.getRepositoryHandler(userId, serverName, methodName)
                     .getEntityByGUID(userId, guid, "guid", entityTypeName, methodName) );
         }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
-            throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+            throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
         return entityDetail;
@@ -61,12 +61,12 @@ public class OMRSClient {
      *
      * @return entities if found
      *
-     * @throws OMRSExceptionWrapper if any exception is thrown from repository level
+     * @throws GlossaryViewOmasException if any exception is thrown from repository level
      */
     protected List<EntityDetail> getRelatedEntities(String userId, String serverName, String entityGUID, String entityTypeName,
                                                     String relationshipTypeGUID, String relationshipTypeName, Integer from, Integer size,
                                                     String methodName)
-            throws OMRSExceptionWrapper{
+            throws GlossaryViewOmasException {
 
         List<EntityDetail> entityDetails;
         try {
@@ -74,7 +74,7 @@ public class OMRSClient {
                     .getEntitiesForRelationshipType(userId, entityGUID, entityTypeName, relationshipTypeGUID, relationshipTypeName,
                             from, size, methodName);
         }catch(InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
-            throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+            throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
         return entityDetails;
@@ -91,17 +91,17 @@ public class OMRSClient {
      *
      * @return entities if found
      *
-     * @throws OMRSExceptionWrapper if any exception is thrown from repository level
+     * @throws GlossaryViewOmasException if any exception is thrown from repository level
      */
     protected List<EntityDetail> getAllEntityDetails(String userId, String serverName, String entityTypeGUID, Integer from, Integer size,
                                                      String methodName)
-            throws OMRSExceptionWrapper{
+            throws GlossaryViewOmasException {
         List<EntityDetail> entities;
         try {
             entities = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
                     .getEntitiesByName(userId, new InstanceProperties(), entityTypeGUID, from, size, methodName);
         }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
-            throw new OMRSExceptionWrapper(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
+            throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
         }
 
