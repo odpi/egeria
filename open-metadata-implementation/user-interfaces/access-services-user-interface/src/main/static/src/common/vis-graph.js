@@ -66,21 +66,6 @@ class VisGraph extends PolymerElement {
           </div>
           
          
-         
-         <div style="position: fixed; visibility: visible; padding: 5px; white-space: nowrap; font-family: cursive; font-size: 12px; background-color: rgb(230, 230, 230); border-radius: 15px; top: 132px; left: 900px; box-sizing: border-box;">
-           <div style="text-align:center;"><hr class="rPartvisNetwork">
-                <div class="showOnMe2"><div style="text-align:center;"></div>
-                <div class="showMeRpartTTp2" style="display:none;">
-                 setosa<script type="text/javascript">$(document).ready(function(){
-                $(".showOnMe2").click(function(){
-                $(".showMeRpartTTp2").toggle();
-                $.sparkline_display_visible();
-                });
-                  });</script></div></div>
-                
-           </div>
-         </div>
-         
       
         </div>
         
