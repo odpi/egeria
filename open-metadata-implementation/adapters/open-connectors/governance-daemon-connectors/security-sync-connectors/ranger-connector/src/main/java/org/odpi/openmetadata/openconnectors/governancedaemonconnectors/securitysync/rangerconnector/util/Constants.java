@@ -24,6 +24,7 @@ public class Constants {
     public static final String SERVICE_TAGS_RESOURCES = "{0}/service/tags/resources/";
     public static final String SERVICE_TAGS = "{0}/service/tags/tags";
     public static final String SERVICE_TAGS_TAGDEF = "{0}/service/tags/tagdefs";
+    public static final String SERVICE_POLICIES = "{0}/service/plugins/policies/download/{1}?lastKnownVersion={2}";
     public static final String SECURITY_SERVER_AUTHORIZATION = "securityServerAuthorization";
 
     private Constants() {

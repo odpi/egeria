@@ -22,6 +22,19 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_UPDATE_TIME                      = "updateTime";
     public static final String PROPERTY_NAME_LABEL                            = "label";
     public static final String PROPERTY_NAME_PROXY                            = "proxy";
+    public static final String PROPERTY_NAME_GLOSSARY_TERM                    = "glossaryTerm";
+    public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
+
+
+    public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
+
+    public static final String PROPERTY_KEY_ENTITY_GUID                    = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GUID;
+    public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME            = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_QUALIFIED_NAME;
+    public static final String PROPERTY_KEY_ENTITY_NAME                    = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NAME;
+    public static final String PROPERTY_KEY_LABEL                          = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_LABEL;
+    public static final String PROPERTY_KEY_PROXY                          = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_PROXY;
+    public static final String PROPERTY_KEY_GLOSSARY_TERM                  = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GLOSSARY_TERM;
+    public static final String PROPERTY_KEY_DISPLAY_NAME                   = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_DISPLAY_NAME;
 
 
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
@@ -60,11 +73,8 @@ public class GraphConstants {
 
     public static final String EDGE_LABEL_CONDENSED = "condensed";
 
-    public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
-
     //Column
-    public static final String PROPERTY_KEY_DISPLAY_NAME = "displayName";
-    public static final String PROPERTY_KEY_GLOSSARY_TERM = "glossaryTerm";
+//    public static final String PROPERTY_KEY_DISPLAY_NAME = "displayName";
     public static final String PROPERTY_KEY_HOST_DISPLAY_NAME = "displayname";
     public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_KEY_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
@@ -80,15 +90,6 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PARENT_PROCESS_GUID = "parent.process.guid";
 
     public static final String PROPERTY_KEY_GLOSSARY = "glossary";
-
-
-    public static final String PROPERTY_KEY_ENTITY_GUID                    = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GUID;
-    public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME            = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_QUALIFIED_NAME;
-    public static final String PROPERTY_KEY_ENTITY_NAME                    = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NAME;
-    public static final String PROPERTY_KEY_LABEL                          = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_LABEL;
-    public static final String PROPERTY_KEY_PROXY                          = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_PROXY;
-
-
 
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP                      = "ed";
 

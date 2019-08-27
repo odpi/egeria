@@ -15,6 +15,7 @@ import org.odpi.openmetadata.userinterface.accessservices.service.response.Verti
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class OpenLineageService {
     //TODO add authentication
     private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
+    private @Value("${open.lineage.graph.source}") Graph graph;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     @Autowired
@@ -42,19 +44,19 @@ public class OpenLineageService {
         return openLineageClient.generateMockGraph(user);
     }
 
-    public Map<String, Object> exportGraph(String userId, Graph graph) throws IOException {
+    public Map<String, Object> exportGraph(String userId) throws IOException {
         String exportedGraph = openLineageClient.exportGraph(user, graph);
         Map<String, Object> graphData = processResponse(exportedGraph);
         return graphData;
     }
 
-    public Map<String, Object> getUltimateSource(String userId, Scope scope, Graph graph, String guid) throws IOException {
+    public Map<String, Object> getUltimateSource(String userId, Scope scope, String guid) throws IOException {
         String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATESOURCE, graph, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, Graph graph, String guid) throws IOException {
+    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, String guid) throws IOException {
         String response = openLineageClient.queryLineage(user, scope, Query.ENDTOEND, graph, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
@@ -66,6 +68,7 @@ public class OpenLineageService {
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
         try {
+            LOG.debug(" Received response:{}", response);
             Response responseObj = mapper.readValue(response, Response.class);
 
             for(Vertice vertice : responseObj.getVertices()){
@@ -80,7 +83,11 @@ public class OpenLineageService {
                     }
                 }
                 node.setProperties(properties);
-                node.setLabel(properties.get("displayName"));
+                String displayName = properties.get("vedisplayName");
+                if(displayName == null || displayName.isEmpty()) {
+                    displayName = properties.get("displayName");
+                }
+                node.setLabel(displayName);
                 listNodes.add(node);
                 if(vertice.getInE()!= null && !vertice.getInE().isEmpty()) {
                     for (Map.Entry<String, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge>> entry :  vertice.getInE().entrySet()) {

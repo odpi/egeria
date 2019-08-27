@@ -21,19 +21,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecuritySyncConfig extends AdminServicesConfigHeader {
 
-    private String      accessServiceRootURL;
-    private String      accessServiceServerName;
+    private String accessServiceRootURL;
+    private String accessServiceServerName;
 
-    private String      securityServerURL;
-    private String      securitySyncServerType;
-    private String      securitySyncServerAuthorization;
-    private String      securitySyncTagServiceName;
-    private Connection  securitySyncServerConnection;
+    private String securityServerURL;
+    private String securitySyncServerType;
+    private String securitySyncServerAuthorization;
+    private String securitySyncTagServiceName;
+    private String securitySyncAccessResourceServiceName;
+    private Long pollingInterval;
+    private Connection securitySyncServerConnection;
 
-    private String      securitySyncInTopicName;
-    private Connection  securitySyncInTopic;
-    private String      securitySyncOutTopicName;
-    private Connection  securitySyncOutTopic;
+    private String securitySyncInTopicName;
+    private Connection securitySyncInTopic;
+    private String securitySyncOutTopicName;
+    private Connection securitySyncOutTopic;
 
     /**
      * Default constructor
@@ -59,6 +61,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
             securitySyncServerType = template.securitySyncServerType;
             securitySyncServerAuthorization = template.securitySyncServerAuthorization;
             securitySyncTagServiceName = template.securitySyncTagServiceName;
+            securitySyncAccessResourceServiceName = template.securitySyncAccessResourceServiceName;
+            pollingInterval = template.pollingInterval;
             securitySyncServerConnection = template.securitySyncServerConnection;
 
             securitySyncInTopic = template.securitySyncInTopic;
@@ -184,6 +188,39 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         this.securitySyncTagServiceName = securitySyncTagServiceName;
     }
 
+    /**
+     * Return the Access Resource Service Named used in the Governance Services Connector to synchronize the access resource policies.
+     *
+     * @return Resource access based policies
+     */
+    public String getSecuritySyncAccessResourceServiceName() {
+        return securitySyncAccessResourceServiceName;
+    }
+
+    /**
+     * Set up the Access Resource Service Named used in the Governance Services Connector to synchronize the access resource policies.
+     *
+     * @param securitySyncAccessResourceServiceName
+     */
+    public void setSecuritySyncAccessResourceServiceName(String securitySyncAccessResourceServiceName) {
+        this.securitySyncAccessResourceServiceName = securitySyncAccessResourceServiceName;
+    }
+
+    /**
+     * @return the polling interval in milli seconds
+     */
+    public Long getPollingInterval() {
+        return pollingInterval;
+    }
+
+    /**
+     * Set up the polling interval in milli seconds
+     *
+     * @param pollingInterval polling interval in milli seconds
+     */
+    public void setPollingInterval(Long pollingInterval) {
+        this.pollingInterval = pollingInterval;
+    }
 
     /**
      * Return the Input Topic Name for Security Sync
@@ -294,6 +331,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 ", securitySyncServerType='" + securitySyncServerType + '\'' +
                 ", securitySyncServerAuthorization='" + securitySyncServerAuthorization + '\'' +
                 ", securitySyncTagServiceName='" + securitySyncTagServiceName + '\'' +
+                ", securitySyncAccessResourceServiceName='" + securitySyncAccessResourceServiceName + '\'' +
+                ", pollingInterval='" + pollingInterval + '\'' +
                 ", securitySyncInTopicName='" + securitySyncInTopicName + '\'' +
                 ", securitySyncInTopic=" + securitySyncInTopic +
                 ", securitySyncOutTopicName='" + securitySyncOutTopicName + '\'' +
@@ -322,6 +361,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
                 Objects.equals(getSecuritySyncServerAuthorization(), that.getSecuritySyncServerAuthorization()) &&
                 Objects.equals(getSecuritySyncTagServiceName(), that.getSecuritySyncTagServiceName()) &&
+                Objects.equals(getSecuritySyncAccessResourceServiceName(), that.getSecuritySyncAccessResourceServiceName()) &&
+                Objects.equals(getPollingInterval(), that.getPollingInterval()) &&
                 Objects.equals(getSecuritySyncInTopic(), that.getSecuritySyncInTopic()) &&
                 Objects.equals(getSecuritySyncOutTopic(), that.getSecuritySyncOutTopic()) &&
                 Objects.equals(getSecuritySyncInTopicName(), that.getSecuritySyncInTopicName()) &&
@@ -342,6 +383,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 getAccessServiceServerName(),
                 getSecuritySyncServerAuthorization(),
                 getSecuritySyncTagServiceName(),
+                getSecuritySyncAccessResourceServiceName(),
+                getPollingInterval(),
                 getSecuritySyncInTopic(),
                 getSecuritySyncOutTopic(),
                 getSecuritySyncInTopicName(),

@@ -103,7 +103,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -139,7 +139,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -178,7 +178,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -218,7 +218,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -260,7 +260,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -311,7 +311,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -360,7 +360,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -418,7 +418,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -454,7 +454,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
@@ -506,7 +506,7 @@ public class DataEngineRESTServices {
 
             response.setGUID(processGuUID);
 
-            log.debug("Returning from method: {1} with response: {2}", methodName, response);
+            log.debug("Returning from method: {} with response: {}", methodName, response);
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
@@ -516,7 +516,7 @@ public class DataEngineRESTServices {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
-        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
 
         return response;
     }
