@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -84,8 +85,12 @@ public class OpenLineageService {
                 }
                 node.setProperties(properties);
                 String displayName = properties.get("vedisplayName");
-                if(displayName == null || displayName.isEmpty()) {
+                String glossaryTerm = properties.get("veglossaryTerm");
+                if(StringUtils.isEmpty(displayName)) {
                     displayName = properties.get("displayName");
+                }
+                if(!StringUtils.isEmpty(glossaryTerm)){
+                    displayName = displayName + "\n" + glossaryTerm;
                 }
                 node.setLabel(displayName);
                 listNodes.add(node);

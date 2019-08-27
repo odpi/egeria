@@ -26,7 +26,6 @@ class AssetLineageView extends PolymerElement {
       
         <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
 
-        <paper-button on-click="_loadData"> Go </paper-button>
       
         <iron-form id="ultimateSourceForm">
         <form method="get">
@@ -68,17 +67,23 @@ class AssetLineageView extends PolymerElement {
             groups : {
                 type: Object,
                 value:{
-                    glossaryTerm: {
+                        glossaryTerm: {
                             shape: 'diamond',
                             color: 'yellowgreen'
                         },
-                        column: {
+                        Column: {
                             color: 'mediumpurple'
                         },
-                        table: {
+                        RelationalColumn: {
+                            color: 'mediumpurple'
+                        },
+                        TabularColumn: {
+                            color: 'mediumpurple'
+                        },
+                        RelationalTable: {
                             shape: 'box',
                         },
-                        process: {
+                        Process: {
                             shape: 'parallelogram'
                         },
                         condensedNode: {
