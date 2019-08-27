@@ -14,6 +14,14 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	 */
 	MAX_QUEUE_SIZE("event_bus_max_queue_size", "100"),
 	
+    /**
+     * Controls the inverval between checks to see if a message has
+     * been processed and its offset committed to kafka.  This is only
+     * used if auto commit is disabled in kafka. 
+     * 
+     */
+    COMMIT_CHECK_INTERVAL_MS("commit_check_interval_ms", "5000"),
+	
 	/**
 	 * In order to ensure that Kafka does not treat our consumer as dead, we need to
 	 * poll for messages within some configured maximum poll interval. To make sure
@@ -25,6 +33,14 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	 * The value provided as a number of milliseconds.
 	 */
 	CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS("timeout_prevention_safety_window_ms", "30000"),
+
+    /**
+     * This property adds an optional upper bound for the consumer event processing
+     * before an event is treated as being fully processed and committed to kafka.  If
+     * the value is negative, there is no timeout, and offsets will not be committed
+     * into kafka the message has been completely processed.
+     */
+    CONSUMER_EVENT_PROCESSING_TIMEOUT_MINS("consumer_message_processing_timout_mins", "30"),
 	
 	/**
 	 * This specifies the poll timeout (in ms) that we provide to kafka when we poll for

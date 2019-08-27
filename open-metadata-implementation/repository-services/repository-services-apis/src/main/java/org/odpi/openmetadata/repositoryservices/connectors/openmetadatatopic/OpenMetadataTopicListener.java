@@ -15,4 +15,13 @@ public interface OpenMetadataTopicListener
      * @param event inbound event
      */
     void processEvent(String event);
+    
+    /**
+     * Method to pass an event received on topic.
+     *
+     * @param event inbound event
+     */
+    default void processEvent(IncomingEvent event) {
+        processEvent(event.getJson());
+    }
 }

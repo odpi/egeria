@@ -2,21 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -93,11 +94,11 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
             {
                 try
                 {
-                    List<String> receivedEvents = this.checkForEvents();
+                    List<IncomingEvent> receivedEvents = checkForIncomingEvents();
 
                     if ((receivedEvents != null) && (!receivedEvents.isEmpty()))
                     {
-                        for (String event : receivedEvents)
+                        for (IncomingEvent event : receivedEvents)
                         {
                             if (event != null)
                             {
@@ -135,13 +136,18 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @param event OMRSEvent to distribute
      */
-    private void distributeEvent(String event)
+    private void distributeEvent(IncomingEvent event)
     {
+        //Initially clear the async event processing context to ensure that it will only
+        //have results from processing this event
+        InternalOMRSEventProcessingContext.clear();
+        
         for (OpenMetadataTopicListener  topicListener : topicListeners)
         {
             try
             {
                 topicListener.processEvent(event);
+                
             }
             catch (Throwable  error)
             {
@@ -151,12 +157,22 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                 auditLog.logRecord(actionDescription,
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(event, error.toString()),
+                                   auditCode.getFormattedLogMessage(event.getJson(), error.toString()),
                                    null,
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
             }
         }
+        
+        //Change the state once all listeners have at least seen the event
+        //The listeners may be processing the event asynchronously.  In that case,
+        //they will add Futures to the event to allow us to know when the processing
+        //is truly complete.
+        event.setState(IncomingEventState.DISTRIBUTED_TO_ALL_TOPIC_LISTENERS);
+        
+        //record any asynchronous processing being done by consumers
+        InternalOMRSEventProcessingContext context = InternalOMRSEventProcessingContext.getInstance();
+        event.addAsyncProcessingResult(context.getOverallAsyncProcessingResult());
     }
 
 
@@ -165,7 +181,25 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @return a list of received events or null
      */
-    protected abstract List<String> checkForEvents();
+    protected List<IncomingEvent> checkForIncomingEvents() {
+        List<IncomingEvent> result = new ArrayList<>();
+        for(String event : checkForEvents()) {
+            result.add(new IncomingEvent(event));
+        }
+        return result;
+    }
+    
+    /**
+     * Checks for events.  Only used if checkForIncomingEvents() has not
+     * been overridden.
+     * 
+     * @deprecated Use checkForIncomingEvents() instead.
+     * @return
+     */
+    @Deprecated
+    protected List<String> checkForEvents() {
+        return Collections.emptyList();
+    }
 
 
     /**

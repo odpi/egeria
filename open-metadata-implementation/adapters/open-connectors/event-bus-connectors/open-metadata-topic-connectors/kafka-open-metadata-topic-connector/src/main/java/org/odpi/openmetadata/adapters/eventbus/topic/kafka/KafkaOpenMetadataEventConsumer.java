@@ -2,11 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -33,7 +36,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     private OMRSAuditLog auditLog;
 
     private final long recoverySleepTimeSec; 
-    private final long pollTimeout; ;
+    private final long pollTimeout;
+    private final long messageProcessingTimeoutMs;
     private final long maxQueueSize;
 
     private				 KafkaOpenMetadataEventConsumerConfiguration config;
@@ -43,10 +47,13 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
     private              KafkaOpenMetadataTopicConnector connector;
 
-    private Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
+    private Map<TopicPartition, OffsetAndMetadata> currentOffsets = Collections.synchronizedMap(new HashMap<>());
+    private long nextMessageProcessingStatusCheckTime = System.currentTimeMillis();
+
     private long maxNextPollTimestampToAvoidConsumerTimeout = 0;
+    private final long messageProcessingStatusCheckIntervalMs;
     private final long maxMsBetweenPolls;
-    
+    private Map<TopicPartition, Queue<KafkaIncomingEvent>> unprocessedEventQueues = new HashMap<>();
     
     //If we get close enough to the consumer timeout timestamp, force a poll so that
     //we do not exceed the timeout.  This parameter controls how close we can get
@@ -54,6 +61,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     private final long consumerTimeoutPreventionSafetyWindowMs;
     
     private Boolean running = true;
+    
+    private final boolean isAutoCommitEnabled;
 
     /**
      * Constructor for the event consumer.
@@ -90,14 +99,24 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
-        maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
+        this.maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
         this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
         this.maxQueueSize = config.getIntProperty(KafkaOpenMetadataEventConsumerProperty.MAX_QUEUE_SIZE);
         this.consumerTimeoutPreventionSafetyWindowMs = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS);
         this.pollTimeout = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.POLL_TIMEOUT);
+        this.isAutoCommitEnabled = getBooleanProperty(kafkaConsumerProperties, KafkaOpenMetadataTopicConnector.ENABLE_AUTO_COMMIT_PROPERTY, false);
+        this.messageProcessingStatusCheckIntervalMs = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.COMMIT_CHECK_INTERVAL_MS);
+        long messageTimeoutMins = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.CONSUMER_EVENT_PROCESSING_TIMEOUT_MINS);
+        this.messageProcessingTimeoutMs = messageTimeoutMins < 0 ? messageTimeoutMins : TimeUnit.MILLISECONDS.convert(messageTimeoutMins, TimeUnit.MINUTES);
     }
 
-  
+    private static boolean getBooleanProperty(Properties p, String name, boolean defaultValue) {
+        String value = p.getProperty(name);
+        if (value == null) {
+            return defaultValue;
+        }
+       return Boolean.valueOf(value).booleanValue();
+    }
 
     /**
      * The server is shutting down.
@@ -113,10 +132,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
 
     private void updateNextMaxPollTimestamp() {
-    	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;
-    	
+    	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;	
     }
-    /**
+     
+      /**
      * This is the method that provides the behaviour of the thread.
      */
     @Override
@@ -124,20 +143,22 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     {
         final String           actionDescription = "run";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
-
+       
         while (isRunning())
         {
             try
             {
+                //this needs to be done in the same thread since the Kafka consumer does
+                //not allow access by multiple threads
+                checkForFullyProcessedMessagesIfNeeded();
+                
             	//if we are close to the timeout, force a poll to avoid having the consumer
             	//be marked as dead because we have not polled often enough
             	boolean pollRequired = System.currentTimeMillis() > maxNextPollTimestampToAvoidConsumerTimeout;
             
-            	
-                	
             	int nUnprocessedEvents = connector.getNumberOfUnprocessedEvents();
             	if (! pollRequired && nUnprocessedEvents > maxQueueSize) {
-            		//The connector queue is too big.  Wait until the size goes down until
+            		//The connector queue is too big.  Wait until the size goes down before 
             		//polling again.  If we let the events just accumulate, we will
             		//eventually run out of memory if the consumer cannot keep up.
             		log.warn("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", nUnprocessedEvents, maxQueueSize);
@@ -147,18 +168,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             	}
             	updateNextMaxPollTimestamp();
                 ConsumerRecords<String, String> records = consumer.poll(pollTimeout);
-                
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
                     String json = record.value();
                     log.debug("Received message: " + json);
-
+                    KafkaIncomingEvent event = new KafkaIncomingEvent(json, record.offset());
                     if (! localServerId.equals(record.key()))
                     {
                         try
                         {
-                            connector.distributeToListeners(json);
+                            addUnprocessedEvent(record.partition(), record.topic(), event);
+                            connector.distributeToListeners(event);
                         }
                         catch (Exception error)
                         {
@@ -184,11 +205,17 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                         log.debug("Ignoring message with key: " + record.key() + " and value " + record.value());
                     }
 
-                    /*
-                     * Acknowledge receipt of message.
-                     */
-                    TopicPartition partition = new TopicPartition(record.topic(), record.partition());
-                    currentOffsets.put(partition, new OffsetAndMetadata(record.offset() + 1));
+                    if ( isAutoCommitEnabled) {
+                        /*
+                         * Acknowledge receipt of message.
+                         */
+                        
+                        //if autocommit is disabled, currentOffsets is updated by the 
+                        //processed event handling thread
+                        TopicPartition partition = new TopicPartition(record.topic(), record.partition());
+                        currentOffsets.put(partition, new OffsetAndMetadata(record.offset() + 1));
+                    
+                    }
                 }
             }
             catch (WakeupException e)
@@ -223,7 +250,28 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         {
             try
             {
-                consumer.commitSync(currentOffsets);
+                //Check for fully processed messages one last time before
+                //shutting down the consumer
+                boolean changesCommitted = checkForFullyProcessedMessages();
+                if (! changesCommitted) {
+                    //Figure out why no changes were committed.  There are 3 possibilities:
+                    // 1) Auto commit is enabled
+                    // 2) All of the unprocessed event queues are empty
+                    // 3) We are waiting for some event to finish processing
+                    
+                    if (! isAutoCommitEnabled) {
+                        int nUnprocessedMessages = getNumberOfUnprocessedMessages();
+                        if (nUnprocessedMessages > 0) {
+                            log.error("Consumer was shut down before all message processing has completed!  There are " + nUnprocessedMessages + " messages whose processing is incomplete.");
+                        }
+                        else {
+                            log.info("All messages have been fully processed.  Consumer is shutting down safely.");
+                        }
+                    }
+                    //commit with the current offsets
+                    log.info("Committing current offsets before shutdown: " + currentOffsets);
+                    consumer.commitSync(currentOffsets);
+                }
             }
             finally
             {
@@ -233,8 +281,164 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         }
     }
 
+    private void addUnprocessedEvent(int partition, String topic, KafkaIncomingEvent event) {
+        if (isAutoCommitEnabled) {
+            return;
+        }
+        TopicPartition key = new TopicPartition(topic, partition);
+        Queue<KafkaIncomingEvent> queue = unprocessedEventQueues.get(key);
+        if (queue == null) {
+            queue = new SynchronizedQueue<>(new ArrayDeque<KafkaIncomingEvent>());
+            synchronized (unprocessedEventQueues) {
+                unprocessedEventQueues.put(key, queue);
+            }
+        }
+        queue.add(event);
+        
+    }
 
-	private void awaitNextPollingTime() {
+    /**
+     * Checks the unprocessed message queues to see if there are any
+     * messages whose processing has completed, but only if auto commit
+     * is disabled and the configured amount of time has passed since
+     * the last check
+     * 
+     * @return whether the current kafka committed message offsets
+     *  changed
+     */
+    private boolean checkForFullyProcessedMessagesIfNeeded() {
+        if (isAutoCommitEnabled) {
+            return false;
+        }
+        if (System.currentTimeMillis() >= nextMessageProcessingStatusCheckTime) {
+            boolean changesFound =  checkForFullyProcessedMessages();
+            nextMessageProcessingStatusCheckTime = System.currentTimeMillis() + messageProcessingStatusCheckIntervalMs;
+            return changesFound;
+        }
+        return false;
+    }
+
+    /**
+     * Checks the unprocessed messages queues to see if there are 
+     * any messages whose processing has completed.  This method
+     * is a no-op if auto commit is enabled.
+     * 
+     * @return whether the current kafka committed message offsets
+     *  changed
+     */ 
+    private boolean checkForFullyProcessedMessages() {
+        if (isAutoCommitEnabled) {
+            return false;
+        }
+        log.info("Checking for fully processed messages whose offsets need to be committed");
+
+        Map<TopicPartition, Queue<KafkaIncomingEvent>> mapToCheck = null;
+        
+        //Make a copy to minimize the amount of time we need to spent
+        //holding a lock on the map.  If we do not synchronize here, a
+        //concurrent modification exception will be thrown if an
+        //attempt is made to update the map while we are iterating though it
+        synchronized(unprocessedEventQueues) {
+            mapToCheck = new HashMap<TopicPartition, Queue<KafkaIncomingEvent>>(unprocessedEventQueues);
+        }
+        
+        //Check all the queues to see they have events initial events
+        //that are fully processed
+        Map<TopicPartition, OffsetAndMetadata> commitData = new HashMap<>();
+        for(Map.Entry<TopicPartition, Queue<KafkaIncomingEvent>> entry : mapToCheck.entrySet()) {
+            Queue<KafkaIncomingEvent> queue = entry.getValue();
+           
+            KafkaIncomingEvent mostRecentProcessedEvent = removeFullyProcessedEventsFromBeginningOfQueue(queue);
+            if (mostRecentProcessedEvent != null) {
+                OffsetAndMetadata omd = new OffsetAndMetadata(mostRecentProcessedEvent.getOffset() + 1);
+                commitData.put(entry.getKey(), omd);
+            }
+        } 
+        
+        if (! commitData.isEmpty()) {
+            currentOffsets.putAll(commitData);
+            log.info("Committing: " + commitData);
+            consumer.commitSync(commitData);
+            return true;
+        }
+        return false;
+        
+    }
+    
+    /**
+     * Iteratively removes fully processed event from the beginning of the queue until
+     * either the queue is empty or the first entry in the queue has not been fully processed
+     * 
+     * @param queue
+     * @return the most recent fully processed event that was removed from the queue
+     */
+    private KafkaIncomingEvent removeFullyProcessedEventsFromBeginningOfQueue(Queue<KafkaIncomingEvent> queue) {
+        KafkaIncomingEvent lastRemoved = null;
+        //Keep fully processed messages from the beginning of the queue until we 
+        //encounter a message that is not fully processed or empty the queue
+        while(isFirstEventFullyProcessed(queue)) {
+            //The message at the beginning of the queue has been fully processed.  Remove
+            //it from the queue and repeat the check.
+            lastRemoved = queue.remove();
+            log.info("Message with offset " + lastRemoved.getOffset() + " has been fully processed.");
+        }
+        KafkaIncomingEvent firstEvent = queue.peek();
+        if (firstEvent != null) {
+            //Queue is not empty, so we're waiting for the processing of first message in
+            //the queue to finish
+            log.info("Waiting for completing of processing of message with offset " + firstEvent.getOffset());
+        }
+        return lastRemoved;
+    }
+
+    private boolean isFirstEventFullyProcessed(Queue<KafkaIncomingEvent> queue) {
+        
+        KafkaIncomingEvent firstEvent = queue.peek();
+        if (firstEvent == null) {
+            //queue is empty
+            return false;
+        }
+        
+        //check whether the message processing timeout has elapsed (if there is one)
+        if (messageProcessingTimeoutMs >= 0 && firstEvent.hasTimeElapsedSinceCreation(messageProcessingTimeoutMs)) {
+            //max processing timeout has elapsed, treat the event as being fully processed
+            log.warn("Processing of message at offset " + firstEvent.getOffset() + " timed out.");
+            return true;
+        }
+        
+        return firstEvent.isFullyProcessed();
+    }
+    
+    /**
+     * Gets the total number of messages in the incoming
+     * event queues that have not been fully processed.
+     * 
+     * @return
+     */
+    private int getNumberOfUnprocessedMessages() {
+        if (isAutoCommitEnabled) {
+            return 0;
+        }
+        Map<TopicPartition, Queue<KafkaIncomingEvent>> mapToCheck = null;
+        
+        //make a copy to minimize the amount of time we need to spent
+        //holding a lock on the map.  If we do not synchronize here, a
+        //concurrent modification exception will be thrown if an
+        //attempt is made to update the map while we are iterating though it
+        synchronized(unprocessedEventQueues) {
+            mapToCheck = new HashMap<TopicPartition, Queue<KafkaIncomingEvent>>(unprocessedEventQueues);
+        }
+        
+        int result = 0;
+        for(Queue<KafkaIncomingEvent> queue : mapToCheck.values()) {
+            if (! queue.isEmpty()) {
+                result++;
+            }
+        }
+        return result;
+    }
+
+    private void awaitNextPollingTime() {
 		try
 		{
 		    Thread.sleep(1000);
