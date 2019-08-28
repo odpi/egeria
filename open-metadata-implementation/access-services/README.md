@@ -49,6 +49,18 @@ This information forms a key part of asset lineage.
   The Data Platform OMAS provides an integration point to enable data platforms to publish metadata to the metadata
 repositories about the changing structures and content stored in the data platform.
 
+* **[open-lineage-services](../governance-servers/open-lineage-services)** - provides a historic reporting warehouse for lineage.
+
+  The Open Lineage Services provides a historic reporting warehouse for lineage. It listens to events that are send out 
+by the Asset Lineage OMAS, and stores lineage data in a Janusgraph database. This lineage can then be queried through
+the Open Lineage Services client and by its REST API, for example by a lineage GUI. While the data format of events sent
+out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage services store lineage data in a very basic
+data format in order to optimize query performance.
+In essence there are 3 kinds of graphs:
+  * ***buffer graph*** -  used to store current lineage in the Open Metadata types
+  * ***current graph*** - stores current lineage in graph database in the format optimimized for lineage
+  * ***historic graph*** -  stores historic lineage in graph database in the format optimimized for lineage
+
 * **[data-privacy](data-privacy)** - support a data privacy officer.
 
   The Data Privacy OMAS supports a privacy officer as they manage data privacy
