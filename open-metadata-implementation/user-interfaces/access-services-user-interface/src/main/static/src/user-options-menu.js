@@ -25,8 +25,8 @@ class UserOptions extends PolymerElement {
           background-color: #DDD;
         }
       </style>
-        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users/current" token="[[token]]" auto></token-ajax>
-        <element style="float: right">
+        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users/current" auto></token-ajax>
+        <div style="float: right">
             <paper-menu-button
                 horizontal-align="right"
                 horizontal-offset="20" 
@@ -50,14 +50,13 @@ class UserOptions extends PolymerElement {
                 </paper-item>
              </paper-listbox>
         </paper-menu-button>
-      </element>
+      </div>
        
     `;
     }
 
     static get properties() {
         return {
-            token: Object,
             user: {
                 type: Object,
                 notify: true
