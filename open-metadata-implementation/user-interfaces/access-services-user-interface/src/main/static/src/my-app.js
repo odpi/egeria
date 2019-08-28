@@ -119,9 +119,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
 
-      <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path></app-location>
+      <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
       <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+      <app-route route="{{subroute}}" pattern="/:guid" data="{{subrouteData}}"></app-route>
 
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
@@ -139,7 +140,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
-
 
                 </app-drawer>
     
@@ -175,11 +175,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
                     </app-toolbar>
                   </app-header>
-        
+                  
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-view language="[[language]]" name="subject-area"></subject-area-view>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData.guid]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
@@ -199,6 +199,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 type: String,
                 reflectToAttribute: true,
                 observer: '_pageChanged'
+            },
+            guid: {
+                type: String,
+                reflectToAttribute: true
             },
             token: {
                 type: Object,

@@ -38,9 +38,14 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
-            <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
-                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-            </paper-input>
+            <div style="width: 200pt; display: inline-block">
+                <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
+                    <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
+                </paper-input>
+            </div>
+            <vaadin-button id="searchSubmit" theme="primary" on-tap="_search">
+                <iron-icon icon="search"></iron-icon>
+            </vaadin-button>
         </form>
        </iron-form>
         <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
@@ -97,8 +102,6 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             item: Object
         };
     }
-
-
 
     _search() {
         this.$.searchForm.validate();

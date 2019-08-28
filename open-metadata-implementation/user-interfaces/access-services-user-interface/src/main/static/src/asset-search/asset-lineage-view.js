@@ -4,6 +4,8 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '../shared-styles.js';
 import '../common/vis-graph.js';
+import '@vaadin/vaadin-radio-button/vaadin-radio-button.js';
+import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
 
 class AssetLineageView extends PolymerElement {
   static get template() {
@@ -27,24 +29,11 @@ class AssetLineageView extends PolymerElement {
         <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
 
       
-        <iron-form id="ultimateSourceForm">
-        <form method="get">
-            <iron-a11y-keys keys="enter" on-keys-pressed="_ultimateSource"></iron-a11y-keys>
-            <paper-input label="Ultimate Source" value="{{guid1}}" no-label-float required autofocus>
-                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-            </paper-input>
-        </form>
-       </iron-form>
-      
-      
-        <iron-form id="end2EndLineageForm">
-        <form method="get">
-            <iron-a11y-keys keys="enter" on-keys-pressed="_endToEndLineage"></iron-a11y-keys>
-            <paper-input label="End to End Lineage" value="{{guid2}}" no-label-float required autofocus>
-                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
-            </paper-input>
-        </form>
-       </iron-form>
+        
+      <vaadin-radio-group id ="radio-group" class="select-option-group" name="radio-group"  role="radiogroup">
+          <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio" >Ultimate Source</vaadin-radio-button>
+          <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
+      </vaadin-radio-group>
       
       
         <div class="container" id="container">
@@ -60,6 +49,10 @@ class AssetLineageView extends PolymerElement {
     static get properties() {
         return {
             token: Object,
+            guid: {
+                type: String,
+                observer: '_ultimateSource'
+            },
             graphData: {
                 type: Object,
                 observer: '_graphDataChanged'
@@ -116,18 +109,17 @@ class AssetLineageView extends PolymerElement {
       }
 
 
-      _ultimateSource(){
-
+      _ultimateSource(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid1 + '/ultimate-source?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
 
-      _endToEndLineage(){
+      _endToEndLineage(guid){
 
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + this.guid2+ '/end2end?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
