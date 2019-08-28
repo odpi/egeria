@@ -23,6 +23,12 @@ functions such as analytics.  The Asset Consumer OMAS provides a factory functio
 for the connectors, the ability to retrieve all of the metadata about the asset
 and the ability to add feedback on the asset.
 
+* **[asset-lineage](asset-lineage)** - Track and publish lineage data.
+
+  The Asset Lineage OMAS listens to relevant lineage related events on the Enterprise topic level and publishes these on
+  the Asset Lineage out topic, combined with relevant context information on the described entities. These events are 
+  listened to by the Open Lineage Services governance server.  
+
 * **[asset-owner](asset-owner)** - manage metadata and feedback for owned assets.
 
   The Asset Owner OMAS provides services for an asset owner to curate metadata about their
