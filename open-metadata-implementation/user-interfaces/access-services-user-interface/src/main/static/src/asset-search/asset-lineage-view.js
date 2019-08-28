@@ -10,7 +10,7 @@ import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
 class AssetLineageView extends PolymerElement {
   static get template() {
     return html`
-      <style include="shared-styles">
+    <style include="shared-styles">
         :host {
           display: block;
           padding: 10px;
@@ -21,28 +21,18 @@ class AssetLineageView extends PolymerElement {
           height: calc(100vh - 130px);
           background-color: white;
         }
-        
-      </style>
+    </style>
       
+    <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
     
-      
-        <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
-
-      
-        
-      <vaadin-radio-group id ="radio-group" class="select-option-group" name="radio-group"  role="radiogroup">
-          <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio" >Ultimate Source</vaadin-radio-button>
-          <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
-      </vaadin-radio-group>
-      
-      
-        <div class="container" id="container">
-        
-            <!--mock-up graph-->
-            <vis-graph id="visgraph" 
-            data=[[graphData]]>
-            </vis-graph>
-        </div>
+    <vaadin-radio-group id ="radio-group" class="select-option-group" name="radio-group"  role="radiogroup">
+      <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio" >Ultimate Source</vaadin-radio-button>
+      <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
+    </vaadin-radio-group>
+          
+    <div class="container" id="container">
+        <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
+    </div>
     `;
   }
 

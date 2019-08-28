@@ -45,7 +45,7 @@ setRootPath(MyAppGlobals.rootPath);
 class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
         return html`
-      <style include="shared-styles">
+       <style include="shared-styles">
         :host {
            display: block;
         };
@@ -117,6 +117,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
          };
         
       </style>
+     
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
