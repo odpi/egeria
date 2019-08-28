@@ -123,7 +123,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
       <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-      <app-route route="{{subroute}}" pattern="/:guid" data="{{subrouteData}}"></app-route>
+      <app-route route="{{subroute}}" pattern="[[rootPath]]:guid" data="{{subrouteData}}"></app-route>
 
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
@@ -172,7 +172,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 <!--                           </iron-form>-->
 <!--                        </div>-->
                       </div>
-                      <div style="float: right"><user-options token="[[token]]"></user-options></div>
+                      <div style="float: right"><user-options></user-options></div>
 
                     </app-toolbar>
                   </app-header>
@@ -199,7 +199,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             page: {
                 type: String,
                 reflectToAttribute: true,
-                observer: '_pageChanged'
+                observer: '_pageChanged',
             },
             guid: {
                 type: String,

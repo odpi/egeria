@@ -23,9 +23,8 @@ class AssetLineageView extends PolymerElement {
         }
     </style>
       
-    <token-ajax id="tokenAjax" last-response="{{graphData}}" token="[[token]]" ></token-ajax>
-    
-    <vaadin-radio-group id ="radio-group" class="select-option-group" name="radio-group"  role="radiogroup">
+    <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
+    <vaadin-radio-group id ="radioUsecases" class="select-option-group" name="radio-group" value="ultimateSource"  role="radiogroup" >
       <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio" >Ultimate Source</vaadin-radio-button>
       <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
     </vaadin-radio-group>
@@ -36,9 +35,13 @@ class AssetLineageView extends PolymerElement {
     `;
   }
 
+    ready() {
+        super.ready();
+        this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value) );
+    }
+
     static get properties() {
         return {
-            token: Object,
             guid: {
                 type: String,
                 observer: '_ultimateSource'
@@ -78,24 +81,24 @@ class AssetLineageView extends PolymerElement {
     }
 
 
-    _graphDataChanged(data) {
-        if (data === null || data === undefined) {
-            data ={ nodes : {},
-                    edges  : {}
-                    };
-        } else {
-            for (var i = 0; i < data.nodes.length; i++) {
-                data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
+        _graphDataChanged(data) {
+            console.log(data);
+            if (data === null || data === undefined) {
+                data ={ nodes : {},
+                        edges  : {}
+                        };
+            } else {
+                for (var i = 0; i < data.nodes.length; i++) {
+                    data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
+                }
             }
+            this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
         }
-        this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
-    }
 
       _loadData(){
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/export?graph=MOCK';
           this.$.tokenAjax._go();
-
       }
 
 
@@ -107,12 +110,21 @@ class AssetLineageView extends PolymerElement {
 
 
       _endToEndLineage(guid){
-
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
+    _usecaseChanged(value) {
+        switch (value) {
+            case 'ultimateSource':
+                this._ultimateSource(this.guid);
+                break;
+            case 'endToEnd':
+                this._endToEndLineage(this.guid);
+                break;
+        }
+    }
 }
 
 window.customElements.define('asset-lineage-view', AssetLineageView);

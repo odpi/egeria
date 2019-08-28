@@ -34,7 +34,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
       </style>
 
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
-
+      
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>

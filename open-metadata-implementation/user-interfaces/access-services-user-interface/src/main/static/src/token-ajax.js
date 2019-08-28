@@ -16,7 +16,7 @@ class TokenAjax extends PolymerElement {
         }
         
         </style>
-        <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
+        <iron-localstorage id="storage" name="my-app-storage" value="{{token}}"></iron-localstorage>
         <iron-ajax id="ajax" url="[[url]]"
                    handle-as="json"
                    last-response="{{lastResponse}}"
@@ -34,6 +34,11 @@ class TokenAjax extends PolymerElement {
             no-cancel-on-esc-key>       
         </spinner-overlay>
     `;
+    }
+
+    connectedCallback(){
+        super.connectedCallback();
+        this.$.storage.reload();
     }
 
     static get properties() {
@@ -81,6 +86,7 @@ class TokenAjax extends PolymerElement {
     }
 
     _go(){
+        this.$.storage.reload();
         console.log('going with token:'+this.token);
         if( typeof this.token !== 'undefined'){
             this.$.ajax.headers['content-type'] = 'application/json';
