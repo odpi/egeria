@@ -12,7 +12,7 @@
   tasks:
     - name: remove sample data files
       include_tasks: data-files/remove.yml
-      when: ('ibm-information-server-engine' in group_names)
+      when: ('ibm_information_server_engine' in group_names)
 
     - name: remove sample metadata
       include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/remove.yml"

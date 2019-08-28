@@ -16,14 +16,14 @@
   vars:
     type: data_file_record
     conditions:
-      - { property: "data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+      - { property: "data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
       - { property: "data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
 
 - include_tasks: query-and-remove-type.yml
   vars:
     type: data_file
     conditions:
-      - { property: "host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+      - { property: "host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
       - { property: "path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
 
 - include_tasks: query-and-remove-type.yml
@@ -99,7 +99,7 @@
     timeout: 10
     return_content: yes
   register: __egeria_samples_ia_projects
-  when: ('ibm-information-server-domain' in group_names)
+  when: ('ibm_information_server_domain' in group_names)
 
 - name: check for project in XML
   xml:
@@ -122,7 +122,7 @@
     validate_certs: no
     timeout: 10
   when: >
-    ('ibm-information-server-domain' in group_names)
+    ('ibm_information_server_domain' in group_names)
     and __egeria_samples_ia_project_matches.count > 0
 
 - import_role: name=IBM.infosvr-import-export
@@ -179,7 +179,7 @@
           is: 0
         - number_of: data_file_field
           meeting_all_conditions:
-            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
           is: 0
 
@@ -198,7 +198,7 @@
     -list USERS
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_users
 
 - name: add users removal to command-list
@@ -211,7 +211,7 @@
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_users is defined
     and __cocopharma_existing_users.stdout.find(item.username) != -1
   loop_control:
@@ -226,7 +226,7 @@
     -list GROUPS
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_groups
 
 - name: add group removal to command-list
@@ -238,7 +238,7 @@
     insertafter: EOF
     create: yes
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_groups is defined
     and __cocopharma_existing_groups.stdout.find(item.id) != -1
   with_items: "{{ egeria_samples_cocopharma_groups }}"
@@ -255,13 +255,13 @@
     -force
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: remove command-list
   file:
     path: /tmp/__cocopharma_users_command_list.x
     state: absent
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: list Metadata Asset Manager import areas
   shell: >
@@ -273,7 +273,7 @@
     -nof
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
   register: __cocopharma_existing_import_areas
 
 - name: remove Metadata Asset Manager file import area
@@ -287,7 +287,7 @@
   args:
     executable: /bin/bash
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_import_areas.stdout.find('CocoPharma_SampleFiles') != -1
 
 - name: remove Metadata Asset Manager database import areas
@@ -301,7 +301,7 @@
   args:
     executable: /bin/bash
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_import_areas.stdout.find('CocoPharma_'~item) != -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
@@ -315,7 +315,7 @@
   register: __cocopharma_db2catalog_completion
   changed_when: False
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')
 
 - name: uncatalog databases
@@ -327,7 +327,7 @@
   become: yes
   become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')
     and __cocopharma_db2catalog_completion.stdout.find(item) > 0
   with_items: "{{ egeria_samples_cocopharma_databases }}"
