@@ -22,7 +22,7 @@
   register: __cocopharma_db2catalog_completion
   changed_when: False
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')
 
 - name: catalog remote data nodes
@@ -33,7 +33,7 @@
   args:
     executable: /bin/bash
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')
     and __cocopharma_db2catalog_completion.stdout.find(item) == -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
@@ -43,8 +43,8 @@
 - name: setup mappings
   set_fact:
     rest_mappings:
-      - { type: "host", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
-      - { type: "host_(engine)", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+      - { type: "host", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
+      - { type: "host_(engine)", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
       - { type: "host", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
       - { type: "host_(engine)", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
       - { type: "data_file", property: "path", from: "/data/files/CocoPharma", to: "{{ egeria_samples_cocopharma_targets.files }}" }
@@ -59,12 +59,12 @@
       - name: CocoPharma_SampleFiles
         type: LocalFileConnector
         description: "Loads metadata for CocoPharma sample files"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
           name: LOCALFS
         assets_to_import:
           - "folder[{{ egeria_samples_cocopharma_targets.files }}]"
-        hostname: "{{ groups['ibm-information-server-engine'][0] | upper }}"
+        hostname: "{{ groups['ibm_information_server_engine'][0] | upper }}"
 
 - name: harvest DB2 metadata via IBM Metadata Asset Manager
   include_role:
@@ -74,7 +74,7 @@
       - name: CocoPharma_{{ db_name }}
         type: DB2Connector
         description: "Import area for CocoPharma {{ db_name }} sample database"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
           name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma DB2 connection"
@@ -105,7 +105,7 @@
       - name: CocoPharma_{{ db_name }}
         type: ODBCConnector
         description: "Import area for CocoPharma {{ db_name }} sample database"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
           name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma PostgreSQL connection"
@@ -161,7 +161,7 @@
       - name: CocoPharma_{{ db_name }}
         type: ODBCConnector
         description: "Import area for CocoPharma {{ db_name }} sample database"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        metadata_interchange_server: "{{ groups['ibm_information_server_engine'][0] | lower }}"
         dcn:
           name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma MariaDB connection"
@@ -263,12 +263,12 @@
           is: 55
         - number_of: data_file_field
           meeting_all_conditions:
-            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
           is: 63
         - number_of: data_file_field
           meeting_all_conditions:
-            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           is: 55
@@ -342,7 +342,7 @@
     -list GROUPS
   args:
     executable: /bin/bash
-  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  when: egeria_samples_cocopharma_groups is defined and ('ibm_information_server_engine' in group_names)
   register: __cocopharma_existing_groups
 
 - name: add group creation to command-list
@@ -354,7 +354,7 @@
     insertafter: EOF
     create: yes
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_groups is defined
     and __cocopharma_existing_groups.stdout.find(item.id) == -1
   with_items: "{{ egeria_samples_cocopharma_groups }}"
@@ -370,7 +370,7 @@
     insertafter: EOF
     create: yes
   with_items: "{{ egeria_samples_cocopharma_groups }}"
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_groups is defined
   loop_control:
     label: "{{ item.id }}"
 
@@ -383,7 +383,7 @@
     -list USERS
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_users
 
 - name: add users to command-list
@@ -396,7 +396,7 @@
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: >
-    ('ibm-information-server-engine' in group_names)
+    ('ibm_information_server_engine' in group_names)
     and __cocopharma_existing_users is defined
     and __cocopharma_existing_users.stdout.find(item.username) == -1
   loop_control:
@@ -411,7 +411,7 @@
     insertafter: EOF
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_users is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
 
@@ -424,13 +424,13 @@
     -f /tmp/__cocopharma_users_command_list.x
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: remove command-list
   file:
     path: /tmp/__cocopharma_users_command_list.x
     state: absent
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: get RIDs for users
   uri:
@@ -446,7 +446,7 @@
       Content-Type: "application/json"
   changed_when: False
   register: __cocopharma_existing_users_rids
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
 
 - name: add users as stewards
   uri:
@@ -462,7 +462,7 @@
     headers:
       Content-Type: "application/json"
   with_items: "{{ egeria_samples_cocopharma_users }}"
-  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_users is defined
+  when: ('ibm_information_server_engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
 
@@ -484,6 +484,6 @@
           rootAssets: schema[{{ db_name | upper }}|{{ egeria_samples_db_schema }}]
           Asset_description_already_exists: Replace_existing_description
   with_items: "{{ egeria_samples_cocopharma_databases }}"
-  when: ('ibm-information-server-engine' in group_names)
+  when: ('ibm_information_server_engine' in group_names)
   loop_control:
     loop_var: db_name

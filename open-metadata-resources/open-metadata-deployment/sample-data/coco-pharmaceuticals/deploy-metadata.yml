@@ -12,11 +12,11 @@
   tasks:
     - name: load sample data files
       include_tasks: data-files/load.yml
-      when: ('ibm-information-server-engine' in group_names)
+      when: ('ibm_information_server_engine' in group_names)
 
     - name: load sample metadata
       include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/load.yml"
       when: >
-        ('ibm-information-server-repo' in group_names)
-        or ('ibm-information-server-engine' in group_names)
-        or ('ibm-information-server-domain' in group_names)
+        ('ibm_information_server_repo' in group_names)
+        or ('ibm_information_server_engine' in group_names)
+        or ('ibm_information_server_domain' in group_names)
