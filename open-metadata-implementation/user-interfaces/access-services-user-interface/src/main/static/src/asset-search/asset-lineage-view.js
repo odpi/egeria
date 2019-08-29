@@ -52,30 +52,30 @@ class AssetLineageView extends PolymerElement {
             },
             groups : {
                 type: Object,
-                value:{
-                        glossaryTerm: {
-                            shape: 'diamond',
-                            color: 'yellowgreen'
-                        },
-                        Column: {
-                            color: 'mediumpurple'
-                        },
-                        RelationalColumn: {
-                            color: 'mediumpurple'
-                        },
-                        TabularColumn: {
-                            color: 'mediumpurple'
-                        },
-                        RelationalTable: {
-                            shape: 'box',
-                        },
-                        Process: {
-                            shape: 'parallelogram'
-                        },
-                        condensedNode: {
-                            color: 'turquoise'
-                        }
-            }
+                value: {
+                    GlossaryTerm: {
+                        shape: 'diamond',
+                        color: '#FCF68E'
+                    },
+                    Column: {
+                        color: '#99E17E'
+                    },
+                    RelationalColumn: {
+                        color: '#99E17E'
+                    },
+                    TabularColumn: {
+                        color: '#99E17E'
+                    },
+                    RelationalTable: {
+                        shape: 'box',
+                    },
+                    Process: {
+                        shape: 'parallelogram'
+                    },
+                    condensedNode: {
+                        color: '#71ccdc'
+                    }
+                }
             }
         }
     }
