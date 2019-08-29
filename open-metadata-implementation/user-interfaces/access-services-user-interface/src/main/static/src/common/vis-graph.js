@@ -91,7 +91,7 @@ class VisGraph extends PolymerElement {
             fixed: false
           },
           edges: {
-            width: 0.15,
+            width: 1,
             smooth: {
               type: 'continuous'
             },
