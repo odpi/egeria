@@ -100,8 +100,8 @@ $ kubectl exec -it local-vdc-ibm-igc-65c4f66888-k6q2n /bin/bash
 For deploying to a pre-existing Information Server environment, the inventory provided (via `-i hosts`)
 should contain at a minimum the following group names:
 
-- `egeria-samples-db-host` group, defining the host containing the database into which the sample data should be loaded.
-- `egeria-samples-files-host` group, defining the host where the sample data files should be loaded.
+- `egeria_samples_db_host` group, defining the host containing the database into which the sample data should be loaded.
+- `egeria_samples_files_host` group, defining the host where the sample data files should be loaded.
 
 If using IGC as a metadata repository, the inventory should also contain the group names required by
 the `IBM.infosvr` role for the repository, engine and domain (services) tiers.
