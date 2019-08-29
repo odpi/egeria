@@ -3,7 +3,7 @@
 # Copyright Contributors to the ODPi Egeria project.
 
 - name: load CocoPharmaceutical sample data
-  hosts: egeria-samples-db-host
+  hosts: egeria_samples_db_host
   any_errors_fatal: true
   vars_files:
     - defaults/main.yml
