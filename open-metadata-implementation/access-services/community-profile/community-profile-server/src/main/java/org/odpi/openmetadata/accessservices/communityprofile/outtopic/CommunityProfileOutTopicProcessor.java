@@ -2,58 +2,73 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 
+import org.odpi.openmetadata.accessservices.communityprofile.auditlog.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.events.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
+import org.odpi.openmetadata.accessservices.communityprofile.topics.CommunityProfileOutTopicPublisher;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
+
 
 /**
- * CommunityProfilePublisher is responsible for publishing events about personalProfiles.  It is called
- * when an interesting OMRS Event is added to the Enterprise OMRS Topic.  It adds events to the Community Profile OMAS
- * out topic.
+ * CommunityProfileOutTopicProcessor is responsible for publishing events about changes to personal profiles,
+ * communities and related elements.  It is called when an interesting OMRS Event is added to the Enterprise
+ * OMRS Topic (see CommunityProfileOMRSTopicProcessor).
+ *
+ * The actual sending of events is done by the super class CommunityProfileOutTopicPublisher.
+ * This class logs a message to the OMRS Audit Log before calling the super class.
  */
-public class CommunityProfilePublisher
+public class CommunityProfileOutTopicProcessor extends CommunityProfileOutTopicPublisher
 {
-    private static final String personalProfileTypeName                  = "PersonalProfile";
-
-
-    private Connection              communityProfileOutTopic;
-    private String                  serviceName;
-    private OMRSAuditLog            auditLog;
+    private InvalidParameterHandler     invalidParameterHandler;
+    private OMRSAuditLog                auditLog;
 
 
     /**
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param communityProfileOutTopic  connection to the out topic
-     * @param serviceName  name of this service
+     * @param connector initialized OpenMetadataTopicConnector object
+     * @param invalidParameterHandler error handler
      * @param auditLog logging destination
      */
-    public CommunityProfilePublisher(Connection              communityProfileOutTopic,
-                                     String                  serviceName,
-                                     OMRSAuditLog            auditLog)
+    public CommunityProfileOutTopicProcessor(OpenMetadataTopicConnector connector,
+                                             InvalidParameterHandler    invalidParameterHandler,
+                                             OMRSAuditLog               auditLog)
     {
-        this.communityProfileOutTopic = communityProfileOutTopic;
-        this.serviceName = serviceName;
+        super(connector, invalidParameterHandler);
+
+        this.invalidParameterHandler = invalidParameterHandler;
         this.auditLog = auditLog;
     }
 
 
-    private void logOutboundEvent()
+    /**
+     * Log an audit log.
+     *
+     * @param actionDescription calling method
+     * @param eventTypeName type of event
+     * @param subjectGUID unique identifier for object that the event is about
+     */
+    private void logOutboundEvent(String                        actionDescription,
+                                  String                        eventTypeName,
+                                  String                        subjectGUID)
     {
         if (auditLog != null)
         {
+            CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.OUTBOUND_EVENT;
 
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(eventTypeName, subjectGUID),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
         }
     }
 
@@ -73,12 +88,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        UserIdentityOutboundEvent event = new UserIdentityOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_USER_IDENTITY_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.NEW_USER_IDENTITY_EVENT);
-        event.setUserIdentity(bean);
-
-        this.sendEvent(event);
+        super.sendNewUserIdentityEvent(bean);
     }
 
 
@@ -97,12 +111,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        UserIdentityOutboundEvent  event = new UserIdentityOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_REF_USER_IDENTITY_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.NEW_REF_USER_IDENTITY_EVENT);
-        event.setUserIdentity(bean);
-
-        this.sendEvent(event);
+        super.sendNewExternalUserIdentityEvent(bean);
     }
 
 
@@ -121,12 +134,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        UserIdentityOutboundEvent  event = new UserIdentityOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.UPDATED_USER_IDENTITY_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.UPDATED_USER_IDENTITY_EVENT);
-        event.setUserIdentity(bean);
-
-        this.sendEvent(event);
+        super.sendUpdatedUserIdentityEvent(bean);
     }
 
 
@@ -145,12 +157,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        UserIdentityOutboundEvent  event = new UserIdentityOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.DELETED_USER_IDENTITY_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.DELETED_USER_IDENTITY_EVENT);
-        event.setUserIdentity(bean);
-
-        this.sendEvent(event);
+        super.sendDeletedUserIdentityEvent(bean);
     }
 
 
@@ -169,12 +180,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        PersonalProfileOutboundEvent event = new PersonalProfileOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.NEW_PERSONAL_PROFILE_EVENT);
-        event.setPersonalProfile(bean);
-
-        this.sendEvent(event);
+        super.sendNewPersonalProfileEvent(bean);
     }
 
 
@@ -193,12 +203,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        PersonalProfileOutboundEvent event = new PersonalProfileOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
-        event.setPersonalProfile(bean);
-
-        this.sendEvent(event);
+        super.sendNewExternalPersonalProfileEvent(bean);
     }
 
 
@@ -217,12 +226,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        PersonalProfileOutboundEvent event = new PersonalProfileOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.UPDATED_PERSONAL_PROFILE_EVENT);
-        event.setPersonalProfile(bean);
-
-        this.sendEvent(event);
+        super.sendUpdatedPersonalProfileEvent(bean);
     }
 
 
@@ -241,12 +249,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        PersonalProfileOutboundEvent event = new PersonalProfileOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.DELETED_PERSONAL_PROFILE_EVENT);
-        event.setPersonalProfile(bean);
-
-        this.sendEvent(event);
+        super.sendDeletedPersonalProfileEvent(bean);
     }
 
 
@@ -271,15 +278,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        KarmaPointOutboundEvent event = new KarmaPointOutboundEvent();
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        event.setEventType(CommunityProfileOutboundEventType.KARMA_POINT_PLATEAU_EVENT);
-        event.setPersonalProfile(bean);
-        event.setUserId(userId);
-        event.setPlateau(plateau);
-        event.setPointsTotal(totalPoints);
-
-        this.sendEvent(event);
+        super.sendKarmaPointPlateauEvent(bean, userId, plateau, totalPoints);
     }
 
 
@@ -304,13 +307,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_ASSET_IN_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendNewAssetInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 
 
@@ -335,13 +336,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.ASSET_REMOVED_FROM_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.ASSET_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendAssetRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 
 
@@ -366,13 +365,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.NEW_PROJECT_IN_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_PROJECT_IN_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendNewProjectInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 
 
@@ -398,13 +395,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.PROJECT_REMOVED_FROM_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.PROJECT_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendProjectRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 
 
@@ -429,13 +424,11 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.NEW_COMMUNITY_IN_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.NEW_COMMUNITY_IN_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendNewCommunityInCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 
 
@@ -461,12 +454,10 @@ public class CommunityProfilePublisher
 
         invalidParameterHandler.validateObject(bean, parameterName, methodName);
 
-        FavouriteCollectionOutboundEvent event = new FavouriteCollectionOutboundEvent(CommunityProfileOutboundEventType.COMMUNITY_REMOVED_FROM_COLLECTION_EVENT,
-                                                                                      bean,
-                                                                                      userId,
-                                                                                      memberGUID,
-                                                                                      memberTypeName);
+        logOutboundEvent(methodName,
+                         CommunityProfileOutboundEventType.COMMUNITY_REMOVED_FROM_COLLECTION_EVENT.getEventTypeName(),
+                         bean.getGUID());
 
-        this.sendEvent(event);
+        super.sendCommunityRemovedFromCollectionEvent(bean, userId, memberGUID, memberTypeName);
     }
 }

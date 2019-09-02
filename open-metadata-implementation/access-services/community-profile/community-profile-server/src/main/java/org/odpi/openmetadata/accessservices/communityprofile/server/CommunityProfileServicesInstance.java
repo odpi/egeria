@@ -34,6 +34,7 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
+     * @param karmaPointPlateau number of karma points to reach a plateau
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
@@ -41,7 +42,8 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                             List<String>            supportedZones,
                                             OMRSAuditLog            auditLog,
                                             String                  localServerUserId,
-                                            int                     maxPageSize) throws NewInstanceException
+                                            int                     maxPageSize,
+                                            int                     karmaPointPlateau) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
@@ -72,7 +74,8 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                                                            serverName,
                                                                            invalidParameterHandler,
                                                                            repositoryHelper,
-                                                                           repositoryHandler);
+                                                                           repositoryHandler,
+                                                                           karmaPointPlateau);
         }
         else
         {

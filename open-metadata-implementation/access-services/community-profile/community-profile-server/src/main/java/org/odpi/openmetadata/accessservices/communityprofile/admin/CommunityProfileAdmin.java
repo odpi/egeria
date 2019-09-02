@@ -8,23 +8,20 @@ import org.odpi.openmetadata.accessservices.communityprofile.omrstopic.Community
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 public class CommunityProfileAdmin extends AccessServiceAdmin
 {
-    private OMRSRepositoryConnector            repositoryConnector = null;
-    private OMRSTopicConnector                 omrsTopicConnector  = null;
-    private AccessServiceConfig                accessServiceConfig = null;
     private OMRSAuditLog                       auditLog            = null;
     private CommunityProfileServicesInstance   instance            = null;
     private String                             serverName          = null;
-    private String                             serverUserName      = null;
-    private CommunityProfileOMRSTopicProcessor omrsTopicProcessor  = null;
     private CommunityProfileInTopicProcessor   inTopicProcessor    = null;
 
 
@@ -39,16 +36,16 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
-     * @param enterpriseOMRSTopicConnector  connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector  connector for querying the cohort repositories
+     * @param accessServiceConfig  specific configuration properties for this access service.
+     * @param omrsTopicConnector  connector for receiving OMRS Events from the cohorts
+     * @param repositoryConnector  connector for querying the cohort repositories
      * @param auditLog  audit log component for logging messages.
      * @param serverUserName  user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
-    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
-                           OMRSTopicConnector      enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
+    public void initialize(AccessServiceConfig     accessServiceConfig,
+                           OMRSTopicConnector      omrsTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector,
                            OMRSAuditLog            auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
@@ -66,20 +63,19 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
 
         try
         {
-            this.accessServiceConfig = accessServiceConfigurationProperties;
-            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
+
             this.instance = new CommunityProfileServicesInstance(repositoryConnector,
-                                                                 this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
-                                                                                            accessServiceConfig.getAccessServiceName(),
-                                                                                            auditLog),
+                                                                 super.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                                             accessServiceConfig.getAccessServiceName(),
+                                                                                             auditLog),
                                                                  auditLog,
                                                                  serverUserName,
-                                                                 repositoryConnector.getMaxPageSize());
+                                                                 repositoryConnector.getMaxPageSize(),
+                                                                 super.extractKarmaPointPlateau(accessServiceConfig.getAccessServiceOptions(),
+                                                                                                accessServiceConfig.getAccessServiceName(),
+                                                                                                auditLog));
             this.serverName = instance.getServerName();
 
-            this.accessServiceConfig = accessServiceConfigurationProperties;
-            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
-            this.serverUserName = serverUserName;
 
             if (omrsTopicConnector != null)
             {
@@ -101,17 +97,15 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                                                    auditLog);
                 }
 
-                omrsTopicProcessor = new CommunityProfileOMRSTopicProcessor(outTopicConnector,
-                                                                            super.extractKarmaPointPlateau(accessServiceConfig.getAccessServiceOptions(),
-                                                                                                           accessServiceConfig.getAccessServiceName(),
-                                                                                                           auditLog),
-                                                                            super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
-                                                                                                             accessServiceConfig.getAccessServiceName(),
-                                                                                                             auditLog),
-                                                                            accessServiceConfig.getAccessServiceName(),
-                                                                            serverUserName,
-                                                                            auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER),
-                                                                            instance);
+                OMRSTopicListener omrsTopicProcessor = new CommunityProfileOMRSTopicProcessor(outTopicConnector,
+                                                                                              super.extractKarmaPointIncrement(accessServiceConfig.getAccessServiceOptions(),
+                                                                                                                               accessServiceConfig.getAccessServiceName(),
+                                                                                                                               auditLog),
+                                                                                              accessServiceConfig.getAccessServiceName(),
+                                                                                              serverUserName,
+                                                                                              auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER),
+                                                                                              repositoryConnector.getRepositoryHelper(),
+                                                                                              instance);
 
                 omrsTopicConnector.registerListener(omrsTopicProcessor);
             }
@@ -143,6 +137,7 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
         catch (Throwable error)
         {
             auditCode = CommunityProfileAuditCode.SERVICE_INSTANCE_FAILURE;
+
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -150,6 +145,16 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      actionDescription,
+                                                      error.getMessage(),
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction(),
+                                                      error);
         }
     }
 

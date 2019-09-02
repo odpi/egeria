@@ -85,6 +85,42 @@ public class PersonalProfileHandler
 
 
     /**
+     * Create a personal profile from an entity.
+     *
+     * @param userId calling userId
+     * @param personalProfileEntity principle entity of the profile.
+     * @param methodName calling method
+     *
+     * @return PersonalProfile bean or null if it does not exist.
+     * @throws InvalidParameterException one of the userIds is null
+     * @throws PropertyServerException the metadata repository is not available
+     * @throws UserNotAuthorizedException the user is not authorized to issue this request
+     */
+    public PersonalProfile getPersonalProfile(String         userId,
+                                              EntityDetail   personalProfileEntity,
+                                              String         methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
+        List<UserIdentity> associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId,
+                                                                                        personalProfileEntity.getGUID(),
+                                                                                        methodName);
+
+        List<ContactMethod> contactMethods = contactMethodHandler.getContactMethods(userId,
+                                                                                    personalProfileEntity.getGUID(),
+                                                                                    methodName);
+
+        PersonalProfileConverter converter = new PersonalProfileConverter(personalProfileEntity,
+                                                                          associatedUserIds,
+                                                                          contactMethods,
+                                                                          repositoryHelper,
+                                                                          serviceName);
+
+        return converter.getBean();
+    }
+
+
+    /**
      * Retrieve a personal profile for a userId.
      *
      * @param userId calling userId
@@ -122,21 +158,7 @@ public class PersonalProfileHandler
 
             if (personalProfileEntity != null)
             {
-                List<UserIdentity> associatedUserIds = userIdentityHandler.getAssociatedUserIds(userId,
-                                                                                                personalProfileEntity.getGUID(),
-                                                                                                methodName);
-
-                List<ContactMethod> contactMethods = contactMethodHandler.getContactMethods(userId,
-                                                                                            personalProfileEntity.getGUID(),
-                                                                                            methodName);
-
-                PersonalProfileConverter converter = new PersonalProfileConverter(personalProfileEntity,
-                                                                                  associatedUserIds,
-                                                                                  contactMethods,
-                                                                                  repositoryHelper,
-                                                                                  serviceName);
-
-                return converter.getBean();
+                return this.getPersonalProfile(userId, personalProfileEntity, methodName);
             }
         }
 

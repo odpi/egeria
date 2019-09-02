@@ -2,33 +2,44 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.omrstopic;
 
+import org.odpi.openmetadata.accessservices.communityprofile.auditlog.CommunityProfileAuditCode;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfilePublisher;
+import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfileOutTopicProcessor;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.ContributionRecord;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.server.CommunityProfileServicesInstance;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 
-public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
+
+/**
+ * CommunityProfileOMRSTopicProcessor examines each OMRS Topic event to (1) determine if karma points should
+ * be awarded to an individual who has contributed to open metadata (2) determine if the event relates to
+ * metadata instances that should result in a Community Profile OMAS event on its Out Topic.
+ *
+ * If karma points need to be awarded, it calls the ContributionRecordHandler to update the person's
+ * contribution record.  If an event needs to be sent, it calls the CommunityProfileOutTopicProcessor.
+ */
+public class CommunityProfileOMRSTopicProcessor extends OMRSTopicListenerBase
 {
-    private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicProcessor.class);
 
-    private OMRSRepositoryHelper repositoryHelper;
+    private CommunityProfileOutTopicProcessor publisher;
 
-    private CommunityProfilePublisher publisher;
+    private OMRSRepositoryHelper             repositoryHelper;
 
-    private int                              karmaPointPlateauThreshold;
     private int                              karmaPointIncrement;
 
     private PersonalProfileHandler           personalProfileHandler;
@@ -42,28 +53,30 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param communityProfileOutTopic  connection to the out topic
-     * @param karmaPointPlateauThreshold level at which karma point achievements result in an event
+     * @param communityProfileOutTopic  connector to the out topic
      * @param karmaPointIncrement increment for each personal contribution
      * @param serviceName  name of this component
      * @param serverUserId userId for requests originated by this server
      * @param auditLog  logging destination
+     * @param repositoryHelper repository helper
      * @param instance  server instance
      */
-    public CommunityProfileOMRSTopicListener(Connection                        communityProfileOutTopic,
-                                             int                               karmaPointPlateauThreshold,
-                                             int                               karmaPointIncrement,
-                                             String                            serviceName,
-                                             String                            serverUserId,
-                                             OMRSAuditLog                      auditLog,
-                                             CommunityProfileServicesInstance  instance)
+    public CommunityProfileOMRSTopicProcessor(OpenMetadataTopicConnector        communityProfileOutTopic,
+                                              int                               karmaPointIncrement,
+                                              String                            serviceName,
+                                              String                            serverUserId,
+                                              OMRSAuditLog                      auditLog,
+                                              OMRSRepositoryHelper              repositoryHelper,
+                                              CommunityProfileServicesInstance  instance)
     {
         super(serviceName, auditLog);
-        publisher = new CommunityProfilePublisher(communityProfileOutTopic,
-                                                  serviceName,
-                                                  auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER));
 
-        this.karmaPointPlateauThreshold = karmaPointPlateauThreshold;
+        this.repositoryHelper = repositoryHelper;
+
+        publisher = new CommunityProfileOutTopicProcessor(communityProfileOutTopic,
+                                                          instance.getInvalidParameterHandler(),
+                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.ENTERPRISE_TOPIC_LISTENER));
+
         this.karmaPointIncrement        = karmaPointIncrement;
 
         this.personalProfileHandler     = instance.getPersonalProfileHandler();
@@ -77,16 +90,23 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
     /**
      * Increment the karma points for an individual if this OMAS is configured to collect karma points.
      *
-     * @param contributingUserId userId of person making contributions to open metadata
+     * @param contribution open metadata element that has changed
      */
-    private void processKarmaPoints(String    contributingUserId)
+    private void awardKarmaPoints(InstanceHeader    contribution)
     {
-        final String methodName = "processKarmaPoints";
+        final String methodName = "awardKarmaPoints";
 
         if (karmaPointIncrement > 0)
         {
-            if (contributingUserId != null)
+            if (contribution != null)
             {
+                String contributingUserId = contribution.getUpdatedBy();
+
+                if (contributingUserId == null)
+                {
+                    contributingUserId = contribution.getCreatedBy();
+                }
+
                 try
                 {
                     PersonalProfile personalProfile = personalProfileHandler.getPersonalProfile(serverUserId,
@@ -95,16 +115,54 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
 
                     if (personalProfile != null)
                     {
-                        contributionRecordHandler.incrementKarmaPoints(serverUserId,
-                                                                       personalProfile.getGUID(),
-                                                                       personalProfile.getQualifiedName(),
-                                                                       karmaPointIncrement,
-                                                                       methodName);
+                        ContributionRecord contributionRecord = contributionRecordHandler.getContributionRecord(serverUserId,
+                                                                                                                personalProfile.getGUID(),
+                                                                                                                personalProfile.getQualifiedName(),
+                                                                                                                methodName);
+
+                        int currentPlateau = contributionRecord.getKarmaPointPlateau();
+
+                        contributionRecord = contributionRecordHandler.incrementKarmaPoints(serverUserId,
+                                                                                            personalProfile.getGUID(),
+                                                                                            personalProfile.getQualifiedName(),
+                                                                                            karmaPointIncrement,
+                                                                                            methodName);
+
+                        log.debug("Karma points updated: " + contributingUserId);
+
+                        if (contributionRecord.getKarmaPointPlateau() > currentPlateau)
+                        {
+                            CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.KARMA_PLATEAU_AWARD;
+
+                            auditLog.logRecord(methodName,
+                                               auditCode.getLogMessageId(),
+                                               auditCode.getSeverity(),
+                                               auditCode.getFormattedLogMessage(contributingUserId,
+                                                                                Integer.toString(contributionRecord.getKarmaPointPlateau()),
+                                                                                Integer.toString(contributionRecord.getKarmaPoints())),
+                                               null,
+                                               auditCode.getSystemAction(),
+                                               auditCode.getUserAction());
+
+                            publisher.sendKarmaPointPlateauEvent(personalProfile,
+                                                                 contributingUserId,
+                                                                 contributionRecord.getKarmaPointPlateau(),
+                                                                 contributionRecord.getKarmaPoints());
+                        }
                     }
                 }
                 catch (Throwable  error)
                 {
+                    CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.KARMA_POINT_EXCEPTION;
 
+                    auditLog.logException(methodName,
+                                          auditCode.getLogMessageId(),
+                                          auditCode.getSeverity(),
+                                          auditCode.getFormattedLogMessage(contributingUserId, error.getClass().getName(), error.getMessage()),
+                                          null,
+                                          auditCode.getSystemAction(),
+                                          auditCode.getUserAction(),
+                                          error);
                 }
             }
         }
@@ -135,9 +193,11 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                       String       originatorOrganizationName,
                                       EntityDetail entity)
     {
-        String actionDescription = "processNewEntityEvent";
+        String methodName = "processNewEntityEvent";
 
         log.debug("Processing new Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
 
         String instanceTypeName = this.getInstanceTypeName(sourceName,
                                                            originatorMetadataCollectionId,
@@ -145,13 +205,36 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                            originatorServerType,
                                                            originatorOrganizationName,
                                                            entity,
-                                                           actionDescription);
+                                                           methodName);
 
         if (instanceTypeName != null)
         {
-            if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME))
-            {
 
+            try
+            {
+                if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME))
+                {
+                    publisher.sendNewPersonalProfileEvent(personalProfileHandler.getPersonalProfile(serverUserId,
+                                                                                                    entity,
+                                                                                                    methodName));
+                }
+                else if (repositoryHelper.isTypeOf(sourceName, instanceTypeName, PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME))
+                {
+                    publisher.sendNewUserIdentityEvent(userIdentityHandler.getUserIdentity(entity));
+                }
+            }
+            catch (Throwable error)
+            {
+                CommunityProfileAuditCode auditCode = CommunityProfileAuditCode.OUTBOUND_EVENT_EXCEPTION;
+
+                auditLog.logException(methodName,
+                                      auditCode.getLogMessageId(),
+                                      auditCode.getSeverity(),
+                                      auditCode.getFormattedLogMessage(entity.getGUID(), instanceTypeName, error.getClass().getName(), error.getMessage()),
+                                      null,
+                                      auditCode.getSystemAction(),
+                                      auditCode.getUserAction(),
+                                      error);
             }
         }
     }
@@ -179,6 +262,9 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                           EntityDetail newEntity)
     {
         log.debug("Processing updated Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(newEntity);
+
     }
 
 
@@ -202,6 +288,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                          EntityDetail entity)
     {
         log.debug("Processing undone Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -217,14 +305,16 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the entity with the new classification added.
      */
-    public void processClassifiedEntityEvent(String sourceName,
-                                             String originatorMetadataCollectionId,
-                                             String originatorServerName,
-                                             String originatorServerType,
-                                             String originatorOrganizationName,
+    public void processClassifiedEntityEvent(String       sourceName,
+                                             String       originatorMetadataCollectionId,
+                                             String       originatorServerName,
+                                             String       originatorServerType,
+                                             String       originatorOrganizationName,
                                              EntityDetail entity)
     {
         log.debug("Processing classified Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -240,14 +330,16 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the entity after the classification has been removed.
      */
-    public void processDeclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
+    public void processDeclassifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
                                                EntityDetail entity)
     {
         log.debug("Processing declassified Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -271,6 +363,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                EntityDetail entity)
     {
         log.debug("Processing reclassified Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -301,6 +395,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                           EntityDetail entity)
     {
         log.debug("Processing deleted Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -358,6 +454,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                EntityDetail entity)
     {
         log.debug("Processing delete-purge entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -381,6 +479,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                            EntityDetail entity)
     {
         log.debug("Processing restored Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -408,6 +508,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                EntityDetail entity)
     {
         log.debug("Processing re-identified Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -435,6 +537,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                           EntityDetail   entity)
     {
         log.debug("Processing re-typed Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
 
@@ -462,60 +566,10 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                           EntityDetail entity)
     {
         log.debug("Processing re-homed Entity event from: " + sourceName);
+
+        this.awardKarmaPoints(entity);
     }
 
-
-    /**
-     * The remote repository is requesting that an entity from this repository's metadata collection is
-     * refreshed so the remote repository can create a reference copy.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param typeDefGUID                    unique identifier for this entity's TypeDef
-     * @param typeDefName                    name of this entity's TypeDef
-     * @param instanceGUID                   unique identifier for the entity
-     * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
-     */
-    public void processRefreshEntityRequested(String sourceName,
-                                              String originatorMetadataCollectionId,
-                                              String originatorServerName,
-                                              String originatorServerType,
-                                              String originatorOrganizationName,
-                                              String typeDefGUID,
-                                              String typeDefName,
-                                              String instanceGUID,
-                                              String homeMetadataCollectionId)
-    {
-        log.debug("Processing refresh Entity request event from: " + sourceName);
-    }
-
-
-    /**
-     * A remote repository in the cohort has sent entity details in response to a refresh request.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the requested entity
-     */
-    public void processRefreshEntityEvent(String       sourceName,
-                                          String       originatorMetadataCollectionId,
-                                          String       originatorServerName,
-                                          String       originatorServerType,
-                                          String       originatorOrganizationName,
-                                          EntityDetail entity)
-    {
-        log.debug("Processing refresh Entity event from: " + sourceName);
-    }
 
 
     /**
@@ -538,6 +592,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                             Relationship relationship)
     {
         log.debug("Processing new relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -563,6 +619,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                 Relationship newRelationship)
     {
         log.debug("Processing updated relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(newRelationship);
     }
 
 
@@ -586,6 +644,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                Relationship relationship)
     {
         log.debug("Processing undone relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -613,6 +673,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                 Relationship relationship)
     {
         log.debug("Processing deleted relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -666,6 +728,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                      Relationship relationship)
     {
         log.debug("Processing delete-purge relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -689,6 +753,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                  Relationship relationship)
     {
         log.debug("Processing restored relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -716,6 +782,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                      Relationship relationship)
     {
         log.debug("Processing re-identified relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -743,6 +811,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                 Relationship   relationship)
     {
         log.debug("Processing re-typed relationship event from: " + sourceName);
+
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -770,60 +840,8 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                                 Relationship relationship)
     {
         log.debug("Processing re-homed relationship event from: " + sourceName);
-    }
 
-
-    /**
-     * A repository has requested the home repository of a relationship send details of the relationship so
-     * the local repository can create a reference copy of the instance.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param typeDefGUID                    unique identifier for this instance's TypeDef
-     * @param typeDefName                    name of this relationship's TypeDef
-     * @param instanceGUID                   unique identifier for the instance
-     * @param homeMetadataCollectionId       metadata collection id for the home of this instance.
-     */
-    public void processRefreshRelationshipRequest(String sourceName,
-                                                  String originatorMetadataCollectionId,
-                                                  String originatorServerName,
-                                                  String originatorServerType,
-                                                  String originatorOrganizationName,
-                                                  String typeDefGUID,
-                                                  String typeDefName,
-                                                  String instanceGUID,
-                                                  String homeMetadataCollectionId)
-    {
-        log.debug("Processing refresh relationship request event from: " + sourceName);
-    }
-
-
-    /**
-     * The local repository is refreshing the information about a relationship for the other
-     * repositories in the cohort.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
-     *                                       sent the event.
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param relationship                   relationship details
-     */
-    public void processRefreshRelationshipEvent(String       sourceName,
-                                                String       originatorMetadataCollectionId,
-                                                String       originatorServerName,
-                                                String       originatorServerType,
-                                                String       originatorOrganizationName,
-                                                Relationship relationship)
-    {
-        log.debug("Processing refresh relationship event from: " + sourceName);
+        this.awardKarmaPoints(relationship);
     }
 
 
@@ -845,229 +863,46 @@ public class CommunityProfileOMRSTopicListener extends OMRSTopicListenerBase
                                           String         originatorServerName,
                                           String         originatorServerType,
                                           String         originatorOrganizationName,
-                                          InstanceGraph instances)
+                                          InstanceGraph  instances)
     {
         log.debug("Processing instance batch event from: " + sourceName);
-    }
 
-
-    /**
-     * An open metadata repository has detected two metadata instances with the same identifier (guid).
-     * This is a serious error because it could lead to corruption of the metadata collections within the cohort.
-     * When this occurs, all repositories in the cohort delete their reference copies of the metadata instances and
-     * at least one of the instances has its GUID changed in its respective home repository.  The updated instance(s)
-     * are redistributed around the cohort.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId metadata collection id of the repository reporting the conflicting instance
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId     metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary           details of the target instance's TypeDef
-     * @param targetInstanceGUID             unique identifier for the source instance
-     * @param otherOrigin                    origin of the other (older) metadata instance
-     * @param otherMetadataCollectionId      metadata collection of the other (older) metadata instance
-     * @param otherTypeDefSummary            details of the other (older) instance's TypeDef
-     * @param otherInstanceGUID              unique identifier for the other (older) instance
-     * @param errorMessage                   description of the error.
-     */
-    public void processConflictingInstancesEvent(String                 sourceName,
-                                                 String                 originatorMetadataCollectionId,
-                                                 String                 originatorServerName,
-                                                 String                 originatorServerType,
-                                                 String                 originatorOrganizationName,
-                                                 String                 targetMetadataCollectionId,
-                                                 TypeDefSummary         targetTypeDefSummary,
-                                                 String                 targetInstanceGUID,
-                                                 String                 otherMetadataCollectionId,
-                                                 InstanceProvenanceType otherOrigin,
-                                                 TypeDefSummary         otherTypeDefSummary,
-                                                 String                 otherInstanceGUID,
-                                                 String                 errorMessage)
-    {
-        log.debug("Processing conflicting instances event from: " + sourceName);
-    }
-
-
-    /**
-     * An open metadata repository has detected an inconsistency in the version of the type used in an updated metadata
-     * instance compared to its stored version.
-     *
-     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
-     *                                       local repository, or event mapper name.
-     * @param originatorMetadataCollectionId metadata collection id of the repository reporting the conflicting instance
-     * @param originatorServerName           name of the server that the event came from.
-     * @param originatorServerType           type of server that the event came from.
-     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param targetMetadataCollectionId     metadata collection id of other repository with the conflicting instance
-     * @param targetTypeDefSummary           details of the target instance's TypeDef
-     * @param targetInstanceGUID             unique identifier for the source instance
-     * @param otherTypeDefSummary            details of the local copy of the instance's TypeDef
-     * @param errorMessage                   description of the error.
-     */
-    public void processConflictingTypeEvent(String         sourceName,
-                                            String         originatorMetadataCollectionId,
-                                            String         originatorServerName,
-                                            String         originatorServerType,
-                                            String         originatorOrganizationName,
-                                            String         targetMetadataCollectionId,
-                                            TypeDefSummary targetTypeDefSummary,
-                                            String         targetInstanceGUID,
-                                            TypeDefSummary otherTypeDefSummary,
-                                            String         errorMessage)
-    {
-        log.debug("Processing conflicting instance type event from: " + sourceName);
-    }
-
-
-
-
-    /**
-     * Determine whether a new entity is an PersonalProfile.  If it is then publish an Community Profile Event about it.
-     *
-     * @param entity - entity object that has just been created.
-     */
-    public void processNewEntity(EntityDetail entity)
-    {
-        String personalProfileType = getPersonalProfileType(entity);
-
-        if (personalProfileType != null)
+        if (instances != null)
         {
-            this.processNewPersonalProfile(this.getPersonalProfile(entity));
+            List<EntityDetail>  entities = instances.getEntities();
+            List<Relationship>  relationships = instances.getRelationships();
+
+            if (entities != null)
+            {
+                for (EntityDetail entity : entities)
+                {
+                    if (entity != null)
+                    {
+                        this.processNewEntityEvent(sourceName,
+                                                   originatorMetadataCollectionId,
+                                                   originatorServerName,
+                                                   originatorServerType,
+                                                   originatorOrganizationName,
+                                                   entity);
+                    }
+                }
+            }
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    if (relationship != null)
+                    {
+                        this.processNewRelationshipEvent(sourceName,
+                                                         originatorMetadataCollectionId,
+                                                         originatorServerName,
+                                                         originatorServerType,
+                                                         originatorOrganizationName,
+                                                         relationship);
+                    }
+                }
+            }
         }
     }
-
-
-    /**
-     * Determine whether an updated entity is an PersonalProfile.  If it is then publish an Community Profile Event about it.
-     *
-     * @param entity - entity object that has just been updated.
-     */
-    public void processUpdatedEntity(EntityDetail   entity)
-    {
-        String personalProfileType = getPersonalProfileType(entity);
-
-        if (personalProfileType != null)
-        {
-            this.processUpdatedPersonalProfile(this.getPersonalProfile(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether an updated entity is an PersonalProfile.  If it is then publish an Community Profile Event about it.
-     *
-     * @param originalEntity - original values for entity object - available when basic property updates have
-     *                       occurred on the entity.
-     * @param newEntity - entity object that has just been updated.
-     */
-    public void processUpdatedEntity(EntityDetail   originalEntity,
-                                     EntityDetail   newEntity)
-    {
-        String personalProfileType = getPersonalProfileType(newEntity);
-
-        if (personalProfileType != null)
-        {
-            this.processUpdatedPersonalProfile(this.getPersonalProfile(originalEntity),
-                                               this.getPersonalProfile(newEntity));
-        }
-    }
-
-
-    /**
-     * Determine whether a deleted entity is an PersonalProfile.  If it is then publish an Community Profile Event about it.
-     *
-     * @param entity - entity object that has just been deleted.
-     */
-    public void processDeletedEntity(EntityDetail   entity)
-    {
-        String personalProfileType = getPersonalProfileType(entity);
-
-        if (personalProfileType != null)
-        {
-            this.processDeletedPersonalProfile(this.getPersonalProfile(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether a restored entity is an PersonalProfile.  If it is then publish an Community Profile Event about it.
-     *
-     * @param entity - entity object that has just been restored.
-     */
-    public void processRestoredEntity(EntityDetail   entity)
-    {
-        String personalProfileType = getPersonalProfileType(entity);
-
-        if (personalProfileType != null)
-        {
-            this.processRestoredPersonalProfile(this.getPersonalProfile(entity));
-        }
-    }
-
-
-    /**
-     * Determine whether a new relationship is related to an PersonalProfile.
-     * If it is then publish an Community Profile Event about it.
-     *
-     * @param relationship - relationship object that has just been created.
-     */
-    public void processNewRelationship(Relationship relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an PersonalProfile.
-     * If it is then publish an Community Profile Event about it.
-     *
-     * @param relationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether an updated relationship is related to an PersonalProfile.
-     * If it is then publish an Community Profile Event about it.
-     *
-     * @param originalRelationship  - original values of relationship.
-     * @param newRelationship - relationship object that has just been updated.
-     */
-    public void processUpdatedRelationship(Relationship   originalRelationship,
-                                           Relationship   newRelationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a deleted relationship is related to an PersonalProfile.
-     * If it is then publish an Community Profile Event about it.
-     *
-     * @param relationship - relationship object that has just been deleted.
-     */
-    public void processDeletedRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
-    /**
-     * Determine whether a restored relationship is related to an PersonalProfile.
-     * If it is then publish an Community Profile Event about it.
-     *
-     * @param relationship - relationship object that has just been restored.
-     */
-    public void processRestoredRelationship(Relationship   relationship)
-    {
-        // todo
-    }
-
-
 }
