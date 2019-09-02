@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adminservices;
+package org.odpi.openmetadata.adminservices.configuration;
 
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 
@@ -69,6 +69,7 @@ public class OMAGAccessServiceRegistration
     /**
      * Retrieve the requested OMAS registration information
      *
+     * @param urlMarker URL insert that identifies the service
      * @return access service registration info
      */
     public static synchronized AccessServiceRegistration getAccessServiceRegistration(String   urlMarker)

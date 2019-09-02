@@ -6,11 +6,15 @@ import org.odpi.openmetadata.adminservices.configuration.auditlog.OMAGAuditCode;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.Connector;
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
@@ -24,6 +28,7 @@ import java.util.Map;
 public abstract class AccessServiceAdmin
 {
     private static  int defaultKarmaPointThreshold = 500;
+    private static  int defaultKarmaPointInterval  = 0;
 
 
     /*
@@ -31,9 +36,10 @@ public abstract class AccessServiceAdmin
      * AccessServiceConfig as the accessServicesOptions.  Individual access services may support
      * additional properties.
      */
-    protected String   supportedZonesPropertyName    = "SupportedZones";    /* Common */
-    protected String   defaultZonesPropertyName      = "DefaultZones";      /* Common */
-    protected String   karmaPointPlateauPropertyName = "KarmaPointPlateau"; /* Community Profile OMAS */
+    protected String   supportedZonesPropertyName      = "SupportedZones";      /* Common */
+    protected String   defaultZonesPropertyName        = "DefaultZones";        /* Common */
+    protected String   karmaPointPlateauPropertyName   = "KarmaPointPlateau";   /* Community Profile OMAS */
+    protected String   karmaPointIncrementPropertyName = "KarmaPointIncrement"; /* Community Profile OMAS */
 
 
     /**
@@ -199,6 +205,92 @@ public abstract class AccessServiceAdmin
     }
 
 
+    /**
+     * Extract the karma point plateau property from the access services option.
+     *
+     * @param accessServiceOptions options passed to the access service.
+     * @param accessServiceName name of calling service
+     * @param auditLog audit log for error messages
+     * @return null or list of zone names
+     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
+     */
+    protected int extractKarmaPointIncrement(Map<String, Object> accessServiceOptions,
+                                             String              accessServiceName,
+                                             OMRSAuditLog        auditLog) throws OMAGConfigurationErrorException
+    {
+        final String  methodName = "extractKarmaPointIncrement";
+        OMAGAuditCode auditCode;
+
+        if (accessServiceOptions == null)
+        {
+            return this.useDefaultKarmaPointIncrement(accessServiceName, auditLog, methodName);
+        }
+        else
+        {
+            Object   incrementObject = accessServiceOptions.get(karmaPointIncrementPropertyName);
+
+            if (incrementObject == null)
+            {
+                return this.useDefaultKarmaPointIncrement(accessServiceName, auditLog, methodName);
+            }
+            else
+            {
+                try
+                {
+                    int increment = Integer.parseInt(incrementObject.toString());
+
+                    auditCode = OMAGAuditCode.KARMA_POINT_COLLECTION_INCREMENT;
+                    auditLog.logRecord(methodName,
+                                       auditCode.getLogMessageId(),
+                                       auditCode.getSeverity(),
+                                       auditCode.getFormattedLogMessage(accessServiceName, Integer.toString(increment)),
+                                       null,
+                                       auditCode.getSystemAction(),
+                                       auditCode.getUserAction());
+
+                    return increment;
+                }
+                catch (Throwable error)
+                {
+                    logBadConfigProperties(accessServiceName,
+                                           karmaPointIncrementPropertyName,
+                                           incrementObject.toString(),
+                                           auditLog,
+                                           methodName,
+                                           error);
+
+                    /* unreachable */
+                    return 0;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Set up and log the default karma point increment.
+     *
+     * @param accessServiceName name of this access service
+     * @param auditLog audit log to use
+     * @param methodName calling method
+     * @return default value
+     */
+    private int useDefaultKarmaPointIncrement(String       accessServiceName,
+                                              OMRSAuditLog auditLog,
+                                              String       methodName)
+    {
+        OMAGAuditCode auditCode = OMAGAuditCode.NO_KARMA_POINT_COLLECTION;
+        auditLog.logRecord(methodName,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(accessServiceName),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
+        return defaultKarmaPointInterval;
+    }
+
 
     /**
      * Extract the karma point plateau property from the access services option.
@@ -232,13 +324,13 @@ public abstract class AccessServiceAdmin
             {
                 try
                 {
-                    Integer plateauThreshold =  Integer.parseInt(plateauThresholdObject.toString());
+                    int plateauThreshold =  Integer.parseInt(plateauThresholdObject.toString());
 
                     auditCode = OMAGAuditCode.PLATEAU_THRESHOLD;
                     auditLog.logRecord(methodName,
                                        auditCode.getLogMessageId(),
                                        auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(accessServiceName, plateauThreshold.toString()),
+                                       auditCode.getFormattedLogMessage(accessServiceName, Integer.toString(plateauThreshold)),
                                        null,
                                        auditCode.getSystemAction(),
                                        auditCode.getUserAction());
@@ -248,7 +340,7 @@ public abstract class AccessServiceAdmin
                 catch (Throwable error)
                 {
                     logBadConfigProperties(accessServiceName,
-                                           defaultZonesPropertyName,
+                                           karmaPointPlateauPropertyName,
                                            plateauThresholdObject.toString(),
                                            auditLog,
                                            methodName,
@@ -285,6 +377,8 @@ public abstract class AccessServiceAdmin
 
         return defaultKarmaPointThreshold;
     }
+
+
 
 
     /**
@@ -379,8 +473,8 @@ public abstract class AccessServiceAdmin
                                auditCode.getUserAction());
 
             OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.NO_ENTERPRISE_TOPIC;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(accessServiceName,
-                                                                                                            serverName);
+            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(accessServiceName,
+                                                                                                                 serverName);
 
             throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
                                                       this.getClass().getName(),
@@ -414,4 +508,105 @@ public abstract class AccessServiceAdmin
 
         return topicName;
     }
+
+
+    /**
+     * Create the connector for this access services' In Topic.
+     *
+     * @param inTopicConnection connection from the configuration properties
+     * @param accessServiceName name of the calling access service
+     * @param parentAuditLog audit log from the admin component
+     * @return connector to access the topic
+     * @throws OMAGConfigurationErrorException problem creating connector
+     */
+    protected OpenMetadataTopicConnector getInTopicConnector(Connection   inTopicConnection,
+                                                             String       accessServiceName,
+                                                             OMRSAuditLog parentAuditLog) throws OMAGConfigurationErrorException
+    {
+        final String  methodName = "getInTopicConnector";
+
+        return this.getTopicConnector(inTopicConnection,
+                                      parentAuditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_IN_TOPIC),
+                                      accessServiceName,
+                                      methodName);
+    }
+
+
+    /**
+     * Create the connector for this access services' Out Topic.
+     *
+     * @param outTopicConnection connection from the configuration properties
+     * @param accessServiceName name of the calling access service
+     * @param parentAuditLog audit log from the admin component
+     * @return connector to access the topic
+     * @throws OMAGConfigurationErrorException problem creating connector
+     */
+    protected OpenMetadataTopicConnector getOutTopicConnector(Connection   outTopicConnection,
+                                                              String       accessServiceName,
+                                                              OMRSAuditLog parentAuditLog) throws OMAGConfigurationErrorException
+    {
+        final String  methodName = "getOutTopicConnector";
+
+        return this.getTopicConnector(outTopicConnection,
+                                      parentAuditLog.createNewAuditLog(OMRSAuditingComponent.OMAS_OUT_TOPIC),
+                                      accessServiceName,
+                                      methodName);
+    }
+
+
+    /**
+     * Create an instance of an open metadata topic connector using the supplied connection.
+     *
+     * @param topicConnection connection needed to create the connector
+     * @param accessServiceName name of the calling access service
+     * @param auditLog audit log for this connector
+     * @return connector to access the topic
+     * @throws OMAGConfigurationErrorException problem creating connector
+     */
+    private OpenMetadataTopicConnector getTopicConnector(Connection   topicConnection,
+                                                         OMRSAuditLog auditLog,
+                                                         String       accessServiceName,
+                                                         String       methodName) throws OMAGConfigurationErrorException
+    {
+        try
+        {
+            ConnectorBroker connectorBroker = new ConnectorBroker();
+            Connector       connector       = connectorBroker.getConnector(topicConnection);
+
+            OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector)connector;
+
+            topicConnector.setAuditLog(auditLog);
+
+            return topicConnector;
+        }
+        catch (Throwable   error)
+        {
+            OMAGAuditCode auditCode = OMAGAuditCode.BAD_TOPIC_CONNECTOR;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(methodName,
+                                                                accessServiceName,
+                                                                error.getClass().getName(),
+                                                                error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.BAD_TOPIC_CONNECTOR;
+            String errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage(methodName,
+                                                                     accessServiceName,
+                                                                     error.getClass().getName(),
+                                                                     error.getMessage());
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
+        }
+
+    }
+
 }

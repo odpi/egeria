@@ -30,18 +30,24 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
      * @param supportedZones list of zones that AssetOwner is allowed to serve Assets from.
      * @param defaultZones list of zones that AssetOwner sets up in new Asset instances.
      * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetOwnerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                       List<String>            supportedZones,
                                       List<String>            defaultZones,
-                                      OMRSAuditLog            auditLog) throws NewInstanceException
+                                      OMRSAuditLog            auditLog,
+                                      String                  localServerUserId,
+                                      int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               supportedZones,
               defaultZones,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         if (repositoryHandler != null)
         {

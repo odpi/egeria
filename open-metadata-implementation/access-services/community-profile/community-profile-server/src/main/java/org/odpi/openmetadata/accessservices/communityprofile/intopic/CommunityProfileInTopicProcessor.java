@@ -36,11 +36,7 @@ public class CommunityProfileInTopicListener implements OMRSTopicListener
                                            OMRSRepositoryValidator repositoryValidator,
                                            String                  componentName)
     {
-        publisher = new CommunityProfilePublisher(communityProfileOutTopic,
-                                                  repositoryConnector,
-                                                  repositoryHelper,
-                                                  repositoryValidator,
-                                                  componentName);
+
     }
 
 

@@ -478,6 +478,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-registration</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>admin-services-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>

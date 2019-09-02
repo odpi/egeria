@@ -8,25 +8,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>asset-catalog</artifactId>
+        <artifactId>admin-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Asset Catalog OMAS Server-side</name>
+
+    <name>Administration Services Registration</name>
     <description>
-        Server-side support for the Asset Catalog Open Metadata Access Service (OMAS).
+        Provides the ability for services within the OMAG Server Platform to register with the admin services.
     </description>
 
-    <artifactId>asset-catalog-server</artifactId>
+    <artifactId>admin-services-registration</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>asset-catalog-api</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
@@ -34,13 +31,19 @@
         </dependency>
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-registration</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>
