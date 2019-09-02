@@ -49,7 +49,7 @@ public class AccessServiceEventHeaderTest
 
 
     /**
-     * Test that hashcode ans equals are working.
+     * Test that hashcode and equals are working.
      */
     @Test public void testHashCode()
     {

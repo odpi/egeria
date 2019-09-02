@@ -3,14 +3,14 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 /**
- * MockAccessServiceEventHeader provides a concrete class to test the access service's outbound event
+ * MockAccessServiceOutboundEvent provides a concrete class to test the access service's outbound event
  */
-public class MockAccessServiceEventHeader extends CommunityProfileEventHeader
+public class MockAccessServiceOutboundEvent extends CommunityProfileOutboundEvent
 {
     /**
      * Default constructor
      */
-    public MockAccessServiceEventHeader()
+    public MockAccessServiceOutboundEvent()
     {
         super();
     }
@@ -21,7 +21,7 @@ public class MockAccessServiceEventHeader extends CommunityProfileEventHeader
      *
      * @param template object to clone
      */
-    public MockAccessServiceEventHeader(MockAccessServiceEventHeader template)
+    public MockAccessServiceOutboundEvent(MockAccessServiceOutboundEvent template)
     {
         super(template);
     }
