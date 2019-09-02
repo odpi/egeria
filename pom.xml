@@ -152,6 +152,7 @@
         <javax-persistence.version>2.2</javax-persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <gaian.version>2.1.8</gaian.version>
+        <avro.version>1.9.1</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
@@ -243,6 +244,13 @@
                 <artifactId>gaian</artifactId>
                 <scope>provided</scope>
                 <version>${gaian.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <scope>provided</scope>
+                <version>${avro.version}</version>
             </dependency>
 
             <dependency>
@@ -1361,6 +1369,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>structured-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>avro-file-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
