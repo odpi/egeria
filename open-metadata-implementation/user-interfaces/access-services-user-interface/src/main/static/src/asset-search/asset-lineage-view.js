@@ -25,8 +25,9 @@ class AssetLineageView extends PolymerElement {
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
     <vaadin-radio-group id ="radioUsecases" class="select-option-group" name="radio-group" value="ultimateSource"  role="radiogroup" >
-      <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio" >Ultimate Source</vaadin-radio-button>
+      <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio">Ultimate Source</vaadin-radio-button>
       <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
+      <vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>
     </vaadin-radio-group>
           
     <div class="container" id="container">
@@ -115,6 +116,12 @@ class AssetLineageView extends PolymerElement {
           this.$.tokenAjax._go();
       }
 
+      _ultimateDestination(guid){
+          this.$.visgraph.options.groups = this.groups;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax._go();
+      }
+
     _usecaseChanged(value) {
         switch (value) {
             case 'ultimateSource':
@@ -122,6 +129,9 @@ class AssetLineageView extends PolymerElement {
                 break;
             case 'endToEnd':
                 this._endToEndLineage(this.guid);
+                break;
+            case 'ultimateDestination':
+                this._ultimateDestination(this.guid);
                 break;
         }
     }

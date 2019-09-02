@@ -53,11 +53,24 @@ public class OpenLineageController {
         }
         return exportedGraph;
     }
+
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
     public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.getEndToEndLineage(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
+    public Map<String, Object> ultimateDestination(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getUltimateDestination(userId, scope, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
