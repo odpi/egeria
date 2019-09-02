@@ -2151,12 +2151,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             EntityNotDeletedException,
             UserNotAuthorizedException
     {
-        final String methodName = "restoreEntity";
+        final String methodName    = "restoreEntity";
+        final String parameterName = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        super.manageInstanceParameterValidation(userId, deletedEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, deletedEntityGUID, parameterName, methodName);
 
         /*
          * Locate entity
@@ -2252,12 +2253,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             RelationshipNotDeletedException,
             UserNotAuthorizedException
     {
-        final String  methodName = "restoreRelationship";
+        final String methodName    = "restoreRelationship";
+        final String parameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship
