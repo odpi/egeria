@@ -166,7 +166,7 @@ public enum StructuredFileConnectorErrorCode
     @Override
     public String toString()
     {
-        return "AssetConsumerErrorCode{" +
+        return "StructuredFileConnectorErrorCode{" +
                 "httpErrorCode=" + httpErrorCode +
                 ", errorMessageId='" + errorMessageId + '\'' +
                 ", errorMessage='" + errorMessage + '\'' +
