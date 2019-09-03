@@ -158,6 +158,7 @@
         <plexus.version>3.2.0</plexus.version>
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
+        <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -395,6 +396,13 @@
             <dependency>
                 <groupId>org.apache.tinkerpop</groupId>
                 <artifactId>tinkergraph-gremlin</artifactId>
+                <scope>compile</scope>
+                <version>${tinkergraph.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers-common</artifactId>
                 <scope>compile</scope>
                 <version>${tinkergraph.version}</version>
             </dependency>
