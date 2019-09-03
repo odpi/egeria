@@ -28,6 +28,7 @@ class AssetLineageView extends PolymerElement {
       <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio">Ultimate Source</vaadin-radio-button>
       <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
       <vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>
+      <vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>
     </vaadin-radio-group>
           
     <div class="container" id="container">
@@ -122,6 +123,12 @@ class AssetLineageView extends PolymerElement {
           this.$.tokenAjax._go();
       }
 
+      _glossaryLineage(guid){
+          this.$.visgraph.options.groups = this.groups;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=COLUMNVIEW';
+          this.$.tokenAjax._go();
+      }
+
     _usecaseChanged(value) {
         switch (value) {
             case 'ultimateSource':
@@ -132,6 +139,9 @@ class AssetLineageView extends PolymerElement {
                 break;
             case 'ultimateDestination':
                 this._ultimateDestination(this.guid);
+                break;
+            case 'glossaryLineage':
+                this._glossaryLineage(this.guid);
                 break;
         }
     }

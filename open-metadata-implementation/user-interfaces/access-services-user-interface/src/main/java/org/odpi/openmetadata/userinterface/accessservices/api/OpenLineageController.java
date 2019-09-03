@@ -78,6 +78,18 @@ public class OpenLineageController {
         return exportedGraph;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
+    public Map<String, Object> glossaryLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getGlossaryLineage(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
     //TODO use global exception handler
     private void handleException(Exception e){
         if(e instanceof InvalidParameterException){
