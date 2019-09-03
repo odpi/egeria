@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 # Egeria Meeting 28th-30th August 2019 
 
 ### Attendees
@@ -110,3 +112,16 @@
   * Add java doc as coding quality rules 
 * Discovery Service Use Case for ING Wholesale Banking Advanced Analytics   
 * Feedback Session: how can we build a better Egeria Community
+  * Q&A session / Frequently Asked Questions
+  * Simple Business Case for Egeria
+  * Regular issue call that is open for anyone
+  * Projects / issues for all work in progress (Better overview of what is being developed)
+  * Improve Egeria Blog Space
+  * Better Documentation
+  * Egeria for dummies 
+  * Newsletter
+  * Fast & Easy run demos
+  * Simple / Easy video introduction
+  * Egeria Hoodies
+  * Better web presence (Google Search Result, Wiki page, etc)
+  * Better Egeria website design
