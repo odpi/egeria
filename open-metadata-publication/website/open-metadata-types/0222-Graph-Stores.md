@@ -3,7 +3,7 @@
 
 # 0222 Graph Stores
 
-Graph stores describe a type of data store that has its content organized as a graph.
+Graph stores describe a type of data store that has its content organized as a graphName.
 
 ![UML](0222-Graph-Stores.png)
 

@@ -3,17 +3,17 @@
 
 # Graph Repository
 
-The Graph Repository provides a local repository that uses a graph store as its persistence store.
+The Graph Repository provides a local repository that uses a graphName store as its persistence store.
 
 ## Configuration
-To configure an OMAG server to use the Graph Repository, set the repository-mode to 'local-graph-repository'. For example:
+To configure an OMAG server to use the Graph Repository, set the repository-mode to 'local-graphName-repository'. For example:
 ```
-HTTP POST <serverURLRoot>/open-metadata/admin-services/users/<userName>/servers/<serverName>/local-repository/mode/local-graph-repository
+HTTP POST <serverURLRoot>/open-metadata/admin-services/users/<userName>/servers/<serverName>/local-repository/mode/local-graphName-repository
 ```
 Replace the <serverURLRoot>, <userName> and <serverName> with the values appropriate for the server you are configuring.
 
 ## Using the Graph Repository
-The interface to the graph repository is the OMRS MetadataCollection API. The graph repository supports almost all of the MetadataCollection API apart from historical queries and undo.
+The interface to the graphName repository is the OMRS MetadataCollection API. The graphName repository supports almost all of the MetadataCollection API apart from historical queries and undo.
 
 ## Using the find methods
 The find methods (listed below) use regular expression (regexp) syntax. They are intended for retrieval of specific entities or relationships and the regexp is always matched to the whole of the property value or classification name.
@@ -37,7 +37,7 @@ Similarly, to find an entity with a classification with name "coco-classificatio
 
 
 ## Under the hood
-Internally, the Graph Repository uses JanusGraph to create a graph database. The JanusGraph graph database and graph are automatically created and the graph schema and search indexes are automatically configured.
+Internally, the Graph Repository uses JanusGraph to create a graphName database. The JanusGraph graphName database and graphName are automatically created and the graphName schema and search indexes are automatically configured.
 
 The Graph Repository configures JanusGraph to use the berkeley embedded database and Lucene search indexes.
 

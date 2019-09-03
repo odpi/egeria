@@ -10,9 +10,9 @@ out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage serv
 data format in order to optimize query performance.
 
 In essence there are 3 kinds of graphs:
-- ***buffer graph*** -  used to store current lineage in the Open Metadata types
-- ***current graph*** - stores current lineage in graph database in the format optimimized for lineage
-- ***historic graph*** -  stores historic lineage in graph database in the format optimimized for lineage
+- ***buffer graphName*** -  used to store current lineage in the Open Metadata types
+- ***current graphName*** - stores current lineage in graphName database in the format optimimized for lineage
+- ***historic graphName*** -  stores historic lineage in graphName database in the format optimimized for lineage
 
 
 The Open Lineage Services data format consists of the following nodes (node properties included):

@@ -7,10 +7,10 @@
 An open metadata instance describes a single element of metadata.
 There are two types of metadata instances in open metadata:
 
-* **Entities** - these are the nodes (vertices) in the metadata graph.  They typically describe concepts, people,
+* **Entities** - these are the nodes (vertices) in the metadata graphName.  They typically describe concepts, people,
 places, things.
 
-* **Relationships** - these are links (edges) in the metadata graph that show how the entities are related.
+* **Relationships** - these are links (edges) in the metadata graphName that show how the entities are related.
 
 Entities can also be decorated with **classifications**.  These describe additional attributes of an entity
 and can be used to identify entities that are similar in a specific aspect.

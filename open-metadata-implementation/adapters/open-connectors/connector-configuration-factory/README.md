@@ -13,8 +13,8 @@ This includes:
 * A connection for the [default audit log](../repository-services-connectors/audit-log-connectors/README.md) called _serverName_.auditlog.
 * A connection for the [open metadata types archive file](../repository-services-connectors/open-metadata-archive-connectors/README.md) called OpenMetadataTypes.json
 * A connection for the [default registry store](../repository-services-connectors/cohort-registry-store-connectors/README.md) called _serverName_.cohortName.registrystore.
-* A connection for the [graph open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md)
-* A connection for the [graph repository event mapper connector](../repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector/README.md).
+* A connection for the [graphName open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/graphName-repository-connector/README.md)
+* A connection for the [graphName repository event mapper connector](../repository-services-connectors/open-metadata-collection-store-connectors/graphName-repository-connector/README.md).
 * A connection for the [in memory open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector/README.md)
 * A connection for the [remote open metadata repository connector](../repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector/README.md)
 * A connection for an [event bus connector](../event-bus-connectors/README.md)
