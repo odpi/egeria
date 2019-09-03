@@ -26,7 +26,7 @@
     <artifactId>open-metadata-collection-store-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>graphName-repository-connector</module>
+        <module>graph-repository-connector</module>
         <module>inmemory-repository-connector</module>
         <module>omrs-rest-repository-connector</module>
     </modules>

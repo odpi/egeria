@@ -26,7 +26,7 @@ public enum OpenLineageErrorCode {
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
     CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-004",
-            "GraphName cannot be opened with that configuration",
+            "Graph cannot be opened with that configuration",
             "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
             "The system was unable to open the graph repository graph database " +
                     "Please check that the graph database exists and is not in use by another process."),
@@ -67,7 +67,7 @@ public enum OpenLineageErrorCode {
             "The system was unable to perform the relationship mapping request.",
             "Correct the caller's code and retry the request."),
     BUFFER_GRAPH_NOT_STARTED( "OPEN-LINEAGE-SERVICES-014 ",
-            "The attempt to run the job to retrieve entities from the buffer GraphName failed",
+            "The attempt to run the job to retrieve entities from the buffer Graph failed",
             "The system was unable to retrieve the entities for copying to the main graph.",
             "Correct the caller's code and retry the request.");
 

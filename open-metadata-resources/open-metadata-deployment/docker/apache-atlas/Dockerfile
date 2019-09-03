@@ -29,7 +29,7 @@ COPY --from=build --chown=atlas:atlas /opt/atlas-bin/ /opt/apache/atlas/
 USER atlas:atlas
 
 WORKDIR /opt/apache/atlas
-RUN sed -i "s|^atlas.graphName.storage.lock.wait-time=10000|atlas.graphName.storage.lock.wait-time=200|g" conf/atlas-application.properties && \
+RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=200|g" conf/atlas-application.properties && \
     echo "atlas.notification.relationships.enabled=true" >> conf/atlas-application.properties && \
     echo "atlas.kafka.listeners=PLAINTEXT://:9027" >> conf/atlas-application.properties && \
     echo "atlas.kafka.advertised.listeners=PLAINTEXT://\${sys:kafka.advertised.hostname}:9027" >> conf/atlas-application.properties

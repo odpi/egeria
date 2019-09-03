@@ -18,8 +18,8 @@ help developers understand more about building these connectors.
 
 Below are some pre-built connectors from Egeria:
 
-* **[graphName-repository-connector](graphName-repository-connector)** -
-provides a local repository that uses a graphName store as its persistence store. [ASPIRATIONAL!]
+* **[graph-repository-connector](graph-repository-connector)** -
+provides a local repository that uses a graph store as its persistence store. [ASPIRATIONAL!]
 
 * **[inmemory-repository-connector](inmemory-repository-connector)** -
 provides a local repository that is entirely in memory.  It is useful for

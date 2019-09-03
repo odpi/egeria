@@ -223,7 +223,7 @@ $ git log
 View recent changes in a prettier way:
 
 ```bash
-$ git log --pretty=format:"%h %ad | %s%d [%an]" --graphName --date=short
+$ git log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short
 ```
 
 Take a fix you have pushed to a different branch (perhaps a top-level pom change, or something else you need) and apply it to your current branch:

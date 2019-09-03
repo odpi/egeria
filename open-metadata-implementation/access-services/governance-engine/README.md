@@ -8,12 +8,12 @@ such as Apache Ranger.  This API simplifies the internal models and structures o
 the open metadata type model and related structure for the consumers.
 
 As an example, Ranger needs to know how a particular entity is classified so that the
-classification can be used within a policy (rule). Apache Atlas has a complex graphName-oriented model,
+classification can be used within a policy (rule). Apache Atlas has a complex graph-oriented model,
 within which classifications can be multi level - for example a column may be classified
 as `employee_salary` whilst `employee_salary` itself may be classified as `SPI`.
 Ranger however just needs to know that the column is SPI, not how we got there.
 So we convert this complex model into something much more 
-operationally-focused and deliver that over the API. The implementation will follow this graphName,
+operationally-focused and deliver that over the API. The implementation will follow this graph,
 and build up a list of all tags that are appropriate to use. Note that in the case
 of Ranger it is actually the tagsync process that will call the
 Governance Engine OMAS for this classification information

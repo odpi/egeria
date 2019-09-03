@@ -52,8 +52,8 @@ This connector runs as the local repository in an OMAG Server.
 This connector provides a simple in-memory repository for testing/demos or
 small-scale environments where metadata is being managed remotely and cached locally.
 
-* **[Graph OMRS Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graphName-repository-connector)** -
-This connector is a placeholder for an open graphName repository implementation such as
+* **[Graph OMRS Repository Connector](../../../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)** -
+This connector is a placeholder for an open graph repository implementation such as
 with JanusGraph.
 
 

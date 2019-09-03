@@ -40,9 +40,9 @@ the Open Lineage Services client and by its REST API, for example by a lineage G
 out by the Asset Lineage Omas are in the Open Metadata format, Open Lineage services store lineage data in a very basic
 data format in order to optimize query performance.
 In essence there are 3 kinds of graphs:
-  * ***buffer graphName*** -  used to store current lineage in the Open Metadata types
-  * ***current graphName*** - stores current lineage in graphName database in the format optimimized for lineage
-  * ***historic graphName*** -  stores historic lineage in graphName database in the format optimimized for lineage
+  * ***buffer graph*** -  used to store current lineage in the Open Metadata types
+  * ***current graph*** - stores current lineage in graph database in the format optimimized for lineage
+  * ***historic graph*** -  stores historic lineage in graph database in the format optimimized for lineage
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

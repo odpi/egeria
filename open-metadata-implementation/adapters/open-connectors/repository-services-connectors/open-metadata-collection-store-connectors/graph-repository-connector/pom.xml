@@ -17,10 +17,10 @@
 
     <name>Graph Repository Connector</name>
     <description>
-        Graph Repository provides a local repository that uses a graphName store as its persistence store.
+        Graph Repository provides a local repository that uses a graph store as its persistence store.
     </description>
 
-    <artifactId>graphName-repository-connector</artifactId>
+    <artifactId>graph-repository-connector</artifactId>
 
     <properties>
         <janus.version>0.3.1</janus.version>

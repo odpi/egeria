@@ -15,13 +15,13 @@ A local repository is optional.
 The administration services can be used to enable one of the built-in
 local repositories.
 
-#### Enable the graphName repository
+#### Enable the graph repository
 
-This command is a placeholder for an Egeria graphName repository.
+This command is a placeholder for an Egeria graph repository.
 
 ```
 
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graphName-repository
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository
 
 ```
 

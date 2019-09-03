@@ -3,7 +3,7 @@
 
 # 0533 Graph Schemas
 
-Model 0533 describes the schema for a property graphName.
+Model 0533 describes the schema for a property graph.
 
 ![UML](0533-Graph-Schemas.png)
 

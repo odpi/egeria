@@ -69,7 +69,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 ### Asset Lineage (Jing & Guy)
 
 - use case review
-- 2 stores, event sourcing possibly to derive 1 graphName from the other.
+- 2 stores, event sourcing possibly to derive 1 graph from the other.
 
 #### Whiteboard Discussion on Process, Ports, and Wires
 
@@ -129,7 +129,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 - Phase 1: done and now usable.
 - Question: nodes and lines, following relationships through terms.
 - Classifications search find.
-- derived graphName using spine object attributes.
+- derived graph using spine object attributes.
 
 ### Event Mapper & Virtualizer (Yuefeng)
 
