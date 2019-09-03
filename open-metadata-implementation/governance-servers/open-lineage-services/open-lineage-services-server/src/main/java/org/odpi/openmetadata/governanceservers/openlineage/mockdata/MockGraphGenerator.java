@@ -50,7 +50,7 @@ public class MockGraphGenerator {
         this.numberFlows = 1;
         this.processesPerFlow = 5;
         this.columnsPerTable = 5;
-        this.hasCycles = false;  //Only works correctly when numberFlows=1 !
+        this.hasCycles = true;  //Only works correctly when numberFlows=1 !
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;

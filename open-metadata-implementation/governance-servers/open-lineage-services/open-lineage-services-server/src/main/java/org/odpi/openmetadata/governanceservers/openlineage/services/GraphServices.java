@@ -29,6 +29,7 @@ import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.simplePath;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
@@ -169,7 +170,8 @@ public class GraphServices {
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV()).dedup().toList();
+                repeat(simplePath().times(10).inE(edgeLabel).outV()).
+                dedup().toList();
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Graph responseGraph = TinkerGraph.open();
@@ -203,7 +205,8 @@ public class GraphServices {
         String edgeLabel = getEdgeLabel(scope);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV()).dedup().toList();
+                repeat(outE(edgeLabel).inV()).
+                dedup().toList();
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
