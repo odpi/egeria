@@ -32,6 +32,7 @@ public class MockGraphGenerator {
     private int columnsPerTable;
     private int numberProcesses;
     private int numberFlows;
+    private boolean hasCycles;
 
 
     public MockGraphGenerator() {
@@ -49,10 +50,15 @@ public class MockGraphGenerator {
         this.numberFlows = 1;
         this.processesPerFlow = 5;
         this.columnsPerTable = 5;
+        this.hasCycles = false;  //Only works correctly when numberFlows=1 !
 
         this.tablesPerFlow = processesPerFlow + 1;
         this.numberTables = numberFlows * tablesPerFlow;
-        this.numberProcesses = numberFlows * processesPerFlow;
+        if (hasCycles)
+            this.numberProcesses = numberFlows * processesPerFlow + 1;
+        else
+            this.numberProcesses = numberFlows * processesPerFlow;
+
     }
 
     public void generate() {
@@ -61,6 +67,7 @@ public class MockGraphGenerator {
             log.info("Generated mock graph");
         } catch (Exception e) {
             log.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -130,6 +137,28 @@ public class MockGraphGenerator {
 
                 final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex);
                 final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * tablesPerFlow + tableIndex + 1);
+
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
+                addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);
+
+                //For each column in a table
+                for (int columnIndex = 0; columnIndex < columnsPerTable; columnIndex++) {
+
+                    final Vertex column1 = columnsOfTable1.get(columnIndex);
+                    final Vertex column2 = columnsOfTable2.get(columnIndex);
+
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, column1, process);
+                    addEdge(EDGE_LABEL_COLUMN_AND_PROCESS, process, column2);
+                }
+            }
+            if (hasCycles) {
+                final Vertex process = processNodes.get(flowIndex * processesPerFlow + tablesPerFlow -1);
+
+                final Vertex table1 = tableNodes.get(flowIndex * tablesPerFlow + tablesPerFlow -1);
+                final Vertex table2 = tableNodes.get(flowIndex * tablesPerFlow + 0);
+
+                final List<Vertex> columnsOfTable1 = columnNodes.get(flowIndex * tablesPerFlow + tablesPerFlow -1) ;
+                final List<Vertex> columnsOfTable2 = columnNodes.get(flowIndex * 0);
 
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, table1, process);
                 addEdge(EDGE_LABEL_TABLE_AND_PROCESS, process, table2);

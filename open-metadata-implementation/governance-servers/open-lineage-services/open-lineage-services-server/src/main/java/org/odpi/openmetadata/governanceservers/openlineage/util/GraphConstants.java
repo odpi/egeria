@@ -75,7 +75,7 @@ public class GraphConstants {
 
     //Column
 //    public static final String PROPERTY_KEY_DISPLAY_NAME = "displayName";
-    public static final String PROPERTY_KEY_HOST_DISPLAY_NAME = "displayname";
+    public static final String PROPERTY_KEY_HOST_DISPLAY_NAME = "hostDisplayname";
     public static final String PROPERTY_KEY_DATABASE_DISPLAY_NAME = "databaseDisplayname";
     public static final String PROPERTY_KEY_SCHEMA_DISPLAY_NAME = "schemaDisplayname";
     public static final String PROPERTY_KEY_TABLE_DISPLAY_NAME = "tableDisplayname";
