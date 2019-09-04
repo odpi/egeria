@@ -34,6 +34,7 @@ class PropertyPane extends PolymerElement {
                  <property-widget type="{{item.type}}"
                      name ="{{item.name}}"
                      value ="{{item.value}}"
+                     component="{{component}}"
                      guid = "{{item.guid}}"
                      readonly = "{{item.readonly}}"
                      on-change="_onPropertyWidgetChange"
@@ -240,9 +241,13 @@ class PropertyPane extends PolymerElement {
                    composed: true,
                    detail: {greeted: "Bye!", status: status}}));
            }else{
-               console.debug('Unknown error!');
+                this.dispatchEvent(new CustomEvent('rest-error-event', {
+                                 bubbles: true,
+                                 composed: true,
+                                 detail: evt.detail
+                              }));
            }
-     }   
+  }
 
 }
 
