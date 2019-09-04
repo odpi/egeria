@@ -404,7 +404,7 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
                 <scope>compile</scope>
-                <version>${tinkergraph.version}</version>
+                <version>${lucene-analyzers-common.version}</version>
             </dependency>
 
             <dependency>
