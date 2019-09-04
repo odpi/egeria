@@ -21,12 +21,8 @@
     </description>
 
     <artifactId>open-lineage-services-server</artifactId>
-    <properties>
-        <janusgraph.version>0.3.1</janusgraph.version>
-        <tinkerpop.version>3.4.2</tinkerpop.version>
-    </properties>
-    <dependencies>
 
+    <dependencies>
 
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -92,7 +88,6 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-common</artifactId>
-            <version>7.0.0</version>
         </dependency>
 
     </dependencies>

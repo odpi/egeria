@@ -66,13 +66,13 @@ public class OpenLineageService {
 
 
     public Map<String, Object> getUltimateDestination(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATEDESTINATION, graph, guid);
+        String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATEDESTINATION, graphName, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getGlossaryLineage(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.GLOSSARY, graph, guid);
+        String response = openLineageClient.queryLineage(user, scope, Query.GLOSSARY, graphName, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
