@@ -13,16 +13,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * NewFileAssetRequestBody carries the parameters for created a new CSV file asset.
+ * NewCSVFileAssetRequestBody carries the parameters for creating a new CSV file asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
+public class NewCSVFileAssetRequestBody extends NewFileAssetRequestBody
 {
-    private String       displayName        = null;
-    private String       description        = null;
-    private String       fullPath           = null;
     private List<String> columnHeaders      = null;
     private Character    delimiterCharacter = null;
     private Character    quoteCharacter     = null;
@@ -31,7 +28,7 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
     /**
      * Default constructor
      */
-    public NewFileAssetRequestBody()
+    public NewCSVFileAssetRequestBody()
     {
     }
 
@@ -41,80 +38,16 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
      *
      * @param template object to copy
      */
-    public NewFileAssetRequestBody(NewFileAssetRequestBody template)
+    public NewCSVFileAssetRequestBody(NewCSVFileAssetRequestBody template)
     {
         super(template);
 
         if (template != null)
         {
-            displayName = template.getDisplayName();
+            columnHeaders = template.getColumnHeaders();
+            delimiterCharacter = template.getDelimiterCharacter();
+            quoteCharacter = template.getQuoteCharacter();
         }
-    }
-
-
-    /**
-     * Return the display name of the file
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name of the file.
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description of the file.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description of the file.
-     *
-     * @param description string description
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the full path of the file - this should be unique.
-     *
-     * @return string name
-     */
-    public String getFullPath()
-    {
-        return fullPath;
-    }
-
-
-    /**
-     * Set up the full path of the file - this should be unique.
-     *
-     * @param fullPath string name
-     */
-    public void setFullPath(String fullPath)
-    {
-        this.fullPath = fullPath;
     }
 
 
@@ -196,10 +129,10 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "NewFileAssetRequestBody{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", fullPath='" + fullPath + '\'' +
+        return "NewCSVFileAssetRequestBody{" +
+                "displayName='" + getDisplayName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", fullPath='" + getFullPath() + '\'' +
                 ", columnHeaders=" + columnHeaders +
                 ", delimiterCharacter=" + delimiterCharacter +
                 ", quoteCharacter=" + quoteCharacter +
@@ -224,11 +157,8 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
         {
             return false;
         }
-        NewFileAssetRequestBody that = (NewFileAssetRequestBody) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getFullPath(), that.getFullPath()) &&
-                Objects.equals(getColumnHeaders(), that.getColumnHeaders()) &&
+        NewCSVFileAssetRequestBody that = (NewCSVFileAssetRequestBody) objectToCompare;
+        return  Objects.equals(getColumnHeaders(), that.getColumnHeaders()) &&
                 Objects.equals(getDelimiterCharacter(), that.getDelimiterCharacter()) &&
                 Objects.equals(getQuoteCharacter(), that.getQuoteCharacter());
     }
@@ -243,7 +173,6 @@ public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
     public int hashCode()
     {
         return Objects.hash(getDisplayName(), getDescription(), getFullPath(), getColumnHeaders(),
-                            getDelimiterCharacter(),
-                            getQuoteCharacter());
+                            getDelimiterCharacter(), getQuoteCharacter());
     }
 }

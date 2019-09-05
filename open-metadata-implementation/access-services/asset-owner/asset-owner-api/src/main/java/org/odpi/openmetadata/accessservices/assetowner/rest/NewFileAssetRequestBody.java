@@ -2,32 +2,39 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.rest;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.ReferenceableRequestBody;
+import com.fasterxml.jackson.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ZoneRequestBody carries the parameters for creating a new zone.
+ * NewFileAssetRequestBody carries the parameters for creating a new file asset.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneRequestBody extends ReferenceableRequestBody
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+                      @JsonSubTypes.Type(value = NewCSVFileAssetRequestBody.class, name = "NewCSVFileAssetRequestBody")
+
+              })
+public class NewFileAssetRequestBody extends AssetOwnerOMASAPIRequestBody
 {
     private String       displayName        = null;
     private String       description        = null;
-    private String       criteria           = null;
+    private String       fullPath           = null;
+
 
     /**
      * Default constructor
      */
-    public ZoneRequestBody()
+    public NewFileAssetRequestBody()
     {
     }
 
@@ -37,7 +44,7 @@ public class ZoneRequestBody extends ReferenceableRequestBody
      *
      * @param template object to copy
      */
-    public ZoneRequestBody(ZoneRequestBody template)
+    public NewFileAssetRequestBody(NewFileAssetRequestBody template)
     {
         super(template);
 
@@ -45,7 +52,7 @@ public class ZoneRequestBody extends ReferenceableRequestBody
         {
             displayName = template.getDisplayName();
             description = template.getDescription();
-            criteria = template.getCriteria();
+            fullPath = template.getFullPath();
         }
     }
 
@@ -99,20 +106,20 @@ public class ZoneRequestBody extends ReferenceableRequestBody
      *
      * @return string name
      */
-    public String getCriteria()
+    public String getFullPath()
     {
-        return criteria;
+        return fullPath;
     }
 
 
     /**
      * Set up the full path of the file - this should be unique.
      *
-     * @param criteria string name
+     * @param fullPath string name
      */
-    public void setCriteria(String criteria)
+    public void setFullPath(String fullPath)
     {
-        this.criteria = criteria;
+        this.fullPath = fullPath;
     }
 
 
@@ -124,16 +131,10 @@ public class ZoneRequestBody extends ReferenceableRequestBody
     @Override
     public String toString()
     {
-        return "ZoneRequestBody{" +
+        return "NewFileAssetRequestBody{" +
                 "displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +
-                ", criteria='" + criteria + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", classifications=" + getClassifications() +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", meanings=" + getMeanings() +
-                ", extendedProperties=" + getExtendedProperties() +
+                ", fullPath='" + fullPath +
                 '}';
     }
 
@@ -155,16 +156,11 @@ public class ZoneRequestBody extends ReferenceableRequestBody
         {
             return false;
         }
-        if (!super.equals(objectToCompare))
-        {
-            return false;
-        }
-        ZoneRequestBody that = (ZoneRequestBody) objectToCompare;
+        NewFileAssetRequestBody that = (NewFileAssetRequestBody) objectToCompare;
         return Objects.equals(getDisplayName(), that.getDisplayName()) &&
                 Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getCriteria(), that.getCriteria());
+                Objects.equals(getFullPath(), that.getFullPath());
     }
-
 
 
     /**
@@ -175,6 +171,6 @@ public class ZoneRequestBody extends ReferenceableRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCriteria());
+        return Objects.hash(getDisplayName(), getDescription(), getFullPath());
     }
 }

@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
 
 import java.util.Objects;
 
@@ -22,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneResponse extends AssetOwnerOMASAPIResponse
+public class FolderResponse extends AssetOwnerOMASAPIResponse
 {
     private GovernanceZone governanceZone = null;
 
@@ -30,7 +29,7 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
     /**
      * Default constructor
      */
-    public ZoneResponse()
+    public FolderResponse()
     {
         super();
     }
@@ -41,7 +40,7 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ZoneResponse(ZoneResponse template)
+    public FolderResponse(FolderResponse template)
     {
         super(template);
 
@@ -107,7 +106,7 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ZoneResponse))
+        if (!(objectToCompare instanceof FolderResponse))
         {
             return false;
         }
@@ -115,7 +114,7 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
         {
             return false;
         }
-        ZoneResponse that = (ZoneResponse) objectToCompare;
+        FolderResponse that = (FolderResponse) objectToCompare;
         return Objects.equals(governanceZone, that.governanceZone);
     }
 

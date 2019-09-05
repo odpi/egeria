@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
+import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
 import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
@@ -22,6 +23,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
     private GovernanceZoneHandler governanceZoneHandler;
+    private FileSystemHandler     fileSystemHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -56,6 +58,12 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                                                    invalidParameterHandler,
                                                                    repositoryHandler,
                                                                    repositoryHelper);
+
+            this.fileSystemHandler = new FileSystemHandler(serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper);
         }
         else
         {
@@ -83,5 +91,18 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     GovernanceZoneHandler getGovernanceZoneHandler()
     {
         return governanceZoneHandler;
+    }
+
+
+
+
+    /**
+     * Return the handler for file system requests.
+     *
+     * @return handler object
+     */
+    FileSystemHandler getFileSystemHandler()
+    {
+        return fileSystemHandler;
     }
 }

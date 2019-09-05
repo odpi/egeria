@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
-import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingCSVFileInterface;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingAvroFileInterface;
+import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -11,12 +11,15 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
-import java.util.List;
 
 /**
- * CSVFileAssetOwner provides specialist methods for working with CSV files.
+ * AvroFileAssetOwner provides specialist methods for working with Avro files.
+ * This includes accessing the file and attempting to read the schema to catalog
+ * its internal structure.  The file is opened client-side so that the metadata server does not
+ * need access to the file contents.
+ *
  */
-public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
+public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
 {
     private String               serverName;               /* Initialized in constructor */
     private String               omasServerURL;            /* Initialized in constructor */
@@ -34,8 +37,8 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public CSVFileAssetOwner(String     serverName,
-                             String     omasServerURL) throws InvalidParameterException
+    public AvroFileAssetOwner(String     serverName,
+                              String     omasServerURL) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
@@ -58,10 +61,10 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public CSVFileAssetOwner(String     serverName,
-                             String     omasServerURL,
-                             String     userId,
-                             String     password) throws InvalidParameterException
+    public AvroFileAssetOwner(String     serverName,
+                              String     omasServerURL,
+                              String     userId,
+                              String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
@@ -73,77 +76,68 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
     }
 
 
-    /**
-     * Add a simple asset description linked to a connection object for a CSV file.
-     *
-     * @param userId calling user (assumed to be the owner)
-     * @param displayName display name for the file in the catalog
-     * @param description description of the file in the catalog
-     * @param fullPath full path of the file - used to access the file through the connector
-     *
-     * @return unique identifier (guid) of the asset
-     *
-     * @throws InvalidParameterException full path or userId is null
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    public String  addCSVFileToCatalog(String    userId,
-                                       String    displayName,
-                                       String    description,
-                                       String    fullPath) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+
+    private void addAvroSchemaToCatalog(String    userId,
+                                        String    assetGUID,
+                                        String    fullPath) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        return this.addCSVFileToCatalog(userId,
-                                        displayName,
-                                        description,
-                                        fullPath,
-                                        null,
-                                        null,
-                                        null);
+        // todo
     }
 
 
     /**
-     * Add a simple asset description linked to a connection object for a CSV file.
+     * Ensure the schema associated with an Avro file is correct.
+     *
+     * @param userId calling user
+     * @param assetGUID unique identifier for the Avro file's asset in the catalog
+     *
+     * @throws InvalidParameterException full path or assetId is null
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void refreshAvroSchemaInCatalog(String    userId,
+                                           String    assetGUID) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException
+    {
+        // todo
+    }
+
+
+    /**
+     * Add a simple asset description linked to a connection object for a Avro file.
      *
      * @param userId calling user (assumed to be the owner)
      * @param displayName display name for the file in the catalog
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
-     * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
-     * @param delimiterCharacter what is the delimiter character - null for default of comma
-     * @param quoteCharacter what is the character to group a field that contains delimiter characters
+     *
      * @return unique identifier (guid) of the asset
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String  addCSVFileToCatalog(String       userId,
-                                       String       displayName,
-                                       String       description,
-                                       String       fullPath,
-                                       List<String> columnHeaders,
-                                       Character    delimiterCharacter,
-                                       Character    quoteCharacter) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public String  addAvroFileToCatalog(String    userId,
+                                        String    displayName,
+                                        String    description,
+                                        String    fullPath) throws InvalidParameterException,
+                                                                   UserNotAuthorizedException,
+                                                                   PropertyServerException
     {
-        final String   methodName = "addCSVFileToCatalog";
+        final String   methodName = "addAvroFileToCatalog";
         final String   pathParameter = "fullPath";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files/csv";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files/avro";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
 
-        NewCSVFileAssetRequestBody requestBody = new NewCSVFileAssetRequestBody();
+        NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
         requestBody.setDisplayName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);
-        requestBody.setColumnHeaders(columnHeaders);
-        requestBody.setDelimiterCharacter(delimiterCharacter);
-        requestBody.setQuoteCharacter(quoteCharacter);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
                                                                   omasServerURL + urlTemplate,
@@ -155,6 +149,12 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-        return restResult.getGUID();
+        String fileAssetGUID = restResult.getGUID();
+
+        this.addAvroSchemaToCatalog(userId, fileAssetGUID, fullPath);
+
+        return fileAssetGUID;
     }
+
+
 }

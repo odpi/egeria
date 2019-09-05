@@ -6,8 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
-import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
+import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 
 import java.util.Objects;
 
@@ -16,21 +15,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ZoneResponse is the response structure used on the OMAS REST API calls that return the properties
- * for a governance zone.
+ * FileSystemResponse is the response structure used on the OMAS REST API calls that return the properties
+ * for a file system.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ZoneResponse extends AssetOwnerOMASAPIResponse
+public class FileSystemResponse extends AssetOwnerOMASAPIResponse
 {
-    private GovernanceZone governanceZone = null;
+    private FileSystem fileSystem = null;
 
 
     /**
      * Default constructor
      */
-    public ZoneResponse()
+    public FileSystemResponse()
     {
         super();
     }
@@ -41,36 +40,36 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
      *
      * @param template object to copy
      */
-    public ZoneResponse(ZoneResponse template)
+    public FileSystemResponse(FileSystemResponse template)
     {
         super(template);
 
         if (template != null)
         {
-            this.governanceZone = template.getGovernanceZone();
+            this.fileSystem = template.getFileSystem();
         }
     }
 
 
     /**
-     * Return the governanceZone result.
+     * Return the fileSystem result.
      *
      * @return bean
      */
-    public GovernanceZone getGovernanceZone()
+    public FileSystem getFileSystem()
     {
-        return governanceZone;
+        return fileSystem;
     }
 
 
     /**
-     * Set up the governanceZone result.
+     * Set up the fileSystem result.
      *
-     * @param governanceZone - bean
+     * @param fileSystem - bean
      */
-    public void setGovernanceZone(GovernanceZone governanceZone)
+    public void setFileSystem(FileSystem fileSystem)
     {
-        this.governanceZone = governanceZone;
+        this.fileSystem = fileSystem;
     }
 
 
@@ -82,8 +81,8 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ZoneResponse{" +
-                "zone='" + getGovernanceZone() + '\'' +
+        return "FileSystemResponse{" +
+                "fileSystem='" + getFileSystem() + '\'' +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -107,7 +106,7 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
         {
             return true;
         }
-        if (!(objectToCompare instanceof ZoneResponse))
+        if (!(objectToCompare instanceof FileSystemResponse))
         {
             return false;
         }
@@ -115,8 +114,8 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
         {
             return false;
         }
-        ZoneResponse that = (ZoneResponse) objectToCompare;
-        return Objects.equals(governanceZone, that.governanceZone);
+        FileSystemResponse that = (FileSystemResponse) objectToCompare;
+        return Objects.equals(fileSystem, that.fileSystem);
     }
 
 
@@ -128,6 +127,6 @@ public class ZoneResponse extends AssetOwnerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceZone);
+        return Objects.hash(fileSystem);
     }
 }
