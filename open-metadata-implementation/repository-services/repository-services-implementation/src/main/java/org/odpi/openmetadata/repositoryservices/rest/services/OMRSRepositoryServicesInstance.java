@@ -32,6 +32,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      * @param localServerURL URL of the local server
      * @param serviceName name of this service
      * @param auditLog logging destination
+     * @param maxPageSize max number of results to return on single request.
      */
     public OMRSRepositoryServicesInstance(String                       localServerName,
                                           OMRSRepositoryConnector      localRepositoryConnector,
@@ -39,9 +40,10 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
                                           OMRSMetadataHighwayManager   metadataHighwayManager,
                                           String                       localServerURL,
                                           String                       serviceName,
-                                          OMRSAuditLog                 auditLog)
+                                          OMRSAuditLog                 auditLog,
+                                          int                          maxPageSize)
     {
-        super(localServerName, serviceName);
+        super(localServerName, serviceName, maxPageSize);
 
         this.auditLog = auditLog;
         this.localServerURL = localServerURL;

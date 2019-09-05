@@ -463,7 +463,8 @@ public class OMRSOperationalServices
                                                          this.getEnterpriseOMRSRepositoryConnector(OMRSAuditingComponent.REST_SERVICES.getComponentName()),
                                                          metadataHighwayManager,
                                                          localServerURL,
-                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES));
+                                                         auditLog.createNewAuditLog(OMRSAuditingComponent.REST_SERVICES),
+                                                         maxPageSize);
 
         /*
          * The local repository (if configured) has been started while the archives were loaded and the

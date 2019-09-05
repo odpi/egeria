@@ -6,6 +6,9 @@
 Data Store Connectors contain OCF connectors to data stores on different
 data platforms:
 
+* **[avro-file-connector](avro-file-connector)** provides connector to read files
+that have an [Apache Avro](https://avro.apache.org/https://avro.apache.org/) format.
+
 * **[gaian-connector](gaian-connector)** provides a JDBC-style connector to the [Gaian](https://github.com/gaiandb/gaiandb) virtualization
 engine.
 

@@ -17,7 +17,7 @@ public class StructuredFileStoreProvider extends ConnectorProviderBase
 {
     static final String  connectorTypeGUID = "108b85fe-d7b8-45c3-9fb8-742ac4e4fb14";
     static final String  connectorTypeName = "Structured File Store Connector";
-    static final String  connectorTypeDescription = "Connector supports storing of the open metadata cohort registry in a file.";
+    static final String  connectorTypeDescription = "Connector supports reading of structured (CSV) files.";
 
     public static final String  columnNamesProperty = "columnNames";
     public static final String  delimiterCharacterProperty = "delimiterCharacter";
