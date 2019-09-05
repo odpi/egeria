@@ -91,7 +91,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
     }
 
 
-    // verifyTypeDef will always return true because all knowledge of types is delegated to the RCM.
+    // verifyTypeDef will always return result from superclass because all knowledge of types is delegated to the RCM.
     public boolean verifyTypeDef(String  userId,
                                  TypeDef typeDef)
             throws
@@ -104,7 +104,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validate parameters
          */
-        super.verifyTypeDef(userId, typeDef);
+        boolean result = super.verifyTypeDef(userId, typeDef);
 
         TypeDefCategory typeDefCategory = typeDef.getCategory();
         switch (typeDefCategory) {
@@ -122,7 +122,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 break;
         }
 
-        return true;
+        return result;
     }
 
 
@@ -2151,12 +2151,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             EntityNotDeletedException,
             UserNotAuthorizedException
     {
-        final String methodName = "restoreEntity";
+        final String methodName    = "restoreEntity";
+        final String parameterName = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        super.manageInstanceParameterValidation(userId, deletedEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, deletedEntityGUID, parameterName, methodName);
 
         /*
          * Locate entity
@@ -2252,12 +2253,13 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             RelationshipNotDeletedException,
             UserNotAuthorizedException
     {
-        final String  methodName = "restoreRelationship";
+        final String methodName    = "restoreRelationship";
+        final String parameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, parameterName, methodName);
 
         /*
          * Locate relationship

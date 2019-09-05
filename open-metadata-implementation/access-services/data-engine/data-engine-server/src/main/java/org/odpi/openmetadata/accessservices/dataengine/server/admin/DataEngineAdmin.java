@@ -16,7 +16,8 @@ import java.util.List;
  * the Data Engine OMAS.  The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class DataEngineAdmin extends AccessServiceAdmin {
+public class DataEngineAdmin extends AccessServiceAdmin
+{
 
     private OMRSAuditLog auditLog;
     private DataEngineServicesInstance instance;

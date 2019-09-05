@@ -3,12 +3,16 @@
 package org.odpi.openmetadata.repositoryservices.connectors.omrstopic;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Date;
 
 /**
@@ -18,8 +22,11 @@ import java.util.Date;
 public class OMRSTopicListenerBase implements OMRSTopicListener
 {
     private static final Logger log = LoggerFactory.getLogger(OMRSTopicListenerBase.class);
-    
-    private String serviceName;
+
+    private final String   UNKNOWN_EVENT_INSERT = "<Unknown Value>";
+
+    protected String       serviceName;
+    protected OMRSAuditLog auditLog;
 
 
     /**
@@ -34,118 +41,263 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
 
 
     /**
+     * Name of the service that this is listening on behalf of.
+     *
+     * @param serviceName name of service
+     */
+    public OMRSTopicListenerBase(String       serviceName,
+                                 OMRSAuditLog auditLog)
+    {
+        this.serviceName = serviceName;
+        this.auditLog    = auditLog;
+    }
+
+
+    /**
+     * Log an audit log message to record an unexpected exception.  We should never see this message.
+     * It indicates a logic error in the service that threw the exception.
+     *
+     * @param error exception
+     * @param actionDescription calling activity
+     */
+    private void logUnexpectedException(Throwable  error,
+                                        String     actionDescription)
+    {
+        log.error("Unexpected exception from " + actionDescription, error);
+
+        StringWriter stackTrace = new StringWriter();
+        error.printStackTrace(new PrintWriter(stackTrace));
+
+        OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER;
+
+        auditLog.logException(actionDescription,
+                              auditCode.getLogMessageId(),
+                              auditCode.getSeverity(),
+                              auditCode.getFormattedLogMessage(serviceName,
+                                                               error.getClass().getName(),
+                                                               error.getMessage(),
+                                                               stackTrace.toString()),
+                              null,
+                              auditCode.getSystemAction(),
+                              auditCode.getUserAction(),
+                              error);
+    }
+
+
+    /**
+     * A new entity has been created.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param instance                       details of the instance from the event
+     * @param actionDescription              description of overall processing
+     */
+    protected String getInstanceTypeName(String            sourceName,
+                                         String            originatorMetadataCollectionId,
+                                         String            originatorServerName,
+                                         String            originatorServerType,
+                                         String            originatorOrganizationName,
+                                         InstanceHeader    instance,
+                                         String            actionDescription)
+    {
+        String instanceTypeName = null;
+
+        if (instance != null)
+        {
+            InstanceType instanceType = instance.getType();
+
+            if (instanceType != null)
+            {
+                instanceTypeName = instanceType.getTypeDefName();
+            }
+        }
+
+        if (instanceTypeName == null)
+        {
+            String         eventSourceName           = UNKNOWN_EVENT_INSERT;
+            String         eventMetadataCollectionId = UNKNOWN_EVENT_INSERT;
+            String         eventServerName           = UNKNOWN_EVENT_INSERT;
+            String         eventServerType           = UNKNOWN_EVENT_INSERT;
+            String         eventOrgName              = UNKNOWN_EVENT_INSERT;
+            String         eventInstanceString       = UNKNOWN_EVENT_INSERT;
+
+            if (instance != null)
+            {
+                eventInstanceString = instance.toString();
+            }
+
+            if (sourceName != null)
+            {
+                eventSourceName = sourceName;
+            }
+
+            if (originatorMetadataCollectionId != null)
+            {
+                eventMetadataCollectionId = originatorMetadataCollectionId;
+            }
+
+            if (originatorServerName != null)
+            {
+                eventServerName = originatorServerName;
+            }
+
+            if (originatorServerType != null)
+            {
+                eventServerType = originatorServerType;
+            }
+
+            if (originatorOrganizationName != null)
+            {
+                eventOrgName = originatorOrganizationName;
+            }
+
+            OMRSAuditCode auditCode = OMRSAuditCode.BAD_EVENT_INSTANCE;
+
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(eventSourceName,
+                                                                eventServerName,
+                                                                eventServerType,
+                                                                eventOrgName,
+                                                                eventMetadataCollectionId,
+                                                                eventInstanceString),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
+
+        return instanceTypeName;
+    }
+
+
+    /**
      * Method to pass a Registry event received on topic.
      *
      * @param registryEvent inbound event
      */
     public void processRegistryEvent(OMRSRegistryEvent registryEvent)
     {
-        log.debug("Processing registry event: " + registryEvent);
+        final String actionDescription = "processRegistryEvent";
 
-        if (registryEvent == null)
+        try
         {
-            log.debug("Null registry event; ignoring event");
-        }
-        else /* process registry event */
-        {
-            OMRSRegistryEventType registryEventType       = registryEvent.getRegistryEventType();
-            OMRSEventOriginator   registryEventOriginator = registryEvent.getEventOriginator();
+            log.debug("Processing registry event: " + registryEvent);
 
-            if ((registryEventType != null) && (registryEventOriginator != null))
+            if (registryEvent == null)
             {
-                switch (registryEventType)
+                log.debug("Null registry event; ignoring event");
+            }
+            else /* process registry event */
+            {
+                OMRSRegistryEventType registryEventType       = registryEvent.getRegistryEventType();
+                OMRSEventOriginator   registryEventOriginator = registryEvent.getEventOriginator();
+
+                if ((registryEventType != null) && (registryEventOriginator != null))
                 {
-                    case REGISTRATION_EVENT:
-                        this.processRegistrationEvent(serviceName,
-                                                      registryEventOriginator.getMetadataCollectionId(),
-                                                      registryEvent.getMetadataCollectionName(),
-                                                      registryEventOriginator.getServerName(),
-                                                      registryEventOriginator.getServerType(),
-                                                      registryEventOriginator.getOrganizationName(),
-                                                      registryEvent.getRegistrationTimestamp(),
-                                                      registryEvent.getRemoteConnection());
-                        break;
+                    switch (registryEventType)
+                    {
+                        case REGISTRATION_EVENT:
+                            this.processRegistrationEvent(serviceName,
+                                                          registryEventOriginator.getMetadataCollectionId(),
+                                                          registryEvent.getMetadataCollectionName(),
+                                                          registryEventOriginator.getServerName(),
+                                                          registryEventOriginator.getServerType(),
+                                                          registryEventOriginator.getOrganizationName(),
+                                                          registryEvent.getRegistrationTimestamp(),
+                                                          registryEvent.getRemoteConnection());
+                            break;
 
-                    case RE_REGISTRATION_EVENT:
-                        this.processReRegistrationEvent(serviceName,
-                                                        registryEventOriginator.getMetadataCollectionId(),
-                                                        registryEvent.getMetadataCollectionName(),
-                                                        registryEventOriginator.getServerName(),
-                                                        registryEventOriginator.getServerType(),
-                                                        registryEventOriginator.getOrganizationName(),
-                                                        registryEvent.getRegistrationTimestamp(),
-                                                        registryEvent.getRemoteConnection());
-                        break;
+                        case RE_REGISTRATION_EVENT:
+                            this.processReRegistrationEvent(serviceName,
+                                                            registryEventOriginator.getMetadataCollectionId(),
+                                                            registryEvent.getMetadataCollectionName(),
+                                                            registryEventOriginator.getServerName(),
+                                                            registryEventOriginator.getServerType(),
+                                                            registryEventOriginator.getOrganizationName(),
+                                                            registryEvent.getRegistrationTimestamp(),
+                                                            registryEvent.getRemoteConnection());
+                            break;
 
-                    case REFRESH_REGISTRATION_REQUEST:
-                        this.processRegistrationRefreshRequest(serviceName,
-                                                               registryEventOriginator.getServerName(),
-                                                               registryEventOriginator.getServerType(),
-                                                               registryEventOriginator.getOrganizationName());
-                        break;
-
-                    case UN_REGISTRATION_EVENT:
-                        this.processUnRegistrationEvent(serviceName,
-                                                        registryEventOriginator.getMetadataCollectionId(),
-                                                        registryEvent.getMetadataCollectionName(),
-                                                        registryEventOriginator.getServerName(),
-                                                        registryEventOriginator.getServerType(),
-                                                        registryEventOriginator.getOrganizationName());
-                        break;
-
-                    case REGISTRATION_ERROR_EVENT:
-                        OMRSRegistryEventErrorCode errorCode = registryEvent.getErrorCode();
-
-                        if (errorCode != null)
-                        {
-                            switch (errorCode)
-                            {
-                                case BAD_REMOTE_CONNECTION:
-                                    this.processBadConnectionEvent(serviceName,
-                                                                   registryEventOriginator.getMetadataCollectionId(),
-                                                                   registryEvent.getMetadataCollectionName(),
+                        case REFRESH_REGISTRATION_REQUEST:
+                            this.processRegistrationRefreshRequest(serviceName,
                                                                    registryEventOriginator.getServerName(),
                                                                    registryEventOriginator.getServerType(),
-                                                                   registryEventOriginator.getOrganizationName(),
-                                                                   registryEvent.getTargetMetadataCollectionId(),
-                                                                   registryEvent.getTargetRemoteConnection(),
-                                                                   registryEvent.getErrorMessage());
-                                    break;
+                                                                   registryEventOriginator.getOrganizationName());
+                            break;
 
-                                case CONFLICTING_COLLECTION_ID:
-                                    this.processConflictingCollectionIdEvent(serviceName,
-                                                                             registryEventOriginator.getMetadataCollectionId(),
-                                                                             registryEvent.getMetadataCollectionName(),
-                                                                             registryEventOriginator.getServerName(),
-                                                                             registryEventOriginator.getServerType(),
-                                                                             registryEventOriginator.getOrganizationName(),
-                                                                             registryEvent.getTargetMetadataCollectionId(),
-                                                                             registryEvent.getErrorMessage());
-                                    break;
+                        case UN_REGISTRATION_EVENT:
+                            this.processUnRegistrationEvent(serviceName,
+                                                            registryEventOriginator.getMetadataCollectionId(),
+                                                            registryEvent.getMetadataCollectionName(),
+                                                            registryEventOriginator.getServerName(),
+                                                            registryEventOriginator.getServerType(),
+                                                            registryEventOriginator.getOrganizationName());
+                            break;
 
-                                default:
-                                    log.debug("Unknown registry event error code; ignoring event");
-                                    break;
+                        case REGISTRATION_ERROR_EVENT:
+                            OMRSRegistryEventErrorCode errorCode = registryEvent.getErrorCode();
+
+                            if (errorCode != null)
+                            {
+                                switch (errorCode)
+                                {
+                                    case BAD_REMOTE_CONNECTION:
+                                        this.processBadConnectionEvent(serviceName,
+                                                                       registryEventOriginator.getMetadataCollectionId(),
+                                                                       registryEvent.getMetadataCollectionName(),
+                                                                       registryEventOriginator.getServerName(),
+                                                                       registryEventOriginator.getServerType(),
+                                                                       registryEventOriginator.getOrganizationName(),
+                                                                       registryEvent.getTargetMetadataCollectionId(),
+                                                                       registryEvent.getTargetRemoteConnection(),
+                                                                       registryEvent.getErrorMessage());
+                                        break;
+
+                                    case CONFLICTING_COLLECTION_ID:
+                                        this.processConflictingCollectionIdEvent(serviceName,
+                                                                                 registryEventOriginator.getMetadataCollectionId(),
+                                                                                 registryEvent.getMetadataCollectionName(),
+                                                                                 registryEventOriginator.getServerName(),
+                                                                                 registryEventOriginator.getServerType(),
+                                                                                 registryEventOriginator.getOrganizationName(),
+                                                                                 registryEvent.getTargetMetadataCollectionId(),
+                                                                                 registryEvent.getErrorMessage());
+                                        break;
+
+                                    default:
+                                        log.debug("Unknown registry event error code; ignoring event");
+                                        break;
+                                }
                             }
-                        }
-                        else
-                        {
-                            log.debug("Null registry event error code, ignoring event");
-                        }
-                        break;
+                            else
+                            {
+                                log.debug("Null registry event error code, ignoring event");
+                            }
+                            break;
 
-                    default:
-                        /*
-                         * New type of registry event that this server does not understand ignore it
-                         */
-                        log.debug("Unknown registry event: " + registryEvent.toString());
-                        break;
+                        default:
+                            /*
+                             * New type of registry event that this server does not understand ignore it
+                             */
+                            log.debug("Unknown registry event: " + registryEvent.toString());
+                            break;
+                    }
+                }
+                else
+                {
+                    log.debug("Ignored registry event: " + registryEvent.toString());
                 }
             }
-            else
-            {
-                log.debug("Ignored registry event: " + registryEvent.toString());
-            }
+        }
+        catch (Throwable error)
+        {
+            this.logUnexpectedException(error, actionDescription);
         }
     }
 
@@ -157,138 +309,147 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      */
     public void processTypeDefEvent(OMRSTypeDefEvent typeDefEvent)
     {
-        log.debug("Processing typeDef event: " + typeDefEvent);
+        final String actionDescription = "processTypeDefEvent";
 
-        OMRSTypeDefEventType typeDefEventType       = typeDefEvent.getTypeDefEventType();
-        OMRSEventOriginator  typeDefEventOriginator = typeDefEvent.getEventOriginator();
-
-        if ((typeDefEventType != null) && (typeDefEventOriginator != null))
+        try
         {
-            switch (typeDefEventType)
+            log.debug("Processing typeDef event: " + typeDefEvent);
+
+            OMRSTypeDefEventType typeDefEventType       = typeDefEvent.getTypeDefEventType();
+            OMRSEventOriginator  typeDefEventOriginator = typeDefEvent.getEventOriginator();
+
+            if ((typeDefEventType != null) && (typeDefEventOriginator != null))
             {
-                case NEW_TYPEDEF_EVENT:
-                    this.processNewTypeDefEvent(serviceName,
-                                                typeDefEventOriginator.getMetadataCollectionId(),
-                                                typeDefEventOriginator.getServerName(),
-                                                typeDefEventOriginator.getServerType(),
-                                                typeDefEventOriginator.getOrganizationName(),
-                                                typeDefEvent.getTypeDef());
-                    break;
-
-                case NEW_ATTRIBUTE_TYPEDEF_EVENT:
-                    this.processNewAttributeTypeDefEvent(serviceName,
-                                                         typeDefEventOriginator.getMetadataCollectionId(),
-                                                         typeDefEventOriginator.getServerName(),
-                                                         typeDefEventOriginator.getServerType(),
-                                                         typeDefEventOriginator.getOrganizationName(),
-                                                         typeDefEvent.getAttributeTypeDef());
-                    break;
-
-                case UPDATED_TYPEDEF_EVENT:
-                    this.processUpdatedTypeDefEvent(serviceName,
+                switch (typeDefEventType)
+                {
+                    case NEW_TYPEDEF_EVENT:
+                        this.processNewTypeDefEvent(serviceName,
                                                     typeDefEventOriginator.getMetadataCollectionId(),
                                                     typeDefEventOriginator.getServerName(),
                                                     typeDefEventOriginator.getServerType(),
                                                     typeDefEventOriginator.getOrganizationName(),
-                                                    typeDefEvent.getTypeDefPatch());
-                    break;
+                                                    typeDefEvent.getTypeDef());
+                        break;
 
-                case DELETED_TYPEDEF_EVENT:
-                    this.processDeletedTypeDefEvent(serviceName,
-                                                    typeDefEventOriginator.getMetadataCollectionId(),
-                                                    typeDefEventOriginator.getServerName(),
-                                                    typeDefEventOriginator.getServerType(),
-                                                    typeDefEventOriginator.getOrganizationName(),
-                                                    typeDefEvent.getTypeDefGUID(),
-                                                    typeDefEvent.getTypeDefName());
-                    break;
-
-                case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
-                    this.processDeletedAttributeTypeDefEvent(serviceName,
+                    case NEW_ATTRIBUTE_TYPEDEF_EVENT:
+                        this.processNewAttributeTypeDefEvent(serviceName,
                                                              typeDefEventOriginator.getMetadataCollectionId(),
                                                              typeDefEventOriginator.getServerName(),
                                                              typeDefEventOriginator.getServerType(),
                                                              typeDefEventOriginator.getOrganizationName(),
-                                                             typeDefEvent.getTypeDefGUID(),
-                                                             typeDefEvent.getTypeDefName());
-                    break;
+                                                             typeDefEvent.getAttributeTypeDef());
+                        break;
 
-                case RE_IDENTIFIED_TYPEDEF_EVENT:
-                    this.processReIdentifiedTypeDefEvent(serviceName,
-                                                         typeDefEventOriginator.getMetadataCollectionId(),
-                                                         typeDefEventOriginator.getServerName(),
-                                                         typeDefEventOriginator.getServerType(),
-                                                         typeDefEventOriginator.getOrganizationName(),
-                                                         typeDefEvent.getOriginalTypeDefSummary(),
-                                                         typeDefEvent.getTypeDef());
-                    break;
+                    case UPDATED_TYPEDEF_EVENT:
+                        this.processUpdatedTypeDefEvent(serviceName,
+                                                        typeDefEventOriginator.getMetadataCollectionId(),
+                                                        typeDefEventOriginator.getServerName(),
+                                                        typeDefEventOriginator.getServerType(),
+                                                        typeDefEventOriginator.getOrganizationName(),
+                                                        typeDefEvent.getTypeDefPatch());
+                        break;
 
-                case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
-                    this.processReIdentifiedAttributeTypeDefEvent(serviceName,
-                                                                  typeDefEventOriginator.getMetadataCollectionId(),
-                                                                  typeDefEventOriginator.getServerName(),
-                                                                  typeDefEventOriginator.getServerType(),
-                                                                  typeDefEventOriginator.getOrganizationName(),
-                                                                  typeDefEvent.getOriginalAttributeTypeDef(),
-                                                                  typeDefEvent.getAttributeTypeDef());
+                    case DELETED_TYPEDEF_EVENT:
+                        this.processDeletedTypeDefEvent(serviceName,
+                                                        typeDefEventOriginator.getMetadataCollectionId(),
+                                                        typeDefEventOriginator.getServerName(),
+                                                        typeDefEventOriginator.getServerType(),
+                                                        typeDefEventOriginator.getOrganizationName(),
+                                                        typeDefEvent.getTypeDefGUID(),
+                                                        typeDefEvent.getTypeDefName());
+                        break;
 
-                case TYPEDEF_ERROR_EVENT:
-                    OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
-
-                    if (errorCode != null)
-                    {
-                        switch(errorCode)
-                        {
-                            case CONFLICTING_TYPEDEFS:
-                                this.processTypeDefConflictEvent(serviceName,
+                    case DELETED_ATTRIBUTE_TYPEDEF_EVENT:
+                        this.processDeletedAttributeTypeDefEvent(serviceName,
                                                                  typeDefEventOriginator.getMetadataCollectionId(),
                                                                  typeDefEventOriginator.getServerName(),
                                                                  typeDefEventOriginator.getServerType(),
                                                                  typeDefEventOriginator.getOrganizationName(),
-                                                                 typeDefEvent.getOriginalTypeDefSummary(),
-                                                                 typeDefEvent.getOtherMetadataCollectionId(),
-                                                                 typeDefEvent.getOtherTypeDefSummary(),
-                                                                 typeDefEvent.getErrorMessage());
-                                break;
+                                                                 typeDefEvent.getTypeDefGUID(),
+                                                                 typeDefEvent.getTypeDefName());
+                        break;
 
-                            case CONFLICTING_ATTRIBUTE_TYPEDEFS:
-                                this.processAttributeTypeDefConflictEvent(serviceName,
-                                                                          typeDefEventOriginator.getMetadataCollectionId(),
-                                                                          typeDefEventOriginator.getServerName(),
-                                                                          typeDefEventOriginator.getServerType(),
-                                                                          typeDefEventOriginator.getOrganizationName(),
-                                                                          typeDefEvent.getOriginalAttributeTypeDef(),
-                                                                          typeDefEvent.getOtherMetadataCollectionId(),
-                                                                          typeDefEvent.getOtherAttributeTypeDef(),
-                                                                          typeDefEvent.getErrorMessage());
+                    case RE_IDENTIFIED_TYPEDEF_EVENT:
+                        this.processReIdentifiedTypeDefEvent(serviceName,
+                                                             typeDefEventOriginator.getMetadataCollectionId(),
+                                                             typeDefEventOriginator.getServerName(),
+                                                             typeDefEventOriginator.getServerType(),
+                                                             typeDefEventOriginator.getOrganizationName(),
+                                                             typeDefEvent.getOriginalTypeDefSummary(),
+                                                             typeDefEvent.getTypeDef());
+                        break;
 
-                            case TYPEDEF_PATCH_MISMATCH:
-                                this.processTypeDefPatchMismatchEvent(serviceName,
+                    case RE_IDENTIFIED_ATTRIBUTE_TYPEDEF_EVENT:
+                        this.processReIdentifiedAttributeTypeDefEvent(serviceName,
                                                                       typeDefEventOriginator.getMetadataCollectionId(),
                                                                       typeDefEventOriginator.getServerName(),
                                                                       typeDefEventOriginator.getServerType(),
                                                                       typeDefEventOriginator.getOrganizationName(),
-                                                                      typeDefEvent.getTargetMetadataCollectionId(),
-                                                                      typeDefEvent.getTargetTypeDefSummary(),
-                                                                      typeDefEvent.getOtherTypeDef(),
-                                                                      typeDefEvent.getErrorMessage());
-                                break;
+                                                                      typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                      typeDefEvent.getAttributeTypeDef());
 
-                            default:
-                                log.debug("Unknown TypeDef event error code; ignoring event");
-                                break;
+                    case TYPEDEF_ERROR_EVENT:
+                        OMRSTypeDefEventErrorCode errorCode = typeDefEvent.getErrorCode();
+
+                        if (errorCode != null)
+                        {
+                            switch (errorCode)
+                            {
+                                case CONFLICTING_TYPEDEFS:
+                                    this.processTypeDefConflictEvent(serviceName,
+                                                                     typeDefEventOriginator.getMetadataCollectionId(),
+                                                                     typeDefEventOriginator.getServerName(),
+                                                                     typeDefEventOriginator.getServerType(),
+                                                                     typeDefEventOriginator.getOrganizationName(),
+                                                                     typeDefEvent.getOriginalTypeDefSummary(),
+                                                                     typeDefEvent.getOtherMetadataCollectionId(),
+                                                                     typeDefEvent.getOtherTypeDefSummary(),
+                                                                     typeDefEvent.getErrorMessage());
+                                    break;
+
+                                case CONFLICTING_ATTRIBUTE_TYPEDEFS:
+                                    this.processAttributeTypeDefConflictEvent(serviceName,
+                                                                              typeDefEventOriginator.getMetadataCollectionId(),
+                                                                              typeDefEventOriginator.getServerName(),
+                                                                              typeDefEventOriginator.getServerType(),
+                                                                              typeDefEventOriginator.getOrganizationName(),
+                                                                              typeDefEvent.getOriginalAttributeTypeDef(),
+                                                                              typeDefEvent.getOtherMetadataCollectionId(),
+                                                                              typeDefEvent.getOtherAttributeTypeDef(),
+                                                                              typeDefEvent.getErrorMessage());
+
+                                case TYPEDEF_PATCH_MISMATCH:
+                                    this.processTypeDefPatchMismatchEvent(serviceName,
+                                                                          typeDefEventOriginator.getMetadataCollectionId(),
+                                                                          typeDefEventOriginator.getServerName(),
+                                                                          typeDefEventOriginator.getServerType(),
+                                                                          typeDefEventOriginator.getOrganizationName(),
+                                                                          typeDefEvent.getTargetMetadataCollectionId(),
+                                                                          typeDefEvent.getTargetTypeDefSummary(),
+                                                                          typeDefEvent.getOtherTypeDef(),
+                                                                          typeDefEvent.getErrorMessage());
+                                    break;
+
+                                default:
+                                    log.debug("Unknown TypeDef event error code; ignoring event");
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        log.debug("Ignored TypeDef event; null error code");
-                    }
-                    break;
+                        else
+                        {
+                            log.debug("Ignored TypeDef event; null error code");
+                        }
+                        break;
 
-                default:
-                    log.debug("Ignored TypeDef event; unknown type");
-                    break;
+                    default:
+                        log.debug("Ignored TypeDef event; unknown type");
+                        break;
+                }
             }
+        }
+        catch (Throwable error)
+        {
+            this.logUnexpectedException(error, actionDescription);
         }
     }
 
@@ -300,228 +461,115 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent)
     {
-        OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType();
-        OMRSEventOriginator   instanceEventOriginator = instanceEvent.getEventOriginator();
+        final String actionDescription = "processInstanceEvent";
 
-        log.debug("Processing instance event: " + instanceEvent);
-
-
-        if ((instanceEventType != null) && (instanceEventOriginator != null))
+        try
         {
-            switch (instanceEventType)
-            {
-                case NEW_ENTITY_EVENT:
-                    this.processNewEntityEvent(serviceName,
-                                               instanceEventOriginator.getMetadataCollectionId(),
-                                               instanceEventOriginator.getServerName(),
-                                               instanceEventOriginator.getServerType(),
-                                               instanceEventOriginator.getOrganizationName(),
-                                               instanceEvent.getEntity());
-                    break;
+            OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType();
+            OMRSEventOriginator   instanceEventOriginator = instanceEvent.getEventOriginator();
 
-                case UPDATED_ENTITY_EVENT:
-                    this.processUpdatedEntityEvent(serviceName,
+            log.debug("Processing instance event: " + instanceEvent);
+
+
+            if ((instanceEventType != null) && (instanceEventOriginator != null))
+            {
+                switch (instanceEventType)
+                {
+                    case NEW_ENTITY_EVENT:
+                        this.processNewEntityEvent(serviceName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
                                                    instanceEventOriginator.getServerType(),
                                                    instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getOriginalEntity(),
                                                    instanceEvent.getEntity());
-                    break;
+                        break;
 
-                case CLASSIFIED_ENTITY_EVENT:
-                    this.processClassifiedEntityEvent(serviceName,
+                    case UPDATED_ENTITY_EVENT:
+                        this.processUpdatedEntityEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getOriginalEntity(),
+                                                       instanceEvent.getEntity());
+                        break;
+
+                    case CLASSIFIED_ENTITY_EVENT:
+                        this.processClassifiedEntityEvent(serviceName,
+                                                          instanceEventOriginator.getMetadataCollectionId(),
+                                                          instanceEventOriginator.getServerName(),
+                                                          instanceEventOriginator.getServerType(),
+                                                          instanceEventOriginator.getOrganizationName(),
+                                                          instanceEvent.getEntity());
+                        break;
+
+                    case RECLASSIFIED_ENTITY_EVENT:
+                        this.processReclassifiedEntityEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntity());
+                        break;
+
+                    case DECLASSIFIED_ENTITY_EVENT:
+                        this.processDeclassifiedEntityEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntity());
+                        break;
+
+                    case DELETED_ENTITY_EVENT:
+                        this.processDeletedEntityEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getEntity());
+                        break;
+
+                    case PURGED_ENTITY_EVENT:
+                        this.processPurgedEntityEvent(serviceName,
+                                                      instanceEventOriginator.getMetadataCollectionId(),
+                                                      instanceEventOriginator.getServerName(),
+                                                      instanceEventOriginator.getServerType(),
+                                                      instanceEventOriginator.getOrganizationName(),
+                                                      instanceEvent.getTypeDefGUID(),
+                                                      instanceEvent.getTypeDefName(),
+                                                      instanceEvent.getInstanceGUID());
+                        break;
+
+                    case DELETE_PURGED_ENTITY_EVENT:
+                        this.processDeletePurgedEntityEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getEntity());
+                        break;
+
+                    case UNDONE_ENTITY_EVENT:
+                        this.processUndoneEntityEvent(serviceName,
                                                       instanceEventOriginator.getMetadataCollectionId(),
                                                       instanceEventOriginator.getServerName(),
                                                       instanceEventOriginator.getServerType(),
                                                       instanceEventOriginator.getOrganizationName(),
                                                       instanceEvent.getEntity());
-                    break;
+                        break;
 
-                case RECLASSIFIED_ENTITY_EVENT:
-                    this.processReclassifiedEntityEvent(serviceName,
+                    case RESTORED_ENTITY_EVENT:
+                        this.processRestoredEntityEvent(serviceName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
                                                         instanceEventOriginator.getServerType(),
                                                         instanceEventOriginator.getOrganizationName(),
                                                         instanceEvent.getEntity());
-                    break;
+                        break;
 
-                case DECLASSIFIED_ENTITY_EVENT:
-                    this.processDeclassifiedEntityEvent(serviceName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getEntity());
-                    break;
-
-                case DELETED_ENTITY_EVENT:
-                    this.processDeletedEntityEvent(serviceName,
-                                                   instanceEventOriginator.getMetadataCollectionId(),
-                                                   instanceEventOriginator.getServerName(),
-                                                   instanceEventOriginator.getServerType(),
-                                                   instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getEntity());
-                    break;
-
-                case PURGED_ENTITY_EVENT:
-                    this.processPurgedEntityEvent(serviceName,
-                                                  instanceEventOriginator.getMetadataCollectionId(),
-                                                  instanceEventOriginator.getServerName(),
-                                                  instanceEventOriginator.getServerType(),
-                                                  instanceEventOriginator.getOrganizationName(),
-                                                  instanceEvent.getTypeDefGUID(),
-                                                  instanceEvent.getTypeDefName(),
-                                                  instanceEvent.getInstanceGUID());
-                    break;
-
-                case DELETE_PURGED_ENTITY_EVENT:
-                    this.processDeletePurgedEntityEvent(serviceName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getEntity());
-                    break;
-
-                case UNDONE_ENTITY_EVENT:
-                    this.processUndoneEntityEvent(serviceName,
-                                                  instanceEventOriginator.getMetadataCollectionId(),
-                                                  instanceEventOriginator.getServerName(),
-                                                  instanceEventOriginator.getServerType(),
-                                                  instanceEventOriginator.getOrganizationName(),
-                                                  instanceEvent.getEntity());
-                    break;
-
-                case RESTORED_ENTITY_EVENT:
-                    this.processRestoredEntityEvent(serviceName,
-                                                    instanceEventOriginator.getMetadataCollectionId(),
-                                                    instanceEventOriginator.getServerName(),
-                                                    instanceEventOriginator.getServerType(),
-                                                    instanceEventOriginator.getOrganizationName(),
-                                                    instanceEvent.getEntity());
-                    break;
-
-                case REFRESH_ENTITY_REQUEST:
-                    this.processRefreshEntityRequested(serviceName,
-                                                       instanceEventOriginator.getMetadataCollectionId(),
-                                                       instanceEventOriginator.getServerName(),
-                                                       instanceEventOriginator.getServerType(),
-                                                       instanceEventOriginator.getOrganizationName(),
-                                                       instanceEvent.getTypeDefGUID(),
-                                                       instanceEvent.getTypeDefName(),
-                                                       instanceEvent.getInstanceGUID(),
-                                                       instanceEvent.getHomeMetadataCollectionId());
-                    break;
-
-                case REFRESHED_ENTITY_EVENT:
-                    this.processRefreshEntityEvent(serviceName,
-                                                   instanceEventOriginator.getMetadataCollectionId(),
-                                                   instanceEventOriginator.getServerName(),
-                                                   instanceEventOriginator.getServerType(),
-                                                   instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getEntity());
-                    break;
-
-                case RE_HOMED_ENTITY_EVENT:
-                    this.processReHomedEntityEvent(serviceName,
-                                                   instanceEventOriginator.getMetadataCollectionId(),
-                                                   instanceEventOriginator.getServerName(),
-                                                   instanceEventOriginator.getServerType(),
-                                                   instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getOriginalHomeMetadataCollectionId(),
-                                                   instanceEvent.getEntity());
-                    break;
-
-                case RETYPED_ENTITY_EVENT:
-                    this.processReTypedEntityEvent(serviceName,
-                                                   instanceEventOriginator.getMetadataCollectionId(),
-                                                   instanceEventOriginator.getServerName(),
-                                                   instanceEventOriginator.getServerType(),
-                                                   instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getOriginalTypeDefSummary(),
-                                                   instanceEvent.getEntity());
-                    break;
-
-                case RE_IDENTIFIED_ENTITY_EVENT:
-                    this.processReIdentifiedEntityEvent(serviceName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getOriginalInstanceGUID(),
-                                                        instanceEvent.getEntity());
-                    break;
-
-                case NEW_RELATIONSHIP_EVENT:
-                    this.processNewRelationshipEvent(serviceName,
-                                                     instanceEventOriginator.getMetadataCollectionId(),
-                                                     instanceEventOriginator.getServerName(),
-                                                     instanceEventOriginator.getServerType(),
-                                                     instanceEventOriginator.getOrganizationName(),
-                                                     instanceEvent.getRelationship());
-                    break;
-
-                case UPDATED_RELATIONSHIP_EVENT:
-                    this.processUpdatedRelationshipEvent(serviceName,
-                                                         instanceEventOriginator.getMetadataCollectionId(),
-                                                         instanceEventOriginator.getServerName(),
-                                                         instanceEventOriginator.getServerType(),
-                                                         instanceEventOriginator.getOrganizationName(),
-                                                         instanceEvent.getOriginalRelationship(),
-                                                         instanceEvent.getRelationship());
-                    break;
-
-                case UNDONE_RELATIONSHIP_EVENT:
-                    this.processUndoneRelationshipEvent(serviceName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getRelationship());
-                    break;
-
-                case DELETED_RELATIONSHIP_EVENT:
-                    this.processDeletedRelationshipEvent(serviceName,
-                                                         instanceEventOriginator.getMetadataCollectionId(),
-                                                         instanceEventOriginator.getServerName(),
-                                                         instanceEventOriginator.getServerType(),
-                                                         instanceEventOriginator.getOrganizationName(),
-                                                         instanceEvent.getRelationship());
-                    break;
-
-                case PURGED_RELATIONSHIP_EVENT:
-                    this.processPurgedRelationshipEvent(serviceName,
-                                                        instanceEventOriginator.getMetadataCollectionId(),
-                                                        instanceEventOriginator.getServerName(),
-                                                        instanceEventOriginator.getServerType(),
-                                                        instanceEventOriginator.getOrganizationName(),
-                                                        instanceEvent.getTypeDefGUID(),
-                                                        instanceEvent.getTypeDefName(),
-                                                        instanceEvent.getInstanceGUID());
-                    break;
-
-                case DELETE_PURGED_RELATIONSHIP_EVENT:
-                    this.processDeletePurgedRelationshipEvent(serviceName,
-                                                              instanceEventOriginator.getMetadataCollectionId(),
-                                                              instanceEventOriginator.getServerName(),
-                                                              instanceEventOriginator.getServerType(),
-                                                              instanceEventOriginator.getOrganizationName(),
-                                                              instanceEvent.getRelationship());
-                    break;
-
-                case RESTORED_RELATIONSHIP_EVENT:
-                    this.processRestoredRelationshipEvent(serviceName,
-                                                          instanceEventOriginator.getMetadataCollectionId(),
-                                                          instanceEventOriginator.getServerName(),
-                                                          instanceEventOriginator.getServerType(),
-                                                          instanceEventOriginator.getOrganizationName(),
-                                                          instanceEvent.getRelationship());
-                    break;
-
-                case REFRESH_RELATIONSHIP_REQUEST:
-                    this.processRefreshRelationshipRequest(serviceName,
+                    case REFRESH_ENTITY_REQUEST:
+                        this.processRefreshEntityRequested(serviceName,
                                                            instanceEventOriginator.getMetadataCollectionId(),
                                                            instanceEventOriginator.getServerName(),
                                                            instanceEventOriginator.getServerType(),
@@ -530,109 +578,231 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
                                                            instanceEvent.getTypeDefName(),
                                                            instanceEvent.getInstanceGUID(),
                                                            instanceEvent.getHomeMetadataCollectionId());
-                    break;
+                        break;
 
-                case REFRESHED_RELATIONSHIP_EVENT:
-                    this.processRefreshRelationshipEvent(serviceName,
+                    case REFRESHED_ENTITY_EVENT:
+                        this.processRefreshEntityEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getEntity());
+                        break;
+
+                    case RE_HOMED_ENTITY_EVENT:
+                        this.processReHomedEntityEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getOriginalHomeMetadataCollectionId(),
+                                                       instanceEvent.getEntity());
+                        break;
+
+                    case RETYPED_ENTITY_EVENT:
+                        this.processReTypedEntityEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getOriginalTypeDefSummary(),
+                                                       instanceEvent.getEntity());
+                        break;
+
+                    case RE_IDENTIFIED_ENTITY_EVENT:
+                        this.processReIdentifiedEntityEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getOriginalInstanceGUID(),
+                                                            instanceEvent.getEntity());
+                        break;
+
+                    case NEW_RELATIONSHIP_EVENT:
+                        this.processNewRelationshipEvent(serviceName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
                                                          instanceEventOriginator.getServerType(),
                                                          instanceEventOriginator.getOrganizationName(),
                                                          instanceEvent.getRelationship());
-                    break;
+                        break;
 
-                case RE_IDENTIFIED_RELATIONSHIP_EVENT:
-                    this.processReIdentifiedRelationshipEvent(serviceName,
+                    case UPDATED_RELATIONSHIP_EVENT:
+                        this.processUpdatedRelationshipEvent(serviceName,
+                                                             instanceEventOriginator.getMetadataCollectionId(),
+                                                             instanceEventOriginator.getServerName(),
+                                                             instanceEventOriginator.getServerType(),
+                                                             instanceEventOriginator.getOrganizationName(),
+                                                             instanceEvent.getOriginalRelationship(),
+                                                             instanceEvent.getRelationship());
+                        break;
+
+                    case UNDONE_RELATIONSHIP_EVENT:
+                        this.processUndoneRelationshipEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getRelationship());
+                        break;
+
+                    case DELETED_RELATIONSHIP_EVENT:
+                        this.processDeletedRelationshipEvent(serviceName,
+                                                             instanceEventOriginator.getMetadataCollectionId(),
+                                                             instanceEventOriginator.getServerName(),
+                                                             instanceEventOriginator.getServerType(),
+                                                             instanceEventOriginator.getOrganizationName(),
+                                                             instanceEvent.getRelationship());
+                        break;
+
+                    case PURGED_RELATIONSHIP_EVENT:
+                        this.processPurgedRelationshipEvent(serviceName,
+                                                            instanceEventOriginator.getMetadataCollectionId(),
+                                                            instanceEventOriginator.getServerName(),
+                                                            instanceEventOriginator.getServerType(),
+                                                            instanceEventOriginator.getOrganizationName(),
+                                                            instanceEvent.getTypeDefGUID(),
+                                                            instanceEvent.getTypeDefName(),
+                                                            instanceEvent.getInstanceGUID());
+                        break;
+
+                    case DELETE_PURGED_RELATIONSHIP_EVENT:
+                        this.processDeletePurgedRelationshipEvent(serviceName,
+                                                                  instanceEventOriginator.getMetadataCollectionId(),
+                                                                  instanceEventOriginator.getServerName(),
+                                                                  instanceEventOriginator.getServerType(),
+                                                                  instanceEventOriginator.getOrganizationName(),
+                                                                  instanceEvent.getRelationship());
+                        break;
+
+                    case RESTORED_RELATIONSHIP_EVENT:
+                        this.processRestoredRelationshipEvent(serviceName,
                                                               instanceEventOriginator.getMetadataCollectionId(),
                                                               instanceEventOriginator.getServerName(),
                                                               instanceEventOriginator.getServerType(),
                                                               instanceEventOriginator.getOrganizationName(),
-                                                              instanceEvent.getOriginalInstanceGUID(),
                                                               instanceEvent.getRelationship());
-                    break;
+                        break;
 
-                case RE_HOMED_RELATIONSHIP_EVENT:
-                    this.processReHomedRelationshipEvent(serviceName,
-                                                         instanceEventOriginator.getMetadataCollectionId(),
-                                                         instanceEventOriginator.getServerName(),
-                                                         instanceEventOriginator.getServerType(),
-                                                         instanceEventOriginator.getOrganizationName(),
-                                                         instanceEvent.getOriginalHomeMetadataCollectionId(),
-                                                         instanceEvent.getRelationship());
-                    break;
+                    case REFRESH_RELATIONSHIP_REQUEST:
+                        this.processRefreshRelationshipRequest(serviceName,
+                                                               instanceEventOriginator.getMetadataCollectionId(),
+                                                               instanceEventOriginator.getServerName(),
+                                                               instanceEventOriginator.getServerType(),
+                                                               instanceEventOriginator.getOrganizationName(),
+                                                               instanceEvent.getTypeDefGUID(),
+                                                               instanceEvent.getTypeDefName(),
+                                                               instanceEvent.getInstanceGUID(),
+                                                               instanceEvent.getHomeMetadataCollectionId());
+                        break;
 
-                case RETYPED_RELATIONSHIP_EVENT:
-                    this.processReTypedRelationshipEvent(serviceName,
-                                                         instanceEventOriginator.getMetadataCollectionId(),
-                                                         instanceEventOriginator.getServerName(),
-                                                         instanceEventOriginator.getServerType(),
-                                                         instanceEventOriginator.getOrganizationName(),
-                                                         instanceEvent.getOriginalTypeDefSummary(),
-                                                         instanceEvent.getRelationship());
-                    break;
-                case BATCH_INSTANCES_EVENT:
-                    this.processInstanceBatchEvent(serviceName,
-                                                   instanceEventOriginator.getMetadataCollectionId(),
-                                                   instanceEventOriginator.getServerName(),
-                                                   instanceEventOriginator.getServerType(),
-                                                   instanceEventOriginator.getOrganizationName(),
-                                                   instanceEvent.getInstanceBatch());
-                    break;
-                case INSTANCE_ERROR_EVENT:
-                    OMRSInstanceEventErrorCode errorCode = instanceEvent.getErrorCode();
+                    case REFRESHED_RELATIONSHIP_EVENT:
+                        this.processRefreshRelationshipEvent(serviceName,
+                                                             instanceEventOriginator.getMetadataCollectionId(),
+                                                             instanceEventOriginator.getServerName(),
+                                                             instanceEventOriginator.getServerType(),
+                                                             instanceEventOriginator.getOrganizationName(),
+                                                             instanceEvent.getRelationship());
+                        break;
 
-                    if (errorCode != null)
-                    {
-                        switch(errorCode)
+                    case RE_IDENTIFIED_RELATIONSHIP_EVENT:
+                        this.processReIdentifiedRelationshipEvent(serviceName,
+                                                                  instanceEventOriginator.getMetadataCollectionId(),
+                                                                  instanceEventOriginator.getServerName(),
+                                                                  instanceEventOriginator.getServerType(),
+                                                                  instanceEventOriginator.getOrganizationName(),
+                                                                  instanceEvent.getOriginalInstanceGUID(),
+                                                                  instanceEvent.getRelationship());
+                        break;
+
+                    case RE_HOMED_RELATIONSHIP_EVENT:
+                        this.processReHomedRelationshipEvent(serviceName,
+                                                             instanceEventOriginator.getMetadataCollectionId(),
+                                                             instanceEventOriginator.getServerName(),
+                                                             instanceEventOriginator.getServerType(),
+                                                             instanceEventOriginator.getOrganizationName(),
+                                                             instanceEvent.getOriginalHomeMetadataCollectionId(),
+                                                             instanceEvent.getRelationship());
+                        break;
+
+                    case RETYPED_RELATIONSHIP_EVENT:
+                        this.processReTypedRelationshipEvent(serviceName,
+                                                             instanceEventOriginator.getMetadataCollectionId(),
+                                                             instanceEventOriginator.getServerName(),
+                                                             instanceEventOriginator.getServerType(),
+                                                             instanceEventOriginator.getOrganizationName(),
+                                                             instanceEvent.getOriginalTypeDefSummary(),
+                                                             instanceEvent.getRelationship());
+                        break;
+                    case BATCH_INSTANCES_EVENT:
+                        this.processInstanceBatchEvent(serviceName,
+                                                       instanceEventOriginator.getMetadataCollectionId(),
+                                                       instanceEventOriginator.getServerName(),
+                                                       instanceEventOriginator.getServerType(),
+                                                       instanceEventOriginator.getOrganizationName(),
+                                                       instanceEvent.getInstanceBatch());
+                        break;
+                    case INSTANCE_ERROR_EVENT:
+                        OMRSInstanceEventErrorCode errorCode = instanceEvent.getErrorCode();
+
+                        if (errorCode != null)
                         {
-                            case CONFLICTING_INSTANCES:
-                                this.processConflictingInstancesEvent(serviceName,
-                                                                      instanceEventOriginator.getMetadataCollectionId(),
-                                                                      instanceEventOriginator.getServerName(),
-                                                                      instanceEventOriginator.getServerType(),
-                                                                      instanceEventOriginator.getOrganizationName(),
-                                                                      instanceEvent.getTargetMetadataCollectionId(),
-                                                                      instanceEvent.getTargetTypeDefSummary(),
-                                                                      instanceEvent.getTargetInstanceGUID(),
-                                                                      instanceEvent.getOtherMetadataCollectionId(),
-                                                                      instanceEvent.getOtherOrigin(),
-                                                                      instanceEvent.getOtherTypeDefSummary(),
-                                                                      instanceEvent.getOtherInstanceGUID(),
-                                                                      instanceEvent.getErrorMessage());
-                                break;
+                            switch (errorCode)
+                            {
+                                case CONFLICTING_INSTANCES:
+                                    this.processConflictingInstancesEvent(serviceName,
+                                                                          instanceEventOriginator.getMetadataCollectionId(),
+                                                                          instanceEventOriginator.getServerName(),
+                                                                          instanceEventOriginator.getServerType(),
+                                                                          instanceEventOriginator.getOrganizationName(),
+                                                                          instanceEvent.getTargetMetadataCollectionId(),
+                                                                          instanceEvent.getTargetTypeDefSummary(),
+                                                                          instanceEvent.getTargetInstanceGUID(),
+                                                                          instanceEvent.getOtherMetadataCollectionId(),
+                                                                          instanceEvent.getOtherOrigin(),
+                                                                          instanceEvent.getOtherTypeDefSummary(),
+                                                                          instanceEvent.getOtherInstanceGUID(),
+                                                                          instanceEvent.getErrorMessage());
+                                    break;
 
-                            case CONFLICTING_TYPE:
-                                this.processConflictingTypeEvent(serviceName,
-                                                                 instanceEventOriginator.getMetadataCollectionId(),
-                                                                 instanceEventOriginator.getServerName(),
-                                                                 instanceEventOriginator.getServerType(),
-                                                                 instanceEventOriginator.getOrganizationName(),
-                                                                 instanceEvent.getTargetMetadataCollectionId(),
-                                                                 instanceEvent.getTargetTypeDefSummary(),
-                                                                 instanceEvent.getTargetInstanceGUID(),
-                                                                 instanceEvent.getOtherTypeDefSummary(),
-                                                                 instanceEvent.getErrorMessage());
-                                break;
+                                case CONFLICTING_TYPE:
+                                    this.processConflictingTypeEvent(serviceName,
+                                                                     instanceEventOriginator.getMetadataCollectionId(),
+                                                                     instanceEventOriginator.getServerName(),
+                                                                     instanceEventOriginator.getServerType(),
+                                                                     instanceEventOriginator.getOrganizationName(),
+                                                                     instanceEvent.getTargetMetadataCollectionId(),
+                                                                     instanceEvent.getTargetTypeDefSummary(),
+                                                                     instanceEvent.getTargetInstanceGUID(),
+                                                                     instanceEvent.getOtherTypeDefSummary(),
+                                                                     instanceEvent.getErrorMessage());
+                                    break;
 
-                            default:
-                                log.debug("Unknown instance event error code, ignoring event");
-                                break;
+                                default:
+                                    log.debug("Unknown instance event error code, ignoring event");
+                                    break;
+                            }
                         }
-                    }
-                    else
-                    {
-                        log.debug("Ignored Instance event, null error code");
-                    }
-                    break;
+                        else
+                        {
+                            log.debug("Ignored Instance event, null error code");
+                        }
+                        break;
 
-                default:
-                    log.debug("Ignored Instance event, unknown type");
-                    break;
+                    default:
+                        log.debug("Ignored Instance event, unknown type");
+                        break;
+                }
+            }
+            else
+            {
+                log.debug("Ignored instance event, null type");
             }
         }
-        else
+        catch (Throwable  error)
         {
-            log.debug("Ignored instance event, null type");
+            this.logUnexpectedException(error, actionDescription);
         }
     }
 

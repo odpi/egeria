@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOnboardingRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.springframework.web.bind.annotation.*;
@@ -41,7 +41,7 @@ public class AssetOnboardingResource
 
     public GUIDResponse addCSVFileToCatalog(@PathVariable String                  serverName,
                                             @PathVariable String                  userId,
-                                            @RequestBody  NewFileAssetRequestBody requestBody)
+                                            @RequestBody NewCSVFileAssetRequestBody requestBody)
     {
         return restAPI.addCSVFileToCatalog(serverName, userId, requestBody);
     }

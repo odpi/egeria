@@ -35,7 +35,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class InformationViewAdmin extends AccessServiceAdmin {
+public class InformationViewAdmin extends AccessServiceAdmin
+{
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
     private OpenMetadataTopicConnector informationViewOutTopicConnector;

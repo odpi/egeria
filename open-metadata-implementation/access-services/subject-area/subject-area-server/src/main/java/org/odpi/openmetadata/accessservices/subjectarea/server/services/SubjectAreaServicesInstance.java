@@ -5,17 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaRegistration;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaServicesInstanceMap;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 
 /**
@@ -125,21 +120,7 @@ public class SubjectAreaServicesInstance
 
     }
 
-    /**
-     * Default constructor
-     */
-    public SubjectAreaServicesInstance() {
-        boolean initialized = false ;
-        List<AccessServiceRegistration> registeredServices = OMAGAccessServiceRegistration.getAccessServiceRegistrationList();
-        for (AccessServiceRegistration accessServiceRegistration:registeredServices) {
-            if (AccessServiceDescription.SUBJECT_AREA_OMAS.getAccessServiceCode()== accessServiceRegistration.getAccessServiceCode()){
-                initialized = true;
-            }
-        }
-        if (!initialized) {
-            SubjectAreaRegistration.registerAccessService();
-        }
-    }
+
     /**
      * Unregister this instance from the instance map.
      */

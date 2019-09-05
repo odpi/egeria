@@ -10,8 +10,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import java.util.List;
 
 /**
- * AssetOnboardingInterface provides the client-side interface for an asset owner to set up the metadata about their
- * asset.  This includes defining its name, source and license.
+ * AssetOnboardingCSVFileInterface provides the client-side interface for an asset owner to set up the metadata about
+ * a CSV file asset.  This includes defining its name, source and license.
  */
 public interface AssetOnboardingCSVFileInterface
 {
