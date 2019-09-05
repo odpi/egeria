@@ -307,7 +307,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 import('./subject-area/subject-area-view.js');
                 break;
             case 'asset-lineage':
-                import('./asset-search/asset-lineage-view.js');
+                import('./asset-lineage/asset-lineage-view.js');
                 break;
             case 'type-explorer':
                 import('./type-explorer/type-explorer-view.js');
