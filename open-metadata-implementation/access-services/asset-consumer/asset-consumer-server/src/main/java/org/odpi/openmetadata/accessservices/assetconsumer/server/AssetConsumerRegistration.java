@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.server;
 
 
 import org.odpi.openmetadata.accessservices.assetconsumer.admin.AssetConsumerAdmin;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
+import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;

@@ -640,7 +640,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOperationalAccessServiceAdminList() != null)
         {
-            for (AccessServiceAdmin  accessServiceAdmin : instance.getOperationalAccessServiceAdminList())
+            for (AccessServiceAdmin accessServiceAdmin : instance.getOperationalAccessServiceAdminList())
             {
                 if (accessServiceAdmin != null)
                 {

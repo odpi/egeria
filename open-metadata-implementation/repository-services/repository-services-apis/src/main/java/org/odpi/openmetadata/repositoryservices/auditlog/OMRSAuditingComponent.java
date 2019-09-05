@@ -129,7 +129,22 @@ public enum OMRSAuditingComponent
     REMOTE_REPOSITORY_CONNECTOR(23,
              "Remote Open Metadata Repository Connector",
              "Provides access to open metadata located in a remote repository.",
-             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/repository-connector.html")
+             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/connectors/repository-connector.html"),
+
+    OMAS_OUT_TOPIC(24,
+             "Open Metadata Access Service (OMAS) Out Topic",
+             "Publishes events from a specific access service.",
+             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.html"),
+
+    OMAS_IN_TOPIC(25,
+             "Open Metadata Access Service (OMAS) In Topic",
+             "Receives events from external servers and tools directed at a specific access service.",
+             "https://odpi.github.io/egeria/open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.html"),
+
+    ENTERPRISE_TOPIC_LISTENER(26,
+             "Open Metadata Access Service (OMAS) In Topic",
+             "Receives events from the open metadata repository cohorts that this server is registered with.",
+             "https://odpi.github.io/egeria/open-metadata-implementation/repository-services/docs/component-descriptions/omrs-event-topic.html")
     ;
 
 

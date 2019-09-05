@@ -19,7 +19,7 @@
     <name>Asset Management Samples</name>
     <description>
         Samples that shows how to manage and use assets through OCF Connectors using
-        the Asset Owner, Connected Asset and Asset Consumer OMAS clients
+        the Asset Owner and Asset Consumer OMAS clients
     </description>
 
     <dependencies>
@@ -39,6 +39,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>structured-file-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>avro-file-connector</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

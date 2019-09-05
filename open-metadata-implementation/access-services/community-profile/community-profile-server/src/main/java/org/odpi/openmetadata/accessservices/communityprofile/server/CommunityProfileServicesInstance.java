@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.server;
 
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
+import org.odpi.openmetadata.accessservices.communityprofile.handlers.ContributionRecordHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.PersonalProfileHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.handlers.UserIdentityHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -21,8 +22,9 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
 {
     private static AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
-    private PersonalProfileHandler personalProfileHandler;
-    private UserIdentityHandler    userIdentityHandler;
+    private PersonalProfileHandler    personalProfileHandler;
+    private UserIdentityHandler       userIdentityHandler;
+    private ContributionRecordHandler contributionRecordHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -32,6 +34,7 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      * @param auditLog logging destination
      * @param localServerUserId userId used for server initiated actions
      * @param maxPageSize max number of results to return on single request.
+     * @param karmaPointPlateau number of karma points to reach a plateau
      *
      * @throws NewInstanceException a problem occurred during initialization
      */
@@ -39,7 +42,8 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                             List<String>            supportedZones,
                                             OMRSAuditLog            auditLog,
                                             String                  localServerUserId,
-                                            int                     maxPageSize) throws NewInstanceException
+                                            int                     maxPageSize,
+                                            int                     karmaPointPlateau) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
@@ -65,6 +69,13 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
                                                                repositoryHelper,
                                                                repositoryHandler,
                                                                errorHandler);
+
+            this.contributionRecordHandler = new ContributionRecordHandler(serviceName,
+                                                                           serverName,
+                                                                           invalidParameterHandler,
+                                                                           repositoryHelper,
+                                                                           repositoryHandler,
+                                                                           karmaPointPlateau);
         }
         else
         {
@@ -87,7 +98,7 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      *
      * @return handler object
      */
-    PersonalProfileHandler getPersonalProfileHandler()
+    public PersonalProfileHandler getPersonalProfileHandler()
     {
         return personalProfileHandler;
     }
@@ -98,8 +109,19 @@ public class CommunityProfileServicesInstance extends OCFOMASServiceInstance
      *
      * @return handler object
      */
-    UserIdentityHandler getUserIdentityHandler()
+    public UserIdentityHandler getUserIdentityHandler()
     {
         return userIdentityHandler;
+    }
+
+
+    /**
+     * Return the handler for personal contribution record requests.
+     *
+     * @return handler object
+     */
+    public ContributionRecordHandler getContributionRecordHandler()
+    {
+        return contributionRecordHandler;
     }
 }

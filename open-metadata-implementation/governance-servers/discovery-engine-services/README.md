@@ -24,7 +24,7 @@ The discovery engine provides a REST API to request that a specific discovery se
 that all applicable discovery services are run for the asset.
 
 The results of each of these
-calls is a [discovery analysis report](docs/concepts/discovery-analysis-report.md).
+calls is a [discovery analysis report](../../frameworks/open-discovery-framework/docs/discovery-report.md).
 
 The discovery engine calls the Discovery Engine OMAS to retrieve information about the Asset's supported discovery
 services and to attach the discovery analysis report to the Asset.

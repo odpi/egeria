@@ -52,6 +52,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-registration</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>

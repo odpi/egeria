@@ -106,13 +106,15 @@ public class OMRSRepositoryRESTServices
      * @param metadataHighwayManager URL of the local server
      * @param localServerURL URL of the local server
      * @param auditLog auditLog destination
+     * @param maxPageSize max number of results to return on single request.
      */
     public static void setServerRepositories(String                          localServerName,
                                              LocalOMRSRepositoryConnector    localRepositoryConnector,
                                              OMRSRepositoryConnector         enterpriseRepositoryConnector,
                                              OMRSMetadataHighwayManager      metadataHighwayManager,
                                              String                          localServerURL,
-                                             OMRSAuditLog                    auditLog)
+                                             OMRSAuditLog                    auditLog,
+                                             int                             maxPageSize)
     {
         new OMRSRepositoryServicesInstance(localServerName,
                                            localRepositoryConnector,
@@ -120,7 +122,8 @@ public class OMRSRepositoryRESTServices
                                            metadataHighwayManager,
                                            localServerURL,
                                            serviceName,
-                                           auditLog);
+                                           auditLog,
+                                           maxPageSize);
     }
 
 
