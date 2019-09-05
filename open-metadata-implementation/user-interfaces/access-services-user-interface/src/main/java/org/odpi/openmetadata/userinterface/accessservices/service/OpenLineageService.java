@@ -67,7 +67,6 @@ public class OpenLineageService {
         return graphData;
     }
 
-
     public Map<String, Object> getUltimateDestination(String userId, Scope scope, String guid) throws IOException {
         String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATEDESTINATION, graph, guid);
         Map<String, Object> graphData = processResponse(response);
@@ -90,17 +89,13 @@ public class OpenLineageService {
         final ObjectMapper mapper = this.mapper;
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
-        try {
-            LOG.debug("Received response:{}", response);
-            Response responseObj = mapper.readValue(response, Response.class);
-            Optional.ofNullable(responseObj.getVertices())
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .forEach(v -> addNodeAndEdges(v, listNodes, listEdges));
-        } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
-            throw e;
-        }
+
+        LOG.debug("Received response:{}", response);
+        Response responseObj = mapper.readValue(response, Response.class);
+        Optional.ofNullable(responseObj.getVertices())
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .forEach(v -> addNodeAndEdges(v, listNodes, listEdges));
 
         Map<String, Object> graphData = new HashMap<>();
         graphData.put("edges", listEdges);
