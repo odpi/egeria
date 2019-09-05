@@ -98,41 +98,35 @@ class AssetLineageView extends PolymerElement {
             this.$.visgraph.importNodesAndEdges(data.nodes, data.edges);
         }
 
-      _loadData(){
-          this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/export?graph=MOCK';
-          this.$.tokenAjax._go();
-      }
-
 
       _ultimateSource(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=columnview';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
 
       _endToEndLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=columnview';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _ultimateDestination(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=columnview';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _glossaryLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=columnview';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _sourceAndDestination(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=columnview';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 

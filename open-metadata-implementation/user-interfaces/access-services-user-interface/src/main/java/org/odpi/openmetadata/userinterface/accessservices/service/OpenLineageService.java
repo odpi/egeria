@@ -9,7 +9,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Edge;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Node;
-import org.odpi.openmetadata.userinterface.accessservices.service.response.Property;
 import org.odpi.openmetadata.userinterface.accessservices.service.response.Response;
 import org.odpi.openmetadata.userinterface.accessservices.service.response.Vertice;
 import org.slf4j.Logger;
@@ -20,10 +19,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.AbstractMap;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class OpenLineageService {
@@ -84,47 +88,15 @@ public class OpenLineageService {
 
     private Map<String, Object> processResponse(String response) throws IOException {
         final ObjectMapper mapper = this.mapper;
-        Map<String, Object> graphObject;
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
         try {
-            LOG.debug(" Received response:{}", response);
+            LOG.debug("Received response:{}", response);
             Response responseObj = mapper.readValue(response, Response.class);
-
-            for(Vertice vertice : responseObj.getVertices()){
-                String labelRoot = vertice.getLabel();
-                String idRoot = String.valueOf(vertice.getId().getValue());
-                Node node = new Node(idRoot, labelRoot + idRoot);
-                node.setGroup(labelRoot);
-                Map<String, String> properties = new HashMap<>();
-                if(vertice.getProperties()!= null && !vertice.getProperties().isEmpty()){
-                    for(Map.Entry<String, List<Property>> propertyEntry: vertice.getProperties().entrySet()){
-                        properties.put(propertyEntry.getKey(), propertyEntry.getValue().get(0).getValue());
-                    }
-                }
-                node.setProperties(properties);
-                String displayName = properties.get("vedisplayName");
-                String glossaryTerm = properties.get("veglossaryTerm");
-                if(StringUtils.isEmpty(displayName)) {
-                    displayName = properties.get("displayName");
-                }
-                if(!StringUtils.isEmpty(glossaryTerm)){
-                    displayName = displayName + "\n" + glossaryTerm;
-                }
-                node.setLabel(displayName);
-                listNodes.add(node);
-                if(vertice.getInE()!= null && !vertice.getInE().isEmpty()) {
-                    for (Map.Entry<String, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge>> entry :  vertice.getInE().entrySet()) {
-
-                        for(org.odpi.openmetadata.userinterface.accessservices.service.response.Edge edge: entry.getValue()) {
-                            String value = String.valueOf(edge.getOutV().getValue());
-                            Edge newEdge = new Edge(idRoot, value);
-                            newEdge.setLabel(entry.getKey());
-                            listEdges.add(newEdge);
-                        }
-                    }
-                }
-            }
+            Optional.ofNullable(responseObj.getVertices())
+                    .map(Collection::stream)
+                    .orElseGet(Stream::empty)
+                    .forEach(v -> addNodeAndEdges(v, listNodes, listEdges));
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             throw e;
@@ -134,6 +106,47 @@ public class OpenLineageService {
         graphData.put("edges", listEdges);
         graphData.put("nodes", listNodes);
         return graphData;
+    }
+
+    private void addNodeAndEdges(Vertice vertice, List<Node> listNodes, List<Edge> listEdges) {
+        String labelRoot = vertice.getLabel();
+        String idRoot = String.valueOf(vertice.getId().getValue());
+
+        Map<String, String> properties = Optional.ofNullable(vertice.getProperties())
+                .map(e -> e.entrySet().stream())
+                .orElseGet(Stream::empty)
+                .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().get(0).getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        String displayName = properties.get("vedisplayName");
+        String glossaryTerm = properties.get("veglossaryTerm");
+        if(StringUtils.isEmpty(displayName)) {
+            displayName = properties.get("displayName");
+        }
+        if(!StringUtils.isEmpty(glossaryTerm)){
+            displayName = displayName + "\n" + glossaryTerm;
+        }
+        Node node = new Node(idRoot, displayName);
+        node.setGroup(labelRoot);
+        node.setProperties(properties);
+
+        listEdges.addAll(Optional.ofNullable(vertice.getInE())
+                .map(e -> e.entrySet().stream())
+                .orElseGet(Stream::empty)
+                .flatMap(e -> createEdges(idRoot, e.getKey(),  e.getValue()).stream())
+                .collect(Collectors.toList()));
+
+        listNodes.add(node);
+    }
+
+    private List<Edge> createEdges(String idRoot, String key, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge> values) {
+        return Optional.ofNullable(values)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .map(e -> { Edge newEdge = new Edge(idRoot, String.valueOf(e.getOutV().getValue()));
+                            newEdge.setLabel(key);
+                            return newEdge;})
+                .collect(Collectors.toList());
     }
 
 
