@@ -19,6 +19,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes({
+                      @JsonSubTypes.Type(value = FileSystemResponse.class, name = "FileSystemResponse"),
+                      @JsonSubTypes.Type(value = FolderResponse.class, name = "FolderResponse"),
+                      @JsonSubTypes.Type(value = ZoneListResponse.class, name = "ZoneListResponse"),
+                      @JsonSubTypes.Type(value = ZoneResponse.class, name = "ZoneResponse")
+
+              })
 public abstract class AssetOwnerOMASAPIResponse extends FFDCResponseBase
 {
     /**

@@ -16,8 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 
@@ -28,13 +26,12 @@ import java.util.Map;
  */
 public class ContributionRecordHandler
 {
-    private static final Logger log = LoggerFactory.getLogger(ContributionRecordHandler.class);
-
     private String                  serviceName;
     private String                  serverName;
     private RepositoryHandler       repositoryHandler;
     private OMRSRepositoryHelper    repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
+    private int                     karmaPointPlateau;
 
 
     /**
@@ -46,18 +43,33 @@ public class ContributionRecordHandler
      * @param invalidParameterHandler handler for invalid parameters
      * @param repositoryHelper helper used by the converters
      * @param repositoryHandler handler for calling the repository services
+     * @param karmaPointPlateau the number of karma points to reach a plateau
      */
     public ContributionRecordHandler(String                  serviceName,
                                      String                  serverName,
                                      InvalidParameterHandler invalidParameterHandler,
                                      OMRSRepositoryHelper    repositoryHelper,
-                                     RepositoryHandler       repositoryHandler)
+                                     RepositoryHandler       repositoryHandler,
+                                     int                     karmaPointPlateau)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.karmaPointPlateau = karmaPointPlateau;
+    }
+
+
+    /**
+     * Return the karma point plateau for an individual.
+     *
+     * @param karmaPointTotal current points
+     * @return current plateau
+     */
+    private int getKarmaPointPlateau(int karmaPointTotal)
+    {
+        return karmaPointTotal / this.karmaPointPlateau;
     }
 
 
@@ -122,7 +134,14 @@ public class ContributionRecordHandler
                                                                                     repositoryHelper,
                                                                                     serviceName);
 
-            return converter.getBean();
+            ContributionRecord contributionRecord = converter.getBean();
+
+            if ((contributionRecord != null) && (contributionRecord.getKarmaPoints() > 0))
+            {
+                contributionRecord.setKarmaPointPlateau(this.getKarmaPointPlateau(contributionRecord.getKarmaPoints()));
+            }
+
+            return contributionRecord;
         }
         else
         {
@@ -266,29 +285,34 @@ public class ContributionRecordHandler
      * @param userId calling user
      * @param personalProfileGUID unique identifier of personal profile
      * @param qualifiedName qualified name of their personal profile
+     * @param karmaPointIncrement number of points to add to the contribution record.
      * @param methodName calling method
-     *
+     * @return updated record or null if not found
      * @throws InvalidParameterException the userId, qualified name or guid is null
      * @throws PropertyServerException the metadata repository is not available
      * @throws UserNotAuthorizedException the user is not authorized to issue this request
      */
-    public void incrementKarmaPoints(String   userId,
-                                     String   personalProfileGUID,
-                                     String   qualifiedName,
-                                     String   methodName) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public ContributionRecord  incrementKarmaPoints(String   userId,
+                                                    String   personalProfileGUID,
+                                                    String   qualifiedName,
+                                                    int      karmaPointIncrement,
+                                                    String   methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
         ContributionRecord contributionRecord = this.getContributionRecord(userId, personalProfileGUID, qualifiedName, methodName);
 
-        if (contributionRecord != null)
+        if ((contributionRecord != null) && (karmaPointIncrement > 0))
         {
-            int currentKarmaPoints = contributionRecord.getKarmaPoints();
+            int newKarmaPoints = contributionRecord.getKarmaPoints() + karmaPointIncrement;
 
-            contributionRecord.setKarmaPoints(currentKarmaPoints++);
-
+            contributionRecord.setKarmaPoints(newKarmaPoints);
             saveContributionRecord(userId, contributionRecord, methodName);
+
+            contributionRecord.setKarmaPointPlateau(this.getKarmaPointPlateau(newKarmaPoints));
         }
+
+        return contributionRecord;
     }
 
 

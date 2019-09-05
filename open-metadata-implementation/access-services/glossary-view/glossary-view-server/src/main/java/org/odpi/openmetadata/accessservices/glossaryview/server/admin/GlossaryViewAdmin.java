@@ -13,7 +13,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Called by the OMAG Server to initialize and terminate the Glossary View OMAS.
  * The initialization call provides this OMAS with resources from the Open Metadata Repository Services.
  */
-public class GlossaryViewAdmin extends AccessServiceAdmin {
+public class GlossaryViewAdmin extends AccessServiceAdmin
+{
 
     private OMRSAuditLog auditLog;
     private GlossaryViewServiceInstance instance;

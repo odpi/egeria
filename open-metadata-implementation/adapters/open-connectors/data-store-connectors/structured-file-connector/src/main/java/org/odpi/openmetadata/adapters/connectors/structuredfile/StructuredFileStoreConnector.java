@@ -23,7 +23,7 @@ import java.util.*;
 public class StructuredFileStoreConnector extends ConnectorBase implements StructuredFileStore
 {
     /*
-     * Variables used in writing to the file.
+     * Variables used in reading the file.
      */
     private String         fileStoreName     = null;
     private List<String>   columnNames       = null;
@@ -388,7 +388,7 @@ public class StructuredFileStoreConnector extends ConnectorBase implements Struc
 
 
     /**
-     * Close the config file
+     * Close the file
      */
     public void disconnect()
     {

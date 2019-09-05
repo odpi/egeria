@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.auditlog.SubjectAreaAudi
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.listener.SubjectAreaOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;

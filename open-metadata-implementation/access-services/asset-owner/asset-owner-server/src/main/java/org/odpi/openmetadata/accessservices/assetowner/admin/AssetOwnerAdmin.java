@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetowner.admin;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.auditlog.AssetOwnerAuditCode;
-import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
 import org.odpi.openmetadata.accessservices.assetowner.server.AssetOwnerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -14,7 +13,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * AssetOwnerAdmin manages the start up and shutdown of the Asset Owner OMAS.   During start up,
@@ -77,7 +75,9 @@ public class AssetOwnerAdmin extends AccessServiceAdmin
             this.instance = new AssetOwnerServicesInstance(repositoryConnector,
                                                            supportedZones,
                                                            defaultZones,
-                                                           auditLog);
+                                                           auditLog,
+                                                           serverUserName,
+                                                           repositoryConnector.getMaxPageSize());
             this.serverName = instance.getServerName();
 
 

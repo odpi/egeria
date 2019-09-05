@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
+import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -148,8 +149,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             		continue;
             	
             	}
+
             	updateNextMaxPollTimestamp();
-                ConsumerRecords<String, String> records = consumer.poll(pollTimeout);
+
+                Duration pollDuration = Duration.ofMillis(pollTimeout);
+                ConsumerRecords<String, String> records = consumer.poll(pollDuration);
                 
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
