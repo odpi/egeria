@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.communityprofile.events;
 
 /**
- * MockAccessServiceEventHeader provides a concrete class to test the access service's event header
+ * MockAccessServiceEventHeader provides a concrete class to test the access service's outbound event
  */
 public class MockAccessServiceEventHeader extends CommunityProfileEventHeader
 {

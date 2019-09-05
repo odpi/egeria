@@ -6,7 +6,7 @@
 The enterprise metadata collection is the [metadata collection](metadata-collection.md)
 that is the combination of metadata from all of the metadata collections held by the
 [open metadata repositories](open-metadata-repository.md) that are members of
-the same [open metadata repository cohort](open-metadata-repository-cohort.md)
+the same [open metadata repository cohorts](open-metadata-repository-cohort.md)
 as the server where the
 [enterprise repository services](subsystem-descriptions/enterprise-repository-services.md) are enabled.
 

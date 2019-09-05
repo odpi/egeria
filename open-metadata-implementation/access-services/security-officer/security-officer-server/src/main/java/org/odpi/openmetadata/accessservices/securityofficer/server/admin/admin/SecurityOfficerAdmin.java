@@ -21,7 +21,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 
-public class SecurityOfficerAdmin extends AccessServiceAdmin {
+public class SecurityOfficerAdmin extends AccessServiceAdmin
+{
 
     private OMRSAuditLog auditLog;
     private String serverName;

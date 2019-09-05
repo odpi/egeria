@@ -51,8 +51,38 @@ public enum CommunityProfileAuditCode
     SERVICE_INSTANCE_FAILURE("OMAS-COMMUNITY-PROFILE-0005",
              OMRSAuditLogRecordSeverity.ERROR,
              "The Community Profile Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
+             "The Community Profile OMAS detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+
+    OUTBOUND_EVENT("OMAS-COMMUNITY-PROFILE-0006",
+             OMRSAuditLogRecordSeverity.EVENT,
+             "The Community Profile Open Metadata Access Service (OMAS) has sent an event of type {0} on its out topic.  Event subject is {1}",
+             "The Community Profile OMAS has detected a situation that results in an outbound event.",
+             "No action is required.  This is part of the normal operation of the service."),
+
+    INBOUND_EVENT("OMAS-COMMUNITY-PROFILE-0007",
+             OMRSAuditLogRecordSeverity.EVENT,
+             "The Community Profile Open Metadata Access Service (OMAS) has received an event of type {0} on its in topic.  Event subject is {1}",
+             "The Community Profile OMAS has detected an incoming event.",
+             "No action is required.  This is part of the normal operation of the service."),
+
+    KARMA_PLATEAU_AWARD("OMAS-COMMUNITY-PROFILE-0008",
+             OMRSAuditLogRecordSeverity.INFO,
+            "{0} has reached a new karma point plateau of {1} with {2} karma points",
+            "The Community Profile OMAS has detected an incoming event.",
+            "No action is required.  This is part of the normal operation of the service."),
+
+    KARMA_POINT_EXCEPTION("OMAS-COMMUNITY-PROFILE-0009",
+             OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to award karma points to {0} due to exception {1}.  The error message from the exception was {2}",
+            "The system detected an exception whilst attempting to award karma points.  No karma points were awarded.",
+            "Investigate and correct the source of the error.  Once fixed, karma points will be awarded."),
+
+    OUTBOUND_EVENT_EXCEPTION("OMAS-COMMUNITY-PROFILE-0010",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to send an outbound event for instance with unique identifier of {0} and type name {1} due to exception {2}.  The error message from the exception was {3}",
+            "The system detected an exception whilst attempting to send an event to the out topic.  No event is sent.",
+            "Investigate and correct the source of the error.  Once fixed, events will be sent.")
     ;
 
     private String                     logMessageId;
