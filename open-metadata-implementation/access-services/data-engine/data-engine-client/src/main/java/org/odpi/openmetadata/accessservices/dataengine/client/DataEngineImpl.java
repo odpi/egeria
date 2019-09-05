@@ -28,6 +28,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -110,9 +111,14 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(Collections.singletonList(process));
 
-        return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
-    }
+        List<String> result = callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
 
+        if(CollectionUtils.isEmpty(result)) {
+            return null;
+        }
+
+        return result.get(0);
+    }
     @Override
     public List<String> createProcesses(String userId, List<Process> processes) throws InvalidParameterException,
                                                                                        PropertyServerException,
