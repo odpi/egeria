@@ -114,7 +114,8 @@ public class MockGraphGenerator {
             columnNodes.add(columnNodesPerTable);
         }
 
-        //Create the lineage flows by connecting columns to processes and connecting processes to the columns of the next table.
+        //Create the lineage flows by connecting columns to processes and connecting processes to the columns of the
+        // next table.
 
         //For each flow
         for (int flowIndex = 0; flowIndex < numberFlows; flowIndex++) {
@@ -150,13 +151,13 @@ public class MockGraphGenerator {
     private void addGlossaryTermProperties(int i, Vertex glossaryVertex) {
         glossaryVertex.property(PROPERTY_KEY_ENTITY_GUID, "g" + i);
         glossaryVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.g" + i);
-        glossaryVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + i);
+        glossaryVertex.property(PROPERTY_KEY_DISPLAY_NAME, "g" + i);
         glossaryVertex.property(PROPERTY_KEY_GLOSSARY, "glossary");
     }
 
     private void addProcessProperties(int i, Vertex processVertex) {
         processVertex.property(PROPERTY_KEY_ENTITY_GUID, "p" + i);
-        processVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.p" + i);
+        processVertex.property(PROPERTY_KEY_DISPLAY_NAME, "p" + i);
         processVertex.property(PROPERTY_KEY_CREATE_TIME, "createTime");
         processVertex.property(PROPERTY_KEY_UPDATE_TIME, "updateTime");
         processVertex.property(PROPERTY_KEY_FORMULA, "formula");
@@ -168,7 +169,7 @@ public class MockGraphGenerator {
     private void addTableProperties(int j, Vertex tableVertex) {
         tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
         tableVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j);
-        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.g" + j);
+        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "g" + j);
         tableVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
         tableVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
         tableVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
@@ -178,7 +179,7 @@ public class MockGraphGenerator {
     private void addColumnProperties(int j, int i, Vertex columnVertex) {
         columnVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j + "c" + i);
         columnVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j + "c" + i);
-        columnVertex.property(PROPERTY_KEY_DISPLAY_NAME, "display.name.t" + j + "c" + i);
+        columnVertex.property(PROPERTY_KEY_DISPLAY_NAME, "t" + j + "c" + i);
         columnVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
         columnVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
         columnVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
