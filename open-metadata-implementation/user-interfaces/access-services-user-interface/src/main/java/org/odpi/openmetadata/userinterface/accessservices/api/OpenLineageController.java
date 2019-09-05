@@ -90,6 +90,18 @@ public class OpenLineageController {
         return exportedGraph;
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
+    public Map<String, Object> sourceAndDestinationLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getSourceAndDestination(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
     //TODO use global exception handler
     private void handleException(Exception e){
         if(e instanceof InvalidParameterException){

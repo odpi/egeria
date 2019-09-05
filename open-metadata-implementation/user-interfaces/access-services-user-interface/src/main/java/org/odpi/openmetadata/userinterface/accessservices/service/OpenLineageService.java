@@ -76,6 +76,12 @@ public class OpenLineageService {
         return graphData;
     }
 
+    public Map<String, Object> getSourceAndDestination(String userId, Scope scope, String guid) throws IOException {
+        String response = openLineageClient.queryLineage(user, scope, Query.SOURCEANDDESTINATION, graph, guid);
+        Map<String, Object> graphData = processResponse(response);
+        return graphData;
+    }
+
     private Map<String, Object> processResponse(String response) throws IOException {
         final ObjectMapper mapper = this.mapper;
         Map<String, Object> graphObject;

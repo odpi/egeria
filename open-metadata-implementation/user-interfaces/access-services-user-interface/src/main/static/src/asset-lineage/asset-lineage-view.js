@@ -29,6 +29,7 @@ class AssetLineageView extends PolymerElement {
       <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
       <vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>
       <vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>
+      <vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio"> Source and Destination</vaadin-radio-button>
     </vaadin-radio-group>
           
     <div class="container" id="container">
@@ -106,26 +107,32 @@ class AssetLineageView extends PolymerElement {
 
       _ultimateSource(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=columnview';
           this.$.tokenAjax._go();
       }
 
 
       _endToEndLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=columnview';
           this.$.tokenAjax._go();
       }
 
       _ultimateDestination(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=columnview';
           this.$.tokenAjax._go();
       }
 
       _glossaryLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=columnview';
+          this.$.tokenAjax._go();
+      }
+
+      _sourceAndDestination(guid){
+          this.$.visgraph.options.groups = this.groups;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=columnview';
           this.$.tokenAjax._go();
       }
 
@@ -142,6 +149,9 @@ class AssetLineageView extends PolymerElement {
                 break;
             case 'glossaryLineage':
                 this._glossaryLineage(this.guid);
+                break;
+            case 'sourceAndDestination':
+                this._sourceAndDestination(this.guid);
                 break;
         }
     }
