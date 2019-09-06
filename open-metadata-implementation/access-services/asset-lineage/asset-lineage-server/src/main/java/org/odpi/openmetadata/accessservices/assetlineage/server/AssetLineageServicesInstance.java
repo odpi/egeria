@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorC
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -24,6 +25,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private GlossaryHandler glossaryHandler;
     private ContextHandler contextHandler;
     private CommonHandler commonHandler;
+    private ProcessHandler processHandler;
 
 
     /**
@@ -63,6 +65,12 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler);
+
+            processHandler = new ProcessHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
         }else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
@@ -97,11 +105,26 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return contextHandler;
     }
 
-
+    /**
+     * Return the specialized common handler for Asset Lineage OMAS.
+     *
+     * @return common handler
+     */
     CommonHandler getCommonHandler()
     {
         return commonHandler;
     }
+
+    /**
+     * Return the specialized process handler for Asset Lineage OMAS.
+     *
+     * @return process handler
+     */
+    ProcessHandler getProcessHandler()
+    {
+        return processHandler;
+    }
+
 
 }
 

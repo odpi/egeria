@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -100,6 +101,31 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
 
         if (instance != null) {
             return instance.getCommonHandler();
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve the specific handler for the access service.
+     *
+     * @param userId     calling user
+     * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the calling operation
+     * @return handler for use by the requested instance
+     * @throws InvalidParameterException  no available instance for the requested server
+     * @throws UserNotAuthorizedException user does not have access to the requested server
+     * @throws PropertyServerException    error in the requested server
+     */
+    public ProcessHandler getProcessHandler(String userId,
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException {
+        AssetLineageServicesInstance instance = (AssetLineageServicesInstance) super.getServerServiceInstance(userId, serverName, serviceOperationName);
+
+        if (instance != null) {
+            return instance.getProcessHandler();
         }
 
         return null;
