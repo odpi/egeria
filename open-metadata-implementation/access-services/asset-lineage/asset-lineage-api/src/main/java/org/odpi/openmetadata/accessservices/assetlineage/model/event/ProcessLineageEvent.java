@@ -1,4 +1,4 @@
-package org.odpi.openmetadata.accessservices.assetlineage.model;
+package org.odpi.openmetadata.accessservices.assetlineage.model.event;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
