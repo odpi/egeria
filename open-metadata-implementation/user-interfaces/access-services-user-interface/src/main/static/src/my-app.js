@@ -19,10 +19,8 @@ import '@polymer/iron-localstorage/iron-localstorage';
 import '@polymer/paper-icon-button/paper-icon-button.js';
 import '@polymer/paper-menu-button/paper-menu-button.js';
 import '@polymer/paper-item/paper-item.js';
-import '@polymer/paper-button';
 import '@polymer/paper-dropdown-menu/paper-dropdown-menu.js';
 import '@polymer/paper-listbox/paper-listbox.js';
-import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/iron-icon/iron-icon.js';
@@ -30,6 +28,7 @@ import '@polymer/iron-icons/iron-icons.js';
 import '@polymer/iron-form/iron-form.js';
 import './my-icons.js';
 import './token-ajax';
+import './toast-feedback';
 import './login-view.js';
 import './user-options-menu';
 import './shared-styles';
@@ -115,6 +114,10 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
           --paper-input-container-label-floating: {
             width: auto;
          };
+         .yellow-button {
+            text-transform: none;
+            color: #eeff41;
+          }
         
       </style>
      
@@ -124,13 +127,15 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
       <app-route route="{{subroute}}" pattern="[[rootPath]]:guid" data="{{subrouteData}}"></app-route>
-
+       
+       <toast-feedback duration="0"></toast-feedback> 
+       
         <template is="dom-if" if="[[!token]]"  restamp="true">
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
       
         <template is="dom-if" if="[[token]]"  restamp="true">
-
+            
             <app-drawer-layout id="drawerLayout" flex forceNarrow  narrow="{{narrow}}" fullbleed="">
                 <app-drawer id="drawer" slot="drawer"  swipe-open="[[narrow]]">
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
@@ -161,16 +166,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                       </div>
 
                       <div main-title="">
-<!--                        <div style="margin-left: 100pt; width: 300pt">-->
-<!--                            <iron-form id="searchForm">-->
-<!--                                <form method="get">-->
-<!--                                    <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>-->
-<!--                                    <paper-input class="custom" label="Search" value="{{q}}" no-label-float required autofocus>-->
-<!--                                        <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>-->
-<!--                                    </paper-input>-->
-<!--                                </form>-->
-<!--                           </iron-form>-->
-<!--                        </div>-->
+
                       </div>
                       <div style="float: right"><user-options></user-options></div>
 
@@ -234,7 +230,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         super.ready();
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
-        this.addEventListener('show-feedback', this._onFeedbackChanged);
         this.addEventListener('set-title', this._onSetTitle);
     }
 
