@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.CommonHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
@@ -22,6 +23,7 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
     private ContextHandler contextHandler;
+    private CommonHandler commonHandler;
 
 
     /**
@@ -51,6 +53,12 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHandler);
 
             contextHandler = new ContextHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
+            commonHandler = new CommonHandler(serviceName,
                     serverName,
                     invalidParameterHandler,
                     repositoryHelper,
@@ -89,6 +97,11 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return contextHandler;
     }
 
+
+    CommonHandler getCommonHandler()
+    {
+        return commonHandler;
+    }
 
 }
 
