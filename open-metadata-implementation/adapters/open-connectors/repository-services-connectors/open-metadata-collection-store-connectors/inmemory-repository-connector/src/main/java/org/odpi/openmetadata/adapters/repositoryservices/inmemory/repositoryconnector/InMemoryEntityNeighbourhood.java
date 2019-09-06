@@ -74,7 +74,7 @@ class InMemoryEntityNeighbourhood
         this.limitResultsByStatus = limitResultsByStatus;
         this.limitResultsByClassification = limitResultsByClassification;
         /*
-         * limit the level to 100 in case the algorithm gets into a circularity - hoefully this is sufficiently high for in memory demo use cases.
+         * limit the level to 100 in case the algorithm gets into a circularity - hopefully this is sufficiently high for in memory demo use cases.
          */
         if (level < 1 || level > 100)
         {
@@ -291,11 +291,11 @@ class InMemoryEntityNeighbourhood
         Set<String> visitedRelationships = new HashSet<>();
         entities.add(rootEntityGUID);
         this.createGraph(entities, visitedEntities, visitedRelationships, 0);
-        List entityList = new ArrayList();
+        List<EntityDetail> entityList = new ArrayList<>();
         /*
          * add the root entity so the returned graph is consistent.
          */
-        List relationshipList = new ArrayList();
+        List<Relationship> relationshipList = new ArrayList<>();
         EntityDetail rootEntity = (entityStore.get(rootEntityGUID));
         entityList.add(rootEntity);
         for (String entityGuid : this.graphEntities)
@@ -321,7 +321,7 @@ class InMemoryEntityNeighbourhood
      * @param currentLevel         the current level
      * @throws TypeErrorException Type error.
      */
-    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws TypeErrorException
+    private void createGraph(Set<String> entities, Set<String> visitedEntities, Set<String> visitedRelationships, int currentLevel) throws TypeErrorException
     {
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)

@@ -152,12 +152,14 @@
         <javax-persistence.version>2.2</javax-persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <gaian.version>2.1.8</gaian.version>
+        <avro.version>1.9.1</avro.version>
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
         <plexus.version>3.2.0</plexus.version>
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
+        <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -243,6 +245,12 @@
                 <artifactId>gaian</artifactId>
                 <scope>provided</scope>
                 <version>${gaian.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.avro</groupId>
+                <artifactId>avro</artifactId>
+                <version>${avro.version}</version>
             </dependency>
 
             <dependency>
@@ -400,6 +408,13 @@
             </dependency>
 
             <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-analyzers-common</artifactId>
+                <scope>compile</scope>
+                <version>${lucene-analyzers-common.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
                 <scope>compile</scope>
@@ -472,6 +487,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>admin-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>admin-services-registration</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1354,6 +1376,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>structured-file-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>avro-file-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>

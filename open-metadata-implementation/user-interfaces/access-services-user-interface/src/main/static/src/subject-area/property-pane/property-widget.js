@@ -26,7 +26,7 @@ class PropertyWidget extends PolymerElement {
 
        </template>
        <template is="dom-if" if="[[objectType]]" restamp="true">
-            <property-pane name="{{name}}" artifact="{{value}}" component="subjectarea"></property-pane>
+            <property-pane name="{{name}}" artifact="{{value}}" component="{{component}}"></property-pane>
        </template>
        </div>
     `;
@@ -41,6 +41,10 @@ class PropertyWidget extends PolymerElement {
             value: {
                 type: Object,
                 notify: true
+            },
+            component: {
+                          type: String,
+                          notify: true
             },
             type: {
               type: String,

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetowner.server;
 
 
 import org.odpi.openmetadata.accessservices.assetowner.ffdc.AssetOwnerErrorCode;
+import org.odpi.openmetadata.accessservices.assetowner.handlers.FileSystemHandler;
 import org.odpi.openmetadata.accessservices.assetowner.handlers.GovernanceZoneHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
@@ -22,6 +23,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_OWNER_OMAS;
 
     private GovernanceZoneHandler governanceZoneHandler;
+    private FileSystemHandler     fileSystemHandler;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -30,18 +32,24 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
      * @param supportedZones list of zones that AssetOwner is allowed to serve Assets from.
      * @param defaultZones list of zones that AssetOwner sets up in new Asset instances.
      * @param auditLog logging destination
+     * @param localServerUserId userId used for server initiated actions
+     * @param maxPageSize max number of results to return on single request.
      * @throws NewInstanceException a problem occurred during initialization
      */
     public AssetOwnerServicesInstance(OMRSRepositoryConnector repositoryConnector,
                                       List<String>            supportedZones,
                                       List<String>            defaultZones,
-                                      OMRSAuditLog            auditLog) throws NewInstanceException
+                                      OMRSAuditLog            auditLog,
+                                      String                  localServerUserId,
+                                      int                     maxPageSize) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName() + " OMAS",
               repositoryConnector,
               supportedZones,
               defaultZones,
-              auditLog);
+              auditLog,
+              localServerUserId,
+              maxPageSize);
 
         if (repositoryHandler != null)
         {
@@ -50,6 +58,12 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
                                                                    invalidParameterHandler,
                                                                    repositoryHandler,
                                                                    repositoryHelper);
+
+            this.fileSystemHandler = new FileSystemHandler(serviceName,
+                                                           serverName,
+                                                           invalidParameterHandler,
+                                                           repositoryHandler,
+                                                           repositoryHelper);
         }
         else
         {
@@ -77,5 +91,18 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     GovernanceZoneHandler getGovernanceZoneHandler()
     {
         return governanceZoneHandler;
+    }
+
+
+
+
+    /**
+     * Return the handler for file system requests.
+     *
+     * @return handler object
+     */
+    FileSystemHandler getFileSystemHandler()
+    {
+        return fileSystemHandler;
     }
 }

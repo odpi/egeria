@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.NoSchemaAttributeExc
 import org.odpi.openmetadata.accessservices.dataengine.model.Attribute;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SchemaTypePropertiesMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.utils.RegexEscapeUtil;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.SchemaElementMapper;
@@ -22,6 +21,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,6 +39,8 @@ public class DataEngineSchemaTypeHandler {
     private static final String EQUALS = "=";
     private static final String OPEN_BRACKET = "(";
     private static final String CLOSE_BRACKET = ")";
+
+    private static final Logger log = LoggerFactory.getLogger(DataEngineSchemaTypeHandler.class);
 
     private final String serviceName;
     private final RepositoryHandler repositoryHandler;
@@ -187,7 +190,8 @@ public class DataEngineSchemaTypeHandler {
                                                                             PropertyServerException {
         final String methodName = "findSchemaAttribute";
 
-        qualifiedName = RegexEscapeUtil.escapeSpecialGraphRegexCharacters(qualifiedName);
+        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
@@ -198,8 +202,11 @@ public class DataEngineSchemaTypeHandler {
                 SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, methodName);
 
         if (retrievedEntity == null) {
+            log.debug("Searching for entity with qualifiedName: {}. Result is null", qualifiedName);
             return null;
         }
+        log.debug("Searching for entity with qualifiedName: {}. Result is {}", qualifiedName,
+                retrievedEntity.getGUID());
 
         return retrievedEntity.getGUID();
     }

@@ -2,33 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import { PolymerElement, html } from "../node_modules/@polymer/polymer/polymer-element.js";
+import './shared-styles.js';
 
 class FormFeedback extends PolymerElement {
     static get template() {
         return html`
-      <style>
+      <style include="shared-styles">
         :host {
             display: block;
         } 
-        .feedback {
-            min-height: 1em;
-            padding: 3px 6px;
-            margin: 5px 0;
-        }       
-        .error {
-            color: red;
-            border: solid 1px red;
-            background-color: #ffcfd3;
-        }
-        .info {
-            color : green;
-            border: solid 1px green;
-            background-color: #bdeebd;
-        }
         
-        .warning {
-            color: orange;
-        }
       </style>
 
        <div class$="feedback [[level]]">

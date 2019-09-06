@@ -11,9 +11,6 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
  * AccessServiceDescription lists all of the identified access services, giving them an unique identifier
  * and including a URL to their home page.
  *
- * AccessServiceAdmin is the API that each access service implements.  It is called to initialize and shutdown
- * the access service.
- *
  * AccessServiceRegistration holds the properties of an access service that is passed to the admin services
  * during registration.
  *

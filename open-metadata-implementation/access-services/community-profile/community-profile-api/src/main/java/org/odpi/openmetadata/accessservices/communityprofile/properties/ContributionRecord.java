@@ -25,6 +25,7 @@ public class ContributionRecord extends CommonHeader
     private List<Classification> classifications      = null;
     private String               qualifiedName        = null;
     private int                  karmaPoints          = 0;
+    private int                  karmaPointPlateau    = 0;
     private Map<String, Object>  extendedProperties   = null;
     private Map<String, String>  additionalProperties = null;
 
@@ -52,6 +53,7 @@ public class ContributionRecord extends CommonHeader
             this.classifications = template.getClassifications();
             this.qualifiedName = template.getQualifiedName();
             this.karmaPoints = template.getKarmaPoints();
+            this.karmaPointPlateau = template.getKarmaPointPlateau();
             this.extendedProperties = template.getExtendedProperties();
             this.additionalProperties = template.getAdditionalProperties();
         }
@@ -136,6 +138,28 @@ public class ContributionRecord extends CommonHeader
 
 
     /**
+     * Return the current karma point plateau level for this person.
+     *
+     * @return count
+     */
+    public int getKarmaPointPlateau()
+    {
+        return karmaPointPlateau;
+    }
+
+
+    /**
+     * Set up the karma point plateau level for this person.
+     *
+     * @param karmaPointPlateau count
+     */
+    public void setKarmaPointPlateau(int karmaPointPlateau)
+    {
+        this.karmaPointPlateau = karmaPointPlateau;
+    }
+
+
+    /**
      * Return any properties associated with the subclass of this element.
      *
      * @return map of property names to property values
@@ -213,6 +237,7 @@ public class ContributionRecord extends CommonHeader
                 "classifications=" + classifications +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", karmaPoints=" + karmaPoints +
+                ", karmaPointPlateau=" + karmaPointPlateau +
                 ", extendedProperties=" + extendedProperties +
                 ", additionalProperties=" + additionalProperties +
                 ", GUID='" + getGUID() + '\'' +
@@ -249,6 +274,7 @@ public class ContributionRecord extends CommonHeader
         }
         ContributionRecord that = (ContributionRecord) objectToCompare;
         return getKarmaPoints() == that.getKarmaPoints() &&
+               getKarmaPointPlateau() == that.getKarmaPointPlateau() &&
                 Objects.equals(getClassifications(), that.getClassifications()) &&
                 Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
@@ -263,7 +289,7 @@ public class ContributionRecord extends CommonHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getClassifications(), getKarmaPoints(),
+        return Objects.hash(super.hashCode(), getClassifications(), getKarmaPoints(), getKarmaPointPlateau(),
                             getExtendedProperties(), getAdditionalProperties());
     }
 }

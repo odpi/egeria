@@ -4,7 +4,7 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Graph;
+import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/export")
-    public Map<String, Object> exportGraph(String userId, @RequestParam Graph graph){
+    public Map<String, Object> exportGraph(String userId, @RequestParam GraphName graphName){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.exportGraph(userId);
@@ -53,11 +53,48 @@ public class OpenLineageController {
         }
         return exportedGraph;
     }
+
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
     public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
         Map<String, Object> exportedGraph;
         try {
             exportedGraph = openLineageService.getEndToEndLineage(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
+    public Map<String, Object> ultimateDestination(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getUltimateDestination(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
+    public Map<String, Object> glossaryLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getGlossaryLineage(userId, scope, guid);
+        } catch (IOException e) {
+            handleException(e);
+            return null;
+        }
+        return exportedGraph;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
+    public Map<String, Object> sourceAndDestinationLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+        Map<String, Object> exportedGraph;
+        try {
+            exportedGraph = openLineageService.getSourceAndDestination(userId, scope, guid);
         } catch (IOException e) {
             handleException(e);
             return null;

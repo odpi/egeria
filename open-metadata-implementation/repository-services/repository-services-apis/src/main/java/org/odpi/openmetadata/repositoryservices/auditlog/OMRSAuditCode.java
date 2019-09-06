@@ -743,27 +743,43 @@ public enum OMRSAuditCode
                         "The local server may not be communicating properly with other servers in " +
                                 "the metadata repository cohort.",
                         "This is an internal logic error.  Raise a Git Issue, including the audit log, to get this fixed."),
+
     UNEXPECTED_EXCEPTION_FROM_EVENT("OMRS-AUDIT-9011",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "An incoming event of type {0} from {1} ({2}) generated an exception with message {3}",
                        "The contents of the event were not accepted by the local repository.",
                        "Review the exception and resolve the issue it documents."),
+
     ENTERPRISE_TOPIC_DISCONNECT_ERROR("OMRS-AUDIT-9012",
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "Disconnecting from the enterprise topic connector generated an exception with message {0}",
                        "The server may not have disconnected from the topic cleanly.",
                        "Review the exception and resolve the issue it documents."),
+
     ENTERPRISE_CONNECTOR_DISCONNECT_ERROR("OMRS-AUDIT-9013",
                         OMRSAuditLogRecordSeverity.EXCEPTION,
                         "Disconnecting of the enterprise connector manager generated an exception with message {0}",
                         "The server may not have disconnected from all repositories cleanly.",
                         "Review the exception and resolve the issue it documents."),
+
     UNEXPECTED_EXCEPTION("OMRS-AUDIT-9014",
                          OMRSAuditLogRecordSeverity.EXCEPTION,
                          "The Open Metadata Repository Service has generated an unexpected {0} exception during method {1}.  The message was <{2}> and the stack trace was: {3}",
                          "The request returns a RepositoryServerException.",
                          "This is probably a logic error. Review the stack trace to identify where the error " +
-                                 "occurred and work to resolve the cause.")
+                                 "occurred and work to resolve the cause."),
+
+    BAD_EVENT_INSTANCE("OMRS-AUDIT-9015",
+                       OMRSAuditLogRecordSeverity.ERROR,
+                       "{0} has passed the {1} an invalid instance within an inbound event reportedly to be from server {2} of type {3} and owned by organization {4}.  The instance is from metadata collection {5} and is of this format: {6}",
+                       "The service detected an error during the processing of an inbound event.  The event is not processed.",
+                       "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, new inbound events should be processed correctly."),
+
+    UNEXPECTED_EXCEPTION_FROM_SERVICE_LISTENER("OMRS-AUDIT-9016",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Service {0} threw an unexpected exception {1} with message {2}; the stack trace was {4}",
+                        "The contents of the event were not accepted by the local repository.",
+                        "Review the exception and resolve the issue it documents.")
 
 
     ;

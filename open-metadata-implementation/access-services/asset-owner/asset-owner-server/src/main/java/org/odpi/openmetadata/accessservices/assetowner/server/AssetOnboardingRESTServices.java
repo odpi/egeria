@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.server;
 
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
 import org.odpi.openmetadata.adapters.connectors.structuredfile.StructuredFileStoreProvider;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -43,6 +43,8 @@ public class AssetOnboardingRESTServices
     }
 
 
+
+
     /**
      * Add a simple asset description linked to a connection object for a CSV file.
      *
@@ -57,7 +59,7 @@ public class AssetOnboardingRESTServices
      */
     public GUIDResponse addCSVFileToCatalog(String                  serverName,
                                             String                  userId,
-                                            NewFileAssetRequestBody requestBody)
+                                            NewCSVFileAssetRequestBody requestBody)
     {
         final String        methodName = "addCSVFileToCatalog";
 

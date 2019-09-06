@@ -1691,11 +1691,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                                           UserNotAuthorizedException
     {
         final String  methodName              = "restoreEntity";
+        final String  parameterName           = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        super.manageInstanceParameterValidation(userId, deletedEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, deletedEntityGUID, parameterName, methodName);
 
         /*
          * Locate entity
