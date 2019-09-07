@@ -33,7 +33,7 @@ Process finished with exit code 0
 
 ```
 
-This means you are ready to [install egeria](task-installing-egeria.md).
+This means you have completed this tutorial and are ready to [choose the next step](..).
 
 
 ----
