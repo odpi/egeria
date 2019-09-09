@@ -9,6 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
@@ -409,6 +410,7 @@ public class DataPlatformOmasListenerTest {
         type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");
 
         NewViewEvent newViewEvent = testDataHelper.buildEvent();
+        newViewEvent.setEventType(DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT);
         listener.processEvent(new ObjectMapper().writeValueAsString(newViewEvent));
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
