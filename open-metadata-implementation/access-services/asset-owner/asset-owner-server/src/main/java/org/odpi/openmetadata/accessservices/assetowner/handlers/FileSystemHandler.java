@@ -4,13 +4,19 @@ package org.odpi.openmetadata.accessservices.assetowner.handlers;
 
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
+import org.odpi.openmetadata.adapters.connectors.structuredfile.StructuredFileStoreProvider;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.AssetHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.SchemaTypeHandler;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +30,8 @@ public class FileSystemHandler
     private OMRSRepositoryHelper    repositoryHelper;
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
+    private AssetHandler            assetHandler;
+    private SchemaTypeHandler       schemaTypeHandler;
 
 
     /**
@@ -31,18 +39,24 @@ public class FileSystemHandler
      *
      * @param serviceName  name of this service
      * @param serverName name of the local server
+     * @param assetHandler handler for assets
+     * @param schemaTypeHandler handler for schema elements
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      */
     public FileSystemHandler(String                  serviceName,
                              String                  serverName,
+                             AssetHandler            assetHandler,
+                             SchemaTypeHandler       schemaTypeHandler,
                              InvalidParameterHandler invalidParameterHandler,
-                             RepositoryHandler repositoryHandler,
-                             OMRSRepositoryHelper repositoryHelper)
+                             RepositoryHandler       repositoryHandler,
+                             OMRSRepositoryHelper    repositoryHelper)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
+        this.assetHandler = assetHandler;
+        this.schemaTypeHandler = schemaTypeHandler;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHandler = repositoryHandler;
         this.repositoryHelper = repositoryHelper;
@@ -342,18 +356,18 @@ public class FileSystemHandler
      * @param maxPageSize maximum number of results
      * @param methodName calling method
      *
-     * @return List of Filesystem properties
+     * @return List of Filesystem unique identifiers
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<FileSystem> getFileSystems(String  userId,
-                                           int     startingFrom,
-                                           int     maxPageSize,
-                                           String  methodName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+    public List<String> getFileSystems(String  userId,
+                                       int     startingFrom,
+                                       int     maxPageSize,
+                                       String  methodName) throws InvalidParameterException,
+                                                                  UserNotAuthorizedException,
+                                                                  PropertyServerException
     {
         return null;
     }
@@ -516,7 +530,128 @@ public class FileSystemHandler
                                                                            UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+        Asset asset = assetHandler.createEmptyAsset(AssetMapper.CSV_FILE_TYPE_NAME, methodName);
 
-        return null;
+        asset.setDisplayName(displayName);
+        asset.setDescription(description);
+        asset.setQualifiedName(AssetMapper.CSV_FILE_TYPE_NAME + ":" + fullPath);
+
+        SchemaType            schemaType       = null;
+        List<SchemaAttribute> schemaAttributes = null;
+
+
+        if (columnHeaders != null)
+        {
+            schemaType  = schemaTypeHandler.getTabularSchemaType(asset.getQualifiedName(),
+                                                                 asset.getDisplayName(),
+                                                                 userId,
+                                                                 "CSVFile",
+                                                                 columnHeaders);
+
+            schemaAttributes = schemaTypeHandler.getTabularSchemaColumns(schemaType.getQualifiedName(),
+                                                                         columnHeaders);
+        }
+
+        if (delimiterCharacter == null)
+        {
+            delimiterCharacter = ',';
+        }
+
+        if (quoteCharacter == null)
+        {
+            quoteCharacter = '\"';
+        }
+
+        Map<String, Object> extendedProperties = new HashMap<>();
+        extendedProperties.put(AssetMapper.DELIMITER_CHARACTER_PROPERTY_NAME, delimiterCharacter);
+        extendedProperties.put(AssetMapper.QUOTE_CHARACTER_PROPERTY_NAME, quoteCharacter);
+        asset.setExtendedProperties(extendedProperties);
+
+        return assetHandler.addAsset(userId,
+                                     asset,
+                                     schemaType,
+                                     schemaAttributes,
+                                     getCSVFileConnection(fullPath,
+                                                          columnHeaders,
+                                                          delimiterCharacter,
+                                                          quoteCharacter),
+                                     methodName);
+    }
+
+
+    /**
+     * This method creates a connection for a CSV File.  The connection object provides the OCF with the
+     * properties to create an appropriate connector and the properties needed by the connector to access the asset.
+     *
+     * The Connection object includes a Connector Type object.  This defines the type of connector to create.
+     * The Connection object also includes an Endpoint object.  This is used by the connector to locate and connect
+     * to the Asset.
+     *
+     * @param fileName name of the file to connect to
+     * @param columnHeaders boolean parameter defining if the column headers are included in the file
+     * @param delimiterCharacter character used between the columns
+     * @param quoteCharacter character used to group text that includes the delimiter character
+     * @return connection object
+     */
+    private Connection getCSVFileConnection(String            fileName,
+                                            List<String>      columnHeaders,
+                                            Character         delimiterCharacter,
+                                            Character         quoteCharacter)
+    {
+        final StructuredFileStoreProvider  provider = new StructuredFileStoreProvider();
+
+        final String endpointGUID      = "8bf8f5fa-b5d8-40e1-a00e-e4a0c59fd6c0";
+        final String connectionGUID    = "b9af734f-f005-4085-9975-bf46c67a099a";
+
+        final String endpointDescription = "File name.";
+
+        String endpointName    = "StructuredFileStore.Endpoint." + fileName;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(Endpoint.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(fileName);
+
+        final String connectionDescription = "StructuredFileStore connection.";
+
+        String connectionName = fileName + "Structured File Store Connection";
+
+        Connection connection = new Connection();
+
+        connection.setType(Connection.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(provider.getConnectorType());
+
+        Map<String, Object>  configurationProperties = new HashMap<>();
+
+        if (delimiterCharacter != null)
+        {
+            configurationProperties.put(StructuredFileStoreProvider.delimiterCharacterProperty, delimiterCharacter);
+        }
+
+        if (quoteCharacter != null)
+        {
+            configurationProperties.put(StructuredFileStoreProvider.quoteCharacterProperty, quoteCharacter);
+        }
+
+        if (columnHeaders != null)
+        {
+            configurationProperties.put(StructuredFileStoreProvider.columnNamesProperty, columnHeaders);
+        }
+
+        if (! configurationProperties.isEmpty())
+        {
+            connection.setConfigurationProperties(configurationProperties);
+        }
+
+        return connection;
     }
 }

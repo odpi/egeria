@@ -22,7 +22,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
 {
     private String               serverName;               /* Initialized in constructor */
-    private String               omasServerURL;            /* Initialized in constructor */
+    private String               serverPlatformRootURL;    /* Initialized in constructor */
     private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -33,20 +33,20 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public AvroFileAssetOwner(String     serverName,
-                              String     omasServerURL) throws InvalidParameterException
+    public AvroFileAssetOwner(String serverName,
+                              String serverPlatformRootURL) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, omasServerURL);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -55,26 +55,32 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public AvroFileAssetOwner(String     serverName,
-                              String     omasServerURL,
+                              String     serverPlatformRootURL,
                               String     userId,
                               String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
+
+    /*
+     * ==============================================
+     * AssetOnboardingFileSystem
+     * ==============================================
+     */
 
 
     private void addAvroSchemaToCatalog(String    userId,
@@ -140,7 +146,7 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
         requestBody.setFullPath(fullPath);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
