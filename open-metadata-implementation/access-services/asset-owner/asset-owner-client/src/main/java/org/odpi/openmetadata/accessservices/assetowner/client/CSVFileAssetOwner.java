@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingCSVFileInterface;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -132,12 +132,12 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
     {
         final String   methodName = "addCSVFileToCatalog";
         final String   pathParameter = "fullPath";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/csv-files";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files/csv";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
 
-        NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
+        NewCSVFileAssetRequestBody requestBody = new NewCSVFileAssetRequestBody();
         requestBody.setDisplayName(displayName);
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);

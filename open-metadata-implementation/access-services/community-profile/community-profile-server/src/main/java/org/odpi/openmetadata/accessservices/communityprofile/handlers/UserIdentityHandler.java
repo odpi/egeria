@@ -64,6 +64,23 @@ public class UserIdentityHandler
     }
 
 
+    /**
+     * Create a userIdentity from an entity.
+     *
+     * @param userIdentityEntity principle entity of the profile.
+     *
+     * @return UserIdentity bean or null if it does not exist.
+     */
+    public UserIdentity getUserIdentity(EntityDetail   userIdentityEntity)
+    {
+        UserIdentityConverter converter = new UserIdentityConverter(userIdentityEntity,
+                                                                    repositoryHelper,
+                                                                    serviceName);
+
+        return converter.getBean();
+    }
+
+
 
     /**
      * Return the UserIdentity entity GUID.

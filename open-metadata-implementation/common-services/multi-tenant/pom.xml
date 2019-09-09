@@ -67,9 +67,15 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>odf-metadata-handlers</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-registration</artifactId>
         </dependency>
 
     </dependencies>

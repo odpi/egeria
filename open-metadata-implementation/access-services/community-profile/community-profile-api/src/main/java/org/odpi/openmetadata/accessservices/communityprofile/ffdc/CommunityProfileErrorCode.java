@@ -56,8 +56,12 @@ public enum CommunityProfileErrorCode
             "Verify that the OMAS server running and their are no errors on the server side."),
     NO_IDENTITY_FOR_PROFILE(500, "OMAS-COMMUNITY-PROFILE-500-004 ",
             "Profile {0} does not have an associated user identity",
-            "The system returned a PropertyServerException rather than executing the request.  The profile is not usable without a user identity",
+            "The system returned a PropertyServerException rather than executing the request.  The profile is not usable without a user identity.",
             "Use the Community Profile OMAS API to either delete this profile or add a user identity to it."),
+    PARSE_EVENT_ERROR(500, "OMAS-COMMUNITY-PROFILE-500-005 ",
+            "Unable to publish the {0} event due to exception {1}.  The error message from the exception was {2}, the event contents was {3}",
+            "The system detected an exception whilst parsing an event into a JSON String prior to publishing it.",
+            "Investigate and correct the source of the error.  Once fixed, events will be published."),
     ;
 
 

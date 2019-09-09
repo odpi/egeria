@@ -611,9 +611,13 @@ public class DataEngineRESTServices {
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        return dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
+        String result = dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
                 schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
                 schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getAttributeList());
+
+        log.debug("Returning from method: {} with response: {}", methodName, result);
+
+        return result;
     }
 
     private String createPortImplementationWithSchemaType(String userId, String serverName,
@@ -634,6 +638,8 @@ public class DataEngineRESTServices {
                 portImplementation.getPortType());
 
         portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
+
+        log.debug("Returning from method: {} with response: {}", methodName, portImplementationGUID);
 
         return portImplementationGUID;
     }

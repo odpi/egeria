@@ -15,7 +15,7 @@ relevant information is made available to the OMAG Administration Services.
 Along the top is the interface with the **[Open Metadata Access Services (OMAS)](../../access-services/README.md)**.
 The OMRS provides access to the open metadata repositories
 through both a call API (see **[Enterprise OMRS Repository Connector](component-descriptions/enterprise-repository-connector.md)**) and an event topic
-(see **[Federated OMRS Topic](omrs-event-topic.md)**).
+(see **[Enterprise OMRS Topic](omrs-event-topic.md)**).
 
 Along the bottom are the **[six types of connectors](component-descriptions/connectors/README.md)** that
 provide the OMRS with access to the stores and system resources it needs to support the OMAS.

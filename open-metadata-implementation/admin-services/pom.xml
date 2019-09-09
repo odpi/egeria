@@ -26,6 +26,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>admin-services-api</module>
+        <module>admin-services-registration</module>
         <module>admin-services-client</module>
         <module>admin-services-server</module>
         <module>admin-services-spring</module>

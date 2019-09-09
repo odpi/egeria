@@ -30,13 +30,13 @@ because they affect the contents of the open metadata repositories.
 Details of the structure of the different types of OMRS Events can be
 found on the [events descriptions](event-descriptions).
 
-## OMRS Enterprise Event Topic
+## Enterprise OMRS Event Topic
 
 The [enterprise repository services](subsystem-descriptions/enterprise-repository-services.md)
 combine the OMRS events from all of the [open metadata repository cohorts](open-metadata-repository-cohort.md)
 that the server is connected to and makes them available to each local
 [Open Metadata Access Service (OMAS)](../../access-services).  This is called the
-enterprise event topic.  By default, it is implemented as an
+enterprise OMRS event topic.  By default, it is implemented as an
 [in-memory open metadata topic](../../adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/inmemory-open-metadata-topic-connector).
 
 

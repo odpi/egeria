@@ -31,7 +31,8 @@ import java.util.List;
  * DataPlatformAdmin manages the start up and shutdown of the Data Platform OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
-public class DataPlatformAdmin extends AccessServiceAdmin {
+public class DataPlatformAdmin extends AccessServiceAdmin
+{
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAdmin.class);
     private OpenMetadataTopicConnector dataPlatformInTopicConnector;

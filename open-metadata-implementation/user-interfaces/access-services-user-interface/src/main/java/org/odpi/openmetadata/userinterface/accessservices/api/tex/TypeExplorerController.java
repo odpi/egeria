@@ -224,7 +224,7 @@ public class TypeExplorerController extends SecureController
             try {
 
                 metadataCollection = repositoryConnector.getMetadataCollection();
-                metadataCollectionId = metadataCollection.getMetadataCollectionId();
+                metadataCollectionId = metadataCollection.getMetadataCollectionId(userId);
 
             }
             catch (RepositoryErrorException exception) {
