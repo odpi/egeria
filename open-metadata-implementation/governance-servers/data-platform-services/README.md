@@ -1,42 +1,39 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Data Engine Proxy Services
+# Data Platform Services
 
-The Data Engine Proxy Services support intercommunication from a Data Engine and
-the Data Engine OMAS. Where a Data Engine is unable to handle this communication
-directly, a proxy can be written for the Data Engine that runs server-side in
-OMAG Server Platform and brokers calls to the Data Engine itself into calls back
-to the Data Engine OMAS. This set of proxy services configures such a proxy to
-run server-side within the OMAG Server Platform.
+The Data Platform Services support intercommunication from a Data Platform and
+the Data Platform OMAS. Where a Data Platform is unable communicate with Data Platform 
+OMAS directly, a Data Platform Service for the Data Platform can run on server-side in
+OMAG Server Platform and broker calls to the Data Platform itself into calls back
+to the Data Platform OMAS. 
 
 ## OMAG Server Platform configuration
 
 1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
-1. Configure the Data Engine Proxy:
+1. Configure the Data Platform:
 
     **POST** following JSON object (following shows an example for IBM DataStage)
 
     ```json
-    {
-        "class": "DataEngineProxyConfig",
-        "dataEngineProxyProvider": "org.odpi.egeria.connectors.ibm.datastage.dataengineconnector.DataStageConnectorProvider",
-        "dataEngineConfig": {
-            "ibm.igc.services.host": "myhost.somewhere.com",
-            "ibm.igc.services.port": "9445",
-            "ibm.igc.username": "igcuser",
-            "ibm.igc.password": "password"
+        {
+        "class": "DataPlatformConfig",
+        "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
+        "dataPlatformServerURL":"127.0.0.1",
+        "dataPlatformServerOutTopicName": "omas.dataplatform.inTopic",
+        "dataPlatformServerName":"Apache Cassandra"
         }
-    }
     ```
     
     to the following address
 
     ```
-    http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/data-engine-proxy-service/configuration
+    http://localhost:8080/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/data-platform-service/configuration
     ```
 
-    The object *dataEngineConfig* is the information required to implement the specific proxy connector to the data engine. The keys should be modified based on the information needed by the connector.
+    The object *dataPlatformConfig* is the information required to implement the specific data platform connector to configure the connection to the target data platform. 
+    The authentication information should be modified based on the information needed by the connector.
 
 1. Start the instance of the OMAG Server Platform
 

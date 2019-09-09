@@ -16,27 +16,31 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import static org.odpi.openmetadata.accessservices.dataplatform.utils.Constants.DATA_PLATFORM_USER_ID;
 
 /**
- * The type Cassandra Keyspace asset handler.
+ * The type DeployedDatabaseSchema asset handler.
  */
-public class CassandraKeyspaceAssetHandler {
+public class DeployedDatabaseSchemaAssetHandler {
 
+    private String serviceName;
+    private String serverName;
     private OMRSRepositoryHelper repositoryHelper;
     private RepositoryHandler repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
 
-    public CassandraKeyspaceAssetHandler(OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler) {
+    public DeployedDatabaseSchemaAssetHandler(String serviceName, String serverName, OMRSRepositoryHelper repositoryHelper, RepositoryHandler repositoryHandler, InvalidParameterHandler invalidParameterHandler) {
+        this.serviceName=serviceName;
+        this.serverName=serverName;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.invalidParameterHandler = invalidParameterHandler;
     }
 
-    public void createKeyspaceAsset(NewDeployedDatabaseSchemaEvent event) throws
+    public void createDeployedDatabaseSchemaAsset(NewDeployedDatabaseSchemaEvent event) throws
             PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
             InvalidParameterException {
 
 
-        String methodName = "createCassandraKeyspace";
+        String methodName = "create Deployed Database Schema Asset";
         String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER,
                 event.getDataPlatform().getDataPlatformEndpoint().getDisplayName() + event.getDataPlatform().getDataPlatformEndpoint().getAddress().split(":")[0]);
         invalidParameterHandler.validateUserId(DATA_PLATFORM_USER_ID, methodName);
@@ -56,7 +60,7 @@ public class CassandraKeyspaceAssetHandler {
 
 
         String qualifiedNameForEndpoint = QualifiedNameUtils.buildQualifiedName("", Constants.ENDPOINT,
-                event.getDataPlatform().getDataPlatformEndpoint().getAddress());
+                event.getDataPlatform().getDataPlatformEndpoint().getEncryptionMethod()+event.getDataPlatform().getDataPlatformEndpoint().getAddress());
 
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
@@ -134,6 +138,7 @@ public class CassandraKeyspaceAssetHandler {
                 methodName);
 
 
+        //TODO: fill in details in event payload about database server side info and change the qulified name
         String qualifiedNameForDatabase = QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATABASE,
                 "Apache Cassandra Data Store");
         InstanceProperties databaseProperties = new EntityPropertiesBuilder()
@@ -154,8 +159,9 @@ public class CassandraKeyspaceAssetHandler {
         InstanceProperties deployedDbSchemaProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDeployedDatabaseSchema)
                 .withStringProperty(Constants.NAME, event.getKeyspace().getKeyspaceName())
-                .withStringProperty(Constants.OWNER, "Cassandra")
-                .withStringProperty(Constants.DESCRIPTION, "This asset is an Cassandra Keyspace")
+                //TODO: complete database source info from data platform service side
+                .withStringProperty(Constants.OWNER, "Owner Info")
+                .withStringProperty(Constants.DESCRIPTION, "Description")
                 .build();
 
         invalidParameterHandler.validateName(qualifiedNameForDeployedDatabaseSchema, Constants.QUALIFIED_NAME, methodName);
@@ -182,37 +188,7 @@ public class CassandraKeyspaceAssetHandler {
                 new InstanceProperties(),
                 methodName);
 
-
-
-/*
-        for (Table table : event.getKeyspace().getTableList()) {
-
-            String qualifiedNameForTabularSchemaType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDatabase, Constants.TABULAR_SCHEMA_TYPE,
-                    table.getTableName() + Constants.TYPE_SUFFIX);
-
-            InstanceProperties tabularSchemaTypeProperties = new EntityPropertiesBuilder()
-                    .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTabularSchemaType)
-                    .withStringProperty(Constants.DISPLAY_NAME, table.getTableName() + Constants.TYPE_SUFFIX).build();
-
-            invalidParameterHandler.validateName(qualifiedNameForTabularSchemaType, Constants.QUALIFIED_NAME, methodName);
-            String tabularSchemaTypeEntityGuid = repositoryHandler.createEntity(
-                    DATA_PLATFORM_USER_ID,
-                    repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID, Constants.TABULAR_SCHEMA_TYPE).getGUID(),
-                    Constants.TABULAR_SCHEMA_TYPE,
-                    tabularSchemaTypeProperties,
-                    methodName);
-
-
-            repositoryHandler.createRelationship(
-                    DATA_PLATFORM_USER_ID,
-                    repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID,Constants.ASSET_SCHEMA_TYPE).getGUID(),
-                    deployedDbSchemaEntityGuid,
-                    tabularSchemaTypeEntityGuid,
-                    new InstanceProperties(),
-                    methodName);
-
-
-        }*/
+        //TODO: Check whether the new Deployed DB also contains any schema types or schema attributes
     }
 
 

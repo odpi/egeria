@@ -13,10 +13,10 @@ import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEven
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
-import org.odpi.openmetadata.accessservices.dataplatform.handlers.CassandraKeyspaceAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -40,10 +40,12 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     private final OMRSAuditLog auditLog;
     private EventPublisher eventPublisher;
     private OMRSRepositoryHelper repositoryHelper;
+    private DataPlatformServicesInstance  instance;
 
-    private DataPlatformInstanceHandler dataPlatformInstanceHandler = new DataPlatformInstanceHandler();
 
-    public DataPlatformInTopicListener(OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper repositoryHelper) {
+
+    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper repositoryHelper) {
+        this.instance = instance;
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.eventPublisher = eventPublisher;
@@ -63,14 +65,11 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
 
             if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT) {
                 NewDeployedDatabaseSchemaEvent newDeployedDatabaseSchemaEvent = OBJECT_MAPPER.readValue(eventAsString, NewDeployedDatabaseSchemaEvent.class);
-                log.info("Started processing NewCassandraKeyspace event in DataPlatform OMAS");
+                log.info("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
 
-                CassandraKeyspaceAssetHandler handler = dataPlatformInstanceHandler.getCassandraKeyspaceAssetHandler(
-                        Constants.DATA_PLATFORM_USER_ID,
-                        "omas",
-                        "CreateCassandraKeyspace");
-                handler.createKeyspaceAsset(newDeployedDatabaseSchemaEvent);
-                log.info("Processing NewCassandraKeyspace event finished: {}", newDeployedDatabaseSchemaEvent);
+                DeployedDatabaseSchemaAssetHandler handler = instance.getDeployedDatabaseSchemaAssetHandler();
+                handler.createDeployedDatabaseSchemaAsset(newDeployedDatabaseSchemaEvent);
+                log.info("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
 
 
             } else if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT) {

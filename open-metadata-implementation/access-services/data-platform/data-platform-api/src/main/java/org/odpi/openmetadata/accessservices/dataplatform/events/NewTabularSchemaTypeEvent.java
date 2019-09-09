@@ -20,5 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class NewTabularSchemaTypeEvent extends DataPlatformEventHeader {
 
+    //TODO: Investigation and implementation of NewTabularSchemaTypeEvent details
     DataPlatform dataPlatform;
 }

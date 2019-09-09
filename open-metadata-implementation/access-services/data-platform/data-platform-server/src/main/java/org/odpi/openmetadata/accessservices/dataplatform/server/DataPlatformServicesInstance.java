@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
-import org.odpi.openmetadata.accessservices.dataplatform.handlers.CassandraKeyspaceAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
@@ -21,7 +21,7 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.DATA_PLATFORM_OMAS;
 
     private RegistrationHandler registrationHandler;
-    private CassandraKeyspaceAssetHandler cassandraKeyspaceAssetHandler;
+    private DeployedDatabaseSchemaAssetHandler deployedDatabaseSchemaAssetHandler;
 
 
     /**
@@ -48,7 +48,9 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler,
                     invalidParameterHandler);
-            cassandraKeyspaceAssetHandler = new CassandraKeyspaceAssetHandler(
+            deployedDatabaseSchemaAssetHandler = new DeployedDatabaseSchemaAssetHandler(
+                    serviceName,
+                    serverName,
                     repositoryHelper,
                     repositoryHandler,
                     invalidParameterHandler
@@ -88,8 +90,8 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
     }
 
 
-    public CassandraKeyspaceAssetHandler getCassandraKeyspaceAssetHandler() {
-        return cassandraKeyspaceAssetHandler;
+    public DeployedDatabaseSchemaAssetHandler getDeployedDatabaseSchemaAssetHandler() {
+        return deployedDatabaseSchemaAssetHandler;
     }
 
     /**
