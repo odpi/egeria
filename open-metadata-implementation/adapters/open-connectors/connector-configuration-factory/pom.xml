@@ -100,6 +100,11 @@
             <artifactId>security-officer-tag-connector</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>cassandra-open-metadata-connector</artifactId>
+            <version>1.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>
