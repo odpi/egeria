@@ -122,6 +122,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-services-server</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
 </project>
