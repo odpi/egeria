@@ -5,6 +5,9 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This is the base class for a connected asset.  It is passed to all of the embedded property objects so the name
  * and type can be used for error messages and other diagnostics.  It also carries the URL of the asset in the
@@ -18,8 +21,9 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
      * Derived name and type for use by nested property object for messages/debug.  If these default values
      * are seen it is a sign that the asset properties are not being populated from the metadata repository.
      */
-    private String assetName = "<Unknown>";
-    private String assetTypeName = "<Unknown>";
+    private String       assetName = "<Unknown>";
+    private String       assetTypeName = "<Unknown>";
+    private List<String> assetSuperTypeNames = null;
 
 
     /**
@@ -82,6 +86,8 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
                 {
                     assetTypeName = typeName;
                 }
+
+                assetSuperTypeNames = elementType.getElementSuperTypeNames();
             }
         }
     }
@@ -101,6 +107,7 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
             this.assetBean = templateAssetDescriptor.getAssetBean();
             this.assetName = templateAssetDescriptor.getAssetName();
             this.assetTypeName = templateAssetDescriptor.getAssetTypeName();
+            this.assetSuperTypeNames = templateAssetDescriptor.getAssetSuperTypeNames();
         }
         else
         {
@@ -140,4 +147,27 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     {
         return assetTypeName;
     }
+
+
+    /**
+     * Return the list of type names for this type's supertypes.
+     *
+     * @return list of type names
+     */
+    public List<String> getAssetSuperTypeNames()
+    {
+        if (assetSuperTypeNames == null)
+        {
+            return null;
+        }
+        else if (assetSuperTypeNames.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(assetSuperTypeNames);
+        }
+    }
+
 }

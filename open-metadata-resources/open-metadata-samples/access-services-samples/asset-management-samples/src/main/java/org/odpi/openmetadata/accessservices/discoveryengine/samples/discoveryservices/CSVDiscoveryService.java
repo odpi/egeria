@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.samples.discoveryservices;
 
-import org.odpi.openmetadata.adapters.connectors.structuredfile.StructuredFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryAnnotationStore;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryService;
@@ -145,11 +145,11 @@ public class CSVDiscoveryService extends DiscoveryService
 
         try
         {
-            StructuredFileStoreConnector assetConnector = (StructuredFileStoreConnector)discoveryContext.getAssetStore().getConnectorToAsset();
-            DiscoveryAnnotationStore     annotationStore = discoveryContext.getAnnotationStore();
-            int                          size = 0;
-            int                          delimiterCount = 0;
-            long                         recordCount = assetConnector.getRecordCount();
+            CSVFileStoreConnector    assetConnector  = (CSVFileStoreConnector)discoveryContext.getAssetStore().getConnectorToAsset();
+            DiscoveryAnnotationStore annotationStore = discoveryContext.getAnnotationStore();
+            int                      size            = 0;
+            int                      delimiterCount  = 0;
+            long                     recordCount     = assetConnector.getRecordCount();
 
             SchemaAnalysisAnnotation  schemaAnnotation      = new SchemaAnalysisAnnotation();
 
