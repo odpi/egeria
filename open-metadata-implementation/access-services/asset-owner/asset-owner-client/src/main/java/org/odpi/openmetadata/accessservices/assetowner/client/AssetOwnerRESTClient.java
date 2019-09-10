@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.client;
 
+import org.odpi.openmetadata.accessservices.assetowner.rest.FileSystemResponse;
+import org.odpi.openmetadata.accessservices.assetowner.rest.FolderResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneListResponse;
 import org.odpi.openmetadata.accessservices.assetowner.rest.ZoneResponse;
 import org.odpi.openmetadata.commonservices.odf.metadatamanagement.client.ODFRESTClient;
@@ -50,13 +52,49 @@ class AssetOwnerRESTClient extends ODFRESTClient
 
 
     /**
-     * Issue a GET REST call that returns a DiscoveryAnalysisReportResponse object.
+     * Issue a GET REST call that returns a FileSystemResponse object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return DiscoveryAnalysisReportResponse
+     * @return FileSystemResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    FileSystemResponse callFileSystemGetRESTCall(String    methodName,
+                                                 String    urlTemplate,
+                                                 Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, FileSystemResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a FolderResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return FolderResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    FolderResponse callFolderGetRESTCall(String    methodName,
+                                         String    urlTemplate,
+                                         Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, FolderResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a Zone List object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return ZoneListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
     ZoneListResponse callZoneListGetRESTCall(String    methodName,

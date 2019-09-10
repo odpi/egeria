@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.assetowner.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.accessservices.assetowner.properties.GovernanceZone;
 
 import java.util.Objects;
@@ -15,15 +16,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ZoneResponse is the response structure used on the OMAS REST API calls that return the properties
- * for a governance zone.
+ * FolderResponse is the response structure used on the OMAS REST API calls that return the properties
+ * for a folder.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class FolderResponse extends AssetOwnerOMASAPIResponse
 {
-    private GovernanceZone governanceZone = null;
+    private Folder folder = null;
 
 
     /**
@@ -46,30 +47,30 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
 
         if (template != null)
         {
-            this.governanceZone = template.getGovernanceZone();
+            this.folder = template.getFolder();
         }
     }
 
 
     /**
-     * Return the governanceZone result.
+     * Return the folder result.
      *
      * @return bean
      */
-    public GovernanceZone getGovernanceZone()
+    public Folder getFolder()
     {
-        return governanceZone;
+        return folder;
     }
 
 
     /**
-     * Set up the governanceZone result.
+     * Set up the folder result.
      *
-     * @param governanceZone - bean
+     * @param folder - bean
      */
-    public void setGovernanceZone(GovernanceZone governanceZone)
+    public void setFolder(Folder folder)
     {
-        this.governanceZone = governanceZone;
+        this.folder = folder;
     }
 
 
@@ -81,8 +82,8 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
     @Override
     public String toString()
     {
-        return "ZoneResponse{" +
-                "zone='" + getGovernanceZone() + '\'' +
+        return "FolderResponse{" +
+                "folder='" + getFolder() + '\'' +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -115,7 +116,7 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
             return false;
         }
         FolderResponse that = (FolderResponse) objectToCompare;
-        return Objects.equals(governanceZone, that.governanceZone);
+        return Objects.equals(folder, that.folder);
     }
 
 
@@ -127,6 +128,6 @@ public class FolderResponse extends AssetOwnerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(governanceZone);
+        return Objects.hash(folder);
     }
 }

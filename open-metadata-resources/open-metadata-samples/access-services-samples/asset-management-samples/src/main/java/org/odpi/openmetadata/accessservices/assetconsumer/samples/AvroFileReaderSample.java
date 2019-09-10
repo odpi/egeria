@@ -6,7 +6,7 @@ import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
 import org.odpi.openmetadata.adapters.connectors.avrofile.AvroFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.avrofile.AvroFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.avrofile.ffdc.exception.FileException;
+import org.odpi.openmetadata.adapters.connectors.basicfile.ffdc.exception.FileException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -256,7 +256,7 @@ public class AvroFileReaderSample
 
             System.out.println("Accessing file: " + fileName);
 
-            File file = connector.getAvroFile();
+            File file = connector.getFile();
 
             System.out.println("File: " + file.getName());
             System.out.println("Path: " + file.getPath());
