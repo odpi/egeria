@@ -345,6 +345,8 @@ public class OpenMetadataTypesArchive
      */
     private void add0010BaseModel()
     {
+        // todo
+        /* Needs to be moved to Governance Roles when owner type deleted from asset */
         this.archiveBuilder.addEnumDef(getAssetOwnerTypeEnum());
 
         this.archiveBuilder.addEntityDef(getReferenceableEntity());
@@ -356,58 +358,6 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addRelationshipDef(getLastAttachmentLinkRelationship());
     }
-
-    private EnumDef getAssetOwnerTypeEnum()
-    {
-        final String guid            = "9548390c-69f5-4dc6-950d-6feeee257b56";
-        final String name            = "AssetOwnerType";
-        final String description     = "Defines the type of identifier for an asset's owner.";
-        final String descriptionGUID = null;
-
-        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
-
-        List<EnumElementDef> elementDefs = new ArrayList<>();
-        EnumElementDef       elementDef;
-
-        final int    element1Ordinal         = 0;
-        final String element1Value           = "UserId";
-        final String element1Description     = "The owner's userId is specified (default).";
-        final String element1DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
-                                                     element1Value,
-                                                     element1Description,
-                                                     element1DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        final int    element2Ordinal         = 1;
-        final String element2Value           = "ProfileId";
-        final String element2Description     = "The unique identifier (guid) of the profile of the owner.";
-        final String element2DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
-                                                     element2Value,
-                                                     element2Description,
-                                                     element2DescriptionGUID);
-        elementDefs.add(elementDef);
-
-
-        final int    element99Ordinal         = 99;
-        final String element99Value           = "Other";
-        final String element99Description     = "Another type of owner identifier, probably not supported by open metadata.";
-        final String element99DescriptionGUID = null;
-
-        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
-                                                     element99Value,
-                                                     element99Description,
-                                                     element99DescriptionGUID);
-        elementDefs.add(elementDef);
-
-        enumDef.setElementDefs(elementDefs);
-
-        return enumDef;
-    }
-
 
 
     /**
@@ -577,12 +527,16 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "description";
         final String attribute2Description     = "Description of the asset.";
         final String attribute2DescriptionGUID = null;
+        // todo
+        /* Moved to Governance Roles */
         final String attribute3Name            = "owner";
         final String attribute3Description     = "Identifier of the person or process that owns the asset.";
         final String attribute3DescriptionGUID = null;
+        /* Moved to Governance Roles */
         final String attribute4Name            = "ownerType";
         final String attribute4Description     = "Type of identifier used for owner property.";
         final String attribute4DescriptionGUID = null;
+        /* Moved to Governance Zones */
         final String attribute5Name            = "zoneMembership";
         final String attribute5Description     = "The list of zones that this asset belongs to.";
         final String attribute5DescriptionGUID = null;
@@ -15188,11 +15142,50 @@ public class OpenMetadataTypesArchive
      */
     private void add0424GovernanceZones()
     {
+        this.archiveBuilder.addClassificationDef(getAssetZoneMembershipClassification());
+
         this.archiveBuilder.addEntityDef(getGovernanceZoneEntity());
 
         this.archiveBuilder.addRelationshipDef(getZoneGovernanceRelationship());
     }
 
+
+    private ClassificationDef getAssetZoneMembershipClassification()
+    {
+        final String guid            = "a1c17a86-9fd3-40ca-bb9b-fe83c6981deb";
+        final String name            = "AssetZoneMembership";
+        final String description     = "Defines the asset's membership of the governance zones.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Asset";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "zoneMembership";
+        final String attribute1Description     = "List of governance zones for the asset.";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute1Name,
+                                                                attribute1Description,
+                                                                attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
 
     private EntityDef getGovernanceZoneEntity()
     {
@@ -16199,6 +16192,11 @@ public class OpenMetadataTypesArchive
 
     private void add0445GovernanceRoles()
     {
+        // todo
+        /* this.archiveBuilder.addEnumDef(getAssetOwnerTypeEnum()); */
+
+        this.archiveBuilder.addClassificationDef(getAssetOwnershipClassification());
+
         this.archiveBuilder.addEntityDef(getGovernanceRoleEntity());
         this.archiveBuilder.addEntityDef(getAssetOwnerEntity());
 
@@ -16207,6 +16205,103 @@ public class OpenMetadataTypesArchive
     }
 
 
+    private EnumDef getAssetOwnerTypeEnum()
+    {
+        final String guid            = "9548390c-69f5-4dc6-950d-6feeee257b56";
+        final String name            = "AssetOwnerType";
+        final String description     = "Defines the type of identifier for an asset's owner.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        List<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef       elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "UserId";
+        final String element1Description     = "The owner's userId is specified (default).";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                     element1Value,
+                                                     element1Description,
+                                                     element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "ProfileId";
+        final String element2Description     = "The unique identifier (guid) of the profile of the owner.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                     element2Value,
+                                                     element2Description,
+                                                     element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+
+        final int    element99Ordinal         = 99;
+        final String element99Value           = "Other";
+        final String element99Description     = "Another type of owner identifier, probably not supported by open metadata.";
+        final String element99DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element99Ordinal,
+                                                     element99Value,
+                                                     element99Description,
+                                                     element99DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
+
+
+    private ClassificationDef getAssetOwnershipClassification()
+    {
+        final String guid = "d531c566-03d2-470a-be69-6f52cabd5fb9";
+        final String name            = "AssetOwnership";
+        final String description     = "Describes the ownership of an asset.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "Asset";
+
+        ClassificationDef classificationDef =  archiveHelper.getClassificationDef(guid,
+                                                                                  name,
+                                                                                  null,
+                                                                                  description,
+                                                                                  descriptionGUID,
+                                                                                  this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                  false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "owner";
+        final String attribute1Description     = "Identifier of the person or process that owns the asset.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "ownerType";
+        final String attribute2Description     = "Type of identifier used for owner property.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getEnumTypeDefAttribute("AssetOwnerType",
+                                                         attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
+    }
+
     private EntityDef getGovernanceRoleEntity()
     {
         final String guid            = "de2d7f2e-1759-44e3-b8a6-8af53e8fb0ee";
@@ -16214,7 +16309,7 @@ public class OpenMetadataTypesArchive
         final String description     = "Describes a set of goals, tasks and skills that can be assigned a person and contribute to the governance of a resource.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "PersonRole";
+        final String superTypeName = "ActorProfile";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

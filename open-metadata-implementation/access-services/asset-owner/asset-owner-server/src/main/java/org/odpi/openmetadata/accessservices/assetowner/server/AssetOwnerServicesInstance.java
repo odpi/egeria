@@ -61,6 +61,8 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
 
             this.fileSystemHandler = new FileSystemHandler(serviceName,
                                                            serverName,
+                                                           assetHandler,
+                                                           schemaTypeHandler,
                                                            invalidParameterHandler,
                                                            repositoryHandler,
                                                            repositoryHelper);
@@ -92,8 +94,6 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
     {
         return governanceZoneHandler;
     }
-
-
 
 
     /**
