@@ -26,11 +26,12 @@ For other operating systems there are [various choices](https://git-scm.com/book
 
 1. [Downloading the Egeria source from GitHub](task-downloading-egeria-source.md)
 2. [Building the Egeria source with Apache Maven](task-building-egeria-source.md)
-3. [Installing Egeria ready for use](task-installing-egeria.md)
 
 ## What next?
 
-* [Learning about Egeria's OMAG Server Platform](../omag-server-tutorial)
+* [Run the hands on labs to get experience with using Egeria](../../open-metadata-labs)
+or
+* [Learn about setting up you own Egeria environment](../installing-egeria-tutorial)
 
 
 ----

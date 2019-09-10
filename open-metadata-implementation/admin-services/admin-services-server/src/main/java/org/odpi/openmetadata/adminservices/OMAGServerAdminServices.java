@@ -6,6 +6,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -13,6 +14,8 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerAdminServices.class);
+
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
@@ -53,6 +58,8 @@ public class OMAGServerAdminServices
                                       String typeName)
     {
         final String methodName = "setServerType";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -102,6 +109,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -122,6 +131,8 @@ public class OMAGServerAdminServices
                                             String name)
     {
         final String methodName = "setOrganizationName";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -171,6 +182,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -191,6 +204,8 @@ public class OMAGServerAdminServices
                                         String serverUserId)
     {
         final String methodName = "setServerUserId";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -240,6 +255,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -260,6 +277,8 @@ public class OMAGServerAdminServices
                                           String serverPassword)
     {
         final String methodName = "setServerPassword";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -309,6 +328,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -329,6 +350,8 @@ public class OMAGServerAdminServices
                                        int     maxPageSize)
     {
         final String methodName = "setMaxPageSize";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -385,6 +408,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -414,6 +439,8 @@ public class OMAGServerAdminServices
                                     Map<String, Object> configurationProperties)
     {
         final String methodName = "setEventBus";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -467,6 +494,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -493,6 +522,8 @@ public class OMAGServerAdminServices
                                          String url)
     {
         final String methodName = "setServerURLRoot";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -542,6 +573,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -559,6 +592,8 @@ public class OMAGServerAdminServices
                                            String serverName)
     {
         final String methodName = "setDefaultAuditLog";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -588,6 +623,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -607,6 +644,8 @@ public class OMAGServerAdminServices
                                                           String fileName)
     {
         final String methodName = "addStartUpOpenMetadataArchiveFile";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -651,6 +690,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -669,6 +710,8 @@ public class OMAGServerAdminServices
                                                 String serverName)
     {
         final String methodName = "setInMemLocalRepository";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -700,6 +743,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -718,6 +763,8 @@ public class OMAGServerAdminServices
                                                 String              serverName)
     {
         final String methodName = "setGraphLocalRepository";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -749,6 +796,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -767,6 +816,8 @@ public class OMAGServerAdminServices
                                             String serverName)
     {
         final String methodName = "setNoRepositoryMode";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -790,6 +841,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -809,6 +862,8 @@ public class OMAGServerAdminServices
                                                      Connection connection)
     {
         final String methodName = "setRepositoryProxyConnection";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -844,6 +899,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -867,6 +924,8 @@ public class OMAGServerAdminServices
                                                      Map<String, Object>  additionalProperties)
     {
         final String methodName  = "setRepositoryProxyConnection";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -899,6 +958,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -921,6 +982,8 @@ public class OMAGServerAdminServices
                                                       Connection connection)
     {
         final String methodName = "setLocalRepositoryEventMapper";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -982,6 +1045,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1008,6 +1073,8 @@ public class OMAGServerAdminServices
                                                       Map<String, Object> additionalProperties)
     {
         final String methodName = "setLocalRepositoryEventMapper";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1038,6 +1105,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1057,6 +1126,8 @@ public class OMAGServerAdminServices
                                                      String               serverName)
     {
         final String methodName = "getLocalMetadataCollectionId";
+
+        log.debug("Calling method: " + methodName);
 
         GUIDResponse response = new GUIDResponse();
 
@@ -1115,6 +1186,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1136,6 +1209,8 @@ public class OMAGServerAdminServices
                                                        String               localMetadataCollectionName)
     {
         final String methodName = "setLocalMetadataCollectionName";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1198,6 +1273,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1224,6 +1301,8 @@ public class OMAGServerAdminServices
                                                  Map<String, Object>  configurationProperties)
     {
         final String methodName = "enableCohortRegistration";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1270,6 +1349,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1294,6 +1375,8 @@ public class OMAGServerAdminServices
     {
         final String methodName = "setCohortMode";
 
+        log.debug("Calling method: " + methodName);
+
         VoidResponse response = new VoidResponse();
 
         try
@@ -1316,6 +1399,8 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -1343,6 +1428,8 @@ public class OMAGServerAdminServices
                                                 List<Connection>      auditLogDestinations)
     {
         final String methodName = "setAuditLogDestinations";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1406,6 +1493,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1426,6 +1515,8 @@ public class OMAGServerAdminServices
                                                 List<Connection>      openMetadataArchives)
     {
         final String methodName = "setOpenMetadataArchives";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1489,6 +1580,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1508,6 +1601,8 @@ public class OMAGServerAdminServices
                                                  LocalRepositoryConfig localRepositoryConfig)
     {
         final String methodName = "setLocalRepositoryConfig";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1571,6 +1666,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1593,6 +1690,8 @@ public class OMAGServerAdminServices
                                         CohortConfig cohortConfig)
     {
         final String methodName = "setCohortConfig";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1702,6 +1801,8 @@ public class OMAGServerAdminServices
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1721,6 +1822,8 @@ public class OMAGServerAdminServices
                                             OMAGServerConfig omagServerConfig)
     {
         final String methodName = "setOMAGServerConfig";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1742,16 +1845,14 @@ public class OMAGServerAdminServices
                                                         errorCode.getUserAction());
             }
 
-            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail = omagServerConfig.getAuditTrail();
 
             if (configAuditTrail == null)
             {
                 configAuditTrail = new ArrayList<>();
             }
 
-            configAuditTrail.add(new Date().toString() + " " + userId + " replaced configuration for server.");
+            configAuditTrail.add(new Date().toString() + " " + userId + " deployed configuration for server.");
 
             omagServerConfig.setAuditTrail(configAuditTrail);
 
@@ -1769,6 +1870,71 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Push the configuration for the server to another OMAG Server Platform.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param destinationPlatform  location of the platform where the config is to be deployed to
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGConfigurationErrorException there is a problem using the supplied configuration or
+     * OMAGInvalidParameterException invalid serverName or destinationPlatform parameter.
+     */
+    public VoidResponse deployOMAGServerConfig(String         userId,
+                                               String         serverName,
+                                               URLRequestBody destinationPlatform)
+    {
+        final String methodName = "deployOMAGServerConfig";
+
+        log.debug("Calling method: " + methodName);
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            String  serverURLRoot = serverConfig.getLocalServerURL();
+
+            if ((destinationPlatform != null) && (destinationPlatform.getUrlRoot() != null))
+            {
+                serverURLRoot = destinationPlatform.getUrlRoot();
+            }
+
+            ConfigurationManagementClient client = new ConfigurationManagementClient(serverName,
+                                                                                     serverURLRoot);
+
+            client.setOMAGServerConfig(userId, serverConfig);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            exceptionHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -1793,6 +1959,8 @@ public class OMAGServerAdminServices
     {
         final String methodName = "getStoredConfiguration";
 
+        log.debug("Calling method: " + methodName);
+
         OMAGServerConfigResponse response = new OMAGServerConfigResponse();
 
         try
@@ -1814,6 +1982,8 @@ public class OMAGServerAdminServices
         {
             exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }

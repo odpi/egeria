@@ -72,7 +72,17 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>structured-file-connector</artifactId>
+            <artifactId>csv-file-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>avro-file-connector</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>basic-file-connector</artifactId>
         </dependency>
 
         <dependency>

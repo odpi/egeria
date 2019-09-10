@@ -72,7 +72,7 @@ Broadly speaking, the OMAG server platform supports
 The administration services (the ones beginning **config** and **operational**)
 are available all of the time the OMAG server platform is running.
 
-The open metadata and governance services are routed to the logical OMAG Servers running
+The open metadata and governance services are routed to the OMAG Servers running
 on the OMAG server platform.
 
 OMAG servers are started on the server platform

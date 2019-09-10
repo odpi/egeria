@@ -42,6 +42,7 @@ public class OMAGNotAuthorizedException extends OMAGCheckedExceptionBase
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 
+
     /**
      * This is the constructor used for creating a OMAGNotAuthorizedException that resulted from a previous error.
      *
