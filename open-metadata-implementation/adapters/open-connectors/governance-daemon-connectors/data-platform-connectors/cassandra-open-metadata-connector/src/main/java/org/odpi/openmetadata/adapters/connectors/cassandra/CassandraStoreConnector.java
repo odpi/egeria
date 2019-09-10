@@ -136,9 +136,10 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
      */
     public void shutdown() {
 
-        cluster.close();
+        String actionDescription = "Shut down the Cassandra connection.";
 
-        String actionDescription = "Shut down the cassandra connection.";
+        session.close();
+        cluster.close();
 
         auditLog = CassandraConnectorAuditCode.CONNECTOR_SHUTDOWN;
         omrsAuditLog.logRecord(actionDescription,

@@ -61,6 +61,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
 
 
         try {
+            //TODO: Use Strategy Pattern instead of multiple if else conditions
             DataPlatformEventHeader dataPlatformEventHeader = OBJECT_MAPPER.readValue(eventAsString, DataPlatformEventHeader.class);
 
             if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT) {
@@ -98,6 +99,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
 
 
             }
+            //TODO: optimize exception handling with specific exception details and actions
         } catch (IOException e) {
             DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
 
