@@ -6,6 +6,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigi
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * TypeHandler provides common methods for managing open metadata types and their conversion to types used
@@ -46,6 +50,26 @@ class TypeConverter
             elementType.setElementTypeName(instanceType.getTypeDefName());
             elementType.setElementTypeVersion(instanceType.getTypeDefVersion());
             elementType.setElementTypeDescription(instanceType.getTypeDefDescription());
+
+            List<TypeDefLink> typeDefSuperTypes = instanceType.getTypeDefSuperTypes();
+
+            if ((typeDefSuperTypes != null) && (! typeDefSuperTypes.isEmpty()))
+            {
+                List<String>   superTypes = new ArrayList<>();
+
+                for (TypeDefLink typeDefLink : typeDefSuperTypes)
+                {
+                    if (typeDefLink != null)
+                    {
+                        superTypes.add(typeDefLink.getName());
+                    }
+                }
+
+                if (! superTypes.isEmpty())
+                {
+                    elementType.setElementSuperTypeNames(superTypes);
+                }
+            }
         }
 
         elementType.setElementHomeMetadataCollectionId(metadataCollectionId);

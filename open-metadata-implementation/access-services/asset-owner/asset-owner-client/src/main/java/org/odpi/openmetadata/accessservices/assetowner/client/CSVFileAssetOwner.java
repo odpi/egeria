@@ -19,7 +19,7 @@ import java.util.List;
 public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
 {
     private String               serverName;               /* Initialized in constructor */
-    private String               omasServerURL;            /* Initialized in constructor */
+    private String               serverPlatformRootURL;    /* Initialized in constructor */
     private AssetOwnerRESTClient restClient;               /* Initialized in constructor */
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -30,20 +30,20 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * Create a new client with no authentication embedded in the HTTP request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
-    public CSVFileAssetOwner(String     serverName,
-                             String     omasServerURL) throws InvalidParameterException
+    public CSVFileAssetOwner(String serverName,
+                             String serverPlatformRootURL) throws InvalidParameterException
     {
         final String methodName = "Constructor (no security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, omasServerURL);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL);
     }
 
 
@@ -52,24 +52,24 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * userId/password of the calling server.  The end user's userId is sent on each request.
      *
      * @param serverName name of the server to connect to
-     * @param omasServerURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
      * @throws InvalidParameterException there is a problem creating the client-side components to issue any
      * REST API calls.
      */
     public CSVFileAssetOwner(String     serverName,
-                             String     omasServerURL,
+                             String     serverPlatformRootURL,
                              String     userId,
                              String     password) throws InvalidParameterException
     {
         final String methodName = "Constructor (with security)";
 
-        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(serverPlatformRootURL, serverName, methodName);
 
         this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restClient = new AssetOwnerRESTClient(serverName, omasServerURL, userId, password);
+        this.serverPlatformRootURL = serverPlatformRootURL;
+        this.restClient = new AssetOwnerRESTClient(serverName, serverPlatformRootURL, userId, password);
     }
 
 
@@ -146,7 +146,7 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
         requestBody.setQuoteCharacter(quoteCharacter);
 
         GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
+                                                                  serverPlatformRootURL + urlTemplate,
                                                                   requestBody,
                                                                   serverName,
                                                                   userId);
