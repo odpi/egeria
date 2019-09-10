@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.serverchassis.springboot;
 
+import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,6 +31,12 @@ public class OMAGServerPlatform
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
+    @Value("${config.user}")
+    String configUser;
+
+    @Value("${config.server.list}")
+    String configServerList;
+
     public static void main(String[] args)
     {
         SpringApplication.run(OMAGServerPlatform.class, args);
@@ -43,10 +50,18 @@ public class OMAGServerPlatform
             {
                 HttpHelper.noStrictSSL();
             }
+            if(configUser!=null && configServerList!=null){
+                OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+                operationalServices.activateWithStoredConfig(configUser, configServerList);
+            }
         };
     }
 
 
+    /**
+     *
+     * @return Swagger documentation bean
+     */
     @Bean
     public Docket egeriaAPI()
     {

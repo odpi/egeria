@@ -58,6 +58,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
