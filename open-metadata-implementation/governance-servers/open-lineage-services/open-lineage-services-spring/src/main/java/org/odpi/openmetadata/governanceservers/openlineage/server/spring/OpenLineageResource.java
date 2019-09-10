@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class OpenLineageResource {
      * @param guid         The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}")
+    @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}", produces={MediaType.APPLICATION_JSON_VALUE})
     public String lineage(
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
@@ -67,7 +68,7 @@ public class OpenLineageResource {
      * @param graph      MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    @GetMapping(path = "/export/graphs/{graph}")
+    @GetMapping(path = "/export/graphs/{graph}", produces={MediaType.APPLICATION_JSON_VALUE})
     public String exportGraph(@PathVariable("userId") String userId,
                               @PathVariable("serverName") String serverName,
                               @PathVariable("graph") String graph) {
