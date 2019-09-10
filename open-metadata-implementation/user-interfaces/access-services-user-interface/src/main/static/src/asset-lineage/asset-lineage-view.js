@@ -101,32 +101,32 @@ class AssetLineageView extends PolymerElement {
 
       _ultimateSource(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?view=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
 
       _endToEndLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?view=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _ultimateDestination(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?view=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _glossaryLineage(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?view=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
       _sourceAndDestination(guid){
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?view=COLUMNVIEW';
           this.$.tokenAjax._go();
       }
 
