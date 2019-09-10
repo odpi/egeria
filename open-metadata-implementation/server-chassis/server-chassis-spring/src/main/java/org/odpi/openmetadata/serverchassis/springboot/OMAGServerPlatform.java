@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.serverchassis.springboot;
 
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
+import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +23,10 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.stream.IntStream;
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
@@ -31,11 +37,16 @@ public class OMAGServerPlatform
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
-    @Value("${config.user}")
-    String configUser;
+    @Value("${startup.user}")
+    String startupUser;
 
-    @Value("${config.server.list}")
-    String configServerList;
+    @Value("${startup.server.list}")
+    String startupServers;
+
+    private String startupMessage = "";
+    private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
+
+    private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
     public static void main(String[] args)
     {
@@ -48,14 +59,41 @@ public class OMAGServerPlatform
         return () -> {
             if (!strictSSL)
             {
+                log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
             }
-            if(configUser!=null && configServerList!=null){
-                OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
-                operationalServices.activateWithStoredConfig(configUser, configServerList);
-            }
+            autoStartConfig();
         };
     }
+
+    /**
+     *  starts the servers specified in the startup.server.list property
+     */
+    private void autoStartConfig(){
+        if(!startupUser.trim().isEmpty() && !startupServers.trim().isEmpty()){
+            log.info("Startup detected for servers: {}",startupServers);
+            String[] splits = startupServers.split(",");
+            //remove eventual duplicates
+            HashSet<String> servers = new HashSet<>(Arrays.asList(splits));
+
+            servers.forEach(server -> {
+                        SuccessMessageResponse response = operationalServices.activateWithStoredConfig(startupUser, server);
+                        if(response.getRelatedHTTPCode() == 200){
+                            startupMessage += "OMAG Server '" + server + "' SUCCESS start , with message: " +
+                                        response.getSuccessMessage() + System.lineSeparator();
+                        }else{
+                            startupMessage += "OMAG Server '" + server + "' ERROR while startup, with error message: " +
+                                    response.getExceptionErrorMessage() + System.lineSeparator();
+                        }
+                    });
+            ;
+        }else {
+            log.info("No OMAG server in startup configuration");
+            startupMessage = "No OMAG server in startup configuration";
+        }
+    }
+
+
 
 
     /**
@@ -80,7 +118,9 @@ public class OMAGServerPlatform
         @Override
         public void onApplicationEvent(ContextRefreshedEvent event)
         {
-            System.out.println(new Date().toString() + " OMAG server platform ready for configuration");
+            System.out.println();
+            System.out.println(OMAGServerPlatform.this.startupMessage);
+            System.out.println(new Date().toString() + " OMAG server platform ready for more configurations");
         }
 
     }
