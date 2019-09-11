@@ -18,6 +18,7 @@ public class TestElementHeader
 {
     private ElementType          type            = new ElementType();
     private List<Classification> classifications = new ArrayList<>();
+    private List<String>         superTypes      = new ArrayList<>();
 
 
     /**
@@ -26,6 +27,9 @@ public class TestElementHeader
     public TestElementHeader()
     {
         classifications.add(new Classification());
+        superTypes.add("Referenceable");
+
+        type.setElementSuperTypeNames(superTypes);
     }
 
 

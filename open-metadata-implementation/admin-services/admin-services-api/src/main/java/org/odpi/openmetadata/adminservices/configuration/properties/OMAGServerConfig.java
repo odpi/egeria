@@ -109,6 +109,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private List<String>              auditTrail                = null;
     private VirtualizationConfig      virtualizationConfig      = null;
     private DataEngineProxyConfig     dataEngineProxyConfig     = null;
+    private DataPlatformConfig        dataPlatformConfig        = null;
 
 
     /**
@@ -153,6 +154,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
             dataEngineProxyConfig = template.getDataEngineProxyConfig();
+            dataPlatformConfig = template.getDataPlatformConfig();
         }
     }
 
@@ -621,6 +623,24 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     }
 
     /**
+     * Return the configuration for the data platform services.
+     *
+     * @return DataEngineProxyConfig properties
+     */
+    public DataPlatformConfig getDataPlatformConfig() {
+        return dataPlatformConfig;
+    }
+
+    /**
+     * Set up the configuration for the data platform services.
+     *
+     * @param dataPlatformConfig properties
+     */
+    public void setDataPlatformConfig(DataPlatformConfig dataPlatformConfig) {
+        this.dataPlatformConfig = dataPlatformConfig;
+    }
+
+    /**
      * Return the list of audit log entries associated with this config file.
      * The audit log simply keep track of the changed to the configuration.
      *
@@ -668,6 +688,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", securityOfficerConfig=" + securityOfficerConfig +
                 ", dataEngineProxyConfig=" + dataEngineProxyConfig +
+                ", dataPlatformConfig=" + dataPlatformConfig +
                 ", auditTrail=" + auditTrail +
                 '}';
     }
@@ -708,6 +729,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getSecurityOfficerConfig(), that.getSecurityOfficerConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                 Objects.equals(getDataEngineProxyConfig(), that.getDataEngineProxyConfig()) &&
+                Objects.equals(getDataPlatformConfig(), that.getDataPlatformConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -724,6 +746,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
                             getStewardshipServicesConfig(), getSecuritySyncConfig(), getSecurityOfficerConfig(),
-                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig());
+                            getAuditTrail(), getVirtualizationConfig(), getDataEngineProxyConfig(),getDataPlatformConfig());
     }
 }

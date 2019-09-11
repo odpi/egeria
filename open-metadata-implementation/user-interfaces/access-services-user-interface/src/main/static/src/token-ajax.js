@@ -111,7 +111,6 @@ class TokenAjax extends PolymerElement {
     _handleErrorResponse(evt){
         var status = evt.detail.request.xhr.status;
         var resp   = evt.detail.request.xhr.response;
-        console.log('Error response with status code: '+ status);
         // Token is not valid, log out.
         if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
             console.log('Token invalid:'+ this.token);
@@ -120,8 +119,12 @@ class TokenAjax extends PolymerElement {
                 composed: true,
                 detail: {greeted: "Bye!", status: status}}));
         }else{
-            console.debug('Unknown error!');
-        }
+            window.dispatchEvent(new CustomEvent('show-feedback', {
+                bubbles: true,
+                composed: true,
+                detail: {message: "We are experiencing an unexpected error. Please try again later!", level: 'error'}}));
+            }
+            this.$.backdrop.close();
     }
 
     _onLoadingChanged(){

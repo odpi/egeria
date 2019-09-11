@@ -32,6 +32,7 @@
         <module>virtualization-services</module>
         <module>security-officer-services</module>
         <module>data-engine-proxy-services</module>
+        <module>data-platform-services</module>
     </modules>
 
 </project>

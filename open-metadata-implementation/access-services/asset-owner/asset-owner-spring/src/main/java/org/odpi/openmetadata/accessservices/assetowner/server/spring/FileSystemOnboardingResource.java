@@ -5,13 +5,11 @@ package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileSystemRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.PathNameRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.FileSystemRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -118,6 +116,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param fileSystemGUID unique identifier of the file system in the catalog
      * @param folderGUID unique identifier of the folder in the catalog
+     * @param requestBody dummy request body
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -126,12 +125,13 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/attach")
 
-    public VoidResponse attachFolderToFileSystem(@PathVariable String  serverName,
-                                                 @PathVariable String  userId,
-                                                 @PathVariable String  fileSystemGUID,
-                                                 @PathVariable String  folderGUID)
+    public VoidResponse attachFolderToFileSystem(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @PathVariable String          fileSystemGUID,
+                                                 @PathVariable String          folderGUID,
+                                                 @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.attachFolderToFileSystem(serverName, userId, fileSystemGUID, folderGUID);
+        return restAPI.attachFolderToFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
 
 
@@ -142,6 +142,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param fileSystemGUID unique identifier of the file system in the catalog
      * @param folderGUID unique identifier of the folder in the catalog
+     * @param requestBody dummy request body
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -150,12 +151,13 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/file-systems/{fileSystemGUID}/folders/{fileSystemGUID}/detach")
 
-    public VoidResponse detachFolderFromFileSystem(@PathVariable String  serverName,
-                                                   @PathVariable String  userId,
-                                                   @PathVariable String  fileSystemGUID,
-                                                   @PathVariable String  folderGUID)
+    public VoidResponse detachFolderFromFileSystem(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @PathVariable String          fileSystemGUID,
+                                                   @PathVariable String          folderGUID,
+                                                   @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.detachFolderFromFileSystem(serverName, userId, fileSystemGUID, folderGUID);
+        return restAPI.detachFolderFromFileSystem(serverName, userId, fileSystemGUID, folderGUID, requestBody);
     }
 
 
@@ -193,6 +195,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID unique identifier of the folder
      * @param fileGUID unique identifier of the file
+     * @param requestBody dummy request body
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -201,12 +204,13 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/attach")
 
-    public VoidResponse  attachFileAssetToFolder(@PathVariable String  serverName,
-                                                 @PathVariable String  userId,
-                                                 @PathVariable String  folderGUID,
-                                                 @PathVariable String  fileGUID)
+    public VoidResponse  attachFileAssetToFolder(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @PathVariable String          folderGUID,
+                                                 @PathVariable String          fileGUID,
+                                                 @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.attachFileAssetToFolder(serverName, userId, folderGUID, fileGUID);
+        return restAPI.attachFileAssetToFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
 
 
@@ -219,6 +223,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID unique identifier of the folder
      * @param fileGUID unique identifier of the file
+     * @param requestBody dummy request body
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -227,12 +232,13 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/detach")
 
-    public VoidResponse  detachFileAssetFromFolder(@PathVariable String  serverName,
-                                                   @PathVariable String  userId,
-                                                   @PathVariable String  folderGUID,
-                                                   @PathVariable String  fileGUID)
+    public VoidResponse  detachFileAssetFromFolder(@PathVariable String          serverName,
+                                                   @PathVariable String          userId,
+                                                   @PathVariable String          folderGUID,
+                                                   @PathVariable String          fileGUID,
+                                                   @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.detachFileAssetFromFolder(serverName, userId, folderGUID, fileGUID);
+        return restAPI.detachFileAssetFromFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
 
 
@@ -252,12 +258,13 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/move-to")
 
-    public VoidResponse  moveFileInCatalog(@PathVariable String  serverName,
-                                           @PathVariable String  userId,
-                                           @PathVariable String  folderGUID,
-                                           @PathVariable String  fileGUID)
+    public VoidResponse  moveFileInCatalog(@PathVariable String          serverName,
+                                           @PathVariable String          userId,
+                                           @PathVariable String          folderGUID,
+                                           @PathVariable String          fileGUID,
+                                           @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.moveFileInCatalog(serverName, userId, folderGUID, fileGUID);
+        return restAPI.moveFileInCatalog(serverName, userId, folderGUID, fileGUID, requestBody);
     }
 
 
@@ -275,9 +282,9 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/file-systems/{fileSystemGUID}")
 
-    public FileSystem getFileSystemByGUID(@PathVariable String  serverName,
-                                          @PathVariable String  userId,
-                                          @PathVariable String  fileSystemGUID)
+    public FileSystemResponse getFileSystemByGUID(@PathVariable String  serverName,
+                                                  @PathVariable String  userId,
+                                                  @PathVariable String  fileSystemGUID)
     {
         return restAPI.getFileSystemByGUID(serverName, userId, fileSystemGUID);
     }
@@ -297,9 +304,9 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/file-systems/by-name/{uniqueName}")
 
-    public FileSystem getFileSystemByUniqueName(@PathVariable String  serverName,
-                                                @PathVariable String  userId,
-                                                @PathVariable String  uniqueName)
+    public FileSystemResponse getFileSystemByUniqueName(@PathVariable String  serverName,
+                                                        @PathVariable String  userId,
+                                                        @PathVariable String  uniqueName)
     {
         return restAPI.getFileSystemByUniqueName(serverName, userId, uniqueName);
     }
@@ -344,9 +351,9 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/folders/{folderGUID}")
 
-    public Folder getFolderByGUID(@PathVariable String  serverName,
-                                  @PathVariable String  userId,
-                                  @PathVariable String  folderGUID)
+    public FolderResponse getFolderByGUID(@PathVariable String  serverName,
+                                          @PathVariable String  userId,
+                                          @PathVariable String  folderGUID)
     {
         return restAPI.getFolderByGUID(serverName, userId, folderGUID);
     }
@@ -366,9 +373,9 @@ public class FileSystemOnboardingResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/folders/by-path-name")
 
-    public Folder getFolderByPathName(@PathVariable String                serverName,
-                                      @PathVariable String                userId,
-                                      @RequestBody  PathNameRequestBody   requestBody)
+    public FolderResponse getFolderByPathName(@PathVariable String                serverName,
+                                              @PathVariable String                userId,
+                                              @RequestBody  PathNameRequestBody   requestBody)
     {
         return restAPI.getFolderByPathName(serverName, userId, requestBody);
     }
