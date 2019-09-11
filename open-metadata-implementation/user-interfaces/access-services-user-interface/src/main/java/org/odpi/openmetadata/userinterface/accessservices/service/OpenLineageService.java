@@ -36,8 +36,8 @@ public class OpenLineageService {
     //TODO add authentication
     private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
-    private @Value("${open.lineage.graph.source}")
-    GraphName graphName;
+    @Value("${open.lineage.graph.source}")
+    private GraphName graphName;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     @Autowired
