@@ -133,9 +133,13 @@ public class ProcessHandler {
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
         if (startEntity == null) return Collections.emptyList();
-
+        String startEntityType = startEntity.getType().getTypeDefName();
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
+
+            if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
+                continue;
+            }
             EntityDetail endEntity = writeEntitiesAndRelationships(userId,guid,startEntity,relationship);
             if(endEntity == null) return Collections.emptyList();
 
@@ -187,29 +191,12 @@ public class ProcessHandler {
                                                                                                     PropertyServerException,
                                                                                                     UserNotAuthorizedException
     {
-        List<EntityDetail> result = new ArrayList<>();
-
-        if (checkIfEntityExistWithSpecificType(entityDetails,TABULAR_COLUMN_TYPE)) {
-            endRelationship(entityDetails,userId);
-        }
-
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
             endRelationship(entityDetails,userId);
         }
 
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            result.addAll(getTabularSchemaTypes(entityDetails,userId));
-            getRelationshipBasedOnType(result,userId);
-        }
-
-        if(checkIfEntityExistWithSpecificType(entityDetails,TABULAR_SCHEMA_TYPE)){
-            result.addAll(getSchemaAttributes(entityDetails,userId));
-            getRelationshipBasedOnType(result,userId);
-        }
-
-        if(checkIfEntityExistWithSpecificType(entityDetails,SCHEMA_ATTRIBUTE)){
-            result.addAll(getTabularColumnTypes(entityDetails,userId));
-            getRelationshipBasedOnType(result,userId);
+            getTabularSchemaTypes(entityDetails,userId);
         }
 
     }
@@ -220,13 +207,13 @@ public class ProcessHandler {
                                                                                          UserNotAuthorizedException
     {
         for (EntityDetail entityDetail : entityDetails) {
-
-            getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
+           getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
                     processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
         }
+
     }
 
-    private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private void getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
     {
@@ -237,10 +224,10 @@ public class ProcessHandler {
                     processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
             result.add(newListOfEntityDetails.get(0));
         }
-        return result;
+        getSchemaAttributes(result,userId);
     }
 
-    private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private void getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                            PropertyServerException,
                                                                                                            UserNotAuthorizedException
     {
@@ -251,10 +238,10 @@ public class ProcessHandler {
                     processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }
-        return result;
+        getTabularColumnTypes(result,userId);
     }
 
-    private List<EntityDetail> getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private void getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                              PropertyServerException,
                                                                                                              UserNotAuthorizedException
     {
@@ -264,9 +251,11 @@ public class ProcessHandler {
                     processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
 
             newListOfEntityDetails = newListOfEntityDetails.stream().filter(entity -> entity.getType().getTypeDefName().equals(TABULAR_COLUMN_TYPE)).collect(Collectors.toList());
-            result.add(newListOfEntityDetails.get(0));
+
+            if(!newListOfEntityDetails.isEmpty()){
+            result.add(newListOfEntityDetails.get(0));}
         }
-        return result;
+        endRelationship(result,userId);
     }
 
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
