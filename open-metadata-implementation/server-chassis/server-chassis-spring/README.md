@@ -12,7 +12,7 @@ Its **main()** method is located in a Java class called
 for the server framework.
 
 When the **OMAGServerPlatform** is started, Spring Boot does a component scan for all Spring
-services that are in Java packages stemming from `org.odpi.openmetadata/*`
+services that are in Java packages stemming from `org.odpi.openmetadata.*`
 and that are visible to this module.
 
 To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
@@ -45,7 +45,9 @@ how the services should be configured.
 
 Setting up the configuration document is a one-time activity.
 Once it is in place it is possible to activate and deactivate the
-services in the OMAGServerPlatform many times over multiple server restarts.
+services in the OMAGServerPlatform many times over multiple server restarts. Also, it can be activate at startup 
+by setting spring-boot property  'startup.server.list'. This startup option is made by 
+default by user id 'system', and it can be override by setting spring-boot property 'startup.user'
 
 Details of how to set up the configuration document, and activate/deactivate
 the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
