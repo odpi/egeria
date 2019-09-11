@@ -9,10 +9,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -119,6 +121,9 @@ public class DataPlatformOmasListenerTest {
     @Mock
     private EventPublisher eventPublisher;
 
+    @Mock
+    private DataPlatformServicesInstance instance;
+
     private OMRSAuditLog auditLog;
 
 
@@ -140,7 +145,7 @@ public class DataPlatformOmasListenerTest {
         MockitoAnnotations.initMocks(this);
 
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, Collections.EMPTY_LIST, auditLog);
-        listener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+        listener = new DataPlatformInTopicListener(instance,omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
         when(helper.getStringProperty(eq(Constants.DATA_PLATFORM_OMAS_NAME),
@@ -405,6 +410,7 @@ public class DataPlatformOmasListenerTest {
         type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");
 
         NewViewEvent newViewEvent = testDataHelper.buildEvent();
+        newViewEvent.setEventType(DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT);
         listener.processEvent(new ObjectMapper().writeValueAsString(newViewEvent));
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
