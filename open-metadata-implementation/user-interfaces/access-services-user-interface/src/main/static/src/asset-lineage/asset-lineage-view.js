@@ -29,9 +29,16 @@ class AssetLineageView extends PolymerElement {
       <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
       <vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>
       <vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>
-      <vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio"> Source and Destination</vaadin-radio-button>
+      <vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio">Source and Destination</vaadin-radio-button>
     </vaadin-radio-group>
           
+    <div>
+    <vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="COLUMNVIEW"  role="radiogroup" >
+      <vaadin-radio-button value="COLUMNVIEW" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>
+      <vaadin-radio-button value="TABLEVIEW" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>
+    </vaadin-radio-group>
+    </div>
+    
     <div class="container" id="container">
         <vis-graph id="visgraph" data=[[graphData]]></vis-graph>
     </div>
@@ -40,7 +47,7 @@ class AssetLineageView extends PolymerElement {
 
     ready() {
         super.ready();
-        this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value) );
+        this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
     }
 
     static get properties() {
@@ -99,53 +106,68 @@ class AssetLineageView extends PolymerElement {
         }
 
 
-      _ultimateSource(guid){
+      _ultimateSource(guid, scope) {
+          if (scope === null || scope === undefined) {
+             scope  = "COLUMNVIEW";
+          }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?scope=' + scope;
           this.$.tokenAjax._go();
       }
 
 
-      _endToEndLineage(guid){
+      _endToEndLineage(guid, scope){
+          if (scope === null || scope === undefined) {
+              scope  = "COLUMNVIEW";
+          }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?scope=' + scope;
           this.$.tokenAjax._go();
       }
 
-      _ultimateDestination(guid){
+      _ultimateDestination(guid, scope){
+          if (scope === null || scope === undefined) {
+              scope  = "COLUMNVIEW";
+          }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?scope=' + scope;
           this.$.tokenAjax._go();
       }
 
-      _glossaryLineage(guid){
+      _glossaryLineage(guid, scope){
+          if (scope === null || scope === undefined) {
+              scope  = "COLUMNVIEW";
+          }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=' + scope;
           this.$.tokenAjax._go();
       }
 
-      _sourceAndDestination(guid){
+      _sourceAndDestination(guid, scope){
+          if (scope === null || scope === undefined) {
+              scope  = "COLUMNVIEW";
+          }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=COLUMNVIEW';
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?scope=' + scope;
           this.$.tokenAjax._go();
       }
 
-    _usecaseChanged(value) {
+    _usecaseChanged(value, scope) {
         switch (value) {
             case 'ultimateSource':
-                this._ultimateSource(this.guid);
+                this._ultimateSource(this.guid, scope);
                 break;
             case 'endToEnd':
-                this._endToEndLineage(this.guid);
+                this._endToEndLineage(this.guid, scope);
                 break;
             case 'ultimateDestination':
-                this._ultimateDestination(this.guid);
+                this._ultimateDestination(this.guid, scope);
                 break;
             case 'glossaryLineage':
-                this._glossaryLineage(this.guid);
+                this._glossaryLineage(this.guid, scope);
                 break;
             case 'sourceAndDestination':
-                this._sourceAndDestination(this.guid);
+                this._sourceAndDestination(this.guid, scope);
                 break;
         }
     }
