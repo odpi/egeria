@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 
+import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
@@ -101,13 +103,52 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
+        Vertex sourceCondensation = g.addV(NODE_LABEL_CONDENSED).next();
+        Vertex destinationCondensation = g.addV(NODE_LABEL_CONDENSED).next();
+
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
         copyVertexProperties(originalQueriedVertex, queriedVertex);
 
-        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
+        sourceCondensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
+        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, destinationCondensation);
 
-        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
+        for (Vertex originalVertex : sourcesList) {
+            Vertex vertex = g.addV(originalVertex.label()).next();
+            copyVertexProperties(originalVertex, vertex);
+            vertex.addEdge(EDGE_LABEL_CONDENSED, sourceCondensation);
+        }
+
+        for (Vertex originalVertex : destinationsList) {
+            Vertex vertex = g.addV(originalVertex.label()).next();
+            copyVertexProperties(originalVertex, vertex);
+            destinationCondensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
+        }
         return janusGraphToGraphson(responseGraph);
+    }
+
+    /**
+     * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
+     * leading from the queried node to any leaf nodes. The queried node can be a column or table.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param view The view queried by the user: tableview, columnview.
+     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String endToEnd(Graph graph, String view, String guid) {
+        GraphTraversalSource g = graph.traversal();
+        String edgeLabel = getEdgeLabel(view);
+
+        Graph endToEndGraph = (Graph)
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                        union(
+                        until(inE(edgeLabel).count().is(0)).
+                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
+                        until(outE(edgeLabel).count().is(0)).
+                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                        ).cap("subGraph").next();
+
+        return janusGraphToGraphson(endToEndGraph);
     }
 
     /**
@@ -126,17 +167,22 @@ public class GraphServices {
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV()).dedup().toList();
-
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
+        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
+
         copyVertexProperties(originalQueriedVertex, queriedVertex);
+        condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
 
-        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
-
+        for (Vertex originalVertex : sourcesList) {
+            Vertex vertex = g.addV(originalVertex.label()).next();
+            copyVertexProperties(originalVertex, vertex);
+            vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
+        }
         return janusGraphToGraphson(responseGraph);
     }
 
@@ -161,67 +207,18 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
+        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
+
         copyVertexProperties(originalQueriedVertex, queriedVertex);
+        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
 
-        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
-
+        for (Vertex originalVertex : destinationsList) {
+            Vertex vertex = g.addV(originalVertex.label()).next();
+            copyVertexProperties(originalVertex, vertex);
+            condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
+        }
         return janusGraphToGraphson(responseGraph);
-    }
-
-    /**
-     * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
-     * leading from the queried node to any leaf nodes. The queried node can be a column or table.
-     *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
-     * @return a subgraph in the GraphSON format.
-     */
-    private String endToEnd(Graph graph, String view, String guid) {
-        GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(view);
-
-        final GraphTraversal<Vertex, Vertex> queriedNode = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode2 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode3 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-
-        Graph endToEndGraph = (Graph)
-                queriedNode.union(
-                        queriedNode2.
-                                until(inE(edgeLabel).count().is(0)).
-                                repeat(inE(edgeLabel).subgraph("subGraph").outV()),
-                        queriedNode3.
-                                until(outE(edgeLabel).count().is(0)).
-                                repeat(outE(edgeLabel).subgraph("subGraph").inV())
-                ).cap("subGraph").next();
-
-        return janusGraphToGraphson(endToEndGraph);
-    }
-
-    private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
-        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
-            condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
-
-            for (Vertex originalVertex : sourcesList) {
-                Vertex vertex = g.addV(originalVertex.label()).next();
-                copyVertexProperties(originalVertex, vertex);
-                vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
-            }
-        }
-    }
-
-    private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
-        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
-            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
-            queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
-            for (Vertex originalVertex : destinationsList) {
-                Vertex vertex = g.addV(originalVertex.label()).next();
-                copyVertexProperties(originalVertex, vertex);
-                condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-            }
-        }
     }
 
     /**
