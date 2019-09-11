@@ -134,12 +134,12 @@ class AssetLineageView extends PolymerElement {
           this.$.tokenAjax._go();
       }
 
-      _glossaryLineage(guid, scope){
-          if (scope === null || scope === undefined) {
-              scope  = "COLUMNVIEW";
+      _glossaryLineage(guid, view){
+          if (view === null || view === undefined) {
+              view  = "COLUMNVIEW";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?scope=' + scope;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?view=' + view;
           this.$.tokenAjax._go();
       }
 
