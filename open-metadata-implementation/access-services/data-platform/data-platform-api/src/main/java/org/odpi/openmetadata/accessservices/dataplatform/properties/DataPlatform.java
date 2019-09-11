@@ -70,4 +70,26 @@ public class DataPlatform implements Serializable
     {
         this.dataPlatformEndpoint = dataPlatformEndpoint;
     }
+
+
+    /**
+     * Return the connector type defined for this data platform.  This value must be set for this to be a
+     * valid data platform definition.
+     *
+     * @return the data platform connector type
+     */
+    public List<ConnectorType> getDataPlatformConnectorType() {
+        return dataPlatformConnectorType;
+    }
+
+
+    /**
+     * Set up the endpoint defined for this data platform.  This value must be set for this to be a
+     * valid data platform definition.
+     *
+     * @param dataPlatformConnectorType the data platform connector type
+     */
+    public void setDataPlatformConnectorType(List<ConnectorType> dataPlatformConnectorType) {
+        this.dataPlatformConnectorType = dataPlatformConnectorType;
+    }
 }

@@ -19,7 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = NewViewEvent.class, name = "NewViewEvent")
+        @JsonSubTypes.Type(value = NewViewEvent.class, name = "NewViewEvent"),
+        @JsonSubTypes.Type(value = NewDeployedDatabaseSchemaEvent.class, name = "NewDeployedDatabaseSchemaEvent")
 })
 public abstract class DataPlatformEventHeader {
 
