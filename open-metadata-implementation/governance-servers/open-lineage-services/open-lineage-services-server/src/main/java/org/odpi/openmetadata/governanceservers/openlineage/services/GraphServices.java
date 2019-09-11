@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 
+import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
@@ -137,19 +139,14 @@ public class GraphServices {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(scope);
 
-        final GraphTraversal<Vertex, Vertex> queriedNode = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode2 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode3 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-
         Graph endToEndGraph = (Graph)
-                queriedNode.union(
-                        queriedNode2.
-                                until(inE(edgeLabel).count().is(0)).
-                                repeat(inE(edgeLabel).subgraph("subGraph").outV()),
-                        queriedNode3.
-                                until(outE(edgeLabel).count().is(0)).
-                                repeat(outE(edgeLabel).subgraph("subGraph").inV())
-                ).cap("subGraph").next();
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                        union(
+                        until(inE(edgeLabel).count().is(0)).
+                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
+                        until(outE(edgeLabel).count().is(0)).
+                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                        ).cap("subGraph").next();
 
         return janusGraphToGraphson(endToEndGraph);
     }
