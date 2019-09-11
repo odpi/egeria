@@ -2,7 +2,9 @@
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class Constants {
 
@@ -69,5 +71,16 @@ public final class Constants {
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
+
+
+    // Map of names to property key names
+    public static final Map<String, String> processRelationshipsTypes = new HashMap<String,String>() {{
+        put(PORT_ALIAS, PORT_DELEGATION);
+        put(PORT_IMPLEMENTATION, PORT_SCHEMA);
+        put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
+        put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
+        put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
+    }};
+
 
 }
