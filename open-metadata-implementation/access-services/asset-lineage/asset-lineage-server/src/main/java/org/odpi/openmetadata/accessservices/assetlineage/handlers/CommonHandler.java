@@ -86,7 +86,7 @@ public class CommonHandler {
         final String methodName = "getRelationshipByType";
         String typeGuid = getTypeName(userId, relationshipType);
 
-        List<Relationship> relationships =    repositoryHandler.getRelationshipsByType(userId,
+        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                       assetGuid,
                                                                                       typeDefName,
                                                                                       typeGuid,
@@ -108,7 +108,7 @@ public class CommonHandler {
      *
      * @return Guid of the type if found, null String if not found
      */
-    private String getTypeName (String userId, String typeDefName){
+    public String getTypeName (String userId, String typeDefName){
         final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
 
         if (typeDefByName != null) {

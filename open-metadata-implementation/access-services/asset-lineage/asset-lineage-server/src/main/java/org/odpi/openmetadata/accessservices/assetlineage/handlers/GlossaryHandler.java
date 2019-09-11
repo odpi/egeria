@@ -81,8 +81,12 @@ public class GlossaryHandler {
 
             return getGlossaryProperties(entityDetail.get());
         } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
-                    e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
+            throw new AssetLineageException(e.getReportedHTTPCode(),
+                                            e.getReportingClassName(),
+                                            e.getReportingActionDescription(),
+                                            e.getErrorMessage(),
+                                            e.getReportedSystemAction(),
+                                            e.getReportedUserAction());
         }
 
     }
@@ -97,11 +101,14 @@ public class GlossaryHandler {
      *
      * @return Glossary Term retrieved from the property server
      */
-    private Optional<EntityDetail> getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private Optional<EntityDetail> getGlossary(String userId, String assetGuid, String typeDefName) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException
+    {
         final String methodName = "getGlossary";
+        CommonHandler commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
 
-        String typeGuid = getTypeName(userId, SEMANTIC_ASSIGNMENT);
-
+        String typeGuid = commonHandler.getTypeName(userId, SEMANTIC_ASSIGNMENT);
         List<Relationship> semanticAssignment = repositoryHandler.getRelationshipsByType(userId,
                 assetGuid,
                 typeDefName,
@@ -151,23 +158,5 @@ public class GlossaryHandler {
         glossaryTerm.setClassifications(classifications);
 
         return glossaryTerm;
-    }
-
-
-    /**
-     * Returns the guid for the type that is provided.
-     *
-     * @param userId userId of user making request
-     * @param typeName  the typeName of the asset.
-     *
-     * @return String guid retrieved from the property server
-     */
-    private String getTypeName(String userId, String typeName) {
-        final TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeName);
-
-        if (typeDefByName != null) {
-            return typeDefByName.getGUID();
-        }
-        return null;
     }
 }
