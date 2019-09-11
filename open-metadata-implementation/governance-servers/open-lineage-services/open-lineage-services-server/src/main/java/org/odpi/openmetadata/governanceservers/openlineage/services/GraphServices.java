@@ -103,26 +103,12 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex sourceCondensation = g.addV(NODE_LABEL_CONDENSED).next();
-        Vertex destinationCondensation = g.addV(NODE_LABEL_CONDENSED).next();
-
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
         copyVertexProperties(originalQueriedVertex, queriedVertex);
 
-        sourceCondensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
-        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, destinationCondensation);
+        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
 
-        for (Vertex originalVertex : sourcesList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            vertex.addEdge(EDGE_LABEL_CONDENSED, sourceCondensation);
-        }
-
-        for (Vertex originalVertex : destinationsList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            destinationCondensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-        }
+        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
         return janusGraphToGraphson(responseGraph);
     }
 
@@ -167,22 +153,17 @@ public class GraphServices {
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV()).dedup().toList();
+
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
-
         copyVertexProperties(originalQueriedVertex, queriedVertex);
-        condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
 
-        for (Vertex originalVertex : sourcesList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
-        }
+        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
+
         return janusGraphToGraphson(responseGraph);
     }
 
@@ -207,18 +188,37 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
-
         copyVertexProperties(originalQueriedVertex, queriedVertex);
-        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
 
-        for (Vertex originalVertex : destinationsList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-        }
+        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
+
         return janusGraphToGraphson(responseGraph);
+    }
+
+    private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
+        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
+            condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
+
+            for (Vertex originalVertex : sourcesList) {
+                Vertex vertex = g.addV(originalVertex.label()).next();
+                copyVertexProperties(originalVertex, vertex);
+                vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
+            }
+        }
+    }
+
+    private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
+        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
+            queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
+            for (Vertex originalVertex : destinationsList) {
+                Vertex vertex = g.addV(originalVertex.label()).next();
+                copyVertexProperties(originalVertex, vertex);
+                condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
+            }
+        }
     }
 
     /**
