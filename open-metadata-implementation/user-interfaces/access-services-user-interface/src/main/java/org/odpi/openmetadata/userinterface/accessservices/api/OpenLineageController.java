@@ -5,7 +5,7 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,10 +43,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
-    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+    public Map<String, Object> ultimateSourceGraph(String userId, @PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getUltimateSource(userId, scope, guid);
+            exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -55,10 +55,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
-    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+    public Map<String, Object> endToEndLineage(String userId, @PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getEndToEndLineage(userId, scope, guid);
+            exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -67,10 +67,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
-    public Map<String, Object> ultimateDestination(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+    public Map<String, Object> ultimateDestination(String userId, @PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getUltimateDestination(userId, scope, guid);
+            exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -79,10 +79,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
-    public Map<String, Object> glossaryLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+    public Map<String, Object> glossaryLineage(String userId, @PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getGlossaryLineage(userId, scope, guid);
+            exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -91,10 +91,10 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
-    public Map<String, Object> sourceAndDestinationLineage(String userId, @PathVariable("guid") String guid, @RequestParam Scope scope){
+    public Map<String, Object> sourceAndDestinationLineage(String userId, @PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
         try {
-            exportedGraph = openLineageService.getSourceAndDestination(userId, scope, guid);
+            exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
         } catch (IOException e) {
             handleException(e);
             return null;
