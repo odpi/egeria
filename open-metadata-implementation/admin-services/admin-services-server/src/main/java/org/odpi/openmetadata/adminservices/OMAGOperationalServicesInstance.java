@@ -7,6 +7,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
+import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.dataengineproxy.admin.DataEngineProxyOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
@@ -37,6 +38,7 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
     private SecurityOfficerOperationalServices  operationalSecurityOfficerService   = null;
     private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
     private DataEngineProxyOperationalServices  operationalDataEngineProxyServices  = null;
+    private DataPlatformOperationalServices     operationalDataPlatformServices     = null;
 
 
     /**
@@ -321,4 +323,21 @@ class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
         this.operationalDataEngineProxyServices = operationalDataEngineProxyServices;
     }
 
+    /**
+     * Return the running instance of Data Platform Service
+     *
+     * @return DataPlatformOperationalServices
+     */
+    DataPlatformOperationalServices getOperationalDataPlatformServices() {
+        return operationalDataPlatformServices;
+    }
+
+    /**
+     * Set up the running instance of Data Platform Service
+     *
+     * @param operationalDataPlatformServices DataPlatformOperationalServices
+     */
+    void setOperationalDataPlatformServices(DataPlatformOperationalServices operationalDataPlatformServices) {
+        this.operationalDataPlatformServices = operationalDataPlatformServices;
+    }
 }

@@ -160,6 +160,8 @@
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
+        <cassandra.version>3.5.0</cassandra.version>
+        <guava.version>20.0</guava.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -1458,6 +1460,20 @@
             </dependency>
 
             <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cassandra-open-metadata-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <scope>compile</scope>
@@ -1581,6 +1597,21 @@
                 <artifactId>spring-tx</artifactId>
                 <scope>compile</scope>
                 <version>${spring-web.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.datastax.cassandra</groupId>
+                <artifactId>cassandra-driver-core</artifactId>
+                <version>${cassandra.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+                <scope>compile</scope>
             </dependency>
 
         </dependencies>
