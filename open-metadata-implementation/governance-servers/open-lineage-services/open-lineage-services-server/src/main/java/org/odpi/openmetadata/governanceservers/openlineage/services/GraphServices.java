@@ -173,7 +173,7 @@ public class GraphServices {
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param view The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
+     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
     private String ultimateDestination(Graph graph, String view, String guid) {
