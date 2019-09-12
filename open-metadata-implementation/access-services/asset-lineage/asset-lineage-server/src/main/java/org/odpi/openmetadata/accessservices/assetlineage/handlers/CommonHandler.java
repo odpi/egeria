@@ -131,19 +131,6 @@ public class CommonHandler {
         }
     }
 
-    public EntityDetail getStartEntity(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
-
-        String methodname = "getStartEntity";
-        if (!relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER, "Any entity type", methodname);
-        } else {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER, "Any entity type", methodname);
-        }
-    }
-
-
     /**
      * Adds entities and relationships for the process Context structure
      *

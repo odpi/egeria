@@ -3,7 +3,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.Edge;
 import org.odpi.openmetadata.accessservices.assetlineage.ProcessContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -101,7 +100,7 @@ public class ContextHandler {
         final String typeDefName = entityDetail.getType().getTypeDefName();
 
         Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(userId,typeDefName);
-        //check if it is a table
+        //TODO check for Table entities
         if (isComplexSchemaType.isPresent()) {
 //            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
             return;
@@ -133,7 +132,6 @@ public class ContextHandler {
     {
         List<Relationship> relationships = commonHandler.getRelationshipByType(userId, startEntity.getGUID(), relationshipType,typeDefName);
 
-        String startEntityType = startEntity.getType().getTypeDefName();
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 

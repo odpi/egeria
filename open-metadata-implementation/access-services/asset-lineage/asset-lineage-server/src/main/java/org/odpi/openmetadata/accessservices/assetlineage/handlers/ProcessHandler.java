@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.*;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
-import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -32,7 +31,6 @@ public class ProcessHandler {
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
     private ProcessContext graph = new ProcessContext();
-    private Converter converter = new Converter();
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -146,34 +144,6 @@ public class ProcessHandler {
         return entityDetails;
 
     }
-
-    /**
-     * Adds entities and relationships to the process Context structure
-     *
-     * @param userId           String - userId of user making request.
-     * @param startEntity      parent entity of the relationship
-     * @param relationship     the relationship of the parent node
-     * @return Entity which is the child of the relationship, null if there is no Entity
-     */
-//    private EntityDetail writeEntitiesAndRelationships(String userId,EntityDetail startEntity, Relationship relationship) throws InvalidParameterException,
-//                                                                                                                                             PropertyServerException,
-//                                                                                                                                             UserNotAuthorizedException
-//    {
-//        EntityDetail endEntity = commonHandler.getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
-//
-//        if (endEntity == null) return null;
-//
-//        LineageEntity startVertex = converter.createEntity(startEntity);
-//        LineageEntity endVertex = converter.createEntity(endEntity);
-//
-//        graph.addVertex(startVertex);
-//        graph.addVertex(endVertex);
-//
-//        Edge edge = new Edge(relationship.getType().getTypeDefName(), startVertex, endVertex);
-//        graph.addEdge(edge);
-//
-//        return endEntity;
-//    }
 
     /**
      * Creates the full context for a Process. There are two cases, a process can have a relationship to either

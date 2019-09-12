@@ -1,9 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public final class Constants {
@@ -13,7 +11,6 @@ public final class Constants {
 
     public static final String ASSET_LINEAGE_OMAS = "AssetLineageOmas";
 
-    public static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";
     public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
     public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
     public static final String ASSET = "Asset";
@@ -73,23 +70,14 @@ public final class Constants {
     public static final String NAME = "name";
 
 
-    // Map of names to property key names
-    public static final Map<String, String> processRelationshipsTypes = new HashMap<String,String>() {{
-        put(PORT_ALIAS, PORT_DELEGATION);
-        put(PORT_IMPLEMENTATION, PORT_SCHEMA);
-        put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
-        put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
-        put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
-    }};
+    // Map of entities to relationship types
+    public static final Map<String, String> processRelationshipsTypes = new HashMap<>();
 
-//    // Map of names to property key names
-//    public static final Map<String, String> assetRelationshipTypes = new HashMap<String,String>() {{
-//        put(RELATIONAL_COLUMN);
-//        put(TABULAR_COLUMN, PORT_SCHEMA);
-//        put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
-//        put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
-//        put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
-//    }};
-
-
+    static {
+        processRelationshipsTypes.put(PORT_ALIAS, PORT_DELEGATION);
+        processRelationshipsTypes.put(PORT_IMPLEMENTATION, PORT_SCHEMA);
+        processRelationshipsTypes.put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
+        processRelationshipsTypes.put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
+        processRelationshipsTypes.put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
+    }
 }

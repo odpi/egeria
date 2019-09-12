@@ -5,8 +5,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
