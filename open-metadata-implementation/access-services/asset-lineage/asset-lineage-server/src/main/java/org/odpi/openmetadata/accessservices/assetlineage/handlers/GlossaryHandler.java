@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class GlossaryHandler {
@@ -55,11 +54,11 @@ public class GlossaryHandler {
 
 
     /**
-     * Returns the glossary term object corresponding to the supplied assset that can possibly have a glossary Term.
+     * Returns the glossary term object corresponding to the supplied asset that can possibly have a glossary Term.
      *
      * @param assetGuid guid of the asset that has been created
      * @param userID    String - userId of user making request.
-     * @return Glossary Term retrieved from the repository
+     * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
      */
     public GlossaryTerm getGlossaryTerm(String assetGuid, String userID, String typeDefName) {
 
@@ -67,15 +66,8 @@ public class GlossaryHandler {
             Optional<EntityDetail> entityDetail = getGlossary(userID, assetGuid, typeDefName);
 
             if (!entityDetail.isPresent()) {
-                log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
-                        " Entity not found with guid {}", assetGuid);
-
-                throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        "Retrieving Entity",
-                        ENTITY_NOT_FOUND.getErrorMessage(),
-                        ENTITY_NOT_FOUND.getSystemAction(),
-                        ENTITY_NOT_FOUND.getUserAction());
+                log.error("No Semantic assignment for the asset with guid {} found", assetGuid);
+                return null;
             }
 
             return getGlossaryProperties(entityDetail.get());
@@ -120,7 +112,7 @@ public class GlossaryHandler {
             return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId,
                     glossaryTermGuid,
                     "guid",
-                    GLOSSARY_TERM_TYPE_NAME,
+                    GLOSSARY_TERM,
                     methodName));
         }
         return Optional.empty();

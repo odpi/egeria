@@ -105,7 +105,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         log.debug("Processing instance event" + instanceEvent);
 
         if (instanceEvent == null) {
-            log.debug("Null instance event - ignoring event");
+            log.debug("Null instance event - Asset LIneage OMAS is ignoring the event");
         } else {
             OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
             OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
@@ -154,18 +154,28 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param serviceOperationName name of the calling operation
      */
     private void processNewEntity(EntityDetail entityDetail, String typeName, String serviceOperationName) {
+        final String methodName = "processNewEntity";
 
-        if (typeName.equals(PROCESS)) {
-            try {
-
+        try {
+            if (typeName.equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
-            } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
-                log.error(e.getErrorMessage());
+            }
+            else {
+                getAssetContext(entityDetail, serviceOperationName);
             }
         }
-        else {
-            getContextForElement(entityDetail, serviceOperationName);
-        }
+        catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
+                log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
+
+                throw new AssetLineageException(e.getReportedHTTPCode(),
+                                                e.getReportingClassName(),
+                                                e.getReportingActionDescription(),
+                                                e.getErrorMessage(),
+                                                e.getReportedSystemAction(),
+                                                e.getReportedUserAction());
+            }
+
+
     }
 
     /**
@@ -175,8 +185,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param serviceOperationName name of the calling operation
      */
     private void getContextForProcess(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                     PropertyServerException,
+                                                                                                     UserNotAuthorizedException {
 
         ProcessHandler processHandler = instanceHandler.getProcessHandler(serverUserName, serverName, serviceOperationName);
         Map<String, Set<Edge>>  processContext = processHandler.getProcessContext(serverUserName, entityDetail.getGUID());
@@ -187,22 +197,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private void getContextForElement(EntityDetail entityDetail, String serviceOperationName) {
-
-        final String methodName = "getContextForElement";
-
-        try {
-            getAssetContext(entityDetail, serviceOperationName);
-
-        } catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e) {
-            log.error("Retrieving handler for the access service failed at {}, Exception message is: {}", methodName, e.getMessage());
-            throw new AssetLineageException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(), e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
-        }
-
-
-    }
-
-    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException,
+                                                                                                PropertyServerException,
+                                                                                                UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
         ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName,serverName,serviceOperationName);
@@ -215,7 +212,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         publisher.publishRelationshipEvent(event);
     }
 
-    private GlossaryTerm getGlossaryContextForAsset(String guid, String typeDefName, String serviceOperationName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private GlossaryTerm getGlossaryContextForAsset(String guid, String typeDefName, String serviceOperationName) throws InvalidParameterException,
+                                                                                                                         PropertyServerException,
+                                                                                                                         UserNotAuthorizedException {
 
         GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
 
