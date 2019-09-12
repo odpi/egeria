@@ -272,8 +272,8 @@ public class ProcessHandler {
         lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
         lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
 
-        Map<String, Object> properties = getPropertiesForEntity(entityDetail);
-        lineageEntity.setProperties(properties);
+//        Map<String, Object> properties = getPropertiesForEntity(entityDetail);
+//        lineageEntity.setProperties(properties);
 
         return lineageEntity;
     }
@@ -287,8 +287,9 @@ public class ProcessHandler {
     private Map<String, Object> getPropertiesForEntity(EntityDetail entityDetail) {
         final String methodName = "getPropertiesForEntity";
 
-        Map<String, InstancePropertyValue> instancePropertiesMap = entityDetail.getProperties().getInstanceProperties();
         Map<String, Object> properties = new HashMap<>();
+        Map<String, InstancePropertyValue> instancePropertiesMap = entityDetail.getProperties().getInstanceProperties();
+        //TODO add check if properties are empty
 
         for (Map.Entry<String, InstancePropertyValue> entry : instancePropertiesMap.entrySet()) {
 

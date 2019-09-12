@@ -82,5 +82,14 @@ public final class Constants {
         put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
     }};
 
+//    // Map of names to property key names
+//    public static final Map<String, String> assetRelationshipTypes = new HashMap<String,String>() {{
+//        put(RELATIONAL_COLUMN);
+//        put(TABULAR_COLUMN, PORT_SCHEMA);
+//        put(TABULAR_SCHEMA_TYPE, ATTRIBUTE_FOR_SCHEMA);
+//        put(SCHEMA_ATTRIBUTE_TYPE, SCHEMA_ATTRIBUTE_TYPE);
+//        put(TABULAR_COLUMN_TYPE, LINEAGE_MAPPING);
+//    }};
+
 
 }

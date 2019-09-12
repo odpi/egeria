@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
@@ -184,6 +185,20 @@ public class Converter {
         return asset;
     }
 
+    public LineageEntity createEntity(EntityDetail entityDetail) {
+        LineageEntity lineageEntity = new LineageEntity();
+        lineageEntity.setGuid(entityDetail.getGUID());
+        lineageEntity.setCreatedBy(entityDetail.getCreatedBy());
+        lineageEntity.setCreateTime(entityDetail.getCreateTime());
+        lineageEntity.setTypeDefName(entityDetail.getType().getTypeDefName());
+        lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
+        lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
+        lineageEntity.setVersion(entityDetail.getVersion());
+        lineageEntity.setProperties(getMapProperties(entityDetail.getProperties()));
+        return lineageEntity;
+    }
+
+
     private List<InstanceStatus> getActiveInstanceStatusList() {
         List<InstanceStatus> instanceStatuses = new ArrayList<>(1);
         instanceStatuses.add(InstanceStatus.ACTIVE);
@@ -360,29 +375,26 @@ public class Converter {
     public Map<String, String> getMapProperties(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
-        if (properties != null) {
+        if(properties == null) {return  attributes;}
 
-            Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-            if (instanceProperties != null) {
-                for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
-                    if (property.getValue() != null) {
+        Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
+        if(instanceProperties == null ) {return attributes;}
 
-                        String propertyValue = getStringForPropertyValue(property.getValue());
-                        if (!propertyValue.equals("")) {
+        for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
 
-                            if (property.getKey().equals("name") || property.getKey().equals("displayName")) {
-                                attributes.put("displayName", propertyValue);
+            if (property.getValue() == null) {return  attributes;}
 
-                            } else {
-                                attributes.put(property.getKey(), propertyValue);
-                            }
-                        }
+            String propertyValue = getStringForPropertyValue(property.getValue());
+            if (!propertyValue.equals("")) {
 
-
+                if (property.getKey().equals("name")) {
+                    attributes.put("displayName", propertyValue);
+                    }
+                else {
+                    attributes.put(property.getKey(), propertyValue);
                     }
                 }
             }
-        }
 
         return attributes;
     }

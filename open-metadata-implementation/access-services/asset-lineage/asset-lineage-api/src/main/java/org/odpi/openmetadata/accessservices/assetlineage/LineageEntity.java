@@ -14,7 +14,7 @@ public class LineageEntity {
     private Date createTime;
     private Date updateTime = null;
     private long version;
-    private Map<String, Object> properties;
+    private Map<String, String> properties;
 
     public String getGuid() {
         return guid;
@@ -72,11 +72,11 @@ public class LineageEntity {
         this.version = version;
     }
 
-    public Map<String, Object> getProperties() {
+    public Map<String, String> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, Object> properties) {
+    public void setProperties(Map<String, String> properties) {
         this.properties = properties;
     }
 
