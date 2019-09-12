@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 public enum Scope {
-    TABLEVIEW,
-    COLUMNVIEW
+    SOURCEANDDESTINATION,
+    ENDTOEND,
+    ULTIMATESOURCE,
+    ULTIMATEDESTINATION,
+    GLOSSARY
 }
 

@@ -1614,11 +1614,16 @@ class GraphOMRSMetadataStore {
                 GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
                 String propName = propNames.next();
                 String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+
+
                 if (qualifiedPropertyName == null) {
                     // Assume this is a core property - if it is not then it's OK - the graph will reject.
                     // Because we are searching for entities prefix using the vertex prefix.
                     qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + propName;
                     mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
+                }
+                else {  // issue_1521
+                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
                 }
                 InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
                 InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
@@ -1752,10 +1757,14 @@ class GraphOMRSMetadataStore {
                 GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
                 String propName = propNames.next();
                 String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+
                 if (qualifiedPropertyName == null) {
                     // Assume this is a core property - if it is not then it's OK - the graph will reject.
                     qualifiedPropertyName = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
                     mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
+                }
+                else {  // issue_1521
+                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
                 }
                 InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
                 InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
