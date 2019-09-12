@@ -4,15 +4,13 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.*;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +31,8 @@ public class ProcessHandler {
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
-    private ProcesRelationships graph = new ProcesRelationships();
-
+    private ProcessContext graph = new ProcessContext();
+    private Converter converter = new Converter();
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -140,9 +138,8 @@ public class ProcessHandler {
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
                 continue;
             }
-            EntityDetail endEntity = writeEntitiesAndRelationships(userId,guid,startEntity,relationship);
+            EntityDetail endEntity = commonHandler.writeEntitiesAndRelationships(userId,startEntity,relationship,graph);
             if(endEntity == null) return Collections.emptyList();
-
             entityDetails.add(endEntity);
         }
 
@@ -151,33 +148,32 @@ public class ProcessHandler {
     }
 
     /**
-     * Adds entities and relationships for the process Context structure
+     * Adds entities and relationships to the process Context structure
      *
      * @param userId           String - userId of user making request.
-     * @param guid             guid of Process to take context
      * @param startEntity      parent entity of the relationship
      * @param relationship     the relationship of the parent node
      * @return Entity which is the child of the relationship, null if there is no Entity
      */
-    private EntityDetail writeEntitiesAndRelationships(String userId,String guid,EntityDetail startEntity, Relationship relationship) throws InvalidParameterException,
-                                                                                                                                             PropertyServerException,
-                                                                                                                                             UserNotAuthorizedException
-    {
-        EntityDetail endEntity = commonHandler.getEntityAtTheEnd(userId, guid, relationship);
-
-        if (endEntity == null) return null;
-
-        LineageEntity startVertex = createEntity(startEntity);
-        LineageEntity endVertex = createEntity(endEntity);
-
-        graph.addVertex(startVertex);
-        graph.addVertex(endVertex);
-
-        Edge edge = new Edge(relationship.getType().getTypeDefName(), startVertex, endVertex);
-        graph.addEdge(edge);
-
-        return endEntity;
-    }
+//    private EntityDetail writeEntitiesAndRelationships(String userId,EntityDetail startEntity, Relationship relationship) throws InvalidParameterException,
+//                                                                                                                                             PropertyServerException,
+//                                                                                                                                             UserNotAuthorizedException
+//    {
+//        EntityDetail endEntity = commonHandler.getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
+//
+//        if (endEntity == null) return null;
+//
+//        LineageEntity startVertex = converter.createEntity(startEntity);
+//        LineageEntity endVertex = converter.createEntity(endEntity);
+//
+//        graph.addVertex(startVertex);
+//        graph.addVertex(endVertex);
+//
+//        Edge edge = new Edge(relationship.getType().getTypeDefName(), startVertex, endVertex);
+//        graph.addEdge(edge);
+//
+//        return endEntity;
+//    }
 
     /**
      * Creates the full context for a Process. There are two cases, a process can have a relationship to either
@@ -261,61 +257,6 @@ public class ProcessHandler {
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
 
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));
-    }
-
-    private LineageEntity createEntity(EntityDetail entityDetail) {
-        LineageEntity lineageEntity = new LineageEntity();
-        lineageEntity.setGuid(entityDetail.getGUID());
-        lineageEntity.setCreatedBy(entityDetail.getCreatedBy());
-        lineageEntity.setCreateTime(entityDetail.getCreateTime());
-        lineageEntity.setTypeDefName(entityDetail.getType().getTypeDefName());
-        lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
-        lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
-
-//        Map<String, Object> properties = getPropertiesForEntity(entityDetail);
-//        lineageEntity.setProperties(properties);
-
-        return lineageEntity;
-    }
-
-    /**
-     * Retrieves the properties for an entity
-     *
-     * @param entityDetail      entity for which properties are being retrieved
-     * @return a Map with the properties
-     */
-    private Map<String, Object> getPropertiesForEntity(EntityDetail entityDetail) {
-        final String methodName = "getPropertiesForEntity";
-
-        Map<String, Object> properties = new HashMap<>();
-        Map<String, InstancePropertyValue> instancePropertiesMap = entityDetail.getProperties().getInstanceProperties();
-        //TODO add check if properties are empty
-
-        for (Map.Entry<String, InstancePropertyValue> entry : instancePropertiesMap.entrySet()) {
-
-            String key = entry.getKey();
-            InstancePropertyValue value = entry.getValue();
-
-            if (value.getInstancePropertyCategory().getName().equalsIgnoreCase("PRIMITIVE")) {
-
-                if (value.getTypeName().equals("int")) {
-                    properties.put(key, repositoryHelper.getIntProperty(ASSET_LINEAGE_OMAS, key, entityDetail.getProperties(), methodName));
-                }
-                properties.put(key, repositoryHelper.getStringProperty(ASSET_LINEAGE_OMAS, key, entityDetail.getProperties(), methodName));
-            }
-
-            if (value.getInstancePropertyCategory().getName().equalsIgnoreCase("ENUM")) {
-                EnumPropertyValue enumPropertyValue = (EnumPropertyValue) value;
-                properties.put(key, enumPropertyValue.getSymbolicName());
-            }
-
-            if (value.getInstancePropertyCategory().getName().equalsIgnoreCase("ARRAY")) {
-                properties.put(key, repositoryHelper.getStringArrayProperty(ASSET_LINEAGE_OMAS, key,
-                        entityDetail.getProperties(), methodName));
-            }
-
-        }
-        return properties;
     }
 }
 

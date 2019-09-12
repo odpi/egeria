@@ -694,14 +694,14 @@ public class OpenMetadataTypesArchive
 
         entityDef.setPropertiesDefinition(properties);
 
-        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
-        validInstanceStatusList.add(InstanceStatus.DRAFT);
-        validInstanceStatusList.add(InstanceStatus.PROPOSED);
-        validInstanceStatusList.add(InstanceStatus.APPROVED);
-        validInstanceStatusList.add(InstanceStatus.ACTIVE);
-        validInstanceStatusList.add(InstanceStatus.DELETED);
-        entityDef.setValidInstanceStatusList(validInstanceStatusList);
-        entityDef.setInitialStatus(InstanceStatus.DRAFT);
+//        ArrayList<InstanceStatus> validInstanceStatusList = new ArrayList<>();
+//        validInstanceStatusList.add(InstanceStatus.DRAFT);
+//        validInstanceStatusList.add(InstanceStatus.PROPOSED);
+//        validInstanceStatusList.add(InstanceStatus.APPROVED);
+//        validInstanceStatusList.add(InstanceStatus.ACTIVE);
+//        validInstanceStatusList.add(InstanceStatus.DELETED);
+//        entityDef.setValidInstanceStatusList(validInstanceStatusList);
+//        entityDef.setInitialStatus(InstanceStatus.DRAFT);
         return entityDef;
     }
 
@@ -14858,7 +14858,7 @@ public class OpenMetadataTypesArchive
                                                            attribute5Description,
                                                            attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getIntTypeDefAttribute(attribute6Name,
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
                                                         attribute6Description,
                                                         attribute6DescriptionGUID);
         properties.add(property);

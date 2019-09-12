@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ProcesRelationships {
+public class ProcessContext {
 
     private Set<LineageEntity> vertices;
     private Set<Edge> edges;
     private Map<String, Set<Edge>> neighbors;
 
-    public ProcesRelationships() {
+    public ProcessContext() {
         vertices = new HashSet<>();
         edges = new HashSet<>();
         neighbors = new HashMap<>();

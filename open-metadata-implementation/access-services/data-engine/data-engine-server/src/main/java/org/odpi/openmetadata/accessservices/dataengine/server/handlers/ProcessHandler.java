@@ -88,7 +88,7 @@ public class ProcessHandler {
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         return repositoryHandler.createEntity(userId, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, InstanceStatus.DRAFT, methodName);
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, InstanceStatus.ACTIVE, methodName);
     }
 
 

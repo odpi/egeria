@@ -23,7 +23,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private ContextHandler contextHandler;
     private CommonHandler commonHandler;
     private ProcessHandler processHandler;
-    private NewContextHandler newContextHandler;
 
     /**
      * Set up the handlers for this server.
@@ -69,11 +68,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     repositoryHelper,
                     repositoryHandler);
 
-            newContextHandler = new NewContextHandler(serviceName,
-                    serverName,
-                    invalidParameterHandler,
-                    repositoryHelper,
-                    repositoryHandler);
         }else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
@@ -128,10 +122,6 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return processHandler;
     }
 
-    NewContextHandler getNewContextHandler()
-    {
-        return newContextHandler;
-    }
 }
 
 

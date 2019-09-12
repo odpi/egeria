@@ -2,18 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
+import org.odpi.openmetadata.accessservices.assetlineage.Edge;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.ProcessContext;
+import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -142,6 +143,36 @@ public class CommonHandler {
         }
     }
 
+
+    /**
+     * Adds entities and relationships for the process Context structure
+     *
+     * @param userId           String - userId of user making request.
+     * @param startEntity      parent entity of the relationship
+     * @param relationship     the relationship of the parent node
+     * @return Entity which is the child of the relationship, null if there is no Entity
+     */
+    protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity, Relationship relationship, ProcessContext graph) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+
+        Converter converter = new Converter();
+        EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
+
+        if (endEntity == null) return null;
+
+        LineageEntity startVertex = converter.createEntity(startEntity);
+        LineageEntity endVertex = converter.createEntity(endEntity);
+
+        graph.addVertex(startVertex);
+        graph.addVertex(endVertex);
+
+        Edge edge = new Edge(relationship.getType().getTypeDefName(), startVertex, endVertex);
+        graph.addEdge(edge);
+
+        return endEntity;
+    }
 
 
 }

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.Edge;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.NewContextHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ProcessHandler;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.*;
@@ -28,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
@@ -165,8 +163,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                 log.error(e.getErrorMessage());
             }
         }
-
-        getContextForElement(entityDetail, serviceOperationName);
+        else {
+            getContextForElement(entityDetail, serviceOperationName);
+        }
     }
 
     /**
@@ -206,10 +205,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private void getAssetContext(EntityDetail entityDetail, String serviceOperationName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String technicalGuid = entityDetail.getGUID();
 
-//        ContextHandler contextHandler = instanceHandler.getContextHandler(serverUserName, serverName, serviceOperationName);
-        NewContextHandler newContextHandler = instanceHandler.getNewContextHandler(serverUserName,serverName,serviceOperationName);
-
-//        ConvertedAssetContext assetContext = contextHandler.getAssetContext(serverName, serverUserName, technicalGuid);
+        ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName,serverName,serviceOperationName);
         Map<String,Set<Edge>> assetContext = newContextHandler.getAssetContext(serverName,serverUserName,technicalGuid);
 //        getGlossaryContextForAsset(technicalGuid, entityDetail.getType().getTypeDefName(), serviceOperationName);
 
@@ -277,7 +273,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private boolean isValidEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(PROCESS, TABULAR_SCHEMA_TYPE, TABULAR_COLUMN_TYPE, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
+        final List<String> types = Arrays.asList(PROCESS, TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
         return types.contains(typeDefName);
     }
 

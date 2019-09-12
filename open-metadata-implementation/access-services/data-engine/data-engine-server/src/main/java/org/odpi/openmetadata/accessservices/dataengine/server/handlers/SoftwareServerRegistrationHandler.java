@@ -105,7 +105,7 @@ public class SoftwareServerRegistrationHandler {
                                                                                           PropertyServerException {
         final String methodName = "getSoftwareServerCapabilityByQualifiedName";
 
-        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+//        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,

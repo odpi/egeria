@@ -431,45 +431,11 @@ public class Converter {
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
-            } else {
+            }
+            else {
                 return "";
             }
         }
     }
 
-    public ConvertedAssetContext convertAssetContext(Term term) {
-        ConvertedAssetContext newAssetContext = new ConvertedAssetContext();
-
-        Element technicalElement = new Element();
-
-        technicalElement.setGuid(term.getGuid());
-        technicalElement.setType(term.getType());
-        technicalElement.setQualifiedName(term.getQualifiedName());
-        technicalElement.setProperties(term.getProperties());
-        newAssetContext.setBaseAsset(technicalElement);
-
-        List<Element> listOfElements = new ArrayList<>();
-
-        Element topLevelElement = new Element();
-        topLevelElement.setGuid(term.getElements().get(0).getGuid());
-        topLevelElement.setType(term.getElements().get(0).getType());
-        topLevelElement.setQualifiedName(term.getElements().get(0).getQualifiedName());
-        topLevelElement.setProperties(term.getElements().get(0).getProperties());
-
-        listOfElements.add(topLevelElement);
-        listOfElements.addAll(term.getElements().get(0).getContext());
-
-        newAssetContext.setContext(listOfElements.stream().collect(
-                Collectors.toMap(Element::getType, element -> element)
-        ));
-        if (term.getElements().get(0).getConnections().isEmpty()) {
-            newAssetContext.setConnection(null);
-
-        } else {
-            newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
-        }
-
-        return newAssetContext;
-
-    }
 }

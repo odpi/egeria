@@ -174,7 +174,7 @@ public class PortHandler {
                                                                                                  PropertyServerException {
         final String methodName = "getPortEntityDetailByQualifiedName";
 
-        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+//        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
