@@ -121,10 +121,10 @@ public class ProcessHandler {
      * @param typeDefName      type of the entity that has the Relationship
      * @return List of entities that are on the other end of the relationship, empty list if none
      */
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid, String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-                                                                                                                                               PropertyServerException,
-                                                                                                                                               InvalidParameterException
-    {
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, String guid,
+                                                               String relationshipType, String typeDefName) throws UserNotAuthorizedException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   InvalidParameterException {
         List<Relationship> relationships = commonHandler.getRelationshipByType(userId, guid, relationshipType,typeDefName);
         EntityDetail startEntity = repositoryHandler.getEntityByGUID(userId, guid, "guid", typeDefName, "getRelationships");
 
@@ -155,8 +155,7 @@ public class ProcessHandler {
      */
     private void getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                     PropertyServerException,
-                                                                                                    UserNotAuthorizedException
-    {
+                                                                                                    UserNotAuthorizedException {
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
             endRelationship(entityDetails,userId);
         }
@@ -170,8 +169,7 @@ public class ProcessHandler {
 
     private void endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                          PropertyServerException,
-                                                                                         UserNotAuthorizedException
-    {
+                                                                                         UserNotAuthorizedException {
         for (EntityDetail entityDetail : entityDetails) {
            getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
                     processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
@@ -180,9 +178,8 @@ public class ProcessHandler {
     }
 
     private void getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException
-    {
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
@@ -194,9 +191,8 @@ public class ProcessHandler {
     }
 
     private void getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                           PropertyServerException,
-                                                                                                           UserNotAuthorizedException
-    {
+                                                                                             PropertyServerException,
+                                                                                             UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
@@ -208,9 +204,8 @@ public class ProcessHandler {
     }
 
     private void getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                             PropertyServerException,
-                                                                                                             UserNotAuthorizedException
-    {
+                                                                                               PropertyServerException,
+                                                                                               UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
             List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
@@ -225,7 +220,6 @@ public class ProcessHandler {
     }
 
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
-
         return entityDetails.stream().anyMatch(entity -> entity.getType().getTypeDefName().equals(typeDefName));
     }
 }

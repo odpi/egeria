@@ -60,7 +60,6 @@ public class ContextHandler {
 
     public Map<String, Set<Edge>> getAssetContext(String serverName, String userId, String guid) {
 
-
         commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
         try {
             Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid);
@@ -69,37 +68,47 @@ public class ContextHandler {
                         " Entity not found with guid {}",guid );
 
                 throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        "Retrieving Entity",
-                        ENTITY_NOT_FOUND.getErrorMessage(),
-                        ENTITY_NOT_FOUND.getSystemAction(),
-                        ENTITY_NOT_FOUND.getUserAction());
+                                                this.getClass().getName(),
+                                                "Retrieving Entity",
+                                                ENTITY_NOT_FOUND.getErrorMessage(),
+                                                ENTITY_NOT_FOUND.getSystemAction(),
+                                                ENTITY_NOT_FOUND.getUserAction());
             }
             buildAssetContext(userId,entityDetail.get());
 
         }
-        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException e){
-            log.error("terrer");
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException |
+        catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException |
+                org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException|
                 org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException |
                 RepositoryErrorException e) {
-            log.error(e.getErrorMessage());
+            throw new AssetLineageException(e.getReportedHTTPCode(),
+                    e.getReportingClassName(),
+                    e.getReportingActionDescription(),
+                    e.getErrorMessage(),
+                    e.getReportedSystemAction(),
+                    e.getReportedUserAction());
         }
         return graph.getNeighbors();
-
     }
 
 
-    private Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException,
+                                                                                       PropertyServerException,
+                                                                                       UserNotAuthorizedException {
         String methodName = "getEntityDetails";
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, "Any entity type", methodName));
     }
 
-    private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+    private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+                                                                                    PropertyServerException,
+                                                                                    InvalidParameterException,
+                                                                                    RepositoryErrorException,
+                                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
-
         Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(userId,typeDefName);
+
         //TODO check for Table entities
         if (isComplexSchemaType.isPresent()) {
 //            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
@@ -127,9 +136,8 @@ public class ContextHandler {
     }
 
     private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-            PropertyServerException,
-            InvalidParameterException
-    {
+                                                                                                                                                            PropertyServerException,
+                                                                                                                                                            InvalidParameterException {
         List<Relationship> relationships = commonHandler.getRelationshipByType(userId, startEntity.getGUID(), relationshipType,typeDefName);
 
         List<EntityDetail> entityDetails = new ArrayList<>();
@@ -145,7 +153,9 @@ public class ContextHandler {
 
     }
 
-    private void setAssetDetails(String userId, EntityDetail startEntity) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void setAssetDetails(String userId, EntityDetail startEntity) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException {
         List<EntityDetail> dataSet = getRelationshipsBetweenEntities(userId,startEntity, ASSET_SCHEMA_TYPE,startEntity.getType().getTypeDefName());
         Optional<EntityDetail> first = dataSet.stream().findFirst();
         if(first.isPresent()){
@@ -154,7 +164,9 @@ public class ContextHandler {
         }
     }
 
-    private void getAsset(String userId, EntityDetail dataSet) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void getAsset(String userId, EntityDetail dataSet) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException {
         final String typeDefName = dataSet.getType().getTypeDefName();
         if (typeDefName.equals(DATA_FILE)) {
             getRelationshipsBetweenEntities(userId, dataSet, NESTED_FILE,typeDefName);
@@ -164,7 +176,9 @@ public class ContextHandler {
         }
     }
 
-    private Optional<TypeDef> isComplexSchemaType(String userId,String typeDefName) throws RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+    private Optional<TypeDef> isComplexSchemaType(String userId,String typeDefName) throws RepositoryErrorException,
+                                                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
+                                                                                           org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
         TypeDefGallery allTypes =  repositoryHandler.getMetadataCollection().getAllTypes(userId);
         return allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName) && t.getSuperType().getName().equals(COMPLEX_SCHEMA_TYPE)).findAny();
     }

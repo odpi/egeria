@@ -66,8 +66,8 @@ public class CommonHandler {
      * @return optional with entity details if found, empty optional if not found
      */
     public Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                      PropertyServerException,
+                                                                                      UserNotAuthorizedException {
         String methodName = "getEntityDetails";
         return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, PROCESS, methodName));
     }
@@ -82,8 +82,9 @@ public class CommonHandler {
      *
      * @return List of the relationships if found, empty list if not found
      */
-    public List<Relationship> getRelationshipByType(String userId, String assetGuid, String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-            PropertyServerException {
+    public List<Relationship> getRelationshipByType(String userId, String assetGuid,
+                                                    String relationshipType, String typeDefName) throws UserNotAuthorizedException,
+                                                                                                        PropertyServerException{
         final String methodName = "getRelationshipByType";
         String typeGuid = getTypeName(userId, relationshipType);
 
@@ -120,14 +121,20 @@ public class CommonHandler {
 
 
     public EntityDetail getEntityAtTheEnd(String userId, String entityDetailGUID, Relationship relationship) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException {
+                                                                                                                    PropertyServerException,
+                                                                                                                    UserNotAuthorizedException {
 
-        String methodname = "getEntityAtTheEnd";
+        String methodName = "getEntityAtTheEnd";
         if (relationship.getEntityOneProxy().getGUID().equals(entityDetailGUID)) {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityTwoProxy().getGUID(), GUID_PARAMETER, "Any entity type", methodname);
+            return repositoryHandler.getEntityByGUID(userId,
+                                                     relationship.getEntityTwoProxy().getGUID(),
+                                                     GUID_PARAMETER,
+                                      "Any entity type", methodName);
         } else {
-            return repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), GUID_PARAMETER, "Any entity type", methodname);
+            return repositoryHandler.getEntityByGUID(userId,
+                                                     relationship.getEntityOneProxy().getGUID(),
+                                                     GUID_PARAMETER,
+                                      "Any entity type", methodName);
         }
     }
 
@@ -139,10 +146,10 @@ public class CommonHandler {
      * @param relationship     the relationship of the parent node
      * @return Entity which is the child of the relationship, null if there is no Entity
      */
-    protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity, Relationship relationship, ProcessContext graph) throws InvalidParameterException,
-            PropertyServerException,
-            UserNotAuthorizedException
-    {
+    protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity,
+                                                         Relationship relationship, ProcessContext graph) throws InvalidParameterException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 UserNotAuthorizedException {
 
         Converter converter = new Converter();
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);
