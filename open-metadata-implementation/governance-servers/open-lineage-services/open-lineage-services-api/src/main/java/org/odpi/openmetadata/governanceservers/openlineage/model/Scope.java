@@ -21,7 +21,7 @@ public enum Scope {
 
     public static Scope fromString(String text) {
         for (Scope value : Scope.values()) {
-            if (value.text.equalsIgnoreCase(text)) {
+            if (value.text.equals(text)) {
                 return value;
             }
         }

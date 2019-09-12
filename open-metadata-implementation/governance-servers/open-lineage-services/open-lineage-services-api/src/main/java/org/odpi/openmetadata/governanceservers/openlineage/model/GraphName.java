@@ -20,7 +20,7 @@ public enum GraphName {
 
     public static GraphName fromString(String text) {
         for (GraphName value : GraphName.values()) {
-            if (value.text.equalsIgnoreCase(text)) {
+            if (value.text.equals(text)) {
                 return value;
             }
         }

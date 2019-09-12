@@ -18,7 +18,7 @@ public enum View {
 
     public static View fromString(String text) {
         for (View value : View.values()) {
-            if (value.text.equalsIgnoreCase(text)) {
+            if (value.text.equals(text)) {
                 return value;
             }
         }
