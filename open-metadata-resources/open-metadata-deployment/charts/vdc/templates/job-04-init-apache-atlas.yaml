@@ -94,10 +94,10 @@ spec:
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
                 {{- if .Values.kafka.internal.enabled }}
-                --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
+                --data '{"producer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"} }'
                 {{- else -}}
                 {{- include "vdc.template.kafkaext.eventbus" . | nindent 16 -}}
-                {{- end -}}
+                {{- end }}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${ATLASPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
@@ -122,10 +122,10 @@ spec:
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
                 {{- if .Values.kafka.internal.enabled }}
-                --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
+                --data '{"producer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers": "'"${KAFKA_ENDPOINT}"'"} }'
                 {{- else -}}
                 {{- include "vdc.template.kafkaext.eventbus" . | nindent 16 -}}
-                {{- end -}}
+                {{- end }}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
