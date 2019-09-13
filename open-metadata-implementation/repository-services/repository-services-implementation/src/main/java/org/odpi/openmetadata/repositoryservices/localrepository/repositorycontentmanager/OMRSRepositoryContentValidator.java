@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
 
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory.ENUM;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory.PRIMITIVE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
@@ -26,6 +27,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     private static final Logger log = LoggerFactory.getLogger(OMRSRepositoryContentValidator.class);
 
     private        OMRSRepositoryContentManager    repositoryContentManager;
+
+    private enum MatchOption {
+        RegexFullMatch,
+        RegexContainsMatch,
+        ExactMatch
+    }
 
 
     /**
@@ -3162,13 +3169,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param matchProperties the properties to match.
      * @param instanceProperties the properties from the instance.
-     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
      * @throws InvalidParameterException invalid search criteria
      */
     public int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                           InstanceProperties       instanceProperties,
-                                           boolean                  exactMatch) throws InvalidParameterException
+                                           InstanceProperties       instanceProperties) throws InvalidParameterException
     {
         final String  methodName = "countMatchingPropertyValues";
         int       matchingProperties = 0;
@@ -3208,80 +3213,112 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
                                         /*
-                                         * The match performed depends on the property category.
-                                         * If it's a string then the match value is used as a regex.
-                                         * For any other primitives perform an exact match.
-                                         * For non-primitives, perform string extraction and do a regex match
+                                         * The type of match performed depends on the property category [and for primitives also
+                                         * the primitive def category]. The rules are as follows:
+                                         *
+                                         * Primitives:
+                                         *   ** String        - the match value is used as a full regex.
+                                         *   ** Non-String    - the match value must be an exact match (.equals() not regex)
+                                         * Non-primitves:
+                                         *   ** Array         - flattened to "{ value, ... }" and matched using contains regex
+                                         *   ** Map           - flattened to "{ key -> value, ... }" and matched using contains regex
+                                         *   ** Struct        - flattened to "{ key : value, ... }" and matched using contains regex
+                                         *   ** Enums:        - matched using exact match (not regex)
+                                         *
                                          */
-                                        boolean performExactMatch = false;
+                                        MatchOption matchOption;
 
                                         InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
 
-                                        if (ipCat != PRIMITIVE)
+                                        if (ipCat == PRIMITIVE)
                                         {
+
                                             /*
-                                             * If this is not a primitive, do string extraction and regex match
+                                             * Property is a primitive.
+                                             * If it is a string, use a full regex match.
+                                             * If not a string, use an exact match.
                                              */
-                                            performExactMatch = false;
-                                        }
-                                        else // PRIMITIVE
-                                        {
-                                            /*
-                                             * If this is a string, do string extraction and regex match
-                                             */
-                                            PrimitivePropertyValue primPropValue = (PrimitivePropertyValue)instancePropertyValue;
+
+                                            PrimitivePropertyValue primPropValue = (PrimitivePropertyValue) instancePropertyValue;
+
                                             if (primPropValue.getPrimitiveDefCategory() == OM_PRIMITIVE_TYPE_STRING)
                                             {
-                                                performExactMatch = false;
+                                                matchOption = MatchOption.RegexFullMatch;
                                             }
-                                            else {
-                                                performExactMatch = true;
-                                            }
-                                        }
-
-                                        if (performExactMatch)
-                                        {
-                                            if (instancePropertyValue.equals(matchPropertyValue))
+                                            else
                                             {
-                                                /*
-                                                 * The values match exactly.
-                                                 */
-                                                matchingProperties++;
+                                                matchOption = MatchOption.ExactMatch;
                                             }
                                         }
-                                        else // regex match required
+                                        else
                                         {
+
                                             /*
-                                             * Does a regex match work? It must match the complete regex...
+                                             * Property is not a primitive.
+                                             * If it is an Array, Struct or Map use a contains regex match (against stringified collection)
+                                             * If it is an Enum use an exact match
+                                             *
                                              */
-                                            String instancePropertyValueString = this.getStringFromPropertyValue(instancePropertyValue);
-
-                                            if (instancePropertyValueString != null)
+                                            if (ipCat == ENUM)
                                             {
-                                                try
+                                                matchOption = MatchOption.ExactMatch;
+                                            }
+                                            else
+                                            {
+                                                matchOption = MatchOption.RegexContainsMatch;
+                                            }
+                                        }
+
+                                        /*
+                                         *  Perform the appropriate comparison
+                                         */
+                                        switch (matchOption) {
+                                            case ExactMatch:
+                                                if (instancePropertyValue.equals(matchPropertyValue))
                                                 {
-                                                    if (instancePropertyValueString.matches(matchPropertyValueString))
+                                                    /*
+                                                     * The values match exactly.
+                                                     */
+                                                    matchingProperties++;
+                                                }
+                                                break;
+
+                                            case RegexContainsMatch:
+                                                matchPropertyValueString = ".*" + matchPropertyValueString + ".*";
+                                                // deliberate no break; let this drop through with the modified match string
+                                            case RegexFullMatch:
+                                                /*
+                                                 * Does a regex match work? It must match the complete regex...
+                                                 */
+                                                String instancePropertyValueString = this.getStringFromPropertyValue(instancePropertyValue);
+
+                                                if (instancePropertyValueString != null)
+                                                {
+                                                    try
                                                     {
-                                                        matchingProperties++;
+                                                        if (instancePropertyValueString.matches(matchPropertyValueString))
+                                                        {
+                                                            matchingProperties++;
+                                                        }
+                                                    }
+                                                    catch (Throwable error)
+                                                    {
+                                                        OMRSErrorCode errorCode = OMRSErrorCode.INVALID_SEARCH_CRITERIA;
+                                                        String errorMessage =
+                                                                errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                                                                        error.getClass().getName(), matchPropertyValueString,
+                                                                        instancePropertyValueString, error.getMessage(),
+                                                                        methodName);
+
+                                                        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                                this.getClass().getName(),
+                                                                methodName,
+                                                                errorMessage,
+                                                                errorCode.getSystemAction(),
+                                                                errorCode.getUserAction());
                                                     }
                                                 }
-                                                catch (Throwable error)
-                                                {
-                                                    OMRSErrorCode errorCode = OMRSErrorCode.INVALID_SEARCH_CRITERIA;
-                                                    String errorMessage =
-                                                            errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                                                                    error.getClass().getName(), matchPropertyValueString,
-                                                                    instancePropertyValueString, error.getMessage(),
-                                                                    methodName);
-
-                                                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                                                        this.getClass().getName(),
-                                                                                        methodName,
-                                                                                        errorMessage,
-                                                                                        errorCode.getSystemAction(),
-                                                                                        errorCode.getUserAction());
-                                                }
-                                            }
+                                                break;
                                         }
                                     }
                                 }
@@ -3302,13 +3339,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param propertyMap map with the properties
      * @param propertyName name of the property to test
      * @param expectedValue expected value
-     * @param exactMatch should the strings match exactly // TODO remove parameter
      * @return boolean result
      */
     private  boolean  checkStringPropertyValue(Map<String, InstancePropertyValue>   propertyMap,
                                                String                               propertyName,
-                                               String                               expectedValue,
-                                               boolean                              exactMatch)  // TODO remove parameter
+                                               String                               expectedValue)
     {
         boolean                 result = false;
         InstancePropertyValue   instancePropertyValue = propertyMap.get(propertyName);
@@ -3394,13 +3429,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
      * @param instanceProperties  the effectivity dates.
-     * @param exactMatch whether this is a fuzzy or exact match. // TODO remove parameter
      * @return integer count of the matching properties.
      */
     public int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
                                                  InstanceAuditHeader      instanceHeader,
-                                                 InstanceProperties       instanceProperties,
-                                                 boolean                  exactMatch) // TODO remove parameter
+                                                 InstanceProperties       instanceProperties)
     {
         final String metadataCollectionIdPropertyName = "metadataCollectionId";
         final String metadataCollectionNamePropertyName = "metadataCollectionName";
@@ -3421,27 +3454,27 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (propertyMap != null)
             {
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId()))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName()))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, typeNamePropertyName, instanceHeader.getType().getTypeDefName(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, typeNamePropertyName, instanceHeader.getType().getTypeDefName()))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, typeGUIDPropertyName, instanceHeader.getType().getTypeDefGUID(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, typeGUIDPropertyName, instanceHeader.getType().getTypeDefGUID()))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, createdByPropertyName, instanceHeader.getCreatedBy(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, createdByPropertyName, instanceHeader.getCreatedBy()))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, updatedByPropertyName, instanceHeader.getUpdatedBy(), exactMatch))
+                if (this.checkStringPropertyValue(propertyMap, updatedByPropertyName, instanceHeader.getUpdatedBy()))
                 {
                     matchingProperties ++;
                 }
@@ -3475,20 +3508,18 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
-     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return boolean flag indicating whether the two sets of properties match
      * @throws InvalidParameterException invalid search criteria
      */
     public boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
                                                         InstanceAuditHeader  instanceHeader,
                                                         InstanceProperties   instanceProperties,
-                                                        MatchCriteria        matchCriteria,
-                                                        boolean              exactMatch) throws InvalidParameterException
+                                                        MatchCriteria        matchCriteria) throws InvalidParameterException
     {
         if (matchProperties != null)
         {
-            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties, exactMatch) +
-                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader, instanceProperties, exactMatch);
+            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
+                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader, instanceProperties);
 
             switch (matchCriteria)
             {
@@ -3743,7 +3774,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
-     * Search for property values exactly matching the supplied property value
+     * Search for property values matching the supplied property value
      *
      * @param sourceName source of the request (used for logging)
      * @param properties list of properties associated with the in instance

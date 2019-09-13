@@ -1142,13 +1142,11 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceProperties  the properties from the instance.
-     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
      * @throws InvalidParameterException invalid search criteria
      */
     int countMatchingPropertyValues(InstanceProperties matchProperties,
-                                    InstanceProperties instanceProperties,
-                                    boolean            exactMatch) throws InvalidParameterException;
+                                    InstanceProperties instanceProperties) throws InvalidParameterException;
 
 
     /**
@@ -1158,14 +1156,12 @@ public interface OMRSRepositoryValidator
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
      * @param instanceProperties  the effectivity dates.
-     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
      * @throws InvalidParameterException invalid search criteria
      */
     int countMatchingHeaderPropertyValues(InstanceProperties  matchProperties,
                                           InstanceAuditHeader instanceHeader,
-                                          InstanceProperties  instanceProperties,
-                                          boolean             exactMatch) throws InvalidParameterException;
+                                          InstanceProperties  instanceProperties) throws InvalidParameterException;
 
 
     /**
@@ -1175,15 +1171,13 @@ public interface OMRSRepositoryValidator
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
-     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return boolean flag indicating whether the two sets of properties match
      * @throws InvalidParameterException invalid search criteria
      */
     boolean verifyMatchingInstancePropertyValues(InstanceProperties  matchProperties,
                                                  InstanceAuditHeader instanceHeader,
                                                  InstanceProperties  instanceProperties,
-                                                 MatchCriteria       matchCriteria,
-                                                 boolean             exactMatch) throws InvalidParameterException;
+                                                 MatchCriteria       matchCriteria) throws InvalidParameterException;
 
 
     /**
@@ -1239,7 +1233,7 @@ public interface OMRSRepositoryValidator
 
 
     /**
-     * Search for property values exactly matching the supplied property value
+     * Search for property values matching the supplied property value
      *
      * @param sourceName source of the request (used for logging)
      * @param properties list of properties associated with the in instance
