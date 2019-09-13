@@ -2614,9 +2614,7 @@ class GraphOMRSMetadataStore {
                                 log.debug("{} entityDetail {}", methodName, entityDetail);
                                 entities.add(entityDetail);
                             }
-                        }
-
-                        catch (EntityProxyOnlyException | RepositoryErrorException e) {
+                        } catch (EntityProxyOnlyException | RepositoryErrorException e) {
                             /* This catch block abandons the whole traversal and neighbourhood search.
                              * This may be a little draconian ut presumably better to know that something
                              * is wrong rather than plough on in ignorance.
@@ -2648,7 +2646,13 @@ class GraphOMRSMetadataStore {
 
             return subGraph;
 
-        } catch (Exception e) {
+        }
+        catch (EntityNotKnownException e) {
+            log.error("{} caught entity not known exception from subgraph traversal {}", methodName, e.getMessage());
+            g.tx().rollback();
+            throw e;
+        }
+        catch (Exception e) {
             log.error("{} caught exception from subgraph traversal {}", methodName, e.getMessage());
             g.tx().rollback();
             return null;
