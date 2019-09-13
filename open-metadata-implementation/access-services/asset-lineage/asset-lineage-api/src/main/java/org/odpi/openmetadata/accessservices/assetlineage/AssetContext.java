@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ProcessContext {
+public class AssetContext {
 
     private Set<LineageEntity> vertices;
     private Set<Edge> edges;
     private Map<String, Set<Edge>> neighbors;
 
-    public ProcessContext() {
+    public AssetContext() {
         vertices = new HashSet<>();
         edges = new HashSet<>();
         neighbors = new HashMap<>();

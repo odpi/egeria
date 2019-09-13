@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.Edge;
 import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
-import org.odpi.openmetadata.accessservices.assetlineage.ProcessContext;
+import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -147,7 +147,7 @@ public class CommonHandler {
      * @return Entity which is the child of the relationship, null if there is no Entity
      */
     protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity,
-                                                         Relationship relationship, ProcessContext graph) throws InvalidParameterException,
+                                                         Relationship relationship, AssetContext graph) throws InvalidParameterException,
                                                                                                                  PropertyServerException,
                                                                                                                  UserNotAuthorizedException {
 

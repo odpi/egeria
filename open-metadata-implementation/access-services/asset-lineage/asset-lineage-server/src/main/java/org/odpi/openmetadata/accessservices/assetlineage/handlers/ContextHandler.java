@@ -1,7 +1,6 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.Edge;
-import org.odpi.openmetadata.accessservices.assetlineage.ProcessContext;
+import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -33,7 +32,7 @@ public class ContextHandler {
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
-    private ProcessContext graph = new ProcessContext();
+    private AssetContext graph;
 
     /**
      * Construct the discovery engine configuration handler caching the objects
@@ -55,12 +54,13 @@ public class ContextHandler {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
     }
 
 
-    public Map<String, Set<Edge>> getAssetContext(String serverName, String userId, String guid) {
+    public AssetContext getAssetContext(String serverName, String userId, String guid) {
 
-        commonHandler = new CommonHandler(serviceName,serverName,invalidParameterHandler,repositoryHelper,repositoryHandler);
+        graph = new AssetContext();
         try {
             Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid);
             if (!entityDetail.isPresent()) {
@@ -75,6 +75,7 @@ public class ContextHandler {
                                                 ENTITY_NOT_FOUND.getUserAction());
             }
             buildAssetContext(userId,entityDetail.get());
+            return graph;
 
         }
         catch (UserNotAuthorizedException | InvalidParameterException | PropertyServerException |
@@ -88,7 +89,6 @@ public class ContextHandler {
                     e.getReportedSystemAction(),
                     e.getReportedUserAction());
         }
-        return graph.getNeighbors();
     }
 
 

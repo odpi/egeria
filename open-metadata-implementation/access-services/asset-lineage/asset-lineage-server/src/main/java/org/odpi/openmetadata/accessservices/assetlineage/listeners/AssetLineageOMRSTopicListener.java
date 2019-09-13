@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
+import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.Edge;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
@@ -203,23 +204,33 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         String technicalGuid = entityDetail.getGUID();
 
         ContextHandler newContextHandler = instanceHandler.getContextHandler(serverUserName,serverName,serviceOperationName);
-        Map<String,Set<Edge>> assetContext = newContextHandler.getAssetContext(serverName,serverUserName,technicalGuid);
-//        getGlossaryContextForAsset(technicalGuid, entityDetail.getType().getTypeDefName(), serviceOperationName);
+        AssetContext assetContext = newContextHandler.getAssetContext(serverName,serverUserName,technicalGuid);
+
+        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName,serverName,serviceOperationName);
+        Map<String,Set<Edge>> context =  glossaryHandler.getGlossaryTerm(technicalGuid,serviceOperationName,entityDetail,assetContext);
+//        getGlossaryContextForAsset(technicalGuid, serviceOperationName,entityDetail ,assetContext);
 
         ProcessLineageEvent event = new ProcessLineageEvent();
-        event.setProcessContext(assetContext);
+        if(context.size() != 0){
+            event.setProcessContext(context);
+        }
+        else
+        {
+            event.setProcessContext(assetContext.getNeighbors());
+        }
+
 
         publisher.publishRelationshipEvent(event);
     }
 
-    private GlossaryTerm getGlossaryContextForAsset(String guid, String typeDefName, String serviceOperationName) throws InvalidParameterException,
-                                                                                                                         PropertyServerException,
-                                                                                                                         UserNotAuthorizedException {
-
-        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
-
-        return glossaryHandler.getGlossaryTerm(guid, typeDefName, serverUserName);
-    }
+//    private GlossaryTerm getGlossaryContextForAsset(String guid, String typeDefName, String serviceOperationName) throws InvalidParameterException,
+//                                                                                                                         PropertyServerException,
+//                                                                                                                         UserNotAuthorizedException {
+//
+//        GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(serverUserName, serverName, serviceOperationName);
+//
+//        return glossaryHandler.getGlossaryTerm(guid, typeDefName, serverUserName);
+//    }
 
     /**
      * @param relationship         - details of the new relationship
@@ -272,7 +283,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     }
 
     private boolean isValidEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(PROCESS, TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
+        final List<String> types = Arrays.asList(PROCESS, GLOSSARY_TERM,TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
         return types.contains(typeDefName);
     }
 

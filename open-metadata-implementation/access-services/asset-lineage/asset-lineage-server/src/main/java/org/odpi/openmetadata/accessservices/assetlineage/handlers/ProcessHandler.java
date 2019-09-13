@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
+import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class ProcessHandler {
@@ -30,7 +31,7 @@ public class ProcessHandler {
     private OMRSRepositoryHelper repositoryHelper;
     private InvalidParameterHandler invalidParameterHandler;
     private CommonHandler commonHandler;
-    private ProcessContext graph = new ProcessContext();
+    private AssetContext graph;
     /**
      * Construct the discovery engine configuration handler caching the objects
      * needed to operate within a single server instance.
@@ -51,6 +52,7 @@ public class ProcessHandler {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
     }
 
     /**
@@ -62,14 +64,13 @@ public class ProcessHandler {
      */
     public Map<String, Set<Edge>> getProcessContext(String userId, String processGuid) {
 
-        commonHandler = new CommonHandler(serviceName, serverName, invalidParameterHandler, repositoryHelper, repositoryHandler);
+        graph = new AssetContext();
 
         try {
 
             Optional<EntityDetail> entityDetail = commonHandler.getEntityDetails(userId, processGuid);
             if (!entityDetail.isPresent()) {
-                log.error("Something is wrong in the OMRS Connector when a specific operation" +
-                        " is performed in the metadata collection. Entity not found with guid {}", processGuid);
+                log.error("Entity with guid {} was not found in any metadata repository", processGuid);
 
                 throw new AssetLineageException(ENTITY_NOT_FOUND.getHTTPErrorCode(),
                                                 this.getClass().getName(),
@@ -79,9 +80,7 @@ public class ProcessHandler {
                                                  ENTITY_NOT_FOUND.getUserAction());
             }
 
-
-            getEntitiesLinkedWithProcessPort(userId, entityDetail.get());
-            return graph.getNeighbors();
+            return checkIfAllRelationshipsExist(userId,entityDetail.get());
 
         } catch (InvalidParameterException | PropertyServerException | UserNotAuthorizedException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
@@ -93,21 +92,44 @@ public class ProcessHandler {
         }
     }
 
+    private Map<String,Set<Edge>> checkIfAllRelationshipsExist(String userId,EntityDetail entityDetail) throws InvalidParameterException,
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException {
 
-    private void getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
-                                                                                                   PropertyServerException,
-                                                                                                   InvalidParameterException
-    {
+        List<EntityDetail> entitiesTillLastRelationship = getEntitiesLinkedWithProcessPort(userId, entityDetail);
+        if(!entitiesTillLastRelationship.isEmpty()){
+            return graph.getNeighbors();
+        }
+
+        log.error("Some relationships are missing for the entity with guid {}",entityDetail.getGUID());
+
+        throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
+                                        this.getClass().getName(),
+                                        "Retrieving Relationships",
+                                        RELATIONSHIP_NOT_FOUND.getErrorMessage(),
+                                        RELATIONSHIP_NOT_FOUND.getSystemAction(),
+                                        RELATIONSHIP_NOT_FOUND.getUserAction());
+    }
+
+    private List<EntityDetail> getEntitiesLinkedWithProcessPort(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,
+                                                                                                                 PropertyServerException,
+                                                                                                                 InvalidParameterException {
 
         final String typeDefName = entityDetail.getType().getTypeDefName();
         List<EntityDetail> entityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(), PROCESS_PORT, typeDefName);
 
         if (entityDetails.isEmpty()){
-            //ADD LOGIN THROW ERROR
-        return;
+            log.error("No relationships has been found for the entity with guid {}",entityDetail.getGUID());
+
+            throw new AssetLineageException(RELATIONSHIP_NOT_FOUND.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            "Retrieving Relationship",
+                                            RELATIONSHIP_NOT_FOUND.getErrorMessage(),
+                                            RELATIONSHIP_NOT_FOUND.getSystemAction(),
+                                            RELATIONSHIP_NOT_FOUND.getUserAction());
     }
 
-        getRelationshipBasedOnType(entityDetails, userId);
+       return getRelationshipBasedOnType(entityDetails, userId);
 
     }
 
@@ -130,6 +152,7 @@ public class ProcessHandler {
 
         if (startEntity == null) return Collections.emptyList();
         String startEntityType = startEntity.getType().getTypeDefName();
+
         List<EntityDetail> entityDetails = new ArrayList<>();
         for (Relationship relationship : relationships) {
 
@@ -149,74 +172,84 @@ public class ProcessHandler {
      * Creates the full context for a Process. There are two cases, a process can have a relationship to either
      * a Port Alias or to a Port Implementation. In case of Port Alias it should take the context until Port Implementation
      * entities otherwise it should take the context up to TabularColumnType entities.
-     *
-     * @param entityDetails      list of entities
+     *  @param entityDetails      list of entities
      * @param userId             String - userId of user making request.
+     * @return
      */
-    private void getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                                    PropertyServerException,
-                                                                                                    UserNotAuthorizedException {
+    private List<EntityDetail> getRelationshipBasedOnType(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+                                                                                                                  PropertyServerException,
+                                                                                                                  UserNotAuthorizedException {
+        List<EntityDetail> entities = new ArrayList<>();
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_ALIAS)) {
-            endRelationship(entityDetails,userId);
+            entities = endRelationship(entityDetails,userId);
         }
 
         if (checkIfEntityExistWithSpecificType(entityDetails,PORT_IMPLEMENTATION)) {
-            getTabularSchemaTypes(entityDetails,userId);
+            entities = getTabularSchemaTypes(entityDetails,userId);
         }
 
+        return entities;
     }
 
 
-    private void endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                         PropertyServerException,
-                                                                                         UserNotAuthorizedException {
+    private List<EntityDetail> endRelationship(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+                                                                                                       PropertyServerException,
+                                                                                                       UserNotAuthorizedException {
+        List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-           getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                    processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
+            result = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
+                                           processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                           entityDetail.getType().getTypeDefName());
         }
-
+        return result;
     }
 
-    private void getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                               PropertyServerException,
-                                                                                               UserNotAuthorizedException {
+    private List<EntityDetail> getTabularSchemaTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+                                                                                                             PropertyServerException,
+                                                                                                             UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
             List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                    processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
-            result.add(newListOfEntityDetails.get(0));
+                                                                                          processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                          entityDetail.getType().getTypeDefName());
+            Optional<EntityDetail> first = newListOfEntityDetails.stream().findFirst();
+            result.add(first.orElse(null));
         }
-        getSchemaAttributes(result,userId);
+        return getSchemaAttributes(result,userId);
     }
 
-    private void getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException {
+    private List<EntityDetail> getSchemaAttributes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+                                                                                                           PropertyServerException,
+                                                                                                           UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
 
             List<EntityDetail>     newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                    processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
+                                                                                            processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                            entityDetail.getType().getTypeDefName());
             result.addAll(newListOfEntityDetails);
         }
-        getTabularColumnTypes(result,userId);
+        return getTabularColumnTypes(result,userId);
     }
 
-    private void getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
+    private List<EntityDetail> getTabularColumnTypes(List<EntityDetail> entityDetails, String userId) throws InvalidParameterException,
                                                                                                PropertyServerException,
                                                                                                UserNotAuthorizedException {
         List<EntityDetail>  result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
             List<EntityDetail>   newListOfEntityDetails = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
-                    processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()), entityDetail.getType().getTypeDefName());
+                                                                                          processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
+                                                                                          entityDetail.getType().getTypeDefName());
 
             newListOfEntityDetails = newListOfEntityDetails.stream().filter(entity -> entity.getType().getTypeDefName().equals(TABULAR_COLUMN_TYPE)).collect(Collectors.toList());
 
             if(!newListOfEntityDetails.isEmpty()){
-            result.add(newListOfEntityDetails.get(0));}
+                Optional<EntityDetail> first = newListOfEntityDetails.stream().findFirst();
+                result.add(first.orElse(null));
+            }
         }
-        endRelationship(result,userId);
+        return endRelationship(result,userId);
     }
 
     private boolean checkIfEntityExistWithSpecificType(List<EntityDetail> entityDetails,String typeDefName){
