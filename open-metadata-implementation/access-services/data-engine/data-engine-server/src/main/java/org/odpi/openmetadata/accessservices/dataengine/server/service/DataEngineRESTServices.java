@@ -374,8 +374,8 @@ public class DataEngineRESTServices {
         List<GUIDResponse> guidResponses = new ArrayList<>();
 
         Consumer<Process> processConsumer = process -> guidResponses.add(createProcess(userId, serverName, process));
-        partitionedProcesses.get(Boolean.TRUE).stream().forEach(processConsumer);
-        partitionedProcesses.get(Boolean.FALSE).stream().forEach(processConsumer);
+        partitionedProcesses.get(Boolean.TRUE).parallelStream().forEach(processConsumer);
+        partitionedProcesses.get(Boolean.FALSE).parallelStream().forEach(processConsumer);
 
         return guidResponses;
     }

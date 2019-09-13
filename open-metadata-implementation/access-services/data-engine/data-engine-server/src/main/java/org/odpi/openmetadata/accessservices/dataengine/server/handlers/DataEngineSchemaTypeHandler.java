@@ -190,7 +190,7 @@ public class DataEngineSchemaTypeHandler {
                                                                             PropertyServerException {
         final String methodName = "findSchemaAttribute";
 
-//        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+        qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,

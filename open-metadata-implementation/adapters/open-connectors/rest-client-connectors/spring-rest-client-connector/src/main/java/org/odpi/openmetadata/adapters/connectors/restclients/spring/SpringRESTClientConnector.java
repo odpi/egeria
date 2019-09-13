@@ -66,8 +66,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
             this.serverName = null;
         }
 
-        String     userId = "admin";
-        String     password ="admin";
+        String     userId = connectionProperties.getUserId();
+        String     password = connectionProperties.getClearPassword();
 
         if ((userId != null) && (password != null))
         {

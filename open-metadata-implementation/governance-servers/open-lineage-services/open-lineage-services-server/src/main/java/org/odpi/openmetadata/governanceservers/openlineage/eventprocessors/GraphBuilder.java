@@ -179,7 +179,7 @@ public class GraphBuilder {
 
         if (relationshipType.equals(SEMANTIC_ASSIGNMENT)) {
 
-//            createEntitiesSemanticAssignment(event);
+            createEntitiesSemanticAssignment(event);
         }
         else {
 
@@ -299,25 +299,25 @@ public class GraphBuilder {
         return vertex;
     }
 
-//    private void createEntitiesSemanticAssignment(RelationshipEvent event) {
-//
-//        GlossaryTerm glossaryTerm = event.getGlossaryTerm();
-//        Element technicalTerm = event.getAssetContext().getBaseAsset();
-//        String technicalTermType = technicalTerm.getType();
-//
-//        Map<String, Element> context = event.getAssetContext().getContext();
-//        context.put(technicalTermType, technicalTerm);
-//
-//        createGlossaryVertex(glossaryTerm,mainGraph);
-//        createGlossaryVertex(glossaryTerm,bufferGraph);
-//
-//        createElementVertex(context,mainGraph,glossaryTerm,true);
-//        createElementVertex(context,bufferGraph,glossaryTerm,false);
-//
-//        semanticAssignmentCreateRelationshipsBuffer(context, glossaryTerm, technicalTermType);
-//        semanticAssignmentCreateRelationshipsMain(context, glossaryTerm, technicalTermType);
-//
-//    }
+    private void createEntitiesSemanticAssignment(RelationshipEvent event) {
+
+        GlossaryTerm glossaryTerm = event.getGlossaryTerm();
+        Element technicalTerm = event.getAssetContext().getBaseAsset();
+        String technicalTermType = technicalTerm.getType();
+
+        Map<String, Element> context = event.getAssetContext().getContext();
+        context.put(technicalTermType, technicalTerm);
+
+        createGlossaryVertex(glossaryTerm,mainGraph);
+        createGlossaryVertex(glossaryTerm,bufferGraph);
+
+        createElementVertex(context,mainGraph,glossaryTerm,true);
+        createElementVertex(context,bufferGraph,glossaryTerm,false);
+
+        semanticAssignmentCreateRelationshipsBuffer(context, glossaryTerm, technicalTermType);
+        semanticAssignmentCreateRelationshipsMain(context, glossaryTerm, technicalTermType);
+
+    }
 
     private void createGlossaryVertex(GlossaryTerm term, JanusGraph graph) {
         GraphTraversalSource g = graph.traversal();

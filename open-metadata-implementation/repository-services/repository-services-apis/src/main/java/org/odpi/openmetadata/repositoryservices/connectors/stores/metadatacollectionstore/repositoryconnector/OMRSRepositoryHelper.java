@@ -52,17 +52,6 @@ public interface OMRSRepositoryHelper
      */
     TypeDefGallery getKnownTypeDefGallery();
 
-    /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName   source of the request (used for logging)
-     * @param typeDefName  unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    TypeDefGallery getActiveTypesByWildCardName(String sourceName,
-                                                String typeDefName);
-
 
     /**
      * Return the list of typeDefs active in the connected cohorts.

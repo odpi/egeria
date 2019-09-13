@@ -88,25 +88,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * Return the TypeDefs identified by the name supplied by the caller.  The TypeDef name may have wild
-     * card characters in it which is why the results are returned in a list.
-     *
-     * @param sourceName  source of the request (used for logging)
-     * @param typeDefName unique name for the TypeDef
-     * @return TypeDef object or null if TypeDef is not known.
-     */
-    public TypeDefGallery getActiveTypesByWildCardName(String sourceName,
-                                                       String typeDefName)
-    {
-        final String methodName = "getActiveTypesByWildCardName";
-
-        validateRepositoryContentManager(methodName);
-
-        return repositoryContentManager.getActiveTypesByWildCardName(sourceName, typeDefName);
-    }
-
-
-    /**
      * Return the list of attributeTypeDefs active in the local repository.
      *
      * @return AttributeTypeDef list
