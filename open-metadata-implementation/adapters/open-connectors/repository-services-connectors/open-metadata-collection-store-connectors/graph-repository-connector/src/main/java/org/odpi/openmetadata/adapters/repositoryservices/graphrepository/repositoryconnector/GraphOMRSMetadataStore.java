@@ -2433,7 +2433,7 @@ class GraphOMRSMetadataStore {
          *
          * g.V(rootVertex).repeat(
          *     bothE("Relationship").has({relationship-status-filter}).has({relationship-type-filter}).as("r").
-         *     inV().has({entity-status-filter}).has({entity-type-filter}).as("e").
+         *     otherV().has({entity-status-filter}).has({entity-type-filter}).as("e").
          *         where(out("Classifier").has({classification-filter})).
          *     simplePath()).
          * times(2).emit().select("r","e")
@@ -2514,7 +2514,7 @@ class GraphOMRSMetadataStore {
                 }
 
                 // Project the relationships and move on to the inVertex for each relationship...
-                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("r").inV();
+                repeatTraversal = (DefaultGraphTraversal) repeatTraversal.as("r").otherV();
 
                 // Optionally filter entities by status
                 if (statusWithin) {
@@ -2559,13 +2559,13 @@ class GraphOMRSMetadataStore {
 
                     if (edge != null && vertex != null) {
 
+                        log.debug("{} save the relationship for edge {}", methodName, edge);
+
                         Relationship relationship = new Relationship();
                         relationshipMapper.mapEdgeToRelationship(edge, relationship);
                         relationships.add(relationship);
 
                         // Get the end entities and add them to the relationship as proxies.
-
-                        vertex = null;
 
                         try {
 
@@ -2575,33 +2575,38 @@ class GraphOMRSMetadataStore {
                              */
 
                             // Start with the outVertex
-                            vertex = edge.outVertex();
+                            Vertex vout = edge.outVertex();
 
-                            if (vertex != null) {
-                                log.debug("{} end 1 entity vertex {}", methodName, vertex);
+                            if (vout != null) {
+                                log.debug("{} Create proxy for end 1 entity vertex {}", methodName, vout);
                                 EntityProxy entityOneProxy = new EntityProxy();
-                                entityMapper.mapVertexToEntityProxy(vertex, entityOneProxy);
+                                entityMapper.mapVertexToEntityProxy(vout, entityOneProxy);
                                 log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
                                 relationship.setEntityOneProxy(entityOneProxy);
 
                             }
 
                             // Move to the inVertex
-                            vertex = edge.inVertex();
+                            Vertex vin = edge.inVertex();
 
-                            if (vertex != null) {
-                                log.debug("{} end 2 entity vertex {}", methodName, vertex);
+                            if (vin != null) {
+                                log.debug("{} Create proxy for end 2 entity vertex {}", methodName, vin);
                                 EntityProxy entityTwoProxy = new EntityProxy();
-                                entityMapper.mapVertexToEntityProxy(vertex, entityTwoProxy);
+                                entityMapper.mapVertexToEntityProxy(vin, entityTwoProxy);
                                 log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
                                 relationship.setEntityTwoProxy(entityTwoProxy);
 
                             }
 
-                            /* Only need to add the arrived-at vertex to the InstanceGraph
-                             * because the traversed-from vertex will already have been added.
-                             * Also you only add the arrived-at entity if it is not a proxy.
+                            /*
+                             * You only add the arrived-at entity if it is not a proxy. This
+                             * is the vertex from the tuple above. Only need to add the arrived-at
+                             * vertex to the InstanceGraph because the traversed-from vertex will
+                             * already have been added (it is either the root or has been
+                             * traversed through already).
                              */
+
+                            log.debug("{} Create entity detail for remote vertex {}", methodName, vertex);
 
                             if (!entityMapper.isProxy(vertex)) {
                                 EntityDetail entityDetail = new EntityDetail();
@@ -2610,6 +2615,7 @@ class GraphOMRSMetadataStore {
                                 entities.add(entityDetail);
                             }
                         }
+
                         catch (EntityProxyOnlyException | RepositoryErrorException e) {
                             /* This catch block abandons the whole traversal and neighbourhood search.
                              * This may be a little draconian ut presumably better to know that something
