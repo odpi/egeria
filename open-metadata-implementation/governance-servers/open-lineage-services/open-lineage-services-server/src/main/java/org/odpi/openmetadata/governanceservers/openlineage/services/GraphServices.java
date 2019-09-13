@@ -4,7 +4,6 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -42,30 +41,27 @@ public class GraphServices {
      * Returns a lineage subgraph.
      *
      * @param graphName    main, buffer, mock, history.
-     * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param scopeText source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param view        The view queried by the user: hostview, tableview, columnview.
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public String lineage(String graphName, String scope, String view, String guid) {
+    public String lineage(String graphName, String scopeText, String view, String guid) {
         String response = "";
 
-        graphName = reformatArg(graphName);
-        scope = reformatArg(scope);
-        view = reformatArg(view);
-
         Graph graph = getJanusGraph(graphName);
-        switch (Scope.valueOf(scope)) {
-            case SOURCEANDDESTINATION:
+        Scope scope = Scope.fromString(scopeText);
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
                 response = sourceAndDestination(graph, view, guid);
                 break;
-            case ENDTOEND:
+            case END_TO_END:
                 response = endToEnd(graph, view, guid);
                 break;
-            case ULTIMATESOURCE:
+            case ULTIMATE_SOURCE:
                 response = ultimateSource(graph, view, guid);
                 break;
-            case ULTIMATEDESTINATION:
+            case ULTIMATE_DESTINATION:
                 response = ultimateDestination(graph, view, guid);
                 break;
             case GLOSSARY:
@@ -173,7 +169,7 @@ public class GraphServices {
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param view The view queried by the user: tableview, columnview.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
+     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
     private String ultimateDestination(Graph graph, String view, String guid) {
@@ -222,19 +218,6 @@ public class GraphServices {
     }
 
     /**
-     * Map http parameter to enum value by converting to uppercase and removing - characters.
-     *
-     * @param string main, buffer, mock, history.
-     * @return String which corresponds to enum format.
-     */
-    private String reformatArg(String string) {
-        string = string.toUpperCase();
-        string = string.replaceAll("-", "");
-        return string;
-    }
-
-
-    /**
      * Returns a subgraph containing all columns or tables connected to the queried glossary term.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
@@ -253,20 +236,21 @@ public class GraphServices {
     /**
      * Retrieve the label of the edges that are to be traversed with the gremlin query.
      *
-     * @param view The view queried by the user: hostview, tableview, columnview.
+     * @param viewText The viewText queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-    private String getEdgeLabel(String view) {
+    private String getEdgeLabel(String viewText) {
         String edgeLabel = "";
-        switch (View.valueOf(view)) {
-            case TABLEVIEW:
+        View view = View.fromString(viewText);
+        switch (view) {
+            case TABLE_VIEW:
                 edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
                 break;
-            case COLUMNVIEW:
+            case COLUMN_VIEW:
                 edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
                 break;
             default:
-                log.error(view + " is not a valid lineage view");
+                log.error(viewText + " is not a valid lineage viewText");
         }
         return edgeLabel;
     }
@@ -288,13 +272,12 @@ public class GraphServices {
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
      *
-     * @param graphString MAIN, BUFFER, MOCK, HISTORY.
+     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(String graphString) {
-        graphString = reformatArg(graphString);
-        JanusGraph graph = getJanusGraph(graphString);
+    public void dumpGraph(String graphName) {
+        JanusGraph graph = getJanusGraph(graphName);
         try {
-            graph.io(IoCore.graphml()).writeGraph("graph-" + graphString + ".graphml");
+            graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -307,7 +290,6 @@ public class GraphServices {
      * @return The queried graph, in graphSON format.
      */
     public String exportGraph(String graphName) {
-        graphName = reformatArg(graphName);
         JanusGraph graph = getJanusGraph(graphName);
         return janusGraphToGraphson(graph);
     }
@@ -334,12 +316,13 @@ public class GraphServices {
     /**
      * Retrieve an Open Lineage Services graph.
      *
-     * @param graphName The name of the queried graph.
+     * @param graphNameText The name of the queried graph.
      * @return The Graph object.
      */
-    private JanusGraph getJanusGraph(String graphName) {
+    private JanusGraph getJanusGraph(String graphNameText) {
         JanusGraph graph = null;
-        switch (GraphName.valueOf(graphName)) {
+        GraphName graphName = GraphName.fromString(graphNameText);
+        switch (graphName) {
             case MAIN:
                 graph = mainGraph;
                 break;
@@ -353,7 +336,7 @@ public class GraphServices {
                 graph = mockGraph;
                 break;
             default:
-                log.error(graphName + " is not a valid graph");
+                log.error(graphNameText + " is not a valid graph");
         }
         return graph;
     }
