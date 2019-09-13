@@ -122,4 +122,6 @@ log
 _site/**
 _layouts/**
 Gemfile
+# vscode editor
+**/.vscode*/**
 
