@@ -13,6 +13,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
 
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory.PRIMITIVE;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+
 /**
  * OMRSRepositoryContentValidator provides methods to validate TypeDefs and Instances returned from
  * an open metadata repository.  It is typically used by OMRS repository connectors and
@@ -3113,7 +3116,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
     {
         if (instancePropertyValue != null)
         {
-            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            if (instancePropertyValue.getInstancePropertyCategory() == PRIMITIVE)
             {
                 PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
 
@@ -3202,17 +3205,54 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                         /*
                                          * The property names match - do the values?
                                          */
-                                        if (instancePropertyValue.equals(matchPropertyValue))
+
+
+                                        /*
+                                         * The match performed depends on the property category.
+                                         * If it's a string then the match value is used as a regex.
+                                         * For any other primitives perform an exact match.
+                                         * For non-primitives, perform string extraction and do a regex match
+                                         */
+                                        boolean performExactMatch = false;
+
+                                        InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
+
+                                        if (ipCat != PRIMITIVE)
                                         {
                                             /*
-                                             * The values match exactly.
+                                             * If this is not a primitive, do string extraction and regex match
                                              */
-                                            matchingProperties++;
+                                            performExactMatch = false;
                                         }
-                                        else if (! exactMatch)
+                                        else // PRIMITIVE
                                         {
                                             /*
-                                             * Does a fuzzy match work?
+                                             * If this is a string, do string extraction and regex match
+                                             */
+                                            PrimitivePropertyValue primPropValue = (PrimitivePropertyValue)instancePropertyValue;
+                                            if (primPropValue.getPrimitiveDefCategory() == OM_PRIMITIVE_TYPE_STRING)
+                                            {
+                                                performExactMatch = false;
+                                            }
+                                            else {
+                                                performExactMatch = true;
+                                            }
+                                        }
+
+                                        if (performExactMatch)
+                                        {
+                                            if (instancePropertyValue.equals(matchPropertyValue))
+                                            {
+                                                /*
+                                                 * The values match exactly.
+                                                 */
+                                                matchingProperties++;
+                                            }
+                                        }
+                                        else // regex match required
+                                        {
+                                            /*
+                                             * Does a regex match work? It must match the complete regex...
                                              */
                                             String instancePropertyValueString = this.getStringFromPropertyValue(instancePropertyValue);
 
@@ -3220,8 +3260,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                                             {
                                                 try
                                                 {
-                                                    if ((instancePropertyValueString.contains(matchPropertyValueString)) ||
-                                                        (instancePropertyValueString.matches(matchPropertyValueString)))
+                                                    if (instancePropertyValueString.matches(matchPropertyValueString))
                                                     {
                                                         matchingProperties++;
                                                     }
@@ -3263,20 +3302,20 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param propertyMap map with the properties
      * @param propertyName name of the property to test
      * @param expectedValue expected value
-     * @param exactMatch should the strings match exactly
+     * @param exactMatch should the strings match exactly // TODO remove parameter
      * @return boolean result
      */
     private  boolean  checkStringPropertyValue(Map<String, InstancePropertyValue>   propertyMap,
                                                String                               propertyName,
                                                String                               expectedValue,
-                                               boolean                              exactMatch)
+                                               boolean                              exactMatch)  // TODO remove parameter
     {
         boolean                 result = false;
         InstancePropertyValue   instancePropertyValue = propertyMap.get(propertyName);
 
         if (instancePropertyValue != null)
         {
-            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            if (instancePropertyValue.getInstancePropertyCategory() == PRIMITIVE)
             {
                 try
                 {
@@ -3285,19 +3324,9 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     if (matchValue != null)
                     {
-                        if (exactMatch)
+                        if (matchValue.matches(expectedValue))
                         {
-                            if (matchValue.equals(expectedValue))
-                            {
-                                result = true;
-                            }
-                        }
-                        else
-                        {
-                            if (matchValue.matches(expectedValue))
-                            {
-                                result = true;
-                            }
+                            result = true;
                         }
                     }
                 }
@@ -3331,7 +3360,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
         if (instancePropertyValue != null)
         {
-            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            if (instancePropertyValue.getInstancePropertyCategory() == PRIMITIVE)
             {
                 try
                 {
@@ -3365,13 +3394,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
      * @param instanceProperties  the effectivity dates.
-     * @param exactMatch whether this is a fuzzy or exact match.
+     * @param exactMatch whether this is a fuzzy or exact match. // TODO remove parameter
      * @return integer count of the matching properties.
      */
     public int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
                                                  InstanceAuditHeader      instanceHeader,
                                                  InstanceProperties       instanceProperties,
-                                                 boolean                  exactMatch)
+                                                 boolean                  exactMatch) // TODO remove parameter
     {
         final String metadataCollectionIdPropertyName = "metadataCollectionId";
         final String metadataCollectionNamePropertyName = "metadataCollectionName";
@@ -3626,7 +3655,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     case PRIMITIVE:
                         PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)propertyValue;
-                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == OM_PRIMITIVE_TYPE_STRING)
                         {
                             String   stringProperty = (String)primitivePropertyValue.getPrimitiveValue();
 
