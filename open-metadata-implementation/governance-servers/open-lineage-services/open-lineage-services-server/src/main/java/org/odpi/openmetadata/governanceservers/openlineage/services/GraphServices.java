@@ -192,6 +192,20 @@ public class GraphServices {
         return janusGraphToGraphson(responseGraph);
     }
 
+    /**
+     * In order not to clutter the user's screen with too many information, only the source nodes and the queried node
+     * are returned, the nodes in between are abstracted by means of a node labeled "condensed". If there are no
+     * ultimate sources, the gremlin query will return the originally queried node. Therefore, this method checks
+     * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
+     * ultimate sources, should the condensation node be created.
+     *
+     *
+     * @param g The GraphTraversal of the graph in which the condensation node will be added.
+     * @param sourcesList The list of ultimate sources for the queried node.
+     * @param originalQueriedVertex The vertex originally queried by the user.
+     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                      original graph.
+     */
     private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
             Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
@@ -205,6 +219,20 @@ public class GraphServices {
         }
     }
 
+    /**
+     * In order not to clutter the user's screen with too many information, only the destination nodes and the queried
+     * node are returned, the nodes in between are abstracted by means of a node labeled "condensed". If there are no
+     * ultimate destinations, the gremlin query will return the originally queried node. Therefore, this method checks
+     * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
+     * ultimate destination, should the condensation node be created.
+     *
+     *
+     * @param g The GraphTraversal of the graph in which the condensation node will be added.
+     * @param destinationsList The list of ultimate sources for the queried node.
+     * @param originalQueriedVertex The vertex originally queried by the user.
+     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                      original graph.
+     */
     private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
             Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
