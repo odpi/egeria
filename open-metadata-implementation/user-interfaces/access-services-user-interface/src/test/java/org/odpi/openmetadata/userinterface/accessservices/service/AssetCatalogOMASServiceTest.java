@@ -38,7 +38,7 @@ class AssetCatalogOMASServiceTest {
     private final String typeDef = "RelationalColumn";
     private final String typeDefDescription = "A semantic description of something, such as a concept, object, asset, technology, role or group.";
     private final String relationshipGuid = "b1c497ce.60641b50.54865oj4d.fnjt4v4.6nj46m.ipef318j22n8qcprd4k6h";
-
+    private final String user = "demo";
     @Mock
     private AssetCatalog assetCatalog;
 
@@ -50,7 +50,7 @@ class AssetCatalogOMASServiceTest {
     public void testGetAssetSummary() throws PropertyServerException, InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetSummary(anyString(), anyString())).thenReturn(expectedResponse);
-        List<AssetDescription> resultList = assetCatalogOMASService.getAssetSummary(assetId);
+        List<AssetDescription> resultList = assetCatalogOMASService.getAssetSummary(user, assetId);
         verifyAssetDescriptionResult(resultList);
     }
 
@@ -59,7 +59,7 @@ class AssetCatalogOMASServiceTest {
     public void testGetAssetDetails() throws PropertyServerException, InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetDetails(anyString(), anyString())).thenReturn(expectedResponse);
-        List<AssetDescription> resultList = assetCatalogOMASService.getAssetDetails(assetId);
+        List<AssetDescription> resultList = assetCatalogOMASService.getAssetDetails(user, assetId);
         verifyAssetDescriptionResult(resultList);
     }
 
@@ -68,7 +68,7 @@ class AssetCatalogOMASServiceTest {
     public void testGetAssetUniverse() throws PropertyServerException, InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetUniverse(anyString(), anyString())).thenReturn(expectedResponse);
-        List<AssetDescription> resultList = assetCatalogOMASService.getAssetUniverse(assetId);
+        List<AssetDescription> resultList = assetCatalogOMASService.getAssetUniverse(user, assetId);
         verifyAssetDescriptionResult(resultList);
     }
 
@@ -77,7 +77,7 @@ class AssetCatalogOMASServiceTest {
     public void testGetAssetRelationships() throws PropertyServerException, InvalidParameterException {
         RelationshipsResponse expectedResponse = mockRelationshipsResponse();
         when(assetCatalog.getAssetRelationships(anyString(), anyString())).thenReturn(expectedResponse);
-        List<Relationship> resultList = assetCatalogOMASService.getAssetRelationships(assetId);
+        List<Relationship> resultList = assetCatalogOMASService.getAssetRelationships(user, assetId);
         verifyRelationshipResponse(resultList);
     }
     @Test
@@ -86,7 +86,7 @@ class AssetCatalogOMASServiceTest {
         RelationshipsResponse expectedResponse = mockRelationshipsResponse();
         String relationshipType = "SemanticAssignment";
         when(assetCatalog.getAssetRelationshipsForType(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
-        List<Relationship> resultList = assetCatalogOMASService.getAssetRelationshipsForType(assetId, relationshipType);
+        List<Relationship> resultList = assetCatalogOMASService.getAssetRelationshipsForType(user, assetId, relationshipType);
         verifyRelationshipResponse(resultList);
     }
     @Test
@@ -95,7 +95,7 @@ class AssetCatalogOMASServiceTest {
         ClassificationsResponse expectedResponse = mockClassificationsResponse();
         when(assetCatalog.getClassificationForAsset(anyString(), anyString())).thenReturn(expectedResponse);
 
-        List<Classification> resultList = assetCatalogOMASService.getClassificationForAsset(assetId);
+        List<Classification> resultList = assetCatalogOMASService.getClassificationForAsset(user, assetId);
         verifyClassificationResponse(resultList);
     }
 
@@ -105,7 +105,7 @@ class AssetCatalogOMASServiceTest {
         InvalidParameterException mockedException = mockExceptionResponse("unit-test");
         when(assetCatalog.getAssetSummary(anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class,
-                () -> assetCatalogOMASService.getAssetSummary("asset-id-does-not-exists"));
+                () -> assetCatalogOMASService.getAssetSummary(user, "asset-id-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
 
     }
@@ -115,7 +115,7 @@ class AssetCatalogOMASServiceTest {
         InvalidParameterException mockedException = mockExceptionResponse("unit-test");
         when(assetCatalog.getAssetDetails(anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class,
-                () -> assetCatalogOMASService.getAssetDetails("asset-id-does-not-exists"));
+                () -> assetCatalogOMASService.getAssetDetails(user, "asset-id-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
     @Test
@@ -124,7 +124,7 @@ class AssetCatalogOMASServiceTest {
         InvalidParameterException mockedException = mockExceptionResponse("unit-test");
         when(assetCatalog.getAssetUniverse(anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class,
-                () -> assetCatalogOMASService.getAssetUniverse("asset-id-does-not-exists"));
+                () -> assetCatalogOMASService.getAssetUniverse(user, "asset-id-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
     @Test
@@ -133,7 +133,7 @@ class AssetCatalogOMASServiceTest {
         InvalidParameterException mockedException = mockExceptionResponse("unit-test");
         when(assetCatalog.getAssetRelationships(anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class,
-                () -> assetCatalogOMASService.getAssetRelationships("asset-id-does-not-exists"));
+                () -> assetCatalogOMASService.getAssetRelationships(user, "asset-id-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
     @Test
@@ -143,7 +143,7 @@ class AssetCatalogOMASServiceTest {
         when(assetCatalog.getAssetRelationshipsForType(anyString(), anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class,
                 () -> assetCatalogOMASService.getAssetRelationshipsForType(
-                        "asset-id-does-not-exists",
+                        user, "asset-id-does-not-exists",
                         "relationship-type-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
@@ -153,7 +153,7 @@ class AssetCatalogOMASServiceTest {
         InvalidParameterException mockedException = mockExceptionResponse("unit-test");
         when(assetCatalog.getClassificationForAsset(anyString(), anyString())).thenThrow(mockedException);
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class, ()
-                -> assetCatalogOMASService.getClassificationForAsset("asset-id-does-not-exists"));
+                -> assetCatalogOMASService.getClassificationForAsset(user, "asset-id-does-not-exists"));
         assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
     }
 
