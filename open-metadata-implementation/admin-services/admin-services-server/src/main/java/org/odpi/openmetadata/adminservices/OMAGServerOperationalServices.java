@@ -20,6 +20,7 @@ import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
+import org.odpi.openmetadata.dataplatformservices.admin.DataPlatformOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -158,6 +159,7 @@ public class OMAGServerOperationalServices
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
             DataEngineProxyConfig     dataEngineProxyConfig     = configuration.getDataEngineProxyConfig();
+            DataPlatformConfig        dataPlatformConfig        = configuration.getDataPlatformConfig();
 
             if ((repositoryServicesConfig == null) &&
                     (accessServiceConfigList == null) &&
@@ -168,7 +170,8 @@ public class OMAGServerOperationalServices
                     (securityOfficerConfig == null) &&
                     (stewardshipServicesConfig == null) &&
                     (virtualizationConfig == null) &&
-                    (dataEngineProxyConfig == null))
+                    (dataEngineProxyConfig == null) &&
+                    (dataPlatformConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -590,6 +593,28 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServicesDescription.STEWARDSHIP_SERVICES.getServiceName());
             }
 
+            /*
+             * Initialize the Data Platform Services.
+             */
+            if (dataPlatformConfig != null)
+            {
+                DataPlatformOperationalServices dataPlatformOperationalServices = new DataPlatformOperationalServices(
+                        configuration.getLocalServerName(),
+                        configuration.getLocalServerUserId(),
+                        configuration.getLocalServerType(),
+                        configuration.getLocalServerURL());
+
+                instance.setOperationalDataPlatformServices(dataPlatformOperationalServices);
+                dataPlatformOperationalServices.initialize(dataPlatformConfig,
+                        operationalRepositoryServices.getAuditLog(
+                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceCode(),
+                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceWiki()));
+
+                activatedServiceList.add(GovernanceServicesDescription.DATA_PLATFORM_SERVICES.getServiceName());
+            }
+
             response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
         }
         catch (UserNotAuthorizedException error)
@@ -707,6 +732,13 @@ public class OMAGServerOperationalServices
             instance.getOperationalStewardshipServices().terminate(permanentDeactivation);
         }
 
+        /*
+         * Shutdown the data platform services
+         */
+        if (instance.getOperationalDataPlatformServices() != null)
+        {
+            instance.getOperationalDataPlatformServices().disconnect(permanentDeactivation);
+        }
 
         /*
          * Shutdown the conformance test suite

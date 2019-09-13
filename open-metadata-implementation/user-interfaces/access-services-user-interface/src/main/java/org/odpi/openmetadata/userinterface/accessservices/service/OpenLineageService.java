@@ -5,8 +5,8 @@ package org.odpi.openmetadata.userinterface.accessservices.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Edge;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Node;
 import org.odpi.openmetadata.userinterface.accessservices.service.response.Response;
@@ -36,8 +36,8 @@ public class OpenLineageService {
     //TODO add authentication
     private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
-    private @Value("${open.lineage.graph.source}")
-    GraphName graphName;
+    @Value("${open.lineage.graph.source}")
+    private GraphName graphName;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
     @Autowired
@@ -56,32 +56,32 @@ public class OpenLineageService {
         return graphData;
     }
 
-    public Map<String, Object> getUltimateSource(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATESOURCE, graphName, guid);
+    public Map<String, Object> getUltimateSource(String userId, View view, String guid) throws IOException {
+        String response = openLineageClient.lineage(user, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getEndToEndLineage(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.ENDTOEND, graphName, guid);
+    public Map<String, Object> getEndToEndLineage(String userId, View view, String guid) throws IOException {
+        String response = openLineageClient.lineage(user, graphName, Scope.END_TO_END, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getUltimateDestination(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.ULTIMATEDESTINATION, graphName, guid);
+    public Map<String, Object> getUltimateDestination(String userId, View view, String guid) throws IOException {
+        String response = openLineageClient.lineage(user, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getGlossaryLineage(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.GLOSSARY, graphName, guid);
+    public Map<String, Object> getGlossaryLineage(String userId, View view, String guid) throws IOException {
+        String response = openLineageClient.lineage(user, graphName, Scope.GLOSSARY, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getSourceAndDestination(String userId, Scope scope, String guid) throws IOException {
-        String response = openLineageClient.queryLineage(user, scope, Query.SOURCEANDDESTINATION, graphName, guid);
+    public Map<String, Object> getSourceAndDestination(String userId, View view, String guid) throws IOException {
+        String response = openLineageClient.lineage(user, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }

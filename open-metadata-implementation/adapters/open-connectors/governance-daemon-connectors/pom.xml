@@ -29,6 +29,7 @@
         <module>security-sync-connectors</module>
         <module>security-officer-connectors</module>
         <module>data-engine-connectors</module>
+        <module>data-platform-connectors</module>
     </modules>
 
 

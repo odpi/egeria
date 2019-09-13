@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetconsumer.samples;
 
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.assetconsumer.client.AssetConsumer;
-import org.odpi.openmetadata.adapters.connectors.structuredfile.StructuredFileStoreConnector;
-import org.odpi.openmetadata.adapters.connectors.structuredfile.StructuredFileStoreProvider;
-import org.odpi.openmetadata.adapters.connectors.structuredfile.ffdc.exception.FileReadException;
+import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreConnector;
+import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreProvider;
+import org.odpi.openmetadata.adapters.connectors.csvfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -52,7 +52,7 @@ public class CSVFileReaderSample
      */
     void run()
     {
-        StructuredFileStoreConnector connector = getConnectorUsingMetadata();
+        CSVFileStoreConnector connector = getConnectorUsingMetadata();
         if (connector == null)
         {
             connector = getConnectorUsingHardCodedConnection();
@@ -68,7 +68,7 @@ public class CSVFileReaderSample
      *
      * @return connector to requested file
      */
-    private StructuredFileStoreConnector getConnectorUsingMetadata()
+    private CSVFileStoreConnector getConnectorUsingMetadata()
     {
         try
         {
@@ -104,8 +104,8 @@ public class CSVFileReaderSample
                              * type is returned, on one where it is not possible to create a connector for, then an
                              * exception is thrown and the code moves on to process the next asset.
                              */
-                            return (StructuredFileStoreConnector) client.getConnectorForAsset(clientUserId,
-                                                                                              assetGUID);
+                            return (CSVFileStoreConnector) client.getConnectorForAsset(clientUserId,
+                                                                                       assetGUID);
                         }
                         catch (Throwable error)
                         {
@@ -135,15 +135,15 @@ public class CSVFileReaderSample
      *
      * @return connector to requested file
      */
-    private StructuredFileStoreConnector getConnectorUsingHardCodedConnection()
+    private CSVFileStoreConnector getConnectorUsingHardCodedConnection()
     {
-        StructuredFileStoreConnector connector = null;
+        CSVFileStoreConnector connector = null;
 
         try
         {
             AssetConsumer client = new AssetConsumer(serverName, serverURLRoot);
 
-            connector = (StructuredFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
+            connector = (CSVFileStoreConnector)client.getConnectorByConnection(clientUserId, getHardCodedConnection(fileName));
         }
         catch (Throwable error)
         {
@@ -160,15 +160,15 @@ public class CSVFileReaderSample
      *
      * @return connector to requested file
      */
-    private StructuredFileStoreConnector getConnectorWithOCF()
+    private CSVFileStoreConnector getConnectorWithOCF()
     {
-        StructuredFileStoreConnector connector = null;
+        CSVFileStoreConnector connector = null;
 
         try
         {
             ConnectorBroker broker = new ConnectorBroker();
 
-            connector = (StructuredFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
+            connector = (CSVFileStoreConnector) broker.getConnector(getHardCodedConnection(fileName));
         }
         catch (Throwable error)
         {
@@ -198,7 +198,7 @@ public class CSVFileReaderSample
 
         final String endpointDescription = "File name.";
 
-        String endpointName    = "StructuredFileStore.Endpoint." + fileName;
+        String endpointName    = "CSVFileStore.Endpoint." + fileName;
 
         Endpoint endpoint = new Endpoint();
 
@@ -210,10 +210,10 @@ public class CSVFileReaderSample
         endpoint.setAddress(fileName);
 
 
-        final String connectorTypeDescription   = "StructuredFileStore connector type.";
-        final String connectorTypeJavaClassName = StructuredFileStoreProvider.class.getName();
+        final String connectorTypeDescription   = "CSVFileStore connector type.";
+        final String connectorTypeJavaClassName = CSVFileStoreProvider.class.getName();
 
-        String connectorTypeName = "StructuredFileStore.ConnectorType.Test";
+        String connectorTypeName = "CSVFileStore.ConnectorType.Test";
 
         ConnectorType connectorType = new ConnectorType();
 
@@ -225,9 +225,9 @@ public class CSVFileReaderSample
         connectorType.setConnectorProviderClassName(connectorTypeJavaClassName);
 
 
-        final String connectionDescription = "StructuredFileStore connection.";
+        final String connectionDescription = "CSVFileStore connection.";
 
-        String connectionName = "StructuredFileStore.Connection.Test";
+        String connectionName = "CSVFileStore.Connection.Test";
 
         Connection connection = new Connection();
 
@@ -248,7 +248,7 @@ public class CSVFileReaderSample
      *
      * @param connector connector to the asset
      */
-    private void displayFile(StructuredFileStoreConnector connector)
+    private void displayFile(CSVFileStoreConnector connector)
     {
         try
         {

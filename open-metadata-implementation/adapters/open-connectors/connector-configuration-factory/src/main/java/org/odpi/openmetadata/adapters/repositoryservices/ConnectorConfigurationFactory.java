@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
@@ -840,6 +841,50 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+    /**
+     * Return the connection of data platform
+     *
+     * @param serverName name of the real repository server
+     * @param connectorProviderClassName the class name of the
+     * @param dataPlatformConfigurationProperties related configuration
+     * @return
+     */
+    public Connection getDataPlatformConnection (String              serverName,
+                                                 String              connectorProviderClassName,
+                                                 Map<String, Object> dataPlatformConfigurationProperties){
+
+        final String endpointGUID             = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
+        final String endpointDescription      = "Data Platform Server endpoint.";
+        final String connectionDescription    = "Data Platform connection.";
+
+        String endpointName    = "DataPlatform.Endpoint." + serverName;
+        Endpoint endpoint = new Endpoint();
+        Connection connection = new Connection();
+
+        endpoint.setType(this.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(dataPlatformConfigurationProperties.get("serverAddress").toString());
+
+        Map<String, String> endpointProperties = new HashMap<>();
+        endpointProperties.put("connectorProviderName", connectorProviderClassName);
+        endpoint.setAdditionalProperties(endpointProperties);
+
+        String connectionName = "Cassandra.Connection." + serverName;
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+
+        CassandraStoreProvider cassandraStoreProvider= new CassandraStoreProvider();
+        connection.setConnectorType(cassandraStoreProvider.getConnectorType());
+        return connection;
+    }
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.

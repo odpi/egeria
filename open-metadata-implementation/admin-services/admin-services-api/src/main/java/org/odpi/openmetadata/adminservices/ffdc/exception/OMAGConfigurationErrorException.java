@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+
 /**
  * OMAGConfigurationErrorException is used when configuration parameters passed on earlier calls turn out to
  * be invalid or make the new call invalid.
@@ -38,5 +40,21 @@ public class OMAGConfigurationErrorException extends OMAGCheckedExceptionBase
     public OMAGConfigurationErrorException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+
+    /**
+     * This is the constructor used for creating a OMAGConfigurationErrorException that resulted from a previous error.
+     *
+     * @param template previous error
+     * */
+    public OMAGConfigurationErrorException(PropertyServerException template)
+    {
+        super(template.getReportedHTTPCode(),
+              template.getReportingClassName(),
+              template.getReportingActionDescription(),
+              template.getErrorMessage(),
+              template.getReportedSystemAction(),
+              template.getReportedUserAction());
     }
 }

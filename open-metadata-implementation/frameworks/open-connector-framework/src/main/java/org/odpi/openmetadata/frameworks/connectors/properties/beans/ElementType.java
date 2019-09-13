@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -21,6 +23,7 @@ public class ElementType extends PropertyBase
 {
     protected String        elementTypeId                     = null;
     protected String        elementTypeName                   = null;
+    protected List<String>  elementSuperTypeNames             = null;
     protected long          elementTypeVersion                = 0;
     protected String        elementTypeDescription            = null;
     protected String        elementSourceServer               = null;
@@ -52,6 +55,7 @@ public class ElementType extends PropertyBase
         {
             elementTypeId = templateType.getElementTypeId();
             elementTypeName = templateType.getElementTypeName();
+            elementSuperTypeNames = templateType.getElementSuperTypeNames();
             elementTypeVersion = templateType.getElementTypeVersion();
             elementTypeDescription = templateType.getElementTypeDescription();
             elementSourceServer = templateType.getElementSourceServer();
@@ -104,6 +108,39 @@ public class ElementType extends PropertyBase
     public String getElementTypeName()
     {
         return elementTypeName;
+    }
+
+
+    /**
+     * Set up the list of type names for this type's supertypes.
+     *
+     * @param elementSuperTypeNames list of type names
+     */
+    public void setElementSuperTypeNames(List<String> elementSuperTypeNames)
+    {
+        this.elementSuperTypeNames = elementSuperTypeNames;
+    }
+
+
+    /**
+     * Return the list of type names for this type's supertypes.
+     *
+     * @return list of type names
+     */
+    public List<String> getElementSuperTypeNames()
+    {
+        if (elementSuperTypeNames == null)
+        {
+            return null;
+        }
+        else if (elementSuperTypeNames.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(elementSuperTypeNames);
+        }
     }
 
 
@@ -272,16 +309,17 @@ public class ElementType extends PropertyBase
     public String toString()
     {
         return "ElementType{" +
-                "elementTypeId='" + elementTypeId + '\'' +
-                ", elementTypeName='" + elementTypeName + '\'' +
-                ", elementTypeVersion=" + elementTypeVersion +
-                ", elementTypeDescription='" + elementTypeDescription + '\'' +
-                ", elementSourceServer='" + elementSourceServer + '\'' +
-                ", elementOrigin=" + elementOrigin +
-                ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
-                ", elementHomeMetadataCollectionName='" + elementHomeMetadataCollectionName + '\'' +
-                ", elementLicense='" + elementLicense + '\'' +
-                '}';
+                       "elementTypeId='" + elementTypeId + '\'' +
+                       ", elementTypeName='" + elementTypeName + '\'' +
+                       ", elementSuperTypeNames=" + elementSuperTypeNames +
+                       ", elementTypeVersion=" + elementTypeVersion +
+                       ", elementTypeDescription='" + elementTypeDescription + '\'' +
+                       ", elementSourceServer='" + elementSourceServer + '\'' +
+                       ", elementOrigin=" + elementOrigin +
+                       ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
+                       ", elementHomeMetadataCollectionName='" + elementHomeMetadataCollectionName + '\'' +
+                       ", elementLicense='" + elementLicense + '\'' +
+                       '}';
     }
 
 
@@ -306,6 +344,7 @@ public class ElementType extends PropertyBase
         return getElementTypeVersion() == that.getElementTypeVersion() &&
                 Objects.equals(getElementTypeId(), that.getElementTypeId()) &&
                 Objects.equals(getElementTypeName(), that.getElementTypeName()) &&
+                Objects.equals(getElementSuperTypeNames(), that.getElementSuperTypeNames()) &&
                 Objects.equals(getElementTypeDescription(), that.getElementTypeDescription()) &&
                 Objects.equals(getElementSourceServer(), that.getElementSourceServer()) &&
                 getElementOrigin() == that.getElementOrigin() &&
@@ -323,6 +362,10 @@ public class ElementType extends PropertyBase
     @Override
     public int hashCode()
     {
-        return Objects.hash(getElementTypeId(), getElementHomeMetadataCollectionId());
+        return Objects.hash(getElementTypeId(), getElementTypeName(), getElementSuperTypeNames(),
+                            getElementTypeVersion(),
+                            getElementTypeDescription(), getElementSourceServer(), getElementOrigin(),
+                            getElementHomeMetadataCollectionId(), getElementHomeMetadataCollectionName(),
+                            getElementLicense());
     }
 }

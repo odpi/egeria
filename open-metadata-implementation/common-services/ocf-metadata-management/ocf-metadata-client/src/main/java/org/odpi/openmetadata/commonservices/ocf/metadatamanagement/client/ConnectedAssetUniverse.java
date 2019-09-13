@@ -419,15 +419,15 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    private AssetResponse getConnectedAssetSummary(String     serviceName,
-                                                   String     remoteServerName,
-                                                   String     omasServerURL,
+    private AssetResponse getConnectedAssetSummary(String        serviceName,
+                                                   String        remoteServerName,
+                                                   String        omasServerURL,
                                                    OCFRESTClient restClient,
-                                                   String     userId,
-                                                   String     assetGUID,
-                                                   String     connectionGUID) throws InvalidParameterException,
-                                                                                     PropertyServerException,
-                                                                                     UserNotAuthorizedException
+                                                   String        userId,
+                                                   String        assetGUID,
+                                                   String        connectionGUID) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException
     {
         final String   methodName = "getConnectedAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/common-services/{1}/connected-asset/users/{2}/assets/{3}/via-connection/{4}";
@@ -439,7 +439,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
         try
         {
             restResult = restClient.callAssetGetRESTCall(methodName,
-                                                         urlTemplate,
+                                                         omasServerURL + urlTemplate,
                                                          remoteServerName,
                                                          serviceName,
                                                          userId,
@@ -497,7 +497,12 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
         try
         {
-            restResult = restClient.callAssetGetRESTCall(methodName, urlTemplate, remoteServerName, serviceName, userId, assetGUID);
+            restResult = restClient.callAssetGetRESTCall(methodName,
+                                                         omasServerURL + urlTemplate,
+                                                         remoteServerName,
+                                                         serviceName,
+                                                         userId,
+                                                         assetGUID);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);

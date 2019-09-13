@@ -4,15 +4,20 @@ package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
-import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
-import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
-import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.InformationViewAsset;
 import org.odpi.openmetadata.accessservices.dataplatform.beans.View;
+import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventHeader;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.NewViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.InformationViewAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.ViewHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
+import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -21,6 +26,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -33,13 +39,17 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     private final OMEntityDao omEntityDao;
     private final OMRSAuditLog auditLog;
     private EventPublisher eventPublisher;
-    private OMRSRepositoryHelper helper;
+    private OMRSRepositoryHelper repositoryHelper;
+    private DataPlatformServicesInstance  instance;
 
-    public DataPlatformInTopicListener(OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper helper) {
+
+
+    public DataPlatformInTopicListener(DataPlatformServicesInstance  instance,OMEntityDao omEntityDao, OMRSAuditLog auditLog, EventPublisher eventPublisher, OMRSRepositoryHelper repositoryHelper) {
+        this.instance = instance;
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.eventPublisher = eventPublisher;
-        this.helper = helper;
+        this.repositoryHelper = repositoryHelper;
     }
 
     /**
@@ -49,26 +59,26 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String eventAsString) {
 
-        NewViewEvent event = null;
-        try {
-            event = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
-        } catch (Exception e) {
-            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
-            auditLog.logException("processEvent",
-                    errorCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    errorCode.getFormattedErrorMessage(),
-                    "event {" + eventAsString + "}",
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    e);
-        }
-        if (event != null) {
-            try {
-                log.info("Started processing event in DataPlatform OMAS");
 
-                InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(event, omEntityDao);
-                ViewHandler viewsBuilder = new ViewHandler(event, omEntityDao, helper);
+        try {
+            //TODO: Use Strategy Pattern instead of multiple if else conditions
+            DataPlatformEventHeader dataPlatformEventHeader = OBJECT_MAPPER.readValue(eventAsString, DataPlatformEventHeader.class);
+
+            if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT) {
+                NewDeployedDatabaseSchemaEvent newDeployedDatabaseSchemaEvent = OBJECT_MAPPER.readValue(eventAsString, NewDeployedDatabaseSchemaEvent.class);
+                log.info("Started processing NewDeployedDatabaseSchemaEvent event in DataPlatform OMAS");
+
+                DeployedDatabaseSchemaAssetHandler handler = instance.getDeployedDatabaseSchemaAssetHandler();
+                handler.createDeployedDatabaseSchemaAsset(newDeployedDatabaseSchemaEvent);
+                log.info("Processing NewDeployedDatabaseSchemaEvent event finished: {}", newDeployedDatabaseSchemaEvent);
+
+
+            } else if (dataPlatformEventHeader.getEventType() == DataPlatformEventType.NEW_INFORMATION_VIEW_EVENT) {
+
+                NewViewEvent newViewEvent = OBJECT_MAPPER.readValue(eventAsString, NewViewEvent.class);
+                log.info("Started processing NewView event in DataPlatform OMAS");
+                InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(newViewEvent, omEntityDao);
+                ViewHandler viewsBuilder = new ViewHandler(newViewEvent, omEntityDao, repositoryHelper);
                 ExecutorService executor = Executors.newCachedThreadPool();
                 Future<InformationViewAsset> informationViewAssetFuture = executor.submit(informationViewAssetHandler);
                 Future<View> assetCreationFuture = executor.submit(viewsBuilder);
@@ -82,23 +92,38 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                             informationViewAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
                             new InstanceProperties());
-                    event.getTableSource().setGuid(view.getViewEntity().getGUID());
+                    newViewEvent.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
-                eventPublisher.sendEvent(event);
-            } catch (Exception e) {
-                log.error("Exception processing event from in topic", e);
-                DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
+                eventPublisher.sendEvent(newViewEvent);
+                log.debug("invalid event schema");
 
-                auditLog.logException("processEvent",
-                        errorCode.getErrorMessageId(),
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                        errorCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
-                        e.getMessage(),
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        e);
+
             }
-        }
-    }
+            //TODO: optimize exception handling with specific exception details and actions
+        } catch (IOException e) {
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PARSE_EVENT_EXCEPTION;
 
+            auditLog.logException("parseEvent",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
+        } catch (Exception e) {
+            log.error("Exception processing event from in topic", e);
+            DataPlatformErrorCode errorCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
+
+            auditLog.logException("processEvent",
+                    errorCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    errorCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                    e.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    e);
+        }
+
+    }
 }

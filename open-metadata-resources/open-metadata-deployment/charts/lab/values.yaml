@@ -4,9 +4,9 @@
 
 service:
   type: NodePort
-  externalName: default.svc.cluster.local
   nodeport:
     jupyter: 30888
+    egeriaui: 30443
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 imageDefaults:
