@@ -3,7 +3,7 @@
 
 # Data Engine OMAS Design
 
-The module structure for the Data Process OMAS is as follows:
+The module structure for the Data Engine OMAS is as follows:
 
 * [data-engine-api](../../data-engine-api) supports the common Java classes that are used both by the client and the server. This includes the Java API, beans and REST API structures.
 * [data-engine-client](../../data-engine-client) supports the Java client library that allows applications and tools to call the remote REST APIs.

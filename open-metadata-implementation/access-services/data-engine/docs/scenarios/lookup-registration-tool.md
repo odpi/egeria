@@ -5,7 +5,7 @@
 
 An external tool can lookup for the software server capability entity created at registration step.
 
-Request to use is: [lookup-external-tool](../../data-engine-server/docs/scenatios/lookup-registration.md)
+Request to use is: [lookup-external-tool](../../data-engine-server/docs/scenarios/lookup-registration.md)
 
 
 ----
