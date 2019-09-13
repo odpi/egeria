@@ -89,11 +89,11 @@ public class CommonHandler {
         String typeGuid = getTypeName(userId, relationshipType);
 
         List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                                      assetGuid,
-                                                                                      typeDefName,
-                                                                                      typeGuid,
-                                                                                      relationshipType,
-                                                                                      methodName);
+                                                                                    assetGuid,
+                                                                                    typeDefName,
+                                                                                    typeGuid,
+                                                                                    relationshipType,
+                                                                                    methodName);
 
         if (relationships != null) {
             return relationships;
@@ -148,8 +148,8 @@ public class CommonHandler {
      */
     protected EntityDetail writeEntitiesAndRelationships(String userId, EntityDetail startEntity,
                                                          Relationship relationship, AssetContext graph) throws InvalidParameterException,
-                                                                                                                 PropertyServerException,
-                                                                                                                 UserNotAuthorizedException {
+                                                                                                               PropertyServerException,
+                                                                                                               UserNotAuthorizedException {
 
         Converter converter = new Converter();
         EntityDetail endEntity = getEntityAtTheEnd(userId, startEntity.getGUID(), relationship);

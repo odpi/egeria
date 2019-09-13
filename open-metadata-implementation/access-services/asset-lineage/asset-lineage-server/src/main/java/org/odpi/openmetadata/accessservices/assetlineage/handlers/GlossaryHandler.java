@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.Edge;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -69,7 +68,6 @@ public class GlossaryHandler {
 
         try {
             graph = assetContext;
-
             boolean glossary = getGlossary(userID, assetGuid, entityDetail.getType().getTypeDefName());
 
             if (!glossary) {
@@ -117,6 +115,13 @@ public class GlossaryHandler {
         return addSemanticAssignmentToContext(userId, semanticAssignments.toArray(new Relationship[0]));
     }
 
+    /**
+     * Add semantic assignments for an asset to the Context structure
+     *
+     * @param userId      userId
+     * @param semanticAssignments   array of the semantic assignments
+     * @return true if semantic relationships exist, false otherwise
+     */
     private boolean addSemanticAssignmentToContext(String userId, Relationship... semanticAssignments) throws InvalidParameterException,
                                                                                                               PropertyServerException,
                                                                                                               UserNotAuthorizedException {
@@ -134,7 +139,7 @@ public class GlossaryHandler {
 
             entityDetails.add(commonHandler.writeEntitiesAndRelationships(userId, glossaryTerm, relationship, graph));
         }
-        return entityDetails != null ? true : false;
+        return entityDetails.isEmpty();
     }
 
 }

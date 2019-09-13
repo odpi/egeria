@@ -83,11 +83,11 @@ public class ContextHandler {
                 org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException |
                 RepositoryErrorException e) {
             throw new AssetLineageException(e.getReportedHTTPCode(),
-                    e.getReportingClassName(),
-                    e.getReportingActionDescription(),
-                    e.getErrorMessage(),
-                    e.getReportedSystemAction(),
-                    e.getReportedUserAction());
+                                            e.getReportingClassName(),
+                                            e.getReportingActionDescription(),
+                                            e.getErrorMessage(),
+                                            e.getReportedSystemAction(),
+                                            e.getReportedUserAction());
         }
     }
 
@@ -112,7 +112,6 @@ public class ContextHandler {
         //TODO check for Table entities
         if (isComplexSchemaType.isPresent()) {
 //            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
-            return;
         }
 
         if(hasSchemaType(typeDefName)) {
@@ -124,9 +123,10 @@ public class ContextHandler {
 
             if (isComplexSchemaType(userId,attributeForSchema.getType().getTypeDefName()).isPresent()) {
                 setAssetDetails(userId, attributeForSchema);
-                return;
             } else {
-                List<EntityDetail> schemaAttributeTypeEntities = getRelationshipsBetweenEntities(userId, attributeForSchema, SCHEMA_ATTRIBUTE_TYPE,attributeForSchema.getType().getTypeDefName());
+                List<EntityDetail> schemaAttributeTypeEntities = getRelationshipsBetweenEntities(userId, attributeForSchema,
+                                                                                                 SCHEMA_ATTRIBUTE_TYPE,
+                                                                                                 attributeForSchema.getType().getTypeDefName());
 
                 for (EntityDetail schema : schemaAttributeTypeEntities) {
                     buildAssetContext(userId, schema);
@@ -135,9 +135,10 @@ public class ContextHandler {
         }
     }
 
-    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity, String relationshipType, String typeDefName) throws UserNotAuthorizedException,
-                                                                                                                                                            PropertyServerException,
-                                                                                                                                                            InvalidParameterException {
+    private List<EntityDetail> getRelationshipsBetweenEntities(String userId, EntityDetail startEntity,
+                                                               String relationshipType, String typeDefName) throws UserNotAuthorizedException,
+                                                                                                                   PropertyServerException,
+                                                                                                                   InvalidParameterException {
         List<Relationship> relationships = commonHandler.getRelationshipByType(userId, startEntity.getGUID(), relationshipType,typeDefName);
 
         List<EntityDetail> entityDetails = new ArrayList<>();
