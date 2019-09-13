@@ -55,19 +55,19 @@ public class OpenLineageService {
     }
 
     public Map<String, Object> getUltimateSource(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATESOURCE, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getEndToEndLineage(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(userId, graphName, Scope.ENDTOEND, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getUltimateDestination(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATEDESTINATION, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
@@ -79,7 +79,7 @@ public class OpenLineageService {
     }
 
     public Map<String, Object> getSourceAndDestination(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(userId, graphName, Scope.SOURCEANDDESTINATION, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
