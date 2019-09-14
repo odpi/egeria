@@ -1,0 +1,18 @@
+ODPi Egeria lab tutorial 
+---
+
+The Egeria tutorials have now been deployed to Kubernetes.
+It may take a minute or so for everything to start up.
+
+Open your web browser and go to addressofmycluster:{{ .Values.service.nodeport.jupyter }} to
+get started
+
+You may need to contact your cluster admin, or read your cloud provider helptext to understand
+the correct 'addressofmycluster' to use.
+
+Please provide any feeback via a github issue at https://github.com/odpi/egeria or 
+join us on slack via https://slack.odpi.org
+
+- The ODPi Egeria team
+
+

@@ -22,7 +22,8 @@ You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
 or a public cloud service that provides Kubernetes 
 
 In order to eliminate some challenges with security/permissions in helm2 it's recommended to install
-helm3 from https://github.com/helm/helm/releases before starting and to ensure the 'helm' executable is in your PATH
+helm3 from https://github.com/helm/helm/releases before starting and to ensure the 'helm' executable is in your PATH. The
+instructions and examples that follow assume use of this version
 
 If you can't meet these requirements, an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
 
