@@ -24,6 +24,9 @@ or a public cloud service that provides Kubernetes (and is Helm-compatible).
 If you are using the Docker Desktop-embedded Kubernetes, just remember to install
 Helm into it as well before following the installation instructions below.
 
+In order to eliminate some challenges with security/permissions in helm2 it's recommended to install
+helm3 from https://github.com/helm/helm/releases before starting.
+
 If you can't meet these requirements, an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
 
 ## Installation
@@ -31,34 +34,14 @@ If you can't meet these requirements, an alternative environment for running the
 From one directory level above the location of this README, run the following:
 
 ```shell script
-$ helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
-
-"confluentinc" has been added to your repositories
-
-$ helm repo update
-
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "confluentinc" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete.
-
-$ helm dependency update lab
-
-Hang tight while we grab the latest from your chart repositories...
-...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
-	Get http://127.0.0.1:8879/charts/index.yaml: dial tcp 127.0.0.1:8879: connect: connection refused
-...Successfully got an update from the "confluentinc" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete.
-Saving 1 charts
-Downloading cp-helm-charts from repo https://confluentinc.github.io/cp-helm-charts/
-Deleting outdated charts
-
-$ helm install lab --name labs
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm dep update lab
+helm install lab --name labs
 ```
 
-Note: If name is not specified an auto-generated name like `slippery-lizard` will be used.
+If name is not specified an auto-generated name like `slippery-lizard` will be used with helm v2
+For helmv3 use 'helm install lab lab' instead
 
 You should see output similar to the following, indicating that the various
 components have been deployed and are starting up:
