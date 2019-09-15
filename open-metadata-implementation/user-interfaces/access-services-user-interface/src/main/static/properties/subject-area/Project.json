@@ -12,27 +12,27 @@
   "url":"aaa"
  },
  {
-  "label":"Url",
-  "name":"url",
-  "type": "text",
-  "url":"aaa"
- },
- {
   "label": "Description",
   "name": "description",
   "type": "bigtext",
   "url":"aaa"
  },
  {
-  "label": "Usage",
-  "name": "usage",
+  "label":"Url",
+  "name":"url",
   "type": "text",
   "url":"aaa"
  },
  {
-  "label": "Language",
-  "name": "language",
-  "type": "text",
+  "label": "Start Date",
+  "name": "startDate",
+  "type": "date",
+  "url":"aaa"
+ },
+ {
+  "label": "Planned End vDate",
+  "name": "plannedEndDate",
+  "type": "date",
   "url":"aaa"
  },
  {
