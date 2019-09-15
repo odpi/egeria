@@ -4,33 +4,38 @@
 import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-material/paper-material.js';
-import './datetime-widget.js';
-import './property-pane.js';
+import '../property-pane/datetime-widget.js';
+import './property-row.js';
+import '../../shared-styles.js';
 
-class PropertyWidget extends PolymerElement {
+class PropertyCell extends PolymerElement {
     static get template() {
         return html`
       <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px 20px;
+        }
+         .table_cell {
+                    display:table-cell;
+                    width:15em;
+                    border-style: solid;
+                    border-color: LightGrey;
         }
       </style>
-      <div id="{{name}}">
       <template is="dom-if" if="[[textType]]" restamp="true">
             <paper-input value ="{{value}}" readonly="{{readonly}}">
       </template>
       <template is="dom-if" if="[[bigTextType]]" restamp="true">
             <paper-input value ="{{value}}" readonly="{{readonly}}">
-      </template>
+      </template>      
        <template is="dom-if" if="[[dateType]]" restamp="true">
             <datetime-widget type="{{type}}" name ="{{name}}" value ="{{value}}" readonly="{{readonly}}">
             </datetime-widget>
 
        </template>
-       <!--
+
        <template is="dom-if" if="[[objectType]]" restamp="true">
-            <property-pane name="{{name}}" artifact="{{value}}" component="{{component}}"></property-pane>
+         <!--   <property-row row="[[value]]"></property-pane> -->
        </template>
        </div>
     `;
@@ -44,11 +49,8 @@ class PropertyWidget extends PolymerElement {
             },
             value: {
                 type: Object,
-                notify: true
-            },
-            component: {
-                          type: String,
-                          notify: true
+                notify: true,
+                observer: '_handleValueChanged'
             },
             type: {
               type: String,
@@ -70,7 +72,7 @@ class PropertyWidget extends PolymerElement {
               type: String,
               computed: 'computeBigTextType(type)',
               notify: true
-            },
+            },            
             dateType: {
               type: String,
               computed: 'computeDateType(type)',
@@ -116,8 +118,11 @@ class PropertyWidget extends PolymerElement {
     ready(){
         super.ready();
     }
-    computeStringType(type) {
-         return this.computeActualType(type,"string");
+    computeTextType(type) {
+         return this.computeActualType(type,"text");
+    }
+    computeBigTextType(type) {
+         return this.computeActualType(type,"bigtext");
     }
     computeDateType(type) {
          return this.computeActualType(type,"date");
@@ -132,6 +137,9 @@ class PropertyWidget extends PolymerElement {
         }
         return actualType;
     }
+    _handleValueChanged(newValue) {
+         console.log('property-cell value changed');
+    }
 }
 
-window.customElements.define('property-widget', PropertyWidget);
+window.customElements.define('property-cell', PropertyCell);

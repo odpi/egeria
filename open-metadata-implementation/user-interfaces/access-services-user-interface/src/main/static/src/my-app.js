@@ -175,7 +175,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
-                    <subject-area-view language="[[language]]" name="subject-area"></subject-area-view>
+                    <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
                     <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData.guid]]"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
@@ -299,7 +299,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         console.log(page);
         switch (page) {
             case 'subject-area':
-                import('./subject-area/subject-area-view.js');
+                import('./subject-area/subject-area-component.js');
                 break;
             case 'asset-lineage':
                 import('./asset-lineage/asset-lineage-view.js');
@@ -315,8 +315,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 break;
         }
     }
-
-
 
     attached() {
         this.loadResources(
