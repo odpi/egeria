@@ -125,3 +125,4 @@ Gemfile
 # vscode editor
 **/.vscode*/**
 **/.factorypath
+**/**.code-workspace
