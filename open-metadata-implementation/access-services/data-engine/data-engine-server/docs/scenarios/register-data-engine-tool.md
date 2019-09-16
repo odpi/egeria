@@ -1,0 +1,32 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+# Register tool
+
+Register an external tool.
+
+```
+
+POST {{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/software-server-capabilities
+
+{
+	"dataEngine": 
+	{
+		"qualifiedName": "qualifiedName",
+    	"displayName": "DataStage",
+    	"description": "Data Stage",
+    	"engineType": "DataEngine",
+    	"engineVersion": "1",
+    	"enginePatchLevel": "1",
+    	"vendor": "ibm",
+    	"version": "123",
+    	"source": "source"
+	}
+}
+
+GUIDResponse - response containing the port alias guid, with status and error message if failing
+
+```
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
