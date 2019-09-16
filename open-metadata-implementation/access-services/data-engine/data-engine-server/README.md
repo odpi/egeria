@@ -5,3 +5,9 @@
 
     <!-- TODO add design info for server -->
 
+Data Engine OMAS server supports the server side implementation of the access service.This includes the
+  * interaction with the [administration services](../../../admin-services) for
+    registration, configuration, initialization and termination of the access service.
+  * interaction with the [repository services](../../../repository-services) to work with open metadata from the
+    [cohort](../../../repository-services/docs/open-metadata-repository-cohort.md).
+  * support for the access service's API and its related event management.
