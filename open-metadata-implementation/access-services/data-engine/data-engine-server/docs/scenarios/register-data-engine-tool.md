@@ -12,15 +12,15 @@ POST {{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engin
 {
 	"dataEngine": 
 	{
-		"qualifiedName": "qualifiedName",
-    	"displayName": "DataStage",
-    	"description": "Data Stage",
-    	"engineType": "DataEngine",
-    	"engineVersion": "1",
-    	"enginePatchLevel": "1",
-    	"vendor": "ibm",
-    	"version": "123",
-    	"source": "source"
+	    "qualifiedName": "qualifiedName",
+        "displayName": "DataStage",
+        "description": "Data Stage",
+        "engineType": "DataEngine",
+        "engineVersion": "1",
+        "enginePatchLevel": "1",
+        "vendor": "ibm",
+        "version": "123",
+        "source": "source"
 	}
 }
 
