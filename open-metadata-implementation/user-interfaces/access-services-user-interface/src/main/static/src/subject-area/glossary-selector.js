@@ -11,17 +11,18 @@ import '@polymer/paper-input/paper-input-behavior.js';
 import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
-
 import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
+import {mixinBehaviors} from "@polymer/polymer/lib/legacy/class.js";
+import {AppLocalizeBehavior} from "@polymer/app-localize-behavior/app-localize-behavior.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
 
-class GlossarySelector extends PolymerElement {
+class GlossarySelector extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
         return html`
       <style include="shared-styles">
         :host {
-          display: block;
+          display: inline-block;
           padding: 10px 20px;
         }
          form  { display: table;      }
@@ -31,19 +32,19 @@ class GlossarySelector extends PolymerElement {
                 a     { display: table-cell; }
       </style>
        <token-ajax id="addGlossaryAjaxId" last-response="{{lastAddGlossaryResp}}" ></token-ajax>
-        <token-ajax id="getGlossariesAjaxId" last-response="{{lastGetGlossariesResp}}" ></token-ajax>
+       <token-ajax id="getGlossariesAjaxId" last-response="{{lastGetGlossariesResp}}" ></token-ajax>
        <paper-dropdown-menu label="Glossaries"
                             id="glossary-selector"
                             selected="[[selectedGlossary]]"
                             attr-for-selected="name"
-                            on-iron-select="_itemSelected">
+                           on-iron-select="_itemSelected">
                       <paper-listbox slot="dropdown-content" selected="1">
                              <template is="dom-repeat" items="[[glossaries]]">
                                  <paper-item guid=[[item.systemAttributes.guid]]>[[item.name]]</paper-item>
                              </template>
                       </paper-listbox>
        </paper-dropdown-menu>
-       <vaadin-button on-click="onGlossaryDialogOpen">+</vaadin-button>
+       <paper-button on-tap="onGlossaryDialogOpen" id='addNewSelectedGlossary' disabled>+</paper-button>
        <paper-dialog id="createGlossaryDialog">
 
                <form is="iron-form" id="createGlossaryForm">
@@ -71,13 +72,16 @@ class GlossarySelector extends PolymerElement {
 
     static get properties() {
         return {
-  //  add glossary response
+      language: {
+        type: String
+      },
+      //  add glossary response
       lastAddGlossaryResp: {
         type: Object,
          // Observer called  when this property changes
         observer: '_addGlossaryRespChanged'
       },
- //  get glossary response
+      //  get glossary response
       lastGetGlossaryResp: {
         type: Object,
          // Observer called  when this property changes
@@ -98,14 +102,33 @@ class GlossarySelector extends PolymerElement {
               type: Array,
               computed: 'computeGlossaryMap(glossaries)',
               notify: true
-            }
-        };
+      },
+      enabled: {
+              type: Boolean,
+              notify: true,
+              observer: '_handleEnabledChange'
+
+      }
+      };
     }
     ready(){
         super.ready();
-        // do the initial load of the glossaries
         this.getGlossaries();
     }
+    attached() {
+            this.loadResources(
+                   // The specified file only contains the flattened translations for that language:
+                   "locales/subject-area/glossarysel_" + this.language + ".json",  //e.g. for es {"hi": "hola"}
+                   this.language,               // unflatten -> {"es": {"hi": "hola"}}
+                   true                // merge so existing resources won't be clobbered
+            );
+    }
+    _handleEnabledChange(newValue) {
+         if (newValue) {
+            this.$.addNewSelectedGlossary.disabled=false;
+         }
+    }
+
     onGlossaryDialogOpen() {
         this.$.createGlossaryDialog.open();
     }
@@ -117,7 +140,7 @@ class GlossarySelector extends PolymerElement {
      if (this.$.glossaryName.value) {
          this.createGlossaryAJAX();
      } else {
-         alert('Glossary name required');
+         alert(this.localize("subject-area_glossary_no_name"));
      }
   }
   /**
@@ -194,18 +217,17 @@ class GlossarySelector extends PolymerElement {
            return null;
         }
   }
-    computeGlossaryMap(glossaries) {
-          var map = null;
-          if (glossaries) {
+  computeGlossaryMap(glossaries) {
+        var map = null;
+        if (glossaries) {
              map = {};
              for (var i = 0; i < glossaries.length; i++) {
                map[glossaries[i].systemAttributes.guid] = glossaries[i];
              }
              return map;
-          }
-          return map;
-    }
-
+        }
+        return map;
+  }
 }
 
 window.customElements.define('glossary-selector', GlossarySelector);

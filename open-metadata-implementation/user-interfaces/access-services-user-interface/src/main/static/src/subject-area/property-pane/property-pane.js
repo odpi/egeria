@@ -45,7 +45,7 @@ class PropertyPane extends PolymerElement {
             </template>
       </dom-repeat>
       </form>
-      <iron-ajax id="getPropertiesAjax" url="{{url}}"
+      <iron-ajax id="getPropertyDefsAjax" url="{{url}}"
                          handle-as="json"
                          last-response="{{props}}"
                          on-error="_handleErrorResponse"
@@ -55,14 +55,11 @@ class PropertyPane extends PolymerElement {
        ></iron-ajax>
        <token-ajax id="updatePropertiesAjax" url="{{updateurl}}"
                          body="{{updatebody}}"
-                         handle-as="json"
                          last-response="{{updatedpropresponse}}"
-                         on-error="_handleErrorResponse"
-                         loading="{{loading}}"
                          method="put"
-                         on-loading-changed="_onLoadingChanged"
+
        ></token-ajax>
-       <spinner-overlay id="backdrop" with-backdrop scroll-action="lock"
+       <spinner-overlay id="defbackdrop" with-backdrop scroll-action="lock"
                    always-on-top
                    no-cancel-on-outside-click
                    no-cancel-on-esc-key>
@@ -102,8 +99,8 @@ class PropertyPane extends PolymerElement {
             pluralName: {
               type: String,
               notify: true,
-               computed: 'computePluralName(name)',
-                        },
+              computed: 'computePluralName(name)',
+            },
             artifact: {
               type: Object,
               notify: true,
@@ -134,7 +131,7 @@ class PropertyPane extends PolymerElement {
          console.log("subject-area-view property changed, guid =" + item.guid + ",value="+item.value);
          //kick off the rest call to do the update.
          var body = {};
-          // aasume the name wee are passed is the json file name, the class and nodetype
+          // assume the name we are passed is the json file name, the class and nodetype
          body.class = this.name;
          body.nodeType =  this.name;
          body[item.name] = item.value;
@@ -216,7 +213,7 @@ class PropertyPane extends PolymerElement {
    * Issue the create rest Ajax call to get properties from the server
    */
   populateProperties() {
-        this.$.getPropertiesAjax.generateRequest();
+        this.$.getPropertyDefsAjax.generateRequest();
   }
   _onLoadingChanged(){
         console.debug('on-loading changed... ' + this.loading);
@@ -224,11 +221,15 @@ class PropertyPane extends PolymerElement {
   _loadingChanged(loading){
         console.debug('loading changed... ' + this.loading);
         if(this.loading){
-            this.$.backdrop.open();
+            this.$.defbackdrop.open();
         }else{
-            this.$.backdrop.close();
+            this.$.defbackdrop.close();
         }
     }
+  /**
+   * Duplicate of the logic in ajax-token. Used with the non secure rest which gets the resources.
+   *
+   */
   _handleErrorResponse(evt){
           var status = evt.detail.request.xhr.status;
           var resp   = evt.detail.request.xhr.response;
