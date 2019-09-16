@@ -6,8 +6,12 @@
 [Initial load](../samples/initial-load/data-stage) use case shows the integration between 
 Data Engine OMAS and IBM Data Stage.
 
-The [process request body](../samples/initial-load/data-engine/payloads/process.json) describes 
+The [processes request body](../samples/initial-load/data-engine/payloads/create-processes.json) describes 
 the open metadata entities corresponding to the Data Stage ETL job.
+
+>Noe: Data Engine OMAS must have access to the IGC entities. 
+Check [egeria-connector-ibm-information-server](https://github.com/odpi/egeria-connector-ibm-information-server#ibm-infosphere-information-server-connectors)
+for more details.
 
 Request to use is: 
 ```
