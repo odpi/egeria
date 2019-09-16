@@ -33,8 +33,6 @@ import java.util.stream.Stream;
 public class OpenLineageService {
 
     private final OpenLineage openLineageClient;
-    //TODO add authentication
-    private final String user = "demo";
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
     @Value("${open.lineage.graph.source}")
     private GraphName graphName;
@@ -47,41 +45,41 @@ public class OpenLineageService {
     }
 
     public String generateMockGraph(String userId){
-        return openLineageClient.generateMockGraph(user);
+        return openLineageClient.generateMockGraph(userId);
     }
 
     public Map<String, Object> exportGraph(String userId) throws IOException {
-        String exportedGraph = openLineageClient.exportGraph(user, graphName);
+        String exportedGraph = openLineageClient.exportGraph(userId, graphName);
         Map<String, Object> graphData = processResponse(exportedGraph);
         return graphData;
     }
 
     public Map<String, Object> getUltimateSource(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(user, graphName, Scope.ULTIMATESOURCE, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getEndToEndLineage(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(user, graphName, Scope.ENDTOEND, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getUltimateDestination(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(user, graphName, Scope.ULTIMATEDESTINATION, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getGlossaryLineage(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(user, graphName, Scope.GLOSSARY, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
     public Map<String, Object> getSourceAndDestination(String userId, View view, String guid) throws IOException {
-        String response = openLineageClient.lineage(user, graphName, Scope.SOURCEANDDESTINATION, view, guid);
+        String response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }

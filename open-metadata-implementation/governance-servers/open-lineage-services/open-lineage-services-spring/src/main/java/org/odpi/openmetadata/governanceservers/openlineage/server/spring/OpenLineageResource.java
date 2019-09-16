@@ -25,15 +25,15 @@ public class OpenLineageResource {
      * extended to condense large paths to prevent cluttering of the users screen. The user will be able to extended
      * the condensed path by querying a different method.
      *
-     * @param userId       calling user.
-     * @param serverName   name of the server instance to connect to.
-     * @param view        The view queried by the user: hostview, tableview, columnview.
-     * @param scope ultimate-source, ultimate-destination, glossary.
-     * @param graph        main, buffer, mock, history.
-     * @param guid         The guid of the node of which the lineage is queried of.
+     * @param userId     calling user.
+     * @param serverName name of the server instance to connect to.
+     * @param view       The view queried by the user: hostview, tableview, columnview.
+     * @param scope      ultimate-source, ultimate-destination, glossary.
+     * @param graph      main, buffer, mock, history.
+     * @param guid       The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}", produces={MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String lineage(
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
@@ -53,7 +53,7 @@ public class OpenLineageResource {
      * @param graph      MAIN, BUFFER, MOCK, HISTORY.
      * @return Voidresponse
      */
-    @GetMapping(path = "/dump/graphs/{graph}")
+    @GetMapping(path = "/dump/sources/{graph}")
     public VoidResponse dumpGraph(@PathVariable("userId") String userId,
                                   @PathVariable("serverName") String serverName,
                                   @PathVariable("graph") String graph) {
@@ -68,7 +68,7 @@ public class OpenLineageResource {
      * @param graph      MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    @GetMapping(path = "/export/graphs/{graph}", produces={MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(path = "/export/sources/{graph}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String exportGraph(@PathVariable("userId") String userId,
                               @PathVariable("serverName") String serverName,
                               @PathVariable("graph") String graph) {

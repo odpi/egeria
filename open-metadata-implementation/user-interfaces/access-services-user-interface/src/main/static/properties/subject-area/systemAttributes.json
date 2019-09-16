@@ -2,51 +2,58 @@
  {
   "label": "Global unique identifier (guid)",
   "name": "guid",
-  "type": "string",
+  "type": "text",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Status",
   "name": "status",
-  "type": "string",
+  "type": "text",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Created by",
   "name":"createdBy",
-  "type": "string",
+  "type": "text",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Updated by",
   "name": "updatedBy",
-  "type": "string",
+  "type": "text",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Create time",
   "name": "createTime",
   "type": "date",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Update time",
   "name": "updateTime",
   "type": "date",
   "url":"aaa",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  },
  {
   "label": "Version",
   "name": "version",
-  "type": "string",
+  "type": "text",
   "url": "bbb",
-  "readonly": true
+  "readonly": true,
+  "object": "systemAttributes"
  }
 ]
 

@@ -6,6 +6,7 @@ import '@polymer/paper-input/paper-input.js';
 import '@polymer/paper-material/paper-material.js';
 import '@vaadin/vaadin-date-picker/vaadin-date-picker.js';
 import '@vaadin/vaadin-time-picker/vaadin-time-picker.js';
+import '../../shared-styles.js';
 
 class DatetimeWidget extends PolymerElement {
     static get template() {
@@ -13,14 +14,13 @@ class DatetimeWidget extends PolymerElement {
       <style include="shared-styles">
         :host {
           display: block;
-          padding: 10px 20px;
         }
       </style>
-      <div id="{{name}}">
-             <vaadin-date-picker placeholder="Pick a date" value ="{{dateValue}}" on-change='_handleDateChange' clear-button-visible readonly={{readonly}}>
-             </vaadin-date-picker>
-             <vaadin-time-picker placeholder="(hh:mm.sss)" value ="{{timeValue}}" on-change='_handleTimechange' clear-button-visible readonly={{readonly}}>
-             </vaadin-time-picker>
+
+      <vaadin-date-picker placeholder="Pick a date" value ="{{dateValue}}" on-change='_handleDateChange' clear-button-visible readonly={{readonly}}>
+      </vaadin-date-picker>
+      <vaadin-time-picker placeholder="(hh:mm.sss)" value ="{{timeValue}}" on-change='_handleTimeChange' clear-button-visible readonly={{readonly}}>
+      </vaadin-time-picker>
     `;
     }
 
