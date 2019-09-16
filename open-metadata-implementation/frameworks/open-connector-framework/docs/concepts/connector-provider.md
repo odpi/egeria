@@ -35,7 +35,7 @@ For example, here is the implementation of the Connector Provider for the
 
 ```java
 
-package org.odpi.openmetadata.adapters.connectors.structuredfile;
+package org.odpi.openmetadata.adapters.connectors.csvfile;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;

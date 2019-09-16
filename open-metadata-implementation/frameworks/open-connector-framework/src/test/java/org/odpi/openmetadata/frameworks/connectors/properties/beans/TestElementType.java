@@ -6,6 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
@@ -14,6 +17,18 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestElementType
 {
+    private List<String> superTypes = new ArrayList<>();
+
+
+    /**
+     * Default constructor
+     */
+    public TestElementType()
+    {
+        superTypes.add("Referenceable");
+    }
+
+
     /**
      * Set up an example object to test.
      *
@@ -25,6 +40,7 @@ public class TestElementType
 
         testObject.setElementTypeId("TestTypeId");
         testObject.setElementTypeName("TestTypeName");
+        testObject.setElementSuperTypeNames(superTypes);
         testObject.setElementTypeVersion(5);
         testObject.setElementTypeDescription("TestTypeDescription");
         testObject.setElementSourceServer("TestSourceServer");
@@ -45,6 +61,7 @@ public class TestElementType
     {
         assertTrue(resultObject.getElementTypeId().equals("TestTypeId"));
         assertTrue(resultObject.getElementTypeName().equals("TestTypeName"));
+        assertTrue(resultObject.getElementSuperTypeNames().equals(superTypes));
         assertTrue(resultObject.getElementTypeVersion() == 5);
         assertTrue(resultObject.getElementTypeDescription().equals("TestTypeDescription"));
         assertTrue(resultObject.getElementSourceServer().equals("TestSourceServer"));

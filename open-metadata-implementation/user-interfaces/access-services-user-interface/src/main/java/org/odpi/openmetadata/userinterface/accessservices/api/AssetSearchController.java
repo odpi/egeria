@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServe
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.userinterface.accessservices.service.AssetCatalogOMASService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,8 @@ public class AssetSearchController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Term>  searchAssets(@RequestParam("q") String q) {
         try {
-            return omasService.searchAssets(q);
+            String user = SecurityContextHolder.getContext().getAuthentication().getName();
+            return omasService.searchAssets(user, q);
         } catch (PropertyServerException | InvalidParameterException e) {
             handleExceprion(e);
             return null;

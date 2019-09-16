@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.client;
 
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,19 +13,19 @@ import java.security.InvalidParameterException;
 public class OpenLineage  {
 
     private String serverName;
-    private String omasServerURL;
+    private String serverURL;
     private RestTemplate restTemplate;
 
     /**
      * Create a new OpenLineage client.
      *
      * @param serverName   name of the server to connect to.
-     * @param newServerURL the network address of the server running the OMAS REST servers.
+     * @param newServerURL the network address of the server running the governance engine.
      */
     public OpenLineage(String serverName,
                        String newServerURL) {
         this.serverName = serverName;
-        this.omasServerURL = newServerURL;
+        this.serverURL = newServerURL;
         this.restTemplate = new RestTemplate();
     }
 
@@ -35,17 +35,17 @@ public class OpenLineage  {
      * the condensed path by querying a different method.
      *
      * @param userId calling user.
-     * @param scope TABLEVIEW, COLUMNVIEW.
-     * @param lineageQuery ULTIMATESOURCE, ULTIMATEDESTINATION, GLOSSARY.
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
+     * @param scope ULTIMATE_SOURCE, ULTIMATE_DESTINATION, GLOSSARY.
+     * @param view TABLE_VIEW, COLUMN_VIEW.
      * @param guid The guid of the node of which the lineage is queried of.
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public String queryLineage(String userId, Scope scope, Query lineageQuery, GraphName graphName, String guid) throws InvalidParameterException {
-        String methodName = "queryLineage";
-        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/query-lineage/{2}/{3}/{4}/{5}";
-        return getRestCall(url, String.class, userId, serverName, scope, lineageQuery, graphName, guid);
+    public String lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
+        String methodName = "lineage";
+        String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/lineage/sources/{2}/scopes/{3}/views/{4}/entities/{5}";
+        return getRestCall(url, String.class, serverName, userId, graphName.getText(), scope.getText(), view.getText(), guid);
 
     }
 
@@ -59,8 +59,8 @@ public class OpenLineage  {
      */
     public VoidResponse dumpGraph(String userId, GraphName graphName) throws InvalidParameterException {
         String methodName = "dumpGraph";
-        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/dump/{2}";
-        return getRestCall(url, VoidResponse.class, userId, serverName, graphName);
+        String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/dump/graphs/{2}";
+        return getRestCall(url, VoidResponse.class, serverName, userId, graphName.getText());
 
     }
 
@@ -74,8 +74,8 @@ public class OpenLineage  {
      */
     public String exportGraph(String userId, GraphName graphName) throws InvalidParameterException {
         String methodName = "exportGraph";
-        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/export/{2}";
-        return getRestCall(url, String.class, userId, serverName, graphName);
+        String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/export/graphs/{2}";
+        return getRestCall(url, String.class, serverName, userId, graphName.getText());
 
     }
 
@@ -89,12 +89,12 @@ public class OpenLineage  {
      */
     public String generateMockGraph(String userId) throws InvalidParameterException {
         String methodName = "generateMockGraph";
-        String url = "/open-metadata/open-lineage/users/{0}/servers/{1}/generate-mock-graph";
-        return getRestCall(url, String.class, userId, serverName);
+        String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/generate-mock-graph";
+        return getRestCall(url, String.class, serverName, userId);
     }
 
     private <T> T getRestCall(String url, Class<T> clazz, Object... params){
-        return restTemplate.getForObject(omasServerURL + url, clazz, params);
+        return restTemplate.getForObject(serverURL + url, clazz, params);
     }
 
 }

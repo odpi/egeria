@@ -17,7 +17,10 @@ class PropertyWidget extends PolymerElement {
         }
       </style>
       <div id="{{name}}">
-      <template is="dom-if" if="[[stringType]]" restamp="true">
+      <template is="dom-if" if="[[textType]]" restamp="true">
+            <paper-input value ="{{value}}" readonly="{{readonly}}">
+      </template>
+      <template is="dom-if" if="[[bigTextType]]" restamp="true">
             <paper-input value ="{{value}}" readonly="{{readonly}}">
       </template>
        <template is="dom-if" if="[[dateType]]" restamp="true">
@@ -25,6 +28,7 @@ class PropertyWidget extends PolymerElement {
             </datetime-widget>
 
        </template>
+       <!--
        <template is="dom-if" if="[[objectType]]" restamp="true">
             <property-pane name="{{name}}" artifact="{{value}}" component="{{component}}"></property-pane>
        </template>
@@ -57,9 +61,14 @@ class PropertyWidget extends PolymerElement {
             // compute the specific types
 
             // primitive types
-            stringType: {
+            textType: {
               type: String,
-              computed: 'computeStringType(type)',
+              computed: 'computeTextType(type)',
+              notify: true
+            },
+            bigTextType: {
+              type: String,
+              computed: 'computeBigTextType(type)',
               notify: true
             },
             dateType: {
