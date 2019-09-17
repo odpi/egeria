@@ -2,37 +2,37 @@
  {
   "label": "Name",
   "name": "name",
-  "type": "string",
+  "type": "text",
   "url":"http://www.ibm.com"
  },
  {
   "label": "Qualified Name",
   "name": "qualifiedName",
-  "type": "string",
+  "type": "text",
   "url":"http://www.ibm.com"
  },
  {
   "label":"Url",
   "name":"url",
-  "type": "string",
+  "type": "text",
   "url":"http://www.microsoft.com"
  },
  {
   "label": "Abbreviation",
   "name": "abbreviation",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {
   "label": "Description",
   "name": "description",
-  "type": "string",
+  "type": "bigtext",
   "url":"aaa"
  },
  {
   "label": "Example",
   "name": "Example",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {

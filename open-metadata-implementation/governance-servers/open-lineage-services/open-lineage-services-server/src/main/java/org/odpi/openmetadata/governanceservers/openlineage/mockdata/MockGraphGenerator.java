@@ -169,7 +169,7 @@ public class MockGraphGenerator {
     private void addTableProperties(int j, Vertex tableVertex) {
         tableVertex.property(PROPERTY_KEY_ENTITY_GUID, "t" + j);
         tableVertex.property(PROPERTY_KEY_NAME_QUALIFIED_NAME, "qualified.name.t" + j);
-        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "g" + j);
+        tableVertex.property(PROPERTY_KEY_DISPLAY_NAME, "t" + j);
         tableVertex.property(PROPERTY_KEY_GLOSSARY_TERM, "glossary term");
         tableVertex.property(PROPERTY_KEY_DATABASE_DISPLAY_NAME, "database.displayName");
         tableVertex.property(PROPERTY_KEY_HOST_DISPLAY_NAME, "host.displayName");
