@@ -7,23 +7,10 @@ Lookup registration submitted by an external tool.
 
 ```
 
-POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/registration/lookup
+GET {{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engine/users/{{user-id}}/software-server-capabilities/{{engine-qualified-name}}
 
-{
-   "class": "RegistrationRequestBody",
-   "softwareServerCapability": {
-             "class": "SoftwareServerCapabilitySource",
-             "author": "owner-test",
-             "userId": "cognosToolId",
-             "lastModifiedTime": 1547838663347,
-             "lastModifier": "owner",
-             "name": "cognos reporting tool",
-             "version": "1",
-             "type": "reporting"
-   }
- }
 
-GUIDResponse - response containing the port alias guid, with status and error message if failing
+GUIDResponse - response containing the external tool guid, with status and error message if failing
 
 ```
 ----

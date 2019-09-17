@@ -36,7 +36,7 @@ POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-
   }
 }
 
-GUIDResponse - response containing the process guid, with status and error message if failing
+GUIDResponse - response containing the schema type guid, with status and error message if failing
 
 ```
 ----

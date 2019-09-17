@@ -24,7 +24,7 @@ POST {{base-url}}/servers/{{server-id}}/open-metadata/access-services/data-engin
 	}
 }
 
-GUIDResponse - response containing the port alias guid, with status and error message if failing
+GUIDResponse - response containing the external tool guid, with status and error message if failing
 
 ```
 ----
