@@ -515,4 +515,78 @@ public class InvalidParameterHandler
                                             errorCode.getUserAction(),
                                             parameterName);
     }
+
+
+    /**
+     * Throw an exception to indicate that the call to a method is not supported.
+     * This is a temporary situation.
+     *
+     * @param userId      user name to validate
+     * @param serviceName name of called service
+     * @param serverName name of this server
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    public void throwMethodNotSupported(String userId,
+                                        String serviceName,
+                                        String serverName,
+                                        String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "methodName";
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                              userId,
+                                                                                                              serverName,
+                                                                                                              serviceName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                parameterName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that the call to a method is not supported.
+     * This is a temporary situation.
+     *
+     * @param userId      user name to validate
+     * @param guid  unique identifier of element
+     * @param type  type of element
+     * @param serviceName name of called service
+     * @param serverName name of this server
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    public void throwUnknownElement(String userId,
+                                    String guid,
+                                    String type,
+                                    String serviceName,
+                                    String serverName,
+                                    String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "guid";
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                              type,
+                                                                                                              userId,
+                                                                                                              methodName,
+                                                                                                              serviceName,
+                                                                                                              serverName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            parameterName);
+    }
 }

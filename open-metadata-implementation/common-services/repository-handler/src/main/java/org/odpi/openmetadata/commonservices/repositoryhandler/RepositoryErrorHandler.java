@@ -5,11 +5,9 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,19 +18,22 @@ import java.util.Map;
  */
 public class RepositoryErrorHandler
 {
-    private String                  serviceName;
-    private String                  serverName;
-
+    private String               serviceName;
+    private String               serverName;
+    private OMRSRepositoryHelper repositoryHelper;
 
     /**
      * Typical constructor providing access to the repository connector for this access service.
      *
+     * @param repositoryHelper  access to the repository helper.
      * @param serviceName  name of this access service
      * @param serverName  name of this server
      */
-    public RepositoryErrorHandler(String                    serviceName,
-                                  String                    serverName)
+    public RepositoryErrorHandler(OMRSRepositoryHelper repositoryHelper,
+                                  String               serviceName,
+                                  String               serverName)
     {
+        this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
         this.serverName = serverName;
     }
@@ -137,6 +138,75 @@ public class RepositoryErrorHandler
         }
     }
 
+
+    /**
+     * Verify whether an instance is of a particular type or not.
+     *
+     * @param userId calling user
+     * @param instanceHeader the entity or relationship header.
+     * @param guidParameterName name of the parameter containing the guid.
+     * @param expectedTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    void validateInstanceType(String         userId,
+                              InstanceHeader instanceHeader,
+                              String         guidParameterName,
+                              String         expectedTypeName,
+                              String         methodName) throws InvalidParameterException
+    {
+        if (instanceHeader != null)
+        {
+            InstanceType type = instanceHeader.getType();
+            if (type != null)
+            {
+                if (! repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), expectedTypeName))
+                {
+                    this.handleWrongTypeForGUIDException(instanceHeader.getGUID(),
+                                                         methodName,
+                                                         type.getTypeDefName(),
+                                                         expectedTypeName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Test whether an instance is of a particular type or not.
+     *
+     * @param instanceHeader the entity or relationship header.
+     * @param entityTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    boolean isInstanceATypeOf(InstanceHeader         instanceHeader,
+                              String                 entityTypeName,
+                              String                 methodName) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        if (instanceHeader != null)
+        {
+            InstanceType type = instanceHeader.getType();
+            if (type != null)
+            {
+                return repositoryHelper.isTypeOf(methodName, type.getTypeDefName(), entityTypeName);
+            }
+        }
+
+        return false;
+    }
 
     /**
      * Throw an exception if the supplied guid returned an entity of the wrong type

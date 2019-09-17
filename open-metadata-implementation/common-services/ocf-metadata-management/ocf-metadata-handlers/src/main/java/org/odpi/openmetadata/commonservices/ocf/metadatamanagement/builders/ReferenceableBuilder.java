@@ -125,10 +125,12 @@ public class ReferenceableBuilder extends RootBuilder
 
         if (qualifiedName != null)
         {
+            String literalQualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
+                                                                      literalQualifiedName,
                                                                       methodName);
         }
 

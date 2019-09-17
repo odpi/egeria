@@ -172,10 +172,12 @@ public class EndpointBuilder extends ReferenceableBuilder
 
         if (displayName != null)
         {
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       EndpointMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
+                                                                      literalName,
                                                                       methodName);
         }
 

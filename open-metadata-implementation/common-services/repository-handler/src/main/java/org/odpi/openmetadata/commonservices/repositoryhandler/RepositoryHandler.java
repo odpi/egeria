@@ -5,9 +5,11 @@ package org.odpi.openmetadata.commonservices.repositoryhandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +26,7 @@ public class RepositoryHandler
     private RepositoryErrorHandler errorHandler;
     private OMRSMetadataCollection metadataCollection;
     private int                    maxPageSize;
+    private OMRSAuditLog           auditLog;
 
     private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
@@ -31,14 +34,17 @@ public class RepositoryHandler
     /**
      * Construct the basic handler with information needed to call the repository services and report any error.
      *
+     * @param auditLog logging destination
      * @param errorHandler  generates error messages and exceptions
      * @param metadataCollection  access to the repository content.
      * @param maxPageSize maximum number of instances that can be returned on a single call
      */
-    public RepositoryHandler(RepositoryErrorHandler  errorHandler,
+    public RepositoryHandler(OMRSAuditLog            auditLog,
+                             RepositoryErrorHandler  errorHandler,
                              OMRSMetadataCollection  metadataCollection,
                              int                     maxPageSize)
     {
+        this.auditLog = auditLog;
         this.errorHandler = errorHandler;
         this.metadataCollection = metadataCollection;
         this.maxPageSize = maxPageSize;
@@ -112,7 +118,15 @@ public class RepositoryHandler
     {
         try
         {
-            return metadataCollection.getEntitySummary(userId, guid);
+            EntitySummary entity = metadataCollection.getEntitySummary(userId, guid);
+
+            errorHandler.validateInstanceType(userId,
+                                             entity,
+                                             guidParameterName,
+                                             entityTypeName,
+                                             methodName);
+
+            return entity;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
         {
@@ -151,34 +165,44 @@ public class RepositoryHandler
                                 String                  methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
     {
-        try
-        {
-            EntityDetail newEntity = metadataCollection.addEntity(userId,
-                                                                  entityTypeGUID,
-                                                                  properties,
-                                                                  null,
-                                                                  InstanceStatus.ACTIVE);
+        return this.createEntity(userId,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 properties,
+                                 null,
+                                 InstanceStatus.ACTIVE,
+                                 methodName);
+    }
 
-            if (newEntity != null)
-            {
-                return newEntity.getGUID();
-            }
 
-            errorHandler.handleNoEntity(entityTypeGUID,
-                                        entityTypeName,
-                                        properties,
-                                        methodName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName);
-        }
-
-        return null;
+    /**
+     * Create a new entity in the open metadata repository with the ACTIVE instance status.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param methodName name of calling method
+     *
+     * @return unique identifier of new entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  createEntity(String                  userId,
+                                String                  entityTypeGUID,
+                                String                  entityTypeName,
+                                InstanceProperties      properties,
+                                List<Classification>    initialClassifications,
+                                String                  methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
+        return this.createEntity(userId,
+                                 entityTypeGUID,
+                                 entityTypeName,
+                                 properties,
+                                 initialClassifications,
+                                 InstanceStatus.ACTIVE,
+                                 methodName);
     }
 
 
@@ -204,12 +228,46 @@ public class RepositoryHandler
                                 String                  methodName) throws UserNotAuthorizedException,
                                                                            PropertyServerException
     {
+       return this.createEntity(userId,
+                                entityTypeGUID,
+                                entityTypeName,
+                                properties,
+                                null,
+                                instanceStatus,
+                                methodName);
+    }
+
+
+    /**
+     * Create a new entity in the open metadata repository with the specified instance status.
+     *
+     * @param userId calling user
+     * @param entityTypeGUID type of entity to create
+     * @param entityTypeName name of the entity's type
+     * @param properties properties for the entity
+     * @param initialClassifications list of classifications for the first version of this entity.
+     * @param instanceStatus initial status (needs to be valid for type)
+     * @param methodName name of calling method
+     *
+     * @return unique identifier of new entity
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public String  createEntity(String                  userId,
+                                String                  entityTypeGUID,
+                                String                  entityTypeName,
+                                InstanceProperties      properties,
+                                List<Classification>    initialClassifications,
+                                InstanceStatus          instanceStatus,
+                                String                  methodName) throws UserNotAuthorizedException,
+                                                                           PropertyServerException
+    {
         try
         {
             EntityDetail newEntity = metadataCollection.addEntity(userId,
                                                                   entityTypeGUID,
                                                                   properties,
-                                                                  null,
+                                                                  initialClassifications,
                                                                   instanceStatus);
 
             if (newEntity != null)
@@ -361,20 +419,20 @@ public class RepositoryHandler
                                       String                  entityTypeName,
                                       InstanceStatus          instanceStatus,
                                       String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+                                                                                 PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
-                    entityGUID,
-                    instanceStatus);
+                                                                           entityGUID,
+                                                                           instanceStatus);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntity(entityTypeGUID,
-                        entityTypeName,
-                        null,
-                        methodName);
+                                            entityTypeName,
+                                            null,
+                                            methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -451,13 +509,13 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      * @throws InvalidParameterException mismatch on properties
      */
-    public void  deleteEntity(String           userId,
-                              String           obsoleteEntityGUID,
-                              String           entityTypeGUID,
-                              String           entityTypeName,
-                              String           validatingPropertyName,
-                              String           validatingProperty,
-                              String           methodName) throws InvalidParameterException,
+    public void removeEntity(String           userId,
+                             String           obsoleteEntityGUID,
+                             String           entityTypeGUID,
+                             String           entityTypeName,
+                             String           validatingPropertyName,
+                             String           validatingProperty,
+                             String           methodName) throws InvalidParameterException,
                                                                   UserNotAuthorizedException,
                                                                   PropertyServerException
     {
@@ -519,6 +577,18 @@ public class RepositoryHandler
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
+            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.ENTITY_PURGED;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(obsoleteEntityGUID,
+                                                                entityTypeName,
+                                                                entityTypeGUID,
+                                                                methodName,
+                                                                metadataCollection.getMetadataCollectionId(userId)),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -548,7 +618,7 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing the property server
      */
-    public void deleteUniqueEntityTypeFromAnchor(String                  userId,
+    public void removeUniqueEntityTypeFromAnchor(String                  userId,
                                                  String                  anchorEntityGUID,
                                                  String                  anchorEntityTypeName,
                                                  String                  anchorRelationshipTypeGUID,
@@ -574,7 +644,7 @@ public class RepositoryHandler
                                                            methodName);
         if (relationship != null)
         {
-            this.deleteRelationship(userId,
+            this.removeRelationship(userId,
                                     anchorRelationshipTypeGUID,
                                     anchorRelationshipTypeName,
                                     relationship.getGUID(),
@@ -636,7 +706,7 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem accessing the property server
      */
-    public void deleteEntityOnLastUse(String                  userId,
+    public void removeEntityOnLastUse(String                  userId,
                                       String                  entityGUID,
                                       String                  guidParameterName,
                                       String                  entityTypeGUID,
@@ -702,21 +772,39 @@ public class RepositoryHandler
                                                  String                 methodName) throws UserNotAuthorizedException,
                                                                                            PropertyServerException
     {
-        List<EntityDetail> results = new ArrayList<>();
-
         try
         {
-            return metadataCollection.findEntitiesByProperty(userId,
-                                                             entityTypeGUID,
-                                                             null,
-                                                             null,
-                                                             startingFrom,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             pageSize);
+            List<EntityDetail> results = metadataCollection.findEntitiesByProperty(userId,
+                                                                                   entityTypeGUID,
+                                                                                   null,
+                                                                                   null,
+                                                                                   startingFrom,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   null,
+                                                                                   pageSize);
+
+            if (results == null)
+            {
+                return null;
+            }
+            else if (results.isEmpty())
+            {
+                return null;
+            }
+            else
+            {
+                for (EntityDetail  entity : results)
+                {
+                    if (entity != null)
+                    {
+                        errorHandler.validateInstanceType(userId, entity, "<null>", entityTypeName, methodName);
+                    }
+                }
+                return results;
+            }
 
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
@@ -728,14 +816,7 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName);
         }
 
-        if (results.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return results;
-        }
+        return null;
     }
 
 
@@ -1205,7 +1286,11 @@ public class RepositoryHandler
     {
         try
         {
-            return metadataCollection.getEntityDetail(userId, guid);
+            EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
+
+            errorHandler.validateInstanceType(userId, entity, guidParameterName, entityTypeName, methodName);
+
+            return entity;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
         {
@@ -1226,6 +1311,57 @@ public class RepositoryHandler
 
         return null;
     }
+
+
+    /**
+     * Test whether an entity is of a particular type or not.
+     *
+     * @param userId calling user
+     * @param guid unique identifier of the entity.
+     * @param guidParameterName name of the parameter containing the guid.
+     * @param entityTypeName name of the type to test for
+     * @param methodName calling method
+     *
+     * @return boolean flag
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public boolean isEntityATypeOf(String                 userId,
+                                   String                 guid,
+                                   String                 guidParameterName,
+                                   String                 entityTypeName,
+                                   String                 methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
+    {
+        try
+        {
+            EntityDetail entity = metadataCollection.getEntityDetail(userId, guid);
+
+            return errorHandler.isInstanceATypeOf(entity, entityTypeName, methodName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnknownEntity(error, guid, entityTypeName, methodName, guidParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException error)
+        {
+            errorHandler.handleEntityProxy(error, guid, entityTypeName, methodName, guidParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return false;
+    }
+
 
 
     /**
@@ -1881,7 +2017,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void deleteRelationship(String                  userId,
+    public void removeRelationship(String                  userId,
                                    String                  relationshipTypeGUID,
                                    String                  relationshipTypeName,
                                    String                  relationshipGUID,
@@ -1935,6 +2071,19 @@ public class RepositoryHandler
                                                  relationshipTypeGUID,
                                                  relationshipTypeName,
                                                  relationshipGUID);
+
+            RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.RELATIONSHIP_PURGED;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(relationshipGUID,
+                                                                relationshipTypeName,
+                                                                relationshipTypeGUID,
+                                                                methodName,
+                                                                metadataCollection.getMetadataCollectionId(userId)),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -1961,7 +2110,7 @@ public class RepositoryHandler
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void deleteRelationshipBetweenEntities(String                  userId,
+    public void removeRelationshipBetweenEntities(String                  userId,
                                                   String                  relationshipTypeGUID,
                                                   String                  relationshipTypeName,
                                                   String                  entity1GUID,
@@ -1980,7 +2129,7 @@ public class RepositoryHandler
 
         if (relationship != null)
         {
-            this.deleteRelationship(userId,
+            this.removeRelationship(userId,
                                     relationshipTypeGUID,
                                     relationshipTypeName,
                                     relationship.getGUID(),
@@ -2123,7 +2272,7 @@ public class RepositoryHandler
 
         if (obsoleteRelationship != null)
         {
-            this.deleteRelationship(userId,
+            this.removeRelationship(userId,
                                     relationshipTypeGUID,
                                     relationshipTypeName,
                                     obsoleteRelationship.getGUID(),
@@ -2174,7 +2323,7 @@ public class RepositoryHandler
             /*
              * The current relationship is between different entities.  It needs to be deleted.
              */
-            this.deleteRelationship(userId,
+            this.removeRelationship(userId,
                                     relationshipTypeGUID,
                                     relationshipTypeName,
                                     relationship.getGUID(),
@@ -2184,7 +2333,15 @@ public class RepositoryHandler
         }
     }
 
-    public OMRSMetadataCollection getMetadataCollection() {
+
+    /**
+     * Return the metadata collection for the repository.  This is used by services that need function that is not
+     * supported by this class.
+     *
+     * @return metadata collection for the repository
+     */
+    public OMRSMetadataCollection getMetadataCollection()
+    {
         return metadataCollection;
     }
 }

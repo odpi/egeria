@@ -1203,7 +1203,7 @@ public class AssetHandler
             /*
              * Remove the asset
              */
-            repositoryHandler.deleteEntity(userId,
+            repositoryHandler.removeEntity(userId,
                                            assetGUID,
                                            AssetMapper.ASSET_TYPE_GUID,
                                            AssetMapper.ASSET_TYPE_NAME,
@@ -1221,7 +1221,7 @@ public class AssetHandler
 
                         if (entityProxy != null)
                         {
-                            repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                            repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                 entityProxy.getGUID(),
@@ -2396,7 +2396,7 @@ public class AssetHandler
 
 
     /**
-     * Return the assets attached to an anchor asset.
+     * Return all the assets attached to an anchor asset.
      *
      * @param userId     calling user
      * @param supportedZones override the default supported zones.
@@ -2422,13 +2422,64 @@ public class AssetHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.getRelatedAssets(userId,
+                                     supportedZones,
+                                     anchorGUID,
+                                     null,
+                                     "all",
+                                     startFrom,
+                                     pageSize,
+                                     serviceName,
+                                     methodName);
+    }
+
+
+    /**
+     * Return the assets attached to an anchor asset by the specified relationship type.  If all related assets
+     * are required then specify null for the relationship type GUID and name.
+     *
+     * @param userId     calling user
+     * @param supportedZones override the default supported zones.
+     * @param anchorGUID identifier for the asset that the related assets are attached to
+     * @param relationshipTypeGUID unique identifier for relationship type
+     * @param relationshipTypeName unique name for relationship type
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param serviceName calling service
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<RelatedAsset>  getRelatedAssets(String       userId,
+                                                List<String> supportedZones,
+                                                String       anchorGUID,
+                                                String       relationshipTypeGUID,
+                                                String       relationshipTypeName,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                String       serviceName,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        String relationshipTypeDisplayName = "all";
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeDisplayName = relationshipTypeName;
+        }
 
         List<Relationship>  assetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                           anchorGUID,
                                                                                           AssetMapper.ASSET_TYPE_NAME,
-                                                                                          null,
-                                                                                          "all",
+                                                                                          relationshipTypeGUID,
+                                                                                          relationshipTypeDisplayName,
                                                                                           startFrom,
                                                                                           pageSize,
                                                                                           methodName);

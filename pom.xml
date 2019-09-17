@@ -1396,6 +1396,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-folder-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>subject-area-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
