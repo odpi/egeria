@@ -95,13 +95,13 @@ spec:
             - "--NotebookApp.token=''"
           env:
             - name: corePlatformURL
-              value: "http://lab-egeria-core-service:8080"
+              value: "http://{{ .Release.Name }}-egeria-core-service:8080"
             - name: dataLakePlatformURL
-              value: "http://lab-egeria-lake-service:8080"
+              value: "http://{{ .Release.Name }}-egeria-lake-service:8080"
             - name: devPlatformURL
-              value: "http://lab-egeria-dev-service:8080"
+              value: "http://{{ .Release.Name }}-egeria-dev-service:8080"
             - name: eventBusURLroot
-              value: "lab-kafka:9092"
+              value: "{{ .Release.Name }}-kafka:9092"
           ports:
             - containerPort: 8888
           readinessProbe:
