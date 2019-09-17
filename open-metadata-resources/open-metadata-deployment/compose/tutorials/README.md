@@ -43,5 +43,6 @@ Components included (with hostnames) are:
   corePlatformURL     = os.environ.get('corePlatformURL','http://localhost:8080')
   dataLakePlatformURL = os.environ.get('dataLakePlatformURL','http://localhost:8081')
   devPlatformURL      = os.environ.get('devPlatformURL','http://localhost:8082')
+ - The notebooks downloaded from git are refreshed on each start. Ensure any modifications to notebooks are saved elsewhere
 
 
