@@ -43,7 +43,7 @@ service:
     ui: 30443
     ranger: 32080
     rangersecure: 30182
-    zookeeper: 32181
+    apachezookeeper: 32181
     solr: 30983
     # Set this to address of one of the local nodes - public IP
     omrsmonitor: 31080
@@ -89,7 +89,8 @@ solr:
   enabled: false
 
 # NOTE: zookeeper is needed for both Solr and Kafka (and therefore for Ranger and Atlas as well)
-zookeeper:
+# This is independent on zookeeper in use for kafka
+apachezookeeper:
   enabled: false
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
@@ -154,7 +155,8 @@ image:
     name: solr
     tag: 7-slim
 
-  zookeeper:
+  # this image is used only for atlas, solr - and not for kafka (if internal version in use)
+  apachezookeeper:
     namespace: library
     name: zookeeper
 
@@ -213,33 +215,18 @@ ibmigc:
       https: "9446"
       broker: "59092"
 
-# When using the k8s-internal Kafka (from Confluent), enable auto-topic creation (and minimize deployment)
-# (for full Kafka options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
-# (for full Zookeeper options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper)
-cp-helm-charts:
-  cp-kafka:
-    brokers: 1
-    configurationOverrides:
-      auto.create.topics.enable: true
-    prometheus:
-      jmx:
-        enabled: false
-  cp-zookeeper:
-    servers: 1
-    prometheus:
-      jmx:
-        enabled: false
+# When using the k8s-internal we configure with some non-standard values to simplify deployment
+# For full documentation on this kafka chart see https://github.com/bitnami/charts/tree/master/bitnami/kafka
+# Note that the kafka support (if used) uses it's own zookeeper
+egeriakafka:
+  securityContext:
+    enabled: false
+  zookeeper:
+    persistence:
+      enabled: false
+  persistence:
+    enabled: false
 
-# For the Confluent kafka chart there are many additional components
-# that we don't need -- so they are removed here
-cp-schema-registry:
-  enabled: false
-cp-kafka-rest:
-  enabled: false
-cp-kafka-connect:
-  enabled: false
-cp-ksql-server:
-  enabled: false
 
 # Open LDAP configuration
 openldap:

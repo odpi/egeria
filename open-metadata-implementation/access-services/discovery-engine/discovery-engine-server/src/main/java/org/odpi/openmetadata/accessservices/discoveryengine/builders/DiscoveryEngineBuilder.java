@@ -191,10 +191,12 @@ public class DiscoveryEngineBuilder extends ReferenceableBuilder
 
         if (displayName != null)
         {
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       DiscoveryEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
+                                                                      literalName,
                                                                       methodName);
         }
 

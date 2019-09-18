@@ -1076,7 +1076,7 @@ public class SchemaTypeHandler
         final String methodName        = "removeSchemaType";
         final String guidParameterName = "schemaTypeGUID";
 
-        repositoryHandler.deleteEntityOnLastUse(userId,
+        repositoryHandler.removeEntityOnLastUse(userId,
                                                 schemaTypeGUID,
                                                 guidParameterName,
                                                 SchemaElementMapper.SCHEMA_TYPE_TYPE_GUID,
@@ -1103,7 +1103,7 @@ public class SchemaTypeHandler
         final String methodName        = "removeSchemaAttribute";
         final String guidParameterName = "schemaAttributeGUID";
 
-        repositoryHandler.deleteEntityOnLastUse(userId,
+        repositoryHandler.removeEntityOnLastUse(userId,
                                                 schemaAttributeGUID,
                                                 guidParameterName,
                                                 SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
