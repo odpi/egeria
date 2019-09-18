@@ -42,7 +42,7 @@ public class PersonalProfileBuilder extends ReferenceableBuilder
         this.repositoryHelper = repositoryHelper;
         this.serviceName = serviceName;
 
-        this.errorHandler = new RepositoryErrorHandler(serviceName, serverName);
+        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
     }
 
 

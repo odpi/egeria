@@ -43,15 +43,15 @@ public enum BasicFileConnectorErrorCode
             "Ensure a valid file name is passed in the address property in the Endpoint object of the Connection object."),
     FILE_NOT_FOUND(404, "BASIC-FILE-CONNECTOR-404-001 ",
              "The file named {0} in the Connection object {1} does not exist",
-             "The connector is unable to open the structure file.",
-             "Add an existing file to the address property of the connection's Endpoint object."),
+             "The connector is unable to open the file.",
+             "Add then name of an existing file to the address property of the connection's Endpoint object."),
     UNEXPECTED_SECURITY_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-001 ",
              "The connector received an unexpected security exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the structure file.",
+             "The connector is unable to process the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved."),
     UNEXPECTED_IO_EXCEPTION(500, "BASIC-FILE-CONNECTOR-500-002 ",
              "The connector received an unexpected IO exception when reading the file named {0}; the error message was: {1}",
-             "The connector is unable to process the structure file.",
+             "The connector is unable to process the file.",
              "Use details from the error message to determine the cause of the error and retry the request once it is resolved.");
 
 
