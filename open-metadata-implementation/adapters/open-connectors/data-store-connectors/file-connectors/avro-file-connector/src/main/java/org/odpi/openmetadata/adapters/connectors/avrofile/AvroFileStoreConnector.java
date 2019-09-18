@@ -4,6 +4,8 @@
 package org.odpi.openmetadata.adapters.connectors.avrofile;
 
 import org.odpi.openmetadata.adapters.connectors.basicfile.BasicFileStoreConnector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -11,4 +13,6 @@ import org.odpi.openmetadata.adapters.connectors.basicfile.BasicFileStoreConnect
  */
 public class AvroFileStoreConnector extends BasicFileStoreConnector
 {
+    private static final Logger log = LoggerFactory.getLogger(AvroFileStoreConnector.class);
+
 }

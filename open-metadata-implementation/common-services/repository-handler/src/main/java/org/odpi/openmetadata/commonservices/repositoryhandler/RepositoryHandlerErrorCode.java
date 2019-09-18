@@ -84,7 +84,7 @@ public enum RepositoryHandlerErrorCode
             "The system is unable to process a request .",
             "This may be a logic error or a configuration error.  Look for errors in the server's audit log and console to understand and correct the source of the error."),
     MULTIPLE_ENTITIES_FOUND(404, "REPOSITORY-HANDLER-404-009 ",
-            "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter isd {4} and the server is {5}",
+            "Multiple {0} entities where found with a name of {1}: the identifiers of the returned entities are {2}; the calling method is {3}, the name parameter is {4} and the server is {5}",
             "The system is unable to process a request because multiple relationships have been discovered and it is unsure which relationship to follow.",
             "Investigate why multiple relationships exist.  Then retry the request once the issue is resolve."),
     NULL_ENTITY_RETURNED_FOR_CLASSIFICATION(404, "REPOSITORY-HANDLER-404-008 ",
