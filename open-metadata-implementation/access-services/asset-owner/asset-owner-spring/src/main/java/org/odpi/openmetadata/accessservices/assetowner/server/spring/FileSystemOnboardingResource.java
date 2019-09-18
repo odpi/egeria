@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * AssetOnboardingResource supports the server-side capture of REST calls to add new asset definitions.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}/assets")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-owner/users/{userId}")
 public class FileSystemOnboardingResource
 {
     private FileSystemRESTServices restAPI = new FileSystemRESTServices();
@@ -170,20 +170,48 @@ public class FileSystemOnboardingResource
      *
      * @param serverName name of calling server
      * @param userId calling user
-     * @param requestBody pathname of the file
+     * @param requestBody pathname of the data file
      *
      * @return list of GUIDs from the top level to the root of the pathname or
      * InvalidParameterException one of the parameters is null or invalid or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/files")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files")
 
-    public GUIDListResponse addFileAssetToCatalog(@PathVariable String              serverName,
-                                                  @PathVariable String              userId,
-                                                  @RequestBody  PathNameRequestBody requestBody)
+    public GUIDListResponse addDataFileAssetToCatalog(@PathVariable String                  serverName,
+                                                      @PathVariable String                  userId,
+                                                      @RequestBody  NewFileAssetRequestBody requestBody)
     {
-        return restAPI.addFileAssetToCatalog(serverName, userId, requestBody);
+        return restAPI.addDataFileAssetToCatalog(serverName, userId, requestBody);
+    }
+
+
+    /**
+     * Creates a new folder asset that is identified as a data asset.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param requestBody pathname of the data folder
+     *
+     * @return list of GUIDs from the top level to the root of the pathname or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-folders")
+
+    public GUIDListResponse addDataFolderAssetToCatalog(@PathVariable String                  serverName,
+                                                        @PathVariable String                  userId,
+                                                        @RequestBody  NewFileAssetRequestBody requestBody)
+    {
+        return restAPI.addDataFolderAssetToCatalog(serverName, userId, requestBody);
     }
 
 
@@ -202,21 +230,21 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/attach")
+    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/attach")
 
-    public VoidResponse  attachFileAssetToFolder(@PathVariable String          serverName,
-                                                 @PathVariable String          userId,
-                                                 @PathVariable String          folderGUID,
-                                                 @PathVariable String          fileGUID,
-                                                 @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  attachDataFileAssetToFolder(@PathVariable String          serverName,
+                                                     @PathVariable String          userId,
+                                                     @PathVariable String          folderGUID,
+                                                     @PathVariable String          fileGUID,
+                                                     @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.attachFileAssetToFolder(serverName, userId, folderGUID, fileGUID, requestBody);
+        return restAPI.attachDataFileAssetToFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
 
 
     /**
-     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveFileInCatalog to record
-     * the fact that the physical file has moved.  Use attachFileAssetToFolder to create logical link to a new
+     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveDataFileInCatalog to record
+     * the fact that the physical file has moved.  Use attachDataFileAssetToFolder to create logical link to a new
      * folder.
      *
      * @param serverName name of calling server
@@ -230,20 +258,20 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/detach")
+    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/detach")
 
-    public VoidResponse  detachFileAssetFromFolder(@PathVariable String          serverName,
-                                                   @PathVariable String          userId,
-                                                   @PathVariable String          folderGUID,
-                                                   @PathVariable String          fileGUID,
-                                                   @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  detachDataFileAssetFromFolder(@PathVariable String          serverName,
+                                                       @PathVariable String          userId,
+                                                       @PathVariable String          folderGUID,
+                                                       @PathVariable String          fileGUID,
+                                                       @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.detachFileAssetFromFolder(serverName, userId, folderGUID, fileGUID, requestBody);
+        return restAPI.detachDataFileAssetFromFolder(serverName, userId, folderGUID, fileGUID, requestBody);
     }
 
 
     /**
-     * Move a file from its current parent folder to a new parent folder - this changes the file's qualified name
+     * Move a data file from its current parent folder to a new parent folder - this changes the file's qualified name
      * but not its unique identifier (guid).  Also the the endpoint in the connection object.
      *
      * @param serverName name of calling server
@@ -256,15 +284,41 @@ public class FileSystemOnboardingResource
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/files/{fileGUID}/move-to")
+    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-files/{fileGUID}/move-to")
 
-    public VoidResponse  moveFileInCatalog(@PathVariable String          serverName,
-                                           @PathVariable String          userId,
-                                           @PathVariable String          folderGUID,
-                                           @PathVariable String          fileGUID,
-                                           @RequestBody  NullRequestBody requestBody)
+    public VoidResponse  moveDataFileInCatalog(@PathVariable String          serverName,
+                                               @PathVariable String          userId,
+                                               @PathVariable String          folderGUID,
+                                               @PathVariable String          fileGUID,
+                                               @RequestBody  NullRequestBody requestBody)
     {
-        return restAPI.moveFileInCatalog(serverName, userId, folderGUID, fileGUID, requestBody);
+        return restAPI.moveDataFileInCatalog(serverName, userId, folderGUID, fileGUID, requestBody);
+    }
+
+
+    /**
+     * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
+     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     *
+     * @param serverName name of calling server
+     * @param userId calling user
+     * @param folderGUID new parent folder
+     * @param dataFolderGUID unique identifier of the data folder to move
+     *
+     * @return void or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * PropertyServerException problem accessing property server or
+     * UserNotAuthorizedException security access problem.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/folders/{folderGUID}/assets/data-folders/{dataFolderGUID}/move-to")
+
+    public VoidResponse  moveDataFolderInCatalog(@PathVariable String          serverName,
+                                                 @PathVariable String          userId,
+                                                 @PathVariable String          folderGUID,
+                                                 @PathVariable String          dataFolderGUID,
+                                                 @RequestBody  NullRequestBody requestBody)
+    {
+        return restAPI.moveDataFolderInCatalog(serverName, userId, folderGUID, dataFolderGUID, requestBody);
     }
 
 
@@ -446,16 +500,16 @@ public class FileSystemOnboardingResource
      * @param userId calling user (assumed to be the owner)
      * @param requestBody properties for the asset
      *
-     * @return unique identifier (guid) of the asset description that represents the avro file or
+     * @return list of GUIDs from the top level to the root of the pathname or
      * InvalidParameterException full path or userId is null
      * PropertyServerException problem accessing property server
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/files/avro")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files/avro")
 
-    public GUIDResponse  addAvroFileToCatalog(@PathVariable String                  serverName,
-                                              @PathVariable String                  userId,
-                                              @RequestBody  NewFileAssetRequestBody requestBody)
+    public GUIDListResponse  addAvroFileToCatalog(@PathVariable String                  serverName,
+                                                  @PathVariable String                  userId,
+                                                  @RequestBody  NewFileAssetRequestBody requestBody)
     {
         return restAPI.addAvroFileToCatalog(serverName, userId, requestBody);
     }
@@ -474,20 +528,17 @@ public class FileSystemOnboardingResource
      * @param userId calling user (assumed to be the owner)
      * @param requestBody parameters for the new asset
      *
-     * @return unique identifier (guid) of the asset or
+     * @return list of GUIDs from the top level to the root of the pathname or
      * InvalidParameterException full path or userId is null or
      * PropertyServerException problem accessing property server or
      * UserNotAuthorizedException security access problem
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/files/csv")
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/data-files/csv")
 
-    public GUIDResponse addCSVFileToCatalog(@PathVariable String                     serverName,
-                                            @PathVariable String                     userId,
-                                            @RequestBody  NewCSVFileAssetRequestBody requestBody)
+    public GUIDListResponse addCSVFileToCatalog(@PathVariable String                     serverName,
+                                                @PathVariable String                     userId,
+                                                @RequestBody  NewCSVFileAssetRequestBody requestBody)
     {
         return restAPI.addCSVFileToCatalog(serverName, userId, requestBody);
     }
-
-
-
 }

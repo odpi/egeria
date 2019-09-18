@@ -187,10 +187,12 @@ public class ConnectorTypeBuilder extends ReferenceableBuilder
 
         if (displayName != null)
         {
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       ConnectorTypeMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
+                                                                      literalName,
                                                                       methodName);
         }
 

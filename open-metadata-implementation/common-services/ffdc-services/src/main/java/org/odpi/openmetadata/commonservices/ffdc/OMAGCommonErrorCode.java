@@ -128,18 +128,30 @@ public enum OMAGCommonErrorCode
                       "The system is unable to process the request.",
                       "Update the caller to provide a correct asset identifier."),
 
+    UNKNOWN_ELEMENT(400, "OMAG-COMMON-400-021 ",
+                    "The identifier {0} of the {1} passed by {2} to method {3} of service {4} is not recognized by the {5} server",
+                    "The system is unable to process the request.",
+                    "Update the caller to provide a correct asset identifier."),
+
+    NULL_SEARCH_STRING(400, "OMAG-COMMON-400-022 ",
+              "The search string passed on the {0} parameter of the {1} operation is null",
+              "The system is unable to process the request without a search string.",
+              "Correct the code in the caller to provide the search string."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",
                                  "The request fails.",
                                  "Check that the unique identifier is correct and the property server(s) is/are running."),
 
+    METHOD_NOT_IMPLEMENTED(500, "OMAG-COMMON-500-001 ",
+                           "Method {0} called by user {1} to OMAG Server {2} is not implemented in service {3}",
+                           "The user has issued a valid call to an open metadata REST API that is currently not yet implemented.",
+                           "Look to become a contributor or advocate for the ODPi Egeria community to help get this method implemented as soon as possible."),
 
-    CLIENT_SIDE_REST_API_ERROR(503, "OMAG-COMMON-503-002 ",
+    CLIENT_SIDE_REST_API_ERROR(503, "OMAG-COMMON-503-001 ",
                                "A client-side exception was received from API call {0} to OMAG Server {1} at {2}.  The error message was {3}",
                                "The server has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
-                               "Look for errors in the local server's console to understand and correct the source of the error."),
-
-
+                               "Look for errors in the local server's console to understand and correct the source of the error.")
             ;
 
     private int    httpErrorCode;

@@ -88,11 +88,11 @@ public enum OpenLineageAuditCode {
     }
 
     public String getFormattedLogMessage(String... params) {
-        log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== Open Lineage Audit Code.getMessage(%s)", Arrays.toString(params)));
 
         String result = MessageFormat.format(logMessage, params);
 
-        log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> Open Lineage Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }

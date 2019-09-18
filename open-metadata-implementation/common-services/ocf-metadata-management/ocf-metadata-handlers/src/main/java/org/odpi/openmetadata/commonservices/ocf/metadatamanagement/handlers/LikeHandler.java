@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.LikeBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.LikeConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.LikeMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -304,7 +303,7 @@ public class LikeHandler
     {
         final String methodName        = "removeLike";
 
-        repositoryHandler.deleteUniqueEntityTypeFromAnchor(userId,
+        repositoryHandler.removeUniqueEntityTypeFromAnchor(userId,
                                                            anchorGUID,
                                                            ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
                                                            LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
