@@ -3135,7 +3135,7 @@ public class OpenMetadataTypesArchive
     private EnumDef getServerAssetUseTypeEnum()
     {
         final String guid            = "09439481-9489-467c-9ae5-178a6e0b6b5a";
-        final String name            = "ServerAssetUse";
+        final String name            = "ServerAssetUseType";
         final String description     = "Defines how a server capability may use an asset.";
         final String descriptionGUID = null;
 
@@ -3269,7 +3269,7 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Additional information on how the asset is use by the software server capability.";
         final String attribute2DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ServerAssetUse",
+        property = archiveHelper.getEnumTypeDefAttribute("ServerAssetUseType",
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -8557,6 +8557,7 @@ public class OpenMetadataTypesArchive
     private void add0220FilesAndFolders()
     {
         this.archiveBuilder.addEntityDef(getFileFolderEntity());
+        this.archiveBuilder.addEntityDef(getDataFolderEntity());
         this.archiveBuilder.addEntityDef(getDataFileEntity());
         this.archiveBuilder.addEntityDef(getCSVFileEntity());
         this.archiveBuilder.addEntityDef(getAvroFileEntity());
@@ -8587,6 +8588,23 @@ public class OpenMetadataTypesArchive
     }
 
 
+    private EntityDef getDataFolderEntity()
+    {
+        final String guid            = "9f1fb984-db15-43ee-85fb-f8b0353bfb8b";
+        final String name            = "DataFolder";
+        final String description     = "A folder (directory) in a file system that contains a collection of data.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "FileFolder";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
     private EntityDef getDataFileEntity()
     {
         final String guid            = "10752b4a-4b5d-4519-9eae-fdd6d162122f";
@@ -8596,11 +8614,31 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "DataStore";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
+                                                                 name,
+                                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                                 description,
+                                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fileType";
+        final String attribute1Description     = "File type descriptor typically extracted from the file name.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 

@@ -340,7 +340,7 @@ public class ContributionRecordHandler
 
         if (contributionRecord != null)
         {
-            repositoryHandler.deleteEntity(userId,
+            repositoryHandler.removeEntity(userId,
                                            contributionRecord.getGUID(),
                                            ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_GUID,
                                            ContributionRecordMapper.CONTRIBUTION_RECORD_TYPE_NAME,

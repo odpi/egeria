@@ -106,12 +106,16 @@ public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
      *
      * @return InstanceProperties object
      */
-    public InstanceProperties getNameInstanceProperties(String methodName) {
+    public InstanceProperties getNameInstanceProperties(String methodName)
+    {
         InstanceProperties properties = super.getNameInstanceProperties(methodName);
 
-        if (name != null) {
+        if (name != null)
+        {
+            String literalName = repositoryHelper.getExactMatchRegex(name);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, name, methodName);
+                    SoftwareServerPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, literalName, methodName);
         }
 
         return properties;

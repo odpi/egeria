@@ -579,7 +579,7 @@ public class ConnectionHandler
 
             if (endpoint != null)
             {
-                repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_GUID,
                                                                     ConnectionMapper.CONNECTION_ENDPOINT_TYPE_NAME,
                                                                     endpoint.getGUID(),
@@ -594,7 +594,7 @@ public class ConnectionHandler
 
             if (connectorType != null)
             {
-                repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_GUID,
                                                                     ConnectionMapper.CONNECTION_CONNECTOR_TYPE_TYPE_NAME,
                                                                     connectionGUID,
@@ -614,7 +614,7 @@ public class ConnectionHandler
                     {
                         Connection realConnection = embeddedConnection.getEmbeddedConnection();
 
-                        repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                        repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                             ConnectionMapper.EMBEDDED_CONNECTION_TYPE_GUID,
                                                                             ConnectionMapper.EMBEDDED_CONNECTION_TYPE_NAME,
                                                                             connectionGUID,
@@ -630,7 +630,7 @@ public class ConnectionHandler
                 }
             }
 
-            repositoryHandler.deleteEntityOnLastUse(userId,
+            repositoryHandler.removeEntityOnLastUse(userId,
                                                     connectionGUID,
                                                     guidParameterName,
                                                     ConnectionMapper.CONNECTION_TYPE_GUID,
