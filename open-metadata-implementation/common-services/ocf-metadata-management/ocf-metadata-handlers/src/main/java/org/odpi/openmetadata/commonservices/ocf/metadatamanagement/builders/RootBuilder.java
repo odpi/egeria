@@ -42,7 +42,7 @@ public class RootBuilder
         this.serviceName = serviceName;
         this.serverName = serverName;
 
-        this.errorHandler = new RepositoryErrorHandler(serviceName, serverName);
+        this.errorHandler = new RepositoryErrorHandler(repositoryHelper, serviceName, serverName);
     }
 
 

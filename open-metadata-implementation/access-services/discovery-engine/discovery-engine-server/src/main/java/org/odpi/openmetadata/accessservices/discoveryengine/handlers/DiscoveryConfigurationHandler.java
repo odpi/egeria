@@ -407,7 +407,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
 
-        repositoryHandler.deleteEntity(userId,
+        repositoryHandler.removeEntity(userId,
                                        guid,
                                        DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
                                        DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_NAME,
@@ -832,7 +832,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
              */
             if (assetConnectionRelationship != null)
             {
-                repositoryHandler.deleteRelationship(userId,
+                repositoryHandler.removeRelationship(userId,
                                                      DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_GUID,
                                                      DiscoveryServicePropertiesMapper.CONNECTION_TO_ASSET_TYPE_NAME,
                                                      assetConnectionRelationship.getGUID(),
@@ -915,7 +915,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
             connectionHandler.removeConnection(userId, connectionEntity.getGUID());
         }
 
-        repositoryHandler.deleteEntity(userId,
+        repositoryHandler.removeEntity(userId,
                                        guid,
                                        DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
                                        DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_NAME,
@@ -1105,7 +1105,7 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
 
-        repositoryHandler.deleteRelationshipBetweenEntities(userId,
+        repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                             DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_GUID,
                                                             DiscoveryEnginePropertiesMapper.SUPPORTED_DISCOVERY_SERVICE_TYPE_NAME,
                                                             discoveryServiceGUID,

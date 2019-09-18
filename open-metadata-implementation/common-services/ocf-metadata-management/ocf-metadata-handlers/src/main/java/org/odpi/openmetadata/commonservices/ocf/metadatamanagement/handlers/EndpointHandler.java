@@ -241,7 +241,7 @@ public class EndpointHandler
         final String methodName        = "removeEndpoint";
         final String guidParameterName = "endpointGUID";
 
-        repositoryHandler.deleteEntityOnLastUse(userId,
+        repositoryHandler.removeEntityOnLastUse(userId,
                                                 endpointGUID,
                                                 guidParameterName,
                                                 EndpointMapper.ENDPOINT_TYPE_GUID,

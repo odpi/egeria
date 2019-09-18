@@ -644,7 +644,7 @@ public class GovernanceOfficerHandler
         invalidParameterHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
         invalidParameterHandler.validateEnum(governanceDomain, governanceDomainParameterName, methodName);
 
-        repositoryHandler.deleteEntity(userId,
+        repositoryHandler.removeEntity(userId,
                                        governanceOfficerGUID,
                                        governanceOfficerTypeGUID,
                                        governanceOfficerTypeName,
