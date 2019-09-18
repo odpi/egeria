@@ -28,7 +28,6 @@ public class RelationshipEvent extends AssetLineageEntityEvent {
     private GlossaryTerm glossaryTerm = null;
     private String relationshipGuid = null;
     private String typeDefName = null;
-    private ConvertedAssetContext assetContext = null;
     private Map<String,AssetLineageEntityEvent> proxies = null;
 
     public GlossaryTerm getGlossaryTerm() {
@@ -53,14 +52,6 @@ public class RelationshipEvent extends AssetLineageEntityEvent {
 
     public void setRelationshipGuid(String typeDefGUID) {
         this.relationshipGuid = typeDefGUID;
-    }
-
-    public ConvertedAssetContext getAssetContext() {
-        return assetContext;
-    }
-
-    public void setAssetContext(ConvertedAssetContext assetContext) {
-        this.assetContext = assetContext;
     }
 
     public Map<String,AssetLineageEntityEvent> getProxies() {

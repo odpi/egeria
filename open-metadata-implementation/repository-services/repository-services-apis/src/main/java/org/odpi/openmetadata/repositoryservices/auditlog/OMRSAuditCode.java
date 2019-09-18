@@ -683,7 +683,7 @@ public enum OMRSAuditCode
 
     PROCESS_INCOMING_EVENT("OMRS-AUDIT-8006",
                            OMRSAuditLogRecordSeverity.EVENT,
-                           "Processing event of type {0} from: {1}",
+                           "Processing incoming event of type {0} for instance {1} from: {2}",
                            "The local server has processed an event from another member of the metadata repository.",
                            "No action required.  This message is for information only."),
 

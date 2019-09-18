@@ -140,10 +140,12 @@ public class SchemaAttributeBuilder extends ReferenceableBuilder
 
         if (attributeName != null)
         {
+            String literalName = repositoryHelper.getExactMatchRegex(attributeName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       SchemaElementMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      attributeName,
+                                                                      literalName,
                                                                       methodName);
         }
 
