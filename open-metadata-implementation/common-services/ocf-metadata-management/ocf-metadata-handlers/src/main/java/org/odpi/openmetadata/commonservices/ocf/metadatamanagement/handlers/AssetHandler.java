@@ -1203,7 +1203,7 @@ public class AssetHandler
             /*
              * Remove the asset
              */
-            repositoryHandler.deleteEntity(userId,
+            repositoryHandler.removeEntity(userId,
                                            assetGUID,
                                            AssetMapper.ASSET_TYPE_GUID,
                                            AssetMapper.ASSET_TYPE_NAME,
@@ -1221,7 +1221,7 @@ public class AssetHandler
 
                         if (entityProxy != null)
                         {
-                            repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                            repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_GUID,
                                                                                 AssetMapper.ASSET_TO_CONNECTION_TYPE_NAME,
                                                                                 entityProxy.getGUID(),
@@ -1780,6 +1780,86 @@ public class AssetHandler
         }
     }
 
+
+    /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<Asset>  findAssets(String   userId,
+                                   String   searchString,
+                                   int      startFrom,
+                                   int      pageSize,
+                                   String   methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        final String   searchParameter = "searchString";
+
+        invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetBuilder builder = new AssetBuilder(searchString,
+                                                searchString,
+                                                searchString,
+                                                repositoryHelper,
+                                                serviceName,
+                                                serverName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   builder.getSearchInstanceProperties(methodName),
+                                                                                   AssetMapper.ASSET_TYPE_GUID,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
+
+        List<Asset>  results = new ArrayList<>();
+        if (retrievedEntities != null)
+        {
+            for (EntityDetail entity : retrievedEntities)
+            {
+                if (entity != null)
+                {
+                    AssetConverter  converter = new AssetConverter(entity, null, repositoryHelper, serviceName);
+                    Asset           asset = converter.getAssetBean();
+                    try
+                    {
+                        results.add(validatedVisibleAsset(userId,
+                                                          supportedZones,
+                                                          searchParameter,
+                                                          asset,
+                                                          serviceName,
+                                                          methodName));
+                    }
+                    catch (Throwable error)
+                    {
+                        /*
+                         * ignore invisible asset
+                         */
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
 
     /**
      * This verifies that the asset exists and the caller has authority to attach to it.
@@ -2396,7 +2476,7 @@ public class AssetHandler
 
 
     /**
-     * Return the assets attached to an anchor asset.
+     * Return all the assets attached to an anchor asset.
      *
      * @param userId     calling user
      * @param supportedZones override the default supported zones.
@@ -2422,13 +2502,64 @@ public class AssetHandler
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
+        return this.getRelatedAssets(userId,
+                                     supportedZones,
+                                     anchorGUID,
+                                     null,
+                                     "all",
+                                     startFrom,
+                                     pageSize,
+                                     serviceName,
+                                     methodName);
+    }
+
+
+    /**
+     * Return the assets attached to an anchor asset by the specified relationship type.  If all related assets
+     * are required then specify null for the relationship type GUID and name.
+     *
+     * @param userId     calling user
+     * @param supportedZones override the default supported zones.
+     * @param anchorGUID identifier for the asset that the related assets are attached to
+     * @param relationshipTypeGUID unique identifier for relationship type
+     * @param relationshipTypeName unique name for relationship type
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     * @param serviceName calling service
+     * @param methodName calling method
+     *
+     * @return list of retrieved objects
+     *
+     * @throws InvalidParameterException  the input properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */
+    public List<RelatedAsset>  getRelatedAssets(String       userId,
+                                                List<String> supportedZones,
+                                                String       anchorGUID,
+                                                String       relationshipTypeGUID,
+                                                String       relationshipTypeName,
+                                                int          startFrom,
+                                                int          pageSize,
+                                                String       serviceName,
+                                                String       methodName) throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
+    {
         invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        String relationshipTypeDisplayName = "all";
+
+        if (relationshipTypeName != null)
+        {
+            relationshipTypeDisplayName = relationshipTypeName;
+        }
 
         List<Relationship>  assetRelationships = repositoryHandler.getRelationshipsByType(userId,
                                                                                           anchorGUID,
                                                                                           AssetMapper.ASSET_TYPE_NAME,
-                                                                                          null,
-                                                                                          "all",
+                                                                                          relationshipTypeGUID,
+                                                                                          relationshipTypeDisplayName,
                                                                                           startFrom,
                                                                                           pageSize,
                                                                                           methodName);
