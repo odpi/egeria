@@ -210,8 +210,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                          * Acknowledge receipt of message.
                          */
                         
-                        //if autocommit is disabled, currentOffsets is updated by the 
-                        //processed event handling thread
+                        //If auto-commit is disabled, the offset for a message is only committed when
+                        //the message has been completely processed by all consumers.  That
+                        //is handled by the call to checkForFullyProcessedMessagesIfNeeded().
                         TopicPartition partition = new TopicPartition(record.topic(), record.partition());
                         currentOffsets.put(partition, new OffsetAndMetadata(record.offset() + 1));
                     
