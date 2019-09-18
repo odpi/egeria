@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public class ReferenceableBuilder extends RootBuilder
 {
-    private String               qualifiedName;
-    private Map<String, String>  additionalProperties = null;
-    private Map<String, Object>  extendedProperties = null;
+    protected String               qualifiedName;
+    private   Map<String, String>  additionalProperties = null;
+    private   Map<String, Object>  extendedProperties = null;
 
 
     /**
@@ -146,6 +146,6 @@ public class ReferenceableBuilder extends RootBuilder
      */
     public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
     {
-        return getNameInstanceProperties(methodName);
+        return this.getNameInstanceProperties(methodName);
     }
 }

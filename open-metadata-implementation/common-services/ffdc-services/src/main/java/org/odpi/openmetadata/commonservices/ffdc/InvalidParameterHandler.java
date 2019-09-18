@@ -187,6 +187,37 @@ public class InvalidParameterHandler
     /**
      * Throw an exception if the supplied userId is null
      *
+     * @param searchString   searchString to validate
+     * @param searchParameter  name of the parameter that passed the searchString.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the searchString is null
+     */
+    public void validateSearchString(String searchString,
+                                     String searchParameter,
+                                     String methodName) throws InvalidParameterException
+    {
+        if ((searchString == null) || (searchString.isEmpty()))
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_SEARCH_STRING;
+            String              errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(searchParameter,
+                                                                                  methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                searchParameter);
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is null
+     *
      * @param object         object to validate
      * @param nameParameter  name of the parameter that passed the object.
      * @param methodName     name of the method making the call.

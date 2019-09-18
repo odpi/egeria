@@ -133,6 +133,11 @@ public enum OMAGCommonErrorCode
                     "The system is unable to process the request.",
                     "Update the caller to provide a correct asset identifier."),
 
+    NULL_SEARCH_STRING(400, "OMAG-COMMON-400-022 ",
+              "The search string passed on the {0} parameter of the {1} operation is null",
+              "The system is unable to process the request without a search string.",
+              "Correct the code in the caller to provide the search string."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",
                                  "The request fails.",

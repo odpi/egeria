@@ -296,7 +296,7 @@ public class FileSystemHandler
 
         asset.setDisplayName(displayName);
         asset.setDescription(description);
-        asset.setQualifiedName(typeName + ":" + pathName);
+        asset.setQualifiedName(pathName);
 
         return assetHandler.addAsset(userId,
                                      asset,
@@ -932,7 +932,7 @@ public class FileSystemHandler
              * The file's pathname includes the root file system name.  A SoftWareServerCapability entity
              * is created for the file system if it does not exist already.
              */
-            FileSystem  fileSystem = this.getFileSystemByUniqueName(userId, pathName, methodName);
+            FileSystem  fileSystem = this.getFileSystemByUniqueName(userId, fileSystemName, methodName);
 
             if (fileSystem == null)
             {
@@ -1523,7 +1523,7 @@ public class FileSystemHandler
      * Retrieve a FileSystem asset by its unique name.
      *
      * @param userId calling user
-     * @param uniqueName unique name ofr the file system
+     * @param uniqueName unique name for the file system
      * @param methodName calling method
      *
      * @return Filesystem properties

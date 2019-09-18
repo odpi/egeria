@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -198,6 +199,47 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       literalName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getSearchInstanceProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (qualifiedName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      qualifiedName,
+                                                                      methodName);
+        }
+
+        if (displayName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
                                                                       methodName);
         }
 

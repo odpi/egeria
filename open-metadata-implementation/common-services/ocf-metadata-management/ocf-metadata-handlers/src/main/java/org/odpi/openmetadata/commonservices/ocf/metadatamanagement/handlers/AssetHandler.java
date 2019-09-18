@@ -1782,6 +1782,86 @@ public class AssetHandler
 
 
     /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
+     */
+    public List<Asset>  findAssets(String   userId,
+                                   String   searchString,
+                                   int      startFrom,
+                                   int      pageSize,
+                                   String   methodName) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException
+    {
+        final String   searchParameter = "searchString";
+
+        invalidParameterHandler.validateSearchString(searchString, searchParameter, methodName);
+        invalidParameterHandler.validatePaging(startFrom, pageSize, methodName);
+
+        AssetBuilder builder = new AssetBuilder(searchString,
+                                                searchString,
+                                                searchString,
+                                                repositoryHelper,
+                                                serviceName,
+                                                serverName);
+
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByName(userId,
+                                                                                   builder.getSearchInstanceProperties(methodName),
+                                                                                   AssetMapper.ASSET_TYPE_GUID,
+                                                                                   startFrom,
+                                                                                   pageSize,
+                                                                                   methodName);
+
+        List<Asset>  results = new ArrayList<>();
+        if (retrievedEntities != null)
+        {
+            for (EntityDetail entity : retrievedEntities)
+            {
+                if (entity != null)
+                {
+                    AssetConverter  converter = new AssetConverter(entity, null, repositoryHelper, serviceName);
+                    Asset           asset = converter.getAssetBean();
+                    try
+                    {
+                        results.add(validatedVisibleAsset(userId,
+                                                          supportedZones,
+                                                          searchParameter,
+                                                          asset,
+                                                          serviceName,
+                                                          methodName));
+                    }
+                    catch (Throwable error)
+                    {
+                        /*
+                         * ignore invisible asset
+                         */
+                    }
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+    /**
      * This verifies that the asset exists and the caller has authority to attach to it.
      *
      * @param userId calling user
