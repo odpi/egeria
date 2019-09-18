@@ -514,7 +514,7 @@ public class CommentHandler
     {
         final String commentDescription = "Removed comment from ";
 
-        repositoryHandler.deleteEntity(userId,
+        repositoryHandler.removeEntity(userId,
                                        commentGUID,
                                        CommentMapper.COMMENT_TYPE_GUID,
                                        CommentMapper.COMMENT_TYPE_NAME,

@@ -26,4 +26,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
               })
 public class DataStore extends Asset
 {
+    /**
+     * Default constructor
+     */
+    public DataStore()
+    {
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public DataStore(DataStore template)
+    {
+        super(template);
+    }
+
+
+    /**
+     * Subtyping constructor.
+     *
+     * @param template object to copy
+     */
+    public DataStore(Asset template)
+    {
+        super(template);
+    }
 }

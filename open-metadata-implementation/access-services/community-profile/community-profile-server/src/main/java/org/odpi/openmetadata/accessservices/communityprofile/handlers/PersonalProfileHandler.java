@@ -306,7 +306,7 @@ public class PersonalProfileHandler
         invalidParameterHandler.validateGUID(profileGUID, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 
-        repositoryHandler.deleteEntity(userId,
+        repositoryHandler.removeEntity(userId,
                                        profileGUID,
                                        PersonalProfileMapper.PERSONAL_PROFILE_TYPE_GUID,
                                        PersonalProfileMapper.PERSONAL_PROFILE_TYPE_NAME,

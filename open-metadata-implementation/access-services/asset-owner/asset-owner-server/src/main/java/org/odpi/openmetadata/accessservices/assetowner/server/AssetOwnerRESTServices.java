@@ -845,6 +845,64 @@ public class AssetOwnerRESTServices
 
 
     /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public AssetsResponse  findAssets(String   serverName,
+                                      String   userId,
+                                      String   searchString,
+                                      int      startFrom,
+                                      int      pageSize)
+    {
+        final String methodName    = "findAssets";
+
+        log.debug("Calling method: " + methodName);
+
+        AssetsResponse response = new AssetsResponse();
+        OMRSAuditLog   auditLog = null;
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setAssets(handler.findAssets(userId, searchString, startFrom, pageSize, methodName));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Return the discovery analysis reports about the asset.
      *
      * @param serverName name of the server instance to connect to
