@@ -250,6 +250,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
     public void shutdown() {
         try {
             dataPlatformInTopicConnector.disconnect();
+            dataPlatformOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting data platform topic connector");
         }
