@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetowner.api;
 
-import org.odpi.openmetadata.accessservices.assetowner.properties.File;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -141,7 +140,9 @@ public interface AssetOnboardingFileSystem
      * "one/two/three/MyFile.txt".
      *
      * @param userId calling user
-     * @param pathName pathname of the file
+     * @param displayName display name for the file in the catalog
+     * @param description description of the file in the catalog
+     * @param pathName pathname of the data file
      *
      * @return list of GUIDs from the top level to the root of the pathname
      *
@@ -149,10 +150,39 @@ public interface AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    List<String> addFileAssetToCatalog(String   userId,
-                                       String   pathName) throws InvalidParameterException,
-                                                                 UserNotAuthorizedException,
-                                                                 PropertyServerException;
+    List<String> addDataFileAssetToCatalog(String   userId,
+                                           String   displayName,
+                                           String   description,
+                                           String   pathName) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException;
+
+    /**
+     * Creates a new folder asset that is identified as a data asset.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param userId calling user
+     * @param displayName display name for the file in the catalog
+     * @param description description of the file in the catalog
+     * @param pathName pathname of the data folder
+     *
+     * @return list of GUIDs from the top level to the root of the pathname
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    List<String> addDataFolderAssetToCatalog(String   userId,
+                                             String   displayName,
+                                             String   description,
+                                             String   pathName) throws InvalidParameterException,
+                                                                       UserNotAuthorizedException,
+                                                                       PropertyServerException;
 
 
     /**
@@ -167,16 +197,16 @@ public interface AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void  attachFileAssetToFolder(String   userId,
-                                  String   folderGUID,
-                                  String   fileGUID) throws InvalidParameterException,
-                                                            UserNotAuthorizedException,
-                                                            PropertyServerException;
+    void attachDataFileAssetToFolder(String   userId,
+                                     String   folderGUID,
+                                     String   fileGUID) throws InvalidParameterException,
+                                                               UserNotAuthorizedException,
+                                                               PropertyServerException;
 
 
     /**
-     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveFileInCatalog to record
-     * the fact that the physical file has moved.  Use attachFileAssetToFolder to create logical link to a new
+     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveDataFileInCatalog to record
+     * the fact that the physical file has moved.  Use attachDataFileAssetToFolder to create logical link to a new
      * folder.
      *
      * @param userId calling user
@@ -187,11 +217,11 @@ public interface AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void  detachFileAssetFromFolder(String   userId,
-                                    String   folderGUID,
-                                    String   fileGUID) throws InvalidParameterException,
-                                                              UserNotAuthorizedException,
-                                                              PropertyServerException;
+    void detachDataFileAssetFromFolder(String   userId,
+                                       String   folderGUID,
+                                       String   fileGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**
@@ -206,13 +236,31 @@ public interface AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    void  moveFileInCatalog(String   userId,
-                            String   folderGUID,
-                            String   fileGUID) throws InvalidParameterException,
-                                                      UserNotAuthorizedException,
-                                                      PropertyServerException;
+    void moveDataFileInCatalog(String   userId,
+                               String   folderGUID,
+                               String   fileGUID) throws InvalidParameterException,
+                                                         UserNotAuthorizedException,
+                                                         PropertyServerException;
 
 
+
+    /**
+     * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
+     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     *
+     * @param userId calling user
+     * @param folderGUID new parent folder
+     * @param dataFolderGUID unique identifier of the file to move
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    void moveDataFolderInCatalog(String   userId,
+                                 String   folderGUID,
+                                 String   dataFolderGUID) throws InvalidParameterException,
+                                                                 UserNotAuthorizedException,
+                                                                 PropertyServerException;
 
 
     /**
@@ -330,7 +378,7 @@ public interface AssetOnboardingFileSystem
 
 
     /**
-     * Get the files inside a folder - both those that are nested and those that are linked.
+     * Get the data files inside a folder - both those that are nested and those that are linked.
      *
      * @param userId calling user
      * @param folderGUID unique identifier of the anchor folder
