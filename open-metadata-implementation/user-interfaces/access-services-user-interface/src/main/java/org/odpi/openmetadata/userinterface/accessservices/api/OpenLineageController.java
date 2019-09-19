@@ -45,11 +45,11 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
-    public Map<String, Object> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, Object> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam String view){
         Map<String, Object> exportedGraph;
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
+            exportedGraph = openLineageService.getUltimateSource(userId, View.fromString(view), guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -58,11 +58,11 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
-    public Map<String, Object> endToEndLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, Object> endToEndLineage(@PathVariable("guid") String guid, @RequestParam String view){
         Map<String, Object> exportedGraph;
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
+            exportedGraph = openLineageService.getEndToEndLineage(userId, View.fromString(view), guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -71,11 +71,11 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
-    public Map<String, Object> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, Object> ultimateDestination(@PathVariable("guid") String guid, @RequestParam String view){
         Map<String, Object> exportedGraph;
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
+            exportedGraph = openLineageService.getUltimateDestination(userId, View.fromString(view), guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -84,11 +84,11 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
-    public Map<String, Object> glossaryLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, Object> glossaryLineage(@PathVariable("guid") String guid, @RequestParam String view){
         Map<String, Object> exportedGraph;
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
+            exportedGraph = openLineageService.getGlossaryLineage(userId, View.fromString(view), guid);
         } catch (IOException e) {
             handleException(e);
             return null;
@@ -97,11 +97,11 @@ public class OpenLineageController {
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
-    public Map<String, Object> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam View view){
+    public Map<String, Object> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam String view){
         Map<String, Object> exportedGraph;
         try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
+            exportedGraph = openLineageService.getSourceAndDestination(userId, View.fromString(view), guid);
         } catch (IOException e) {
             handleException(e);
             return null;
