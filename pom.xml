@@ -1935,6 +1935,9 @@
                         <exclude>**/.project</exclude>
                         <exclude>**/.settings/**</exclude>
                         <exclude>egeria-graph-repositories/**</exclude>
+                        <exclude>**/.vscode*/**</exclude>
+                        <exclude>**/.factorypath/**</exclude>
+                        <exclude>**/**.code-workspace</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">

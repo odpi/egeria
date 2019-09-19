@@ -43,7 +43,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ .Release.Name }}-cp-kafka
+              value: {{ .Release.Name }}-egeriakafka
 {{ end }}
       containers:
         - name: initialize

@@ -22,14 +22,14 @@ data:
 
   {{ if .Values.kafka.internal.enabled }}
   KAFKA_TOPIC: {{ .Values.kafka.topicroot}}.open-metadata.repository-services.cohort.coco.OMRSTopic
-  KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka:9092
+  KAFKA_ENDPOINT: {{ .Release.Name }}-egeriakafka:9092
   {{ else }}
   # If using external kafka this is typically a comma seperated list of brokers
   # It is also likely insufficient to connect without additional authentication information
   KAFKA_ENDPOINT: {{ .Values.kafka.external.brokers }}
   {{ end }}
 
-  ZK_HOST: {{ include "myapp.fullname" . }}-zookeeper-service
+  ZK_HOST: {{ include "myapp.fullname" . }}-apache-zookeeper-service
 
   {{ if .Values.atlas.enabled }}
   ATLASPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:8080
