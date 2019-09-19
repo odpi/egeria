@@ -21,7 +21,7 @@ data:
   EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service:8080
 
   {{ if .Values.kafka.internal.enabled }}
-  KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka:9092
+  KAFKA_ENDPOINT: {{ .Release.Name }}-egeriakafka:9092
   {{ else }}
   # If using external kafka this is typically a comma seperated list of brokers
   # It is also likely insufficient to connect without additional authentication information

@@ -60,6 +60,21 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
+
+    /**
+     * Create a new client without authentication.
+     *
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException null URL or server name
+     */
+    public DataEngineImpl(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
+        super(serverName, serverPlatformRootURL);
+
+        this.serverName = serverName;
+        this.serverPlatformRootURL = serverPlatformRootURL;
+    }
+
     /**
      * Create a new client that passes userId and password in each HTTP request.  This is the
      * userId/password of the calling server.  The end user's userId is sent on each request.

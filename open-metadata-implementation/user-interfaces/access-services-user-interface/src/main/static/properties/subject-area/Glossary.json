@@ -2,37 +2,37 @@
  {
   "label": "Name",
   "name": "name",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {
   "label": "Qualified Name",
   "name": "qualifiedName",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {
   "label":"Url",
   "name":"url",
-  "type": "string",
-  "url":"aaa"
- },
- {
-  "label": "Usage",
-  "name": "usage",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {
   "label": "Description",
   "name": "description",
-  "type": "string",
+  "type": "bigtext",
+  "url":"aaa"
+ },
+ {
+  "label": "Usage",
+  "name": "usage",
+  "type": "text",
   "url":"aaa"
  },
  {
   "label": "Language",
   "name": "language",
-  "type": "string",
+  "type": "text",
   "url":"aaa"
  },
  {
