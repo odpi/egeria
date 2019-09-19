@@ -76,7 +76,7 @@ spec:
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
-              value: "http://egeria-lake-service:8080"
+              value: "http://{{ .Release.Name }}-egeria-lake-service:8080"
       restartPolicy: Always
 
 status: {}
