@@ -31,6 +31,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
         </dependency>
