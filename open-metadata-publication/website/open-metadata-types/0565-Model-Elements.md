@@ -7,7 +7,7 @@ Models are used during the development of schema and their
 related software to provide templates and abstractions
 of the implementation.
 
-We add representations of models the the metadata repository
+We add representations of models to the metadata repository
 to help organize and explain data assets - particularly when
 they are complex, or the schema is not available.
 
