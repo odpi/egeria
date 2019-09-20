@@ -3,6 +3,7 @@
 ---
 name: vdc
 description: Egeria VDC Environment
+apiVersion: v1
 version: 0.1.11
 icon: https://raw.githubusercontent.com/odpi/egeria/99016e77167fa30dcfade809b061358a92a59973/assets/img/egeria.png
 keywords:

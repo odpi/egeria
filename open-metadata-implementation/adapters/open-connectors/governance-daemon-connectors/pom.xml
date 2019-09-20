@@ -15,6 +15,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
+    <artifactId>governance-daemon-connectors</artifactId>
     <name>Governance Daemon Connectors</name>
     <description>
         The governance daemon connectors contains connectors for the governance
@@ -22,13 +23,11 @@
         asynchronously between different tools.
     </description>
 
-    <artifactId>governance-daemon-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>view-generator-connectors</module>
         <module>security-sync-connectors</module>
         <module>security-officer-connectors</module>
-        <module>data-engine-connectors</module>
         <module>data-platform-connectors</module>
     </modules>
 

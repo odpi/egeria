@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ConvertedAssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -184,6 +183,20 @@ public class Converter {
         return asset;
     }
 
+    public LineageEntity createEntity(EntityDetail entityDetail) {
+        LineageEntity lineageEntity = new LineageEntity();
+        lineageEntity.setGuid(entityDetail.getGUID());
+        lineageEntity.setCreatedBy(entityDetail.getCreatedBy());
+        lineageEntity.setCreateTime(entityDetail.getCreateTime());
+        lineageEntity.setTypeDefName(entityDetail.getType().getTypeDefName());
+        lineageEntity.setUpdatedBy(entityDetail.getUpdatedBy());
+        lineageEntity.setUpdateTime(entityDetail.getUpdateTime());
+        lineageEntity.setVersion(entityDetail.getVersion());
+        lineageEntity.setProperties(getMapProperties(entityDetail.getProperties()));
+        return lineageEntity;
+    }
+
+
     private List<InstanceStatus> getActiveInstanceStatusList() {
         List<InstanceStatus> instanceStatuses = new ArrayList<>(1);
         instanceStatuses.add(InstanceStatus.ACTIVE);
@@ -360,29 +373,26 @@ public class Converter {
     public Map<String, String> getMapProperties(InstanceProperties properties) {
         Map<String, String> attributes = new HashMap<>();
 
-        if (properties != null) {
+        if(properties == null) {return  attributes;}
 
-            Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
-            if (instanceProperties != null) {
-                for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
-                    if (property.getValue() != null) {
+        Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
+        if(instanceProperties == null ) {return attributes;}
 
-                        String propertyValue = getStringForPropertyValue(property.getValue());
-                        if (!propertyValue.equals("")) {
+        for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
 
-                            if (property.getKey().equals("name") || property.getKey().equals("displayName")) {
-                                attributes.put("displayName", propertyValue);
+            if (property.getValue() == null) {return  attributes;}
 
-                            } else {
-                                attributes.put(property.getKey(), propertyValue);
-                            }
-                        }
+            String propertyValue = getStringForPropertyValue(property.getValue());
+            if (!propertyValue.equals("")) {
 
-
+                if (property.getKey().equals("name")) {
+                    attributes.put("displayName", propertyValue);
+                    }
+                else {
+                    attributes.put(property.getKey(), propertyValue);
                     }
                 }
             }
-        }
 
         return attributes;
     }
@@ -419,45 +429,11 @@ public class Converter {
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
-            } else {
+            }
+            else {
                 return "";
             }
         }
     }
 
-    public ConvertedAssetContext convertAssetContext(Term term) {
-        ConvertedAssetContext newAssetContext = new ConvertedAssetContext();
-
-        Element technicalElement = new Element();
-
-        technicalElement.setGuid(term.getGuid());
-        technicalElement.setType(term.getType());
-        technicalElement.setQualifiedName(term.getQualifiedName());
-        technicalElement.setProperties(term.getProperties());
-        newAssetContext.setBaseAsset(technicalElement);
-
-        List<Element> listOfElements = new ArrayList<>();
-
-        Element topLevelElement = new Element();
-        topLevelElement.setGuid(term.getElements().get(0).getGuid());
-        topLevelElement.setType(term.getElements().get(0).getType());
-        topLevelElement.setQualifiedName(term.getElements().get(0).getQualifiedName());
-        topLevelElement.setProperties(term.getElements().get(0).getProperties());
-
-        listOfElements.add(topLevelElement);
-        listOfElements.addAll(term.getElements().get(0).getContext());
-
-        newAssetContext.setContext(listOfElements.stream().collect(
-                Collectors.toMap(Element::getType, element -> element)
-        ));
-        if (term.getElements().get(0).getConnections().isEmpty()) {
-            newAssetContext.setConnection(null);
-
-        } else {
-            newAssetContext.setConnection(term.getElements().get(0).getConnections().get(0));
-        }
-
-        return newAssetContext;
-
-    }
 }

@@ -112,8 +112,8 @@ services:
         image: 'odpi/egeria:latest'
         command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
         environment:
-            - OMAS_SERVER_URL=http://egeriacore:8080
-            - OMAS_SERVER_NAME=cocoMDS1
+            - OMAS_SERVER_URL=http://egeriadl:8080
+            - OMAS_SERVER_NAME=cocoMDS4
         ports:
             - '18443:8443'
         links:

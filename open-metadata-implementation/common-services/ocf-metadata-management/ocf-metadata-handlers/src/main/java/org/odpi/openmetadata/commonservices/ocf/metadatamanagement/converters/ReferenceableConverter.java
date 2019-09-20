@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -72,7 +73,7 @@ public class ReferenceableConverter extends ElementHeaderConverter
      */
     private List<Classification> getClassificationsFromEntity()
     {
-        List<Classification> classifications       = null;
+        List<Classification> classifications = null;
 
         if (entity != null)
         {
@@ -96,5 +97,35 @@ public class ReferenceableConverter extends ElementHeaderConverter
         }
 
         return classifications;
+    }
+
+
+    /**
+     * Extract the classifications from the entity.
+     *
+     * @return list of bean classifications
+     */
+    protected InstanceProperties getClassificationProperties(String  classificationName)
+    {
+        if (entity != null)
+        {
+            List<org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification> entityClassifications = entity.getClassifications();
+
+            if (entityClassifications != null)
+            {
+                for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification entityClassification : entityClassifications)
+                {
+                    if (entityClassification != null)
+                    {
+                        if (classificationName.equals(entityClassification.getName()))
+                        {
+                            return entityClassification.getProperties();
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }

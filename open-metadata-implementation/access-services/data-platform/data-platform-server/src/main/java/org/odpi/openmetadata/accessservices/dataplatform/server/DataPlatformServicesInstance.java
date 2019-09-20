@@ -94,12 +94,4 @@ public class DataPlatformServicesInstance extends OCFOMASServiceInstance {
         return deployedDatabaseSchemaAssetHandler;
     }
 
-    /**
-     * Unregister this instance from the instance map.
-     */
-    public void shutdown() {
-        DataPlatformServicesInstanceMap.removeInstanceForJVM(serverName);
-    }
-
-
 }

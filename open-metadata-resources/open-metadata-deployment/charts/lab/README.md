@@ -19,10 +19,11 @@ In order to use the labs, you'll first need to have the following installed:
 - Helm
 
 You could use the Docker-embedded Kubernetes for this on eg. Docker Desktop,
-or a public cloud service that provides Kubernetes (and is Helm-compatible).
+or a public cloud service that provides Kubernetes 
 
-If you are using the Docker Desktop-embedded Kubernetes, just remember to install
-Helm into it as well before following the installation instructions below.
+In order to eliminate some challenges with security/permissions in helm2 it's recommended to install
+helm3 from https://github.com/helm/helm/releases before starting and to ensure the 'helm' executable is in your PATH. The
+instructions and examples that follow assume use of this version
 
 If you can't meet these requirements, an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
 
@@ -31,123 +32,88 @@ If you can't meet these requirements, an alternative environment for running the
 From one directory level above the location of this README, run the following:
 
 ```shell script
-$ helm repo add confluentinc https://confluentinc.github.io/cp-helm-charts/
-
-"confluentinc" has been added to your repositories
-
-$ helm repo update
-
-Hang tight while we grab the latest from your chart repositories...
-...Skip local chart repository
-...Successfully got an update from the "confluentinc" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete.
-
-$ helm dependency update lab
-
-Hang tight while we grab the latest from your chart repositories...
-...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
-	Get http://127.0.0.1:8879/charts/index.yaml: dial tcp 127.0.0.1:8879: connect: connection refused
-...Successfully got an update from the "confluentinc" chart repository
-...Successfully got an update from the "stable" chart repository
-Update Complete.
-Saving 1 charts
-Downloading cp-helm-charts from repo https://confluentinc.github.io/cp-helm-charts/
-Deleting outdated charts
-
-$ helm install lab --name labs
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update
+helm dep update lab
+helm install lab lab
 ```
-
-Note: If name is not specified an auto-generated name like `slippery-lizard` will be used.
-
-You should see output similar to the following, indicating that the various
-components have been deployed and are starting up:
-
+Example transcript:
 ```text
-2019/08/02 15:59:29 Warning: Building values map for chart 'cp-kafka'. Skipped value (map[]) for 'image', as it is not a table.
-NAME:   labs
-LAST DEPLOYED: Fri Aug  2 15:59:29 2019
-NAMESPACE: default
-STATUS: DEPLOYED
-
-RESOURCES:
-==> v1/Deployment
-NAME              READY  UP-TO-DATE  AVAILABLE  AGE
-labs-egeria-core  0/1    1           0          0s
-labs-egeria-dev   0/1    1           0          0s
-labs-egeria-lake  0/1    1           0          0s
-labs-jupyter      0/1    1           0          0s
-
-==> v1/Pod(related)
-NAME                               READY  STATUS             RESTARTS  AGE
-labs-cp-kafka-0                    0/1    ContainerCreating  0         0s
-labs-cp-zookeeper-0                0/1    Pending            0         0s
-labs-egeria-core-869995888d-4hd49  0/1    ContainerCreating  0         0s
-labs-egeria-dev-594ddf775b-x7j4m   0/1    ContainerCreating  0         0s
-labs-egeria-lake-84fd699864-r9q4g  0/1    ContainerCreating  0         0s
-labs-jupyter-796d97f79b-mpzqw      0/1    Pending            0         0s
-
-==> v1/Service
-NAME                        TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)            AGE
-labs-cp-kafka               ClusterIP  10.99.73.44     <none>       9092/TCP           0s
-labs-cp-kafka-headless      ClusterIP  None            <none>       9092/TCP           0s
-labs-cp-zookeeper           ClusterIP  10.110.167.227  <none>       2181/TCP           0s
-labs-cp-zookeeper-headless  ClusterIP  None            <none>       2888/TCP,3888/TCP  0s
-labs-egeria-core-service    NodePort   10.109.219.6    <none>       8080:30080/TCP     0s
-labs-egeria-dev-service     NodePort   10.96.214.25    <none>       8080:30082/TCP     0s
-labs-egeria-lake-service    NodePort   10.110.106.201  <none>       8080:30081/TCP     0s
-labs-jupyter-service        NodePort   10.106.212.44   <none>       8888:30888/TCP     0s
-
-==> v1beta1/PodDisruptionBudget
-NAME                   MIN AVAILABLE  MAX UNAVAILABLE  ALLOWED DISRUPTIONS  AGE
-labs-cp-zookeeper-pdb  N/A            1                0                    0s
-
-==> v1beta1/StatefulSet
-NAME               READY  AGE
-labs-cp-kafka      0/1    0s
-labs-cp-zookeeper  0/1    0s
+➜  export PATH=~/bin:$PATH
+➜  pwd
+/home/jonesn/tmp/egeria/open-metadata-resources/open-metadata-deployment/charts
+➜  helm version
+version.BuildInfo{Version:"v3.0.0-beta.3", GitCommit:"5cb923eecbe80d1ad76399aee234717c11931d9a", GitTreeState:"clean", GoVersion:"go1.12.9"}
+➜  helm repo add bitnami https://charts.bitnami.com/bitnami
+"bitnami" has been added to your repositories
+➜  helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈ Happy Helming!⎈
+➜  helm dep update lab
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "bitnami" chart repository
+Update Complete. ⎈Happy Helming!⎈
+Saving 1 charts
+Downloading kafka from repo https://charts.bitnami.com/bitnami
+Deleting outdated chart
 ```
-
+Now we can actually do the deployment with
+```shell script
+helm install lab lab
+```
+which will look like:
+```text
+➜  helm install lab lab                                                                                  <<<
+NAME: lab
+LAST DEPLOYED: 2019-09-14 15:12:35.663861002 +0000 UTC m=+0.131192396
+NAMESPACE: egeria
+STATUS: deployed
+```
 Note that it can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running `kubectl get all` -- when ready, you should see output like the following:
-
 ```text
-NAME                                    READY   STATUS    RESTARTS   AGE
-pod/labs-cp-kafka-0                     1/1     Running   0          76s
-pod/labs-cp-zookeeper-0                 1/1     Running   0          76s
-pod/labs-egeria-core-869995888d-4hd49   1/1     Running   0          76s
-pod/labs-egeria-dev-594ddf775b-x7j4m    1/1     Running   0          76s
-pod/labs-egeria-lake-84fd699864-r9q4g   1/1     Running   0          76s
-pod/labs-jupyter-796d97f79b-mpzqw       1/1     Running   0          76s
+➜  kubectl get all
+NAME                                   READY   STATUS    RESTARTS   AGE
+pod/lab-egeria-core-5555fbcb5d-hcfmg   1/1     Running   0          3m23s
+pod/lab-egeria-dev-8d57b9474-f8zdf     1/1     Running   0          3m23s
+pod/lab-egeria-lake-794877f46-lr96k    1/1     Running   0          3m23s
+pod/lab-egeria-ui-6b8d6998c6-7j2ln     1/1     Running   0          3m23s
+pod/lab-jupyter-7f8957b7f6-49qk2       1/1     Running   0          3m23s
+pod/lab-kafka-0                        1/1     Running   1          3m23s
+pod/lab-zookeeper-0                    1/1     Running   0          3m23s
 
-NAME                                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
-service/kubernetes                   ClusterIP   10.96.0.1        <none>        443/TCP             29h
-service/labs-cp-kafka                ClusterIP   10.99.73.44      <none>        9092/TCP            76s
-service/labs-cp-kafka-headless       ClusterIP   None             <none>        9092/TCP            76s
-service/labs-cp-zookeeper            ClusterIP   10.110.167.227   <none>        2181/TCP            76s
-service/labs-cp-zookeeper-headless   ClusterIP   None             <none>        2888/TCP,3888/TCP   76s
-service/labs-egeria-core-service     NodePort    10.109.219.6     <none>        8080:30080/TCP      76s
-service/labs-egeria-dev-service      NodePort    10.96.214.25     <none>        8080:30082/TCP      76s
-service/labs-egeria-lake-service     NodePort    10.110.106.201   <none>        8080:30081/TCP      76s
-service/labs-jupyter-service         NodePort    10.106.212.44    <none>        8888:30888/TCP      76s
 
-NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/labs-egeria-core   1/1     1            1           76s
-deployment.apps/labs-egeria-dev    1/1     1            1           76s
-deployment.apps/labs-egeria-lake   1/1     1            1           76s
-deployment.apps/labs-jupyter       1/1     1            1           76s
+NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/lab-egeria-core-service   ClusterIP   172.21.191.188   <none>        8080/TCP                     3m24s
+service/lab-egeria-dev-service    ClusterIP   172.21.191.90    <none>        8080/TCP                     3m24s
+service/lab-egeria-lake-service   ClusterIP   172.21.93.73     <none>        8080/TCP                     3m24s
+service/lab-egeria-ui-service     NodePort    172.21.32.97     <none>        8443:30443/TCP               3m24s
+service/lab-jupyter-service       NodePort    172.21.201.185   <none>        8888:30888/TCP               3m23s
+service/lab-kafka                 ClusterIP   172.21.25.145    <none>        9092/TCP                     3m24s
+service/lab-kafka-headless        ClusterIP   None             <none>        9092/TCP                     3m24s
+service/lab-zookeeper             ClusterIP   172.21.206.152   <none>        2181/TCP,2888/TCP,3888/TCP   3m24s
+service/lab-zookeeper-headless    ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   3m24s
 
-NAME                                          DESIRED   CURRENT   READY   AGE
-replicaset.apps/labs-egeria-core-869995888d   1         1         1       76s
-replicaset.apps/labs-egeria-dev-594ddf775b    1         1         1       76s
-replicaset.apps/labs-egeria-lake-84fd699864   1         1         1       76s
-replicaset.apps/labs-jupyter-796d97f79b       1         1         1       76s
 
-NAME                                 READY   AGE
-statefulset.apps/labs-cp-kafka       1/1     76s
-statefulset.apps/labs-cp-zookeeper   1/1     76s
+NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/lab-egeria-core   1/1     1            1           3m23s
+deployment.apps/lab-egeria-dev    1/1     1            1           3m23s
+deployment.apps/lab-egeria-lake   1/1     1            1           3m23s
+deployment.apps/lab-egeria-ui     1/1     1            1           3m23s
+deployment.apps/lab-jupyter       1/1     1            1           3m23s
+
+NAME                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/lab-egeria-core-5555fbcb5d   1         1         1       3m23s
+replicaset.apps/lab-egeria-dev-8d57b9474     1         1         1       3m23s
+replicaset.apps/lab-egeria-lake-794877f46    1         1         1       3m23s
+replicaset.apps/lab-egeria-ui-6b8d6998c6     1         1         1       3m23s
+replicaset.apps/lab-jupyter-7f8957b7f6       1         1         1       3m23s
+
+NAME                             READY   AGE
+statefulset.apps/lab-kafka       1/1     3m23s
+statefulset.apps/lab-zookeeper   1/1     3m23s
 ```
-
 (Note that all of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
 
 At this point you should be able to access your notebook by going to the port listed to the right of

@@ -32,29 +32,14 @@ image:
     namespace: jupyter
     name: base-notebook
 
-# When using the k8s-internal Kafka (from Confluent), enable auto-topic creation and minimize the footprint
-# (for full Kafka options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
-# (for full Zookeeper options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper)
-cp-helm-charts:
-  cp-kafka:
-    brokers: 1
-    configurationOverrides:
-      auto.create.topics.enable: true
-    prometheus:
-      jmx:
+# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
+kafka:
+    #volumePermissions:
+    #enabled: true
+    securityContext:
         enabled: false
-  cp-zookeeper:
-    servers: 1
-    prometheus:
-      jmx:
+    zookeeper:
+        persistence: 
+            enabled: false
+    persistence: 
         enabled: false
-
-# Disable unused components from the Confluent kafka chart
-cp-schema-registry:
-  enabled: false
-cp-kafka-rest:
-  enabled: false
-cp-kafka-connect:
-  enabled: false
-cp-ksql-server:
-  enabled: false

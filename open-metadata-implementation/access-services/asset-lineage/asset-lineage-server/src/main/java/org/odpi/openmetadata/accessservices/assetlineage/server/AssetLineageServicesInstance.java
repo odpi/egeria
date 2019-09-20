@@ -4,8 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.ContextHandler;
-import org.odpi.openmetadata.accessservices.assetlineage.handlers.GlossaryHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.handlers.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -22,7 +21,8 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
     private static AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
     private GlossaryHandler glossaryHandler;
     private ContextHandler contextHandler;
-
+    private CommonHandler commonHandler;
+    private ProcessHandler processHandler;
 
     /**
      * Set up the handlers for this server.
@@ -55,6 +55,19 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
                     invalidParameterHandler,
                     repositoryHelper,
                     repositoryHandler);
+
+            commonHandler = new CommonHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
+            processHandler = new ProcessHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
         }else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
@@ -89,6 +102,25 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         return contextHandler;
     }
 
+    /**
+     * Return the specialized common handler for Asset Lineage OMAS.
+     *
+     * @return common handler
+     */
+    CommonHandler getCommonHandler()
+    {
+        return commonHandler;
+    }
+
+    /**
+     * Return the specialized process handler for Asset Lineage OMAS.
+     *
+     * @return process handler
+     */
+    ProcessHandler getProcessHandler()
+    {
+        return processHandler;
+    }
 
 }
 
