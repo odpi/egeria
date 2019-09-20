@@ -32,9 +32,7 @@ image:
     namespace: jupyter
     name: base-notebook
 
-# When using the k8s-internal Kafka (from Confluent), enable auto-topic creation and minimize the footprint
-# (for full Kafka options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
-# (for full Zookeeper options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper)
+# When using the k8s-internal Kafka (from Bitnami), enable auto-topic creation and minimize the footprint
 kafka:
     #volumePermissions:
     #enabled: true

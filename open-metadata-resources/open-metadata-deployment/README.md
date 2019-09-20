@@ -54,8 +54,8 @@ want to make use of will be available.
 Start by adding the chart repositories we will need with the following helm command:
 
 ```bash
-$ helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
-"confluent" has been added to your repositories
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+"bitnami" has been added to your repositories
 ```
 
 This repository is needed for the Kafka chart on which our deployment depends.
@@ -66,7 +66,7 @@ Then update your local repository index with the following command:
 $ helm repo update
 Hang tight while we grab the latest from your chart repositories...
 ...Skip local chart repository
-...Successfully got an update from the "confluent" chart repository
+...Successfully got an update from the "bitnami" chart repository
 ...Successfully got an update from the "stable" chart repository
 Update Complete. * Happy Helming!*
 ```
@@ -92,11 +92,11 @@ $ helm dependency update vdc
 Hang tight while we grab the latest from your chart repositories...
 ...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
 	Get http://127.0.0.1:8879/charts/index.yaml: dial tcp 127.0.0.1:8879: connect: connection refused
-...Successfully got an update from the "confluent" chart repository
+...Successfully got an update from the "bitnami" chart repository
 ...Successfully got an update from the "stable" chart repository
 Update Complete. ⎈Happy Helming!⎈
 Saving 2 charts
-Downloading cp-helm-charts from repo https://confluentinc.github.io/cp-helm-charts/
+Downloading kafka from repo https://charts.bitnami.com/bitnami
 Downloading openldap from repo https://kubernetes-charts.storage.googleapis.com/
 Deleting outdated charts
 ```
