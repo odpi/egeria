@@ -36,7 +36,25 @@ public enum KafkaOpenMetadataEventConsumerProperty
 	/*
 	 * The amount of time to sleep after we encounter a Kafka error, in seconds
 	 */
-	RECOVERY_SLEEP_TIME("recovery_sleep_time_sec", "10");
+	RECOVERY_SLEEP_TIME("recovery_sleep_time_sec", "10"),
+	
+    /**
+     * This property adds an optional upper bound for the consumer event processing
+     * before an event is treated as being fully processed and committed to Kafka.  If
+     * the value is negative, there is no timeout, and offsets will not be committed
+     * into Kafka until the message has been completely processed by all consumers.
+     * 
+     * This property is only used if auto commit is disabled in the Kafka consumer.
+     */
+    CONSUMER_EVENT_PROCESSING_TIMEOUT_MINS("consumer_message_processing_timeout_mins", "30"),
+    
+    /**
+     * Controls the interval between checks to see if a message has
+     * been processed and its offset committed to Kafka.  This is only
+     * used if auto commit is disabled in the Kafka consumer. 
+     * 
+     */
+    COMMIT_CHECK_INTERVAL_MS("commit_check_interval_ms", "5000");
 
 	private String propertyName;
 	private String defaultValue;
