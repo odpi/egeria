@@ -112,6 +112,60 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
 
     /**
+     * Log the event
+     *
+     * @param instanceEventType event type
+     * @param instanceHeader header of the instance
+     * @param instanceEventOriginator originator
+     * @param instanceEvent whole event
+     * @param methodName calling method
+     */
+    private void logIncomingEvent(OMRSInstanceEventType instanceEventType,
+                                  InstanceHeader        instanceHeader,
+                                  OMRSEventOriginator   instanceEventOriginator,
+                                  OMRSInstanceEvent     instanceEvent,
+                                  String                methodName)
+    {
+        String instanceGUID = "<unknown GUID>";
+
+        if (instanceHeader != null)
+        {
+            instanceGUID = instanceHeader.getGUID();
+        }
+
+        this.logIncomingEvent(instanceEventType, instanceGUID, instanceEventOriginator, instanceEvent, methodName);
+    }
+
+
+    /**
+     * Log the event
+     *
+     * @param instanceEventType event type
+     * @param instanceGUID unique identifier of the instance
+     * @param instanceEventOriginator originator
+     * @param instanceEvent whole event
+     * @param methodName calling method
+     */
+    private void logIncomingEvent(OMRSInstanceEventType instanceEventType,
+                                  String                instanceGUID,
+                                  OMRSEventOriginator   instanceEventOriginator,
+                                  OMRSInstanceEvent     instanceEvent,
+                                  String                methodName)
+    {
+        OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_INCOMING_EVENT;
+        auditLog.logRecord(methodName,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(instanceEventType.getName(),
+                                                            instanceGUID,
+                                                            instanceEventOriginator.toString()),
+                           instanceEvent.toString(),
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+
+    /**
      * Unpack and process the incoming event
      *
      * @param cohortName source of the event
@@ -128,19 +182,14 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
 
         if ((instanceEventType != null) && (instanceEventOriginator != null))
         {
-            OMRSAuditCode auditCode = OMRSAuditCode.PROCESS_INCOMING_EVENT;
-            auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(instanceEventType.getName(),
-                                                                instanceEventOriginator.toString()),
-                               instanceEvent.toString(),
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
             switch (instanceEventType)
             {
                 case NEW_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processNewEntityEvent(cohortName,
                                                instanceEventOriginator.getMetadataCollectionId(),
                                                instanceEventOriginator.getServerName(),
@@ -150,6 +199,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case UPDATED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processUpdatedEntityEvent(cohortName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
@@ -160,6 +214,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case CLASSIFIED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processClassifiedEntityEvent(cohortName,
                                                       instanceEventOriginator.getMetadataCollectionId(),
                                                       instanceEventOriginator.getServerName(),
@@ -169,6 +228,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RECLASSIFIED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReclassifiedEntityEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -178,6 +242,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case DECLASSIFIED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processDeclassifiedEntityEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -187,6 +256,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case DELETED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processDeletedEntityEvent(cohortName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
@@ -196,6 +270,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case PURGED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getInstanceGUID(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processPurgedEntityEvent(cohortName,
                                                   instanceEventOriginator.getMetadataCollectionId(),
                                                   instanceEventOriginator.getServerName(),
@@ -207,6 +286,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case DELETE_PURGED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processDeletePurgedEntityEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -216,6 +300,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case UNDONE_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processUndoneEntityEvent(cohortName,
                                                   instanceEventOriginator.getMetadataCollectionId(),
                                                   instanceEventOriginator.getServerName(),
@@ -225,6 +314,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RESTORED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRestoredEntityEvent(cohortName,
                                                     instanceEventOriginator.getMetadataCollectionId(),
                                                     instanceEventOriginator.getServerName(),
@@ -234,6 +328,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case REFRESH_ENTITY_REQUEST:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getInstanceGUID(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRefreshEntityRequested(cohortName,
                                                        instanceEventOriginator.getMetadataCollectionId(),
                                                        instanceEventOriginator.getServerName(),
@@ -246,6 +345,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case REFRESHED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRefreshEntityEvent(cohortName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
@@ -255,6 +359,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RE_HOMED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReHomedEntityEvent(cohortName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
@@ -265,6 +374,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RETYPED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReTypedEntityEvent(cohortName,
                                                    instanceEventOriginator.getMetadataCollectionId(),
                                                    instanceEventOriginator.getServerName(),
@@ -275,6 +389,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RE_IDENTIFIED_ENTITY_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getEntity(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReIdentifiedEntityEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -285,6 +404,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case NEW_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processNewRelationshipEvent(cohortName,
                                                      instanceEventOriginator.getMetadataCollectionId(),
                                                      instanceEventOriginator.getServerName(),
@@ -294,6 +418,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case UPDATED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processUpdatedRelationshipEvent(cohortName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
@@ -304,6 +433,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case UNDONE_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processUndoneRelationshipEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -313,6 +447,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case DELETED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processDeletedRelationshipEvent(cohortName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
@@ -322,6 +461,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case PURGED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getInstanceGUID(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processPurgedRelationshipEvent(cohortName,
                                                         instanceEventOriginator.getMetadataCollectionId(),
                                                         instanceEventOriginator.getServerName(),
@@ -333,6 +477,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case DELETE_PURGED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processDeletePurgedRelationshipEvent(cohortName,
                                                               instanceEventOriginator.getMetadataCollectionId(),
                                                               instanceEventOriginator.getServerName(),
@@ -342,6 +491,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RESTORED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRestoredRelationshipEvent(cohortName,
                                                           instanceEventOriginator.getMetadataCollectionId(),
                                                           instanceEventOriginator.getServerName(),
@@ -351,6 +505,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case REFRESH_RELATIONSHIP_REQUEST:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getInstanceGUID(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRefreshRelationshipRequest(cohortName,
                                                            instanceEventOriginator.getMetadataCollectionId(),
                                                            instanceEventOriginator.getServerName(),
@@ -363,6 +522,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case REFRESHED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processRefreshRelationshipEvent(cohortName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
@@ -372,6 +536,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RE_IDENTIFIED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReIdentifiedRelationshipEvent(cohortName,
                                                               instanceEventOriginator.getMetadataCollectionId(),
                                                               instanceEventOriginator.getServerName(),
@@ -382,6 +551,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RE_HOMED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReHomedRelationshipEvent(cohortName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
@@ -392,6 +566,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                     break;
 
                 case RETYPED_RELATIONSHIP_EVENT:
+                    this.logIncomingEvent(instanceEventType,
+                                          instanceEvent.getRelationship(),
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
                     this.processReTypedRelationshipEvent(cohortName,
                                                          instanceEventOriginator.getMetadataCollectionId(),
                                                          instanceEventOriginator.getServerName(),
@@ -401,12 +580,17 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                                          instanceEvent.getRelationship());
                     break;
                 case BATCH_INSTANCES_EVENT:
-                	this.processInstanceBatchEvent(cohortName,
-                            instanceEventOriginator.getMetadataCollectionId(),
-                            instanceEventOriginator.getServerName(),
-                            instanceEventOriginator.getServerType(),
-                            instanceEventOriginator.getOrganizationName(),
-                            instanceEvent.getInstanceBatch());
+                    this.logIncomingEvent(instanceEventType,
+                                          "<multiple>",
+                                          instanceEventOriginator,
+                                          instanceEvent,
+                                          methodName);
+                    this.processInstanceBatchEvent(cohortName,
+                                                   instanceEventOriginator.getMetadataCollectionId(),
+                                                   instanceEventOriginator.getServerName(),
+                                                   instanceEventOriginator.getServerType(),
+                                                   instanceEventOriginator.getOrganizationName(),
+                                                   instanceEvent.getInstanceBatch());
                 	break;
                 case INSTANCE_ERROR_EVENT:
                     OMRSInstanceEventErrorCode errorCode = instanceEvent.getErrorCode();
@@ -416,6 +600,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                         switch(errorCode)
                         {
                             case CONFLICTING_INSTANCES:
+                                this.logIncomingEvent(instanceEventType,
+                                                      instanceEvent.getTargetInstanceGUID(),
+                                                      instanceEventOriginator,
+                                                      instanceEvent,
+                                                      methodName);
                                 this.processConflictingInstancesEvent(cohortName,
                                                                       instanceEventOriginator.getMetadataCollectionId(),
                                                                       instanceEventOriginator.getServerName(),
@@ -432,6 +621,11 @@ public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor 
                                 break;
 
                             case CONFLICTING_TYPE:
+                                this.logIncomingEvent(instanceEventType,
+                                                      instanceEvent.getTargetInstanceGUID(),
+                                                      instanceEventOriginator,
+                                                      instanceEvent,
+                                                      methodName);
                                 this.processConflictingTypeEvent(cohortName,
                                                                  instanceEventOriginator.getMetadataCollectionId(),
                                                                  instanceEventOriginator.getServerName(),

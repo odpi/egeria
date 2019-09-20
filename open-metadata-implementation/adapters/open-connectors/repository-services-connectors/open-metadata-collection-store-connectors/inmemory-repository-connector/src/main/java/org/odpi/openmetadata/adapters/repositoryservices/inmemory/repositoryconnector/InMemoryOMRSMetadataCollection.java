@@ -839,8 +839,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                                              sequencingProperty,
                                                              sequencingOrder,
                                                              pageSize);
-
-        repositoryValidator.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        
 
         /*
          * Perform operation

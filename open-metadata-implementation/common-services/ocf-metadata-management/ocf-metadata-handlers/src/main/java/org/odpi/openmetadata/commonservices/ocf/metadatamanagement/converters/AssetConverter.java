@@ -125,11 +125,14 @@ public class AssetConverter extends ReferenceableConverter
                                                                           AssetMapper.DESCRIPTION_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
+                /* Note this value should be in the classification */
                 bean.setOwner(repositoryHelper.removeStringProperty(serviceName,
                                                                     AssetMapper.OWNER_PROPERTY_NAME,
                                                                     instanceProperties,
                                                                     methodName));
+                /* Note this value should be in the classification */
                 bean.setOwnerType(this.removeOwnerTypeFromProperties(instanceProperties));
+                /* Note this value should be in the classification */
                 bean.setZoneMembership(repositoryHelper.removeStringArrayProperty(serviceName,
                                                                                   AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
                                                                                   instanceProperties,
@@ -157,6 +160,31 @@ public class AssetConverter extends ReferenceableConverter
                                                                                 methodName));
                 }
             }
+
+            /*
+             * The values in the classifications override the values in the main properties of the Asset's entity.
+             * Having these properties in the main entity is deprecated.
+             */
+            instanceProperties = super.getClassificationProperties(AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME);
+
+            if (instanceProperties != null)
+            {
+                bean.setZoneMembership(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                               AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                               instanceProperties,
+                                                                               methodName));
+            }
+
+            instanceProperties = super.getClassificationProperties(AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME);
+
+            if (instanceProperties != null)
+            {
+                bean.setOwner(repositoryHelper.getStringProperty(serviceName,
+                                                                 AssetMapper.OWNER_PROPERTY_NAME,
+                                                                 instanceProperties,
+                                                                 methodName));
+                bean.setOwnerType(this.getOwnerTypeFromProperties(instanceProperties));
+            }
         }
     }
 
@@ -167,7 +195,7 @@ public class AssetConverter extends ReferenceableConverter
      * @param properties  entity properties
      * @return ContactMethodType  enum value
      */
-    private OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
+    private OwnerType getOwnerTypeFromProperties(InstanceProperties   properties)
     {
         OwnerType ownerType = OwnerType.OTHER;
 
@@ -195,11 +223,30 @@ public class AssetConverter extends ReferenceableConverter
                         ownerType = OwnerType.OTHER;
                         break;
                 }
-
-                instancePropertiesMap.remove(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
-
-                properties.setInstanceProperties(instancePropertiesMap);
             }
+        }
+
+        return ownerType;
+    }
+
+
+    /**
+     * Retrieve the ContactMethodType enum property from the instance properties of an entity
+     *
+     * @param properties  entity properties
+     * @return ContactMethodType  enum value
+     */
+    private OwnerType removeOwnerTypeFromProperties(InstanceProperties   properties)
+    {
+        OwnerType ownerType = this.getOwnerTypeFromProperties(properties);
+
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertiesMap = properties.getInstanceProperties();
+
+            instancePropertiesMap.remove(AssetMapper.OWNER_TYPE_PROPERTY_NAME);
+
+            properties.setInstanceProperties(instancePropertiesMap);
         }
 
         return ownerType;

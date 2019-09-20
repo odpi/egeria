@@ -8,7 +8,7 @@ data.
 
 The list of valid values can be modelled directly in open metadata using
 the **ValidValuesSet** entity with one or more ValidValue entities linked off of it.
-There is on **ValidValue** entity for each of the valid values.
+There is one **ValidValue** entity instance for each of the valid values.
 
 Typically the valid values set is linked off of a [GlossaryTerm](0330-Terms.md)
 or a [SchemaElement](0501-Schema-Elements.md).

@@ -15,9 +15,9 @@ import java.util.Map;
  */
 public class ReferenceableBuilder extends RootBuilder
 {
-    private String               qualifiedName;
-    private Map<String, String>  additionalProperties = null;
-    private Map<String, Object>  extendedProperties = null;
+    protected String               qualifiedName;
+    private   Map<String, String>  additionalProperties = null;
+    private   Map<String, Object>  extendedProperties = null;
 
 
     /**
@@ -125,10 +125,12 @@ public class ReferenceableBuilder extends RootBuilder
 
         if (qualifiedName != null)
         {
+            String literalQualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
+
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       null,
                                                                       ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      qualifiedName,
+                                                                      literalQualifiedName,
                                                                       methodName);
         }
 
@@ -144,6 +146,6 @@ public class ReferenceableBuilder extends RootBuilder
      */
     public InstanceProperties getQualifiedNameInstanceProperties(String  methodName)
     {
-        return getNameInstanceProperties(methodName);
+        return this.getNameInstanceProperties(methodName);
     }
 }

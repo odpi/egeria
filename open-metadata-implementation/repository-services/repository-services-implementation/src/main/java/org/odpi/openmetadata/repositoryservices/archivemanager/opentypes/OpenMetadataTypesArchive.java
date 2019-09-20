@@ -3135,7 +3135,7 @@ public class OpenMetadataTypesArchive
     private EnumDef getServerAssetUseTypeEnum()
     {
         final String guid            = "09439481-9489-467c-9ae5-178a6e0b6b5a";
-        final String name            = "ServerAssetUse";
+        final String name            = "ServerAssetUseType";
         final String description     = "Defines how a server capability may use an asset.";
         final String descriptionGUID = null;
 
@@ -3269,7 +3269,7 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Additional information on how the asset is use by the software server capability.";
         final String attribute2DescriptionGUID = null;
 
-        property = archiveHelper.getEnumTypeDefAttribute("ServerAssetUse",
+        property = archiveHelper.getEnumTypeDefAttribute("ServerAssetUseType",
                                                          attribute1Name,
                                                          attribute1Description,
                                                          attribute1DescriptionGUID);
@@ -8557,6 +8557,7 @@ public class OpenMetadataTypesArchive
     private void add0220FilesAndFolders()
     {
         this.archiveBuilder.addEntityDef(getFileFolderEntity());
+        this.archiveBuilder.addEntityDef(getDataFolderEntity());
         this.archiveBuilder.addEntityDef(getDataFileEntity());
         this.archiveBuilder.addEntityDef(getCSVFileEntity());
         this.archiveBuilder.addEntityDef(getAvroFileEntity());
@@ -8587,6 +8588,23 @@ public class OpenMetadataTypesArchive
     }
 
 
+    private EntityDef getDataFolderEntity()
+    {
+        final String guid            = "9f1fb984-db15-43ee-85fb-f8b0353bfb8b";
+        final String name            = "DataFolder";
+        final String description     = "A folder (directory) in a file system that contains a collection of data.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "FileFolder";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+
     private EntityDef getDataFileEntity()
     {
         final String guid            = "10752b4a-4b5d-4519-9eae-fdd6d162122f";
@@ -8596,11 +8614,31 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "DataStore";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
+                                                                 name,
+                                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                                 description,
+                                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "fileType";
+        final String attribute1Description     = "File type descriptor typically extracted from the file name.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -17877,6 +17915,9 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addRelationshipDef(getAttributeForSchemaRelationship());
         this.archiveBuilder.addRelationshipDef(getSchemaAttributeTypeRelationship());
+        this.archiveBuilder.addRelationshipDef(getNestedSchemaAttributeRelationship());
+
+        this.archiveBuilder.addClassificationDef(getTypeEmbeddedAttributeClassification());
     }
 
 
@@ -17908,27 +17949,36 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "position";
         final String attribute2Description     = "Position in the schema, starting at zero.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "cardinality";
-        final String attribute3Description     = "Number of occurrences of this attribute allowed.";
+        final String attribute3Name            = "minCardinality";
+        final String attribute3Description     = "Minimum number of occurrences of this attribute allowed (0 = optional, 1+ = mandatory).";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "defaultValueOverride";
-        final String attribute4Description     = "Initial value for the attribute (overriding the default value of its type.";
+        final String attribute4Name            = "maxCardinality";
+        final String attribute4Description     = "Maximum number of occurrences of this attribute allowed (-1 = infinite).";
         final String attribute4DescriptionGUID = null;
-        final String attribute5Name            = "id";
-        final String attribute5Description     = "Id of schema element.";
+        final String attribute5Name            = "allowsDuplicateValues";
+        final String attribute5Description     = "When multiple occurrences are allowed, indicates whether duplicates of the same value are allowed or not.";
         final String attribute5DescriptionGUID = null;
-        final String attribute6Name            = "description";
-        final String attribute6Description     = "Description of the column.";
+        final String attribute6Name            = "orderedValues";
+        final String attribute6Description     = "When multiple occurrences are allowed, indicates whether the values are ordered or not.";
         final String attribute6DescriptionGUID = null;
-        final String attribute7Name            = "comment";
-        final String attribute7Description     = "Comment";
+        final String attribute7Name            = "defaultValueOverride";
+        final String attribute7Description     = "Initial value for the attribute (overriding the default value of its type.";
         final String attribute7DescriptionGUID = null;
-        final String attribute8Name            = "nativeClass";
-        final String attribute8Description     = "Native class used by the client to represent this entity.";
+        final String attribute8Name            = "id";
+        final String attribute8Description     = "Id of schema element.";
         final String attribute8DescriptionGUID = null;
-        final String attribute9Name            = "formula";
-        final String attribute9Description     = "formula";
+        final String attribute9Name            = "description";
+        final String attribute9Description     = "Description of the column.";
         final String attribute9DescriptionGUID = null;
+        final String attribute10Name            = "comment";
+        final String attribute10Description     = "Comment";
+        final String attribute10DescriptionGUID = null;
+        final String attribute11Name            = "nativeClass";
+        final String attribute11Description     = "Native class used by the client to represent this entity.";
+        final String attribute11DescriptionGUID = null;
+        final String attribute12Name            = "formula";
+        final String attribute12Description     = "formula";
+        final String attribute12DescriptionGUID = null;
 
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -17939,19 +17989,17 @@ public class OpenMetadataTypesArchive
                 attribute2Description,
                 attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute3Name,
                 attribute3Description,
                 attribute3DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+        property = archiveHelper.getIntTypeDefAttribute(attribute4Name,
                 attribute4Description,
                 attribute4DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute5Name,
                 attribute5Description,
                 attribute5DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute6Name,
                 attribute6Description,
                 attribute6DescriptionGUID);
         properties.add(property);
@@ -17966,6 +18014,18 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute9Name,
                 attribute9Description,
                 attribute9DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute10Name,
+                attribute10Description,
+                attribute10DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute11Name,
+                attribute11Description,
+                attribute11DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute12Name,
+                attribute12Description,
+                attribute12DescriptionGUID);
         properties.add(property);
 
 
@@ -18116,6 +18176,135 @@ public class OpenMetadataTypesArchive
         relationshipDef.setEndDef2(relationshipEndDef);
 
         return relationshipDef;
+    }
+
+
+    private RelationshipDef getNestedSchemaAttributeRelationship()
+    {
+        final String guid            = "0ffb9d87-7074-45da-a9b0-ae0859611133";
+        final String name            = "NestedSchemaAttribute";
+        final String description     = "The direct parent-child relationship between attributes with an embedded type.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "SchemaAttribute";
+        final String                     end1AttributeName            = "parentAttribute";
+        final String                     end1AttributeDescription     = "Schema attribute containing this attribute.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "SchemaAttribute";
+        final String                     end2AttributeName            = "nestedAttributes";
+        final String                     end2AttributeDescription     = "The attributes defining the internal structure of the parent attribute.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        return relationshipDef;
+    }
+
+
+    private ClassificationDef getTypeEmbeddedAttributeClassification()
+    {
+        final String guid            = "e2bb76bb-774a-43ff-9045-3a05f663d5d9";
+        final String name            = "TypeEmbeddedAttribute";
+        final String description     = "Type information embedded within an attribute.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "SchemaAttribute";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                this.archiveBuilder.getEntityDef(
+                        linkedToEntity),
+                false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "versionNumber";
+        final String attribute1Description     = "Version of the schema type.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "author";
+        final String attribute2Description     = "User name of the person or process that created the schema type.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "usage";
+        final String attribute3Description     = "Guidance on how the schema should be used.";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "encodingStandard";
+        final String attribute4Description     = "Format of the schema.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "dataType";
+        final String attribute5Description     = "Type name for the data stored in this schema element.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "defaultValue";
+        final String attribute6Description     = "Initial value for data stored in this schema element.";
+        final String attribute6DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                attribute1Description,
+                attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                attribute5Description,
+                attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                attribute6Description,
+                attribute6DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 

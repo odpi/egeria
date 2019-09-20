@@ -18,6 +18,8 @@
         Packaged executables from Egeria.
     </description>
 
+    <packaging>jar</packaging>
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>open-metadata-assemblies</artifactId>
@@ -31,7 +33,7 @@
                         <goals>
                             <goal>single</goal>
                         </goals>
-                        <phase>package</phase>
+                        <phase>prepare-package</phase>
                         <configuration>
                             <skipAssembly>false</skipAssembly>
                             <descriptors>
@@ -48,11 +50,35 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-                <version>2.7</version>
                 <configuration>
                     <skip>false</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>default-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                 <filtering>false</filtering>
+                 <directory>target</directory>
+                 <includes>
+                     <include>*.gz</include>
+                 </includes>
+            </resource>
+        </resources>
     </build>
 </project>
