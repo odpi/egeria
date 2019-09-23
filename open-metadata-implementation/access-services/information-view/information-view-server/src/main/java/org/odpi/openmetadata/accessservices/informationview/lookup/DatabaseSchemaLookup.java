@@ -48,7 +48,10 @@ public class DatabaseSchemaLookup extends EntityLookup<TableSource> {
 
     @Override
     protected InstanceProperties getMatchingProperties(TableSource source) {
-        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getSchemaName(), "findDatabase");
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String sourceSchemaNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getSchemaName());
+        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(),
+                Constants.NAME, sourceSchemaNameRegex, "findDatabase");
     }
 
   

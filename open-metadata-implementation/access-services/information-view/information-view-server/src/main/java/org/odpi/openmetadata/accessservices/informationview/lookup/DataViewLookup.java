@@ -36,7 +36,10 @@ public class DataViewLookup extends EntityLookup<DataViewSource> {
     @Override
     protected InstanceProperties getMatchingProperties(DataViewSource source) {
         InstanceProperties matchProperties = new InstanceProperties();
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.ID, source.getId(), "getMatchingProperties");
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String sourceIdRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getId());
+        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties,
+                Constants.ID, sourceIdRegex, "getMatchingProperties");
         return matchProperties;
     }
 }

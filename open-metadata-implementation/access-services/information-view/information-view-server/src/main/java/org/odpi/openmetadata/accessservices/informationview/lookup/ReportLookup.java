@@ -42,7 +42,10 @@ public class ReportLookup extends EntityLookup<ReportSource>  {
     @Override
     protected InstanceProperties getMatchingProperties(ReportSource source) {
         InstanceProperties matchProperties = new InstanceProperties();
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.ID, source.getReportId(), "getMatchingProperties");
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String sourceReportIdRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getReportId());
+        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties,
+                Constants.ID, sourceReportIdRegex, "getMatchingProperties");
         return matchProperties;
     }
 
