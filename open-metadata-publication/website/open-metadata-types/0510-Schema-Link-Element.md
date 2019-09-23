@@ -3,7 +3,7 @@
 
 # 0510 Schema Link Element
 
-Schema link elements allows a schema to reference and external schema.
+Schema link elements allow a schema to reference an external schema.
 This could be a schema from an external standard or tool.
 
 ![UML](0510-Schema-Link-Element.png)

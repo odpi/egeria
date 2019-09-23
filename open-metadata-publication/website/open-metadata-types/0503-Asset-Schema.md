@@ -4,13 +4,11 @@
 # 0503 Asset Schema
 
 Model 0503 shows the relationship between an [Asset](0010-Base-Model.md)
-and a [Schema Element](0501-Schema-Elements.md).
+and a [SchemaType](0501-Schema-Elements.md).
 
-A physical data store may be made up of a hierarchy of Assets.
-Each of these Assets may point to the appropriate SchemaElements which
-are also typically organized in a hierarchy.
-Thus we can work with both assets and schema at different
-levels of granularity.
+A physical data store may be made up of one or more Assets.
+Each of these Assets may point to the appropriate SchemaType that describes
+the structure of the Asset.
 
 ![UML](0503-Asset-Schema.png)
 

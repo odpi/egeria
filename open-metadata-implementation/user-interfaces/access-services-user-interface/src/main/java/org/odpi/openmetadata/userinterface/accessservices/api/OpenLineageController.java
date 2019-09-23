@@ -4,11 +4,16 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -115,6 +120,12 @@ public class OpenLineageController {
             throw new IllegalArgumentException(e.getMessage());
         }
         throw new RuntimeException("Unknown exception! " + e.getMessage());
+    }
+
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
+        webdataBinder.registerCustomEditor(Scope.class, new ScopeEnumConverter());
     }
 
 }
