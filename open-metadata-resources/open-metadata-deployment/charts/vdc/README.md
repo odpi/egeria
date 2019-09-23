@@ -31,7 +31,7 @@ Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not con
 **Required helm repositories (prereq)**
 
 ```
-helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
 **Installing a chart**
