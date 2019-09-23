@@ -61,6 +61,7 @@ public class AssetOwnerServicesInstance extends OCFOMASServiceInstance
 
             this.fileSystemHandler = new FileSystemHandler(serviceName,
                                                            serverName,
+                                                           supportedZones,
                                                            assetHandler,
                                                            schemaTypeHandler,
                                                            invalidParameterHandler,

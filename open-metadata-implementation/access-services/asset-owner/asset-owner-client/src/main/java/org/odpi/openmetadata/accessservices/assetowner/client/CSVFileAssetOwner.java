@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingCSVFil
 import org.odpi.openmetadata.accessservices.assetowner.rest.NewCSVFileAssetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -81,18 +81,18 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
      *
-     * @return unique identifier (guid) of the asset
+     * @return list of GUIDs from the top level to the root of the pathname
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String  addCSVFileToCatalog(String    userId,
-                                       String    displayName,
-                                       String    description,
-                                       String    fullPath) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+    public List<String>  addCSVFileToCatalog(String    userId,
+                                             String    displayName,
+                                             String    description,
+                                             String    fullPath) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         return this.addCSVFileToCatalog(userId,
                                         displayName,
@@ -114,25 +114,26 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
      * @param columnHeaders does the first line of the file contain the column names. If not pass the list of column headers.
      * @param delimiterCharacter what is the delimiter character - null for default of comma
      * @param quoteCharacter what is the character to group a field that contains delimiter characters
-     * @return unique identifier (guid) of the asset
+     *
+     * @return list of GUIDs from the top level to the root of the pathname
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String  addCSVFileToCatalog(String       userId,
-                                       String       displayName,
-                                       String       description,
-                                       String       fullPath,
-                                       List<String> columnHeaders,
-                                       Character    delimiterCharacter,
-                                       Character    quoteCharacter) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException,
-                                                                           PropertyServerException
+    public List<String>  addCSVFileToCatalog(String       userId,
+                                             String       displayName,
+                                             String       description,
+                                             String       fullPath,
+                                             List<String> columnHeaders,
+                                             Character    delimiterCharacter,
+                                             Character    quoteCharacter) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 PropertyServerException
     {
         final String   methodName = "addCSVFileToCatalog";
         final String   pathParameter = "fullPath";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files/csv";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files/csv";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
@@ -145,16 +146,16 @@ public class CSVFileAssetOwner implements AssetOnboardingCSVFileInterface
         requestBody.setDelimiterCharacter(delimiterCharacter);
         requestBody.setQuoteCharacter(quoteCharacter);
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-        return restResult.getGUID();
+        return restResult.getGUIDs();
     }
 }

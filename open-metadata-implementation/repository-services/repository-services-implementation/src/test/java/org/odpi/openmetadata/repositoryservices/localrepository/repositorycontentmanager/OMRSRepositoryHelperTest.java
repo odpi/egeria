@@ -163,6 +163,18 @@ public class OMRSRepositoryHelperTest
         assertFalse(Pattern.matches(testEndsWith, testString + "x"));
         assertTrue(createHelper().getUnqualifiedLiteralString(testEndsWith).equals(endsWith));
 
+        // test 10 ensure that multi-literal regexes do not match
+        String multiExact = "\\Qsome.exact\\Eand.not\\Qand.more\\E";
+        String multiError = "\\Qsome.exact\\Eand.not\\E";
+        String multiContains = ".*" + multiExact + ".*";
+        String multiStarts = multiExact + ".*";
+        String multiEnds = ".*" + multiExact;
+        assertFalse(createHelper().isExactMatchRegex(multiExact));
+        assertFalse(createHelper().isExactMatchRegex(multiError));
+        assertFalse(createHelper().isContainsRegex(multiContains));
+        assertFalse(createHelper().isStartsWithRegex(multiStarts));
+        assertFalse(createHelper().isEndsWithRegex(multiEnds));
+
     }
 
     private OMRSRepositoryHelper createHelper() {
