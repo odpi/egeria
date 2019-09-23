@@ -26,14 +26,13 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.stream.IntStream;
+import java.util.List;
 
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @EnableSwagger2
 @Configuration
-public class OMAGServerPlatform
-{
+public class OMAGServerPlatform {
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
@@ -43,22 +42,29 @@ public class OMAGServerPlatform
     @Value("${startup.server.list}")
     String startupServers;
 
+    @Autowired
+    EventPublisherManager eventPublisher;
+
+    @Autowired
+    private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private ApplicationContext appContext;
+
+
     private String startupMessage = "";
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
     private static final Logger log = LoggerFactory.getLogger(OMAGServerPlatform.class);
 
-    public static void main(String[] args)
-    {
-        SpringApplication.run(OMAGServerPlatform.class, args);
+    public static void main(String[] args) {
+        ConfigurableApplicationContext ctx = SpringApplication.run(OMAGServerPlatform.class, args);
     }
 
     @Bean
-    public InitializingBean getInitialize()
-    {
+    public InitializingBean getInitialize() {
         return () -> {
-            if (!strictSSL)
-            {
+            if (!strictSSL) {
                 log.warn("strict.ssl is set to false! Invalid certificates will be accepted for connection!");
                 HttpHelper.noStrictSSL();
             }
@@ -67,42 +73,55 @@ public class OMAGServerPlatform
     }
 
     /**
-     *  starts the servers specified in the startup.server.list property
+     * starts the servers specified in the startup.server.list property
      */
-    private void autoStartConfig(){
-        if(!startupUser.trim().isEmpty() && !startupServers.trim().isEmpty()){
-            log.info("Startup detected for servers: {}",startupServers);
+    private boolean autoStartConfig() {
+        if (!startupUser.trim().isEmpty() && !startupServers.trim().isEmpty()) {
+            log.info("Startup detected for servers: {}", startupServers);
             String[] splits = startupServers.split(",");
             //remove eventual duplicates
             HashSet<String> servers = new HashSet<>(Arrays.asList(splits));
 
-            servers.forEach(server -> {
-                        SuccessMessageResponse response = operationalServices.activateWithStoredConfig(startupUser, server);
-                        if(response.getRelatedHTTPCode() == 200){
-                            startupMessage += "OMAG Server '" + server + "' SUCCESS start , with message: " +
-                                        response.getSuccessMessage() + System.lineSeparator();
-                        }else{
-                            startupMessage += "OMAG Server '" + server + "' ERROR while startup, with error message: " +
-                                    response.getExceptionErrorMessage() + System.lineSeparator();
-                        }
-                    });
-            ;
-        }else {
+            for (String server : servers) {
+                SuccessMessageResponse response = operationalServices.activateWithStoredConfig(startupUser, server);
+                if (response.getRelatedHTTPCode() == 200) {
+                    startupMessage += "OMAG Server '" + server + "' SUCCESS start , with message: " +
+                            response.getSuccessMessage() + System.lineSeparator();
+                } else {
+                    startupMessage += "OMAG Server '" + server + "' ERROR while startup, with error message: " +
+                            response.getExceptionErrorMessage() + System.lineSeparator();
+                    return false;
+                }
+            }
+
+        } else {
             log.info("No OMAG server in startup configuration");
             startupMessage = "No OMAG server in startup configuration";
+        }
+        return true;
+    }
+
+    private void temporaryDeactivateServers(){
+        List<String> activeServerList = platformAPI.getActiveServerList(startupUser).getServerList();
+        for (String server : activeServerList) {
+            VoidResponse voidResponse = operationalServices.deactivateTemporarily(startupUser, server);
+            if(200 == voidResponse.getRelatedHTTPCode()){
+                log.info("OMAG Server '{}' temporary deactivated SUCCESSFULLY  ",server); ;
+            } else {
+                log.error("OMAG Server '{}' temporary deactivation FAIL with code {}  and message {} ",
+                        server,
+                        voidResponse.getRelatedHTTPCode(),
+                        voidResponse.getExceptionErrorMessage()); ;
+            }
         }
     }
 
 
-
-
     /**
-     *
      * @return Swagger documentation bean
      */
     @Bean
-    public Docket egeriaAPI()
-    {
+    public Docket egeriaAPI() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
@@ -112,17 +131,20 @@ public class OMAGServerPlatform
 
 
     @Component
-    public class ApplicationContextListener implements
-                                            ApplicationListener<ContextRefreshedEvent>
-    {
-        @Override
-        public void onApplicationEvent(ContextRefreshedEvent event)
-        {
+    public class ApplicationContextListener  {
+
+        @EventListener
+        public void onApplicationEvent(ContextRefreshedEvent event) {
             System.out.println();
             System.out.println(OMAGServerPlatform.this.startupMessage);
             System.out.println(new Date().toString() + " OMAG server platform ready for more configurations");
         }
 
+        @EventListener
+        public void onApplicationEvent(ContextClosedEvent event) {
+            System.out.println("Context closed event received. Calling temporary deactivate the servers...");
+            temporaryDeactivateServers();
+        }
     }
 
 }
