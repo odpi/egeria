@@ -9,19 +9,19 @@ public enum Scope {
     ULTIMATE_DESTINATION("ultimate-destination"),
     GLOSSARY("glossary");
 
-    private final String text;
+    private final String value;
 
     Scope(String s) {
-        this.text = s;
+        this.value = s;
     }
 
-    public String getText() {
-        return text;
+    public String getValue() {
+        return value;
     }
 
     public static Scope fromString(String text) {
         for (Scope value : Scope.values()) {
-            if (value.text.equals(text)) {
+            if (value.value.equals(text)) {
                 return value;
             }
         }

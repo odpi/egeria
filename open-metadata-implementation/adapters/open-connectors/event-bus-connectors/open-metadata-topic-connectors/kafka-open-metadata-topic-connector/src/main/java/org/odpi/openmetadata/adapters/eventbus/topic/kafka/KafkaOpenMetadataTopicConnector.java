@@ -2,14 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.IncomingEvent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-
-import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -18,6 +22,8 @@ import java.util.*;
  */
 public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
+    public static final String ENABLE_AUTO_COMMIT_PROPERTY = "enable.auto.commit";
+
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
     
@@ -31,9 +37,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
     private String       topicName          = null;
     private String       serverId           = null;
-    private List<String> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
-
-
+    private List<IncomingEvent> incomingEventsList = Collections.synchronizedList(new ArrayList<>());
     /**
      * Constructor sets up the default properties for the producer and consumer.  Any properties passed through
      * the connection's additional properties will override these values.  For most environments,
@@ -54,7 +58,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         producerProperties.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         consumerProperties.put("bootstrap.servers", "localhost:9092");
-        consumerProperties.put("enable.auto.commit", "true");
+        consumerProperties.put(ENABLE_AUTO_COMMIT_PROPERTY, "true");
         consumerProperties.put("auto.commit.interval.ms", "1000");
         consumerProperties.put("session.timeout.ms", "30000");
         consumerProperties.put("max.partition.fetch.bytes",	10485760);
@@ -250,9 +254,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      *
      * @return a list of received events or null
      */
-    protected List<String> checkForEvents()
+    @Override
+    protected List<IncomingEvent> checkForIncomingEvents()
     {
-        List<String> newEvents = null;
+        List<IncomingEvent> newEvents = null;
 
         // This method is called periodically from a independent thread managed by OpenMetadataTopic
         // (superclass) so it should not block.
@@ -269,13 +274,12 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         return newEvents;
     }
 
-
     /**
      * Distribute events to other listeners.
      *
      * @param event object containing the event properties.
      */
-    void distributeToListeners(String event)
+    void distributeToListeners(IncomingEvent event)
     {
         log.debug("distribute event to listeners" + event);
         incomingEventsList.add(event);
