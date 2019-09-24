@@ -1,0 +1,55 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+trigger:
+  branches:
+    include:
+      - master
+      - egeria-release-*
+pr: none
+
+stages:
+  - stage: Merge
+    jobs:
+      - job: Deploy
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: DownloadSecureFile@1
+            name: mavenSettings
+            inputs:
+              secureFile: egeria-artifactory-settings.xml
+          - script: |
+              mkdir -p $(Agent.HomeDirectory)/.m2/
+              mv $(mavenSettings.secureFilePath) $(Agent.HomeDirectory)/.m2/settings.xml
+          - task: ArtifactoryMaven@1
+            inputs:
+              mavenPomFile: 'pom.xml'
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              artifactoryResolverService: 'ODPiArtifactory'
+              targetResolveReleaseRepo: 'egeria-staging'
+              targetResolveSnapshotRepo: 'egeria-snapshot'
+              artifactoryDeployService: 'ODPiArtifactory'
+              targetDeployReleaseRepo: 'egeria-staging'
+              targetDeploySnapshotRepo: 'egeria-snapshot'
+              collectBuildInfo: true
+              buildName: 'Egeria'
+              buildNumber: '$(Build.BuildNumber)'
+              includeEnvVars: true
+              goals: 'clean install'
+              options: >-
+                  --batch-mode
+                  -e
+                  -Dmerge
+                  -s $(Agent.HomeDirectory)/.m2/settings.xml
+                  -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+                  -P artifactory
+          - task: ArtifactoryPublishBuildInfo@1
+            inputs:
+              artifactoryService: ODPiArtifactory
+              buildName: 'Egeria'
+          - publish: target
+            artifact: target-$(Build.BuildId)
+            condition: always()
