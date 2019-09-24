@@ -299,16 +299,10 @@ public class DataEngineRESTServices {
 
             handleFailedProcesses(response, mappedResponses);
 
-            createLineageMappings(userId, serverName, processesRequestBody.getLineageMappings(), response);
-
             createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
                     guidResponse.getGUID(), InstanceStatus.ACTIVE));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
-        } catch (PropertyServerException error) {
-            restExceptionHandler.capturePropertyServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: {} with response: {}", methodName, response.toString());

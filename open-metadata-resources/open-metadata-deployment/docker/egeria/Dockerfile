@@ -15,6 +15,7 @@ ENV repo ${repo:-"https://nexus.odpi.org/content/groups/public/"}
 ADD https://nexus.odpi.org/content/groups/public/org/odpi/egeria/egeria/${version}/ index.html
 
 WORKDIR /opt/egeria
+RUN mkdir /opt/egeria/binaries
 
 RUN mvn org.apache.maven.plugins:maven-dependency-plugin:2.5.1:get -DremoteRepositories=$repo \
     -Dartifact=org.odpi.egeria:open-metadata-assemblies:${version}:jar -Ddest=egeria.jar && \
@@ -46,7 +47,6 @@ RUN apk --no-cache add bash shadow && \
 
 COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
 COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
-COPY --from=build --chown=egeria:egeria /opt/egeria/git.* /opt/egeria/details/
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
