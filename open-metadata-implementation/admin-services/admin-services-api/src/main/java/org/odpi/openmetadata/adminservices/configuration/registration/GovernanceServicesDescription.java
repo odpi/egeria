@@ -50,7 +50,12 @@ public enum GovernanceServicesDescription implements Serializable
                                       "Data Engine Proxy Services",
                                       null,
                                       "Integrate Data Engines that are not self-capable of integrating directly with the Data Engine OMAS",
-                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/data-engine-proxy-services/");
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/data-engine-proxy-services/"),
+    DATA_PLATFORM_SERVICES           (2008,
+                                      "Data Platform Services",
+                                      null,
+                                      "Publish metadata on data platforms that are not self-capable of integrating directly with the Data Platform OMAS",
+                                      "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/data-platform-services/");
 
 
     private static final long     serialVersionUID    = 1L;

@@ -388,6 +388,9 @@
                         <!--<exclude>**/*.json</exclude>-->
                         <exclude>**/banner.txt</exclude>
                         <exclude>tools/polymer*</exclude>
+                        <exclude>**/.vscode*/**</exclude>
+                        <exclude>**/.factorypath/**</exclude>
+                        <exclude>**/**.code-workspace</exclude>
                     </excludes>
                 </configuration>
             </plugin>

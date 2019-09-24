@@ -5,10 +5,7 @@ package org.odpi.openmetadata.accessservices.assetowner.client;
 import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingFileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
 import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
-import org.odpi.openmetadata.accessservices.assetowner.rest.FileSystemResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.FolderResponse;
-import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileSystemRequestBody;
-import org.odpi.openmetadata.accessservices.assetowner.rest.PathNameRequestBody;
+import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -109,23 +106,23 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String   createFileSystemInCatalog(String               userId,
-                                              String               uniqueName,
-                                              String               displayName,
-                                              String               description,
-                                              String               type,
-                                              String               version,
-                                              String               patchLevel,
-                                              String               source,
-                                              String               format,
-                                              String               encryption,
+    public String   createFileSystemInCatalog(String              userId,
+                                              String              uniqueName,
+                                              String              displayName,
+                                              String              description,
+                                              String              type,
+                                              String              version,
+                                              String              patchLevel,
+                                              String              source,
+                                              String              format,
+                                              String              encryption,
                                               Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException
     {
         final String   methodName = "createFileSystemInCatalog";
         final String   pathParameter = "uniqueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, pathParameter, methodName);
@@ -178,7 +175,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "createFolderStructureInCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
@@ -222,7 +219,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "createFolderStructureInCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
@@ -264,7 +261,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         final String   methodName = "attachFolderToFileSystem";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems/{2}/folders/{3}/attach";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/attach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
@@ -306,7 +303,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
         final String   methodName = "detachFolderFromFileSystem";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems/{2}/folders/{3}/detach";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}/folders/{3}/detach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
@@ -329,14 +326,16 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
 
 
     /**
-     * Creates a new file asset and links it to the folder structure implied in the path name.  If the folder
+     * Creates a new data file asset and links it to the folder structure implied in the path name.  If the folder
      * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
      * For example, a pathName of "one/two/three/MyFile.txt" potentially creates 3 new folder assets, one called "one",
      * the next called "one/two" and the last one called "one/two/three" plus a file asset called
      * "one/two/three/MyFile.txt".
      *
      * @param userId calling user
-     * @param pathName pathname of the file
+     * @param displayName display name for the file in the catalog
+     * @param description description of the file in the catalog
+     * @param pathName pathname of the data file
      *
      * @return list of GUIDs from the top level to the root of the pathname
      *
@@ -344,19 +343,76 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public List<String> addFileAssetToCatalog(String   userId,
-                                              String   pathName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+    public List<String> addDataFileAssetToCatalog(String   userId,
+                                                  String   displayName,
+                                                  String   description,
+                                                  String   pathName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        final String   methodName = "addFileAssetToCatalog";
+        final String   methodName = "addDataFileAssetToCatalog";
         final String   pathParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, pathParameter, methodName);
 
-        PathNameRequestBody requestBody = new PathNameRequestBody();
+        NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
+        requestBody.setDisplayName(displayName);
+        requestBody.setDescription(description);
+        requestBody.setFullPath(pathName);
+
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getGUIDs();
+    }
+
+
+    /**
+     * Creates a new folder asset that is identified as a data asset.  This means the files and sub-folders within
+     * it collectively make up the contents of the data asset.  As with other types of file-based asset, links
+     * are made to the folder structure implied in the path name.  If the folder
+     * structure is not catalogued already, this is created automatically using the createFolderStructureInCatalog() method.
+     * For example, a pathName of "one/two/three/MyDataFolder" potentially creates 3 new folder assets, one called "one",
+     * the next called "one/two" and the last one called "one/two/three" plus a DataFolder asset called
+     * "one/two/three/MyDataFolder".
+     *
+     * @param userId calling user
+     * @param displayName display name for the file in the catalog
+     * @param description description of the file in the catalog
+     * @param pathName pathname of the data folder
+     *
+     * @return list of GUIDs from the top level to the root of the pathname
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<String> addDataFolderAssetToCatalog(String   userId,
+                                                    String   displayName,
+                                                    String   description,
+                                                    String   pathName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
+    {
+        final String   methodName = "addDataFolderAssetToCatalog";
+        final String   pathParameter = "pathName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-folders";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(pathName, pathParameter, methodName);
+
+        NewFileAssetRequestBody requestBody = new NewFileAssetRequestBody();
+        requestBody.setDisplayName(displayName);
+        requestBody.setDescription(description);
         requestBody.setFullPath(pathName);
 
         GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
@@ -385,16 +441,16 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  attachFileAssetToFolder(String   userId,
-                                         String   folderGUID,
-                                         String   fileGUID) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public void attachDataFileAssetToFolder(String   userId,
+                                            String   folderGUID,
+                                            String   fileGUID) throws InvalidParameterException,
+                                                                      UserNotAuthorizedException,
+                                                                      PropertyServerException
     {
-        final String   methodName = "attachFileAssetToFolder";
+        final String   methodName = "attachDataFileAssetToFolder";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}/files/{3}/attach";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/attach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
@@ -417,8 +473,8 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
 
 
     /**
-     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveFileInCatalog to record
-     * the fact that the physical file has moved.  Use attachFileAssetToFolder to create logical link to a new
+     * Remove a link between a file asset and a folder.  The file is not changed.  Use moveDataFileInCatalog to record
+     * the fact that the physical file has moved.  Use attachDataFileAssetToFolder to create logical link to a new
      * folder.
      *
      * @param userId calling user
@@ -429,16 +485,16 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  detachFileAssetFromFolder(String   userId,
-                                           String   folderGUID,
-                                           String   fileGUID) throws InvalidParameterException,
+    public void detachDataFileAssetFromFolder(String   userId,
+                                              String   folderGUID,
+                                              String   fileGUID) throws InvalidParameterException,
                                                                      UserNotAuthorizedException,
                                                                      PropertyServerException
     {
-        final String   methodName = "detachFileAssetFromFolder";
+        final String   methodName = "detachDataFileAssetFromFolder";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}/files/{3}/detach";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/detach";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
@@ -472,16 +528,16 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public void  moveFileInCatalog(String   userId,
-                                   String   folderGUID,
-                                   String   fileGUID) throws InvalidParameterException,
+    public void moveDataFileInCatalog(String   userId,
+                                      String   folderGUID,
+                                      String   fileGUID) throws InvalidParameterException,
                                                              UserNotAuthorizedException,
                                                              PropertyServerException
     {
-        final String   methodName = "moveFileInCatalog";
+        final String   methodName = "moveDataFileInCatalog";
         final String   fileGUIDParameter = "fileGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}/files/{3}/move-to";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files/{3}/move-to";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileGUID, fileGUIDParameter, methodName);
@@ -496,6 +552,49 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                   userId,
                                                                   folderGUID,
                                                                   fileGUID);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    }
+
+
+    /**
+     * Move a data folder from its current parent folder to a new parent folder - this changes the folder's qualified name
+     * but not its unique identifier (guid).  Also the the endpoint in the connection object.
+     *
+     * @param userId calling user
+     * @param folderGUID new parent folder
+     * @param dataFolderGUID unique identifier of the file to move
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void moveDataFolderInCatalog(String   userId,
+                                        String   folderGUID,
+                                        String   dataFolderGUID) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
+    {
+        final String   methodName = "moveDataFileInCatalog";
+        final String   fileGUIDParameter = "fileGUID";
+        final String   folderGUIDParameter = "folderGUID";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-folders/{3}/move-to";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(dataFolderGUID, fileGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
+
+        NullRequestBody requestBody = new NullRequestBody();
+
+        VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
+                                                                  serverPlatformRootURL + urlTemplate,
+                                                                  requestBody,
+                                                                  serverName,
+                                                                  userId,
+                                                                  folderGUID,
+                                                                  dataFolderGUID);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -522,7 +621,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getFileSystemByGUID";
         final String   fileSystemGUIDParameter = "fileSystemGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(fileSystemGUID, fileSystemGUIDParameter, methodName);
@@ -560,7 +659,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "uniqueName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems/by-name/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems/by-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(uniqueName, nameParameter, methodName);
@@ -599,7 +698,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
                                                                    PropertyServerException
     {
         final String   methodName = "getFileSystems";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/file-systems?startingFrom={2}&maximumResults={3}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/file-systems?startingFrom={2}&maximumResults={3}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -637,7 +736,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getFileSystemByGUID";
         final String   folderGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, folderGUIDParameter, methodName);
@@ -675,7 +774,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getFileSystemByUniqueName";
         final String   nameParameter = "pathName";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/by-path-name/{2}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/by-path-name/{2}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(pathName, nameParameter, methodName);
@@ -717,7 +816,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getNestedFolders";
         final String   anchorGUIDParameter = "anchorGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/{2}/folders?startingFrom={3}&maximumResults={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/anchor/{2}/folders?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, anchorGUIDParameter, methodName);
@@ -761,7 +860,7 @@ public class FileSystemAssetOwner implements AssetOnboardingFileSystem
     {
         final String   methodName = "getFolderFiles";
         final String   anchorGUIDParameter = "folderGUID";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/folders/{2}/files?startingFrom={3}&maximumResults={4}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/folders/{2}/assets/data-files?startingFrom={3}&maximumResults={4}";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(folderGUID, anchorGUIDParameter, methodName);

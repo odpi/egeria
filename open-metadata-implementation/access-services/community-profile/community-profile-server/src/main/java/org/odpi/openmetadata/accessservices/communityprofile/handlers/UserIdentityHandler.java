@@ -306,7 +306,7 @@ public class UserIdentityHandler
             {
                 if (anotherIdentity)
                 {
-                    repositoryHandler.deleteRelationshipBetweenEntities(userId,
+                    repositoryHandler.removeRelationshipBetweenEntities(userId,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_GUID,
                                                                         PersonalProfileMapper.PROFILE_IDENTITY_TYPE_NAME,
                                                                         profileGUID,
@@ -396,7 +396,7 @@ public class UserIdentityHandler
                 this.removeIdentityFromProfile(userId, connectedProfileEntity.getGUID(), obsoleteIdentity, methodName);
             }
 
-            repositoryHandler.deleteEntity(userId,
+            repositoryHandler.removeEntity(userId,
                                            userIdentityGUID,
                                            UserIdentityMapper.USER_IDENTITY_TYPE_GUID,
                                            UserIdentityMapper.USER_IDENTITY_TYPE_NAME,

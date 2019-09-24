@@ -6,10 +6,12 @@ import org.odpi.openmetadata.accessservices.assetowner.api.AssetOnboardingAvroFi
 import org.odpi.openmetadata.accessservices.assetowner.rest.NewFileAssetRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+
+import java.util.List;
 
 
 /**
@@ -120,22 +122,22 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
      * @param description description of the file in the catalog
      * @param fullPath full path of the file - used to access the file through the connector
      *
-     * @return unique identifier (guid) of the asset
+     * @return list of GUIDs from the top level to the root of the pathname
      *
      * @throws InvalidParameterException full path or userId is null
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
-    public String  addAvroFileToCatalog(String    userId,
-                                        String    displayName,
-                                        String    description,
-                                        String    fullPath) throws InvalidParameterException,
-                                                                   UserNotAuthorizedException,
-                                                                   PropertyServerException
+    public List<String> addAvroFileToCatalog(String    userId,
+                                             String    displayName,
+                                             String    description,
+                                             String    fullPath) throws InvalidParameterException,
+                                                                        UserNotAuthorizedException,
+                                                                        PropertyServerException
     {
         final String   methodName = "addAvroFileToCatalog";
         final String   pathParameter = "fullPath";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/files/avro";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-owner/users/{1}/assets/data-files/avro";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(fullPath, pathParameter, methodName);
@@ -145,22 +147,24 @@ public class AvroFileAssetOwner implements AssetOnboardingAvroFileInterface
         requestBody.setDescription(description);
         requestBody.setFullPath(fullPath);
 
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  serverPlatformRootURL + urlTemplate,
-                                                                  requestBody,
-                                                                  serverName,
-                                                                  userId);
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          requestBody,
+                                                                          serverName,
+                                                                          userId);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-        String fileAssetGUID = restResult.getGUID();
+        List<String> fileAssetGUIDs = restResult.getGUIDs();
+        if ((fileAssetGUIDs != null) && (! fileAssetGUIDs.isEmpty()))
+        {
+            String fileAssetGUID = fileAssetGUIDs.get(fileAssetGUIDs.size() - 1);
 
-        this.addAvroSchemaToCatalog(userId, fileAssetGUID, fullPath);
+            this.addAvroSchemaToCatalog(userId, fileAssetGUID, fullPath);
+        }
 
-        return fileAssetGUID;
+        return fileAssetGUIDs;
     }
-
-
 }

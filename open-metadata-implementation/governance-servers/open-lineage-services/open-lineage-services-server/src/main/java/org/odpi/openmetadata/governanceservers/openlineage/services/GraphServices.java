@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -15,8 +15,8 @@ import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Query;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
@@ -39,38 +40,34 @@ public class GraphServices {
     /**
      * Returns a lineage subgraph.
      *
-     * @param scope        The scope queried by the user: hostview, tableview, columnview.
-     * @param lineageQuery source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param graphName    main, buffer, mock, history.
+     * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view        The view queried by the user: hostview, tableview, columnview.
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public String queryLineage(String scope, String lineageQuery, String graphName, String guid) {
+    public String lineage(String graphName, Scope scope, View view, String guid) {
         String response = "";
 
-        scope = reformatArg(scope);
-        lineageQuery = reformatArg(lineageQuery);
-        graphName = reformatArg(graphName);
-
         Graph graph = getJanusGraph(graphName);
-        switch (Query.valueOf(lineageQuery)) {
-            case SOURCEANDDESTINATION:
-                response = sourceAndDestination(scope, graph, guid);
+        switch (scope) {
+            case SOURCE_AND_DESTINATION:
+                response = sourceAndDestination(graph, view, guid);
                 break;
-            case ENDTOEND:
-                response = endToEnd(scope, graph, guid);
+            case END_TO_END:
+                response = endToEnd(graph, view, guid);
                 break;
-            case ULTIMATESOURCE:
-                response = ultimateSource(scope, graph, guid);
+            case ULTIMATE_SOURCE:
+                response = ultimateSource(graph, view, guid);
                 break;
-            case ULTIMATEDESTINATION:
-                response = ultimateDestination(scope, graph, guid);
+            case ULTIMATE_DESTINATION:
+                response = ultimateDestination(graph, view, guid);
                 break;
             case GLOSSARY:
                 response = glossary(graph, guid);
                 break;
             default:
-                log.error(lineageQuery + " is not a valid lineage query");
+                log.error(scope + " is not a valid lineage query");
         }
         return response;
     }
@@ -79,14 +76,14 @@ public class GraphServices {
      * Returns a subgraph containing all root and leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param scope The scope queried by the user: tableview, columnview.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param view The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String sourceAndDestination(String scope, Graph graph, String guid) {
+    private String sourceAndDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(scope);
+        String edgeLabel = getEdgeLabel(view);
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
@@ -101,26 +98,12 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex sourceCondensation = g.addV(NODE_LABEL_CONDENSED).next();
-        Vertex destinationCondensation = g.addV(NODE_LABEL_CONDENSED).next();
-
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
         copyVertexProperties(originalQueriedVertex, queriedVertex);
 
-        sourceCondensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
-        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, destinationCondensation);
+        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
 
-        for (Vertex originalVertex : sourcesList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            vertex.addEdge(EDGE_LABEL_CONDENSED, sourceCondensation);
-        }
-
-        for (Vertex originalVertex : destinationsList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            destinationCondensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-        }
+        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
         return janusGraphToGraphson(responseGraph);
     }
 
@@ -128,28 +111,23 @@ public class GraphServices {
      * Returns a subgraph containing all paths leading from any root node to the queried node, and all of the paths
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
-     * @param scope The scope queried by the user: tableview, columnview.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param view The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String endToEnd(String scope, Graph graph, String guid) {
+    private String endToEnd(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(scope);
-
-        final GraphTraversal<Vertex, Vertex> queriedNode = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode2 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
-        final GraphTraversal<Vertex, Vertex> queriedNode3 = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid);
+        String edgeLabel = getEdgeLabel(view);
 
         Graph endToEndGraph = (Graph)
-                queriedNode.union(
-                        queriedNode2.
-                                until(inE(edgeLabel).count().is(0)).
-                                repeat(inE(edgeLabel).subgraph("subGraph").outV()),
-                        queriedNode3.
-                                until(outE(edgeLabel).count().is(0)).
-                                repeat(outE(edgeLabel).subgraph("subGraph").inV())
-                ).cap("subGraph").next();
+                g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
+                        union(
+                        until(inE(edgeLabel).count().is(0)).
+                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
+                        until(outE(edgeLabel).count().is(0)).
+                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                        ).cap("subGraph").next();
 
         return janusGraphToGraphson(endToEndGraph);
     }
@@ -158,34 +136,29 @@ public class GraphServices {
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param scope The scope queried by the user: tableview, columnview.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param view The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateSource(String scope, Graph graph, String guid) {
+    private String ultimateSource(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(scope);
+        String edgeLabel = getEdgeLabel(view);
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
                 repeat(inE(edgeLabel).outV()).dedup().toList();
+
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
-
         copyVertexProperties(originalQueriedVertex, queriedVertex);
-        condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
 
-        for (Vertex originalVertex : sourcesList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
-        }
+        addSourceCondensationNode(g, sourcesList, originalQueriedVertex, queriedVertex);
+
         return janusGraphToGraphson(responseGraph);
     }
 
@@ -193,14 +166,14 @@ public class GraphServices {
      * Returns a subgraph containing all leaf nodes of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
-     * @param scope The scope queried by the user: tableview, columnview.
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param guid  The guid of the node of which the lineage is queried of. This can be a column, table, or host node.
+     * @param view The view queried by the user: tableview, columnview.
+     * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateDestination(String scope, Graph graph, String guid) {
+    private String ultimateDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
-        String edgeLabel = getEdgeLabel(scope);
+        String edgeLabel = getEdgeLabel(view);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
                 repeat(outE(edgeLabel).inV()).dedup().toList();
@@ -210,32 +183,66 @@ public class GraphServices {
         Graph responseGraph = TinkerGraph.open();
         g = responseGraph.traversal();
 
-        Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
         Vertex queriedVertex = g.addV(originalQueriedVertex.label()).next();
-
         copyVertexProperties(originalQueriedVertex, queriedVertex);
-        queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
 
-        for (Vertex originalVertex : destinationsList) {
-            Vertex vertex = g.addV(originalVertex.label()).next();
-            copyVertexProperties(originalVertex, vertex);
-            condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
-        }
+        addDestinationCondensationNode(g, destinationsList, originalQueriedVertex, queriedVertex);
+
         return janusGraphToGraphson(responseGraph);
     }
 
     /**
-     * Map http parameter to enum value by converting to uppercase and removing - characters.
+     * In order not to clutter the user's screen with too many information, only the source nodes and the queried node
+     * are returned, the nodes in between are abstracted by means of a node labeled "condensed". If there are no
+     * ultimate sources, the gremlin query will return the originally queried node. Therefore, this method checks
+     * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
+     * ultimate sources, should the condensation node be created.
      *
-     * @param string main, buffer, mock, history.
-     * @return String which corresponds to enum format.
+     *
+     * @param g The GraphTraversal of the graph in which the condensation node will be added.
+     * @param sourcesList The list of ultimate sources for the queried node.
+     * @param originalQueriedVertex The vertex originally queried by the user.
+     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                      original graph.
      */
-    private String reformatArg(String string) {
-        string = string.toUpperCase();
-        string = string.replaceAll("-", "");
-        return string;
+    private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
+        if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
+            condensation.addEdge(EDGE_LABEL_CONDENSED, queriedVertex);
+
+            for (Vertex originalVertex : sourcesList) {
+                Vertex vertex = g.addV(originalVertex.label()).next();
+                copyVertexProperties(originalVertex, vertex);
+                vertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
+            }
+        }
     }
 
+    /**
+     * In order not to clutter the user's screen with too many information, only the destination nodes and the queried
+     * node are returned, the nodes in between are abstracted by means of a node labeled "condensed". If there are no
+     * ultimate destinations, the gremlin query will return the originally queried node. Therefore, this method checks
+     * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
+     * ultimate destination, should the condensation node be created.
+     *
+     *
+     * @param g The GraphTraversal of the graph in which the condensation node will be added.
+     * @param destinationsList The list of ultimate sources for the queried node.
+     * @param originalQueriedVertex The vertex originally queried by the user.
+     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                      original graph.
+     */
+    private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
+        if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
+            Vertex condensation = g.addV(NODE_LABEL_CONDENSED).next();
+            queriedVertex.addEdge(EDGE_LABEL_CONDENSED, condensation);
+            for (Vertex originalVertex : destinationsList) {
+                Vertex vertex = g.addV(originalVertex.label()).next();
+                copyVertexProperties(originalVertex, vertex);
+                condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
+            }
+        }
+    }
 
     /**
      * Returns a subgraph containing all columns or tables connected to the queried glossary term.
@@ -256,20 +263,20 @@ public class GraphServices {
     /**
      * Retrieve the label of the edges that are to be traversed with the gremlin query.
      *
-     * @param scope The scope queried by the user: hostview, tableview, columnview.
+     * @param view The view queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-    private String getEdgeLabel(String scope) {
+    private String getEdgeLabel(View view) {
         String edgeLabel = "";
-        switch (Scope.valueOf(scope)) {
-            case TABLEVIEW:
+        switch (view) {
+            case TABLE_VIEW:
                 edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
                 break;
-            case COLUMNVIEW:
+            case COLUMN_VIEW:
                 edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
                 break;
             default:
-                log.error(scope + " is not a valid lineage scope");
+                log.error(view + " is not a valid lineage view");
         }
         return edgeLabel;
     }
@@ -291,13 +298,12 @@ public class GraphServices {
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.
      *
-     * @param graphString MAIN, BUFFER, MOCK, HISTORY.
+     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
-    public void dumpGraph(String graphString) {
-        graphString = reformatArg(graphString);
-        JanusGraph graph = getJanusGraph(graphString);
+    public void dumpGraph(String graphName) {
+        JanusGraph graph = getJanusGraph(graphName);
         try {
-            graph.io(IoCore.graphml()).writeGraph("graph-" + graphString + ".graphml");
+            graph.io(IoCore.graphml()).writeGraph("graph-" + graphName + ".graphml");
         } catch (IOException e) {
             log.error(e.getMessage());
         }
@@ -306,12 +312,11 @@ public class GraphServices {
     /**
      * Return an entire graph, in GraphSon format.
      *
-     * @param graphString MAIN, BUFFER, MOCK, HISTORY.
+     * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      * @return The queried graph, in graphSON format.
      */
-    public String exportGraph(String graphString) {
-        graphString = reformatArg(graphString);
-        JanusGraph graph = getJanusGraph(graphString);
+    public String exportGraph(String graphName) {
+        JanusGraph graph = getJanusGraph(graphName);
         return janusGraphToGraphson(graph);
     }
 
@@ -337,12 +342,13 @@ public class GraphServices {
     /**
      * Retrieve an Open Lineage Services graph.
      *
-     * @param graphName The name of the queried graph.
+     * @param graphNameText The name of the queried graph.
      * @return The Graph object.
      */
-    private JanusGraph getJanusGraph(String graphName) {
+    private JanusGraph getJanusGraph(String graphNameText) {
         JanusGraph graph = null;
-        switch (GraphName.valueOf(graphName)) {
+        GraphName graphName = GraphName.fromString(graphNameText);
+        switch (graphName) {
             case MAIN:
                 graph = mainGraph;
                 break;
@@ -356,7 +362,7 @@ public class GraphServices {
                 graph = mockGraph;
                 break;
             default:
-                log.error(graphName + " is not a valid graph");
+                log.error(graphNameText + " is not a valid graph");
         }
         return graph;
     }

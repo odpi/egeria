@@ -160,6 +160,8 @@
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
+        <cassandra.version>3.5.0</cassandra.version>
+        <guava.version>20.0</guava.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -1396,6 +1398,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-folder-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>subject-area-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1453,6 +1462,20 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-engine-proxy-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cassandra-open-metadata-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1581,6 +1604,21 @@
                 <artifactId>spring-tx</artifactId>
                 <scope>compile</scope>
                 <version>${spring-web.version}</version>
+            </dependency>
+
+
+            <dependency>
+                <groupId>com.datastax.cassandra</groupId>
+                <artifactId>cassandra-driver-core</artifactId>
+                <version>${cassandra.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+                <scope>compile</scope>
             </dependency>
 
         </dependencies>
@@ -1897,6 +1935,10 @@
                         <exclude>**/.project</exclude>
                         <exclude>**/.settings/**</exclude>
                         <exclude>egeria-graph-repositories/**</exclude>
+                        <exclude>**/.vscode*/**</exclude>
+                        <exclude>**/.factorypath/**</exclude>
+                        <exclude>**/**.code-workspace</exclude>
+                        <exclude>config</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2183,6 +2225,21 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>artifactory</id>
+            <distributionManagement>
+                <repository>
+                    <id>central</id>
+                    <name>odpi-artifactory-primary-0-staging</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <name>odpi-artifactory-primary-0-snapshots</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-snapshot</url>
+                </snapshotRepository>
+            </distributionManagement>
         </profile>
     </profiles>
 

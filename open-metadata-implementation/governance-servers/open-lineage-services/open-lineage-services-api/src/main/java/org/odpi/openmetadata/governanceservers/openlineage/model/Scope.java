@@ -3,7 +3,28 @@
 package org.odpi.openmetadata.governanceservers.openlineage.model;
 
 public enum Scope {
-    TABLEVIEW,
-    COLUMNVIEW
-}
+    SOURCE_AND_DESTINATION("source-and-destination"),
+    END_TO_END("end-to-end"),
+    ULTIMATE_SOURCE("ultimate-source"),
+    ULTIMATE_DESTINATION("ultimate-destination"),
+    GLOSSARY("glossary");
 
+    private final String value;
+
+    Scope(String s) {
+        this.value = s;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public static Scope fromString(String text) {
+        for (Scope value : Scope.values()) {
+            if (value.value.equals(text)) {
+                return value;
+            }
+        }
+        return null;
+    }
+}

@@ -112,7 +112,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
 
 
             if (dataPlatformInTopicConnector != null) {
-                OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+                OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(instance, omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
                 this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
                 startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_DP_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
             }
@@ -250,6 +250,7 @@ public class DataPlatformAdmin extends AccessServiceAdmin
     public void shutdown() {
         try {
             dataPlatformInTopicConnector.disconnect();
+            dataPlatformOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting data platform topic connector");
         }

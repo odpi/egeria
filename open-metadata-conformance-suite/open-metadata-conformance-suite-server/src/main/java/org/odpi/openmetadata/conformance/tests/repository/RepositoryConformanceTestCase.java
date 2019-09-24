@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.*;
 
@@ -510,43 +511,20 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     {
         EntityDef  entityDef = null;
 
+        OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
         /*
          * Need to look up entity def (or a suitable subclass).
          */
-        List<String>   possibleEntityNameMatch = new ArrayList<>();
-        possibleEntityNameMatch.add(entityIdentifiers.getName());
-
-        while ((entityDef == null) && (! possibleEntityNameMatch.isEmpty()))
+        String candidateTypeDef = entityIdentifiers.getName();
+        for (EntityDef supportedEntityDef : supportedEntityDefs.values())
         {
-            List<String>   possibleEntitySubtypeNameMatch = new ArrayList<>();
-
-            for (String   entityTypeName : possibleEntityNameMatch)
-            {
-                entityDef = supportedEntityDefs.get(entityTypeName);
-
-                /*
-                 * First check that we have a match
-                 */
-                if (entityDef == null)
-                {
-                    /*
-                     * Now look for subclasses of this entity and set up list with subclasses for next iteration.
-                     */
-                    for (EntityDef supportedEntityDef : supportedEntityDefs.values())
-                    {
-                        TypeDefLink superType = supportedEntityDef.getSuperType();
-                        if ((superType != null) && (entityTypeName.equals(superType.getName())))
-                        {
-                            possibleEntitySubtypeNameMatch.add(supportedEntityDef.getName());
-                        }
-                    }
-                }
+            if (repositoryHelper.isTypeOf(cohortRepositoryConnector.getRepositoryName(), supportedEntityDef.getName(), candidateTypeDef)) {
+                entityDef = supportedEntityDef;
+                break;
             }
-
-            possibleEntityNameMatch = possibleEntitySubtypeNameMatch;
         }
-
         return entityDef;
+
     }
 
 
