@@ -7,6 +7,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.userinterface.accessservices.api.MalformedInputException;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Edge;
 import org.odpi.openmetadata.userinterface.accessservices.beans.Node;
 import org.odpi.openmetadata.userinterface.accessservices.service.response.Response;
@@ -48,49 +49,54 @@ public class OpenLineageService {
         return openLineageClient.generateMockGraph(userId);
     }
 
-    public Map<String, Object> exportGraph(String userId) throws IOException {
+    public Map<String, Object> exportGraph(String userId)  {
         String exportedGraph = openLineageClient.exportGraph(userId, graphName);
         Map<String, Object> graphData = processResponse(exportedGraph);
         return graphData;
     }
 
-    public Map<String, Object> getUltimateSource(String userId, View view, String guid) throws IOException {
+    public Map<String, Object> getUltimateSource(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getEndToEndLineage(String userId, View view, String guid) throws IOException {
+    public Map<String, Object> getEndToEndLineage(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getUltimateDestination(String userId, View view, String guid) throws IOException {
+    public Map<String, Object> getUltimateDestination(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getGlossaryLineage(String userId, View view, String guid) throws IOException {
+    public Map<String, Object> getGlossaryLineage(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    public Map<String, Object> getSourceAndDestination(String userId, View view, String guid) throws IOException {
+    public Map<String, Object> getSourceAndDestination(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
-    private Map<String, Object> processResponse(String response) throws IOException {
+    private Map<String, Object> processResponse(String response)  {
         final ObjectMapper mapper = this.mapper;
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
 
         LOG.debug("Received response:{}", response);
-        Response responseObj = mapper.readValue(response, Response.class);
+        Response responseObj = null;
+        try {
+            responseObj = mapper.readValue(response, Response.class);
+        } catch (IOException e) {
+           throw new MalformedInputException("Unable to process response", e);
+        }
         Optional.ofNullable(responseObj.getVertices())
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
