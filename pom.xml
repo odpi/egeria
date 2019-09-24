@@ -1938,6 +1938,7 @@
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
+                        <exclude>config</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2224,6 +2225,21 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>artifactory</id>
+            <distributionManagement>
+                <repository>
+                    <id>central</id>
+                    <name>odpi-artifactory-primary-0-staging</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <name>odpi-artifactory-primary-0-snapshots</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-snapshot</url>
+                </snapshotRepository>
+            </distributionManagement>
         </profile>
     </profiles>
 
