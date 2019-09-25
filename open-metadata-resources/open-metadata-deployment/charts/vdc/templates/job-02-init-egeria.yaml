@@ -81,6 +81,9 @@ spec:
                 {{- end }}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/{{- .Values.egeria.repomode -}}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
                 ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
