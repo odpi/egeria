@@ -45,7 +45,7 @@ public class OpenLineage  {
     public String lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
         String methodName = "lineage";
         String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/lineage/sources/{2}/scopes/{3}/views/{4}/entities/{5}";
-        return getRestCall(url, String.class, serverName, userId, graphName.getText(), scope.getText(), view.getText(), guid);
+        return getRestCall(url, String.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
 
     }
 

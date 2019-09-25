@@ -2,23 +2,32 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.InternalOMRSEventProcessingContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorInterface;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
+import org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * OMRSRepositoryEventManager is responsible for managing the distribution of TypeDef and instance events.
@@ -33,7 +42,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 {
     private boolean                                   isActive               = false;
     private List<OMRSTypeDefEvent>                    typeDefEventBuffer     = new ArrayList<>();
-    private List<OMRSInstanceEvent>                   instanceEventBuffer    = new ArrayList<>();
+    private List<BufferedInstanceEvent>               instanceEventBuffer    = new ArrayList<>();
     private List<OMRSTypeDefEventProcessorInterface>  typeDefEventConsumers  = new ArrayList<>();
     private List<OMRSInstanceEventProcessorInterface> instanceEventConsumers = new ArrayList<>();
     private OMRSRepositoryContentValidator            repositoryValidator;   /* set in constructor */
@@ -265,6 +274,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                     this.distributeTypeDefEvent(event);
                 }
             }
+            typeDefEventBuffer.clear();
         }
 
 
@@ -281,13 +291,31 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
 
-            for (OMRSInstanceEvent event : instanceEventBuffer)
+            for (BufferedInstanceEvent event : instanceEventBuffer)
             {
                 if (event != null)
                 {
-                    this.distributeInstanceEvent(event);
+                    //Clear the async event processing context to ensure that it will only have
+                    //results from processing this event
+                    
+                    InternalOMRSEventProcessingContext.clear();
+                    
+                    this.distributeInstanceEvent(event.getEvent());
+                    //Now that the buffered event has been distributed, we need to update the Future
+                    //that the OpenMetadataTopicConnector is monitoring the reflect the state of
+                    //any asynchronous event processing that is taking place for this event.
+                    
+                    //That future is recorded in the BufferedInstanceEvent.
+                    
+                    //Get OMRSFuture for overall asynchronous processing result for the event
+                    OMRSFuture future = InternalOMRSEventProcessingContext.getInstance().getOverallAsyncProcessingResult();
+                    
+                    //Update the future stored in the BufferedInstanceEvent to delegate its processing
+                    //status check to that Future.
+                    event.getFuture().setDelegate(future);
                 }
             }
+            instanceEventBuffer.clear();
         }
     }
 
@@ -417,7 +445,30 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
         }
         else
         {
-            this.instanceEventBuffer.add(instanceEvent);
+            //If distributeInstanceEvent() is not being called now and we are just adding
+            //the event to the buffer, we still need a way for the OpenMetadataTopicConnector
+            //to monitor the state of event processing.  This makes it so that we do not
+            //treat the event is being fully processed until it is actually distributed
+            //to the instance event consumers.
+            //
+            //To this, we leverage the asynchronous message processing mechanism and create
+            //an OMRSFuture that can be used to monitor the processing state of the event.
+            
+            //The OMRSFuture is created in the BufferedInstanceEvent.  It is a special type
+            //of future ("DelegatingFuture") that initially always returns false when
+            //we check to see if the processing has finished.  Once we do start processing
+            //the event, that future is updated to delegate to a future that tracks the 
+            //state of any asynchronous processing being done for the event.
+            
+            //Here, we just add the future for the BufferedInstanceEvent to the 
+            //OMRSAsyncEventProcessingContext so that the event will not be
+            //treated as consumed quite yet.
+            
+            BufferedInstanceEvent event = new BufferedInstanceEvent(instanceEvent);
+            instanceEventBuffer.add(event);
+            
+            InternalOMRSEventProcessingContext context = InternalOMRSEventProcessingContext.getInstance();
+            context.addAsyncProcessingResult(event.getFuture());
         }
     }
 
