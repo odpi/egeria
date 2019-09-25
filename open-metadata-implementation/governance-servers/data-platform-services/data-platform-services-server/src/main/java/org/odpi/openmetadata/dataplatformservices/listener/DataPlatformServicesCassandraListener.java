@@ -2,33 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.dataplatformservices.listener;
 
-import com.datastax.driver.core.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEventType;
-import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.DataPlatform;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.cassandra.Column;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.cassandra.Keyspace;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.cassandra.Table;
-import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
-import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-
-public class DataPlatformServicesCassandraListener implements CassandraStoreListener, OpenMetadataTopicListener {
+public class DataPlatformServicesCassandraListener  {
 
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformServicesCassandraListener.class);
@@ -45,14 +27,14 @@ public class DataPlatformServicesCassandraListener implements CassandraStoreList
         this.dataPlatformConfig = dataPlatformConfig;
     }
 
-    @Override
+   /* @Override
     public void onKeyspaceAdded(KeyspaceMetadata keyspaceMetadata) {
 
         NewDeployedDatabaseSchemaEvent newDeployedDatabaseSchemaEvent =new NewDeployedDatabaseSchemaEvent();
         String actionDescription = "Sending NewDeployedDatabaseSchemaEvent to Data Platform OMAS in topic.";
 
         try {
-            Keyspace keyspace = new Keyspace();
+            DeployedDatabaseSchema deployedDatabaseSchema = new DeployedDatabaseSchema();
             DataPlatform dataPlatform = new DataPlatform();
 
             List<ConnectorType> connectorTypes=new ArrayList<>();
@@ -61,30 +43,29 @@ public class DataPlatformServicesCassandraListener implements CassandraStoreList
             dataPlatform.setDataPlatformEndpoint(dataPlatformConfig.getDataPlatformConnection().getEndpoint());
 
             if (!keyspaceMetadata.getTables().isEmpty()){
-                List<Table> tableList=new ArrayList<>();
+                List<TabularSchema> tabularSchemaList =new ArrayList<>();
                 for (TableMetadata tableMetadata:keyspaceMetadata.getTables()){
-                    Table table=new Table();
-                    table.setTableName(tableMetadata.getName());
-                    table.setGuid(tableMetadata.getId().toString());
-                    List<Column> columnList=new ArrayList<>();
+                    TabularSchema tabularSchema =new TabularSchema();
+                    tabularSchema.setName(tableMetadata.getName());
+                    tabularSchema.setGuid(tableMetadata.getId().toString());
+                    List<TabularColumn> tabularColumnList =new ArrayList<>();
                     for (ColumnMetadata columnMetadata:tableMetadata.getColumns()){
-                        Column column = new Column();
-                        column.setName(columnMetadata.getName());
-                        column.setType(columnMetadata.getType().asFunctionParameterString());
-                        columnList.add(column);
+                        TabularColumn tabularColumn = new TabularColumn();
+                        tabularColumn.setName(columnMetadata.getName());
+                        tabularColumn.setType(columnMetadata.getType().asFunctionParameterString());
+                        tabularColumnList.add(tabularColumn);
                     }
-                    table.setColumns(columnList);
-                    tableList.add(table);
+                    tabularSchema.setTabularColumns(tabularColumnList);
+                    tabularSchemaList.add(tabularSchema);
                 }
-                keyspace.setTableList(tableList);
+                deployedDatabaseSchema.setTabularSchemaList(tabularSchemaList);
             }
 
-            keyspace.setGuid(UUID.randomUUID().toString());
-            keyspace.setKeyspaceName(keyspaceMetadata.getName());
-            keyspace.setReplication(keyspaceMetadata.getReplication());
-            keyspace.setReplicationStrategy(keyspaceMetadata.getReplication().get("class"));
+            deployedDatabaseSchema.setGuid(UUID.randomUUID().toString());
+            deployedDatabaseSchema.setName(keyspaceMetadata.getName());
+            deployedDatabaseSchema.setAdditionalProperties(keyspaceMetadata.getReplication());
 
-            newDeployedDatabaseSchemaEvent.setKeyspace(keyspace);
+            newDeployedDatabaseSchemaEvent.setDeployedDatabaseSchema(deployedDatabaseSchema);
             newDeployedDatabaseSchemaEvent.setDataPlatform(dataPlatform);
             newDeployedDatabaseSchemaEvent.setEventType(DataPlatformEventType.NEW_DEPLOYED_DB_SCHEMA_EVENT);
 
@@ -213,13 +194,13 @@ public class DataPlatformServicesCassandraListener implements CassandraStoreList
 
     }
 
-    /**
+    *//**
      * Method to pass an event received on topic.
      *
      * @param event inbound event
-     */
+     *//*
     @Override
     public void processEvent(String event) {
-
+*/
     }
-}
+

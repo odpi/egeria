@@ -1,24 +1,26 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
-package org.odpi.openmetadata.accessservices.dataplatform.properties;
-
+package org.odpi.openmetadata.accessservices.dataplatform.properties.schema;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.connection.EndpointSource;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.BusinessTerm;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.Source;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
+/**
+ * The type TabularColumn.
+ */
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DatabaseSource extends Source {
+public class TabularColumn extends Source {
 
     private String name;
-    private EndpointSource endpointSource;
+    private String type;
 
     public String getName() {
         return name;
@@ -28,20 +30,22 @@ public class DatabaseSource extends Source {
         this.name = name;
     }
 
-    public EndpointSource getEndpointSource() {
-        return endpointSource;
+    public String getType() {
+        return type;
     }
 
-    public void setEndpointSource(EndpointSource endpointSource) {
-        this.endpointSource = endpointSource;
+    public void setType(String type) {
+        this.type = type;
     }
-
 
     @Override
     public String toString() {
-        return "{" +
+        return "TabularColumn{" +
                 "name='" + name + '\'' +
-                ", endpointSource=" + endpointSource +
-                '}';
+                ", type='" + type + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", guid='" + guid + '\'' +
+                "} " + super.toString();
     }
 }

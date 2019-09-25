@@ -11,6 +11,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Data Platform Services API</name>
+    <description>The implementation of generic APIs for Data Platform Service.</description>
     <artifactId>data-platform-services-api</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>

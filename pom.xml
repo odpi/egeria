@@ -160,7 +160,6 @@
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
-        <cassandra.version>3.5.0</cassandra.version>
         <guava.version>20.0</guava.version>
 
         <!-- Versions of plugins -->
@@ -1606,12 +1605,10 @@
                 <version>${spring-web.version}</version>
             </dependency>
 
-
             <dependency>
-                <groupId>com.datastax.cassandra</groupId>
-                <artifactId>cassandra-driver-core</artifactId>
-                <version>${cassandra.version}</version>
-                <scope>compile</scope>
+                <groupId>com.datastax.oss</groupId>
+                <artifactId>java-driver-core</artifactId>
+                <version>4.2.0</version>
             </dependency>
 
             <dependency>

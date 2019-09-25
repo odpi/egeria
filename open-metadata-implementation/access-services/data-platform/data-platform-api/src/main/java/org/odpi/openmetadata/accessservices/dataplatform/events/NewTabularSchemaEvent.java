@@ -7,13 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.connection.DataPlatform;
-import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
-
-import java.util.Objects;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.schema.TabularSchema;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -22,17 +19,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
+public class NewTabularSchemaEvent extends DataPlatformEventHeader {
 
-    private DeployedDatabaseSchema deployedDatabaseSchema;
+    private TabularSchema tabularSchema;
     private DataPlatform dataPlatform;
 
-    public DeployedDatabaseSchema getDeployedDatabaseSchema() {
-        return deployedDatabaseSchema;
+    public TabularSchema getTabularSchema() {
+        return tabularSchema;
     }
 
-    public void setDeployedDatabaseSchema(DeployedDatabaseSchema deployedDatabaseSchema) {
-        this.deployedDatabaseSchema = deployedDatabaseSchema;
+    public void setTabularSchema(TabularSchema tabularSchema) {
+        this.tabularSchema = tabularSchema;
     }
 
     public DataPlatform getDataPlatform() {
@@ -45,23 +42,9 @@ public class NewDeployedDatabaseSchemaEvent extends DataPlatformEventHeader {
 
     @Override
     public String toString() {
-        return "NewDeployedDatabaseSchemaEvent{" +
-                "deployedDatabaseSchema=" + deployedDatabaseSchema +
+        return "NewTabularSchemaEvent{" +
+                "tabularSchema=" + tabularSchema +
                 ", dataPlatform=" + dataPlatform +
                 "} " + super.toString();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        NewDeployedDatabaseSchemaEvent that = (NewDeployedDatabaseSchemaEvent) o;
-        return Objects.equals(deployedDatabaseSchema, that.deployedDatabaseSchema) &&
-                Objects.equals(dataPlatform, that.dataPlatform);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(deployedDatabaseSchema, dataPlatform);
     }
 }

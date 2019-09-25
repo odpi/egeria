@@ -2,7 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.cassandra;
 
-import com.datastax.driver.core.*;
+import com.datastax.oss.driver.api.core.CqlIdentifier;
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.session.Session;
 import org.odpi.openmetadata.adapters.connectors.cassandra.auditlog.CassandraConnectorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
@@ -12,23 +14,26 @@ import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableCo
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.InetSocketAddress;
+
 
 /**
  * The type Cassandra store connector.
  */
-public class CassandraStoreConnector extends ConnectorBase implements AuditableConnector {
+public class CassandraDatabaseConnector extends ConnectorBase implements AuditableConnector {
 
-    private static final Logger log = LoggerFactory.getLogger(CassandraStoreConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(CassandraDatabaseConnector.class);
     private OMRSAuditLog omrsAuditLog;
     private CassandraConnectorAuditCode auditLog;
 
     private String serverAddress = null;
-    private String clusterName = null;
+    private Integer port = null;
     private String username = null;
     private String password = null;
 
-    private Cluster cluster;
-    private Session session;
+    private CqlSession cqlSession;
+    private CassandraDatabaseMetadataChangeListener
+
 
 
     /**
@@ -96,7 +101,7 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
 
         startCassandraConnection();
 
-        if (cluster.getClusterName().equals(clusterName) && omrsAuditLog != null)
+        if (omrsAuditLog != null)
         {
             auditLog = CassandraConnectorAuditCode.CONNECTOR_INITIALIZED;
             omrsAuditLog.logRecord(actionDescription,
@@ -114,12 +119,12 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
      */
     public void startCassandraConnection() {
 
-        this.cluster = Cluster.builder()
-                .addContactPoint(serverAddress)
-                .withClusterName(clusterName)
-                .withCredentials(username, password)
+        this.cqlSession = CqlSession.builder()
+                .addContactPoint(new InetSocketAddress(serverAddress,port))
+                .withAuthCredentials(username, password)
+                .withSchemaChangeListener(CassandraDatabaseMetadataChangeListener )
                 .build();
-        session = cluster.connect();
+
     }
 
     /**
@@ -127,10 +132,9 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
      *
      * @return Cassandra session.
      */
-    public Session getSession() {
-        return this.session;
+    public CqlSession getSession() {
+        return this.cqlSession;
     }
-
     /**
      * Terminate Cassandra cluster.
      */
@@ -138,8 +142,7 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
 
         String actionDescription = "Shut down the Cassandra connection.";
 
-        session.close();
-        cluster.close();
+        cqlSession.close();
 
         auditLog = CassandraConnectorAuditCode.CONNECTOR_SHUTDOWN;
         omrsAuditLog.logRecord(actionDescription,
@@ -165,14 +168,14 @@ public class CassandraStoreConnector extends ConnectorBase implements AuditableC
     /**
      * Register listener.
      *
-     * @param cassandraStoreListener the cassandra store listener
+     * @param cassandraDatabaseMetadataChangeListener the cassandra store listener
      */
-    public void registerListener(CassandraStoreListener cassandraStoreListener)
+    public void registerListener(CassandraDatabaseMetadataChangeListener cassandraDatabaseMetadataChangeListener)
     {
-        if (cassandraStoreListener != null)
+        if (cassandraDatabaseMetadataChangeListener != null)
         {
-            this.cluster.register(cassandraStoreListener);
-            log.info("Registering cassandra cluster listener: {}", cassandraStoreListener.toString());
+            this.cqlSession.;
+            log.info("Registering cassandra cluster listener: {}", cassandraDatabaseMetadataChangeListener.toString());
         } else {
             String actionDescription = "Error in registering cassandra store listener.";
 

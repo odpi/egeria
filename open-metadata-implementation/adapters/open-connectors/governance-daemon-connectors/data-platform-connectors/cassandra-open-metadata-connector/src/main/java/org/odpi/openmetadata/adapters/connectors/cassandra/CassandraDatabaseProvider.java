@@ -7,30 +7,30 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
- * The type Cassandra store provider.
+ * The type Apache Cassandra Database provider.
  */
-public class CassandraStoreProvider extends ConnectorProviderBase {
+public class CassandraDatabaseProvider extends ConnectorProviderBase {
 
     /**
      * The Connector type guid.
      */
-    static final String  connectorTypeGUID = "d970c3db-46ba-4e96-8d7f-d36e7ed9e84d";
+    private static final String  connectorTypeGUID = "d970c3db-46ba-4e96-8d7f-d36e7ed9e84d";
     /**
      * The Connector type name.
      */
-    static final String  connectorTypeName = "Apache Cassandra Data Store Connector";
+    private static final String  connectorTypeName = "Apache Cassandra Database Connector";
     /**
      * The Connector type description.
      */
-    static final String  connectorTypeDescription = "Connector supports retrieving data assets from Cassandra clusters.";
+    private static final String  connectorTypeDescription = "Connector supports retrieving data assets from Cassandra clusters.";
 
 
     /**
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * registry store implementation.
      */
-    public CassandraStoreProvider() {
-        Class connectorClass = CassandraStoreConnector.class;
+    public CassandraDatabaseProvider() {
+        Class connectorClass = CassandraDatabaseConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();
