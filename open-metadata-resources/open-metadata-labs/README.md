@@ -54,8 +54,27 @@ See [https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-met
 
 If you have egeria running locally, you can run the labs without any dependency on container infrastructure.
 Follow the [OMAG Server Platform tutorial](../open-metadata-tutorials/omag-server-tutorial/task-starting-the-omag-server-platform.md)
-for instructions on how to set up and run the platform yourself.
+for instructions on how to set up and run a platform yourself.
+You need to start three OMAG Server Platforms at the following URLs:
 
+* `http://localhost:8080`
+* `http://localhost:8081`
+* `http://localhost:8082`
+
+In addition, you need Apache Zookeeper managing an Apache Kafka server that is running at a PLAINTEXT listener at
+`http://localhost:59092`.  Apache Kafka includes Apache Zookeeper.  Download and install Apache Kafka.
+From the directory where Kafka is installed, edit the `config/server.properties` file so that the `listeners`
+and `advertised.listeners` are set up as follows.
+
+![Kafka's server properties](images/kafka-server-properties.png)
+
+Change into Kafka's `bin` directory and issue the following commands:
+```
+$ ./zookeeper-server-start.sh ../config/zookeeper.properties &
+$ ./kafka-server-start.sh ../config/server.properties &
+```
+
+Then you are ready to run the labs - we suggest that you begin with the [read-me-first](./read-me-first.ipynb) lab notebook.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

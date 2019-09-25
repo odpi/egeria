@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListR
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -259,6 +260,32 @@ public class AssetConsumerResource
 
 
     /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of unique identifiers for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-search-string")
+
+    public GUIDListResponse findAssets(@PathVariable String   serverName,
+                                       @PathVariable String   userId,
+                                       @RequestParam int      startFrom,
+                                       @RequestParam int      pageSize,
+                                       @RequestBody  String   searchString)
+    {
+        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+    }
+
+    /**
      * Return a list of assets with the requested name.
      *
      * @param serverName name of the server instances for this request
@@ -267,18 +294,18 @@ public class AssetConsumerResource
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
-     * @return list of Asset summaries or
+     * @return list of unique identifiers for matching assets or
      * InvalidParameterException the name is invalid or
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
     @RequestMapping(method = RequestMethod.POST, path = "/assets/by-name")
 
-    public AssetsResponse getAssetsByName(@PathVariable String   serverName,
-                                          @PathVariable String   userId,
-                                          @RequestParam int      startFrom,
-                                          @RequestParam int      pageSize,
-                                          @RequestBody  String   name)
+    public GUIDListResponse getAssetsByName(@PathVariable String   serverName,
+                                            @PathVariable String   userId,
+                                            @RequestParam int      startFrom,
+                                            @RequestParam int      pageSize,
+                                            @RequestBody  String   name)
     {
         return restAPI.getAssetsByName(serverName, userId, name, startFrom, pageSize);
     }
