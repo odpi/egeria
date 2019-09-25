@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 
 /**
  * EnterpriseRepositoryServicesResource provides the server-side support for the OMRS Repository REST Services API
@@ -462,12 +461,12 @@ public class EnterpriseRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}/history")
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/entity/{guid}/history")
 
-    public  EntityDetailResponse getEntityDetail(@PathVariable String     serverName,
-                                                 @PathVariable String     userId,
-                                                 @PathVariable String     guid,
-                                                 @RequestParam Date       asOfTime)
+    public  EntityDetailResponse getEntityDetail(@PathVariable String         serverName,
+                                                 @PathVariable String         userId,
+                                                 @PathVariable String         guid,
+                                                 @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getEntityDetail(serverName, userId, guid, asOfTime);
     }
@@ -792,10 +791,10 @@ public class EnterpriseRepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}/history")
 
-    public  RelationshipResponse getRelationship(@PathVariable String    serverName,
-                                                 @PathVariable String    userId,
-                                                 @PathVariable String    guid,
-                                                 @RequestParam Date      asOfTime)
+    public  RelationshipResponse getRelationship(@PathVariable String         serverName,
+                                                 @PathVariable String         userId,
+                                                 @PathVariable String         guid,
+                                                 @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getRelationship(serverName, userId, guid, asOfTime);
     }

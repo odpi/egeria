@@ -1258,6 +1258,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>repository-services-implementation</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
