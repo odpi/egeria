@@ -10,7 +10,7 @@ The administration notebooks define how to configure and manage Egeria OMAG serv
 
 ## Basic Setup
 
-* [Configuring metadata servers](metadata-server-config.ipynb)
+* [Understanding metadata server configuration](understanding-server-config.ipynb)
 * [Starting and stopping servers](managing-servers.ipynb)
 
 Once these notebooks are complete and the servers are running, you can choose to continue with this
