@@ -52,7 +52,9 @@ public abstract class EntityLookup<T extends Source> {
             return omEntityDao.getEntityByGuid(source.getGuid());
         }
         if(!StringUtils.isEmpty(source.getQualifiedName())){
-            return omEntityDao.getEntity(equivalentOMType, source.getQualifiedName(), false);
+            // GDW - need to convert qualifiedName to an exactMatchRegex
+            String sourceQualifiedNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getQualifiedName());
+            return omEntityDao.getEntity(equivalentOMType, sourceQualifiedNameRegex, false);
         }
         return null;
     }
@@ -95,6 +97,9 @@ public abstract class EntityLookup<T extends Source> {
      * @return the entity detail matching the type and properties
      */
     public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) {
+        //
+        // GDW - match properties passed to findEntities must be escaped for exact match but matchProperties for local filter match must be unescaped
+        //
         return matchExactlyToUniqueEntity(omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE), matchProperties);
     }
 
@@ -131,7 +136,10 @@ public abstract class EntityLookup<T extends Source> {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
             String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
-            if (!((PrimitivePropertyValue)property.getValue()).getPrimitiveValue().equals(actualValue)) {
+            // GDW - need to unescape any strings that were converted to exactMatchRegexes earlier
+            String matchStringValue = (String)((PrimitivePropertyValue)property.getValue()).getPrimitiveValue();
+            String literalMatchValue = enterpriseConnector.getRepositoryHelper().getUnqualifiedLiteralString(matchStringValue);
+            if (!literalMatchValue.equals(actualValue)) {
                 return false;
             }
         }
