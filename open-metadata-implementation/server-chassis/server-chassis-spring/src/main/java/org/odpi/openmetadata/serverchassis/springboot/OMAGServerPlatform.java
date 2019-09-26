@@ -105,6 +105,9 @@ public class OMAGServerPlatform
         }
     }
 
+    /**
+     *  Read all the active servers in the platform and call for temporary deactivate
+     */
     private void temporaryDeactivateAllServers(){
         List<String> activeServers = platformActiveServices.getActiveServerList(sysUser).getServerList();
         if(activeServers != null){
