@@ -3,12 +3,16 @@
 package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.userinterface.accessservices.service.OpenLineageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -34,87 +37,60 @@ public class OpenLineageController {
     @RequestMapping(method = RequestMethod.GET, value = "/export")
     public Map<String, Object> exportGraph(@RequestParam GraphName graphName){
         Map<String, Object> exportedGraph;
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.exportGraph(userId);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.exportGraph(userId);
         return exportedGraph;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-source")
     public Map<String, Object> ultimateSourceGraph(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
+
         return exportedGraph;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/end2end")
     public Map<String, Object> endToEndLineage(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
+
         return exportedGraph;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
     public Map<String, Object> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-        try {
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
             exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+
         return exportedGraph;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/glossary-lineage")
     public Map<String, Object> glossaryLineage(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
+
         return exportedGraph;
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/source-and-destination")
     public Map<String, Object> sourceAndDestinationLineage(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
-        } catch (IOException e) {
-            handleException(e);
-            return null;
-        }
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.getSourceAndDestination(userId, view, guid);
         return exportedGraph;
     }
 
-    //TODO use global exception handler
-    private void handleException(Exception e){
-        if(e instanceof InvalidParameterException){
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        throw new RuntimeException("Unknown exception! " + e.getMessage());
+
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
+        webdataBinder.registerCustomEditor(Scope.class, new ScopeEnumConverter());
     }
 
 }

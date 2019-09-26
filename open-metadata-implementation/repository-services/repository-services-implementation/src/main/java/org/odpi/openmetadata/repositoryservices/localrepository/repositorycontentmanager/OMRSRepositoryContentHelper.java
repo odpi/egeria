@@ -3349,7 +3349,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isExactMatchRegex(String s)
     {
-        return s == null || (s.startsWith("\\Q") && s.endsWith("\\E"));
+        return s == null
+                || (s.startsWith("\\Q")
+                    && s.endsWith("\\E")
+                    && s.indexOf("\\E") == s.length() - 2);
     }
 
     /**
@@ -3388,7 +3391,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isContainsRegex(String s)
     {
-        return s != null && s.startsWith(".*") && s.endsWith(".*") && isExactMatchRegex(s.substring(2, s.length() - 2));
+        return s != null
+                && s.startsWith(".*")
+                && s.endsWith(".*")
+                && isExactMatchRegex(s.substring(2, s.length() - 2));
     }
 
     /**
@@ -3427,7 +3433,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isStartsWithRegex(String s)
     {
-        return s != null && s.endsWith(".*") && isExactMatchRegex(s.substring(0, s.length() - 2));
+        return s != null
+                && s.endsWith(".*")
+                && isExactMatchRegex(s.substring(0, s.length() - 2));
     }
 
     /**
@@ -3466,7 +3474,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isEndsWithRegex(String s)
     {
-        return s != null && s.startsWith(".*") && isExactMatchRegex(s.substring(2));
+        return s != null
+                && s.startsWith(".*")
+                && isExactMatchRegex(s.substring(2));
     }
 
     /**

@@ -3,6 +3,8 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
@@ -44,7 +46,7 @@ public class OpenLineageRestServices {
     }
 
 
-    public String lineage(String serverName, String userId, String graph, String scope, String view, String guid) {
+    public String lineage(String serverName, String userId, String graph, Scope scope, View view, String guid) {
         String response = "";
         try {
             GraphServices graphServices = instanceHandler.queryHandler(serverName);

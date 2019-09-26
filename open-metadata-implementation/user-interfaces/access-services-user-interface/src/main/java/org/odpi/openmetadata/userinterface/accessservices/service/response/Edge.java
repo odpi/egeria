@@ -14,9 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Edge {
 
-
     private Id outV;
-
 
     public Id getOutV() {
         return outV;
