@@ -68,6 +68,9 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
 
     protected InstanceProperties getMatchingProperties(DatabaseColumnSource source) {
         String methodName = "getMatchingProperties";
-        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getName(), methodName);
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String sourceNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getName());
+        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(),
+                Constants.NAME, sourceNameRegex, methodName);
     }
 }

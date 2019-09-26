@@ -8,13 +8,13 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListenerBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.assetconsumer.outtopic.AssetConsumerPublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
@@ -26,7 +26,7 @@ import java.util.List;
  * AssetConsumerOMRSTopicListener received details of each OMRS event from the cohorts that the local server
  * is connected to.  It passes NEW_ENTITY_EVENTs to the publisher.
  */
-public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
+public class AssetConsumerOMRSTopicListener extends OMRSTopicListenerBase
 {
     private static final String assetTypeName                         = "Asset";
 
@@ -58,6 +58,8 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
                                           List<String>            supportedZones,
                                           OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException
     {
+        super(componentName, auditLog);
+
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.componentName = componentName;
@@ -65,26 +67,6 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
 
         publisher = new AssetConsumerPublisher(assetConsumerOutTopic, auditLog);
     }
-
-
-    /**
-     * Method to pass a Registry event received on topic.
-     *
-     * @param event inbound event
-     */
-    public void processRegistryEvent(OMRSRegistryEvent event) { log.debug("Ignoring registry event: " + event.toString()); }
-
-
-    /**
-     * Method to pass a Registry event received on topic.
-     *
-     * @param event inbound event
-     */
-    public void processTypeDefEvent(OMRSTypeDefEvent event)
-    {
-        log.debug("Ignoring type event: " + event.toString());
-    }
-
 
     /**
      * Unpack and deliver an instance event to the InstanceEventProcessor
