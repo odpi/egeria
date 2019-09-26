@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The AssetConsumerOMASResource provides the server-side implementation of the Asset Consumer Open Metadata
+ * The AssetConsumerResource provides the server-side implementation of the Asset Consumer Open Metadata
  * Assess Service (OMAS).  This interface provides connections to assets and APIs for adding feedback
  * on the asset.
  */
