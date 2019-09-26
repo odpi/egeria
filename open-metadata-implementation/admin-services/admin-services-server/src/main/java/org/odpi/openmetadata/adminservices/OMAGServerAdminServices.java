@@ -1637,6 +1637,18 @@ public class OMAGServerAdminServices
              */
             if (repositoryServicesConfig != null)
             {
+                LocalRepositoryConfig    existingLocalRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+                if ((localRepositoryConfig != null) && (existingLocalRepositoryConfig != null))
+                {
+                    String  existingMetadataCollectionId = existingLocalRepositoryConfig.getMetadataCollectionId();
+
+                    if (existingMetadataCollectionId != null)
+                    {
+                        configAuditTrail.add(new Date().toString() + " " + userId + " preserving local metadata collection id " + existingMetadataCollectionId + ".");
+                        localRepositoryConfig.setMetadataCollectionId(existingMetadataCollectionId);
+                    }
+                }
+
                 repositoryServicesConfig.setLocalRepositoryConfig(localRepositoryConfig);
             }
             else if (localRepositoryConfig != null)
