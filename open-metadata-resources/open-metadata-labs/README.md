@@ -21,7 +21,7 @@ There are three main ways to run these labs:
 
 * [Using Docker Compose](../open-metadata-tutorials/beginners-guide/running-self-contained.md) to run them in a
 self-contained environment on your own system.
-* [Using Kubernetes](../open-metadata-tutorials/beginners-guide/running-self-contained.md) to run them in a more
+* [Using Kubernetes (with Helm)](../open-metadata-tutorials/beginners-guide/running-self-contained.md) to run them in a more
 flexible, possibly public cloud self-contained environment.
 * [Using your own local environment directly](../open-metadata-tutorials/beginners-guide/running-natively.md).
 

@@ -55,7 +55,8 @@ Running the environment (after Docker is installed and running):
     Your self-contained environment should be ready.  Go to http://localhost:18888 to open the Jupyter interface and
     you are ready to [start the Open Metadata Labs](../../open-metadata-labs).
 
-1. To shutdown the environment, again within the `tutorials` directory run the command:
+1. To shutdown the environment press `CTRL-C` in the console where it was started.  To remove the containers,
+    again within the `tutorials` directory run the command:
 
     ```shell script
     docker-compose -f ./egeria-tutorial.yaml down
