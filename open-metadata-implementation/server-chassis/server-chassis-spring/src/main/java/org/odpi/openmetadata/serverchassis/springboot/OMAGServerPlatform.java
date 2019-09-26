@@ -5,7 +5,6 @@ package org.odpi.openmetadata.serverchassis.springboot;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
 import org.odpi.openmetadata.http.HttpHelper;
-import org.odpi.openmetadata.platformservices.rest.ServerListResponse;
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformActiveServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
