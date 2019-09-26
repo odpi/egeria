@@ -79,6 +79,9 @@ The code for OMRS is organized into three modules:
 * **[repository-services-apis](repository-services-apis)** contains the Java interfaces and
 event structures for the repository services.
 
+* **[repository-services-client](repository-services-client)** contains the Java interfaces and
+for calling remote repository services.
+
 * **[repository-services-implementation](repository-services-implementation)** contains the
 support for the peer-to-peer metadata exchange and federation.
 
