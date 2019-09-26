@@ -41,7 +41,11 @@ public class SoftwareServerCapabilityLookup extends EntityLookup<SoftwareServerC
     @Override
     protected InstanceProperties getMatchingProperties(SoftwareServerCapabilitySource softwareServerCapabilitySource) {
         InstanceProperties matchProperties = new InstanceProperties();
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.QUALIFIED_NAME, softwareServerCapabilitySource.getQualifiedName(), "getMatchingProperties");
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String softwareServerCapabilitySourceQualifiedNameRegex =
+                enterpriseConnector.getRepositoryHelper().getExactMatchRegex(softwareServerCapabilitySource.getQualifiedName());
+        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties,
+                Constants.QUALIFIED_NAME, softwareServerCapabilitySourceQualifiedNameRegex, "getMatchingProperties");
         return matchProperties;
     }
 }
