@@ -38,8 +38,11 @@ Running the environment (after Docker is installed and running):
 1. Download all of the files (and directory structure) under
 [https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials](https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials).
 
-1. From within the `tutorials` directory downloaded in the first step, run the command
-`docker-compose -f ./egeria-tutorial.yaml up`.
+1. From within the `tutorials` directory downloaded in the first step, run the command:
+
+    ```shell script
+    docker-compose -f ./egeria-tutorial.yaml up
+    ```
 
 1. You may need to wait while some containers are downloaded and started up. Once you see the following lines:
 
@@ -49,10 +52,14 @@ Running the environment (after Docker is installed and running):
     egeriadl_1    | Thu Sep 26 19:33:56 GMT 2019 OMAG server platform ready for configuration
     ```
 
-    the tutorials are ready. Go to http://localhost:18888 to start the tutorials.
+    Your self-contained environment should be ready.  Go to http://localhost:18888 to open the Jupyter interface and
+    you are ready to [start the Open Metadata Labs](../../open-metadata-labs).
 
-1. To shutdown the environment, again within the `tutorials` directory run the command
-`docker-compose -f ./egeria-tutorial.yaml down`
+1. To shutdown the environment, again within the `tutorials` directory run the command:
+
+    ```shell script
+    docker-compose -f ./egeria-tutorial.yaml down
+    ```
 
 **Important note**: Be aware that each time you run the environment it will reset to a clean tutorial. So if you make
 any changes within the Notebooks that you want to keep, be sure to save these to a local file on your computer before

@@ -8,13 +8,11 @@ The open metadata labs contain Jupyter Notebooks that allow you to try different
 
 Each notebook describes a scenario from the
 [Coco Pharmaceuticals](https://github.com/odpi/data-governance/tree/master/docs/coco-pharmaceuticals)
-case study, focusing on a challenge that one or more of the personas face and
+case study, focusing on a challenge that one or more of the personae face and
 how they approached the solution.
 
 The calls to the Egeria APIs necessary to complete the challenge are encoded in
-the notebook so you can experiment with the APIs.
-
-The open metadata labs can be used for individual study, as part of a class and / or
+the notebook so you can experiment with the APIs.  These labs can be used for individual study, as part of a class and / or
 as the basis of a workbook for using Egeria within a specific organization.
 
 ## Running the Labs
