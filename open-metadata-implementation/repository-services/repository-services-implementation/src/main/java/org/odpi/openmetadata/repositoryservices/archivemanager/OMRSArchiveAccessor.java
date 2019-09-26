@@ -16,15 +16,12 @@ import java.util.*;
  */
 public class OMRSArchiveAccessor
 {
-    private final Map<String, EntityDef> entityDefsByName = new HashMap<>();
-    private final Map<String, EntityDef> entityDefsByGuid = new HashMap<>();
-    private final Map<String, ClassificationDef> classificationDefs = new HashMap<>();
-    private final Map<String, RelationshipDef> relationshipDefsByName = new HashMap<>();
-    private final Map<String, RelationshipDef> relationshipDefsByGuid = new HashMap<>();
-    private final Map<String, EnumDef>           enumDefs           = new HashMap<>();
-
-    private OpenMetadataArchive          openMetadataArchive;
-    private OpenMetadataArchiveTypeStore typeStore;
+    private final Map<String, EntityDef>         entityDefsByName       = new HashMap<>();
+    private final Map<String, EntityDef>         entityDefsByGuid       = new HashMap<>();
+    private final Map<String, ClassificationDef> classificationDefs     = new HashMap<>();
+    private final Map<String, RelationshipDef>   relationshipDefsByName = new HashMap<>();
+    private final Map<String, RelationshipDef>   relationshipDefsByGuid = new HashMap<>();
+    private final Map<String, EnumDef>           enumDefs               = new HashMap<>();
 
     private static OMRSArchiveAccessor instance = null;
 
@@ -51,13 +48,12 @@ public class OMRSArchiveAccessor
      */
     public OMRSArchiveAccessor(OpenMetadataArchive openMetadataArchive)
     {
-        this.openMetadataArchive = openMetadataArchive;
-        this.typeStore = this.openMetadataArchive.getArchiveTypeStore();
+        OpenMetadataArchiveTypeStore typeStore = openMetadataArchive.getArchiveTypeStore();
 
         /*
          * break down these types so we can consume them.
          */
-        for (TypeDef typeDef : this.typeStore.getNewTypeDefs())
+        for (TypeDef typeDef : typeStore.getNewTypeDefs())
         {
             switch (typeDef.getCategory())
             {
@@ -65,9 +61,11 @@ public class OMRSArchiveAccessor
                     this.entityDefsByName.put(typeDef.getName(), ((EntityDef) typeDef));
                     this.entityDefsByGuid.put(typeDef.getGUID(), ((EntityDef) typeDef));
                     break;
+
                 case CLASSIFICATION_DEF:
                     this.classificationDefs.put(typeDef.getName(), ((ClassificationDef) typeDef));
                     break;
+
                 case RELATIONSHIP_DEF:
                     this.relationshipDefsByName.put(typeDef.getName(), (RelationshipDef) typeDef);
                     this.relationshipDefsByGuid.put(typeDef.getGUID(), (RelationshipDef) typeDef);
@@ -75,7 +73,7 @@ public class OMRSArchiveAccessor
             }
         }
 
-        for (AttributeTypeDef attributeTypeDef : this.typeStore.getAttributeTypeDefs())
+        for (AttributeTypeDef attributeTypeDef : typeStore.getAttributeTypeDefs())
         {
             switch (attributeTypeDef.getCategory())
             {
@@ -86,11 +84,11 @@ public class OMRSArchiveAccessor
                 case PRIMITIVE:
                     // todo
                     break;
+
                 case COLLECTION:
                     // todo
                     break;
             }
-
         }
     }
 
@@ -105,6 +103,8 @@ public class OMRSArchiveAccessor
     {
         return entityDefsByName.get(typeName);
     }
+
+
     /**
      * Return the entity type definition for the supplied type guid.
      *
@@ -127,6 +127,8 @@ public class OMRSArchiveAccessor
     {
         return relationshipDefsByName.get(typeName);
     }
+
+
     /**
      * Return the relationship type definition for the supplied type guid.
      *
@@ -169,7 +171,8 @@ public class OMRSArchiveAccessor
      * @param typeDef typeDef source values for the InstanceType
      * @return the an InstanceType (template)
      */
-    public InstanceType createTemplateFromTypeDef(TypeDef typeDef) {
+    public InstanceType createTemplateFromTypeDef(TypeDef typeDef)
+    {
         InstanceType template = new InstanceType();
         template.setTypeDefName(typeDef.getName());
         template.setTypeDefCategory(typeDef.getCategory());
@@ -177,7 +180,7 @@ public class OMRSArchiveAccessor
         template.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
         template.setTypeDefGUID(typeDef.getGUID());
 
-        List supertypes = new ArrayList();
+        List<TypeDefLink> supertypes = new ArrayList<>();
         supertypes.add(typeDef.getSuperType());
         template.setTypeDefSuperTypes(supertypes);
         template.setTypeDefVersion(typeDef.getVersion());

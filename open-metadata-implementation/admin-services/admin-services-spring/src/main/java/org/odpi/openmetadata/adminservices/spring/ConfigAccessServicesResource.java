@@ -44,6 +44,7 @@ public class ConfigAccessServicesResource
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
      * @param accessServiceOptions  property name/value pairs used to configure the access services
+     * @param serviceURLMarker string indicating which access service it is calling
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or

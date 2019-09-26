@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListR
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -15,11 +16,15 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -105,10 +110,103 @@ public class AssetConsumerRESTServices
     }
 
 
+    /**
+     * Return a list of GUIDs based on a list of Assets.
+     *
+     * @param assets list of assets
+     * @return list of GUIDs
+     */
+    private List<String> getGUIDs(List<Asset>  assets)
+    {
+        if ((assets != null) && (! assets.isEmpty()))
+        {
+            List<String>  results = new ArrayList<>();
+
+            for (Asset asset : assets)
+            {
+                if (asset != null)
+                {
+                    String guid = asset.getGUID();
+
+                    if (guid != null)
+                    {
+                        results.add(guid);
+                    }
+                }
+            }
+
+            if (! results.isEmpty())
+            {
+                return  results;
+            }
+
+        }
+
+        return null;
+    }
 
 
     /**
-     * Return a list of assets with the requested name.
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of unique identifiers for assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    public GUIDListResponse findAssets(String   serverName,
+                                       String   userId,
+                                       String   searchString,
+                                       int      startFrom,
+                                       int      pageSize)
+    {
+        final String methodName    = "findAssets";
+
+        log.debug("Calling method: " + methodName);
+
+        GUIDListResponse response = new GUIDListResponse();
+        OMRSAuditLog     auditLog = null;
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+
+            response.setGUIDs(this.getGUIDs(handler.findAssets(userId, searchString, startFrom, pageSize, methodName)));
+        }
+        catch (InvalidParameterException error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of assets with the requested name.  This is an exact match search.
      *
      * @param serverName name of the server instances for this request
      * @param userId calling user
@@ -116,30 +214,30 @@ public class AssetConsumerRESTServices
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
      *
-     * @return list of Asset summaries or
+     * @return list of unique identifiers for Assets with the requested name or
      * InvalidParameterException the name is invalid or
      * PropertyServerException there is a problem access in the property server or
      * UserNotAuthorizedException the user does not have access to the properties
      */
-    public AssetsResponse getAssetsByName(String   serverName,
-                                          String   userId,
-                                          String   name,
-                                          int      startFrom,
-                                          int      pageSize)
+    public GUIDListResponse getAssetsByName(String   serverName,
+                                            String   userId,
+                                            String   name,
+                                            int      startFrom,
+                                            int      pageSize)
     {
-        final String methodName    = "getAssetsByName";
+        final String methodName = "getAssetsByName";
 
         log.debug("Calling method: " + methodName);
 
-        AssetsResponse response = new AssetsResponse();
-        OMRSAuditLog   auditLog = null;
+        GUIDListResponse response = new GUIDListResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
-            response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
+            response.setGUIDs(this.getGUIDs(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName)));
         }
         catch (InvalidParameterException error)
         {

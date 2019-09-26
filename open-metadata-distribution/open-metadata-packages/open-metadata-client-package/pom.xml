@@ -77,7 +77,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-process-client</artifactId>
+            <artifactId>data-model-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
