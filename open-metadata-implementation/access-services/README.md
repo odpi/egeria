@@ -62,10 +62,11 @@ in their organization.
 This includes managing privacy impact assessments and reviews of software services
 that use personal data as they move through their development, deployment and use.
 
-* **[data-process](data-process)** - exchange metadata about processes.
+* **[data-model](data-model)** - exchange data model content from tools and standards.
 
-  The Process Design OMAS provides the ability to manage process flow metadata.
-It is used by business process modelling tools.
+  The Data Model OMAS provides the ability to manage information from data models.
+These models may come from tools or be part of a packaged standard.
+This content is useful for governance, system integration and software development.
 
 * **[data-science](data-science)** - manage metadata for analytics.
 

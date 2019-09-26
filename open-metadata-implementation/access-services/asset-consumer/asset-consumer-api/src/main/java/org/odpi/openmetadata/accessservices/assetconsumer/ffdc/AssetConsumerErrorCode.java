@@ -36,7 +36,7 @@ public enum AssetConsumerErrorCode
     OMRS_NOT_INITIALIZED(404, "OMAS-ASSET-CONSUMER-404-002 ",
                          "The open metadata repository services are not initialized for the {0} operation",
                          "The system is unable to connect to an open metadata repository.",
-                         "Check that the server where the Asset Owner OMAS is running initialized correctly.  " +
+                         "Check that the server where the Asset Consumer OMAS is running initialized correctly.  " +
                                  "Correct any errors discovered and retry the request when the open metadata services are available."),
     CONNECTION_NOT_FOUND(404, "OMAS-ASSET-CONSUMER-404-005 ",
             "The requested connection {0} is not found in OMAS Server {1}, optional error message {2}",
