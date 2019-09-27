@@ -148,7 +148,16 @@ class VisGraph extends PolymerElement {
 
   setData(data) {
     console.log('data: ' + data);
-    console.log('this: ' + this);
+    if(this.data === null || this.data === undefined )
+       this.data = {
+          nodes: {
+            type: vis.DataSet
+          },
+          edges: {
+            type: vis.DataSet
+          }
+        };
+
     this.data.nodes = data.nodes;
     this.data.edges = data.edges;
 

@@ -36,9 +36,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {RestClientException.class})
     protected ResponseEntity<Object> handleResourceException(RestClientException ex, WebRequest request) {
-        String bodyOfResponse = "Unable to access resource.";
+        String bodyOfResponse = "{\"timestamp\":\"2019-09-26T17:57:49.107+0000\",\"status\":503," +
+                "\"error\":\"Forbidden\",\"message\":\"Unable to access resource\",\"path\":\"/api/users/current\"}";
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("status", String.valueOf(HttpStatus.SERVICE_UNAVAILABLE.value()));
         return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+                new HttpHeaders(), HttpStatus.SERVICE_UNAVAILABLE, request);
     }
 
     @ExceptionHandler(value = {UserNotAuthorizedException.class})
