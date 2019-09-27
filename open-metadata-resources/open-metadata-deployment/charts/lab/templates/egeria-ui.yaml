@@ -76,7 +76,7 @@ spec:
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
-              value: "http://{{ .Release.Name }}-datalakeplatform:8080"
+              value: "http://{{ .Release.Name }}-datalake:8080"
       restartPolicy: Always
 
 status: {}

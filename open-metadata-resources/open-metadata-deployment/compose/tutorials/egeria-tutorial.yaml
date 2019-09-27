@@ -46,9 +46,9 @@ services:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
-            - coreURL=http://core:8080
-            - datalakeURL=http://datalake:8080
-            - devURL=http://dev:8080
+            - corePlatformURL=http://core:8080
+            - dataLakePlatformURL=http://datalake:8080
+            - devPlatformURL=http://dev:8080
             - eventBusURLroot=kafka:9092
         command: start.sh jupyter lab --LabApp.token=''
         ports:
@@ -79,10 +79,7 @@ services:
             - zookeeper
             - kafka
         networks:
-            cocopharma:
-                aliases:
-                    - egeria
-                    - egeriacore
+            - cocopharma
 
     datalake:
         depends_on:
@@ -94,8 +91,6 @@ services:
             - zookeeper
         networks:
             - cocopharma
-         aliases:
-             - egeriadl
 
     dev:
         depends_on:
@@ -108,12 +103,10 @@ services:
             - kafka
         networks:
             - cocopharma
-        aliases:
-            egeriadev
 
     ui:
         depends_on:
-            - coreurl
+            - datalake
         image: 'odpi/egeria:latest'
         command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
         environment:
@@ -125,7 +118,5 @@ services:
             - core
         networks:
             cocopharma:
-                aliases:
-                    - egeriaui
 networks:
     cocopharma:
