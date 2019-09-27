@@ -46,9 +46,9 @@ services:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
-            - corePlatformURL=http://coreplatform:8080
-            - dataLakePlatformURL=http://datalakeplatform:8080
-            - devPlatformURL=http://devplatform:8080
+            - coreURL=http://core:8080
+            - datalakeURL=http://datalake:8080
+            - devURL=http://dev:8080
             - eventBusURLroot=kafka:9092
         command: start.sh jupyter lab --LabApp.token=''
         ports:
@@ -56,20 +56,20 @@ services:
         links:
             - zookeeper
             - kafka
-            - coreplatform
-            - devplatform
-            - datalakeplatform
+            - core
+            - dev
+            - datalake
         depends_on:
-            - coreplatform
-            - devplatform
-            - datalakeplatform
+            - core
+            - dev
+            - datalake
         networks:
             - cocopharma
         volumes:
             - ./notebook-start.d:/usr/local/bin/start-notebook.d
         user: root
 
-    coreplatform:
+    core:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -84,7 +84,7 @@ services:
                     - egeria
                     - egeriacore
 
-    datalakeplatform:
+    datalake:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -97,7 +97,7 @@ services:
          aliases:
              - egeriadl
 
-    devplatform:
+    dev:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -113,16 +113,16 @@ services:
 
     ui:
         depends_on:
-            - coreplatformurl
+            - coreurl
         image: 'odpi/egeria:latest'
         command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
         environment:
-            - OMAS_SERVER_URL=http://datalakeplatform:8080
+            - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
         ports:
             - '18443:8443'
         links:
-            - coreplatform
+            - core
         networks:
             cocopharma:
                 aliases:

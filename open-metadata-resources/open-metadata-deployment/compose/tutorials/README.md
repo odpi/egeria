@@ -16,9 +16,9 @@ See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-meta
 Components included are:
  * Multiple egeria images -- this uses the latest docker egeria image, as published to dockerhub
    and as used by our helm charts
-   - Core egeria server - coreplatform:8080 internally, localhost:18080 externally
-   - Datalake server    - datalakeplatform:8080 internally, localhost:18081 externally 
-   - Development server - devplatform:8080 internally, localhost:18082 externally
+   - Core egeria server - core:8080 internally, localhost:18080 externally
+   - Datalake server    - datalake:8080 internally, localhost:18081 externally 
+   - Development server - dev:8080 internally, localhost:18082 externally
    - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
  * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
  * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image

@@ -9,8 +9,8 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-lake-service
-  name: {{ include "myapp.fullname" . }}-egeria-lake-service
+    app.kubernetes.io/component: datalakeplatform
+  name: {{ include "myapp.fullname" . }}-datalakeplatform
 
 spec:
   ports:
@@ -18,20 +18,20 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: egeria-lake-service
+    app.kubernetes.io/component: datalakeplatform
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-egeria-lake
+  name: {{ include "myapp.fullname" . }}-datalakeplatform
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-lake-service
+    app.kubernetes.io/component: datalakeplatform
 
 spec:
   replicas: 1
@@ -39,7 +39,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: egeria-lake-service
+      app.kubernetes.io/component: datalakeplatform
   strategy: {}
   template:
     metadata:
@@ -47,7 +47,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: egeria-lake-service
+        app.kubernetes.io/component: datalakeplatform
     spec:
       containers:
         - name: egeria
