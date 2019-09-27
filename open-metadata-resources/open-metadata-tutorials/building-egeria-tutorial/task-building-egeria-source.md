@@ -4,23 +4,21 @@
 # Building the Egeria Source
 
 When you [download the egeria source from GitHub](task-downloading-egeria-source.md)
-a new directory called **egeria** is created that contains all of the source and the build scripts.
+a new directory called `egeria` is created that contains all of the source and the build scripts.
 
 The build scripts use [Apache Maven](https://maven.apache.org) to ensure the software is
-built in the correct order.  If you change into the **egeria** directory, you will see
-a file called **pom.xml**.  This is the file that controls the build.
+built in the correct order.  If you change into the `egeria` directory, you will see
+a file called `pom.xml`.  This is the file that controls the build.
 
-Issue the following command from the egeria directory.
+Issue the following command from the `egeria` directory.
 
-```text
-
+```bash
 $ mvn clean install
-
 ``` 
+
 The build can take 5-15 minutes depending on the speed and load on your machine.  However eventually you will see the message:
 
 ```text
-
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -30,7 +28,6 @@ The build can take 5-15 minutes depending on the speed and load on your machine.
 [INFO] ------------------------------------------------------------------------
 
 Process finished with exit code 0
-
 ```
 
 This means you have completed this tutorial and are ready to [choose the next step](..).
