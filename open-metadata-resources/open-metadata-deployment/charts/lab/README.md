@@ -25,7 +25,8 @@ In order to eliminate some challenges with security/permissions in helm2 it's re
 helm3 from https://github.com/helm/helm/releases before starting and to ensure the 'helm' executable is in your PATH. The
 instructions and examples that follow assume use of this version
 
-If you can't meet these requirements, an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
+If you can't meet these requirements, or would like to start with a simpler approach,
+an alternative environment for running the tutorials has been implemented using docker-compose & can be found at https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/compose/tutorials .
 
 ## Installation
 
@@ -73,51 +74,49 @@ STATUS: deployed
 Note that it can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running `kubectl get all` -- when ready, you should see output like the following:
 ```text
-➜  kubectl get all
-NAME                                   READY   STATUS    RESTARTS   AGE
-pod/lab-egeria-core-5555fbcb5d-hcfmg   1/1     Running   0          3m23s
-pod/lab-egeria-dev-8d57b9474-f8zdf     1/1     Running   0          3m23s
-pod/lab-egeria-lake-794877f46-lr96k    1/1     Running   0          3m23s
-pod/lab-egeria-ui-6b8d6998c6-7j2ln     1/1     Running   0          3m23s
-pod/lab-jupyter-7f8957b7f6-49qk2       1/1     Running   0          3m23s
-pod/lab-kafka-0                        1/1     Running   1          3m23s
-pod/lab-zookeeper-0                    1/1     Running   0          3m23s
+➜ kubectl get all
+NAME                                READY   STATUS    RESTARTS   AGE
+pod/lab-core-7cf97db498-jp5ql       1/1     Running   0          68s
+pod/lab-datalake-78984678f4-lw77s   1/1     Running   0          68s
+pod/lab-dev-7d9bbbc686-4mnhl        1/1     Running   0          68s
+pod/lab-jupyter-664c8595bd-nc2rq    1/1     Running   0          68s
+pod/lab-kafka-0                     1/1     Running   1          68s
+pod/lab-ui-866b5796d9-98npz         1/1     Running   0          68s
+pod/lab-zookeeper-0                 1/1     Running   0          68s
 
+NAME                             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/lab-core                 NodePort    172.21.33.108    <none>        8080:30080/TCP               69s
+service/lab-datalake             NodePort    172.21.200.243   <none>        8080:30081/TCP               69s
+service/lab-dev                  NodePort    172.21.146.166   <none>        8080:30082/TCP               69s
+service/lab-jupyter              NodePort    172.21.226.53    <none>        8888:30888/TCP               69s
+service/lab-kafka                ClusterIP   172.21.248.164   <none>        9092/TCP                     69s
+service/lab-kafka-headless       ClusterIP   None             <none>        9092/TCP                     69s
+service/lab-ui                   NodePort    172.21.6.119     <none>        8443:30443/TCP               69s
+service/lab-zookeeper            ClusterIP   172.21.249.121   <none>        2181/TCP,2888/TCP,3888/TCP   69s
+service/lab-zookeeper-headless   ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   69s
 
-NAME                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
-service/lab-egeria-core-service   ClusterIP   172.21.191.188   <none>        8080/TCP                     3m24s
-service/lab-egeria-dev-service    ClusterIP   172.21.191.90    <none>        8080/TCP                     3m24s
-service/lab-egeria-lake-service   ClusterIP   172.21.93.73     <none>        8080/TCP                     3m24s
-service/lab-egeria-ui-service     NodePort    172.21.32.97     <none>        8443:30443/TCP               3m24s
-service/lab-jupyter-service       NodePort    172.21.201.185   <none>        8888:30888/TCP               3m23s
-service/lab-kafka                 ClusterIP   172.21.25.145    <none>        9092/TCP                     3m24s
-service/lab-kafka-headless        ClusterIP   None             <none>        9092/TCP                     3m24s
-service/lab-zookeeper             ClusterIP   172.21.206.152   <none>        2181/TCP,2888/TCP,3888/TCP   3m24s
-service/lab-zookeeper-headless    ClusterIP   None             <none>        2181/TCP,2888/TCP,3888/TCP   3m24s
+NAME                           READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/lab-core       1/1     1            1           69s
+deployment.apps/lab-datalake   1/1     1            1           69s
+deployment.apps/lab-dev        1/1     1            1           68s
+deployment.apps/lab-jupyter    1/1     1            1           68s
+deployment.apps/lab-ui         1/1     1            1           68s
 
-
-NAME                              READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/lab-egeria-core   1/1     1            1           3m23s
-deployment.apps/lab-egeria-dev    1/1     1            1           3m23s
-deployment.apps/lab-egeria-lake   1/1     1            1           3m23s
-deployment.apps/lab-egeria-ui     1/1     1            1           3m23s
-deployment.apps/lab-jupyter       1/1     1            1           3m23s
-
-NAME                                         DESIRED   CURRENT   READY   AGE
-replicaset.apps/lab-egeria-core-5555fbcb5d   1         1         1       3m23s
-replicaset.apps/lab-egeria-dev-8d57b9474     1         1         1       3m23s
-replicaset.apps/lab-egeria-lake-794877f46    1         1         1       3m23s
-replicaset.apps/lab-egeria-ui-6b8d6998c6     1         1         1       3m23s
-replicaset.apps/lab-jupyter-7f8957b7f6       1         1         1       3m23s
+NAME                                      DESIRED   CURRENT   READY   AGE
+replicaset.apps/lab-core-7cf97db498       1         1         1       69s
+replicaset.apps/lab-datalake-78984678f4   1         1         1       68s
+replicaset.apps/lab-dev-7d9bbbc686        1         1         1       68s
+replicaset.apps/lab-jupyter-664c8595bd    1         1         1       68s
+replicaset.apps/lab-ui-866b5796d9         1         1         1       68s
 
 NAME                             READY   AGE
-statefulset.apps/lab-kafka       1/1     3m23s
-statefulset.apps/lab-zookeeper   1/1     3m23s
+statefulset.apps/lab-kafka       1/1     68s
+statefulset.apps/lab-zookeeper   1/1     68s
 ```
 (Note that all of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
 
 At this point you should be able to access your notebook by going to the port listed to the right of
-`service/labs-egeria-labs-jupyter-service` -- by default (and in the case above) the port is `30888`:
+`service/lab-jupyter` -- by default (and in the case above) the port is `30888`:
 
 For example, if running Kubernetes locally on your machine, you should be able to get to the notebook
 with:
@@ -138,16 +137,36 @@ by deleting the deployment and running the installation again. This will wipe ou
 metadata across the lab Egeria servers, remove all messages from the Kafka bus used in the cohort,
 reset the Jupyter notebooks to their original clean state, etc.
 
-To delete the deployment, simply run:
+To delete the deployment, simply run this for Helm3:
 
 ```shell script
-$ helm delete labs --purge
+$ helm delete lab
+```
+Or if using Helm2:
+```$xslt
+helm delete lab --purge
 ```
 
-Where `labs` is the name you used in your original deployment. (If you left Helm to randomly
-generate one, you can see what it's called by first running `helm list` and reviewing the output.)
+Where `lab` is the name you used in your original deployment. (You can see what it's called by first running `helm list` and reviewing the output.)
 
 (Then just re-run the last command in the Installation section above to get a fresh environment.)
+## Port Clashes
+The chart is configured to use a fixed set of ports and expose them using a 'NodePort' service as described above.
+
+You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as 'lab.yaml' with the following contents:
+```
+service:
+  type: NodePort
+  nodeport:
+    jupyter: 30888
+    core: 30080
+    datalake: 30081
+    dev: 30082
+    ui: 30443
+```
+and then change the port numbers accordingly.
+You can then deploy using
+'helm install lab lab -f lab.yaml' which will override standard defaults with your choices
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

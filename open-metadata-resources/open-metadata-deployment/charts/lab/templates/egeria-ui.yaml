@@ -9,32 +9,32 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-ui-service
-  name: {{ include "myapp.fullname" . }}-egeria-ui-service
+    app.kubernetes.io/component: ui
+  name: {{ include "myapp.fullname" . }}-ui
 
 spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8443
       targetPort: 8443
-      nodePort: {{ .Values.service.nodeport.egeriaui }}
+      nodePort: {{ .Values.service.nodeport.ui }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: egeria-ui-service
+    app.kubernetes.io/component: ui
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-egeria-ui
+  name: {{ include "myapp.fullname" . }}-ui
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-core-ui
+    app.kubernetes.io/component: ui
 
 spec:
   replicas: 1
@@ -42,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: egeria-ui-service
+      app.kubernetes.io/component: ui
   strategy: {}
   template:
     metadata:
@@ -50,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: egeria-ui-service
+        app.kubernetes.io/component: ui
     spec:
       containers:
         - name: egeria
@@ -76,7 +76,7 @@ spec:
             - name: "OMAS_SERVER_NAME"
               value: "cocoMDS4"
             - name: "OMAS_SERVER_URL"
-              value: "http://{{ .Release.Name }}-egeria-lake-service:8080"
+              value: "http://{{ .Release.Name }}-datalakeplatform:8080"
       restartPolicy: Always
 
 status: {}
