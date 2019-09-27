@@ -58,6 +58,16 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>admin-services-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>ocf-metadata-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
@@ -102,6 +112,16 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-spring</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>platform-services-server</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>platform-services-api</artifactId>
         </dependency>
 
         <dependency>
@@ -217,7 +237,6 @@
             <scope>runtime</scope>
         </dependency>
 
-
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>security-officer-spring</artifactId>
@@ -266,6 +285,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>http-helper</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
 
     </dependencies>
