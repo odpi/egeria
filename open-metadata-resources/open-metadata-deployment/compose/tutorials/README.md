@@ -13,15 +13,16 @@ option for real-world coding & deployment. The same configuration we have here f
 also available for k8s. 
 See https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/charts/lab
 
-Components included (with hostnames) are:
+Components included are:
  * Multiple egeria images -- this uses the latest docker egeria image, as published to dockerhub
    and as used by our helm charts
-   - egeriacore (Core egeria server - port 8080)
-   - egeriadev  (dev egeria server - port 8080)
-   - egeriadl   (datalake egeria server - port 8080)
- * kafka - Kafka (port 9092) - standard Bitnami image
- * zookeeper - Zookeeper (port 1082)- standard Bitnami image
- * notebook - Jupyter notebook (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
+   - Core egeria server - coreplatform:8080 internally, localhost:18080 externally
+   - Datalake server    - datalakeplatform:8080 internally, localhost:18081 externally 
+   - Development server - devplatform:8080 internally, localhost:18082 externally
+   - Egeria ui          - ui:8443 internally (https), localhost:18443 externally (https)
+ * kafka - kafka:9092 internally, localhost:19092 externally - standard Bitnami image
+ * zookeeper - zookeeper:2181 internally, localhost:12181 externally- standard Bitnami image
+ * notebook - notebook:8888 internally, localhost:18888 externally (lab version, base image) - see https://jupyter-docker-stacks.readthedocs.io/en/latest/
 
 ## Usage
 
@@ -29,16 +30,15 @@ Components included (with hostnames) are:
  which contains an initialization script 'getnotebooks.sh'. You can either run directly from a git 
  clone, or download the files individually
  - Ensure docker is installed & configured. See https://docs.docker.com/install/ 
- - docker-compose -f ./egeria-tutorial.yaml up
+ - To start the environment `docker-compose -f ./egeria-tutorial.yaml up`
  - you will notice all the components starting. As the notebook server starts it will also load
    the latest notebooks we have available directly from git.
  - go to http://localhost:18888 to interact with the Jupyter Notebook 
- - In the notebook use the regular port numbers above
- - docker-compose -f ./egeria-tutorial.yaml down
+ - To stop the environment : `docker-compose -f ./egeria-tutorial.yaml down`
+ - To refresh the images (recommended to pick up latest code) : `docker-compose -f ./egeria-tutorial.yaml pull`
 
- ### Debugging, workarounds, or using the services outside the notebook
-  - Note that in order to avoid typical port clashes, when referring to any of the components outside docker/notebook add 10000 to
-    the internal port number, and use localhost for hostname. The exception is egeria where the servers are at localhost:18080 , localhost:18081, localhost:18082
+ ### Using the environment to extend notebooks or develop new ones
+ 
   - If you are using a notebook written to assume 'localhost:8080' or similar, replace with the following fragment. This will use the correct defaults for the environment (k8s or compose), or localhost if these are not yet. :
   corePlatformURL     = os.environ.get('corePlatformURL','http://localhost:8080')
   dataLakePlatformURL = os.environ.get('dataLakePlatformURL','http://localhost:8081')
