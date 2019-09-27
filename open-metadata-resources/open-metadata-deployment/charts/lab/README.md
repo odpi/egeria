@@ -166,7 +166,7 @@ service:
 ```
 and then change the port numbers accordingly.
 You can then deploy using
-'helm install lab lab -f lab.yaml' which will override standard defaults with your choices
+`helm install lab lab -f lab.yaml` which will override standard defaults with your choices
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
