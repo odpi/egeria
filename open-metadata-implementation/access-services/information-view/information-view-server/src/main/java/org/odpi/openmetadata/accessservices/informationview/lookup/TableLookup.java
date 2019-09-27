@@ -67,7 +67,9 @@ public class TableLookup extends EntityLookup<TableSource> {
 
     @Override
     protected InstanceProperties getMatchingProperties(TableSource source) {
+        // GDW - each string property added to matchProperties should be converted to exact match regex
+        String sourceNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getName());
         return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(),
-                Constants.NAME, source.getName(), "lookupEntity");
+                Constants.NAME, sourceNameRegex, "lookupEntity");
     }
 }
