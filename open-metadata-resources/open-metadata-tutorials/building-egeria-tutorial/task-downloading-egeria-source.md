@@ -3,10 +3,9 @@
 
 # Downloading the Egeria Source from GitHub
 
-The Egeria source is extracted from GitHub using the following **git** command:
+The Egeria source is extracted from GitHub using the following `git` command:
 
-```text
-
+```bash
 $ git clone https://github.com/odpi/egeria.git
 Cloning into 'egeria'...
 remote: Enumerating objects: 38, done.
@@ -16,16 +15,13 @@ remote: Total 50419 (delta 8), reused 29 (delta 7), pack-reused 50381
 Receiving objects: 100% (50419/50419), 36.35 MiB | 5.23 MiB/s, done.
 Resolving deltas: 100% (31704/31704), done.
 Checking out files: 100% (6669/6669), done.
-$
-
 ```
+
 A new directory has been created with the ODPi Egeria source code.
-Change to the **egeria** directory.
-```text
+Change to the `egeria` directory.
 
+```bash
 $ cd egeria
-$
-
 ```
 
 You are now ready to [build the egeria source](task-building-egeria-source.md).
