@@ -9,8 +9,8 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: jupyter-service
-  name: {{ include "myapp.fullname" . }}-jupyter-service
+    app.kubernetes.io/component: jupyter
+  name: {{ include "myapp.fullname" . }}-jupyter
 
 spec:
   type: {{ .Values.service.type }}
@@ -21,7 +21,7 @@ spec:
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: jupyter-service
+    app.kubernetes.io/component: jupyter
 ...
 ---
 apiVersion: apps/v1
@@ -34,7 +34,7 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: jupyter-service
+    app.kubernetes.io/component: jupyter
 
 spec:
   replicas: 1
@@ -42,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: jupyter-service
+      app.kubernetes.io/component: jupyter
   strategy: {}
   template:
     metadata:
@@ -50,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: jupyter-service
+        app.kubernetes.io/component: jupyter
     spec:
       securityContext:
         fsGroup: 100
@@ -95,11 +95,11 @@ spec:
             - "--NotebookApp.token=''"
           env:
             - name: corePlatformURL
-              value: "http://{{ .Release.Name }}-egeria-core-service:8080"
+              value: "http://{{ .Release.Name }}-core:8080"
             - name: dataLakePlatformURL
-              value: "http://{{ .Release.Name }}-egeria-lake-service:8080"
+              value: "http://{{ .Release.Name }}-datalake:8080"
             - name: devPlatformURL
-              value: "http://{{ .Release.Name }}-egeria-dev-service:8080"
+              value: "http://{{ .Release.Name }}-dev:8080"
             - name: eventBusURLroot
               value: "{{ .Release.Name }}-kafka:9092"
           ports:
