@@ -40,7 +40,7 @@ public enum RepositoryHandlerErrorCode
     PROPERTY_SERVER_ERROR(400, "REPOSITORY-HANDLER-400-003 ",
             "An unexpected error was returned by the property server during {1} request for open metadata access service {2} on server {3}; message was {0}",
             "The system is unable to process the request.",
-            "Verify the access rights of the user."),
+            "Verify the sanity of the server.  This is probably a logic error.  If you can not work out what happened, ask the ODPi Egeria community for help."),
     INVALID_PROPERTY_VALUE(400, "REPOSITORY-HANDLER-400-004 ",
             "The property named {0} with value of {1} supplied on method {2} does not match the stored value of {3} for entity {4}",
             "The system is unable to process the request.",
