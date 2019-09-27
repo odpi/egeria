@@ -5,6 +5,11 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 
 public class MalformedInputException extends RuntimeException {
 
+    /**
+     *
+     * @param message text to display
+     * @param e raised parent exception
+     */
     public MalformedInputException(String message, Exception e) {
         super(message, e);
     }

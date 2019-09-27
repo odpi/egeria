@@ -11,7 +11,12 @@ import java.util.Map;
 @Component
 public class CustomErrorAttributes extends DefaultErrorAttributes {
 
-
+    /**
+     *
+     * @param webRequest initial request
+     * @param errorMessage message to display to client
+     * @return
+     */
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, String errorMessage) {
         Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, false);
         errorAttributes.put("message", errorMessage);
