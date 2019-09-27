@@ -143,7 +143,7 @@ To delete the deployment, simply run this for Helm3:
 $ helm delete lab
 ```
 Or if using Helm2:
-```$xslt
+```shell script
 helm delete lab --purge
 ```
 
@@ -153,7 +153,7 @@ Where `lab` is the name you used in your original deployment. (You can see what 
 ## Port Clashes
 The chart is configured to use a fixed set of ports and expose them using a 'NodePort' service as described above.
 
-You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as 'lab.yaml' with the following contents:
+You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as `lab.yaml` with the following contents:
 ```
 service:
   type: NodePort
