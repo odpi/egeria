@@ -7,18 +7,23 @@ ODPi Egeria is a big project tackling a complex problem.
 The open metadata tutorials provide guided learning on different topics related to using ODPi Egeria.
 Our initial focus for the tutorials is to help you explore the capabilities of ODPi Egeria.
 Therefore the **getting started** section covers the minimum effort needed to get the technology running
-followed by a series of persona driven labs, allowing you to explore areas of interest.
+followed by a series of persona-driven labs, allowing you to explore areas of interest.
+
+Need a quick refresher on some of the technologies involved? Check out the [Beginner's Guide](beginners-guide).
 
 ## Getting started
 
-* [Downloading and building Egeria](building-egeria-tutorial)
-* [Running the open metadata hands on labs](../open-metadata-labs)
+* [Running the open metadata hands-on labs](../open-metadata-labs)
 
 ## Advanced topics
 
+* [Downloading and building Egeria](building-egeria-tutorial)
 * [Installing Egeria](installing-egeria-tutorial)
 * [Configuring and running Egeria's OMAG Server Platform and OMAG Servers](omag-server-tutorial)
 
+## Beginner's Guide
+
+* [Git, Java, Maven, Kafka, ZooKeeper, Jupyter, Docker, Kubernetes, Helm ... eh?](beginners-guide)
 
 
 ----

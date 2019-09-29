@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,7 +142,9 @@ public class OMEntityDao {
      */
     public EntityDetail getEntity(String typeName, String qualifiedName, boolean zoneRestricted) {
         Map<String, String>  properties = new HashMap<>();
-        properties.put(Constants.QUALIFIED_NAME, qualifiedName);
+        // GDW - need to convert qualifiedName to exactMatchRegex
+        String qualifiedNameRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(qualifiedName);
+        properties.put(Constants.QUALIFIED_NAME, qualifiedNameRegex);
         InstanceProperties matchProperties = buildMatchingInstanceProperties(properties, zoneRestricted);
         List<EntityDetail> existingEntities;
         existingEntities = findEntities(matchProperties, typeName, Constants.START_FROM, PAGE_SIZE);
@@ -149,7 +152,10 @@ public class OMEntityDao {
     }
 
     public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) {
-        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeName);
+        // GDW the matchProperties passed to this method should have already converted any exact match string
+        // using the getExactMatchRegex repository helper method
+        OMRSRepositoryHelper repositoryHelper = enterpriseConnector.getRepositoryHelper();
+        TypeDef typeDef = repositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
             log.debug("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
