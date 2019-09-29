@@ -9,7 +9,7 @@
        <repository>
          <id>odpi-snapshots</id>
          <name>ODPi Snapshots</name>
-         <url>https://nexus.odpi.org/content/groups/public/</url>
+         <url>https://odpi.jfrog.io/odpi/egeria-snapshot/</url>
        </repository>
      </repositories>
    </profile>

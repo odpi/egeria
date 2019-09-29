@@ -23,7 +23,7 @@ services:
         ports:
             - '12181:2181'
         networks:
-            - egerianet
+            - cocopharma
 
     kafka:
         depends_on:
@@ -38,7 +38,7 @@ services:
         ports:
             - '19092:9092'
         networks:
-            - egerianet
+            - cocopharma
 
     notebook:
         image: 'jupyter/base-notebook:latest'
@@ -46,9 +46,9 @@ services:
             - GRANT_SUDO=yes
             - CHOWN_HOME=yes
             - JUPYTER_ENABLE_LAB=yes
-            - corePlatformURL=http://egeriacore:8080
-            - dataLakePlatformURL=http://egeriadl:8080
-            - devPlatformURL=http://egeriadev:8080
+            - corePlatformURL=http://core:8080
+            - dataLakePlatformURL=http://datalake:8080
+            - devPlatformURL=http://dev:8080
             - eventBusURLroot=kafka:9092
         command: start.sh jupyter lab --LabApp.token=''
         ports:
@@ -56,20 +56,20 @@ services:
         links:
             - zookeeper
             - kafka
-            - egeriacore
-            - egeriadev
-            - egeriadl
+            - core
+            - dev
+            - datalake
         depends_on:
-            - egeriacore
-            - egeriadev
-            - egeriadl
+            - core
+            - dev
+            - datalake
         networks:
-            - egerianet
+            - cocopharma
         volumes:
             - ./notebook-start.d:/usr/local/bin/start-notebook.d
         user: root
 
-    egeriacore:
+    core:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -79,11 +79,9 @@ services:
             - zookeeper
             - kafka
         networks:
-            egerianet:
-                aliases:
-                    - egeria
+            - cocopharma
 
-    egeriadev:
+    datalake:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -91,11 +89,10 @@ services:
             - '18081:8080'
         links:
             - zookeeper
-            - kafka
         networks:
-            - egerianet
+            - cocopharma
 
-    egeriadl:
+    dev:
         depends_on:
             - kafka
         image: 'odpi/egeria:latest'
@@ -103,24 +100,23 @@ services:
             - '18082:8080'
         links:
             - zookeeper
+            - kafka
         networks:
-            - egerianet
+            - cocopharma
 
-    egeriaui:
+    ui:
         depends_on:
-            - egeriacore
+            - datalake
         image: 'odpi/egeria:latest'
         command: /bin/bash -c "java -jar /opt/egeria/access-services-user-interface.jar"
         environment:
-            - OMAS_SERVER_URL=http://egeriadl:8080
+            - OMAS_SERVER_URL=http://datalake:8080
             - OMAS_SERVER_NAME=cocoMDS4
         ports:
             - '18443:8443'
         links:
-            - egeriacore
+            - core
         networks:
-            egerianet:
-                aliases:
-                    - ui
+            cocopharma:
 networks:
-    egerianet:
+    cocopharma:
