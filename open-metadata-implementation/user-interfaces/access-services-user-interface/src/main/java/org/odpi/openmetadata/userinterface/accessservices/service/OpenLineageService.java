@@ -39,6 +39,10 @@ public class OpenLineageService {
     private GraphName graphName;
     private static final Logger LOG = LoggerFactory.getLogger(OpenLineageService.class);
 
+    /**
+     * 
+     * @param openLineageClient client to connect to open lineage services
+     */
     @Autowired
     public OpenLineageService(OpenLineage openLineageClient) {
         this.openLineageClient = openLineageClient;
@@ -49,49 +53,94 @@ public class OpenLineageService {
         return openLineageClient.generateMockGraph(userId);
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @return map of nodes and edges describing graph
+     */
     public Map<String, Object> exportGraph(String userId)  {
         String exportedGraph = openLineageClient.exportGraph(userId, graphName);
         Map<String, Object> graphData = processResponse(exportedGraph);
         return graphData;
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @param view level of granularity, eg down to column or table level
+     * @param guid unique identifier if the asset
+     * @return map of nodes and edges describing the ultimate sources for the asset
+     */
     public Map<String, Object> getUltimateSource(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_SOURCE, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @param view level of granularity, eg down to column or table level
+     * @param guid unique identifier if the asset
+     * @return map of nodes and edges describing the end to end flow
+     */
     public Map<String, Object> getEndToEndLineage(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.END_TO_END, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @param view level of granularity, eg down to column or table level
+     * @param guid unique identifier if the asset
+     * @return map of nodes and edges describing the ultimate destinations of the asset
+     */
     public Map<String, Object> getUltimateDestination(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.ULTIMATE_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @param view level of granularity, eg down to column or table level
+     * @param guid unique identifier if the asset
+     * @return map of nodes and edges describing the glossary terms linked to the asset
+     */
     public Map<String, Object> getGlossaryLineage(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.GLOSSARY, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
+    /**
+     * 
+     * @param userId id of the user triggering the request
+     * @param view level of granularity, eg down to column or table level
+     * @param guid unique identifier if the asset
+     * @return map of nodes and edges describing the ultimate sources and destinations of the asset
+     */
     public Map<String, Object> getSourceAndDestination(String userId, View view, String guid)  {
         String response = openLineageClient.lineage(userId, graphName, Scope.SOURCE_AND_DESTINATION, view, guid);
         Map<String, Object> graphData = processResponse(response);
         return graphData;
     }
 
+    /**
+     * 
+     * @param response string returned from Open Lineage Services to be processed
+     * @return map of nodes and edges describing the end to end flow
+     */
     private Map<String, Object> processResponse(String response)  {
         final ObjectMapper mapper = this.mapper;
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
 
         LOG.debug("Received response:{}", response);
-        Response responseObj = null;
+        Response responseObj;
         try {
             responseObj = mapper.readValue(response, Response.class);
         } catch (IOException e) {
@@ -108,18 +157,25 @@ public class OpenLineageService {
         return graphData;
     }
 
-    private void addNodeAndEdges(Vertice vertice, List<Node> listNodes, List<Edge> listEdges) {
-        String labelRoot = vertice.getLabel();
-        String idRoot = String.valueOf(vertice.getId().getValue());
+    /**
+     * This method will add a new node to  the list of all nodes based on the properties of the currentNode to be processed
+     * and all the relationships linekd to the currentNode in listEdges
+     * @param currentNode current node to be processed
+     * @param listNodes list of all nodes
+     * @param listEdges list of all relationships
+     */
+    private void addNodeAndEdges(Vertice currentNode, List<Node> listNodes, List<Edge> listEdges) {
+        String labelRoot = currentNode.getLabel();
+        String idRoot = String.valueOf(currentNode.getId().getValue());
 
-        Map<String, String> properties = Optional.ofNullable(vertice.getProperties())
+        Map<String, String> properties = Optional.ofNullable(currentNode.getProperties())
                 .map(e -> e.entrySet().stream())
                 .orElseGet(Stream::empty)
                 .map(e -> new AbstractMap.SimpleEntry<>(e.getKey(), e.getValue().get(0).getValue()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
         String displayName = properties.get("vedisplayName");
-        String glossaryTerm = properties.get("veglossaryTerm");
+        String glossaryTerm = properties.get("veglossaryTerm");//TODO once returned format is finalized, this should be moved to constants
         if(StringUtils.isEmpty(displayName)) {
             displayName = properties.get("displayName");
         }
@@ -130,7 +186,7 @@ public class OpenLineageService {
         node.setGroup(labelRoot);
         node.setProperties(properties);
 
-        listEdges.addAll(Optional.ofNullable(vertice.getInE())
+        listEdges.addAll(Optional.ofNullable(currentNode.getInE())
                 .map(e -> e.entrySet().stream())
                 .orElseGet(Stream::empty)
                 .flatMap(e -> createEdges(idRoot, e.getKey(),  e.getValue()).stream())
@@ -139,8 +195,15 @@ public class OpenLineageService {
         listNodes.add(node);
     }
 
-    private List<Edge> createEdges(String idRoot, String key, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge> values) {
-        return Optional.ofNullable(values)
+    /**
+     * 
+     * @param idRoot unique identifier of the current node
+     * @param key label of the edges to be added
+     * @param edges list of edges linked to the current node
+     * @return map of nodes and edges describing the end to end flow
+     */
+    private List<Edge> createEdges(String idRoot, String key, List<org.odpi.openmetadata.userinterface.accessservices.service.response.Edge> edges) {
+        return Optional.ofNullable(edges)
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
                 .map(e -> { Edge newEdge = new Edge(idRoot, String.valueOf(e.getOutV().getValue()));
