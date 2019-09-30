@@ -33,11 +33,6 @@ public class OpenLineageController {
     @Autowired
     private OpenLineageService openLineageService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String getMockGraph(String userId){
-        return openLineageService.generateMockGraph(userId);
-    }
-
     /**
      *
      * @param graphName name of the graph source to use
