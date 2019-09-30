@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * This class responsibility is to interact with Open Lineage Services(OLS), process the returned response and return it in a format understood by view
+ */
 @Service
 public class OpenLineageService {
 
