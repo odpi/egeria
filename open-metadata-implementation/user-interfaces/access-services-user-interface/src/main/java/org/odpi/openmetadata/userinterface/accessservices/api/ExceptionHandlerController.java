@@ -26,9 +26,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     /**
      * 
-     * @param ex raised exception to be handled
-     * @param request the initial web request the initial web request
-     * @return
+     * @param ex - raised exception to be handled
+     * @param request - the initial web request - the initial web request
+     * @return the entity containing the response exception
      */
     @ExceptionHandler(value = {MalformedInputException.class})
     protected ResponseEntity<Object> handleMalformedInput(MalformedInputException ex, WebRequest request) {
@@ -40,9 +40,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     /**
      * 
-     * @param ex raised exception to be handled
-     * @param request the initial web request
-     * @return
+     * @param ex - raised exception to be handled
+     * @param request - the initial web request
+     * @return the entity containing the response exception
      */
     @ExceptionHandler(value = {InvalidParameterException.class, PropertyServerException.class,
             InvalidParameterException.class})
@@ -55,9 +55,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     /**
      * 
-     * @param ex raised exception to be handled
-     * @param request the initial web request
-     * @return
+     * @param ex - raised exception to be handled
+     * @param request - the initial web request
+     * @return the entity containing the response exception
      */
     @ExceptionHandler(value = {RestClientException.class})
     protected ResponseEntity<Object> handleResourceException(RestClientException ex, WebRequest request) {
@@ -69,9 +69,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     /**
      * 
-     * @param ex raised exception to be handled
-     * @param request the initial web request
-     * @return
+     * @param ex - raised exception to be handled
+     * @param request - the initial web request
+     * @return the entity containing the response exception
      */
     @ExceptionHandler(value = {UserNotAuthorizedException.class})
     protected ResponseEntity<Object> handleUnauthorizedException(UserNotAuthorizedException ex, WebRequest request) {
