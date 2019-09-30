@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +33,8 @@ import java.util.stream.Stream;
 @Service
 public class OpenLineageService {
 
+    public static final String EDGES_LABEL = "edges";
+    public static final String NODES_LABEL = "nodes";
     private final OpenLineage openLineageClient;
     private com.fasterxml.jackson.databind.ObjectMapper mapper;
     @Value("${open.lineage.graph.source}")
@@ -135,25 +137,30 @@ public class OpenLineageService {
      * @return map of nodes and edges describing the end to end flow
      */
     private Map<String, Object> processResponse(String response)  {
-        final ObjectMapper mapper = this.mapper;
+        Map<String, Object> graphData = new HashMap<>();
         List<Edge> listEdges = new ArrayList<>();
         List<Node> listNodes = new ArrayList<>();
 
-        LOG.debug("Received response:{}", response);
+        LOG.debug("Received response from open lineage service: {}", response);
+        if (response == null) {
+            graphData.put(EDGES_LABEL, listEdges);
+            graphData.put(NODES_LABEL, listNodes);
+            return graphData;
+        }
+
         Response responseObj;
         try {
             responseObj = mapper.readValue(response, Response.class);
         } catch (IOException e) {
-           throw new MalformedInputException("Unable to process response", e);
+            throw new MalformedInputException("Unable to process response", e);
         }
         Optional.ofNullable(responseObj.getVertices())
                 .map(Collection::stream)
                 .orElseGet(Stream::empty)
                 .forEach(v -> addNodeAndEdges(v, listNodes, listEdges));
 
-        Map<String, Object> graphData = new HashMap<>();
-        graphData.put("edges", listEdges);
-        graphData.put("nodes", listNodes);
+        graphData.put(EDGES_LABEL, listEdges);
+        graphData.put(NODES_LABEL, listNodes);
         return graphData;
     }
 
