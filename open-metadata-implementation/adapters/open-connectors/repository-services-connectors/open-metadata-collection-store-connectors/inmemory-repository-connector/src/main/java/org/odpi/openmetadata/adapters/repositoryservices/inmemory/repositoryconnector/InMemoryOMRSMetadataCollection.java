@@ -425,8 +425,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               entity,
                                                                               entity.getProperties(),
-                                                                              matchCriteria,
-                                                                              false)))
+                                                                              matchCriteria
+                                                                              )))
                 {
                     foundEntities.add(entity);
                 }
@@ -546,8 +546,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                                             matchClassificationProperties,
                                             entityClassification,
                                             entityClassification.getProperties(),
-                                            matchCriteria,
-                                            false))
+                                            matchCriteria
+                                            ))
 
                                     {
                                         foundEntities.add(entity);
@@ -860,8 +860,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               relationship,
                                                                               relationship.getProperties(),
-                                                                              matchCriteria,
-                                                                              false)))
+                                                                              matchCriteria)))
                 {
                     foundRelationships.add(relationship);
                 }

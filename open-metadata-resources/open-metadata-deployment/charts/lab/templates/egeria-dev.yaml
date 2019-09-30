@@ -9,29 +9,32 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-dev-service
-  name: {{ include "myapp.fullname" . }}-egeria-dev-service
+    app.kubernetes.io/component: dev
+  name: {{ include "myapp.fullname" . }}-dev
 
 spec:
+  type: {{ .Values.service.type }}
   ports:
     - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.dev }}
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: egeria-dev-service
+    app.kubernetes.io/component: dev
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-egeria-dev
+  name: {{ include "myapp.fullname" . }}-dev
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-dev-service
+    app.kubernetes.io/component: dev
 
 spec:
   replicas: 1
@@ -39,7 +42,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: egeria-dev-service
+      app.kubernetes.io/component: dev
   strategy: {}
   template:
     metadata:
@@ -47,7 +50,7 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: egeria-dev-service
+        app.kubernetes.io/component: dev
     spec:
       containers:
         - name: egeria

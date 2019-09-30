@@ -83,6 +83,7 @@ public class InMemoryRepositoryTest {
                 any(String.class),
                 any(String.class),
                 any(String.class))).thenCallRealMethod();
+        when(omrsRepositoryHelper.getExactMatchRegex(any(String.class))).thenCallRealMethod();
 
     }
 
