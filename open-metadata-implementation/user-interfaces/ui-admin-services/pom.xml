@@ -8,40 +8,34 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>user-interfaces</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>ui-admin-services</artifactId>
 
-    <name>Configuration Store Connectors</name>
+    <name>User Interface Administration Services</name>
     <description>
-        The configuration store connectors contains the connectors that manage
-        the open metadata configuration.
+        The ui administration services support the configuration of the user interface platform.
+        This configuration determines where the open metadata services are.  It also supports
+        the querying the runtime (operational) state of the user interface components.
     </description>
 
-    <artifactId>configuration-store-connectors</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>configuration-file-store-connector</module>
+        <module>ui-admin-services-api</module>
+        <module>ui-admin-services-client</module>
+        <module>ui-admin-services-server</module>
+        <module>ui-admin-services-spring</module>
     </modules>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
-        </dependency>
- 
-	<dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-    </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <artifactId>open-connector-framework</artifactId>
         </dependency>
 
     </dependencies>
