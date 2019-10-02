@@ -3,6 +3,11 @@
 
 ![Egeria Logo](assets/img/ODPi_Egeria_Logo_color.png)
 
+[![GitHub](https://img.shields.io/github/license/odpi/egeria)](LICENSE.md)
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3044/badge)](https://bestpractices.coreinfrastructure.org/projects/3044)
+[![Azure](https://dev.azure.com/odpi/egeria/_apis/build/status/odpi.egeria)](https://dev.azure.com/odpi/Egeria/_build)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=odpi_egeria&metric=alert_status)](https://sonarcloud.io/dashboard?id=odpi_egeria)
+
 # Egeria - Open Metadata and Governance
   
 Egeria provides the Apache 2.0 licensed [open metadata and governance](open-metadata-publication/website/README.md)
@@ -12,9 +17,7 @@ value from data whilst ensuring it is properly governed.
 
 ## Digging deeper
 
-See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md)
-for details on how the content of the project is organized.
-
+See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md) for details on how the content of the project is organized.
 
 ## Egeria governance
 
@@ -29,11 +32,6 @@ To understand how to join and contribute see the
 All participants are bound the ODPi's [Code of Conduct](https://github.com/odpi/specs/wiki/ODPi-Code-of-Conduct).
 The governance of the project is described in more detail in the
 [Egeria Operations](./Egeria-Operations.md).
-
-The Egeria team is working towards their Core Infrastructure Initiative (CII)
-Best Practices Badge
- 
- [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/3044/badge)](https://bestpractices.coreinfrastructure.org/projects/3044).
 
 ## Call schedule
 
