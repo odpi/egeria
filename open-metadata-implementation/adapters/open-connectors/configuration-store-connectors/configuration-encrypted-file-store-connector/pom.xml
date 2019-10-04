@@ -13,6 +13,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <name>Encrypted Configuration File Store Connector</name>
+    <description>
+        The configuration file store connector supports managing the
+        open metadata configuration as an encrypted JSON file.
+    </description>
+
     <artifactId>configuration-encrypted-file-store-connector</artifactId>
 
     <dependencies>
