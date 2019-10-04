@@ -11,7 +11,11 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Cl
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -248,26 +252,6 @@ public class AssetCatalogEntityResource {
         return assetService.getLastUpdatedAssets(serverName, userId, searchParameters);
     }
 
-    /**
-     * Return a list of assets matching the search criteria and the context for each asset
-     * Return the connection id and qualified name.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param searchCriteria   a string expression of the characteristics of the required assets
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of properties used to narrow the search
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/search-asset-v2/{searchCriteria}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetResponse searchAssetsV2(@PathVariable("serverName") String serverName,
-                                        @PathVariable("userId") String userId,
-                                        @PathVariable("searchCriteria") String searchCriteria,
-                                        @RequestBody SearchParameters searchParameters) {
-        return assetService.searchAssetsGeneric(serverName, userId, searchCriteria, searchParameters);
-    }
-
 
     /**
      * Return a list of assets matching the search criteria without the full context
@@ -282,9 +266,9 @@ public class AssetCatalogEntityResource {
             path = "/search/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
-                                        @PathVariable("userId") String userId,
-                                        @PathVariable("searchCriteria") String searchCriteria,
-                                        @RequestBody SearchParameters searchParameters) {
+                                                @PathVariable("userId") String userId,
+                                                @PathVariable("searchCriteria") String searchCriteria,
+                                                @RequestBody SearchParameters searchParameters) {
         return assetService.findAssetsBySearchedPropertyValue(serverName, userId, searchCriteria, searchParameters);
     }
 
@@ -293,17 +277,17 @@ public class AssetCatalogEntityResource {
      * Return the full context of an asset/glossary term based on its identifier.
      * The response contains the list of the connections assigned to the asset.
      *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetId          the global unique identifier of the asset
+     * @param serverName unique identifier for requested server.
+     * @param userId     the unique identifier for the user
+     * @param assetId    the global unique identifier of the asset
      * @return list of properties used to narrow the search
      */
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-context/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
-                                                @PathVariable("userId") String userId,
-                                                @PathVariable("assetId") String assetId) {
+                                         @PathVariable("userId") String userId,
+                                         @PathVariable("assetId") String assetId) {
         return assetService.buildAssetContext(serverName, userId, assetId);
     }
 }
