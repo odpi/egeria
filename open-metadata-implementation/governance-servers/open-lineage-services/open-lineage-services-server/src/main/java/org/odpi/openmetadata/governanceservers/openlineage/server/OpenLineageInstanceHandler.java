@@ -2,28 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
-
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
-
 
 class OpenLineageInstanceHandler
 {
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
-    public GraphServices queryHandler(String serverName) throws PropertyServerException {
-        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
-
-        if (instance != null) {
-            return instance.getGraphServices();
-        } else {
-            final String methodName = "queryHandler";
-            throwError(serverName, methodName);
-            return null;
-        }
-    }
+//    public GraphQueryingServices queryHandler(String serverName) throws PropertyServerException {
+//        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
+//
+//        if (instance != null) {
+//            return instance.getGraphServices();
+//        } else {
+//            final String methodName = "queryHandler";
+//            throwError(serverName, methodName);
+//            return null;
+//        }
+//    }
 
     private void throwError(String serverName, String methodName) throws PropertyServerException {
         OpenLineageErrorCode errorCode = OpenLineageErrorCode.SERVICE_NOT_INITIALIZED;
@@ -36,15 +32,4 @@ class OpenLineageInstanceHandler
                 errorCode.getUserAction());
     }
 
-    public MockGraphGenerator mockGraphGenerator(String serverName) throws PropertyServerException {
-        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
-
-        if (instance != null) {
-            return instance.getMockGraphGenerator();
-        } else {
-            final String methodName = "queryHandler";
-            throwError(serverName, methodName);
-            return null;
-        }
-    }
 }

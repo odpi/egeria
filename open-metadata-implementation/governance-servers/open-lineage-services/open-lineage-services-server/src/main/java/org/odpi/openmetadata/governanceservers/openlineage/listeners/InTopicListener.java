@@ -60,15 +60,12 @@ public class InTopicListener implements OpenMetadataTopicListener {
             switch (event.getOmrsInstanceEventType()) {
                 case NEW_ENTITY_EVENT:
                     AssetLineageEntityEvent newEntityEvent = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEntityEvent.class);
-                    graphBuilder.createEntity(newEntityEvent);
                     break;
                 case NEW_RELATIONSHIP_EVENT:
                         RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
-                    graphBuilder.createRelationship(relationshipEvent);
                     break;
                 case DELETE_PURGED_RELATIONSHIP_EVENT:
                          DeletePurgedRelationshipEvent deletePurgedRelationshipEvent =OBJECT_MAPPER.readValue(eventAsString, DeletePurgedRelationshipEvent.class);
-                         graphBuilder.removeSemanticRelationship(deletePurgedRelationshipEvent);
                     break;
             }
         }catch (IOException e){

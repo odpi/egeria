@@ -11,19 +11,15 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.services.BufferGraphFactory;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphFactory;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
-import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,20 +88,9 @@ public class OpenLineageOperationalServices {
 
             this.auditLog = auditLog;
 
-            try {
-                this.mainGraph = GraphFactory.openMainGraph();
-                this.bufferGraph = BufferGraphFactory.openBufferGraph();
-                this.historyGraph = GraphFactory.openHistoryGraph();
-                this.mockGraph = GraphFactory.openMockGraph();
-
-                this.graphBuilder = new GraphBuilder();
-                MockGraphGenerator mockGraphGenerator = new MockGraphGenerator();
-                GraphServices graphServices = new GraphServices();
-                this.instance = new OpenLineageServicesInstance(mockGraphGenerator, graphServices, localServerName);
-            } catch (RepositoryErrorException e) {
-                log.error("{} Could not open graph database", "GraphBuilder constructor"); //TODO  elaborate error
-            }
-
+            this.graphBuilder = new GraphBuilder();
+            GraphQueryingServices graphServices = new GraphQueryingServices();
+            this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
 
             Connection inTopicConnection = openLineageConfig.getInTopicConnection();
             String inTopicName = getTopicName(inTopicConnection);

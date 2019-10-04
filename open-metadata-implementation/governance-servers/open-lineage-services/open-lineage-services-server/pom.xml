@@ -60,11 +60,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-core</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
         </dependency>
@@ -73,16 +68,6 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-api</artifactId>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>gremlin-core</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tinkerpop</groupId>
-            <artifactId>tinkergraph-gremlin</artifactId>
         </dependency>
 
         <dependency>
