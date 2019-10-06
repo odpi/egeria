@@ -82,7 +82,7 @@ public class SubjectAreaServicesInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public String getServerName() throws NewInstanceException {
-        final String methodName = "getServerName";
+        final String methodName = "getLocalServerName";
 
         if (serverName != null) {
             return serverName;

@@ -57,7 +57,7 @@ public class OMAGServerAdminServices
                                       String serverName,
                                       String typeName)
     {
-        final String methodName = "setServerType";
+        final String methodName = "setLocalServerType";
 
         log.debug("Calling method: " + methodName);
 
@@ -203,7 +203,7 @@ public class OMAGServerAdminServices
                                         String serverName,
                                         String serverUserId)
     {
-        final String methodName = "setServerUserId";
+        final String methodName = "setLocalServerUserId";
 
         log.debug("Calling method: " + methodName);
 
@@ -276,7 +276,7 @@ public class OMAGServerAdminServices
                                           String serverName,
                                           String serverPassword)
     {
-        final String methodName = "setServerPassword";
+        final String methodName = "setLocalServerPassword";
 
         log.debug("Calling method: " + methodName);
 
