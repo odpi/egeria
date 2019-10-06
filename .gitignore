@@ -75,6 +75,7 @@ ui.server.*.config
 
 *.registrystore
 *.testlab.results
+keystore_*/**
 
 # other files
 .DS_Store
