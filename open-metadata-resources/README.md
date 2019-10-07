@@ -5,6 +5,9 @@
 
 The open metadata resources contains the open metadata demos and samples.
 
+* **[open-metadata-archives](open-metadata-archives)** - provides the code and
+instructions to build open metadata archives to load pre-canned content (both types and instances).
+
 * **[open-metadata-demos](open-metadata-demos)** - provides the scripts and
 instructions to run a demo.
 
