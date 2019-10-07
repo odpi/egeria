@@ -215,7 +215,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             if (searchCriteria == null) {
                 response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper,methodName,userId,"Glossary",asOfTime, offset, pageSize);
             } else {
-                response = oMRSAPIHelper.findEntitiesByPropertyValue(oMRSAPIHelper, methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+                response = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             }
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
