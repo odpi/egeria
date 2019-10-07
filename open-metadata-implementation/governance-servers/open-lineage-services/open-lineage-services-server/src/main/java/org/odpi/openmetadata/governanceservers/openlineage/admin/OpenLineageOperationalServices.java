@@ -129,13 +129,7 @@ public class OpenLineageOperationalServices {
         } catch (ConnectorCheckedException e) {
             String action = "Unable to initialize the topic connection";
             OpenLineageAuditCode auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            auditLog.logRecord(action,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(topicName, localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+            logAudit(auditCode,action);
 
             throw new OMAGConfigurationErrorException(400,
                     this.getClass().getSimpleName(),
@@ -221,13 +215,7 @@ public class OpenLineageOperationalServices {
                           String actionDescription, String methodName) throws OMAGConfigurationErrorException{
 
         OpenLineageAuditCode auditCode = code;
-        auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(localServerName),
-                        null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+        logAudit(auditCode,actionDescription);
 
         throw new OMAGConfigurationErrorException(500,
                                                   this.getClass().getName(),
