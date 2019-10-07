@@ -145,9 +145,10 @@ public class GraphServices {
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
                         .emit().
                         repeat(
-                                bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).bothV()
+                                bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").bothV()
                         )
-                        .until(simplePath().bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).count().is(0))
+                        //.until(simplePath().bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).count().is(0))
+                        .times(2)
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
 
