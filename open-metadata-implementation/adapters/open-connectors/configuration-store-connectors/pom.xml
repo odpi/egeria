@@ -43,7 +43,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ui-admin-services-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
