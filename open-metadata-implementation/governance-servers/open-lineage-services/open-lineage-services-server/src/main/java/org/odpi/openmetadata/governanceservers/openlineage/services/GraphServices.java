@@ -131,7 +131,8 @@ public class GraphServices {
     }
 
     /**
-     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
+     * columns or tables connected to synonyms of the queried glossary term.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param guid  The guid of the glossary term of which the lineage is queried of.
@@ -140,30 +141,14 @@ public class GraphServices {
     private String glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
 
-
         Graph subGraph = (Graph)
                 g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
                         .emit().
-                        repeat(
-                                bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").bothV()
-                        )
-                        //.until(simplePath().bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).count().is(0))
-                        .times(2)
+                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().bothV())
                         .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
                         .cap("subGraph").next();
-
-
         return janusGraphToGraphson(subGraph);
     }
-
-//    private String glossary(Graph graph, String guid) {
-//        GraphTraversalSource g = graph.traversal();
-//        Graph subGraph = (Graph)
-//                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-//                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-//                        cap("subGraph").next();
-//        return janusGraphToGraphson(subGraph);
-//    }
 
     /**
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
