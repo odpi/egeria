@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -57,7 +58,6 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         }
     }
 
-
     /**
      * Save the server configuration.
      *
@@ -88,6 +88,20 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
         {
             log.debug("Unusable Server config Store :(", ioException);
         }
+    }
+
+
+    /**
+     * Retrieve the configuration saved from a previous run of the OMAG Server Platform.
+     * (Note: this exists primarily for backwards compatibility -- wherever possible, use the parameterized version
+     * of this method.)
+     *
+     * @return server configuration
+     * @see #retrieveServerConfig(Class)
+     */
+    public OMAGServerConfig retrieveServerConfig()
+    {
+        return retrieveServerConfig(OMAGServerConfig.class);
     }
 
 
