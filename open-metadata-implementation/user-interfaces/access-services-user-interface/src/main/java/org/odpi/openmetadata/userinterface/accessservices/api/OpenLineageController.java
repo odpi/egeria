@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * This controller serves all requests for retrieving lineage details, both vertical and horizontal
+ */
 @RestController
 @RequestMapping("/api/lineage")
 public class OpenLineageController {
@@ -30,15 +33,10 @@ public class OpenLineageController {
     @Autowired
     private OpenLineageService openLineageService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public String getMockGraph(String userId){
-        return openLineageService.generateMockGraph(userId);
-    }
-
     /**
      *
-     * @param graphName
-     * @return
+     * @param graphName name of the graph source to use
+     * @return map of nodes and edges describing the graph
      */
     @RequestMapping(method = RequestMethod.GET, value = "/export")
     public Map<String, Object> exportGraph(@RequestParam GraphName graphName){
@@ -126,6 +124,10 @@ public class OpenLineageController {
     }
 
 
+    /**
+     * This method is registering a custom converter for View and Scope enums in order to be able to use in url the text of the enum and not the actual name
+     * @param webdataBinder DataBinder for data binding from web request parameters to JavaBean objects
+     */
     @InitBinder
     public void initBinder(final WebDataBinder webdataBinder) {
         webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
