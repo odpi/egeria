@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
  */
 public class OpenLineageOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageOperationalServices.class);
+
+    private static final String ACTION_DESCRIPTION = "initialize";
+
     private String localServerName;
     private String localServerType;
     private String localMetadataCollectionName;
@@ -66,40 +69,48 @@ public class OpenLineageOperationalServices {
     }
 
     public void initialize(OpenLineageConfig openLineageConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        final String actionDescription = "initialize";
-        final String methodName = "initialize";
+
         this.auditLog = auditLog;
 
         if(openLineageConfig == null) {
-            getError(auditLog,OpenLineageAuditCode.NO_CONFIG_DOC,actionDescription,methodName);
+            getError(auditLog,OpenLineageAuditCode.NO_CONFIG_DOC,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
         }
 
-
         this.openLineageConfig = openLineageConfig;
+        logAudit(OpenLineageAuditCode.SERVICE_INITIALIZING, ACTION_DESCRIPTION);
 
-        logAudit(OpenLineageAuditCode.SERVICE_INITIALIZING, actionDescription);
+        Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
+        getGraphConnector(bufferGraphConnection);
+        startGraphServices(janusConnector);
 
+    }
 
+    private void getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
-        Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
-        if (bufferGraphConnection != null) {
-            log.info("Found connection: {}", bufferGraphConnection);
+        if (connection != null) {
+            log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                janusConnector = (JanusConnector) connectorBroker.getConnector(bufferGraphConnection);
+                janusConnector = (JanusConnector) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
-                getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,actionDescription,methodName);
+                getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
             }
         }
+    }
 
-        GraphStoringServices graphStoringServices = new GraphStoringServices(janusConnector);
+    private void startGraphServices(GraphStore graphStore) throws OMAGConfigurationErrorException {
+
+        GraphStoringServices graphStoringServices = new GraphStoringServices(graphStore);
         GraphQueryingServices graphServices = new GraphQueryingServices();
         this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
 
+        startEventBus(graphStoringServices);
+    }
 
+    private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {
         inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);
         if (inTopicConnector != null) {
 
@@ -107,13 +118,9 @@ public class OpenLineageOperationalServices {
             inTopicConnector.registerListener(governanceEventListener);
 
             startTopic(inTopicConnector, openLineageConfig.getInTopicName());
-            logAudit(OpenLineageAuditCode.SERVICE_INITIALIZED, actionDescription);
+            logAudit(OpenLineageAuditCode.SERVICE_INITIALIZED, ACTION_DESCRIPTION);
 
         }
-
-
-
-
     }
 
     private void startTopic(OpenMetadataTopicConnector topic, String topicName) throws OMAGConfigurationErrorException {
@@ -129,6 +136,7 @@ public class OpenLineageOperationalServices {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
+
             throw new OMAGConfigurationErrorException(400,
                     this.getClass().getSimpleName(),
                     action,
@@ -161,44 +169,13 @@ public class OpenLineageOperationalServices {
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
 
-        }
-    }
-
-
-    private void startConnector(OpenLineageAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(topicName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-
-        try {
-            topicConnector.start();
-        } catch (ConnectorCheckedException e) {
-            auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(topicName, localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-            throw new OMAGConfigurationErrorException(400,
-                    OpenLineageOperationalServices.class.getSimpleName(),
-                    actionDescription,
-                    auditCode.getFormattedLogMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction()
-            );
         }
     }
 
@@ -225,24 +202,19 @@ public class OpenLineageOperationalServices {
         OpenLineageAuditCode auditCode;
 
         auditCode = OpenLineageAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(localServerName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        logAudit(auditCode,actionDescription);
+
         return true;
     }
 
     private void logAudit(OpenLineageAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
-                          auditCode.getLogMessageId(),
-                          OMRSAuditLogRecordSeverity.INFO,
-                          auditCode.getFormattedLogMessage("Openlineage"),
+                           auditCode.getLogMessageId(),
+                           OMRSAuditLogRecordSeverity.INFO,
+                           auditCode.getFormattedLogMessage("Openlineage"),
                         null,
-                          auditCode.getSystemAction(),
-                          auditCode.getUserAction());
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
     }
 
     private void getError(OMRSAuditLog auditLog, OpenLineageAuditCode code,
@@ -253,7 +225,7 @@ public class OpenLineageOperationalServices {
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
                            auditCode.getFormattedLogMessage(localServerName),
-                null,
+                        null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
@@ -265,3 +237,4 @@ public class OpenLineageOperationalServices {
                                                   auditCode.getUserAction());
     }
 }
+

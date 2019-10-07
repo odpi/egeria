@@ -37,7 +37,7 @@ public class JanusFactory extends IndexingFactory {
                 set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
                 set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
                 set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
-        
+
         try {
 
             janusGraph = config.open();

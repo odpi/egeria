@@ -694,8 +694,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOpenLineageOperationalServices() != null)
         {
-            // TODO
-            // instance.getOpenLineageOperationalServices().terminate(permanentDeactivation);
+             instance.getOpenLineageOperationalServices().disconnect(permanentDeactivation);
         }
 
         /*
