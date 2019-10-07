@@ -33,15 +33,20 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>org.janusgraph</groupId>-->
+<!--            <artifactId>janusgraph-cassandra</artifactId>-->
+<!--            <exclusions>-->
+<!--                <exclusion>-->
+<!--                    <artifactId>hibernate-validator</artifactId>-->
+<!--                    <groupId>org.hibernate</groupId>-->
+<!--                </exclusion>-->
+<!--            </exclusions>-->
+<!--        </dependency>-->
+
         <dependency>
             <groupId>org.janusgraph</groupId>
-            <artifactId>janusgraph-cassandra</artifactId>
-            <exclusions>
-                <exclusion>
-                    <artifactId>hibernate-validator</artifactId>
-                    <groupId>org.hibernate</groupId>
-                </exclusion>
-            </exclusions>
+            <artifactId>janusgraph-cql</artifactId>
         </dependency>
 
         <dependency>
@@ -84,6 +89,7 @@
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- Runtime dependencies for janusgraph-->
+                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cassandra:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>

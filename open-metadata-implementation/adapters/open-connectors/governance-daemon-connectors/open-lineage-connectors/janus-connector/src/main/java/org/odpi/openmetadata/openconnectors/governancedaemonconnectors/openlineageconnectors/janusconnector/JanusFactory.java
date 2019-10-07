@@ -5,6 +5,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.OpenLineageErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.OpenLineageException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabels;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,18 +26,18 @@ public class JanusFactory extends IndexingFactory {
     private static final Logger log = LoggerFactory.getLogger(JanusFactory.class);
 
 
-    public static JanusGraph openBufferGraph(){
+    public static JanusGraph openBufferGraph(ConnectionProperties connectionProperties){
 
         final String methodName = "open";
         JanusGraph janusGraph;
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
-                set("storage.backend", "cql").
-                set("storage.hostname", "127.0.0.1").
-                set("storage.cql.keyspace","janusgraph").
-                set("index.search.backend", "elasticsearch").
-                set("index.search.hostname", "127.0.0.1:9200");
-
+                set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
+                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
+                set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
+                set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
+                set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
+        
         try {
 
             janusGraph = config.open();
@@ -44,7 +46,7 @@ public class JanusFactory extends IndexingFactory {
             log.error("{} could not open graph stored", e);
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("cannot open Cassandra DB", methodName, JanusFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, JanusFactory.class.getName());
 
             throw new OpenLineageException(400,
                     JanusFactory.class.getName(),

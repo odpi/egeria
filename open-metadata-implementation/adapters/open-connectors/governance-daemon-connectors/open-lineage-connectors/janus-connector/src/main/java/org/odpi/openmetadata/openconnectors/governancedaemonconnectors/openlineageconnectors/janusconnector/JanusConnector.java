@@ -31,10 +31,8 @@ public class JanusConnector extends ConnectorBase implements GraphStore {
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
 
-        EndpointProperties endpoint = connectionProperties.getEndpoint();
-
         super.initialize(connectorInstanceId, connectionProperties);
-        this.graph = openBufferGraph();
+        this.graph = openBufferGraph(connectionProperties);
 
     }
 
