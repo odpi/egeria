@@ -27,9 +27,7 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
 import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
 
@@ -40,10 +38,10 @@ public class GraphServices {
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName    main, buffer, mock, history.
-     * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view        The view queried by the user: hostview, tableview, columnview.
-     * @param guid         The guid of the node of which the lineage is queried from.
+     * @param graphName main, buffer, mock, history.
+     * @param scope     source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view      The view queried by the user: hostview, tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public String lineage(String graphName, Scope scope, View view, String guid) {
@@ -77,7 +75,7 @@ public class GraphServices {
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -112,7 +110,7 @@ public class GraphServices {
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -123,21 +121,55 @@ public class GraphServices {
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                        until(inE(edgeLabel).count().is(0)).
-                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
-                        until(outE(edgeLabel).count().is(0)).
-                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                                until(inE(edgeLabel).count().is(0)).
+                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV()),
+                                until(outE(edgeLabel).count().is(0)).
+                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV())
                         ).cap("subGraph").next();
 
         return janusGraphToGraphson(endToEndGraph);
     }
 
     /**
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
+     *
+     * @param graph MAIN, BUFFER, MOCK, HISTORY.
+     * @param guid  The guid of the glossary term of which the lineage is queried of.
+     * @return a subgraph in the GraphSON format.
+     */
+    private String glossary(Graph graph, String guid) {
+        GraphTraversalSource g = graph.traversal();
+
+
+        Graph subGraph = (Graph)
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
+                        .emit().
+                        repeat(
+                                bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).bothV()
+                        )
+                        .until(simplePath().bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).count().is(0))
+                        .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
+                        .cap("subGraph").next();
+
+
+        return janusGraphToGraphson(subGraph);
+    }
+
+//    private String glossary(Graph graph, String guid) {
+//        GraphTraversalSource g = graph.traversal();
+//        Graph subGraph = (Graph)
+//                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
+//                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
+//                        cap("subGraph").next();
+//        return janusGraphToGraphson(subGraph);
+//    }
+
+    /**
      * Returns a subgraph containing all root of the full graph that are connected with the queried node.
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -167,7 +199,7 @@ public class GraphServices {
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
@@ -198,12 +230,11 @@ public class GraphServices {
      * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
      * ultimate sources, should the condensation node be created.
      *
-     *
-     * @param g The GraphTraversal of the graph in which the condensation node will be added.
-     * @param sourcesList The list of ultimate sources for the queried node.
+     * @param g                     The GraphTraversal of the graph in which the condensation node will be added.
+     * @param sourcesList           The list of ultimate sources for the queried node.
      * @param originalQueriedVertex The vertex originally queried by the user.
-     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
-     *                      original graph.
+     * @param queriedVertex         A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                              original graph.
      */
     private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
@@ -225,12 +256,11 @@ public class GraphServices {
      * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
      * ultimate destination, should the condensation node be created.
      *
-     *
-     * @param g The GraphTraversal of the graph in which the condensation node will be added.
-     * @param destinationsList The list of ultimate sources for the queried node.
+     * @param g                     The GraphTraversal of the graph in which the condensation node will be added.
+     * @param destinationsList      The list of ultimate sources for the queried node.
      * @param originalQueriedVertex The vertex originally queried by the user.
-     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
-     *                      original graph.
+     * @param queriedVertex         A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                              original graph.
      */
     private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
@@ -242,22 +272,6 @@ public class GraphServices {
                 condensation.addEdge(EDGE_LABEL_CONDENSED, vertex);
             }
         }
-    }
-
-    /**
-     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
-     *
-     * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param guid  The guid of the glossary term of which the lineage is queried of.
-     * @return a subgraph in the GraphSON format.
-     */
-    private String glossary(Graph graph, String guid) {
-        GraphTraversalSource g = graph.traversal();
-        Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-                        cap("subGraph").next();
-        return janusGraphToGraphson(subGraph);
     }
 
     /**
