@@ -27,6 +27,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>access-services-user-interface</module>
+        <module>ui-admin-services</module>
     </modules>
 
 

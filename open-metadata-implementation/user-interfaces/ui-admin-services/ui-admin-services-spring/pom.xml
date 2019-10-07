@@ -6,46 +6,44 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>ui-admin-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Configuration Store Connectors</name>
-    <description>
-        The configuration store connectors contains the connectors that manage
-        the open metadata configuration.
-    </description>
+    <artifactId>ui-admin-services-spring</artifactId>
 
-    <artifactId>configuration-store-connectors</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>configuration-file-store-connector</module>
-        <module>configuration-encrypted-file-store-connector</module>
-    </modules>
+    <name>Administration Services with Spring</name>
+    <description>
+        The ui administration services with Spring module uses Spring to implement a RESTful service
+        for the ui server administration services.
+    </description>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>admin-services-api</artifactId>
-        </dependency>
-
-	    <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <artifactId>ui-admin-services-api</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <artifactId>ui-admin-services-server</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
     </dependencies>
+
+
 
 </project>
