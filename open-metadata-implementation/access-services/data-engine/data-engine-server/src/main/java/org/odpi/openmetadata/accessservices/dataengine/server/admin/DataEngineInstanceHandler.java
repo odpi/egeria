@@ -47,11 +47,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getProcessHandler();
-        }
-
-        return null;
+        return instance.getProcessHandler();
     }
 
     /**
@@ -74,11 +70,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getSoftwareServerRegistrationHandler();
-        }
-
-        return null;
+        return instance.getSoftwareServerRegistrationHandler();
     }
 
     /**
@@ -102,11 +94,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getDataEngineSchemaTypeHandler();
-        }
-
-        return null;
+        return instance.getDataEngineSchemaTypeHandler();
     }
 
     /**
@@ -129,11 +117,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getPortHandler();
-        }
-
-        return null;
+        return instance.getPortHandler();
     }
 }
 
