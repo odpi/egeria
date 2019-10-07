@@ -99,9 +99,10 @@ public class OpenLineageOperationalServices {
         GraphQueryingServices graphServices = new GraphQueryingServices();
         this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
 
+
+        inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);
         if (inTopicConnector != null) {
 
-            inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);
             OpenMetadataTopicListener governanceEventListener = new InTopicListener(graphStoringServices, auditLog);
             inTopicConnector.registerListener(governanceEventListener);
 
@@ -109,6 +110,8 @@ public class OpenLineageOperationalServices {
             logAudit(OpenLineageAuditCode.SERVICE_INITIALIZED, actionDescription);
 
         }
+
+
 
 
     }

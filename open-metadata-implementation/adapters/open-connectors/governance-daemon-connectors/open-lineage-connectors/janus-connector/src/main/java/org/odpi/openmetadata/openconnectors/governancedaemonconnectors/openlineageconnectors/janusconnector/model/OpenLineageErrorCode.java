@@ -23,7 +23,7 @@ public enum OpenLineageErrorCode {
                                     "The Open Lineage Services have not been initialized for server {0} and can not support REST API calls",
                                     "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
                                     "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
-    CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-004",
+    CANNOT_OPEN_GRAPH_DB("OPEN-LINEAGE-SERVICES-004 ",
                                  "Graph cannot be opened with that configuration",
                                  "It is not possible to open the graph database at path {0} in the {1} method of {2} class for repository {3}",
                                  "The system was unable to open the graph repository graph database " +

@@ -16,7 +16,7 @@ public class GraphStoringServices {
         this.graphStore = graphStore;
     }
 
-    private void test(){
+    public void test(){
         graphStore.addEntity();
     }
 }

@@ -24,9 +24,9 @@ public class InTopicListener implements OpenMetadataTopicListener {
     private final OMRSAuditLog auditLog;
     private GraphStoringServices graphStoringServices;
 
-    public InTopicListener(GraphStoringServices gremlinBuilder, OMRSAuditLog auditLog) {
+    public InTopicListener(GraphStoringServices graphStoringServices, OMRSAuditLog auditLog) {
 
-        this.graphStoringServices = gremlinBuilder;
+        this.graphStoringServices = graphStoringServices;
         this.auditLog = auditLog;
 
     }
@@ -39,6 +39,7 @@ public class InTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String eventAsString) {
         AssetLineageEvent event = null;
+        graphStoringServices.test();
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEvent.class);
             log.info("Started processing OpenLineageEvent");
