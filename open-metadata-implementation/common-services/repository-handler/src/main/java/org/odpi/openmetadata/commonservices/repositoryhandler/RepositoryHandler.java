@@ -447,7 +447,7 @@ public class RepositoryHandler
 
 
     /**
-     * Update an existing entity in the open metadata repository.
+     * Add a new classification to an existing entity in the open metadata repository.
      *
      * @param userId calling user
      * @param entityGUID unique identifier of entity to update
@@ -480,6 +480,99 @@ public class RepositoryHandler
                                                              classificationTypeGUID,
                                                              classificationTypeName,
                                                              properties,
+                                                             methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+    }
+
+
+    /**
+     * Update the properties of an existing classification to an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID type of classification to create
+     * @param classificationTypeName name of the classification's type
+     * @param properties properties for the classification
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void    reclassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeGUID,
+                                    String                  classificationTypeName,
+                                    InstanceProperties      properties,
+                                    String                  methodName) throws UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        try
+        {
+            EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
+                                                                                   entityGUID,
+                                                                                   classificationTypeName,
+                                                                                   properties);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntityForClassification(entityGUID,
+                                                             classificationTypeGUID,
+                                                             classificationTypeName,
+                                                             properties,
+                                                             methodName);
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+    }
+
+
+    /**
+     * Remove an existing classification from an existing entity in the open metadata repository.
+     *
+     * @param userId calling user
+     * @param entityGUID unique identifier of entity to update
+     * @param classificationTypeGUID type of classification to create
+     * @param classificationTypeName name of the classification's type
+     * @param methodName name of calling method
+     *
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public void    declassifyEntity(String                  userId,
+                                    String                  entityGUID,
+                                    String                  classificationTypeGUID,
+                                    String                  classificationTypeName,
+                                    String                  methodName) throws UserNotAuthorizedException,
+                                                                               PropertyServerException
+    {
+        try
+        {
+            EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
+                                                                         entityGUID,
+                                                                         classificationTypeName);
+
+            if (newEntity == null)
+            {
+                errorHandler.handleNoEntityForClassification(entityGUID,
+                                                             classificationTypeGUID,
+                                                             classificationTypeName,
+                                                             null,
                                                              methodName);
             }
         }
