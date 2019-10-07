@@ -1364,6 +1364,7 @@ public class OMRSAPIHelper {
                 // TODO error
             }
         }
+
         SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
         TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("findEntitiesByPropertyValue",typeName);
         String entityTypeGUID = typeDef.getGUID();
@@ -1394,6 +1395,7 @@ public class OMRSAPIHelper {
         if (pageSize == null) {
             pageSize = new Integer(0);
         }
+      
         TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
         String entityTypeGUID = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(

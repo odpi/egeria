@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
-import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
