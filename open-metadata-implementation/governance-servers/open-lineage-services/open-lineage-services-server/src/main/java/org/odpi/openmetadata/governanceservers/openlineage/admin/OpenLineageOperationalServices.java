@@ -35,7 +35,6 @@ public class OpenLineageOperationalServices {
     private String localOrganizationName;
     private String localServerUserId;
     private String localServerURL;
-    private int maxPageSize;
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector inTopicConnector;
@@ -50,20 +49,17 @@ public class OpenLineageOperationalServices {
      * @param localOrganizationName name of the organization that owns the local server
      * @param localServerUserId     user id for this server to use if processing inbound messages.
      * @param localServerURL        URL root for this server.
-     * @param maxPageSize           maximum number of records that can be requested on the pageSize parameter
      */
     public OpenLineageOperationalServices(String localServerName,
                                           String localServerType,
                                           String localOrganizationName,
                                           String localServerUserId,
-                                          String localServerURL,
-                                          int maxPageSize) {
+                                          String localServerURL) {
         this.localServerName = localServerName;
         this.localServerType = localServerType;
         this.localOrganizationName = localOrganizationName;
         this.localServerUserId = localServerUserId;
         this.localServerURL = localServerURL;
-        this.maxPageSize = maxPageSize;
     }
 
     public void initialize(OpenLineageConfig openLineageConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
@@ -107,7 +103,6 @@ public class OpenLineageOperationalServices {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
-        //TODO Error handling and logging
     }
 
 

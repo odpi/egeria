@@ -55,7 +55,34 @@ public class OMAGServerAdminForOpenLineage
 
         try
         {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
+
+
+            openLineageConfig.setOpenLineageBufferGraphConnection(
+                    connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
+                                                                                    openLineageConfig.getOpenLineageProvider(),
+                                                                                    serverConfig.getLocalServerURL(),
+                                                                                    openLineageConfig.getBufferGraphConfig())
+                                                                  );
+
+            EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
+            openLineageConfig.setInTopicConnection(
+                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultALOutTopicName,
+                                                                               eventBusConfig.getConnectorProvider(),
+                                                                   eventBusConfig.getTopicURLRoot() + ".server",
+                                                                               openLineageConfig.getInTopicName(),
+                                                                               UUID.randomUUID().toString(),
+                                                                               eventBusConfig.getConfigurationProperties())
+                                                    );
+
+            serverConfig.setOpenLineageConfig(openLineageConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
@@ -76,22 +103,6 @@ public class OMAGServerAdminForOpenLineage
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
-            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-            EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            openLineageConfig.setInTopicConnection(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultALOutTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server",
-                            openLineageConfig.getInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getConfigurationProperties()));
-
-
-            serverConfig.setOpenLineageConfig(openLineageConfig);
-
-            configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
         catch (OMAGInvalidParameterException  error)
         {

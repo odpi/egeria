@@ -468,14 +468,13 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerType(),
                         configuration.getOrganizationName(),
                         configuration.getLocalServerUserId(),
-                        configuration.getLocalServerURL(),
-                        configuration.getMaxPageSize());
+                        configuration.getLocalServerURL());
                 instance.setOpenLineageOperationalServices(openLineageOperationalServices);
                 openLineageOperationalServices.initialize(openLineageConfig,
                         operationalRepositoryServices.getAuditLog(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
 
                 activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
             }
