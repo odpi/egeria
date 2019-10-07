@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Asse
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetLineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -22,11 +22,11 @@ public class InTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(InTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private GraphBuilder graphBuilder;
+    private GraphStoringServices graphStoringServices;
 
-    public InTopicListener(GraphBuilder gremlinBuilder, OMRSAuditLog auditLog) {
+    public InTopicListener(GraphStoringServices gremlinBuilder, OMRSAuditLog auditLog) {
 
-        this.graphBuilder = gremlinBuilder;
+        this.graphStoringServices = gremlinBuilder;
         this.auditLog = auditLog;
 
     }

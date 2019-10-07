@@ -40,10 +40,6 @@ public class JanusConnector extends ConnectorBase implements GraphStore {
     @Override
     public void addEntity() {
         GraphTraversalSource g =  graph.traversal();
-        g.addV("ProcessTest").next();
-
-        g.tx().commit();
-
         System.out.println(g.V().count().next());
 
     }
