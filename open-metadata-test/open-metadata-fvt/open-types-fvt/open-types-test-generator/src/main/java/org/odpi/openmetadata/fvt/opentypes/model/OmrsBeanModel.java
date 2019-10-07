@@ -4,7 +4,7 @@ package org.odpi.openmetadata.fvt.opentypes.model;
 
 import org.odpi.openmetadata.fvt.opentypes.utils.GeneratorUtilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
