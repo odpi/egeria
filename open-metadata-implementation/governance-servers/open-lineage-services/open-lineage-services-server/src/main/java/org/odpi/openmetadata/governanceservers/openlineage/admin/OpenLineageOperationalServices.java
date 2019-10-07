@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -42,11 +41,6 @@ public class OpenLineageOperationalServices {
     private OpenMetadataTopicConnector inTopicConnector;
     private GraphBuilder graphBuilder;
     private OpenLineageServicesInstance instance;
-    public static JanusGraph mainGraph;
-    public static JanusGraph bufferGraph;
-    public static JanusGraph historyGraph;
-    public static JanusGraph mockGraph;
-
 
     /**
      * Constructor used at server startup.
