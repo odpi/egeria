@@ -7,13 +7,12 @@ import com.google.crypto.tink.*;
 import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,17 +66,17 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
     /**
      * Save the server configuration.
      *
-     * @param omagServerConfig - configuration properties to save
+     * @param serverConfig - configuration properties to save
      */
-    public void saveServerConfig(OMAGServerConfig omagServerConfig) {
+    public <T> void saveServerConfig(T serverConfig) {
 
         File configStoreFile = new File(configStoreName);
         File keystore = getKeystore();
 
         try {
 
-            if (omagServerConfig == null) {
-                log.debug("Deleting server config store properties: " + omagServerConfig);
+            if (serverConfig == null) {
+                log.debug("Deleting server config store properties: " + serverConfig);
                 configStoreFile.delete();
                 keystore.delete();
             } else {
@@ -87,9 +86,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
                 CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(
                         keystore));
 
-                log.debug("Writing encrypted server config store properties: " + omagServerConfig);
+                log.debug("Writing encrypted server config store properties: " + serverConfig);
                 ObjectMapper objectMapper = new ObjectMapper();
-                String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
+                String configStoreFileContents = objectMapper.writeValueAsString(serverConfig);
                 Aead aead = keysetHandle.getPrimitive(Aead.class);
                 byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(Charset.forName("UTF-8")), null);
                 FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
@@ -110,11 +109,11 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      *
      * @return server configuration
      */
-    public OMAGServerConfig  retrieveServerConfig() {
-
+    public <T> T  retrieveServerConfig( Class<T> clazz)
+    {
         File configStoreFile = new File(configStoreName);
         File keystore = getKeystore();
-        OMAGServerConfig newConfigProperties = null;
+        T newConfigProperties = null;
 
         try {
 
@@ -127,7 +126,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             byte[] decrypted = aead.decrypt(ciphertext, null);
             String configStoreFileContents = new String(decrypted, Charset.forName("UTF-8"));
             ObjectMapper objectMapper = new ObjectMapper();
-            newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+            newConfigProperties = objectMapper.readValue(configStoreFileContents, clazz);
 
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("Unable to read encryption key.", e);
