@@ -8,6 +8,7 @@ import com.google.crypto.tink.aead.AeadConfig;
 import com.google.crypto.tink.aead.AeadKeyTemplates;
 import com.google.crypto.tink.proto.KeyTemplate;
 import org.apache.commons.io.FileUtils;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -102,6 +103,17 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         }
 
     }
+
+
+    /**
+     * Retrieve the configuration saved from a previous run of the OMAG Server Platform.
+     * (Note: this exists primarily for backwards compatibility -- wherever possible, use the parameterized version
+     * of this method.)
+     *
+     * @return server configuration
+     * @see #retrieveServerConfig(Class)
+     */
+    public OMAGServerConfig retrieveServerConfig() { return retrieveServerConfig(OMAGServerConfig.class); }
 
 
     /**
