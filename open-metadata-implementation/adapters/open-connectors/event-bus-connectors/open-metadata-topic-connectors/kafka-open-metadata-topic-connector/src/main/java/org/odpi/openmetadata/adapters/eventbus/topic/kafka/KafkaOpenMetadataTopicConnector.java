@@ -158,24 +158,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             Object              propertiesObject;
 
             propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
-            if (propertiesObject != null)
-            {
-                propertiesMap = (Map<String, Object>)propertiesObject;
-                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
-                {
-                    producerProperties.setProperty(entry.getKey(), (String) entry.getValue());
-                }
-            }
+            copyProperties(propertiesObject, producerProperties);
 
             propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.consumerPropertyName);
-            if (propertiesObject != null)
-            {
-                propertiesMap = (Map<String, Object>)propertiesObject;
-                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
-                {
-                    consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
-                }
-            }
+            copyProperties(propertiesObject, consumerProperties);
+            
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.egeriaConsumerPropertyName);
+            copyProperties(propertiesObject, consumerEgeriaProperties);
         }
         catch (Throwable   error)
         {

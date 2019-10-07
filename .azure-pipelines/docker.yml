@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+---
+trigger:
+  paths:
+    include:
+      - open-metadata-resources/open-metadata-deployment/docker
+pr: none
+schedules:
+  - cron: "11 0 * * *"
+    displayName: Daily Docker Build
+    always: true
+    branches:
+      include:
+        - master
+
+stages:
+  - stage: Docker
+    jobs:
+      - job: Maven
+        pool:
+          vmImage: 'ubuntu-latest'
+        strategy:
+          matrix:
+            apache-atlas:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/apache-atlas/pom.xml'
+            egeria:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/egeria/pom.xml'
+            egeria-configure:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/configure/pom.xml'
+            egeria-gaian:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/gaian/pom.xml'
+            egeria-omrs-monitor:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/pom.xml'
+            egeria-ranger:
+              POM_FILE: 'open-metadata-resources/open-metadata-deployment/docker/apache-ranger-admin/pom.xml'
+        steps:
+          # TODO: Not sure if this is really needed...
+          - script: mkdir -p ${HOME}/.docker
+          - task: DownloadSecureFile@1
+            name: dockerConfig
+            inputs:
+              secureFile: odpi-docker.json
+          - script: mv $(dockerConfig.secureFilePath) ${HOME}/.docker/config.json
+          - task: Docker@2
+            displayName: Login to Docker Hub
+            inputs:
+              command: login
+              containerRegistry: odpi-dockerhub
+          - task: Maven@3
+            inputs:
+              mavenPomFile: $(POM_FILE)
+              javaHomeOption: 'JDKVersion'
+              jdkVersionOption: '1.8'
+              jdkArchitectureOption: 'x64'
+              goals: 'clean install'
+              options: >-
+                  --batch-mode
+                  -e
+                  -Ddocker
+                  -Ddocker.repo=odpi
+                  -Ddocker.registry=docker.io
+                  -Ddockerfile.googleContainerRegistryEnabled=false

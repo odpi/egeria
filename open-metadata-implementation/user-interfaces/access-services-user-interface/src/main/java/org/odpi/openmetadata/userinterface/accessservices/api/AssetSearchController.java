@@ -28,20 +28,11 @@ public class AssetSearchController {
      * @return list of assets
      */
     @RequestMapping(method = RequestMethod.GET)
-    public List<Term>  searchAssets(@RequestParam("q") String q) {
-        try {
-            String user = SecurityContextHolder.getContext().getAuthentication().getName();
-            return omasService.searchAssets(user, q);
-        } catch (PropertyServerException | InvalidParameterException e) {
-            handleExceprion(e);
-            return null;
-        }
+    public List<Term>  searchAssets(@RequestParam("q") String q) throws PropertyServerException,
+                                                                        InvalidParameterException {
+        String user = SecurityContextHolder.getContext().getAuthentication().getName();
+        return omasService.searchAssets(user, q);
     }
 
-    private void handleExceprion(Exception e){
-        if(e instanceof InvalidParameterException){
-            throw new IllegalArgumentException(e.getMessage());
-        }
-        throw new RuntimeException("Unknown exception! " + e.getMessage());
-    }
+
 }

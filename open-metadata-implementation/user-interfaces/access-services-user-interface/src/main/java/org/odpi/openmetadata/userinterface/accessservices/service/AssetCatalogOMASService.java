@@ -34,7 +34,7 @@ public class AssetCatalogOMASService {
      * Fetch asset's header
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param searchCriteria the searchCriteria
      * @return the assets for the search criteria
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -53,7 +53,7 @@ public class AssetCatalogOMASService {
      * Fetch asset's header and classification
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -72,7 +72,7 @@ public class AssetCatalogOMASService {
      * Fetch asset's header, classification and properties
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -93,7 +93,7 @@ public class AssetCatalogOMASService {
      * Fetch asset's header, classification, properties and relationships
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -112,7 +112,7 @@ public class AssetCatalogOMASService {
      * Fetch the relationships for a specific asset
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return list of relationships for the given asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -131,7 +131,7 @@ public class AssetCatalogOMASService {
      * Fetch the relationships for a specific asset and relationship type
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId          the unique identifier for the asset
      * @param relationshipType the relationship type
      * @return list of relationships for the given asset and relationship type
@@ -153,7 +153,7 @@ public class AssetCatalogOMASService {
      * Fetch the classification for a specific asset
      *
      *
-     * @param user
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the classification for the asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server

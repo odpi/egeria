@@ -145,29 +145,6 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
-        if (owner != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.OWNER_PROPERTY_NAME,
-                                                                      owner,
-                                                                      methodName);
-        }
-
-        if (ownerType != null)
-        {
-            properties = this.addOwnerTypeToProperties(properties, methodName);
-        }
-
-        if (zoneMembership != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                           zoneMembership,
-                                                                           methodName);
-        }
-
         if (latestChange != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -241,6 +218,60 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                       AssetMapper.DESCRIPTION_PROPERTY_NAME,
                                                                       description,
                                                                       methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the asset's zone membership in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    public InstanceProperties getZoneMembershipProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = null;
+
+        if (zoneMembership != null)
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           null,
+                                                                           AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                           zoneMembership,
+                                                                           methodName);
+        }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Return the bean properties describing the asset's owner in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    public InstanceProperties getOwnerProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = null;
+
+        if (owner != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.OWNER_PROPERTY_NAME,
+                                                                      owner,
+                                                                      methodName);
+        }
+
+        if (ownerType != null)
+        {
+            properties = this.addOwnerTypeToProperties(properties, methodName);
         }
 
         return properties;

@@ -44,12 +44,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-apis</artifactId>
+            <artifactId>open-metadata-types</artifactId>
         </dependency>
 
     </dependencies>

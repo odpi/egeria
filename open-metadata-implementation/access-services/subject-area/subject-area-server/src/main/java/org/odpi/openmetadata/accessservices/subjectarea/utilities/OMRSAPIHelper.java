@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.VoidResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1365,10 +1365,10 @@ public class OMRSAPIHelper {
                 // TODO error
             }
         }
-        SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
-        TypeDef typeDef =archiveAccessor.getEntityDefByName(type);
-        String entityTypeGUID = typeDef.getGUID();
+        SequencingOrder                  omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+        OpenMetadataTypesArchiveAccessor archiveAccessor     = OpenMetadataTypesArchiveAccessor.getInstance();
+        TypeDef                          typeDef             =archiveAccessor.getEntityDefByName(type);
+        String                           entityTypeGUID      = typeDef.getGUID();
         return  oMRSAPIHelper.callFindEntitiesByPropertyValue(
                 restAPIName,
                 userId,
@@ -1396,9 +1396,9 @@ public class OMRSAPIHelper {
         if (pageSize == null) {
             pageSize = new Integer(0);
         }
-        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
-        TypeDef typeDef =archiveAccessor.getEntityDefByName(typeName);
-        String entityTypeGUID = typeDef.getGUID();
+        OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
+        TypeDef                          typeDef         =archiveAccessor.getEntityDefByName(typeName);
+        String                           entityTypeGUID  = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(
                 restAPIName,
                 userId,
