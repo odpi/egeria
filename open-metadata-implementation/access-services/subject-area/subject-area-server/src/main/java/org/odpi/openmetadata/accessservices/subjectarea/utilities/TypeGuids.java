@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 
 
@@ -18,7 +18,7 @@ public class TypeGuids
     public static String getMediaReferenceTypeGuid() {
         if (mediaReferenceTypeGuid ==null)
         {
-            RelationshipDef mediaReferenceType = OMRSArchiveAccessor.getInstance().getRelationshipDefByName("MediaReference");
+            RelationshipDef mediaReferenceType = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName("MediaReference");
             mediaReferenceTypeGuid = mediaReferenceType.getGUID();
         }
         return mediaReferenceTypeGuid;
@@ -28,7 +28,7 @@ public class TypeGuids
     {
         if (categoryAnchorTypeGuid ==null)
         {
-            RelationshipDef anchor = OMRSArchiveAccessor.getInstance().getRelationshipDefByName("CategoryAnchor");
+            RelationshipDef anchor = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName("CategoryAnchor");
             categoryAnchorTypeGuid = anchor.getGUID();
         }
         return categoryAnchorTypeGuid;
@@ -38,7 +38,7 @@ public class TypeGuids
     {
         if (termAnchorTypeGuid ==null)
         {
-            RelationshipDef anchor = OMRSArchiveAccessor.getInstance().getRelationshipDefByName("TermAnchor");
+            RelationshipDef anchor = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName("TermAnchor");
             termAnchorTypeGuid = anchor.getGUID();
         }
         return termAnchorTypeGuid;
@@ -49,7 +49,7 @@ public class TypeGuids
 
         if (categoryHierarchyLinkTypeGuid  ==null)
         {
-            RelationshipDef anchor = OMRSArchiveAccessor.getInstance().getRelationshipDefByName("CategoryHierarchyLink");
+            RelationshipDef anchor = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName("CategoryHierarchyLink");
             categoryHierarchyLinkTypeGuid = anchor.getGUID();
         }
         return categoryHierarchyLinkTypeGuid;

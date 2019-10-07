@@ -26,7 +26,7 @@ capability around the data assets.
 * **[0536 API Schemas](0536-API-Schemas.md)**
 * **[0540 Data Classes](0540-Data-Classes.md)**
 * **[0545 Reference Data](0545-Reference-Data.md)**
-* **[0565 Model Elements](0565-Model-Elements.md)**
+* **[0565 Model Elements](0565-Design-Model-Elements.md)**
 * **[0580 Solution Blueprints](0580-Solution-Blueprints.md)**
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
 * **[0595 Design Patterns](0595-Design-Patterns.md)**
