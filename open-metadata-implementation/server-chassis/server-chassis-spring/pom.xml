@@ -126,7 +126,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-model-spring</artifactId>
+            <artifactId>design-model-spring</artifactId>
             <scope>runtime</scope>
         </dependency>
 
