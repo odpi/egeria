@@ -3,12 +3,13 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -61,17 +62,17 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
     /**
      * Save the server configuration.
      *
-     * @param serverConfig - configuration properties to save
+     * @param omagServerConfig - configuration properties to save
      */
-    public <T> void saveServerConfig(T serverConfig)
+    public void saveServerConfig(OMAGServerConfig omagServerConfig)
     {
         File    configStoreFile = new File(configStoreName);
 
         try
         {
-            log.debug("Writing server config store properties: " + serverConfig);
+            log.debug("Writing server config store properties: " + omagServerConfig);
 
-            if (serverConfig == null)
+            if (omagServerConfig == null)
             {
                 configStoreFile.delete();
             }
@@ -79,7 +80,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
             {
                 ObjectMapper objectMapper = new ObjectMapper();
 
-                String configStoreFileContents = objectMapper.writeValueAsString(serverConfig);
+                String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
 
                 FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, false);
             }
@@ -96,10 +97,10 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
      *
      * @return server configuration
      */
-    public <T> T  retrieveServerConfig( Class<T> clazz)
+    public OMAGServerConfig  retrieveServerConfig()
     {
         File             configStoreFile     = new File(configStoreName);
-        T newConfigProperties;
+        OMAGServerConfig newConfigProperties;
 
         try
         {
@@ -109,7 +110,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
             ObjectMapper objectMapper = new ObjectMapper();
 
-            newConfigProperties = objectMapper.readValue(configStoreFileContents, clazz);
+            newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
         }
         catch (IOException ioException)
         {
