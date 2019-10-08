@@ -7,6 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 
+
 /**
  * UIServerAdministration defines the administrative interface for an User Interface (UI) Server.
  * It is used to create both the Java client and the RESTful server-side implementation.  It provides all of the
@@ -70,6 +71,7 @@ public interface UIServerAdministration
             InvalidParameterException;
 
 
+
     /**
      * Set up the descriptive type of the server.  This value is added to distributed events to
      * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
@@ -84,7 +86,6 @@ public interface UIServerAdministration
                        String serverName,
                        String serverType) throws OMAGNotAuthorizedException,
                                                     InvalidParameterException;
-
 
     /**
      * Set up the name of the organization that is running this server.  This value is added to distributed events to

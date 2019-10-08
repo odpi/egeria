@@ -44,5 +44,27 @@
         </dependency>
 
     </dependencies>
+    <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+                <execution>
+                    <id>analyze</id>
+                    <goals>
+                        <goal>analyze-only</goal>
+                    </goals>
+                    <configuration>
+                        <ignoredUnusedDeclaredDependencies combine.children="append">
+                            <!-- ui admin  - false positives from dependency checker -->
+                            <ignoredUnusedDeclaredDependency>org.odpi.egeria:ui-admin-services-api:*</ignoredUnusedDeclaredDependency>
+                        </ignoredUnusedDeclaredDependencies>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+    </build>
 
 </project>

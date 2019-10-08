@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.adminservices.configuration.properties;
 
+
 import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;

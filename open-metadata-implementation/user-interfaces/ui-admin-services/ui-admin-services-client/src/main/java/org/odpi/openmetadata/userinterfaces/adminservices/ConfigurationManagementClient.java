@@ -133,6 +133,7 @@ public class ConfigurationManagementClient
         catch (PropertyServerException  error)
         {
             throw new OMAGConfigurationErrorException(error);
+
         }
     }
 }
