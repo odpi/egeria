@@ -97,7 +97,7 @@ public enum GovernanceServicesDescription implements Serializable
      */
     public static Set<String> getGovernanceServersURLMarkers()
     {
-       Set<String> urlMarkerSet = new HashSet<>();
+        Set<String> urlMarkerSet = new HashSet<>();
         for (GovernanceServicesDescription governanceServicesDescription:getGovernanceServersDescriptionList()) {
             String urlMarker = governanceServicesDescription.getServiceURLMarker();
             if (urlMarker != null) {
