@@ -1,11 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.adapters.connectors.cassandra;
+package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra;
 
-import com.datastax.oss.driver.api.core.CqlIdentifier;
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.session.Session;
-import org.odpi.openmetadata.adapters.connectors.cassandra.auditlog.CassandraConnectorAuditCode;
+import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
@@ -20,21 +18,17 @@ import java.net.InetSocketAddress;
 /**
  * The type Cassandra store connector.
  */
-public class CassandraDatabaseConnector extends ConnectorBase implements AuditableConnector {
+public abstract class CassandraMetadataExtractorConnector extends ConnectorBase implements  CassandraMetadataExtractor {
 
-    private static final Logger log = LoggerFactory.getLogger(CassandraDatabaseConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(CassandraMetadataExtractorConnector.class);
     private OMRSAuditLog omrsAuditLog;
-    private CassandraConnectorAuditCode auditLog;
+    private CassandraMetadataExtractorAuditCode auditLog;
 
     private String serverAddress = null;
     private Integer port = null;
     private String username = null;
     private String password = null;
-
     private CqlSession cqlSession;
-    private CassandraDatabaseMetadataChangeListener
-
-
 
     /**
      * Initialize the connector.
@@ -55,7 +49,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
         super.initialize(connectorInstanceId, connectionProperties);
 
         if (omrsAuditLog != null) {
-            auditLog = CassandraConnectorAuditCode.CONNECTOR_INITIALIZING;
+            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_INITIALIZING;
             omrsAuditLog.logRecord(
                     actionDescription,
                     auditLog.getLogMessageId(),
@@ -75,7 +69,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
             } else {
                 log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
                 if (omrsAuditLog != null) {
-                    auditLog = CassandraConnectorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
+                    auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
                     omrsAuditLog.logRecord(actionDescription,
                             auditLog.getLogMessageId(),
                             auditLog.getSeverity(),
@@ -88,7 +82,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
         } else {
             log.error("Errors in Cassandra server address. The endpoint containing the server address is invalid.");
             if (omrsAuditLog != null) {
-                auditLog = CassandraConnectorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
+                auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
                 omrsAuditLog.logRecord(actionDescription,
                         auditLog.getLogMessageId(),
                         auditLog.getSeverity(),
@@ -103,7 +97,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
 
         if (omrsAuditLog != null)
         {
-            auditLog = CassandraConnectorAuditCode.CONNECTOR_INITIALIZED;
+            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_INITIALIZED;
             omrsAuditLog.logRecord(actionDescription,
                     auditLog.getLogMessageId(),
                     auditLog.getSeverity(),
@@ -122,7 +116,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
         this.cqlSession = CqlSession.builder()
                 .addContactPoint(new InetSocketAddress(serverAddress,port))
                 .withAuthCredentials(username, password)
-                .withSchemaChangeListener(CassandraDatabaseMetadataChangeListener )
+               // .withSchemaChangeListener(CassandraMetadataExtractor)
                 .build();
 
     }
@@ -144,7 +138,7 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
 
         cqlSession.close();
 
-        auditLog = CassandraConnectorAuditCode.CONNECTOR_SHUTDOWN;
+        auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SHUTDOWN;
         omrsAuditLog.logRecord(actionDescription,
                 auditLog.getLogMessageId(),
                 auditLog.getSeverity(),
@@ -154,32 +148,22 @@ public class CassandraDatabaseConnector extends ConnectorBase implements Auditab
                 auditLog.getUserAction());
     }
 
-    /**
-     * Pass the instance of OMRS Audit Log
-     *
-     * @param auditLog audit log object
-     */
-    @Override
-    public void setAuditLog(OMRSAuditLog auditLog) {
-        this.omrsAuditLog = auditLog;
-    }
-
 
     /**
      * Register listener.
      *
-     * @param cassandraDatabaseMetadataChangeListener the cassandra store listener
+     * @param cassandraMetadataExtractor the cassandra store listener
      */
-    public void registerListener(CassandraDatabaseMetadataChangeListener cassandraDatabaseMetadataChangeListener)
+    public void registerListener(CassandraMetadataExtractor cassandraMetadataExtractor)
     {
-        if (cassandraDatabaseMetadataChangeListener != null)
+        if (cassandraMetadataExtractor != null)
         {
-            this.cqlSession.;
-            log.info("Registering cassandra cluster listener: {}", cassandraDatabaseMetadataChangeListener.toString());
+           // this.cqlSession.;
+            log.info("Registering cassandra cluster listener: {}", cassandraMetadataExtractor.toString());
         } else {
             String actionDescription = "Error in registering cassandra store listener.";
 
-            auditLog = CassandraConnectorAuditCode.CONNECTOR_REGISTER_LISTENER_ERROR;
+            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_REGISTER_LISTENER_ERROR;
             omrsAuditLog.logRecord(actionDescription,
                     auditLog.getLogMessageId(),
                     auditLog.getSeverity(),

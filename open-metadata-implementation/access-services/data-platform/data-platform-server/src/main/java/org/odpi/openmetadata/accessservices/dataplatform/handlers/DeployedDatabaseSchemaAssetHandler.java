@@ -154,11 +154,11 @@ public class DeployedDatabaseSchemaAssetHandler {
                 databaseProperties,
                 methodName);
         String qualifiedNameForDeployedDatabaseSchema = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDatabase, Constants.DEPLOYED_DATABASE_SCHEMA,
-                event.getDeployedDatabaseSchema().getKeyspaceName());
+                event.getDeployedDatabaseSchema().getName());
 
         InstanceProperties deployedDbSchemaProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDeployedDatabaseSchema)
-                .withStringProperty(Constants.NAME, event.getDeployedDatabaseSchema().getKeyspaceName())
+                .withStringProperty(Constants.NAME, event.getDeployedDatabaseSchema().getName())
                 //TODO: complete database source info from data platform service side
                 .withStringProperty(Constants.OWNER, "Owner Info")
                 .withStringProperty(Constants.DESCRIPTION, "Description")

@@ -21,7 +21,7 @@
 
     <packaging>pom</packaging>
     <modules>
-        <module>cassandra-open-metadata-connector</module>
+        <module>cassandra-metadata-extractor-connector</module>
     </modules>
 
 </project>

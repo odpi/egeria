@@ -11,8 +11,8 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cassandra-open-metadata-connector</artifactId>
-    <name>Cassandra Data Platform Connector</name>
+    <artifactId>cassandra-metadata-extractor-connector</artifactId>
+    <name>Cassandra Metadata Extractor Connector</name>
     <description>
         The cassandra data platform connector provides support for maintaining
         metadata for a Cassandra Data Platform.
@@ -40,6 +40,12 @@
         <dependency>
             <groupId>com.datastax.oss</groupId>
             <artifactId>java-driver-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-services-api</artifactId>
+            <version>1.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 

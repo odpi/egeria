@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.dataplatformservices.admin;
 
-import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraDatabaseConnector;
+import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
 import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -27,7 +27,7 @@ public class DataPlatformOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector dataPlatformServiceOutTopicConnector;
-    private CassandraDatabaseConnector cassandraDatabaseConnector;
+    private CassandraStoreConnector cassandraStoreConnector;
     private DataPlatformConfig dataPlatformConfig;
 
     /**
@@ -69,9 +69,6 @@ public class DataPlatformOperationalServices {
             if (dataPlatformConfig.getDataPlatformServerOutTopic() != null) {
                 try {
                     dataPlatformServiceOutTopicConnector = getTopicConnector(dataPlatformConfig.getDataPlatformServerOutTopic(), auditLog);
-                    //dataPlatformServicesCassandraListener = new DataPlatformServicesCassandraListener(auditLog, dataPlatformServiceOutTopicConnector,dataPlatformConfig);
-                    //dataPlatformServiceOutTopicConnector.registerListener(dataPlatformServicesCassandraListener);
-
                 } catch (Exception e) {
                     auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
@@ -92,9 +89,9 @@ public class DataPlatformOperationalServices {
             if (dataPlatformConnection != null) {
                 try {
                     ConnectorBroker connectorBroker = new ConnectorBroker();
-                    cassandraDatabaseConnector =(CassandraDatabaseConnector) connectorBroker.getConnector(dataPlatformConnection);
+                    cassandraStoreConnector =(CassandraStoreConnector) connectorBroker.getConnector(dataPlatformConnection);
                     log.info("Found connection: " + dataPlatformConnection);
-                    //cassandraDatabaseConnector.registerListener(dataPlatformServicesCassandraListener);
+                    //cassandraMetadataExtractorConnector.registerListener(dataPlatformServicesCassandraListener);
                 } catch (Exception e) {
                     log.error("Error in initializing Cassandra connector: ", e);
                 }
@@ -149,7 +146,7 @@ public class DataPlatformOperationalServices {
         try {
 
             // Disconnect the cassandra connector
-            cassandraDatabaseConnector.disconnect();
+            cassandraStoreConnector.disconnect();
             dataPlatformServiceOutTopicConnector.disconnect();
             auditCode = DataPlatformServicesAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",

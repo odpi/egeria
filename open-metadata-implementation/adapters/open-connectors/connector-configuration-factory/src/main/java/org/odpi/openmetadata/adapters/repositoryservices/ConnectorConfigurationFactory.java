@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
-import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraDatabaseProvider;
+import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
@@ -881,8 +881,8 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
 
-        CassandraDatabaseProvider cassandraDatabaseProvider = new CassandraDatabaseProvider();
-        connection.setConnectorType(cassandraDatabaseProvider.getConnectorType());
+        CassandraStoreConnector cassandraStoreConnector = new CassandraStoreConnector();
+       // connection.setConnectorType(cassandraStoreConnector.getConnectorType());
         return connection;
     }
     /**
