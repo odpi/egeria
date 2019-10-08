@@ -728,7 +728,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param metadataCollectionName display name for the metadata collection (can be null).
      */
     public void registerMetadataCollection(String    metadataCollectionId,
-                                                        String    metadataCollectionName)
+                                           String    metadataCollectionName)
     {
         final String methodName = "registerMetadataCollection";
 
@@ -766,11 +766,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException the type name is not recognized.
      */
-    public EntityDetail getSkeletonEntity(String sourceName,
-                                          String metadataCollectionId,
+    public EntityDetail getSkeletonEntity(String                 sourceName,
+                                          String                 metadataCollectionId,
                                           InstanceProvenanceType provenanceType,
-                                          String userName,
-                                          String typeName) throws TypeErrorException
+                                          String                 userName,
+                                          String                 typeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonEntity";
 
@@ -883,11 +883,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out relationship needs properties
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
-    public Relationship getSkeletonRelationship(String sourceName,
-                                                String metadataCollectionId,
+    public Relationship getSkeletonRelationship(String                 sourceName,
+                                                String                 metadataCollectionId,
                                                 InstanceProvenanceType provenanceType,
-                                                String userName,
-                                                String typeName) throws TypeErrorException
+                                                String                 userName,
+                                                String                 typeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonRelationship";
 
@@ -923,7 +923,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return instance type
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
-    public InstanceType getNewInstanceType(String sourceName,
+    public InstanceType getNewInstanceType(String         sourceName,
                                            TypeDefSummary typeDefSummary) throws TypeErrorException
     {
         final String methodName = "getNewInstanceType";
@@ -950,13 +950,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return an entity that is filled out
      * @throws TypeErrorException the type name is not recognized as an entity type
      */
-    public EntityDetail getNewEntity(String sourceName,
-                                     String metadataCollectionId,
+    public EntityDetail getNewEntity(String                 sourceName,
+                                     String                 metadataCollectionId,
                                      InstanceProvenanceType provenanceType,
-                                     String userName,
-                                     String typeName,
-                                     InstanceProperties properties,
-                                     List<Classification> classifications) throws TypeErrorException
+                                     String                 userName,
+                                     String                 typeName,
+                                     InstanceProperties     properties,
+                                     List<Classification>   classifications) throws TypeErrorException
     {
         EntityDetail entity = this.getSkeletonEntity(sourceName,
                                                      metadataCollectionId,
@@ -983,12 +983,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return a relationship that is filled out
      * @throws TypeErrorException the type name is not recognized as a relationship type
      */
-    public Relationship getNewRelationship(String sourceName,
-                                           String metadataCollectionId,
+    public Relationship getNewRelationship(String                 sourceName,
+                                           String                 metadataCollectionId,
                                            InstanceProvenanceType provenanceType,
-                                           String userName,
-                                           String typeName,
-                                           InstanceProperties properties) throws TypeErrorException
+                                           String                 userName,
+                                           String                 typeName,
+                                           InstanceProperties     properties) throws TypeErrorException
     {
         Relationship relationship = this.getSkeletonRelationship(sourceName,
                                                                  metadataCollectionId,
@@ -1014,13 +1014,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
-    public Classification getNewClassification(String sourceName,
-                                               String userName,
-                                               String typeName,
-                                               String entityTypeName,
+    public Classification getNewClassification(String               sourceName,
+                                               String               userName,
+                                               String               typeName,
+                                               String               entityTypeName,
                                                ClassificationOrigin classificationOrigin,
-                                               String classificationOriginGUID,
-                                               InstanceProperties properties) throws TypeErrorException
+                                               String               classificationOriginGUID,
+                                               InstanceProperties   properties) throws TypeErrorException
     {
         Classification classification = this.getSkeletonClassification(sourceName,
                                                                        userName,
@@ -1044,10 +1044,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param methodName        calling method
      * @return updated entity
      */
-    public EntityDetail addClassificationToEntity(String sourceName,
-                                                  EntityDetail entity,
+    public EntityDetail addClassificationToEntity(String         sourceName,
+                                                  EntityDetail   entity,
                                                   Classification newClassification,
-                                                  String methodName)
+                                                  String         methodName)
     {
         EntityDetail updatedEntity = new EntityDetail(entity);
 
@@ -1114,10 +1114,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return located classification
      * @throws ClassificationErrorException the classification is not attached to the entity
      */
-    public Classification getClassificationFromEntity(String sourceName,
+    public Classification getClassificationFromEntity(String       sourceName,
                                                       EntityDetail entity,
-                                                      String classificationName,
-                                                      String methodName) throws ClassificationErrorException
+                                                      String       classificationName,
+                                                      String       methodName) throws ClassificationErrorException
     {
         final String thisMethodName = "getClassificationFromEntity";
 
@@ -1173,11 +1173,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param methodName        calling method
      * @return updated entity
      */
-    public EntityDetail updateClassificationInEntity(String sourceName,
-                                                     String userName,
-                                                     EntityDetail entity,
+    public EntityDetail updateClassificationInEntity(String         sourceName,
+                                                     String         userName,
+                                                     EntityDetail   entity,
                                                      Classification newClassification,
-                                                     String methodName)
+                                                     String         methodName)
     {
         if (newClassification != null)
         {
@@ -1217,10 +1217,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated entity
      * @throws ClassificationErrorException the entity was not classified with this classification
      */
-    public EntityDetail deleteClassificationFromEntity(String sourceName,
+    public EntityDetail deleteClassificationFromEntity(String       sourceName,
                                                        EntityDetail entity,
-                                                       String oldClassificationName,
-                                                       String methodName) throws ClassificationErrorException
+                                                       String       oldClassificationName,
+                                                       String       methodName) throws ClassificationErrorException
     {
         EntityDetail updatedEntity = new EntityDetail(entity);
 
@@ -3349,7 +3349,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isExactMatchRegex(String s)
     {
-        return s == null || (s.startsWith("\\Q") && s.endsWith("\\E"));
+        return s == null
+                || (s.startsWith("\\Q")
+                    && s.endsWith("\\E")
+                    && s.indexOf("\\E") == s.length() - 2);
     }
 
     /**
@@ -3388,7 +3391,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isContainsRegex(String s)
     {
-        return s != null && s.startsWith(".*") && s.endsWith(".*") && isExactMatchRegex(s.substring(2, s.length() - 2));
+        return s != null
+                && s.startsWith(".*")
+                && s.endsWith(".*")
+                && isExactMatchRegex(s.substring(2, s.length() - 2));
     }
 
     /**
@@ -3427,7 +3433,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isStartsWithRegex(String s)
     {
-        return s != null && s.endsWith(".*") && isExactMatchRegex(s.substring(0, s.length() - 2));
+        return s != null
+                && s.endsWith(".*")
+                && isExactMatchRegex(s.substring(0, s.length() - 2));
     }
 
     /**
@@ -3466,7 +3474,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      */
     public boolean isEndsWithRegex(String s)
     {
-        return s != null && s.startsWith(".*") && isExactMatchRegex(s.substring(2));
+        return s != null
+                && s.startsWith(".*")
+                && isExactMatchRegex(s.substring(2));
     }
 
     /**

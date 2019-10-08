@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -144,29 +145,6 @@ public class AssetBuilder extends ReferenceableBuilder
                                                                       methodName);
         }
 
-        if (owner != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      AssetMapper.OWNER_PROPERTY_NAME,
-                                                                      owner,
-                                                                      methodName);
-        }
-
-        if (ownerType != null)
-        {
-            properties = this.addOwnerTypeToProperties(properties, methodName);
-        }
-
-        if (zoneMembership != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                           zoneMembership,
-                                                                           methodName);
-        }
-
         if (latestChange != null)
         {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
@@ -192,11 +170,108 @@ public class AssetBuilder extends ReferenceableBuilder
 
         if (displayName != null)
         {
+            String literalName = repositoryHelper.getExactMatchRegex(displayName);
+
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      literalName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getSearchInstanceProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (qualifiedName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      qualifiedName,
+                                                                      methodName);
+        }
+
+        if (displayName != null)
+        {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                       properties,
                                                                       AssetMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       displayName,
                                                                       methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
+
+
+    /**
+     * Return the bean properties describing the asset's zone membership in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    public InstanceProperties getZoneMembershipProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = null;
+
+        if (zoneMembership != null)
+        {
+            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
+                                                                           null,
+                                                                           AssetMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
+                                                                           zoneMembership,
+                                                                           methodName);
+        }
+
+        return properties;
+    }
+
+
+
+    /**
+     * Return the bean properties describing the asset's owner in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     * @throws InvalidParameterException there is a problem with the properties
+     */
+    public InstanceProperties getOwnerProperties(String  methodName) throws InvalidParameterException
+    {
+        InstanceProperties properties = null;
+
+        if (owner != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      AssetMapper.OWNER_PROPERTY_NAME,
+                                                                      owner,
+                                                                      methodName);
+        }
+
+        if (ownerType != null)
+        {
+            properties = this.addOwnerTypeToProperties(properties, methodName);
         }
 
         return properties;

@@ -24,6 +24,8 @@
     </description>
     <modules>
         <module>repository-services-apis</module>
+        <module>repository-services-archive-utilities</module>
+        <module>repository-services-client</module>
         <module>repository-services-implementation</module>
         <module>repository-services-spring</module>
     </modules>

@@ -9,7 +9,7 @@ using the `org.odpi.egeria` group.
 
 ## Select repository
 
-If you are developing against the current code you may want to use the current repository.  Selecting the repository from [Nexus Repository Manager](https://nexus.odpi.org/#view-repositories).  For documentation 
+If you are developing against the current code you may want to use the current repository.  Selecting the repository from [Artifact Repository](https://odpi.jfrog.io/odpi/egeria-snapshot).  For documentation 
 here, we chose the ```snapshot``` repository. 
 
 ## Add repository to your gradle
@@ -19,7 +19,7 @@ In our ```build.gradle``` file we would the following:
 ```groovy
 repositories {
         maven {
-            url "https://nexus.odpi.org/content/repositories/snapshots"
+            url "https://odpi.jfrog.io/odpi/egeria-snapshot"
         }
     }
 ```

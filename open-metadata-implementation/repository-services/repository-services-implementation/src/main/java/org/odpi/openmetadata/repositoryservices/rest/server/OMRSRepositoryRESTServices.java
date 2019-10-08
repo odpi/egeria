@@ -276,9 +276,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setMetadataCollectionId(localMetadataCollection.getMetadataCollectionId(userId));
+            response.setMetadataCollectionId(metadataCollection.getMetadataCollectionId(userId));
         }
         catch (InvalidParameterException  error)
         {
@@ -333,9 +333,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            TypeDefGallery typeDefGallery = localMetadataCollection.getAllTypes(userId);
+            TypeDefGallery typeDefGallery = metadataCollection.getAllTypes(userId);
             if (typeDefGallery != null)
             {
                 response.setAttributeTypeDefs(typeDefGallery.getAttributeTypeDefs());
@@ -391,9 +391,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            TypeDefGallery typeDefGallery = localMetadataCollection.findTypesByName(userId, name);
+            TypeDefGallery typeDefGallery = metadataCollection.findTypesByName(userId, name);
             if (typeDefGallery != null)
             {
                 response.setAttributeTypeDefs(typeDefGallery.getAttributeTypeDefs());
@@ -448,9 +448,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDefs(localMetadataCollection.findTypeDefsByCategory(userId, category));
+            response.setTypeDefs(metadataCollection.findTypeDefsByCategory(userId, category));
         }
         catch (RepositoryErrorException  error)
         {
@@ -499,9 +499,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setAttributeTypeDefs(localMetadataCollection.findAttributeTypeDefsByCategory(userId, category));
+            response.setAttributeTypeDefs(metadataCollection.findAttributeTypeDefsByCategory(userId, category));
         }
         catch (RepositoryErrorException  error)
         {
@@ -550,9 +550,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDefs(localMetadataCollection.findTypeDefsByProperty(userId, matchCriteria));
+            response.setTypeDefs(metadataCollection.findTypeDefsByProperty(userId, matchCriteria));
         }
         catch (RepositoryErrorException  error)
         {
@@ -605,12 +605,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<TypeDef> typeDefs = localMetadataCollection.findTypesByExternalID(userId,
-                                                                                   standard,
-                                                                                   organization,
-                                                                                   identifier);
+            List<TypeDef> typeDefs = metadataCollection.findTypesByExternalID(userId,
+                                                                              standard,
+                                                                              organization,
+                                                                              identifier);
             response.setTypeDefs(typeDefs);
         }
         catch (RepositoryErrorException  error)
@@ -660,9 +660,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDefs(localMetadataCollection.searchForTypeDefs(userId, searchCriteria));
+            response.setTypeDefs(metadataCollection.searchForTypeDefs(userId, searchCriteria));
         }
         catch (RepositoryErrorException  error)
         {
@@ -713,9 +713,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDef(localMetadataCollection.getTypeDefByGUID(userId, guid));
+            response.setTypeDef(metadataCollection.getTypeDefByGUID(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -770,9 +770,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByGUID(userId, guid));
+            response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByGUID(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -828,9 +828,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDef(localMetadataCollection.getTypeDefByName(userId, name));
+            response.setTypeDef(metadataCollection.getTypeDefByName(userId, name));
         }
         catch (RepositoryErrorException  error)
         {
@@ -885,9 +885,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setAttributeTypeDef(localMetadataCollection.getAttributeTypeDefByName(userId, name));
+            response.setAttributeTypeDef(metadataCollection.getAttributeTypeDefByName(userId, name));
         }
         catch (RepositoryErrorException  error)
         {
@@ -946,9 +946,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.addTypeDefGallery(userId, newTypes);
+            metadataCollection.addTypeDefGallery(userId, newTypes);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1023,9 +1023,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.addTypeDef(userId, newTypeDef);
+            metadataCollection.addTypeDef(userId, newTypeDef);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1100,9 +1100,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
+            metadataCollection.addAttributeTypeDef(userId, newAttributeTypeDef);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1177,9 +1177,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setFlag(localMetadataCollection.verifyTypeDef(userId, typeDef));
+            response.setFlag(metadataCollection.verifyTypeDef(userId, typeDef));
         }
         catch (RepositoryErrorException  error)
         {
@@ -1245,9 +1245,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setFlag(localMetadataCollection.verifyAttributeTypeDef(userId, attributeTypeDef));
+            response.setFlag(metadataCollection.verifyAttributeTypeDef(userId, attributeTypeDef));
         }
         catch (RepositoryErrorException  error)
         {
@@ -1314,9 +1314,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDef(localMetadataCollection.updateTypeDef(userId, typeDefPatch));
+            response.setTypeDef(metadataCollection.updateTypeDef(userId, typeDefPatch));
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1390,9 +1390,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+            metadataCollection.deleteTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1462,9 +1462,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
+            metadataCollection.deleteAttributeTypeDef(userId, obsoleteTypeDefGUID, obsoleteTypeDefName);
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1545,13 +1545,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setTypeDef(localMetadataCollection.reIdentifyTypeDef(userId,
-                                                                          originalTypeDefGUID,
-                                                                          originalTypeDefName,
-                                                                          newTypeDefGUID,
-                                                                          newTypeDefName));
+            response.setTypeDef(metadataCollection.reIdentifyTypeDef(userId,
+                                                                     originalTypeDefGUID,
+                                                                     originalTypeDefName,
+                                                                     newTypeDefGUID,
+                                                                     newTypeDefName));
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1628,13 +1628,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setAttributeTypeDef(localMetadataCollection.reIdentifyAttributeTypeDef(userId,
-                                                                                            originalAttributeTypeDefGUID,
-                                                                                            originalAttributeTypeDefName,
-                                                                                            newAttributeTypeDefGUID,
-                                                                                            newAttributeTypeDefName));
+            response.setAttributeTypeDef(metadataCollection.reIdentifyAttributeTypeDef(userId,
+                                                                                       originalAttributeTypeDefGUID,
+                                                                                       originalAttributeTypeDefName,
+                                                                                       newAttributeTypeDefGUID,
+                                                                                       newAttributeTypeDefName));
         }
         catch (FunctionNotSupportedException error)
         {
@@ -1697,9 +1697,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.isEntityKnown(userId, guid));
+            response.setEntity(metadataCollection.isEntityKnown(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -1750,9 +1750,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.getEntitySummary(userId, guid));
+            response.setEntity(metadataCollection.getEntitySummary(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -1830,9 +1830,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.getEntityDetail(userId, guid));
+            response.setEntity(metadataCollection.getEntityDetail(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -1872,7 +1872,7 @@ public class OMRSRepositoryRESTServices
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return EnityDetailResponse:
+     * @return EntityDetailResponse:
      * EntityDetail structure or
      * InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1883,10 +1883,10 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityDetailResponse getEntityDetail(String     serverName,
-                                                 String     userId,
-                                                 String     guid,
-                                                 Date       asOfTime)
+    public  EntityDetailResponse getEntityDetail(String         serverName,
+                                                 String         userId,
+                                                 String         guid,
+                                                 HistoryRequest asOfTime)
     {
         final  String   methodName = "getEntityDetail";
 
@@ -1896,9 +1896,16 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.getEntityDetail(userId, guid, asOfTime));
+            if (asOfTime != null)
+            {
+                response.setEntity(metadataCollection.getEntityDetail(userId, guid, asOfTime.getAsOfTime()));
+            }
+            else
+            {
+                response.setEntity(metadataCollection.getEntityDetail(userId, guid, null));
+            }
         }
         catch (RepositoryErrorException  error)
         {
@@ -1984,17 +1991,17 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
-                                                                                                 entityGUID,
-                                                                                                 relationshipTypeGUID,
-                                                                                                 fromRelationshipElement,
-                                                                                                 limitResultsByStatus,
-                                                                                                 null,
-                                                                                                 sequencingProperty,
-                                                                                                 sequencingOrder,
-                                                                                                 pageSize);
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            entityGUID,
+                                                                                            relationshipTypeGUID,
+                                                                                            fromRelationshipElement,
+                                                                                            limitResultsByStatus,
+                                                                                            null,
+                                                                                            sequencingProperty,
+                                                                                            sequencingOrder,
+                                                                                            pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -2112,17 +2119,17 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship> relationships = localMetadataCollection.getRelationshipsForEntity(userId,
-                                                                                                 entityGUID,
-                                                                                                 relationshipTypeGUID,
-                                                                                                 fromRelationshipElement,
-                                                                                                 limitResultsByStatus,
-                                                                                                 asOfTime,
-                                                                                                 sequencingProperty,
-                                                                                                 sequencingOrder,
-                                                                                                 pageSize);
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            entityGUID,
+                                                                                            relationshipTypeGUID,
+                                                                                            fromRelationshipElement,
+                                                                                            limitResultsByStatus,
+                                                                                            asOfTime,
+                                                                                            sequencingProperty,
+                                                                                            sequencingOrder,
+                                                                                            pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -2244,19 +2251,19 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
-                                                                                          entityTypeGUID,
-                                                                                          matchProperties,
-                                                                                          matchCriteria,
-                                                                                          fromEntityElement,
-                                                                                          limitResultsByStatus,
-                                                                                          limitResultsByClassification,
-                                                                                          null,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByProperty(userId,
+                                                                                     entityTypeGUID,
+                                                                                     matchProperties,
+                                                                                     matchCriteria,
+                                                                                     fromEntityElement,
+                                                                                     limitResultsByStatus,
+                                                                                     limitResultsByClassification,
+                                                                                     null,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2347,8 +2354,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    entityTypeGUID                    = null;
-        InstanceProperties        matchProperties              = null;
-        MatchCriteria             matchCriteria                = null;
+        InstanceProperties        matchProperties                   = null;
+        MatchCriteria             matchCriteria                     = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
         List<String>              limitResultsByClassification      = null;
@@ -2375,19 +2382,19 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
-                                                                                          entityTypeGUID,
-                                                                                          matchProperties,
-                                                                                          matchCriteria,
-                                                                                          fromEntityElement,
-                                                                                          limitResultsByStatus,
-                                                                                          limitResultsByClassification,
-                                                                                          asOfTime,
-                                                                                          sequencingProperty,
-                                                                                          sequencingOrder,
-                                                                                          pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByProperty(userId,
+                                                                                     entityTypeGUID,
+                                                                                     matchProperties,
+                                                                                     matchCriteria,
+                                                                                     fromEntityElement,
+                                                                                     limitResultsByStatus,
+                                                                                     limitResultsByClassification,
+                                                                                     asOfTime,
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder,
+                                                                                     pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2470,9 +2477,9 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  EntityListResponse findEntitiesByClassification(String                    serverName,
-                                                            String                    userId,
-                                                            String                    classificationName,
+    public  EntityListResponse findEntitiesByClassification(String                   serverName,
+                                                            String                   userId,
+                                                            String                   classificationName,
                                                             PropertyMatchFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByClassification";
@@ -2504,19 +2511,19 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
-                                                                                                entityTypeGUID,
-                                                                                                classificationName,
-                                                                                                matchClassificationProperties,
-                                                                                                matchCriteria,
-                                                                                                fromEntityElement,
-                                                                                                limitResultsByStatus,
-                                                                                                null,
-                                                                                                sequencingProperty,
-                                                                                                sequencingOrder,
-                                                                                                pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByClassification(userId,
+                                                                                           entityTypeGUID,
+                                                                                           classificationName,
+                                                                                           matchClassificationProperties,
+                                                                                           matchCriteria,
+                                                                                           fromEntityElement,
+                                                                                           limitResultsByStatus,
+                                                                                           null,
+                                                                                           sequencingProperty,
+                                                                                           sequencingOrder,
+                                                                                           pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2638,19 +2645,19 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
-                                                                                                entityTypeGUID,
-                                                                                                classificationName,
-                                                                                                matchClassificationProperties,
-                                                                                                matchCriteria,
-                                                                                                fromEntityElement,
-                                                                                                limitResultsByStatus,
-                                                                                                asOfTime,
-                                                                                                sequencingProperty,
-                                                                                                sequencingOrder,
-                                                                                                pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByClassification(userId,
+                                                                                           entityTypeGUID,
+                                                                                           classificationName,
+                                                                                           matchClassificationProperties,
+                                                                                           matchCriteria,
+                                                                                           fromEntityElement,
+                                                                                           limitResultsByStatus,
+                                                                                           asOfTime,
+                                                                                           sequencingProperty,
+                                                                                           sequencingOrder,
+                                                                                           pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2768,18 +2775,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
-                                                                                               entityTypeGUID,
-                                                                                               searchCriteria,
-                                                                                               fromEntityElement,
-                                                                                               limitResultsByStatus,
-                                                                                               limitResultsByClassification,
-                                                                                               null,
-                                                                                               sequencingProperty,
-                                                                                               sequencingOrder,
-                                                                                               pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                          entityTypeGUID,
+                                                                                          searchCriteria,
+                                                                                          fromEntityElement,
+                                                                                          limitResultsByStatus,
+                                                                                          limitResultsByClassification,
+                                                                                          null,
+                                                                                          sequencingProperty,
+                                                                                          sequencingOrder,
+                                                                                          pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2896,18 +2903,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
-                                                                                               entityTypeGUID,
-                                                                                               searchCriteria,
-                                                                                               fromEntityElement,
-                                                                                               limitResultsByStatus,
-                                                                                               limitResultsByClassification,
-                                                                                               asOfTime,
-                                                                                               sequencingProperty,
-                                                                                               sequencingOrder,
-                                                                                               pageSize);
+            List<EntityDetail>  entities = metadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                          entityTypeGUID,
+                                                                                          searchCriteria,
+                                                                                          fromEntityElement,
+                                                                                          limitResultsByStatus,
+                                                                                          limitResultsByClassification,
+                                                                                          asOfTime,
+                                                                                          sequencingProperty,
+                                                                                          sequencingOrder,
+                                                                                          pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -2993,9 +3000,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.isRelationshipKnown(userId, guid));
+            response.setRelationship(metadataCollection.isRelationshipKnown(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3069,9 +3076,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.getRelationship(userId, guid));
+            response.setRelationship(metadataCollection.getRelationship(userId, guid));
         }
         catch (RepositoryErrorException  error)
         {
@@ -3117,10 +3124,10 @@ public class OMRSRepositoryRESTServices
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  RelationshipResponse getRelationship(String    serverName,
-                                                 String    userId,
-                                                 String    guid,
-                                                 Date      asOfTime)
+    public  RelationshipResponse getRelationship(String         serverName,
+                                                 String         userId,
+                                                 String         guid,
+                                                 HistoryRequest asOfTime)
     {
         final  String   methodName = "getRelationship";
 
@@ -3130,9 +3137,16 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.getRelationship(userId, guid, asOfTime));
+            if (asOfTime != null)
+            {
+                response.setRelationship(metadataCollection.getRelationship(userId, guid, asOfTime.getAsOfTime()));
+            }
+            else
+            {
+                response.setRelationship(metadataCollection.getRelationship(userId, guid, null));
+            }
         }
         catch (RepositoryErrorException  error)
         {
@@ -3217,18 +3231,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
-                                                                                                    relationshipTypeGUID,
-                                                                                                    matchProperties,
-                                                                                                    matchCriteria,
-                                                                                                    fromRelationshipElement,
-                                                                                                    limitResultsByStatus,
-                                                                                                    null,
-                                                                                                    sequencingProperty,
-                                                                                                    sequencingOrder,
-                                                                                                    pageSize);
+            List<Relationship>  relationships = metadataCollection.findRelationshipsByProperty(userId,
+                                                                                               relationshipTypeGUID,
+                                                                                               matchProperties,
+                                                                                               matchCriteria,
+                                                                                               fromRelationshipElement,
+                                                                                               limitResultsByStatus,
+                                                                                               null,
+                                                                                               sequencingProperty,
+                                                                                               sequencingOrder,
+                                                                                               pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -3344,18 +3358,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
-                                                                                                    relationshipTypeGUID,
-                                                                                                    matchProperties,
-                                                                                                    matchCriteria,
-                                                                                                    fromRelationshipElement,
-                                                                                                    limitResultsByStatus,
-                                                                                                    asOfTime,
-                                                                                                    sequencingProperty,
-                                                                                                    sequencingOrder,
-                                                                                                    pageSize);
+            List<Relationship>  relationships = metadataCollection.findRelationshipsByProperty(userId,
+                                                                                               relationshipTypeGUID,
+                                                                                               matchProperties,
+                                                                                               matchCriteria,
+                                                                                               fromRelationshipElement,
+                                                                                               limitResultsByStatus,
+                                                                                               asOfTime,
+                                                                                               sequencingProperty,
+                                                                                               sequencingOrder,
+                                                                                               pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -3465,17 +3479,17 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
-                                                                                                         relationshipTypeGUID,
-                                                                                                         searchCriteria,
-                                                                                                         fromRelationshipElement,
-                                                                                                         limitResultsByStatus,
-                                                                                                         null,
-                                                                                                         sequencingProperty,
-                                                                                                         sequencingOrder,
-                                                                                                         pageSize);
+            List<Relationship>  relationships = metadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                    relationshipTypeGUID,
+                                                                                                    searchCriteria,
+                                                                                                    fromRelationshipElement,
+                                                                                                    limitResultsByStatus,
+                                                                                                    null,
+                                                                                                    sequencingProperty,
+                                                                                                    sequencingOrder,
+                                                                                                    pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -3588,17 +3602,17 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
-                                                                                                         relationshipTypeGUID,
-                                                                                                         searchCriteria,
-                                                                                                         fromRelationshipElement,
-                                                                                                         limitResultsByStatus,
-                                                                                                         asOfTime,
-                                                                                                         sequencingProperty,
-                                                                                                         sequencingOrder,
-                                                                                                         pageSize);
+            List<Relationship>  relationships = metadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                    relationshipTypeGUID,
+                                                                                                    searchCriteria,
+                                                                                                    fromRelationshipElement,
+                                                                                                    limitResultsByStatus,
+                                                                                                    asOfTime,
+                                                                                                    sequencingProperty,
+                                                                                                    sequencingOrder,
+                                                                                                    pageSize);
             response.setRelationships(relationships);
             if (relationships != null)
             {
@@ -3701,13 +3715,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
-                                                                                     startEntityGUID,
-                                                                                     endEntityGUID,
-                                                                                     limitResultsByStatus,
-                                                                                     null);
+            InstanceGraph instanceGraph = metadataCollection.getLinkingEntities(userId,
+                                                                                startEntityGUID,
+                                                                                endEntityGUID,
+                                                                                limitResultsByStatus,
+                                                                                null);
             if (instanceGraph != null)
             {
                 response.setEntityElementList(instanceGraph.getEntities());
@@ -3791,13 +3805,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            InstanceGraph instanceGraph = localMetadataCollection.getLinkingEntities(userId,
-                                                                                     startEntityGUID,
-                                                                                     endEntityGUID,
-                                                                                     limitResultsByStatus,
-                                                                                     asOfTime);
+            InstanceGraph instanceGraph = metadataCollection.getLinkingEntities(userId,
+                                                                                startEntityGUID,
+                                                                                endEntityGUID,
+                                                                                limitResultsByStatus,
+                                                                                asOfTime);
             if (instanceGraph != null)
             {
                 response.setEntityElementList(instanceGraph.getEntities());
@@ -3887,16 +3901,16 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
-                                                                                        entityGUID,
-                                                                                        entityTypeGUIDs,
-                                                                                        relationshipTypeGUIDs,
-                                                                                        limitResultsByStatus,
-                                                                                        limitResultsByClassification,
-                                                                                        null,
-                                                                                        level);
+            InstanceGraph instanceGraph = metadataCollection.getEntityNeighborhood(userId,
+                                                                                   entityGUID,
+                                                                                   entityTypeGUIDs,
+                                                                                   relationshipTypeGUIDs,
+                                                                                   limitResultsByStatus,
+                                                                                   limitResultsByClassification,
+                                                                                   null,
+                                                                                   level);
             if (instanceGraph != null)
             {
                 response.setEntityElementList(instanceGraph.getEntities());
@@ -3992,16 +4006,16 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            InstanceGraph instanceGraph = localMetadataCollection.getEntityNeighborhood(userId,
-                                                                                        entityGUID,
-                                                                                        entityTypeGUIDs,
-                                                                                        relationshipTypeGUIDs,
-                                                                                        limitResultsByStatus,
-                                                                                        limitResultsByClassification,
-                                                                                        asOfTime,
-                                                                                        level);
+            InstanceGraph instanceGraph = metadataCollection.getEntityNeighborhood(userId,
+                                                                                   entityGUID,
+                                                                                   entityTypeGUIDs,
+                                                                                   relationshipTypeGUIDs,
+                                                                                   limitResultsByStatus,
+                                                                                   limitResultsByClassification,
+                                                                                   asOfTime,
+                                                                                   level);
             if (instanceGraph != null)
             {
                 response.setEntityElementList(instanceGraph.getEntities());
@@ -4103,18 +4117,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
-                                                                                      startEntityGUID,
-                                                                                      entityTypeGUIDs,
-                                                                                      fromEntityElement,
-                                                                                      limitResultsByStatus,
-                                                                                      limitResultsByClassification,
-                                                                                      null,
-                                                                                      sequencingProperty,
-                                                                                      sequencingOrder,
-                                                                                      pageSize);
+            List<EntityDetail>  entities = metadataCollection.getRelatedEntities(userId,
+                                                                                 startEntityGUID,
+                                                                                 entityTypeGUIDs,
+                                                                                 fromEntityElement,
+                                                                                 limitResultsByStatus,
+                                                                                 limitResultsByClassification,
+                                                                                 null,
+                                                                                 sequencingProperty,
+                                                                                 sequencingOrder,
+                                                                                 pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -4239,18 +4253,18 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            List<EntityDetail>  entities = localMetadataCollection.getRelatedEntities(userId,
-                                                                                      startEntityGUID,
-                                                                                      entityTypeGUIDs,
-                                                                                      fromEntityElement,
-                                                                                      limitResultsByStatus,
-                                                                                      limitResultsByClassification,
-                                                                                      asOfTime,
-                                                                                      sequencingProperty,
-                                                                                      sequencingOrder,
-                                                                                      pageSize);
+            List<EntityDetail>  entities = metadataCollection.getRelatedEntities(userId,
+                                                                                 startEntityGUID,
+                                                                                 entityTypeGUIDs,
+                                                                                 fromEntityElement,
+                                                                                 limitResultsByStatus,
+                                                                                 limitResultsByClassification,
+                                                                                 asOfTime,
+                                                                                 sequencingProperty,
+                                                                                 sequencingOrder,
+                                                                                 pageSize);
             response.setEntities(entities);
             if (entities != null)
             {
@@ -4369,13 +4383,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.addEntity(userId,
-                                                                 entityTypeGUID,
-                                                                 initialProperties,
-                                                                 initialClassifications,
-                                                                 initialStatus));
+            response.setEntity(metadataCollection.addEntity(userId,
+                                                            entityTypeGUID,
+                                                            initialProperties,
+                                                            initialClassifications,
+                                                            initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4475,15 +4489,15 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.addExternalEntity(userId,
-                                                                         entityTypeGUID,
-                                                                         externalSourceGUID,
-                                                                         externalSourceName,
-                                                                         initialProperties,
-                                                                         initialClassifications,
-                                                                         initialStatus));
+            response.setEntity(metadataCollection.addExternalEntity(userId,
+                                                                    entityTypeGUID,
+                                                                    externalSourceGUID,
+                                                                    externalSourceName,
+                                                                    initialProperties,
+                                                                    initialClassifications,
+                                                                    initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4564,9 +4578,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.addEntityProxy(userId, entityProxy);
+            metadataCollection.addEntityProxy(userId, entityProxy);
         }
         catch (RepositoryErrorException  error)
         {
@@ -4626,9 +4640,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus));
+            response.setEntity(metadataCollection.updateEntityStatus(userId, entityGUID, newStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4696,9 +4710,11 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.updateEntityProperties(userId, entityGUID, propertiesRequestBody.getInstanceProperties()));
+            response.setEntity(metadataCollection.updateEntityProperties(userId,
+                                                                         entityGUID,
+                                                                         propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4762,9 +4778,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.undoEntityUpdate(userId, entityGUID));
+            response.setEntity(metadataCollection.undoEntityUpdate(userId, entityGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4839,9 +4855,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID));
+            response.setEntity(metadataCollection.deleteEntity(userId, typeDefGUID, typeDefName, obsoleteEntityGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -4913,9 +4929,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
+            metadataCollection.purgeEntity(userId, typeDefGUID, typeDefName, deletedEntityGUID);
         }
         catch (RepositoryErrorException  error)
         {
@@ -4980,9 +4996,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.restoreEntity(userId, deletedEntityGUID));
+            response.setEntity(metadataCollection.restoreEntity(userId, deletedEntityGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5054,12 +5070,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.classifyEntity(userId,
-                                                                      entityGUID,
-                                                                      classificationName,
-                                                                      propertiesRequestBody.getInstanceProperties()));
+            response.setEntity(metadataCollection.classifyEntity(userId,
+                                                                 entityGUID,
+                                                                 classificationName,
+                                                                 propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5130,11 +5146,11 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.declassifyEntity(userId,
-                                                                        entityGUID,
-                                                                        classificationName));
+            response.setEntity(metadataCollection.declassifyEntity(userId,
+                                                                   entityGUID,
+                                                                   classificationName));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5205,12 +5221,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.updateEntityClassification(userId,
-                                                                                  entityGUID,
-                                                                                  classificationName,
-                                                                                  propertiesRequestBody.getInstanceProperties()));
+            response.setEntity(metadataCollection.updateEntityClassification(userId,
+                                                                             entityGUID,
+                                                                             classificationName,
+                                                                             propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5299,14 +5315,14 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.addRelationship(userId,
-                    relationshipTypeGUID,
-                    initialProperties,
-                    entityOneGUID,
-                    entityTwoGUID,
-                    initialStatus));
+            response.setRelationship(metadataCollection.addRelationship(userId,
+                                                                        relationshipTypeGUID,
+                                                                        initialProperties,
+                                                                        entityOneGUID,
+                                                                        entityTwoGUID,
+                                                                        initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5406,16 +5422,16 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.addExternalRelationship(userId,
-                                                                                     relationshipTypeGUID,
-                                                                                     externalSourceGUID,
-                                                                                     externalSourceName,
-                                                                                     initialProperties,
-                                                                                     entityOneGUID,
-                                                                                     entityTwoGUID,
-                                                                                     initialStatus));
+            response.setRelationship(metadataCollection.addExternalRelationship(userId,
+                                                                                relationshipTypeGUID,
+                                                                                externalSourceGUID,
+                                                                                externalSourceName,
+                                                                                initialProperties,
+                                                                                entityOneGUID,
+                                                                                entityTwoGUID,
+                                                                                initialStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5491,11 +5507,11 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.updateRelationshipStatus(userId,
-                                                                                      relationshipGUID,
-                                                                                      newStatus));
+            response.setRelationship(metadataCollection.updateRelationshipStatus(userId,
+                                                                                 relationshipGUID,
+                                                                                 newStatus));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5563,11 +5579,11 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.updateRelationshipProperties(userId,
-                                                                                          relationshipGUID,
-                                                                                          propertiesRequestBody.getInstanceProperties()));
+            response.setRelationship(metadataCollection.updateRelationshipProperties(userId,
+                                                                                     relationshipGUID,
+                                                                                     propertiesRequestBody.getInstanceProperties()));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5631,9 +5647,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.undoRelationshipUpdate(userId, relationshipGUID));
+            response.setRelationship(metadataCollection.undoRelationshipUpdate(userId, relationshipGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5685,9 +5701,9 @@ public class OMRSRepositoryRESTServices
      *                                     soft-deletes or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public RelationshipResponse deleteRelationship(String                        serverName,
-                                                   String                        userId,
-                                                   String                        obsoleteRelationshipGUID,
+    public RelationshipResponse deleteRelationship(String                      serverName,
+                                                   String                      userId,
+                                                   String                      obsoleteRelationshipGUID,
                                                    TypeDefValidationForRequest typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
@@ -5707,12 +5723,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.deleteRelationship(userId,
-                                                                                typeDefGUID,
-                                                                                typeDefName,
-                                                                                obsoleteRelationshipGUID));
+            response.setRelationship(metadataCollection.deleteRelationship(userId,
+                                                                           typeDefGUID,
+                                                                           typeDefName,
+                                                                           obsoleteRelationshipGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5784,9 +5800,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
+            metadataCollection.purgeRelationship(userId, typeDefGUID, typeDefName, deletedRelationshipGUID);
         }
         catch (RepositoryErrorException  error)
         {
@@ -5852,9 +5868,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.restoreRelationship(userId, deletedRelationshipGUID));
+            response.setRelationship(metadataCollection.restoreRelationship(userId, deletedRelationshipGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5938,13 +5954,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.reIdentifyEntity(userId,
-                                                                        typeDefGUID,
-                                                                        typeDefName,
-                                                                        entityGUID,
-                                                                        newEntityGUID));
+            response.setEntity(metadataCollection.reIdentifyEntity(userId,
+                                                                   typeDefGUID,
+                                                                   typeDefName,
+                                                                   entityGUID,
+                                                                   newEntityGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6021,12 +6037,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.reTypeEntity(userId,
-                                                                    entityGUID,
-                                                                    currentTypeDefSummary,
-                                                                    newTypeDefSummary));
+            response.setEntity(metadataCollection.reTypeEntity(userId,
+                                                               entityGUID,
+                                                               currentTypeDefSummary,
+                                                               newTypeDefSummary));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6117,15 +6133,15 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setEntity(localMetadataCollection.reHomeEntity(userId,
-                                                                    entityGUID,
-                                                                    typeDefGUID,
-                                                                    typeDefName,
-                                                                    homeMetadataCollectionId,
-                                                                    newHomeMetadataCollectionId,
-                                                                    newHomeMetadataCollectionName));
+            response.setEntity(metadataCollection.reHomeEntity(userId,
+                                                               entityGUID,
+                                                               typeDefGUID,
+                                                               typeDefName,
+                                                               homeMetadataCollectionId,
+                                                               newHomeMetadataCollectionId,
+                                                               newHomeMetadataCollectionName));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6201,13 +6217,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.reIdentifyRelationship(userId,
-                                                                                    typeDefGUID,
-                                                                                    typeDefName,
-                                                                                    relationshipGUID,
-                                                                                    newRelationshipGUID));
+            response.setRelationship(metadataCollection.reIdentifyRelationship(userId,
+                                                                               typeDefGUID,
+                                                                               typeDefName,
+                                                                               relationshipGUID,
+                                                                               newRelationshipGUID));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6284,12 +6300,12 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.reTypeRelationship(userId,
-                                                                                relationshipGUID,
-                                                                                currentTypeDefSummary,
-                                                                                newTypeDefSummary));
+            response.setRelationship(metadataCollection.reTypeRelationship(userId,
+                                                                           relationshipGUID,
+                                                                           currentTypeDefSummary,
+                                                                           newTypeDefSummary));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6377,15 +6393,15 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            response.setRelationship(localMetadataCollection.reHomeRelationship(userId,
-                                                                                relationshipGUID,
-                                                                                typeDefGUID,
-                                                                                typeDefName,
-                                                                                homeMetadataCollectionId,
-                                                                                newHomeMetadataCollectionId,
-                                                                                newHomeMetadataCollectionName));
+            response.setRelationship(metadataCollection.reHomeRelationship(userId,
+                                                                           relationshipGUID,
+                                                                           typeDefGUID,
+                                                                           typeDefName,
+                                                                           homeMetadataCollectionId,
+                                                                           newHomeMetadataCollectionId,
+                                                                           newHomeMetadataCollectionName));
         }
         catch (RepositoryErrorException  error)
         {
@@ -6459,9 +6475,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.saveEntityReferenceCopy(userId, entity);
+            metadataCollection.saveEntityReferenceCopy(userId, entity);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6554,13 +6570,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.purgeEntityReferenceCopy(userId,
-                                                             entityGUID,
-                                                             typeDefGUID,
-                                                             typeDefName,
-                                                             homeMetadataCollectionId);
+            metadataCollection.purgeEntityReferenceCopy(userId,
+                                                        entityGUID,
+                                                        typeDefGUID,
+                                                        typeDefName,
+                                                        homeMetadataCollectionId);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6640,13 +6656,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.refreshEntityReferenceCopy(userId,
-                                                               entityGUID,
-                                                               typeDefGUID,
-                                                               typeDefName,
-                                                               homeMetadataCollectionId);
+            metadataCollection.refreshEntityReferenceCopy(userId,
+                                                          entityGUID,
+                                                          typeDefGUID,
+                                                          typeDefName,
+                                                          homeMetadataCollectionId);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6720,9 +6736,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.saveRelationshipReferenceCopy(userId, relationship);
+            metadataCollection.saveRelationshipReferenceCopy(userId, relationship);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6821,13 +6837,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.purgeRelationshipReferenceCopy(userId,
-                                                                   relationshipGUID,
-                                                                   typeDefGUID,
-                                                                   typeDefName,
-                                                                   homeMetadataCollectionId);
+            metadataCollection.purgeRelationshipReferenceCopy(userId,
+                                                              relationshipGUID,
+                                                              typeDefGUID,
+                                                              typeDefName,
+                                                              homeMetadataCollectionId);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6908,13 +6924,13 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.refreshRelationshipReferenceCopy(userId,
-                                                                     relationshipGUID,
-                                                                     typeDefGUID,
-                                                                     typeDefName,
-                                                                     homeMetadataCollectionId);
+            metadataCollection.refreshRelationshipReferenceCopy(userId,
+                                                                relationshipGUID,
+                                                                typeDefGUID,
+                                                                typeDefName,
+                                                                homeMetadataCollectionId);
         }
         catch (RepositoryErrorException  error)
         {
@@ -6996,9 +7012,9 @@ public class OMRSRepositoryRESTServices
 
         try
         {
-            OMRSMetadataCollection localMetadataCollection = validateRepository(userId, serverName, methodName);
+            OMRSMetadataCollection metadataCollection = validateRepository(userId, serverName, methodName);
 
-            localMetadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
+            metadataCollection.saveInstanceReferenceCopies(userId, instanceGraph);
         }
         catch (RepositoryErrorException  error)
         {
@@ -7076,7 +7092,7 @@ public class OMRSRepositoryRESTServices
                                                       String serverName,
                                                       String methodName) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
-                                                                                     RepositoryErrorException
+                                                                                RepositoryErrorException
     {
         OMRSMetadataCollection   metadataCollection = null;
 

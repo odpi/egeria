@@ -13,7 +13,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: ingress
   annotations:
-    ingress.bluemix.net/tcp-ports: "serviceName={{ include "myapp.fullname" . }}-ranger-service ingressPort=6080 servicePort=6080;serviceName={{ include "myapp.fullname" . }}-atlas-service ingressPort=21000 servicePort=21000;serviceName={{ include "myapp.name" . }}-cp-kafka ingressPort=9092 servicePort=9092;serviceName={{ include "myapp.name" . }}-openldap ingressPort=389 servicePort=389;serviceName={{ include "myapp.fullname" . }}-egeria-service ingressPort=8080 servicePort=8080;serviceName={{ include "myapp.fullname" . }}-gaian-service ingressPort=6144 servicePort=6144;serviceName={{ include "myapp.fullname" . }}-igxproxy-service ingressPort=8090 servicePort=8080;serviceName={{ include "myapp.fullname" . }}-postgresql-service ingressPort=5432 servicePort=5432;serviceName={{ include "myapp.fullname" . }}-ui-service ingressPort=8443 servicePort=8443"
+    ingress.bluemix.net/tcp-ports: "serviceName={{ include "myapp.fullname" . }}-ranger-service ingressPort=6080 servicePort=6080;serviceName={{ include "myapp.fullname" . }}-atlas-service ingressPort=21000 servicePort=21000;serviceName={{ include "myapp.name" . }}-egeriakafka ingressPort=9092 servicePort=9092;serviceName={{ include "myapp.name" . }}-openldap ingressPort=389 servicePort=389;serviceName={{ include "myapp.fullname" . }}-egeria-service ingressPort=8080 servicePort=8080;serviceName={{ include "myapp.fullname" . }}-gaian-service ingressPort=6144 servicePort=6144;serviceName={{ include "myapp.fullname" . }}-igxproxy-service ingressPort=8090 servicePort=8080;serviceName={{ include "myapp.fullname" . }}-postgresql-service ingressPort=5432 servicePort=5432;serviceName={{ include "myapp.fullname" . }}-ui-service ingressPort=8443 servicePort=8443"
 
     #ingress.bluemix.net/rewrite-path: |
     #  serviceName={{ include "myapp.fullname" . }}-ranger-service rewrite=/;
@@ -41,7 +41,7 @@ spec:
           - path: /kafka
             backend:
               servicePort: 9082
-              serviceName: {{ include "myapp.fullname" . }}-cp-kafka
+              serviceName: {{ include "myapp.fullname" . }}-egeriakafka
 {{ end }}
           - path: /ldap
             backend:

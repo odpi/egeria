@@ -41,16 +41,15 @@ public class GraphServices {
      * Returns a lineage subgraph.
      *
      * @param graphName    main, buffer, mock, history.
-     * @param scopeText source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
      * @param view        The view queried by the user: hostview, tableview, columnview.
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public String lineage(String graphName, String scopeText, String view, String guid) {
+    public String lineage(String graphName, Scope scope, View view, String guid) {
         String response = "";
 
         Graph graph = getJanusGraph(graphName);
-        Scope scope = Scope.fromString(scopeText);
         switch (scope) {
             case SOURCE_AND_DESTINATION:
                 response = sourceAndDestination(graph, view, guid);
@@ -82,7 +81,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String sourceAndDestination(Graph graph, String view, String guid) {
+    private String sourceAndDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
@@ -117,7 +116,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String endToEnd(Graph graph, String view, String guid) {
+    private String endToEnd(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
@@ -142,7 +141,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateSource(Graph graph, String view, String guid) {
+    private String ultimateSource(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
 
@@ -172,7 +171,7 @@ public class GraphServices {
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
-    private String ultimateDestination(Graph graph, String view, String guid) {
+    private String ultimateDestination(Graph graph, View view, String guid) {
         GraphTraversalSource g = graph.traversal();
         String edgeLabel = getEdgeLabel(view);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
@@ -264,12 +263,11 @@ public class GraphServices {
     /**
      * Retrieve the label of the edges that are to be traversed with the gremlin query.
      *
-     * @param viewText The viewText queried by the user: table-view, column-view.
+     * @param view The view queried by the user: table-view, column-view.
      * @return The label of the edges that are to be traversed with the gremlin query.
      */
-    private String getEdgeLabel(String viewText) {
+    private String getEdgeLabel(View view) {
         String edgeLabel = "";
-        View view = View.fromString(viewText);
         switch (view) {
             case TABLE_VIEW:
                 edgeLabel = EDGE_LABEL_TABLE_AND_PROCESS;
@@ -278,7 +276,7 @@ public class GraphServices {
                 edgeLabel = EDGE_LABEL_COLUMN_AND_PROCESS;
                 break;
             default:
-                log.error(viewText + " is not a valid lineage viewText");
+                log.error(view + " is not a valid lineage view");
         }
         return edgeLabel;
     }

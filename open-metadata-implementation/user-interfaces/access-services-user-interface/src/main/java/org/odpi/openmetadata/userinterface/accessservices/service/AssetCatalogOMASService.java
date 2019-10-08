@@ -23,8 +23,7 @@ import java.util.List;
 public class AssetCatalogOMASService {
     private final AssetCatalog assetCatalog;
     private static final Logger LOG = LoggerFactory.getLogger(AssetCatalogOMASService.class);
-    //TODO add authentication
-    private final String user = "demo";
+
 
     @Autowired
     public AssetCatalogOMASService(AssetCatalog assetCatalog) {
@@ -34,12 +33,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch asset's header
      *
+     *
+     * @param user userId of the user triggering the request
      * @param searchCriteria the searchCriteria
      * @return the assets for the search criteria
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<Term> searchAssets(String searchCriteria) throws PropertyServerException, InvalidParameterException {
+    public List<Term> searchAssets(String user, String searchCriteria) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.searchForAssets(user, searchCriteria).getAssets();
         } catch (InvalidParameterException | PropertyServerException e) {
@@ -51,12 +52,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch asset's header and classification
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<AssetDescription> getAssetSummary(String assetId) throws PropertyServerException, InvalidParameterException {
+    public List<AssetDescription> getAssetSummary(String user, String assetId) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetSummary(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
@@ -68,12 +71,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch asset's header, classification and properties
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<AssetDescription> getAssetDetails(String assetId) throws PropertyServerException, InvalidParameterException {
+    public List<AssetDescription> getAssetDetails(String user, String assetId) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetDetails(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
@@ -87,12 +92,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch asset's header, classification, properties and relationships
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the asset with its header and the list of associated classifications
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<AssetDescription> getAssetUniverse(String assetId) throws PropertyServerException, InvalidParameterException {
+    public List<AssetDescription> getAssetUniverse(String user, String assetId) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetUniverse(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
@@ -104,12 +111,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch the relationships for a specific asset
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return list of relationships for the given asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<Relationship> getAssetRelationships(String assetId) throws PropertyServerException, InvalidParameterException {
+    public List<Relationship> getAssetRelationships(String user, String assetId) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetRelationships(user, assetId).getRelationships();
         } catch (InvalidParameterException | PropertyServerException e) {
@@ -121,13 +130,15 @@ public class AssetCatalogOMASService {
     /**
      * Fetch the relationships for a specific asset and relationship type
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId          the unique identifier for the asset
      * @param relationshipType the relationship type
      * @return list of relationships for the given asset and relationship type
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<Relationship> getAssetRelationshipsForType(String assetId,
+    public List<Relationship> getAssetRelationshipsForType(String user, String assetId,
                                                            String relationshipType) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getAssetRelationshipsForType(user, assetId, relationshipType).getRelationships();
@@ -141,12 +152,14 @@ public class AssetCatalogOMASService {
     /**
      * Fetch the classification for a specific asset
      *
+     *
+     * @param user userId of the user triggering the request
      * @param assetId the unique identifier for the asset
      * @return the classification for the asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<Classification> getClassificationForAsset(String assetId) throws PropertyServerException, InvalidParameterException {
+    public List<Classification> getClassificationForAsset(String user, String assetId) throws PropertyServerException, InvalidParameterException {
         try {
             return assetCatalog.getClassificationForAsset(user, assetId).getClassifications();
         } catch (InvalidParameterException | PropertyServerException e) {

@@ -13,7 +13,7 @@ import java.util.*;
 // omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.fvt.opentypes.common.*;
 import org.odpi.openmetadata.fvt.opentypes.classifications.ClassificationBeanFactory;
 import org.odpi.openmetadata.fvt.opentypes.enums.*;
@@ -227,7 +227,7 @@ public class <$$uEntityName$$>Mapper {
 
             omrsEntityDetail.setProperties(instanceProperties);
             // set the type in the entity
-            OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+            OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
             TypeDef typeDef = archiveAccessor.getEntityDefByName("<$$uEntityName$$>");
             InstanceType template = archiveAccessor.createTemplateFromTypeDef(typeDef);
             InstanceType instanceType = new InstanceType(template);

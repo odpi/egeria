@@ -33,9 +33,9 @@ class AssetLineageView extends PolymerElement {
     </vaadin-radio-group>
           
     <div>
-    <vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="COLUMNVIEW"  role="radiogroup" >
-      <vaadin-radio-button value="COLUMNVIEW" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>
-      <vaadin-radio-button value="TABLEVIEW" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>
+    <vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="column-view"  role="radiogroup" >
+      <vaadin-radio-button value="column-view" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>
+      <vaadin-radio-button value="table-view" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>
     </vaadin-radio-group>
     </div>
     
@@ -94,9 +94,8 @@ class AssetLineageView extends PolymerElement {
         _graphDataChanged(data) {
             console.log(data);
             if (data === null || data === undefined) {
-                data ={ nodes : {},
-                        edges  : {}
-                        };
+                data = { nodes : [],
+                         edges : []};
             } else {
                 for (var i = 0; i < data.nodes.length; i++) {
                     data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');
@@ -108,7 +107,7 @@ class AssetLineageView extends PolymerElement {
 
       _ultimateSource(guid, view) {
           if (view === null || view === undefined) {
-             view  = "COLUMNVIEW";
+             view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-source?view=' + view;
@@ -118,7 +117,7 @@ class AssetLineageView extends PolymerElement {
 
       _endToEndLineage(guid, view){
           if (view === null || view === undefined) {
-              view  = "COLUMNVIEW";
+              view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?view=' + view;
@@ -127,7 +126,7 @@ class AssetLineageView extends PolymerElement {
 
       _ultimateDestination(guid, view){
           if (view === null || view === undefined) {
-              view  = "COLUMNVIEW";
+              view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?view=' + view;
@@ -136,7 +135,7 @@ class AssetLineageView extends PolymerElement {
 
       _glossaryLineage(guid, view){
           if (view === null || view === undefined) {
-              view  = "COLUMNVIEW";
+              view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?view=' + view;
@@ -145,7 +144,7 @@ class AssetLineageView extends PolymerElement {
 
       _sourceAndDestination(guid, view){
           if (view === null || view === undefined) {
-              view  = "COLUMNVIEW";
+              view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
           this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?view=' + view;

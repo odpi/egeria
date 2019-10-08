@@ -1,33 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
-FROM maven:3.6.0-jdk-8 AS build
-ARG branch
-ARG pr
+FROM maven:3.6.2-slim AS build
+ARG version
+ARG repo
 
-ENV branch ${branch:-master}
+# Default to latest snapshot from official odpi repository
+ENV version ${version:-"1.1-SNAPSHOT"}
+ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
 
-WORKDIR /opt
+# WORKDIR /opt
 
-# Force Docker layer cache invalidation if there have been changes to the Egeria branch
-ADD https://api.github.com/repos/odpi/egeria/git/refs/heads/$branch version.json
-
-RUN set -e; \
-    apt-get update && \
-    apt-get install -y git-extras && \
-    git clone https://github.com/odpi/egeria.git -b ${branch}
+# Force Docker layer cache invalidation if there have been changes to the Egeria repo
+ADD https://nexus.odpi.org/content/groups/public/org/odpi/egeria/egeria/${version}/ index.html
 
 WORKDIR /opt/egeria
+RUN mkdir /opt/egeria/binaries
 
-# Add Pull request if specified (requires git-extras package), build, and then place distributable files
-RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi && \
-    mvn clean install -DskipTests && \
-    git log > git.log && echo ${branch} > git.branch && \
-    git remote -v >> git.remote && \
-    mkdir /opt/egeria/binaries && \
-    mv /opt/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-[1-9]\.[0-9]\-SNAPSHOT\.jar /opt/egeria/binaries/ && \
-    mv /opt/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-[1-9]\.[0-9]\-SNAPSHOT\.jar /opt/egeria/binaries/
-
+RUN mvn org.apache.maven.plugins:maven-dependency-plugin:2.5.1:get -DremoteRepositories=$repo \
+    -Dartifact=org.odpi.egeria:open-metadata-assemblies:${version}:jar -Ddest=egeria.jar && \
+    jar -xf egeria.jar egeria-${version}-distribution.tar.gz && \
+    gunzip -c egeria-${version}-distribution.tar.gz | tar -xf -  \
+      egeria-omag-${version}/user-interface/access-services-user-interface-${version}.jar \
+      egeria-omag-${version}/server/server-chassis-spring-${version}.jar && \
+    mv egeria-omag-${version}/user-interface/access-services-user-interface-${version}.jar /opt/egeria/binaries/ && \
+    mv egeria-omag-${version}/server/server-chassis-spring-${version}.jar /opt/egeria/binaries/ 
+    
 FROM openjdk:8-jre-alpine
 
 LABEL org.label-schema.schema-version = "1.0"
@@ -49,7 +47,6 @@ RUN apk --no-cache add bash shadow && \
 
 COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
 COPY --from=build --chown=egeria:egeria /opt/egeria/binaries/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
-COPY --from=build --chown=egeria:egeria /opt/egeria/git.* /opt/egeria/details/
 COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
 
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
