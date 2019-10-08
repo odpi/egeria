@@ -238,7 +238,7 @@ public class TestUIServerErrorHandler {
         }
         GovernanceServerEndpoint governanceServer1 = new GovernanceServerEndpoint();
         governanceServer1.setServerName("AAA");
-        governanceServer1.setServerURL("http://aaa.aaa");
+        governanceServer1.setServerRootURL("http://aaa.aaa");
         governanceServer1.setGovernanceServiceName("open-lineage");
         govEnds.add(governanceServer1);
         try {
@@ -249,7 +249,7 @@ public class TestUIServerErrorHandler {
 
         GovernanceServerEndpoint governanceServer2 = new GovernanceServerEndpoint();
         governanceServer2.setServerName("BBB");
-        governanceServer2.setServerURL("http://bbb.bbb");
+        governanceServer2.setServerRootURL("http://bbb.bbb");
         governanceServer2.setGovernanceServiceName("open-lineage");
         govEnds.add(governanceServer2);
         try {

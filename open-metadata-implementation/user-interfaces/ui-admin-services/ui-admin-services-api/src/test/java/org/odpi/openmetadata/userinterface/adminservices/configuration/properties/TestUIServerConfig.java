@@ -25,7 +25,7 @@ public class TestUIServerConfig {
         GovernanceServerEndpoint openLinenbdpoint = new GovernanceServerEndpoint();
         openLinenbdpoint.setGovernanceServiceName("open-lineage");
         openLinenbdpoint.setServerName("lin1");
-        openLinenbdpoint.setServerURL("http://localhost:8081");
+        openLinenbdpoint.setServerRootURL("http://localhost:8081");
         gsendpoints.add(openLinenbdpoint);
 
         uiServerConfig.setGovernanceServerEndpoints(gsendpoints);

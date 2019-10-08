@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class GovernanceServerEndpoint {
     private String serverName;
-    private String serverURL;
+    private String serverRootURL;
     private String governanceServiceName;
 
     /**
@@ -30,24 +30,25 @@ public class GovernanceServerEndpoint {
     }
 
     /**
-     * The serverURL for the governance server.
-     * @return server URL
+     * The serverRootURL for the governance server. This is the root (the first part) of the URL for
+     * the governance server
+     * @return root server URL
      */
-    public String getServerURL() {
-        return serverURL;
+    public String getServerRootURL() {
+        return serverRootURL;
     }  
     /**
-     * Set up the serverURL for the governance server.
+     * Set up the serverRootURL for the governance server.
      *
-     * @param serverURL governance server name
+     * @param serverRootURL governance server name
      */
 
-    public void setServerURL(String serverURL) {
-        this.serverURL = serverURL;
+    public void setServerRootURL(String serverRootURL) {
+        this.serverRootURL = serverRootURL;
     }
 
     /**
-     * governance service name
+     * Governance service name.
      * @return governance service name
      */
     public String getGovernanceServiceName() {
@@ -68,20 +69,20 @@ public class GovernanceServerEndpoint {
         if (!(o instanceof GovernanceServerEndpoint)) return false;
         GovernanceServerEndpoint that = (GovernanceServerEndpoint) o;
         return Objects.equals(getServerName(), that.getServerName()) &&
-                Objects.equals(getServerURL(), that.getServerURL()) &&
+                Objects.equals(getServerRootURL(), that.getServerRootURL()) &&
                 Objects.equals(getGovernanceServiceName(), that.getGovernanceServiceName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getServerName(), getServerURL(), getGovernanceServiceName());
+        return Objects.hash(getServerName(), getServerRootURL(), getGovernanceServiceName());
     }
 
     @Override
     public String toString() {
         return "GovernanceServerEndpoint{" +
                 "serverName='" + serverName + '\'' +
-                ", serverURL='" + serverURL + '\'' +
+                ", serverRootURL='" + serverRootURL + '\'' +
                 ", governanceServiceName='" + governanceServiceName + '\'' +
                 '}';
     }

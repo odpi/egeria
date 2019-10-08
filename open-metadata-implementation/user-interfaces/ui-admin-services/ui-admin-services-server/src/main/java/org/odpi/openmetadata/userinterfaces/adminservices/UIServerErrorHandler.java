@@ -253,7 +253,7 @@ class UIServerErrorHandler
         for (GovernanceServerEndpoint governanceServerEndpoint:governanceServerEndpoints) {
             String governanceServiceName = governanceServerEndpoint.getGovernanceServiceName();
             validateGovernanceServiceName(governanceServiceName,serverName, methodName);
-            validateGovernanceServerURL(governanceServerEndpoint.getServerURL(), serverName, methodName);
+            validateGovernanceServerURL(governanceServerEndpoint.getServerRootURL(), serverName, methodName);
             validateGovernanceServerName(governanceServerEndpoint.getServerName(), serverName, methodName);
             if (governanceServernames.contains(governanceServiceName)) {
                 // more than one definition of the same governance server type

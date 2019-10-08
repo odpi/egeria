@@ -24,7 +24,7 @@ with body:
    "governanceServerEndpoints":[
       {
          "serverName":"lin1",
-         "serverURL":"http://localhost:8081",
+         "serverRootURL":"http://localhost:8081",
          "governanceServiceName":"open-lineage"
       }
    ]
