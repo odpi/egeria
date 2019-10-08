@@ -7,7 +7,7 @@ ARG repo
 
 # Default to latest snapshot from official odpi repository
 ENV version ${version:-"1.1-SNAPSHOT"}
-ENV repo ${repo:-"https://nexus.odpi.org/content/groups/public/"}
+ENV repo ${repo:-"https://odpi.jfrog.io/odpi/egeria-snapshot/"}
 
 # WORKDIR /opt
 

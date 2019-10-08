@@ -94,9 +94,8 @@ class AssetLineageView extends PolymerElement {
         _graphDataChanged(data) {
             console.log(data);
             if (data === null || data === undefined) {
-                data ={ nodes : {},
-                        edges  : {}
-                        };
+                data = { nodes : [],
+                         edges : []};
             } else {
                 for (var i = 0; i < data.nodes.length; i++) {
                     data.nodes[i].title = JSON.stringify(data.nodes[i].properties, "test", '<br>');

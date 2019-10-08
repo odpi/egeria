@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.store;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import java.io.Serializable;
 
 /**
  * OMAGServerConfigStore provides the interface to the configuration for an OMAG Server.  This is accessed
@@ -15,15 +15,16 @@ public interface OMAGServerConfigStore
      *
      * @param configuration configuration properties to save
      */
-    void saveServerConfig(OMAGServerConfig   configuration);
+    <T> void saveServerConfig(T configuration);
 
 
     /**
      * Retrieve the configuration saved from a previous run of the server.
      *
+     * @param <T> class name
      * @return server configuration
      */
-    OMAGServerConfig  retrieveServerConfig();
+    <T> T  retrieveServerConfig( Class<T> clazz);
 
 
     /**

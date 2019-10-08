@@ -40,11 +40,6 @@ public class ConnectorConfigurationFactory
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
 
-    private static final String defaultEventMapperTopicName = defaultTopicRootName + "localrepository.events";
-
-    private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
-
-
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
 
@@ -204,18 +199,6 @@ public class ConnectorConfigurationFactory
         connection.setEndpoint(endpoint);
 
         return connection;
-    }
-
-
-    /**
-     * Return the connection for the default open metadata types archive file.
-     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
-     *
-     * @return OCF Connection used to create the file-based open metadata archive
-     */
-    public Connection getOpenMetadataTypesConnection()
-    {
-        return this.getOpenMetadataArchiveFileConnection(defaultOpenMetadataArchiveFileName);
     }
 
 
@@ -885,6 +868,8 @@ public class ConnectorConfigurationFactory
        // connection.setConnectorType(cassandraStoreConnector.getConnectorType());
         return connection;
     }
+
+
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.

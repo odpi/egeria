@@ -188,6 +188,10 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
@@ -245,6 +249,7 @@
             <artifactId>open-lineage-services-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+
 
     </dependencies>
 

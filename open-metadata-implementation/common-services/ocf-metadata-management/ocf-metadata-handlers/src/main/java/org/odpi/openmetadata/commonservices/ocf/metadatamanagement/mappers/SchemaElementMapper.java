@@ -72,7 +72,8 @@ public class SchemaElementMapper
     public static final String SCHEMA_ATTRIBUTE_TYPE_NAME               = "SchemaAttribute";
     /* SchemaElement */
 
-    public static final String ATTRIBUTE_NAME_PROPERTY_NAME             = "name";                 /* from SchemaAttribute entity */
+    public static final String ATTRIBUTE_NAME_PROPERTY_NAME             = "displayName";                 /* from SchemaAttribute entity */
+    public static final String OLD_ATTRIBUTE_NAME_PROPERTY_NAME         = "name";                 /* from SchemaAttribute entity */
     public static final String ELEMENT_POSITION_PROPERTY_NAME           = "position";             /* from SchemaAttribute entity */
     public static final String CARDINALITY_PROPERTY_NAME                = "cardinality";          /* from SchemaAttribute entity */
     public static final String DEFAULT_VALUE_OVERRIDE_PROPERTY_NAME     = "defaultValueOverride"; /* from SchemaAttribute entity */

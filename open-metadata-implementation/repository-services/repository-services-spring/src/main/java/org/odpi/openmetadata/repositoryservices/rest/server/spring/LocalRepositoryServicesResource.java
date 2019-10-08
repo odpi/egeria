@@ -8,7 +8,6 @@ import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.server.OMRSRepositoryRESTServices;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 
 /**
  * LocalRepositoryServicesResource provides the server-side support for the OMRS Repository REST Services API
@@ -690,7 +689,7 @@ public class LocalRepositoryServicesResource
      * @param userId unique identifier for requesting user.
      * @param guid String unique identifier for the entity.
      * @param asOfTime the time used to determine which version of the entity that is desired.
-     * @return EnityDetailResponse:
+     * @return EntityDetailResponse:
      * EntityDetail structure or
      * InvalidParameterException the guid or date is null or the asOfTime property is for a future time or
      * RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -701,12 +700,12 @@ public class LocalRepositoryServicesResource
      * FunctionNotSupportedException the repository does not support asOfTime parameter or
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/instances/entity/{guid}/history")
+    @RequestMapping(method = RequestMethod.POST, path = "/instances/entity/{guid}/history")
 
-    public  EntityDetailResponse getEntityDetail(@PathVariable String     serverName,
-                                                 @PathVariable String     userId,
-                                                 @PathVariable String     guid,
-                                                 @RequestParam Date       asOfTime)
+    public  EntityDetailResponse getEntityDetail(@PathVariable String         serverName,
+                                                 @PathVariable String         userId,
+                                                 @PathVariable String         guid,
+                                                 @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getEntityDetail(serverName, userId, guid, asOfTime);
     }
@@ -1031,10 +1030,10 @@ public class LocalRepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/instances/relationship/{guid}/history")
 
-    public  RelationshipResponse getRelationship(@PathVariable String    serverName,
-                                                 @PathVariable String    userId,
-                                                 @PathVariable String    guid,
-                                                 @RequestParam Date      asOfTime)
+    public  RelationshipResponse getRelationship(@PathVariable String         serverName,
+                                                 @PathVariable String         userId,
+                                                 @PathVariable String         guid,
+                                                 @RequestBody  HistoryRequest asOfTime)
     {
         return restAPI.getRelationship(serverName, userId, guid, asOfTime);
     }

@@ -44,9 +44,14 @@ public class EndpointLookup extends EntityLookup<EndpointSource> {
     @Override
     protected InstanceProperties getMatchingProperties(EndpointSource source) {
         InstanceProperties matchProperties = new InstanceProperties();
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.NETWORK_ADDRESS, source.getNetworkAddress(), "findEndpoint");
+        // GDW - each string property added to matchProperties shoudl be converted to exact match regex
+        String sourceNetworkAddressRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getNetworkAddress());
+        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties,
+                Constants.NETWORK_ADDRESS, sourceNetworkAddressRegex, "findEndpoint");
         if(!StringUtils.isEmpty(source.getProtocol())){
-            matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
+            String sourceProtocolRegex = enterpriseConnector.getRepositoryHelper().getExactMatchRegex(source.getProtocol());
+            matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties,
+                    Constants.PROTOCOL, sourceProtocolRegex, "findEndpoint");
         }
         //matchProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
 

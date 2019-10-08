@@ -25,6 +25,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>configuration-file-store-connector</module>
+        <module>configuration-encrypted-file-store-connector</module>
     </modules>
 
     <dependencies>

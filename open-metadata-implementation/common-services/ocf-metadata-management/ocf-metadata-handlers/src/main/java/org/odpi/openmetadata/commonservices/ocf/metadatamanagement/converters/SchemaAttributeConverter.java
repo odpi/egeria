@@ -78,6 +78,16 @@ public class SchemaAttributeConverter extends ReferenceableConverter
                                                                             SchemaElementMapper.ATTRIBUTE_NAME_PROPERTY_NAME,
                                                                             instanceProperties,
                                                                             methodName));
+                if (bean.getAttributeName() == null)
+                {
+                    /*
+                     * If no display name is present then check to see if deprecated name was used
+                     */
+                    bean.setAttributeName(repositoryHelper.removeStringProperty(serviceName,
+                                                                                SchemaElementMapper.OLD_ATTRIBUTE_NAME_PROPERTY_NAME,
+                                                                                instanceProperties,
+                                                                                methodName));
+                }
                 bean.setElementPosition(repositoryHelper.removeIntProperty(serviceName,
                                                                            SchemaElementMapper.ELEMENT_POSITION_PROPERTY_NAME,
                                                                            instanceProperties,
