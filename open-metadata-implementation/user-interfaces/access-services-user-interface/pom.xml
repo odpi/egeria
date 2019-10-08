@@ -142,47 +142,53 @@
             <artifactId>http-helper</artifactId>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>connector-configuration-factory</artifactId>
-            <version>1.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>1.1-SNAPSHOT</version>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
-            <version>1.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-config</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
@@ -191,10 +197,12 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
@@ -203,38 +211,47 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-commons</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-web</artifactId>
         </dependency>
+
         <dependency>
             <groupId>javax.persistence</groupId>
             <artifactId>javax.persistence-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>subject-area-api</artifactId>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -242,15 +259,17 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-client</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-api</artifactId>
-            <version>${open-metadata.version}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ui-admin-services-spring</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>
@@ -415,6 +434,8 @@
                         </goals>
                         <configuration>
                             <ignoredUnusedDeclaredDependencies combine.children="append">
+                                <!-- Egeria ui admin needs to be in the component scan -->
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
                                 <!-- Spring enablement - false positives from dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>

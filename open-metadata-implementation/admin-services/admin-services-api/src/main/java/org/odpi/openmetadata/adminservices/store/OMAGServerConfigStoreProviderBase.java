@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices.store;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
 /**
  * The OMAGServerConfigStoreProviderBase provides a base class for the connector provider supporting the OMAG
