@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataplatform.handlers;
 
 import org.odpi.openmetadata.accessservices.dataplatform.events.NewDeployedDatabaseSchemaEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
@@ -33,6 +34,32 @@ public class DeployedDatabaseSchemaAssetHandler {
         this.repositoryHandler = repositoryHandler;
         this.invalidParameterHandler = invalidParameterHandler;
     }
+
+    public String createDeployedDatabaseSchemaAsset(DeployedDatabaseSchema deployedDatabaseSchema) throws PropertyServerException,
+            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
+            InvalidParameterException{
+
+        String methodName = "create Deployed Database Schema Asset";
+
+        String qualifiedNameForDeployedDatabaseSchema = deployedDatabaseSchema.getQualifiedName();
+
+        InstanceProperties deployedDbSchemaProperties = new EntityPropertiesBuilder()
+                .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDeployedDatabaseSchema)
+                .withStringProperty(Constants.NAME, deployedDatabaseSchema.getName())
+                .withStringProperty(Constants.OWNER, "Owner Info")
+                .withStringProperty(Constants.DESCRIPTION, "Description")
+                .build();
+
+        invalidParameterHandler.validateName(qualifiedNameForDeployedDatabaseSchema, Constants.QUALIFIED_NAME, methodName);
+
+        return repositoryHandler.createEntity(
+                DATA_PLATFORM_USER_ID,
+                repositoryHelper.getTypeDefByName(DATA_PLATFORM_USER_ID, Constants.DEPLOYED_DATABASE_SCHEMA).getGUID(),
+                Constants.DEPLOYED_DATABASE_SCHEMA,
+                deployedDbSchemaProperties,
+                methodName);
+    }
+
 
     public void createDeployedDatabaseSchemaAsset(NewDeployedDatabaseSchemaEvent event) throws
             PropertyServerException,

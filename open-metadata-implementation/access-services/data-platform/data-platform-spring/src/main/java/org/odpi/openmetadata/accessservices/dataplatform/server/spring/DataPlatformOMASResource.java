@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server.spring;
 
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformRestServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -30,11 +31,11 @@ public class DataPlatformOMASResource {
      * @param requestBody properties of the entity
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/software-server-capabilities")
+    @PostMapping(path = "/software-server-capability")
     public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @RequestBody RegistrationRequestBody requestBody) {
-        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+        return restAPI.createSoftwareServerCapability(serverName, userId, requestBody);
     }
 
     /**
@@ -45,11 +46,19 @@ public class DataPlatformOMASResource {
      * @param qualifiedName the qualified name
      * @return the software server capability by qualified name
      */
-    @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
+    @GetMapping(path = "/software-server-capability/{qualifiedName}")
     public RegistrationRequestBody getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
                                                                               @PathVariable String userId,
                                                                               @PathVariable String qualifiedName) {
         return restAPI.getSoftwareServerCapabilityByQualifiedName(serverName, userId, qualifiedName);
     }
+
+    @PostMapping(path = "/deployed-database-schema")
+    public GUIDResponse createDeployedDatabaseSchema(@PathVariable("serverName") String serverName,
+                                                       @PathVariable("userId") String userId,
+                                                       @RequestBody DeployedDatabaseSchemaRequestBody requestBody) {
+        return restAPI.createDeployedDatabaseSchema(serverName, userId, requestBody);
+    }
+
 
 }

@@ -2,8 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.server;
 
+import org.odpi.openmetadata.accessservices.dataplatform.handlers.DeployedDatabaseSchemaAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.properties.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataplatform.handlers.RegistrationHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.responses.DeployedDatabaseSchemaRequestBody;
 import org.odpi.openmetadata.accessservices.dataplatform.responses.RegistrationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -42,12 +45,10 @@ public class DataPlatformRestServices {
      * @param registrationRequestBody properties of the server
      * @return the unique identifier (guid) of the created server
      */
-    public GUIDResponse createSoftwareServer(String serverName, String userId,
+    public GUIDResponse createSoftwareServerCapability(String serverName, String userId,
                                              RegistrationRequestBody registrationRequestBody) {
 
-        final String methodName = "createSoftwareServer";
-
-        log.debug("Calling method: {}", methodName);
+        final String methodName = "createSoftwareServerCapability";
 
         GUIDResponse response = new GUIDResponse();
 
@@ -99,6 +100,42 @@ public class DataPlatformRestServices {
         } catch (UserNotAuthorizedException error) {
             dataPlatformInstanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
+        log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
+        return response;
+    }
+
+    /**
+     * Create deployed database schema guid response.
+     *
+     * @param serverName                        the server name
+     * @param userId                            the user id
+     * @param deployedDatabaseSchemaRequestBody the deployed database schema request body
+     * @return the guid response
+     */
+    public GUIDResponse createDeployedDatabaseSchema(String serverName, String userId,
+                                                     DeployedDatabaseSchemaRequestBody deployedDatabaseSchemaRequestBody) {
+
+        final String methodName = "createDeployedDatabaseSchema";
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            if (deployedDatabaseSchemaRequestBody == null) {
+                restExceptionHandler.handleNoRequestBody(userId, methodName, serverName);
+                return response;
+            }
+            DeployedDatabaseSchemaAssetHandler handler = dataPlatformInstanceHandler.getDeployedDatabaseSchemaAssetHandler(userId, serverName, methodName);
+            DeployedDatabaseSchema deployedDatabaseSchema = deployedDatabaseSchemaRequestBody.getDeployedDatabaseSchema();
+            response.setGUID(handler.createDeployedDatabaseSchemaAsset(deployedDatabaseSchema));
+
+        } catch (InvalidParameterException error) {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        } catch (PropertyServerException error) {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        } catch (UserNotAuthorizedException error) {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
         log.debug("Returning from method: {1} with response: {2}", methodName, response.toString());
 
         return response;
