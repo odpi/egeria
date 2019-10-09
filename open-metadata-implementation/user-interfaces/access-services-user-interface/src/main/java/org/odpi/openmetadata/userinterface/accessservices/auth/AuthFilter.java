@@ -16,13 +16,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class TokenAuthFilter extends GenericFilterBean {
+public class AuthFilter extends GenericFilterBean {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TokenAuthFilter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AuthFilter.class);
 
-    private final TokenAuthService authService;
+    private final AuthService authService;
 
-    public TokenAuthFilter(TokenAuthService authService) {
+    public AuthFilter(AuthService authService) {
         this.authService = authService;
     }
 

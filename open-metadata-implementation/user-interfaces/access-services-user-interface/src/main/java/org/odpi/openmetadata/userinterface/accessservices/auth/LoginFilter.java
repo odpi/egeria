@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.auth;
 
+import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,17 +20,17 @@ import java.io.IOException;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private TokenAuthService tokenAuthenticationService;
+    private AuthService authenticationService;
 
-    protected LoginFilter(String urlMapping, AuthenticationManager authenticationManager, TokenAuthService tokenAuthenticationService) {
+    protected LoginFilter(String urlMapping, AuthenticationManager authenticationManager, AuthService authenticationService) {
         super(new AntPathRequestMatcher(urlMapping));
         setAuthenticationManager(authenticationManager);
-        this.tokenAuthenticationService = tokenAuthenticationService;
+        this.authenticationService = authenticationService;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException {
 
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(
@@ -38,17 +39,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authentication) throws IOException, ServletException {
-
-        TokenUser token;
-        if (authentication.getPrincipal() instanceof TokenUser) {
-            token = (TokenUser) authentication.getPrincipal();
-        }
-        else {
-            token = new TokenUser((InetOrgPerson)authentication.getPrincipal());
-        }
-        tokenAuthenticationService.addAuthentication(response, token);
+                                            FilterChain chain, Authentication authentication)  {
+        authenticationService.addAuthentication(request, response, authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        request.getSession().setAttribute("user",token.getUser());
+
     }
 }

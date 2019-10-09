@@ -19,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
 @Configuration
-
 public class EgeriaUIApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIApplication.class);
@@ -60,5 +59,19 @@ public class EgeriaUIApplication {
                                       @Value("${open.lineage.server.name}") String serverName)  {
         return new OpenLineage(serverName, serverUrl);
     }
+
+//    @Bean(name="token")
+//    @ConditionalOnProperty(name = "authentication.mode", havingValue = "token")
+//    @ConditionalOnMissingBean
+//    public TokenAuthService getTokenAuth()  {
+//        return new TokenAuthService();
+//    }
+//
+//    @Bean(name="session")
+//    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
+//    @ConditionalOnMissingBean
+//    public SessionAuthService getSessionAuth()  {
+//        return new SessionAuthService();
+//    }
 
 }
