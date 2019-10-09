@@ -233,7 +233,7 @@ public class OMAGServerAdminStoreServices
 
         if (serverConfigStore != null)
         {
-            serverConfig = serverConfigStore.retrieveServerConfig(OMAGServerConfig.class);
+            serverConfig = serverConfigStore.retrieveServerConfig();
         }
 
         if (serverConfig == null)
