@@ -60,18 +60,6 @@ public class EgeriaUIApplication {
         return new OpenLineage(serverName, serverUrl);
     }
 
-//    @Bean(name="token")
-//    @ConditionalOnProperty(name = "authentication.mode", havingValue = "token")
-//    @ConditionalOnMissingBean
-//    public TokenAuthService getTokenAuth()  {
-//        return new TokenAuthService();
-//    }
-//
-//    @Bean(name="session")
-//    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
-//    @ConditionalOnMissingBean
-//    public SessionAuthService getSessionAuth()  {
-//        return new SessionAuthService();
-//    }
+
 
 }
