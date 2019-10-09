@@ -120,7 +120,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?view=' + view;
           this.$.tokenAjax._go();
       }
 

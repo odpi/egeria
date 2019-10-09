@@ -3,15 +3,11 @@
 package org.odpi.openmetadata.userinterface.accessservices.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,7 +19,6 @@ import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import javax.sql.DataSource;
 
 @EnableWebSecurity
 @Configuration
@@ -31,10 +26,10 @@ import javax.sql.DataSource;
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    AuthService authService;
+    private AuthService authService;
 
     @Value("${ldap.user.search.base}")
     private String userSearchBase;
@@ -125,7 +120,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
-
 
 
     @Bean(name="token")
