@@ -47,6 +47,11 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-types</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>metadata-security-server</artifactId>
         </dependency>
 
@@ -75,7 +80,6 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
-
 
     </dependencies>
 </project>

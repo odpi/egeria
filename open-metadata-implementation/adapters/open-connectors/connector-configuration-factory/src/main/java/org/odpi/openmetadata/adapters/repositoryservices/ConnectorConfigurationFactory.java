@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
@@ -25,7 +26,7 @@ import java.util.*;
 
 
 /**
- * ConnectorConfigurationFactory sets up default configuration for the OMRS components.  It is used by the OMAG server
+ * ConnectorConfigurationFactory sets up default configuration for the OMRS components.  It is used by the OMAG and UI server
  * while it manages the changes made to the server configuration by the server administrator.  The aim is to
  * build up the RepositoryServicesConfig object that is used to initialize the OMRSOperationalServices.
  */
@@ -39,11 +40,6 @@ public class ConnectorConfigurationFactory
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
-
-    private static final String defaultEventMapperTopicName = defaultTopicRootName + "localrepository.events";
-
-    private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
-
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
@@ -70,6 +66,24 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FileBasedServerConfigStoreProvider.class.getName()));
+        connection.setQualifiedName(endpoint.getAddress());
+
+        return connection;
+    }
+    /**
+     * Returns the connection for the user interface server configuration file.
+     *
+     * @param serverName  name of the server
+     * @return Connection object
+     */
+    public Connection getUIServerConfigConnection(String serverName)
+    {
+        Endpoint   endpoint = new Endpoint();
+        endpoint.setAddress("ui.server." + serverName + ".config");
+
+        Connection connection = new Connection();
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(FileBasedUIServerConfigStoreProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -204,18 +218,6 @@ public class ConnectorConfigurationFactory
         connection.setEndpoint(endpoint);
 
         return connection;
-    }
-
-
-    /**
-     * Return the connection for the default open metadata types archive file.
-     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
-     *
-     * @return OCF Connection used to create the file-based open metadata archive
-     */
-    public Connection getOpenMetadataTypesConnection()
-    {
-        return this.getOpenMetadataArchiveFileConnection(defaultOpenMetadataArchiveFileName);
     }
 
 
@@ -885,6 +887,8 @@ public class ConnectorConfigurationFactory
         connection.setConnectorType(cassandraStoreProvider.getConnectorType());
         return connection;
     }
+
+
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.

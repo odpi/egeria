@@ -14,8 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.fvt.opentypes.common.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
-import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
@@ -158,7 +158,7 @@ public class BeansToAccessOMRS  {
         //InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
          // get the <$$uEntityName$$> type guid
-         OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+         OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
          EntityDef entityDef = archiveAccessor.getEntityDefByName("<$$uEntityName$$>");
          EntityDetail deletedOmrsEntityDetail = oMRSAPIHelper.callOMRSDeleteEntity(userId,"<$$uEntityName$$>",entityDef.getGUID(),entityGuid);
          <$$uEntityName$$> deleted<$$uEntityName$$> = <$$uEntityName$$>Mapper.mapOmrsEntityDetailTo<$$uEntityName$$>(deletedOmrsEntityDetail);
@@ -187,7 +187,7 @@ public class BeansToAccessOMRS  {
         //InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
          // get the <$$uEntityName$$> type guid
-         OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+         OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
          EntityDef entityDef = archiveAccessor.getEntityDefByName("<$$uEntityName$$>");
          oMRSAPIHelper.callOMRSPurgeEntity(userId,"<$$uEntityName$$>",entityDef.getGUID(),entityGuid);
          if (log.isDebugEnabled()) {
@@ -481,7 +481,7 @@ public class BeansToAccessOMRS  {
             //InputValidator.validateUserIdNotNull(className,methodName,userId);
             //InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
              // get the appropriate type name and guid
-             OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+             OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
              RelationshipDef relationshipDef = archiveAccessor.getRelationshipDefByName(typeName);
              String typeGuid = relationshipDef.getGUID();
              Relationship  deletedRelationship =oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, relationshipGuid);
@@ -508,7 +508,7 @@ public class BeansToAccessOMRS  {
            //InputValidator.validateGUIDNotNull(className,methodName,relationshipGuid,"relationshipGuid");
 
             // get the appropriate type name and guid
-            OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+            OpenMetadataTypesArchiveAccessor archiveAccessor = OpenMetadataTypesArchiveAccessor.getInstance();
             RelationshipDef relationshipDef = archiveAccessor.getRelationshipDefByName(typeName);
             String typeGuid = relationshipDef.getGUID();
 
