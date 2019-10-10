@@ -76,7 +76,7 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void createSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "createSchemaType";
+        String methodName = "createOrUpdateSchemaType";
 
         ComplexSchemaType schemaType = new ComplexSchemaType();
         SchemaAttribute schemaAttribute = new SchemaAttribute();
@@ -117,7 +117,7 @@ class DataEngineSchemaTypeHandlerTest {
                                                                     UserNotAuthorizedException,
                                                                     InvocationTargetException, NoSuchMethodException,
                                                                     InstantiationException, IllegalAccessException {
-        String methodName = "createSchemaType";
+        String methodName = "createOrUpdateSchemaType";
 
         ComplexSchemaType schemaType = new ComplexSchemaType();
         SchemaAttribute schemaAttribute = new SchemaAttribute();

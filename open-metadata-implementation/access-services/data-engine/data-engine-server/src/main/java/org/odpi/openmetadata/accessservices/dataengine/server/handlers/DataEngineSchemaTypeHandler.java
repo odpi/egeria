@@ -91,7 +91,7 @@ public class DataEngineSchemaTypeHandler {
                                    List<Attribute> attributeList) throws InvalidParameterException,
                                                                          PropertyServerException,
                                                                          UserNotAuthorizedException {
-        final String methodName = "createSchemaType";
+        final String methodName = "createOrUpdateSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
