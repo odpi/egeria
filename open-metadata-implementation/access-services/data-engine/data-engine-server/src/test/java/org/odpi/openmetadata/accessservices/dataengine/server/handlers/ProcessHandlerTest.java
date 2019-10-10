@@ -92,7 +92,7 @@ class ProcessHandlerTest {
 
     @Test
     void addProcessPortRelationship() throws UserNotAuthorizedException, PropertyServerException,
-                                             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                             InvalidParameterException {
         String methodName = "addProcessPortRelationship";
 
         processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID);

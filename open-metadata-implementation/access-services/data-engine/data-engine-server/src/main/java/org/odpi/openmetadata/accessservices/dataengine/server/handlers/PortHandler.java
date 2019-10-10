@@ -191,7 +191,8 @@ public class PortHandler {
     }
 
     /**
-     * Create a PortSchema relationship between a Port and the corresponding SchemaType
+     * Create a PortSchema relationship between a Port and the corresponding SchemaType. Verifies that the
+     * relationship is not present before creating it
      *
      * @param userId         the name of the calling user
      * @param portGUID       the unique identifier of the port

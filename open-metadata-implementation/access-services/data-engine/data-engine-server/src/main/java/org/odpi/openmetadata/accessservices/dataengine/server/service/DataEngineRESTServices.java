@@ -47,6 +47,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.partitioningBy;
 
@@ -191,7 +192,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the Port Implementation with a PortSchema relationship
+     * Create or update the Port Implementation with a PortSchema relationship
      *
      * @param serverName                    name of server instance to call
      * @param userId                        the name of the calling user
@@ -232,7 +233,7 @@ public class DataEngineRESTServices {
 
 
     /**
-     * Create the Port Alias with a PortDelegation relationship
+     * Create or update the Port Alias with a PortDelegation relationship
      *
      * @param serverName           name of server instance to call
      * @param userId               the name of the calling user
@@ -569,6 +570,11 @@ public class DataEngineRESTServices {
 
         log.debug("Calling method: {}", methodName);
 
+        if (CollectionUtils.isEmpty(newPortGUIDs)) {
+            return;
+        }
+
+        ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
         Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
