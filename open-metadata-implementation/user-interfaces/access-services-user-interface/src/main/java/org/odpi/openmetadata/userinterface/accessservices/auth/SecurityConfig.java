@@ -71,6 +71,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/locales/**").permitAll()
                 .antMatchers("/properties/**").permitAll()
+                .antMatchers("/open-metadata/ui-admin-services/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
