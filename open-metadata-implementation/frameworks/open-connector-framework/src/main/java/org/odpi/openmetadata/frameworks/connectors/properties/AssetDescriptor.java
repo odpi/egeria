@@ -32,7 +32,8 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     protected AssetDescriptor()
     {
         super();
-        this.assetBean = new Asset();
+
+        this.setAssetBean(null);
     }
 
 
@@ -46,6 +47,40 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
     {
         super();
 
+        this.setAssetBean(assetBean);
+    }
+
+
+    /**
+     * Copy/clone Constructor - used to copy the asset descriptor for a new consumer.
+     *
+     * @param templateAssetDescriptor template asset descriptor to copy.
+     */
+    public AssetDescriptor(AssetDescriptor templateAssetDescriptor)
+    {
+        super();
+
+        if (templateAssetDescriptor != null)
+        {
+            this.setAssetBean(templateAssetDescriptor.getAssetBean());
+            this.assetName = templateAssetDescriptor.getAssetName();
+            this.assetTypeName = templateAssetDescriptor.getAssetTypeName();
+            this.assetSuperTypeNames = templateAssetDescriptor.getAssetSuperTypeNames();
+        }
+        else
+        {
+            this.setAssetBean(null);
+        }
+    }
+
+
+    /**
+     * Set up private attributes based on the supplied asset bean.
+     *
+     * @param assetBean bean containing all of the properties
+     */
+    protected void setAssetBean(Asset assetBean)
+    {
         if (assetBean == null)
         {
             this.assetBean = new Asset();
@@ -89,29 +124,6 @@ public abstract class AssetDescriptor extends AssetPropertyElementBase
 
                 assetSuperTypeNames = elementType.getElementSuperTypeNames();
             }
-        }
-    }
-
-
-    /**
-     * Copy/clone Constructor - used to copy the asset descriptor for a new consumer.
-     *
-     * @param templateAssetDescriptor template asset descriptor to copy.
-     */
-    public AssetDescriptor(AssetDescriptor templateAssetDescriptor)
-    {
-        super();
-
-        if (templateAssetDescriptor != null)
-        {
-            this.assetBean = templateAssetDescriptor.getAssetBean();
-            this.assetName = templateAssetDescriptor.getAssetName();
-            this.assetTypeName = templateAssetDescriptor.getAssetTypeName();
-            this.assetSuperTypeNames = templateAssetDescriptor.getAssetSuperTypeNames();
-        }
-        else
-        {
-            this.assetBean = new Asset();
         }
     }
 
