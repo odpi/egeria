@@ -33,17 +33,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.janusgraph</groupId>-->
-<!--            <artifactId>janusgraph-cassandra</artifactId>-->
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <artifactId>hibernate-validator</artifactId>-->
-<!--                    <groupId>org.hibernate</groupId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
-<!--        </dependency>-->
-
         <dependency>
             <groupId>org.janusgraph</groupId>
             <artifactId>janusgraph-cql</artifactId>
@@ -63,16 +52,6 @@
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.xerial.snappy</groupId>
-            <artifactId>snappy-java</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlr-runtime</artifactId>
-        </dependency>
     </dependencies>
 
     <build>
@@ -91,11 +70,8 @@
                                 <!-- Runtime dependencies for janusgraph-->
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cql:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-es:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.janusgraph:janusgraph-cassandra:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>commons-logging:commons-logging:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>commons-codec:commons-codec:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.xerial.snappy:snappy-java:*</ignoredUnusedDeclaredDependency>
-                                <ignoredUnusedDeclaredDependency>org.antlr:antlr-runtime:*</ignoredUnusedDeclaredDependency>
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
