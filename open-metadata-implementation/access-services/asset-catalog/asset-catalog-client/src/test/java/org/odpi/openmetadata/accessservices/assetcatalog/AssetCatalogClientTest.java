@@ -17,7 +17,11 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParame
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 
@@ -26,7 +30,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)

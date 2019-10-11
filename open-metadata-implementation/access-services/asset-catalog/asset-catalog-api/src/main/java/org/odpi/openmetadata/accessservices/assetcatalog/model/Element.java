@@ -19,8 +19,8 @@ public class Element {
     private String guid;
     private String type;
     private String qualifiedName;
-    private Map<String, String> properties;
-    private List<Element> parrentElement;
+    private Map<String, Object> properties;
+    private List<Element> parentElement;
 
     public String getGuid() {
         return guid;
@@ -46,19 +46,19 @@ public class Element {
         this.qualifiedName = qualifiedName;
     }
 
-    public Map<String, String> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
-    public void setProperties(Map<String, String> properties) {
+    public void setProperties(Map<String, Object> properties) {
         this.properties = properties;
     }
 
-    public List<Element> getParrentElement() {
-        return parrentElement;
+    public List<Element> getParentElement() {
+        return parentElement;
     }
 
-    public void setParrentElement(List<Element> parrentElement) {
-        this.parrentElement = parrentElement;
+    public void setParentElement(List<Element> parentElement) {
+        this.parentElement = parentElement;
     }
 }
