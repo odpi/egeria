@@ -77,10 +77,11 @@ public class AssetCatalogEntityResource {
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
                                                        @PathVariable("assetId") String assetId,
+                                                       @RequestParam("assetType") String assetType,
                                                        @RequestParam("relationshipType") String  relationshipType,
                                                        @RequestParam("startFrom")Integer startFrom,
                                                        @RequestParam("limit") Integer limit) {
-        return assetService.getAssetRelationships(serverName, userId, assetId, relationshipType, startFrom, limit);
+        return assetService.getAssetRelationships(serverName, userId, assetId, assetType, relationshipType, startFrom, limit);
     }
 
     /**
