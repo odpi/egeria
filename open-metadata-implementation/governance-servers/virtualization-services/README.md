@@ -1,8 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Virtualizer
-Virtualizer communicates with Information View OMAS and virtualization tool which is currently Gaian. The design of the application allows 
+# Virtualizer Server
+
+The Virtualizer communicates with Information View OMAS and virtualization tool which is currently Gaian.
+The design of the server allows for other data virtualization platforms to be
+plugged in by changing the view generation connector.
 
 Virtualizer has three main functions:
 1. listen to Information View OMAS Out topic(specified by property information-view-out-topic) and retrieve InformationViewEvent event (json structure);
@@ -11,10 +14,11 @@ Virtualizer has three main functions:
 
 ## OMAG server configuration
 
-Virtualizer is now running as a service for [OMAG Server Platform](../server-chassis). In this case, the service should be configured and initialized by the restful APIs provided by the platform.
+The Virtualizer is now running as a server on the [OMAG Server Platform](../../../open-metadata-publication/website/omag-server).
+In this case, the service should be configured and initialized by the restful APIs provided by the platform.
 
-Here are the steps to run Vitualizer
-- Start [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
+Here are the steps to run Virtualizer
+1. Start an [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
 
 - Configure event bus
 
