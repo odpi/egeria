@@ -21033,7 +21033,7 @@ public class OpenMetadataTypesArchive
         final String attribute4Description     = "Version number of the model element.";
         final String attribute4DescriptionGUID = null;
         final String attribute5Name            = "author";
-        final String attribute5Description     = "UserId of the creator of the model element.";
+        final String attribute5Description     = "Name of the creator of the model (person or organization).";
         final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
@@ -21086,13 +21086,47 @@ public class OpenMetadataTypesArchive
         final String description     = "A curated collection of design model elements.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "DesignModelElement";
+        final String superTypeName = "Asset";
 
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+
+        final String attribute1Name            = "technicalName";
+        final String attribute1Description     = "Technical name (no spaces) that can be used in artifact generation.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "versionNumber";
+        final String attribute2Description     = "Version number of the model.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "author";
+        final String attribute3Description     = "Name of the creator of the model (person or organization).";
+        final String attribute3DescriptionGUID = null;
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                           attribute1Description,
+                                                           attribute1DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
     }
 
 
@@ -21582,7 +21616,7 @@ public class OpenMetadataTypesArchive
 
     private void add0571ConceptModels()
     {
-        this.archiveBuilder.addEnumDef(getConceptModelAttributeTypeEnum());
+        this.archiveBuilder.addEnumDef(getConceptModelAttributeCoverageCategoryEnum());
         this.archiveBuilder.addEnumDef(getConceptModelDecorationEnum());
 
         this.archiveBuilder.addEntityDef(getConceptModelElementEntity());
@@ -21592,13 +21626,15 @@ public class OpenMetadataTypesArchive
 
         this.archiveBuilder.addRelationshipDef(getConceptBeadRelationshipEndRelationship());
         this.archiveBuilder.addRelationshipDef(getConceptBeadAttributeLinkRelationship());
+
+        this.archiveBuilder.addClassificationDef(getConceptBeadAttributeCoverageClassification());
     }
 
 
-    private EnumDef getConceptModelAttributeTypeEnum()
+    private EnumDef getConceptModelAttributeCoverageCategoryEnum()
     {
         final String guid            = "2c0ac237-e02e-431a-89fd-3107d94d4007";
-        final String name            = "ConceptModelAttributeType";
+        final String name            = "ConceptModelAttributeCoverageCategory";
         final String description     = "Describes the type of attribute - this is used in scoping the model.";
         final String descriptionGUID = null;
 
@@ -21609,7 +21645,7 @@ public class OpenMetadataTypesArchive
 
         final int    element1Ordinal         = 0;
         final String element1Value           = "Unknown";
-        final String element1Description     = "The attribute type is unknown - this is the default.";
+        final String element1Description     = "The attribute's coverage category is unknown - this is the default.";
         final String element1DescriptionGUID = null;
 
         elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
@@ -21792,33 +21828,11 @@ public class OpenMetadataTypesArchive
 
         final String superTypeName = "ConceptModelElement";
 
-        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
-                                                                 name,
-                                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                                 description,
-                                                                 descriptionGUID);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "type";
-        final String attribute1Description     = "Type of role that the attribute plays as part of the concept bead.";
-        final String attribute1DescriptionGUID = null;
-
-
-        property = archiveHelper.getEnumTypeDefAttribute("ConceptModelAttributeType",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-
-
-        entityDef.setPropertiesDefinition(properties);
-
-        return entityDef;
+        return  archiveHelper.getDefaultEntityDef(guid,
+                                                  name,
+                                                  this.archiveBuilder.getEntityDef(superTypeName),
+                                                  description,
+                                                  descriptionGUID);
     }
 
 
@@ -22050,6 +22064,46 @@ public class OpenMetadataTypesArchive
         relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
+    }
+
+
+    private ClassificationDef getConceptBeadAttributeCoverageClassification()
+    {
+        final String guid            = "f8b60afe-ddef-4b6f-9628-82ebfff34d65";
+        final String name            = "ConceptBeadAttributeCoverage";
+        final String description     = "Identifies the coverage category of a concept bead attribute.";
+        final String descriptionGUID = null;
+
+        final String linkedToEntity = "ConceptBeadAttribute";
+
+        ClassificationDef classificationDef = archiveHelper.getClassificationDef(guid,
+                                                                                 name,
+                                                                                 null,
+                                                                                 description,
+                                                                                 descriptionGUID,
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
+                                                                                 false);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "coverageCategory";
+        final String attribute1Description     = "Type of role that the attribute plays as part of the concept bead.";
+        final String attribute1DescriptionGUID = null;
+
+
+        property = archiveHelper.getEnumTypeDefAttribute("ConceptModelAttributeCoverageCategory",
+                                                         attribute1Name,
+                                                         attribute1Description,
+                                                         attribute1DescriptionGUID);
+        properties.add(property);
+
+        classificationDef.setPropertiesDefinition(properties);
+
+        return classificationDef;
     }
 
 
