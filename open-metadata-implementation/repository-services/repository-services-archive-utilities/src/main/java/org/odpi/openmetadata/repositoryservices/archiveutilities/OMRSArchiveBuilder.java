@@ -844,6 +844,7 @@ public class OMRSArchiveBuilder
         }
     }
 
+
     /**
      * Check whether the relationshipDef supplies any attributes that already exist.
      *
@@ -1093,6 +1094,34 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Retrieve an entity from the archive.
+     *
+     * @param guid unique identifier
+     */
+    public EntityDetail getEntity(String   guid)
+    {
+        final String methodName = "getEntity";
+
+        EntityDetail   entity = entityDetailMap.get(guid);
+
+        if (entity == null)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_GUID;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, guid);
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        return entity;
+    }
+
+
+    /**
      * Add a new relationship to the archive.
      *
      * @param relationship instance to add
@@ -1144,6 +1173,34 @@ public class OMRSArchiveBuilder
 
             relationshipList.add(relationship);
         }
+    }
+
+
+    /**
+     * Retrieve an entity from the archive.
+     *
+     * @param guid unique identifier
+     */
+    public Relationship getRelationship(String   guid)
+    {
+        final String methodName = "getRelationship";
+
+        Relationship   relationship = relationshipMap.get(guid);
+
+        if (relationship == null)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_GUID;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, guid);
+
+            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
+        }
+
+        return relationship;
     }
 
 
