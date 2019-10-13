@@ -2,9 +2,10 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Release 1.0
+# Release 1.0 (February 2019)
 
-Release 1.0 contains:
+Release 1.0 provides the open metadata integration and exchange between
+metadata repositories:
 
 * The [Open Connector Framework (OCF)](../open-metadata-implementation/frameworks/open-connector-framework)
   provides standard interfaces for implementing connectors.  These are used
@@ -12,8 +13,7 @@ Release 1.0 contains:
   and to plug in platform capabilities
   into the Open Metadata Repository Services (OMRS).
 
-* The first production-ready
-  implementation of the [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services).
+* The implementation of the [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services).
   The repository services provide support for the [open metadata types](../open-metadata-publication/website/open-metadata-types),
   the interfaces used by a repository technology the wants to support the
   open metadata protocols, the event management for open metadata replication
@@ -22,8 +22,6 @@ Release 1.0 contains:
   The repository services can be used as embeddable libraries
   in technologies that wish to participate in an
   [open metadata repository cohort](../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md).
-
-
 
 
 ----
