@@ -141,7 +141,7 @@
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <spring-data.version>2.2.0.RELEASE</spring-data.version>
         <spring-web.version>5.1.8.RELEASE</spring-web.version>
-        <spring-security.version>5.1.5.RELEASE</spring-security.version>
+        <spring-security.version>5.2.0.RELEASE</spring-security.version>
         <tomcat.version>9.0.21</tomcat.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>4.3</commons-collections.version>
