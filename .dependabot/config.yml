@@ -16,13 +16,13 @@ update_configs:
   # Explicit references to package.json (see https://github.com/dependabot/feedback/issues/705 )
   
   - package_manager: "javascript"
-    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/dist/package.json"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/dist"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
       - "davidradl"
   - package_manager: "javascript"
-    directory: "/open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static/package.json"
+    directory: "/open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static"
     update_schedule: "daily"
     default_reviewers:
       - "grahamwallis"
