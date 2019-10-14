@@ -1,66 +1,49 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
-/**
- * This is the interface for the generic operations on data cassandra clusters
- */
-package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog;
+package org.odpi.openmetadata.adapters.connectors.datastore.cassandra.ffdc;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
+
 import java.text.MessageFormat;
 
-/**
- * The enum Cassandra connector audit code.
- */
-public enum CassandraMetadataExtractorAuditCode {
+public enum CassandraDataStoreAuditCode {
 
 
-    CONNECTOR_INITIALIZING("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0001",
+    CONNECTOR_INITIALIZING("CASSANDRA-DATA-STORE-CONNECTOR-0001",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cassandra metadata extractor connector is being initialized",
+            "The Cassandra data store connector is being initialized",
             "The local server has started up a new instance of the cassandra connector.",
             "No action is required.  This is part of the normal operation of the service."),
-    CONNECTOR_INITIALIZED("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0002",
+    CONNECTOR_INITIALIZED("CASSANDRA-DATA-STORE-CONNECTOR-0002",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cassandra metadata extractor connector has initialized a new instance for server {0}",
+            "The Cassandra data store connector has initialized a new instance for server {0}",
             "The local server has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
-    CONNECTOR_SHUTDOWN("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0003",
+    CONNECTOR_SHUTDOWN("CASSANDRA-DATA-STORE-CONNECTOR-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Cassandra metadata extractor connector is shutting down its instance for server {0}",
+            "The Cassandra data store connector is shutting down its instance for server {0}",
             "The local server has requested shut down of a cassandra connector.",
             "No action is required.  This is part of the normal operation of the service."),
-    CONNECTOR_SERVER_CONFIGURATION_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0004",
+    CONNECTOR_SERVER_CONFIGURATION_ERROR("CASSANDRA-DATA-STORE-CONNECTOR-0004",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The configuration of the cassandra cluster is not valid.",
+            "The configuration of the Cassandra cluster is not valid.",
             "The local server is unable to create a connector.",
             "Check the connection configuration"),
-    CONNECTOR_SERVER_ADDRESS_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0005",
+    CONNECTOR_SERVER_ADDRESS_ERROR("CASSANDRA-DATA-STORE-CONNECTOR-0005",
             OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The address of the cassandra cluster is not valid.",
+            "The address of the Cassandra cluster is not valid.",
             "The local server is unable to create a connector.",
             "Check if the address of the cassandra cluster is valid"),
-    CONNECTOR_KEYSPACE_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0006.",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The name of the Keyspace is not valid ",
-            "The local server is unable to create a connector.",
-            "Check if the name of the logical is valid"),
-    CONNECTOR_SERVER_CONNECTION_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0007.",
+    CONNECTOR_SERVER_CONNECTION_ERROR("CASSANDRA-DATA-STORE-CONNECTOR-0007.",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The address of the cassandra cluster cannot be connected.",
             "The local server is unable to create a connector.",
             "Check if the address of the cassandra cluster is accessible."),
-    CONNECTOR_TABLE_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0008",
-            OMRSAuditLogRecordSeverity.EXCEPTION,
-            "The Cassandra table cannot be created or updated.",
-            "No query result will be provided.",
-            "Check if the query is valid."),
-    CONNECTOR_REGISTER_LISTENER_ERROR("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0009",
+    CONNECTOR_REGISTER_LISTENER_ERROR("CASSANDRA-DATA-STORE-CONNECTOR-0009",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Cassandra metadata change listener can not be registered",
             "No metadata change from cassandra will be listened.",
-            "Check the Cassandra configuration details on whether schema metadata is enabled.");
-    
-    
+            "Check the configuration details.");
+
+
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
     private String logMessage;
@@ -81,7 +64,7 @@ public enum CassandraMetadataExtractorAuditCode {
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    CassandraMetadataExtractorAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
+    CassandraDataStoreAuditCode(String messageId, OMRSAuditLogRecordSeverity severity, String message,
                                         String systemAction, String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;
@@ -139,4 +122,5 @@ public enum CassandraMetadataExtractorAuditCode {
     public String getUserAction() {
         return userAction;
     }
+    
 }

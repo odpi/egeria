@@ -11,8 +11,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-
-
     <name>Cassandra Data Store Connectors</name>
     <description>
         Cassandra data store connector provides  access to data assets store in
@@ -25,6 +23,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
         </dependency>
 
         <dependency>

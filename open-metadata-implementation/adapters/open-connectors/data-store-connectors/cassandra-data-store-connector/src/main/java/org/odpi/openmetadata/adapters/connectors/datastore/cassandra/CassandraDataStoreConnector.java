@@ -3,14 +3,18 @@
 
 package org.odpi.openmetadata.adapters.connectors.datastore.cassandra;
 
+import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.ffdc.CassandraDataStoreAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.InetSocketAddress;
 
 
 /**
@@ -19,6 +23,14 @@ import org.slf4j.LoggerFactory;
 public class CassandraDataStoreConnector extends ConnectorBase
 {
     private static final Logger log = LoggerFactory.getLogger(CassandraDataStoreConnector.class);
+    private CassandraDataStoreAuditCode auditLog;
+    private OMRSAuditLog omrsAuditLog;
+
+    private CqlSession cqlSession;
+    private String username = null;
+    private String password = null;
+    private String serverAddresses =null;
+    private Integer port = 9042;
 
     /**
      * Typical Constructor: Connectors should always have a constructor requiring no parameters and perform
@@ -37,67 +49,98 @@ public class CassandraDataStoreConnector extends ConnectorBase
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
         super.initialize(connectorInstanceId, connectionProperties);
+
+        final String actionDescription = "initialize";
+
+        this.connectorInstanceId = connectorInstanceId;
+        this.connectionProperties = connectionProperties;
+
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+
+        this.password = connectionProperties.getClearPassword();
+
+        super.initialize(connectorInstanceId, connectionProperties);
+
+        if (omrsAuditLog != null) {
+            auditLog = CassandraDataStoreAuditCode.CONNECTOR_INITIALIZING;
+            omrsAuditLog.logRecord(
+                    actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+        }
+
+        if (endpoint != null) {
+            serverAddresses = endpoint.getAddress();
+
+            if (serverAddresses != null) {
+                log.debug("The connecting cassandra cluster server address is: {}.", serverAddresses);
+
+            } else {
+                log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
+                if (omrsAuditLog != null) {
+                    auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
+                    omrsAuditLog.logRecord(actionDescription,
+                            auditLog.getLogMessageId(),
+                            auditLog.getSeverity(),
+                            auditLog.getFormattedLogMessage(),
+                            null,
+                            auditLog.getSystemAction(),
+                            auditLog.getUserAction());
+                }
+            }
+        } else {
+            log.error("Errors in Cassandra server address. The endpoint containing the server address is invalid.");
+            if (omrsAuditLog != null) {
+                auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
+                omrsAuditLog.logRecord(actionDescription,
+                        auditLog.getLogMessageId(),
+                        auditLog.getSeverity(),
+                        auditLog.getFormattedLogMessage(),
+                        null,
+                        auditLog.getSystemAction(),
+                        auditLog.getUserAction());
+            }
+        }
+
+        startCassandraConnection();
+
+        if (omrsAuditLog != null)
+        {
+            auditLog = CassandraDataStoreAuditCode.CONNECTOR_INITIALIZED;
+            omrsAuditLog.logRecord(actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+        }
+    }
+
+
+    /**
+     * Set up the Cassandra Cluster Connection
+     */
+    public void startCassandraConnection() {
+
+        CqlSessionBuilder builder = CqlSession.builder();
+        builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
+        builder.withAuthCredentials(username, password);
+        this.cqlSession = builder.build();
+
     }
 
     /**
-     * Returns the unique connector instance id that assigned to the connector instance when it was created.
-     * It is useful for error and audit messages.
+     * Provide Cassandra Session.
      *
-     * @return guid for the connector instance
+     * @return Cassandra session.
      */
-    @Override
-    public String getConnectorInstanceId() {
-        return super.getConnectorInstanceId();
-    }
-
-    /**
-     * Returns the connection object that was used to create the connector instance.  Its contents are never refreshed
-     * during the lifetime of the connector instance, even if the connection information is updated or removed
-     * from the originating metadata repository.
-     *
-     * @return connection properties object
-     */
-    @Override
-    public ConnectionProperties getConnection() {
-        return super.getConnection();
-    }
-
-    /**
-     * Set up the connected asset properties object.  This provides the known metadata properties stored in one or more
-     * metadata repositories.  The properties are populated whenever getConnectedAssetProperties() is called.
-     *
-     * @param connectedAssetProperties properties of the connected asset
-     */
-    @Override
-    public void initializeConnectedAssetProperties(ConnectedAssetProperties connectedAssetProperties) {
-        super.initializeConnectedAssetProperties(connectedAssetProperties);
-    }
-
-    /**
-     * Returns the properties that contain the metadata for the asset.  The asset metadata is retrieved from the
-     * metadata repository and cached in the ConnectedAssetProperties object each time the getConnectedAssetProperties
-     * method is requested by the caller.   Once the ConnectedAssetProperties object has the metadata cached, it can be
-     * used to access the asset property values many times without a return to the metadata repository.
-     * The cache of metadata can be refreshed simply by calling this getConnectedAssetProperties() method again.
-     *
-     * @param userId userId of requesting user
-     * @return ConnectedAssetProperties   connected asset properties
-     * @throws PropertyServerException    indicates a problem retrieving properties from a metadata repository
-     * @throws UserNotAuthorizedException indicates that the user is not authorized to access the asset properties.
-     */
-    @Override
-    public ConnectedAssetProperties getConnectedAssetProperties(String userId) throws PropertyServerException, UserNotAuthorizedException {
-        return super.getConnectedAssetProperties(userId);
-    }
-
-    /**
-     * Indicates that the connector is completely configured and can begin processing.
-     *
-     * @throws ConnectorCheckedException there is a problem within the connector.
-     */
-    @Override
-    public void start() throws ConnectorCheckedException {
-        super.start();
+    public CqlSession getSession() {
+        return this.cqlSession;
     }
 
     /**
@@ -108,26 +151,17 @@ public class CassandraDataStoreConnector extends ConnectorBase
     @Override
     public void disconnect() throws ConnectorCheckedException {
         super.disconnect();
+
+        String actionDescription = "Shut down the Cassandra data store connection.";
+        cqlSession.close();
+        auditLog = CassandraDataStoreAuditCode.CONNECTOR_SHUTDOWN;
+        omrsAuditLog.logRecord(actionDescription,
+                auditLog.getLogMessageId(),
+                auditLog.getSeverity(),
+                auditLog.getFormattedLogMessage(),
+                null,
+                auditLog.getSystemAction(),
+                auditLog.getUserAction());
     }
 
-    /**
-     * Return a flag indicating whether the connector is active.  This means it has been started and not yet
-     * disconnected.
-     *
-     * @return isActive flag
-     */
-    @Override
-    public boolean isActive() {
-        return super.isActive();
-    }
-
-    /**
-     * Standard toString method.
-     *
-     * @return print out of variables in a JSON-style
-     */
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }

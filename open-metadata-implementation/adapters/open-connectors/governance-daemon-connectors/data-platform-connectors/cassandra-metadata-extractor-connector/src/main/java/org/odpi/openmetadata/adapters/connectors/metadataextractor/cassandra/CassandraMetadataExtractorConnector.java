@@ -3,12 +3,17 @@
 package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlSession;
+import com.datastax.oss.driver.api.core.metadata.schema.KeyspaceMetadata;
 import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
+import org.odpi.openmetadata.dataplatformservices.api.DataPlatformConnectorBase;
+import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformDeployedDatabaseSchema;
+import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformSoftwareServerCapability;
+import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularColumn;
+import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularSchema;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,13 +21,14 @@ import java.net.InetSocketAddress;
 
 
 /**
- * The type Cassandra store connector.
+ * The Cassandra Metadata Extractor Connector is the connector for synchronizing data assets from Apache Cassandra Database.
  */
-public abstract class CassandraMetadataExtractorConnector extends ConnectorBase implements  CassandraMetadataExtractor {
+public abstract class CassandraMetadataExtractorConnector extends DataPlatformConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(CassandraMetadataExtractorConnector.class);
     private OMRSAuditLog omrsAuditLog;
     private CassandraMetadataExtractorAuditCode auditLog;
+    private CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener();
 
     private String serverAddress = null;
     private Integer port = null;
@@ -60,13 +66,10 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
                     auditLog.getUserAction());
         }
 
-        if (endpoint != null) {
+        if (endpoint.getAddress() != null) {
             serverAddress = endpoint.getAddress();
 
-            if (serverAddress != null) {
-                log.info("The connecting cassandra cluster server address is: {}.", serverAddress);
-
-            } else {
+        } else {
                 log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
                 if (omrsAuditLog != null) {
                     auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
@@ -76,21 +79,7 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
                             auditLog.getFormattedLogMessage(),
                             null,
                             auditLog.getSystemAction(),
-                            auditLog.getUserAction());
-                }
-            }
-        } else {
-            log.error("Errors in Cassandra server address. The endpoint containing the server address is invalid.");
-            if (omrsAuditLog != null) {
-                auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditLog.getLogMessageId(),
-                        auditLog.getSeverity(),
-                        auditLog.getFormattedLogMessage(),
-                        null,
-                        auditLog.getSystemAction(),
-                        auditLog.getUserAction());
-            }
+                            auditLog.getUserAction()); }
         }
 
         startCassandraConnection();
@@ -116,7 +105,7 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
         this.cqlSession = CqlSession.builder()
                 .addContactPoint(new InetSocketAddress(serverAddress,port))
                 .withAuthCredentials(username, password)
-               // .withSchemaChangeListener(CassandraMetadataExtractor)
+                .withSchemaChangeListener(cassandraMetadataListener)
                 .build();
 
     }
@@ -129,8 +118,9 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
     public CqlSession getSession() {
         return this.cqlSession;
     }
+
     /**
-     * Terminate Cassandra cluster.
+     * Terminate Cassandra Metadata Extractor Connector Connection.
      */
     public void shutdown() {
 
@@ -150,16 +140,16 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
 
 
     /**
-     * Register listener.
+     * Register metadata change listener of Cassandra Metadata Extractor Connector.
      *
      * @param cassandraMetadataExtractor the cassandra store listener
      */
     public void registerListener(CassandraMetadataExtractor cassandraMetadataExtractor)
     {
-        if (cassandraMetadataExtractor != null)
+        if (cassandraMetadataExtractor != null && this.cqlSession.isSchemaMetadataEnabled())
         {
-           // this.cqlSession.;
-            log.info("Registering cassandra cluster listener: {}", cassandraMetadataExtractor.toString());
+
+            log.debug("Registering cassandra cluster listener: {}", cassandraMetadataExtractor.toString());
         } else {
             String actionDescription = "Error in registering cassandra store listener.";
 
@@ -174,4 +164,29 @@ public abstract class CassandraMetadataExtractorConnector extends ConnectorBase 
         }
     }
 
+
+    @Override
+    public DataPlatformSoftwareServerCapability getDataPlatformSoftwareServerCapability() {
+        return super.getDataPlatformSoftwareServerCapability();
+    }
+
+    @Override
+    public DataPlatformDeployedDatabaseSchema getDataPlatformDeployedDatabaseSchema() {
+
+        KeyspaceMetadata keyspaceMetadata ;
+
+
+
+        return super.getDataPlatformDeployedDatabaseSchema();
+    }
+
+    @Override
+    public DataPlatformTabularSchema getDataPlatformTabularSchema() {
+        return super.getDataPlatformTabularSchema();
+    }
+
+    @Override
+    public DataPlatformTabularColumn getDataPlatformTabularColumn() {
+        return super.getDataPlatformTabularColumn();
+    }
 }
