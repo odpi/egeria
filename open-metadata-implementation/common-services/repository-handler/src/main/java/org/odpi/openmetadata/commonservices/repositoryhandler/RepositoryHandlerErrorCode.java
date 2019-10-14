@@ -46,7 +46,7 @@ public enum RepositoryHandlerErrorCode
             "The system is unable to process the request.",
             "Correct the values of the properties passed on the request and retry."),
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "REPOSITORY-HANDLER-404-005 ",
-            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3)",
+            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3}",
             "The service is not able to return the requested object.",
             "Check that the unique identifier is correct and the property server(s) supporting the service is/are running."),
     OMRS_NOT_INITIALIZED(404, "REPOSITORY-HANDLER-404-001 ",
