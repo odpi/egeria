@@ -1154,6 +1154,6 @@ public class AssetCatalogService {
             return entitiesByPropertyValue;
         }
 
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
 }
