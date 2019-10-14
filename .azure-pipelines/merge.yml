@@ -51,5 +51,5 @@ stages:
               artifactoryService: ODPiArtifactory
               buildName: 'Egeria'
           - publish: target
-            artifact: target-$(Build.BuildId)
+            artifact: target-$(Build.BuildNumber)
             condition: always()
