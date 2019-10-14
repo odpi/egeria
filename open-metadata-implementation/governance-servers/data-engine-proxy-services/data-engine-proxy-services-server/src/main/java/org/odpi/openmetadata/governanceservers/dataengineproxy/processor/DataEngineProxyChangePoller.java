@@ -96,7 +96,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             this.auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(dataEngineProxyConfig.getDataEngineProxyProvider()),
+                    auditCode.getFormattedLogMessage(connector.getConnection().getConnectorType().getConnectorProviderClassName()),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());

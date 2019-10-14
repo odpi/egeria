@@ -15,8 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * DataEngineProxyConfig caches the properties that are used to setup up the connector to a Data Engine Proxy in
- * the server. The configurations contain the name of the connector provider and the corresponding additional
- * properties.
+ * the server.
  *
  * This configuration class should support various types of Data Engine connectors.
  */
@@ -29,12 +28,8 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     private String     accessServiceRootURL      = null;
     private String     accessServiceServerName   = null;
 
-    private String     dataEngineProxyProvider   = null;
     private Connection dataEngineProxyConnection = null;
-    private boolean    pollForChanges            = true;
     private int        pollIntervalInSeconds     = 60;
-
-    private Map<String, Object> dataEngineConfig = null;
 
     /**
      * Default constuctor
@@ -52,11 +47,8 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
         if (template != null) {
             this.accessServiceRootURL      = template.accessServiceRootURL;
             this.accessServiceServerName   = template.accessServiceServerName;
-            this.dataEngineProxyProvider   = template.dataEngineProxyProvider;
             this.dataEngineProxyConnection = template.dataEngineProxyConnection;
-            this.pollForChanges            = template.pollForChanges;
             this.pollIntervalInSeconds     = template.pollIntervalInSeconds;
-            this.dataEngineConfig          = template.dataEngineConfig;
         }
     }
 
@@ -85,20 +77,6 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     public void setAccessServiceServerName(String accessServiceServerName) { this.accessServiceServerName = accessServiceServerName; }
 
     /**
-     * Provide the name of the Data Engine provider class
-     * @return String
-     */
-    public String getDataEngineProxyProvider() {
-        return dataEngineProxyProvider;
-    }
-
-    /**
-     * Set the name of the Data Engine provider class
-     * @param dataEngineProxyProvider
-     */
-    public void setDataEngineProxyProvider(String dataEngineProxyProvider) { this.dataEngineProxyProvider = dataEngineProxyProvider; }
-
-    /**
      * Provide the connection to the Data Engine proxy
      * @return Connection
      */
@@ -113,44 +91,18 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     public void setDataEngineProxyConnection(Connection dataEngineProxyConnection) { this.dataEngineProxyConnection = dataEngineProxyConnection; }
 
     /**
-     * Indicate whether to poll for changes (true) or not (false).
-     * @return boolean
-     */
-    public boolean pollForChanges() { return pollForChanges; }
-
-    /**
-     * Define whether to poll for changes (true) or not (false).
-     * @param pollForChanges
-     */
-    public void setPollForChanges(boolean pollForChanges) { this.pollForChanges = pollForChanges; }
-
-    /**
-     * Provide the seconds to wait between each polling of the data engine for changes
+     * Provide the seconds to wait between each polling of the data engine for changes. Note that this is only used
+     * by Data Engine Connectors that require polling in order to find changes.
      * @return int
      */
     public int getPollIntervalInSeconds() { return pollIntervalInSeconds; }
 
     /**
-     * Set the number of seconds to wait between each polling of the data engine for changes
+     * Set the number of seconds to wait between each polling of the data engine for changes. Note that this is only
+     * used by Data Engine Connectors that require polling in order to find changes.
      * @param pollIntervalInSeconds
      */
     public void setPollIntervalInSeconds(int pollIntervalInSeconds) { this.pollIntervalInSeconds = pollIntervalInSeconds; }
-
-    /**
-     * Provide the configuration for the Data Engine proxy
-     * @return {@code Map<String, Object>}
-     */
-    public Map<String, Object> getDataEngineConfig() {
-        return dataEngineConfig;
-    }
-
-    /**
-     * Set the configuration for the Data Engine proxy
-     * @param dataEngineConfig
-     */
-    public void setDataEngineConfig(Map<String, Object> dataEngineConfig) {
-        this.dataEngineConfig = dataEngineConfig;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -159,17 +111,14 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
         DataEngineProxyConfig that = (DataEngineProxyConfig) o;
         return Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
                 Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
-                Objects.equals(getDataEngineProxyProvider(), that.getDataEngineProxyProvider()) &&
                 Objects.equals(getDataEngineProxyConnection(), that.getDataEngineProxyConnection()) &&
-                Objects.equals(pollForChanges(), that.pollForChanges()) &&
-                Objects.equals(getPollIntervalInSeconds(), that.getPollIntervalInSeconds()) &&
-                Objects.equals(getDataEngineConfig(), that.getDataEngineConfig());
+                Objects.equals(getPollIntervalInSeconds(), that.getPollIntervalInSeconds());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(), getDataEngineProxyProvider(),
-                getDataEngineProxyConnection(), pollForChanges(), getPollIntervalInSeconds(), getDataEngineConfig());
+        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
+                getDataEngineProxyConnection(), getPollIntervalInSeconds());
     }
 
 }

@@ -21,6 +21,14 @@ public interface DataEngineInterface {
     DataEngineSoftwareServerCapability getDataEngineDetails();
 
     /**
+     * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
+     * (false).
+     *
+     * @return boolean
+     */
+    boolean requiresPolling();
+
+    /**
      * Retrieve the date and time at which changes were last synchronized.
      *
      * @return Date

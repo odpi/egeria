@@ -157,7 +157,7 @@ public class DataEngineProxyOperationalServices {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 dataEngineProxyConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineProxy);
                 // If the config says we should poll for changes, do so via a new thread
-                if (dataEngineProxyConfig.pollForChanges()) {
+                if (dataEngineProxyConnector.requiresPolling()) {
                     DataEngineProxyChangePoller poller = new DataEngineProxyChangePoller(
                             dataEngineProxyConnector,
                             dataEngineProxyConfig,

@@ -28,6 +28,14 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
     }
 
     /**
+     * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
+     * (false).
+     *
+     * @return boolean
+     */
+    public boolean requiresPolling() { return true; };
+
+    /**
      * Retrieve the date and time at which changes were last synchronized.
      *
      * @return Date
