@@ -39,7 +39,6 @@ public class InTopicListener implements OpenMetadataTopicListener {
     @Override
     public void processEvent(String eventAsString) {
         AssetLineageEvent event = null;
-        graphStoringServices.test();
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEvent.class);
             log.info("Started processing OpenLineageEvent");

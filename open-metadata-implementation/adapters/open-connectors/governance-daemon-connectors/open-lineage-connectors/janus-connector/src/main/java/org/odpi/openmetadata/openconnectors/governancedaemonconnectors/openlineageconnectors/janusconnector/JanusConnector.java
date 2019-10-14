@@ -4,15 +4,18 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.janusgraph.core.JanusGraph;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.JanusFactory.openBufferGraph;
 
-public class JanusConnector extends ConnectorBase implements GraphStore {
+public class JanusConnector extends OpenLineageConnectorBase {
 
     private static final Logger log = LoggerFactory.getLogger(JanusConnector.class);
     private JanusGraph graph;
@@ -26,20 +29,13 @@ public class JanusConnector extends ConnectorBase implements GraphStore {
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
 
-        final String actionDescription = "initialize";
-
-        this.connectorInstanceId = connectorInstanceId;
-        this.connectionProperties = connectionProperties;
-
         super.initialize(connectorInstanceId, connectionProperties);
+        this.connectionProperties = connectionProperties;
         this.graph = openBufferGraph(connectionProperties);
 
     }
 
     @Override
-    public void addEntity() {
-        GraphTraversalSource g =  graph.traversal();
-        System.out.println(g.V().count().next());
-
+    public void addEntity(ProcessLineageEvent processLineageEvent) {
     }
 }

@@ -870,7 +870,7 @@ public class ConnectorConfigurationFactory
     }
 
     /**
-     * Return the connection.  This is using the OpenLineageConnector.
+     * Return the connection.  This is used by open lineage graph connectors.
      *
      * @param serverName  name of the real repository server
      * @param url  url for the Open Lineage Server

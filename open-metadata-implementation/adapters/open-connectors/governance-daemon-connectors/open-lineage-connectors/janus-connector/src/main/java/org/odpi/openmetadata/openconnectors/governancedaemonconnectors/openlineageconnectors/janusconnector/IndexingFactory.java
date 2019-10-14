@@ -19,6 +19,14 @@ public class IndexingFactory {
 
     private static final Logger log = LoggerFactory.getLogger(IndexingFactory.class);
 
+    /**
+     * Creates the indexes for the properties of vertices.
+     *
+     * @param propertyName  - property name
+     * @param propertyKeyName - the property name that is stored in the graph
+     * @param unique - if the propery name is unique or not
+     * @param graph - graph instance to create the indexes
+     */
     protected static void createCompositeIndexForVertexProperty(String propertyName, String propertyKeyName, boolean unique, JanusGraph graph)
     {
 
@@ -48,11 +56,9 @@ public class IndexingFactory {
                 log.info("{} index {} already exists", methodName, indexName);
                 management.rollback();
                 return;
-            } else {
-                // index does not already exist - create
-                log.info("{} index create {} for vertex property {}", methodName, indexName, propertyKeyName);
             }
 
+            log.info("{} index create {} for vertex property {}", methodName, indexName, propertyKeyName);
 
             // Check whether property key exists (e.g. edge also has a "guid" property) and if not create it...
             PropertyKey propertyKey;
@@ -66,6 +72,7 @@ public class IndexingFactory {
                 log.debug("{} make property key for property {}", methodName, propertyKeyName);
                 propertyKey = management.makePropertyKey(propertyKeyName).dataType(clazz).make();
             }
+
 
             JanusGraphManagement.IndexBuilder indexBuilder = management.buildIndex(indexName, Vertex.class).addKey(propertyKey);
             if (unique) {
@@ -100,6 +107,13 @@ public class IndexingFactory {
 
     }
 
+    /**
+     * Creates the indexes for the properties of edges.
+     *
+     * @param propertyName  - property name
+     * @param propertyKeyName - the property name that is stored in the graph
+     * @param graph - graph instance to create the indexes
+     */
     protected static void createCompositeIndexForEdgeProperty(String propertyName, String propertyKeyName,JanusGraph graph) {
 
         final String methodName = "createCompositeIndexForEdgeProperty";

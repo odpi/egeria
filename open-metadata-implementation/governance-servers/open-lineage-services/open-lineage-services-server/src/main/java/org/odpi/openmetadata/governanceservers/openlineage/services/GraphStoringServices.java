@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.GraphStore;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,13 +11,13 @@ public class GraphStoringServices {
 
     private static final Logger log = LoggerFactory.getLogger(GraphStoringServices.class);
 
-    private GraphStore graphStore;
+    private OpenLineageGraphStore openLineageGraphStore;
 
-    public GraphStoringServices(GraphStore graphStore) {
-        this.graphStore = graphStore;
+    public GraphStoringServices(OpenLineageGraphStore graphStore) {
+        this.openLineageGraphStore = graphStore;
     }
 
-    public void test(){
-        graphStore.addEntity();
+    public void test(ProcessLineageEvent processLineageEvent){
+        openLineageGraphStore.addEntity(processLineageEvent);
     }
 }
