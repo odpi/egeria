@@ -19,9 +19,9 @@ to the Data Platform OMAS.
     ```json
         {
         "class": "DataPlatformConfig",
-        "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
+        "dataPlatformGUIDs": "296bc645-2043-499c-bcd9-ecff90e46899",
         "dataPlatformServerURL":"127.0.0.1",
-        "dataPlatformServerOutTopicName": "omas.dataplatform.inTopic",
+        "dataPlatformServiceOutTopicName": "omas.dataplatform.inTopic",
         "dataPlatformServerName":"Apache Cassandra"
         }
     ```
