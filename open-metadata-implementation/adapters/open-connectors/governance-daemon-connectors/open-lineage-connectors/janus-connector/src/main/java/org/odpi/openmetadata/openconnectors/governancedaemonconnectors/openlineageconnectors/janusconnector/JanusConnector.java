@@ -5,11 +5,8 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -14,7 +14,6 @@ import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicList
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.JanusConnector;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
