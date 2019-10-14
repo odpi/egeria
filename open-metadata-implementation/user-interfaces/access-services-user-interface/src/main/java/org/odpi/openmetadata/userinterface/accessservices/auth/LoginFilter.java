@@ -29,7 +29,7 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException, IOException {
 
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(

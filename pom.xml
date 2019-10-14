@@ -131,18 +131,18 @@
         <mockito.version>2.28.2</mockito.version>
         <testng.version>6.14.3</testng.version>
         <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.26</slf4j.version>
+        <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.9.9</jackson.version>
         <jackson.databind.version>2.9.9.3</jackson.databind.version>
         <kafka.version>2.1.1</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
-        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.1.9.RELEASE</spring-boot.version>
         <spring-data.version>2.2.0.RELEASE</spring-data.version>
-        <spring-web.version>5.1.8.RELEASE</spring-web.version>
+        <spring-web.version>5.2.0.RELEASE</spring-web.version>
         <spring-security.version>5.2.0.RELEASE</spring-security.version>
-        <tomcat.version>9.0.21</tomcat.version>
+        <tomcat.version>9.0.27</tomcat.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>4.3</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
@@ -179,7 +179,7 @@
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <frontend.plugin.version>1.6</frontend.plugin.version>
@@ -1839,6 +1839,20 @@
                 <groupId>com.google.crypto.tink</groupId>
                 <artifactId>tink</artifactId>
                 <version>${tink.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-aop</artifactId>
+                <version>${spring-web.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
+                <version>${spring-web.version}</version>
                 <scope>compile</scope>
             </dependency>
 
