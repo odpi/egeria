@@ -8,13 +8,12 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 /**
  * OMAGServerExceptionHandler provides common error handling routines for the admin services
  */
-class OMAGServerExceptionHandler extends RESTExceptionHandler
+public class OMAGServerExceptionHandler extends RESTExceptionHandler
 {
     /**
      * Default constructor
@@ -32,10 +31,10 @@ class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param runtimeException returned error.
      */
-    void captureRuntimeException(String            serverName,
-                                 String            methodName,
-                                 FFDCResponseBase  response,
-                                 Throwable         runtimeException)
+    public void captureRuntimeException(String serverName,
+                                        String methodName,
+                                        FFDCResponseBase response,
+                                        Throwable runtimeException)
     {
         OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
         String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
@@ -62,9 +61,9 @@ class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param runtimeException returned error.
      */
-    void captureRuntimeException(String            methodName,
-                                 FFDCResponseBase  response,
-                                 Throwable         runtimeException)
+    public void captureRuntimeException(String methodName,
+                                        FFDCResponseBase response,
+                                        Throwable runtimeException)
     {
         OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_PLATFORM_EXCEPTION;
         String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -88,7 +87,7 @@ class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
+    public void captureConfigurationErrorException(FFDCResponseBase response, OMAGConfigurationErrorException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }
@@ -112,7 +111,7 @@ class OMAGServerExceptionHandler extends RESTExceptionHandler
      * @param response  REST Response
      * @param error returned response.
      */
-    void captureNotAuthorizedException(FFDCResponseBase response, OMAGNotAuthorizedException error)
+    public void captureNotAuthorizedException(FFDCResponseBase response, OMAGNotAuthorizedException error)
     {
         captureCheckedException(response, error, error.getClass().getName());
     }

@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.csvfile.CSVFileStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.csvfile.ffdc.exception.FileReadException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
@@ -88,6 +89,10 @@ public class CSVFileReaderSample
              * that matches the requested filename.
              */
             List<String>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
+            /// List<String>   knownAssets = client.findAssets(clientUserId, ".*", 0, 99);
+            ///AssetUniverse universe = client.getAssetProperties(clientUserId, "0fdd1dbb-b11a-48bd-a82c-a6d7838ffd60" );
+
+            ///System.out.println(universe.toString());
 
             if (knownAssets != null)
             {
@@ -290,7 +295,17 @@ public class CSVFileReaderSample
 
             if (assetProperties != null)
             {
-                System.out.println(assetProperties.toString());
+                AssetUniverse assetUniverse = assetProperties.getAssetUniverse();
+
+                if (assetUniverse != null)
+                {
+                    System.out.println("Type Name: " + assetUniverse.getAssetTypeName());
+                    System.out.println("Qualified Name: " + assetUniverse.getQualifiedName());
+                }
+                else
+                {
+                    System.out.println(assetProperties.toString());
+                }
             }
             else
             {
@@ -311,8 +326,7 @@ public class CSVFileReaderSample
 
     /**
      * Main program that controls the operation of the sample.  The parameters are passed space separated.
-     * The file name must be passed as parameter 1.  The other parameters are used to override the
-     * sample's default values.
+     * The parameters are used to override the sample's default values.
      *
      * @param args 1. file name 2. server name, 3. URL root for the server, 4. client userId
      */
@@ -320,17 +334,15 @@ public class CSVFileReaderSample
     {
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
-        if ((args == null) || (args.length < 1))
-        {
-            System.out.println("Please specify the file name in the first parameter");
-            System.exit(-1);
-        }
-
-        String  fileName = args[0];
+        String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
         String  serverName = "cocoMDS1";
-        String  serverURLRoot = "http://localhost:8080";
-        String  clientUserId = "garygeeke";
+        String  serverURLRoot = "http://localhost:8081";
+        String  clientUserId = "peterprofile";
 
+        if (args.length > 0)
+        {
+            fileName = args[0];
+        }
 
         if (args.length > 1)
         {
@@ -352,6 +364,7 @@ public class CSVFileReaderSample
         System.out.println("===============================");
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);
+        System.out.println("Reading file: " + fileName);
         System.out.println();
 
         try
