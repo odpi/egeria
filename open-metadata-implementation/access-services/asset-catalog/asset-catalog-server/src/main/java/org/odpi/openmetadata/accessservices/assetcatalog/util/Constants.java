@@ -16,7 +16,7 @@ public final class Constants {
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
 
     public static final String DEPLOYED_API = "DeployedAPI";
-    public static final String INFRASTRUCTURE = "Infrastructure";
+    public static final String IT_INFRASTRUCTURE = "ITInfrastructure";
     public static final String PROCESS = "Process";
     public static final String DATA_STORE = "DataStore";
     public static final String DATA_SET = "DataSet";

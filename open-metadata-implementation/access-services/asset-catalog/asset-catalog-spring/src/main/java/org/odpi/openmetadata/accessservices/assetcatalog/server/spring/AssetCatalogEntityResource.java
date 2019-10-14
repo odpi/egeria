@@ -33,10 +33,11 @@ public class AssetCatalogEntityResource {
      * @param serverName unique identifier for requested server.
      * @param userId     the unique identifier for the user
      * @param assetId    the unique identifier for the asset
+     * @param assetType  the type of the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      */
     @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-details/{assetId}/{assetType}",
+            path = "/asset-details/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
@@ -46,12 +47,14 @@ public class AssetCatalogEntityResource {
     }
 
     /**
+     *
      * Fetch asset's header, classification, properties and relationships
      *
      * @param serverName unique identifier for requested server.
      * @param userId     the unique identifier for the user
      * @param assetId    the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications
+     * @param assetType  the asset type
+     * @return @return the asset with its header and the list of associated classifications and relationship
      */
     @RequestMapping(method = RequestMethod.GET,
             path = "/asset-universe/{assetId}",
@@ -64,11 +67,16 @@ public class AssetCatalogEntityResource {
     }
 
     /**
+     *
      * Fetch the relationships for a specific asset
      *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetId          the unique identifier for the asset
+     * @param serverName        unique identifier for requested server
+     * @param userId            the unique identifier for the user
+     * @param assetId           the unique identifier for the asset
+     * @param assetType         the type of the asset
+     * @param relationshipType  the type of the relationship
+     * @param startFrom         offset
+     * @param limit             limit the number of the assets returned
      * @return list of relationships for the given asset
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -90,6 +98,7 @@ public class AssetCatalogEntityResource {
      * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
      * @param assetId          the unique identifier for the asset
+     * @param assetType        the type of the asset
      * @param classificationName the name of the classification
      * @return ClassificationsResponse the classification for the asset
      */
@@ -99,8 +108,8 @@ public class AssetCatalogEntityResource {
     public ClassificationsResponse getClassificationsForAssets(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
                                                                @PathVariable("assetId") String assetId,
-                                                               @RequestBody String assetType,
-                                                               @RequestBody String classificationName) {
+                                                               @RequestParam("assetType") String assetType,
+                                                               @RequestParam("classificationName") String classificationName) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetId, assetType, classificationName);
     }
 
@@ -175,11 +184,10 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.POST,
             path = "/assets-from-neighborhood/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetsFromNeighborhood(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId,
-            @PathVariable("assetId") String assetId,
-            @RequestBody SearchParameters searchParameters) {
+    public AssetDescriptionResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
+                                                              @PathVariable("userId") String userId,
+                                                              @PathVariable("assetId") String assetId,
+                                                              @RequestBody SearchParameters searchParameters) {
         return assetService.getAssetsFromNeighborhood(serverName, userId, assetId, searchParameters);
     }
 
@@ -217,7 +225,8 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                          @PathVariable("userId") String userId,
-                                         @PathVariable("assetId") String assetId) {
-        return assetService.buildAssetContext(serverName, userId, assetId);
+                                         @PathVariable("assetId") String assetId,
+                                         @RequestParam("assetType") String assetType) {
+        return assetService.buildAssetContext(serverName, userId, assetId, assetType);
     }
 }

@@ -327,13 +327,13 @@ public class AssetCatalogService {
         return response;
     }
 
-    public AssetResponse buildAssetContext(String serverName, String userId, String assetId) {
+    public AssetResponse buildAssetContext(String serverName, String userId, String assetId, String assetType) {
         AssetResponse response = new AssetResponse();
         String methodName = "buildAssetContext";
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            EntityDetail entityDetail = assetCatalogHandler.getEntity(serverName, userId, assetId);
+            EntityDetail entityDetail = assetCatalogHandler.getEntity(userId, assetId, assetType);
 
             if (entityDetail.getType() == null) {
                 return response;

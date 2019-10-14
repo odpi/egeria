@@ -281,7 +281,7 @@ public class AssetCatalogHandler {
             return entitiesByPropertyValue;
         }
 
-        return Collections.emptyList();
+        return new ArrayList<>();
     }
 
     private List<Classification> filterClassificationByName(List<Classification> classifications, String classificationName) {
@@ -333,7 +333,7 @@ public class AssetCatalogHandler {
             return assetCatalogHandler.getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
         } else if (typeDefName.equals(DEPLOYED_API)) {
             return assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
-        } else if (typeDefName.equals(INFRASTRUCTURE) || superTypes.contains(INFRASTRUCTURE)) {
+        } else if (typeDefName.equals(IT_INFRASTRUCTURE) || superTypes.contains(IT_INFRASTRUCTURE)) {
             return assetCatalogHandler.getContextForInfrastructure(userId, knownAssetConnection, entityDetail, assetElement);
         } else if (typeDefName.equals(PROCESS) || superTypes.contains(PROCESS)) {
             return assetCatalogHandler.getContextForProcess(userId, knownAssetConnection, entityDetail, assetElement);
@@ -342,6 +342,7 @@ public class AssetCatalogHandler {
         } else {
             Term term = buildTerm(entityDetail);
             assetCatalogHandler.getContextForDataSet(userId, knownAssetConnection, entityDetail, assetElement);
+            term.setElements(Collections.singletonList(assetElement));
             return term;
         }
     }
@@ -350,14 +351,25 @@ public class AssetCatalogHandler {
         String method = "getStructureForGlossaryTerm";
         Term term = buildTerm(glossaryTerm);
 
-        List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId, glossaryTerm.getGUID(), GLOSSARY_TERM, SEMANTIC_ASSIGNMENT_GUID, SEMANTIC_ASSIGNMENT, 0, 0, method);
+        List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId,
+                glossaryTerm.getGUID(),
+                GLOSSARY_TERM,
+                SEMANTIC_ASSIGNMENT_GUID,
+                SEMANTIC_ASSIGNMENT,
+                0,
+                0,
+                method);
+
+        if (schemas == null || schemas.isEmpty()) {
+            return term;
+        }
+
         List<AssetElement> assets = new ArrayList<>(schemas.size());
 
         for (EntityDetail schema : schemas) {
             AssetElement assetElement = new AssetElement();
-            Element firstElement = buildElement(schema);
             List<Element> elements = new ArrayList<>();
-            elements.add(firstElement);
+            elements.add(buildElement(schema));
             assetElement.setContext(elements);
 
             findAsset(userId, Collections.singletonList(schema), assetElement, knownAssetConnection);
@@ -371,6 +383,7 @@ public class AssetCatalogHandler {
 
     private Term getContextForDeployedAPI(String userId, EntityDetail entityDetail, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException {
         String method = "getContextForDeployedAPI";
+        Term term = buildTerm(entityDetail);
 
         List<EntityDetail> endpoints = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -381,15 +394,20 @@ public class AssetCatalogHandler {
                 0,
                 0,
                 method);
+        if (endpoints == null || endpoints.isEmpty()) {
+            return term;
+        }
 
         for (EntityDetail endpoint : endpoints) {
+            addContextElement(assetElement, endpoint);
             getConnectionContext(userId, endpoint, assetElement);
         }
 
-        return null;
+        return term;
     }
 
     private Term getContextForInfrastructure(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        Term term = buildTerm(entityDetail);
 
         switch (entityDetail.getType().getTypeDefName()) {
             case HOST:
@@ -408,11 +426,13 @@ public class AssetCatalogHandler {
                 break;
         }
 
-        return null;
+        term.setElements(Collections.singletonList(assetElement));
+        return term;
     }
 
     private Term getContextForProcess(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForProcess";
+        Term term = buildTerm(entityDetail);
 
         List<EntityDetail> ports = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -426,6 +446,7 @@ public class AssetCatalogHandler {
 
         if (ports != null && !ports.isEmpty()) {
             for (EntityDetail port : ports) {
+                addContextElement(assetElement, port);
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
                     EntityDetail schemaType = repositoryHandler.getEntityForRelationshipType(userId,
                             port.getGUID(),
@@ -435,18 +456,19 @@ public class AssetCatalogHandler {
                             method);
 
                     if (schemaType != null) {
+                        addElement(assetElement, schemaType);
                         getContextForSchemaType(userId, assetElement, knownAssetConnection, schemaType);
                     }
                 }
             }
         }
 
-        return null;
+        return term;
     }
 
     private Term getContextForDataStore(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, FunctionNotSupportedException, PropertyErrorException, EntityProxyOnlyException, EntityNotKnownException, PagingErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-
         Term term = buildTerm(entityDetail);
+
         if (entityDetail.getType().getTypeDefName().equals(DATABASE)) {
             getContextForDatabase(userId, knownAssetConnection, entityDetail, assetElement);
         } else {
@@ -457,6 +479,7 @@ public class AssetCatalogHandler {
             }
         }
         term.setElements(Collections.singletonList(assetElement));
+
         return term;
     }
 
@@ -496,10 +519,7 @@ public class AssetCatalogHandler {
             return;
         }
 
-        List<Element> elements = new ArrayList<>();
-        elements.add(buildElement(schemaType));
-
-        addElement(assetElement, elements);
+        addElement(assetElement, schemaType);
         if (isComplexSchemaType(schemaType.getType().getTypeDefName()).isPresent()) {
             getContextForSchemaType(userId, assetElement, knownAssetConnection, schemaType);
         } else {
@@ -531,7 +551,7 @@ public class AssetCatalogHandler {
                 entityDetail.getGUID(), entityDetail.getType().getTypeDefName(),
                 FOLDER_HIERARCHY_GUID, FOLDER_HIERARCHY, method);
 
-        if (parentFolderRelationships.isEmpty()) {
+        if (parentFolderRelationships == null || parentFolderRelationships.isEmpty()) {
             return;
         }
 
@@ -546,9 +566,7 @@ public class AssetCatalogHandler {
 
     private void getContextForEachParentFolder(String userId, Map<String, List<Connection>> knownAssetConnection, AssetElement assetElement, List<EntityDetail> parentFolders) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, PropertyErrorException, EntityProxyOnlyException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         for (EntityDetail folder : parentFolders) {
-            List<Element> elements = new ArrayList<>();
-            elements.add(buildElement(folder));
-            addElement(assetElement, elements);
+            addElement(assetElement, folder);
 
             getContextForFileFolder(userId, knownAssetConnection, folder, assetElement);
         }
@@ -566,6 +584,9 @@ public class AssetCatalogHandler {
                 0,
                 0,
                 method);
+        if (fileFolders == null || fileFolders.isEmpty()) {
+            return;
+        }
 
         getContextForEachParentFolder(userId, knownAssetConnection, assetElement, fileFolders);
     }
@@ -583,6 +604,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (host != null) {
+            addElement(assetElement, host);
             getContextForHost(userId, knownAssetConnection, host, assetElement);
         }
     }
@@ -601,11 +623,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (networkGateways != null) {
-            List<Element> elements = new ArrayList<>();
-            for (EntityDetail networkGateway : networkGateways) {
-                elements.add(buildElement(networkGateway));
-            }
-            addElement(assetElement, elements);
+            networkGateways.forEach(element -> addElement(assetElement, element));
         }
 
         List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(
@@ -621,6 +639,7 @@ public class AssetCatalogHandler {
 
         if (hosts != null && !hosts.isEmpty()) {
             for (EntityDetail host : hosts) {
+                addElement(assetElement, host);
                 getContextForHost(userId, knownAssetConnection, host, assetElement);
             }
         }
@@ -628,13 +647,13 @@ public class AssetCatalogHandler {
 
     private void getContextForHost(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForHost";
+        List<EntityDetail> hosts = null;
         if (entityDetail.getType().getTypeDefName().equals(VIRTUAL_CONTAINER)) {
-            List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(userId, entityDetail.getGUID(), HOST, DEPLOYED_VIRTUAL_CONTAINER_GUID, DEPLOYED_VIRTUAL_CONTAINER, 0, 0, method);
+            hosts = repositoryHandler.getEntitiesForRelationshipType(userId, entityDetail.getGUID(), HOST, DEPLOYED_VIRTUAL_CONTAINER_GUID, DEPLOYED_VIRTUAL_CONTAINER, 0, 0, method);
 
-            addElements(assetElement, hosts);
+
         } else if (entityDetail.getType().getTypeDefName().equals(HOST_CLUSTER)) {
-
-            List<EntityDetail> hosts = repositoryHandler.getEntitiesForRelationshipType(
+            hosts = repositoryHandler.getEntitiesForRelationshipType(
                     userId,
                     entityDetail.getGUID(),
                     HOST,
@@ -643,9 +662,10 @@ public class AssetCatalogHandler {
                     0,
                     0,
                     method);
+        }
 
-
-            addElements(assetElement, hosts);
+        if (hosts != null) {
+            hosts.forEach(element -> addElement(assetElement, element));
         }
 
         EntityDetail operatingPlatform = repositoryHandler.getEntityForRelationshipType(userId,
@@ -656,7 +676,7 @@ public class AssetCatalogHandler {
                 method);
 
 
-        addElement(assetElement, Collections.singletonList(buildElement(operatingPlatform)));
+        addElement(assetElement, operatingPlatform);
 
         List<EntityDetail> locations = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -667,20 +687,11 @@ public class AssetCatalogHandler {
                 0,
                 0,
                 method);
-
-        for (EntityDetail location : locations) {
-            getContextForLocation(userId, assetElement, knownAssetConnection, location);
-        }
-    }
-
-    private void addElements(AssetElement assetElement, List<EntityDetail> hosts) {
-        if (hosts != null) {
-            List<Element> elements = new ArrayList<>(hosts.size());
-            for (EntityDetail host : hosts) {
-                elements.add(buildElement(host));
-
+        if (locations != null) {
+            for (EntityDetail location : locations) {
+                addElement(assetElement, location);
+                getContextForLocation(userId, assetElement, knownAssetConnection, location);
             }
-            addElement(assetElement, elements);
         }
     }
 
@@ -699,6 +710,7 @@ public class AssetCatalogHandler {
 
         if (assetLocations != null && !assetLocations.isEmpty()) {
             for (EntityDetail assetLocation : assetLocations) {
+                addElement(assetElement, assetLocation);
                 getAsset(userId, assetElement, knownAssetConnection, assetLocation);
             }
         }
@@ -716,6 +728,7 @@ public class AssetCatalogHandler {
 
         if (nestedLocations != null && !nestedLocations.isEmpty()) {
             for (EntityDetail nestedLocation : nestedLocations) {
+                addElement(assetElement, nestedLocation);
                 getContextForLocation(userId, assetElement, knownAssetConnection, nestedLocation);
             }
         }
@@ -723,6 +736,7 @@ public class AssetCatalogHandler {
 
     private void getContextForSoftwareServer(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForSoftwareServer";
+        Element parentElement = null;
 
         EntityDetail softwareServerPlatform = repositoryHandler.getEntityForRelationshipType(
                 userId,
@@ -734,6 +748,8 @@ public class AssetCatalogHandler {
 
 
         if (softwareServerPlatform != null) {
+            parentElement = getLastNode(assetElement);
+            addElement(assetElement, softwareServerPlatform);
             getContextForSoftwareServerPlatform(userId, knownAssetConnection, softwareServerPlatform, assetElement);
         }
 
@@ -746,10 +762,15 @@ public class AssetCatalogHandler {
                 method);
 
         if (endpoint != null) {
+            if (parentElement != null) {
+                addChildElement(parentElement, Collections.singletonList(buildElement(endpoint)));
+            } else {
+                addContextElement(assetElement, endpoint);
+            }
             getConnectionContext(userId, endpoint, assetElement);
         }
-    }
 
+    }
 
     private void getConnectionContext(String userId, EntityDetail endpoint, AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException {
         String method = "getConnectionContext";
@@ -764,8 +785,14 @@ public class AssetCatalogHandler {
                 0,
                 method);
 
+        if (connections == null) {
+            return;
+        }
 
         for (EntityDetail connection : connections) {
+            addElement(assetElement, connection);
+
+            List<EntityDetail> elements = new ArrayList<>();
             EntityDetail connectorType = repositoryHandler.getEntityForRelationshipType(
                     userId,
                     connection.getGUID(),
@@ -774,9 +801,8 @@ public class AssetCatalogHandler {
                     CONNECTION_CONNECTOR_TYPE,
                     method);
 
-
             if (connectorType != null) {
-                addElement(assetElement, Collections.singletonList(buildElement(connectorType)));
+                elements.add(connectorType);
             }
 
             EntityDetail asset = repositoryHandler.getEntityForRelationshipType(
@@ -786,11 +812,10 @@ public class AssetCatalogHandler {
                     CONNECTION_TO_ASSET_GUID,
                     CONNECTION_TO_ASSET,
                     method);
-
-            addElement(assetElement, Collections.singletonList(buildElement(asset)));
+            elements.add(asset);
+            elements.forEach(element -> addElement(assetElement, element));
         }
     }
-
 
     private void findAsset(String userId, List<EntityDetail> entitiesByType, AssetElement assetElement,
                            Map<String, List<Connection>> knownAssetConnection) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
@@ -806,12 +831,13 @@ public class AssetCatalogHandler {
                     0,
                     0,
                     method);
+            if (theEndOfRelationship == null || theEndOfRelationship.isEmpty()) {
+                return;
+            }
 
 
             for (EntityDetail entity : theEndOfRelationship) {
-                List<Element> elements = new ArrayList<>();
-                elements.add(buildElement(entity));
-                addElement(assetElement, elements);
+                addElement(assetElement, entity);
 
                 Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(entity.getType().getTypeDefName());
                 if (isComplexSchemaType.isPresent()) {
@@ -827,12 +853,13 @@ public class AssetCatalogHandler {
                             0,
                             0,
                             method);
+                    if (schemaAttributeTypeEntities != null) {
+                        if (!schemaAttributeTypeEntities.isEmpty()) {
+                            schemaAttributeTypeEntities.forEach(element -> addElement(assetElement, element));
+                        }
 
-                    if (!schemaAttributeTypeEntities.isEmpty()) {
-                        addElement(assetElement, getElements(schemaAttributeTypeEntities));
+                        findAsset(userId, schemaAttributeTypeEntities, assetElement, knownAssetConnection);
                     }
-
-                    findAsset(userId, schemaAttributeTypeEntities, assetElement, knownAssetConnection);
                 }
             }
         }
@@ -853,56 +880,31 @@ public class AssetCatalogHandler {
                     0,
                     0,
                     method);
+            if (attributeForSchemas != null) {
+                for (EntityDetail attributeForSchema : attributeForSchemas) {
+                    addElement(assetElement, attributeForSchema);
 
+                    if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
+                        setAssetDetails(userId, assetElement, knownAssetConnection, attributeForSchema);
+                        return;
+                    } else {
+                        List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
+                                userId,
+                                attributeForSchema.getGUID(),
+                                attributeForSchema.getType().getTypeDefName(),
+                                SCHEMA_ATTRIBUTE_TYPE_GUID,
+                                SCHEMA_ATTRIBUTE_TYPE,
+                                0,
+                                0,
+                                method);
 
-            for (EntityDetail attributeForSchema : attributeForSchemas) {
-                Element element = buildElement(attributeForSchema);
-                List<Element> elements = new ArrayList<>();
-                elements.add(element);
-
-                addElement(assetElement, elements);
-                if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
-                    setAssetDetails(userId, assetElement, knownAssetConnection, attributeForSchema);
-                    return;
-                } else {
-                    List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
-                            userId,
-                            attributeForSchema.getGUID(),
-                            attributeForSchema.getType().getTypeDefName(),
-                            SCHEMA_ATTRIBUTE_TYPE_GUID,
-                            SCHEMA_ATTRIBUTE_TYPE,
-                            0,
-                            0,
-                            method);
-
-                    addElement(assetElement, getElements(schemaAttributeTypeEntities));
-                    for (EntityDetail schema : schemaAttributeTypeEntities) {
-                        getContextForSchemaType(userId, assetElement, knownAssetConnection, schema);
+                        schemaAttributeTypeEntities.forEach(element -> addElement(assetElement, element));
+                        for (EntityDetail schema : schemaAttributeTypeEntities) {
+                            getContextForSchemaType(userId, assetElement, knownAssetConnection, schema);
+                        }
                     }
                 }
             }
-        }
-    }
-
-    private Element lastElementAdded(Element tree) {
-        List<Element> innerElement = tree.getParentElement();
-        if (innerElement == null) {
-            return tree;
-        }
-        return lastElementAdded(innerElement.get(innerElement.size() - 1));
-    }
-
-    private void addElement(AssetElement assetElement, List<Element> element) {
-        List<Element> context = assetElement.getContext();
-
-        if (context != null) {
-            Element leaf = lastElementAdded(context.get(context.size() - 1));
-            List<Element> lastNode = new ArrayList<>(element);
-            leaf.setParentElement(lastNode);
-
-        } else {
-            List<Element> elements = new ArrayList<>(element);
-            assetElement.setContext(elements);
         }
     }
 
@@ -917,9 +919,7 @@ public class AssetCatalogHandler {
                 method);
 
         if (assetElement.getContext() != null && dataSet != null) {
-            List<Element> elements = new ArrayList<>();
-            elements.add(buildElement(dataSet));
-            addElement(assetElement, elements);
+            addElement(assetElement, dataSet);
         } else {
             assetElement.setContext(Collections.singletonList(buildElement(dataSet)));
         }
@@ -935,7 +935,7 @@ public class AssetCatalogHandler {
                 dataSet.getGUID(), dataSet.getType().getTypeDefName(),
                 DATA_CONTENT_FOR_DATA_SET_GUID, DATA_CONTENT_FOR_DATA_SET, method);
 
-        if (assetToDataSetRelationships.isEmpty()) {
+        if (assetToDataSetRelationships == null || assetToDataSetRelationships.isEmpty()) {
             return;
         }
 
@@ -970,17 +970,6 @@ public class AssetCatalogHandler {
         assetElement.setQualifiedName(repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, asset.getProperties(), method));
     }
 
-    private List<Element> getElements(List<EntityDetail> schemaAttributeTypeEntities) {
-        List<Element> elements = new ArrayList<>();
-
-        for (EntityDetail schemaAttributeType : schemaAttributeTypeEntities) {
-            Element element = buildElement(schemaAttributeType);
-            elements.add(element);
-        }
-
-        return elements;
-    }
-
     private Element buildElement(EntityDetail entityDetail) {
         return buildTerm(entityDetail);
     }
@@ -996,7 +985,6 @@ public class AssetCatalogHandler {
 
         return term;
     }
-
 
     private Optional<TypeDef> isComplexSchemaType(String typeDefName) {
         List<TypeDef> allTypes = repositoryHelper.getActiveTypeDefs();
@@ -1016,7 +1004,7 @@ public class AssetCatalogHandler {
                 method);
 
 
-        if (!connections.isEmpty()) {
+        if (connections != null && !connections.isEmpty()) {
             return connections.stream()
                     .map(t -> new Connection(t.getGUID(), repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, t.getProperties(), method)))
                     .collect(Collectors.toList());
@@ -1042,6 +1030,57 @@ public class AssetCatalogHandler {
         } else {
             return repositoryHandler.getEntityByGUID(userId, relationship.getEntityOneProxy().getGUID(), guidParam, relationship.getEntityOneProxy().getType().getTypeDefName(), method);
         }
+    }
+
+    private Element lastElementAdded(Element tree) {
+        List<Element> innerElement = tree.getParentElement();
+        if (innerElement == null) {
+            return tree;
+        }
+        return lastElementAdded(innerElement.get(innerElement.size() - 1));
+    }
+
+    private void addElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        List<Element> elements = new ArrayList<>();
+        elements.add(buildElement(entityDetail));
+
+        if (context != null) {
+            Element leaf = lastElementAdded(context.get(context.size() - 1));
+            leaf.setParentElement(elements);
+        } else {
+            assetElement.setContext(elements);
+        }
+    }
+
+
+    private Element getLastNode(AssetElement assetElement) {
+        List<Element> context = assetElement.getContext();
+
+        if (context != null) {
+            return lastElementAdded(context.get(context.size() - 1));
+        } else {
+            return null;
+        }
+    }
+
+    private void addChildElement(Element parentElement, List<Element> elements) {
+        if (parentElement != null) {
+            if (parentElement.getParentElement() != null) {
+                parentElement.getParentElement().addAll(elements);
+            } else {
+                parentElement.setParentElement(elements);
+            }
+        }
+    }
+
+    private void addContextElement(AssetElement assetElement, EntityDetail entityDetail) {
+        List<Element> context = assetElement.getContext();
+        if (context == null) {
+            context = new ArrayList<>();
+        }
+        context.add(buildElement(entityDetail));
+        assetElement.setContext(context);
     }
 
 }
