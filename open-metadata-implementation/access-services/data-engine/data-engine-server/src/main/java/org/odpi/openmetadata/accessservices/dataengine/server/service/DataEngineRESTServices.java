@@ -708,9 +708,10 @@ public class DataEngineRESTServices {
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        String schemaTypeGUID = dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
-                schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
-                schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getAttributeList());
+        String schemaTypeGUID = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(userId,
+                schemaType.getQualifiedName(), schemaType.getDisplayName(), schemaType.getAuthor(),
+                schemaType.getEncodingStandard(), schemaType.getUsage(), schemaType.getVersionNumber(),
+                schemaType.getAttributeList());
 
         log.debug("Returning from method: {} with response: {}", methodName, schemaTypeGUID);
 
@@ -739,6 +740,11 @@ public class DataEngineRESTServices {
         } else {
             portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
                     portImplementation.getDisplayName(), portImplementation.getPortType());
+
+            String oldSchemaTypeGUID = portHandler.getSchemaTypeForPort(userId, portImplementationGUID);
+            if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
+                deleteObsoleteSchemaType(userId, oldSchemaTypeGUID);
+            }
         }
 
         portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
@@ -746,6 +752,14 @@ public class DataEngineRESTServices {
         log.debug("Returning from method: {} with response: {}", methodName, portImplementationGUID);
 
         return portImplementationGUID;
+    }
+
+    private void deleteObsoleteSchemaType(String userId, String oldSchemaTypeGUID) {
+        //TODO implement - delete for schema type & all attributes & schema types for schema attributes
+        // find schema attributes for schema type
+        // for each attribute: -find schema type for schema attribute
+        // -delete schema type
+        // -delete schema type
     }
 
     private String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias) throws

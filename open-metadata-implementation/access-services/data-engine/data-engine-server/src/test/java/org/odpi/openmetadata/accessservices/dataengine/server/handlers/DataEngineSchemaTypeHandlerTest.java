@@ -95,7 +95,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         mockFindSchemaAttribute(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID);
 
-        String result = dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
                         ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null)));
 
@@ -134,7 +134,7 @@ class DataEngineSchemaTypeHandlerTest {
                 methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
+                dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
                         USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
                                 ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null))));
 

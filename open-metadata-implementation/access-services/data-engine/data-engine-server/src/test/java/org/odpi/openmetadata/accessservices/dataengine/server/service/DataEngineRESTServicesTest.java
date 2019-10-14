@@ -240,10 +240,10 @@ class DataEngineRESTServicesTest {
 //    }
 //
 //    @Test
-//    void createSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+//    void createOrUpdateSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 //        mockSchemaTypeHandler("createOrUpdateSchemaType");
 //
-//        when(dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
+//        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
 //                USAGE, VERSION_NUMBER, null)).thenReturn(GUID);
 //
 //        SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
@@ -265,7 +265,7 @@ class DataEngineRESTServicesTest {
 //        mockSchemaTypeHandler(methodName);
 //
 //        InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-//        when(dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
+//        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
 //                USAGE, VERSION_NUMBER, null)).thenThrow(mockedException);
 //
 //        SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
@@ -287,7 +287,7 @@ class DataEngineRESTServicesTest {
 //        mockSchemaTypeHandler(methodName);
 //
 //        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-//        when(dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
+//        when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
 //                USAGE, VERSION_NUMBER, null)).thenThrow(mockedException);
 //
 //        SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
@@ -308,7 +308,7 @@ class DataEngineRESTServicesTest {
 //
 //        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        assertEquals(GUID, response.getGUID());
 //    }
@@ -334,7 +334,7 @@ class DataEngineRESTServicesTest {
 //
 //        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
 //    }
@@ -360,7 +360,7 @@ class DataEngineRESTServicesTest {
 //
 //        GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
 //    }
@@ -439,7 +439,7 @@ class DataEngineRESTServicesTest {
 //
 //        ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT);
 //        verify(portHandler, times(1)).createOrUpdatePortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
@@ -473,7 +473,7 @@ class DataEngineRESTServicesTest {
 //
 //        dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT);
 //        verify(portHandler, times(1)).createOrUpdatePortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
@@ -508,7 +508,7 @@ class DataEngineRESTServicesTest {
 //
 //        dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 //
-//        verify(dataEngineSchemaTypeHandler, times(1)).createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+//        verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
 //                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null);
 //        verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT);
 //        verify(portHandler, times(1)).createOrUpdatePortAliasWithDelegation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,

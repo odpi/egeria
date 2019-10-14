@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
 import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.PortPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -220,6 +221,36 @@ public class PortHandler {
         }
     }
 
+    /**
+     * Retrieve the schema type that is linked to the port
+     *
+     * @param userId   the name of the calling user
+     * @param portGUID the unique identifier of the port
+     *
+     * @return The unique identifier for the retrieved schema type or null
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String getSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException {
+        final String methodName = "getSchemaTypForPort";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+
+        EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId, portGUID,
+                PortPropertiesMapper.PORT_TYPE_NAME, PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID,
+                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, methodName);
+
+        if (entity == null) {
+            return null;
+        }
+
+        return entity.getGUID();
+    }
 
     /**
      * Create a PortDelegation relationship between two ports. Verifies that the

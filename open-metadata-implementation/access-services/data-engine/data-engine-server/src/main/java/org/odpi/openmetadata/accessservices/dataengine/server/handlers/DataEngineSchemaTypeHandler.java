@@ -20,6 +20,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttrib
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,11 +87,11 @@ public class DataEngineSchemaTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
-                                   String encodingStandard, String usage, String versionNumber,
-                                   List<Attribute> attributeList) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException {
+    public String createOrUpdateSchemaType(String userId, String qualifiedName, String displayName, String author,
+                                           String encodingStandard, String usage, String versionNumber,
+                                           List<Attribute> attributeList) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException {
         final String methodName = "createOrUpdateSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -126,8 +127,16 @@ public class DataEngineSchemaTypeHandler {
 
             String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName());
 
-            repositoryHandler.createRelationship(userId, SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                    schemaAttributeGUID, attributeSchemaTypeGUID, null, methodName);
+            Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, schemaAttributeGUID,
+                    SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, attributeSchemaTypeGUID,
+                    SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
+                    SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME, methodName);
+
+            if (relationship == null) {
+                repositoryHandler.createRelationship(userId,
+                        SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID, schemaAttributeGUID,
+                        attributeSchemaTypeGUID, null, methodName);
+            }
         }
     }
 
@@ -171,8 +180,15 @@ public class DataEngineSchemaTypeHandler {
         SchemaType targetSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, targetSchemaAttributeGUID,
                 methodName);
 
-        repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
-                sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
+        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaType.getGUID(),
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaType.getGUID(),
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, methodName);
+
+        if (relationship == null) {
+            repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
+                    sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
+        }
     }
 
     private void throwNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {
@@ -185,9 +201,8 @@ public class DataEngineSchemaTypeHandler {
                 errorMessage, errorCode.getSystemAction(), errorCode.getUserAction(), qualifiedName);
     }
 
-    private String findSchemaAttribute(String userId, String qualifiedName) throws
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException {
+    private String findSchemaAttribute(String userId, String qualifiedName) throws UserNotAuthorizedException,
+                                                                                   PropertyServerException {
         final String methodName = "findSchemaAttribute";
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
