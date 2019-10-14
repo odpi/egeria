@@ -234,14 +234,16 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
         String  instanceMetadataCollectionId = instance.getMetadataCollectionId();
 
-        if (localMetadataCollectionId.equals(instanceMetadataCollectionId))
-        {
-            return localConnector;
-        }
+        if(localMetadataCollectionId != null) {
+            if (localMetadataCollectionId.equals(instanceMetadataCollectionId)) {
+                return localConnector;
+            }
 
-        if (localMetadataCollectionId.equals(instance.getReplicatedBy()))
-        {
-            return localConnector;
+            if(instance.getReplicatedBy() != null) {
+                if (localMetadataCollectionId.equals(instance.getReplicatedBy())) {
+                    return localConnector;
+                }
+            }
         }
 
         for (FederatedConnector   remoteCohortConnector : remoteCohortConnectors)
