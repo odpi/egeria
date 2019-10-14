@@ -543,13 +543,6 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>ui-admin-services-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
                 <artifactId>ui-admin-services-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -2102,12 +2095,6 @@
                                     <level>ERROR</level>
                                     <version>[1.8,)</version>
                                     <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
-                                    </message>
-                                </requireJavaVersion>
-                                <requireJavaVersion>
-                                    <level>WARN</level>
-                                    <version>(,1.9]</version>
-                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
