@@ -337,7 +337,7 @@ public class FileSystemHandler
 
         asset.setDisplayName(displayName);
         asset.setDescription(description);
-        asset.setQualifiedName(typeName + ":" + pathName);
+        asset.setQualifiedName(pathName);
 
         Map<String, Object> extendedProperties = new HashMap<>();
         extendedProperties.put(AssetMapper.FILE_TYPE_PROPERTY_NAME, fileType);
@@ -1233,7 +1233,7 @@ public class FileSystemHandler
 
         asset.setDisplayName(displayName);
         asset.setDescription(description);
-        asset.setQualifiedName(AssetMapper.CSV_FILE_TYPE_NAME + ":" + fullPath);
+        asset.setQualifiedName(fullPath);
 
         SchemaType            schemaType       = null;
         List<SchemaAttribute> schemaAttributes = null;

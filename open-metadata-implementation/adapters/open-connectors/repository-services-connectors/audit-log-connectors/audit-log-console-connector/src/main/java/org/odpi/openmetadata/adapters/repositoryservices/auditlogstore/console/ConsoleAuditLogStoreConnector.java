@@ -69,7 +69,8 @@ public class ConsoleAuditLogStoreConnector extends OMRSAuditLogStoreConnectorBas
         }
 
         log.debug("AuditLogRecord: " + logRecord.toString());
-        System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
+        System.out.println(logRecord.getTimeStamp() + " " + logRecord.getOriginator().getServerName() + " " +
+                logRecord.getSeverity() + " " + logRecord.getMessageId() + " " + logRecord.getMessageText());
 
         return null;
     }

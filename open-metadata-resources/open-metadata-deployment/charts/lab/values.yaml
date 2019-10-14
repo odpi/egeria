@@ -6,14 +6,18 @@ service:
   type: NodePort
   nodeport:
     jupyter: 30888
-    egeriaui: 30443
+    core: 30080
+    datalake: 30081
+    dev: 30082
+    ui: 30443
 
 # Defaults for the images (can be overridden here or individually, see comment below)
 imageDefaults:
   registry: docker.io
   namespace: odpi
   tag: latest
-  pullPolicy: IfNotPresent
+  # set pullPolicy=Always to ensure getting the latest images each time. IfNotPresent to reuse existing (not recommended)
+  pullPolicy: Always
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -43,3 +47,6 @@ kafka:
             enabled: false
     persistence: 
         enabled: false
+    #can be enabled if external kafka access is required
+    #service:
+        #nodeport: 30092

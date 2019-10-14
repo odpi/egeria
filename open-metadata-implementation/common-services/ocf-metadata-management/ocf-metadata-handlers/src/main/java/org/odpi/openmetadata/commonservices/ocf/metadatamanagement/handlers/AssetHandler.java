@@ -846,6 +846,69 @@ public class AssetHandler
                                            assetBuilder.getInstanceProperties(methodName),
                                            methodName);
 
+            if (originalAsset.getZoneMembership() == null)
+            {
+                if (updatedAsset.getZoneMembership() != null)
+                {
+                    repositoryHandler.classifyEntity(userId,
+                                                     originalAsset.getGUID(),
+                                                     AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                     AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                     assetBuilder.getZoneMembershipProperties(methodName),
+                                                     methodName);
+                }
+            }
+            else if (updatedAsset.getZoneMembership() == null)
+            {
+                repositoryHandler.declassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                   methodName);
+            }
+            if (! (originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+            {
+                repositoryHandler.reclassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                   assetBuilder.getZoneMembershipProperties(methodName),
+                                                   methodName);
+            }
+
+
+            if (originalAsset.getOwner() == null)
+            {
+                if (updatedAsset.getOwner() != null)
+                {
+                    repositoryHandler.classifyEntity(userId,
+                                                     originalAsset.getGUID(),
+                                                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                     AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                     assetBuilder.getZoneMembershipProperties(methodName),
+                                                     methodName);
+                }
+            }
+            else if (updatedAsset.getOwner() == null)
+            {
+                repositoryHandler.declassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                   methodName);
+            }
+            if (! (originalAsset.getOwner().equals(updatedAsset.getZoneMembership())))
+            {
+                repositoryHandler.reclassifyEntity(userId,
+                                                   originalAsset.getGUID(),
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                   assetBuilder.getZoneMembershipProperties(methodName),
+                                                   methodName);
+            }
+
+
+
             this.saveAssociatedConnection(userId,
                                           originalAsset,
                                           updatedAsset.getShortDescription(),

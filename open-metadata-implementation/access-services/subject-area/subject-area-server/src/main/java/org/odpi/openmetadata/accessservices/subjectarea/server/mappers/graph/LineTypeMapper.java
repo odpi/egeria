@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +27,7 @@ public class LineTypeMapper {
      */
     static public String  mapLineTypeToRelationshipTypeGuid(LineType lineType) throws InvalidParameterException {
         String relationshipTypeName = lineType.name();
-        return OMRSArchiveAccessor.getInstance().getRelationshipDefByName(relationshipTypeName).getGUID();
+        return OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByName(relationshipTypeName).getGUID();
     }
 
     /**
@@ -36,7 +36,7 @@ public class LineTypeMapper {
      * @return LineType nodetype
      */
     public static LineType mapRelationshipTypeGuidToLineType(String guid) {
-        String lineTypeName = OMRSArchiveAccessor.getInstance().getRelationshipDefByGuid(guid).getName();
+        String lineTypeName = OpenMetadataTypesArchiveAccessor.getInstance().getRelationshipDefByGuid(guid).getName();
 
         LineType lineType = null;
         for (LineType lineTypeToCheck : LineType.values()) {
