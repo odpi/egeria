@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.auth;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,8 +33,14 @@ public class TokenAuthFilter extends GenericFilterBean {
         try {
             Authentication authentication = authService.getAuthentication((HttpServletRequest) request);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        }catch (ExpiredJwtException e){
+            LOG.error("TOKEN EXPIRED", e.getMessage());
+            SecurityContextHolder.getContext().setAuthentication(null);
         }catch (JwtException e){
-            LOG.error("invalid token for this request", e);
+            LOG.error("Token error", e);
+            SecurityContextHolder.getContext().setAuthentication(null);
+        }catch (Exception e){
+            LOG.error("Authentication exception", e);
             SecurityContextHolder.getContext().setAuthentication(null);
         }
         filterChain.doFilter(request, response);
