@@ -636,7 +636,9 @@ public class DataEngineRESTServices {
         Set<String> portAliasGUIDs = new HashSet<>();
 
         if (CollectionUtils.isNotEmpty(portAliases)) {
-            portAliases.parallelStream().forEach(portAlias ->
+
+            // port aliases can not be processed in parallel, as multiple processes define the same port alias
+            portAliases.forEach(portAlias ->
             {
                 try {
                     portAliasGUIDs.add(createOrUpdatePortAliasWithDelegation(userId, serverName, portAlias));
@@ -706,13 +708,13 @@ public class DataEngineRESTServices {
         DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                 instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-        String result = dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
+        String schemaTypeGUID = dataEngineSchemaTypeHandler.createSchemaType(userId, schemaType.getQualifiedName(),
                 schemaType.getDisplayName(), schemaType.getAuthor(), schemaType.getEncodingStandard(),
                 schemaType.getUsage(), schemaType.getVersionNumber(), schemaType.getAttributeList());
 
-        log.debug("Returning from method: {} with response: {}", methodName, result);
+        log.debug("Returning from method: {} with response: {}", methodName, schemaTypeGUID);
 
-        return result;
+        return schemaTypeGUID;
     }
 
     private String createOrUpdatePortImplementationWithSchemaType(String userId, String serverName,

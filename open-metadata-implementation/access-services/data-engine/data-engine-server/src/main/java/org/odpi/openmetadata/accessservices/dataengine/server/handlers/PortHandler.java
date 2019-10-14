@@ -252,7 +252,7 @@ public class PortHandler {
 
             if (relationship == null) {
                 repositoryHandler.createRelationship(userId, PortPropertiesMapper.PORT_DELEGATION_TYPE_GUID, portGUID,
-                        delegatesTo, null, methodName);
+                        delegatedPort.getGUID(), null, methodName);
             }
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
