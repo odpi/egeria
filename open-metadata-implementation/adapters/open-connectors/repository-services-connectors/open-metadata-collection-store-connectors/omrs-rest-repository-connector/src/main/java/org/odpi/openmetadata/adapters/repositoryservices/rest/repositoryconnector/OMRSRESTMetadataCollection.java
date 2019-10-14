@@ -198,6 +198,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return String metadata collection id.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
+    @SuppressWarnings("deprecation")
     public String getMetadataCollectionId() throws RepositoryErrorException
     {
         final String methodName  = "getMetadataCollectionId";
