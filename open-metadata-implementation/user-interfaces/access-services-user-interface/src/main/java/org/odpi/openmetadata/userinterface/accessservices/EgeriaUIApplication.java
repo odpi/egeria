@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @Configuration
-
 public class EgeriaUIApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIApplication.class);
@@ -62,5 +61,7 @@ public class EgeriaUIApplication {
                                       @Value("${open.lineage.server.name}") String serverName)  {
         return new OpenLineage(serverName, serverUrl);
     }
+
+
 
 }
