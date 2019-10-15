@@ -15,7 +15,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <naDiscoveryServerClientme>ODF Metadata Management API</naDiscoveryServerClientme>
+    <name>ODF Metadata Management API</name>
     <description>
         Common API classes for the Open Metadata Access Services (OMASs) built around the
         Open Discovery Framework (ODF).
@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
-    </dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
