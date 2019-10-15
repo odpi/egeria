@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
-import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -25,11 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class DataEngineProxyConfig extends AdminServicesConfigHeader {
 
     /* Properties needed to call the access service REST APIs */
-    private String     accessServiceRootURL      = null;
-    private String     accessServiceServerName   = null;
+    private String     accessServiceRootURL    = null;
+    private String     accessServiceServerName = null;
 
-    private Connection dataEngineProxyConnection = null;
-    private int        pollIntervalInSeconds     = 60;
+    private Connection dataEngineConnection    = null;
+    private int        pollIntervalInSeconds   = 60;
 
     /**
      * Default constuctor
@@ -45,10 +44,10 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
      */
     public DataEngineProxyConfig(DataEngineProxyConfig template) {
         if (template != null) {
-            this.accessServiceRootURL      = template.accessServiceRootURL;
-            this.accessServiceServerName   = template.accessServiceServerName;
-            this.dataEngineProxyConnection = template.dataEngineProxyConnection;
-            this.pollIntervalInSeconds     = template.pollIntervalInSeconds;
+            this.accessServiceRootURL    = template.accessServiceRootURL;
+            this.accessServiceServerName = template.accessServiceServerName;
+            this.dataEngineConnection    = template.dataEngineConnection;
+            this.pollIntervalInSeconds   = template.pollIntervalInSeconds;
         }
     }
 
@@ -77,18 +76,18 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     public void setAccessServiceServerName(String accessServiceServerName) { this.accessServiceServerName = accessServiceServerName; }
 
     /**
-     * Provide the connection to the Data Engine proxy
+     * Provide the connection to the Data Engine
      * @return Connection
      */
-    public Connection getDataEngineProxyConnection() {
-        return dataEngineProxyConnection;
+    public Connection getDataEngineConnection() {
+        return dataEngineConnection;
     }
 
     /**
-     * Set the connection to the Data Engine proxy
-     * @param dataEngineProxyConnection the connection to the Data Engine proxy
+     * Set the connection to the Data Engine
+     * @param dataEngineConnection the connection to the Data Engine
      */
-    public void setDataEngineProxyConnection(Connection dataEngineProxyConnection) { this.dataEngineProxyConnection = dataEngineProxyConnection; }
+    public void setDataEngineConnection(Connection dataEngineConnection) { this.dataEngineConnection = dataEngineConnection; }
 
     /**
      * Provide the seconds to wait between each polling of the data engine for changes. Note that this is only used
@@ -114,7 +113,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
         DataEngineProxyConfig that = (DataEngineProxyConfig) o;
         return Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
                 Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
-                Objects.equals(getDataEngineProxyConnection(), that.getDataEngineProxyConnection()) &&
+                Objects.equals(getDataEngineConnection(), that.getDataEngineConnection()) &&
                 Objects.equals(getPollIntervalInSeconds(), that.getPollIntervalInSeconds());
     }
 
@@ -124,7 +123,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
-                getDataEngineProxyConnection(), getPollIntervalInSeconds());
+                getDataEngineConnection(), getPollIntervalInSeconds());
     }
 
 }

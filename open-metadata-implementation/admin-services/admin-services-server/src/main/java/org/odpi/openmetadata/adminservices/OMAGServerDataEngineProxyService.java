@@ -52,7 +52,7 @@ public class OMAGServerDataEngineProxyService {
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
 
-            Connection templateConnection = dataEngineProxyConfig.getDataEngineProxyConnection();
+            Connection templateConnection = dataEngineProxyConfig.getDataEngineConnection();
             Endpoint templateEndpoint = templateConnection.getEndpoint();
 
             String endpointName = "DataEngineNative.Endpoint." + serverName;
@@ -74,7 +74,7 @@ public class OMAGServerDataEngineProxyService {
             connection.setDescription(connectionDescription);
             connection.setEndpoint(endpoint);
 
-            dataEngineProxyConfig.setDataEngineProxyConnection(connection);
+            dataEngineProxyConfig.setDataEngineConnection(connection);
 
             serverConfig.setDataEngineProxyConfig(dataEngineProxyConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);

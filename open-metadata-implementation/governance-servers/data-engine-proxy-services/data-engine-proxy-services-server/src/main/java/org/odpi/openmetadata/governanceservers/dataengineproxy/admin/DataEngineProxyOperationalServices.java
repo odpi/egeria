@@ -30,7 +30,7 @@ public class DataEngineProxyOperationalServices {
     private String localServerPassword;
 
     private OMRSAuditLog auditLog;
-    private DataEngineConnectorBase dataEngineProxyConnector;
+    private DataEngineConnectorBase dataEngineConnector;
     private Thread changePoller;
 
     /**
@@ -141,16 +141,16 @@ public class DataEngineProxyOperationalServices {
         }
 
         // Configure the connector
-        Connection dataEngineProxy = dataEngineProxyConfig.getDataEngineProxyConnection();
-        if (dataEngineProxy != null) {
-            log.info("Found connection: " + dataEngineProxy);
+        Connection dataEngineConnection = dataEngineProxyConfig.getDataEngineConnection();
+        if (dataEngineConnection != null) {
+            log.info("Found connection: " + dataEngineConnection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                dataEngineProxyConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineProxy);
+                dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 // If the config says we should poll for changes, do so via a new thread
-                if (dataEngineProxyConnector.requiresPolling()) {
+                if (dataEngineConnector.requiresPolling()) {
                     DataEngineProxyChangePoller poller = new DataEngineProxyChangePoller(
-                            dataEngineProxyConnector,
+                            dataEngineConnector,
                             dataEngineProxyConfig,
                             dataEngineClient,
                             auditLog
@@ -190,7 +190,7 @@ public class DataEngineProxyOperationalServices {
                 changePoller.interrupt();
             }
             // Disconnect the data engine connector
-            dataEngineProxyConnector.disconnect();
+            dataEngineConnector.disconnect();
             auditCode = DataEngineProxyAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),

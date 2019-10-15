@@ -22,7 +22,7 @@ run server-side within the OMAG Server Platform.
         "class": "DataEngineProxyConfig",
         "accessServiceRootURL": "http://localhost:8080",
         "accessServiceServerName": "omas",
-        "dataEngineProxyConnection": {
+        "dataEngineConnection": {
             "class": "Connection",
             "connectorType": {
                 "class": "ConnectorType",
