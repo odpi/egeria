@@ -60,10 +60,14 @@ public class JanusConnector extends OpenLineageConnectorBase {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB){
             case "berkeleydb":
-                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                this.bufferGraph = BufferGraphFactory.openBufferGraph();
-                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
+                try {
+                    this.mainGraph = BerkeleyJanusFactory.openMainGraph();
+                    this.bufferGraph = BufferGraphFactory.openBufferGraph();
+                    this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
+                    this.mockGraph = BerkeleyJanusFactory.openMockGraph();
+                } catch (Exception e) {
+                    log.error("{} Could not open graph database", "GraphBuilder constructor"); //TODO  elaborate error
+                }
                 break;
             case "cassandra":
             default:
