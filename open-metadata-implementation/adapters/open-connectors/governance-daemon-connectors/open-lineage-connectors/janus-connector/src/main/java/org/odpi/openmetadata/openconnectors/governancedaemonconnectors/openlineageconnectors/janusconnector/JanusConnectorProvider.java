@@ -15,7 +15,7 @@ public class JanusConnectorProvider extends ConnectorProviderBase {
      * registry store implementation.
      */
     public JanusConnectorProvider() {
-        Class connectorClass = JanusConnector.class;
+        Class connectorClass = JanusClient.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();

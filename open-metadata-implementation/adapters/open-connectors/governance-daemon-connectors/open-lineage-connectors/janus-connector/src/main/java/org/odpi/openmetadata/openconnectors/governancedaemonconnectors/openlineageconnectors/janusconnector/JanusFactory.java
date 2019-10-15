@@ -57,7 +57,6 @@ public class JanusFactory extends IndexingFactory {
         }
 
 
-
         try {
             log.info("Updating graph schema, if necessary");
             initializeGraph(janusGraph);
