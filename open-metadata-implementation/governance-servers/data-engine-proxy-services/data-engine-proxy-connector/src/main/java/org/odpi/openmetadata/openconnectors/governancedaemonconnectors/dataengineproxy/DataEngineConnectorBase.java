@@ -13,9 +13,11 @@ import java.util.List;
 
 /**
  * Base implementation of a Data Engine Connector, implementing all of the required methods any Data Engine Connector
- * is expected to provide (via the DataEngineInterface).
+ * is expected to provide (via the DataEngineInterface). It is an abstract class as on its own it does absolutely
+ * nothing, and therefore a Data Engine Connector needs to extend it and override at least one of the methods to
+ * actually do something.
  */
-public class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
+public abstract class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineConnectorBase.class);
 
