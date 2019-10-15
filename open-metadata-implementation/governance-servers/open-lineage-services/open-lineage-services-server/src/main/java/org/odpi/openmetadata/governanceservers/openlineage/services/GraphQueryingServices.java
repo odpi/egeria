@@ -2,19 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.services;
 
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.GraphDatabase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GraphQueryingServices {
 
     private static final Logger log = LoggerFactory.getLogger(GraphStoringServices.class);
-    private GraphDatabase graphDB;
+    private OpenLineageGraphStore openLineageGraphStore;
 
-    public GraphQueryingServices(GraphDatabase graphDB) {
-        this.graphDB = graphDB;
+    public GraphQueryingServices(OpenLineageGraphStore openLineageGraphStore) {
+        this.openLineageGraphStore = openLineageGraphStore;
     }
 
     /**
@@ -27,7 +27,7 @@ public class GraphQueryingServices {
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public String lineage(String graphName, Scope scope, View view, String guid) {
-        return graphDB.lineage(graphName, scope, view, guid);
+        return openLineageGraphStore.lineage(graphName, scope, view, guid);
     }
 
     /**
@@ -36,7 +36,7 @@ public class GraphQueryingServices {
      * @param graphName MAIN, BUFFER, MOCK, HISTORY.
      */
     public void dumpGraph(String graphName) {
-        graphDB.dumpGraph(graphName);
+        openLineageGraphStore.dumpGraph(graphName);
     }
 
     /**
@@ -46,7 +46,7 @@ public class GraphQueryingServices {
      * @return The queried graph, in graphSON format.
      */
     public String exportGraph(String graphName) {
-        return graphDB.exportGraph(graphName);
+        return openLineageGraphStore.exportGraph(graphName);
     }
 
 }
