@@ -32,7 +32,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
 
     /**
-     * Constructor used by Asset Consumer OMAS for getExtendedProperties() with no authentication
+     * Constructor used by Asset Consumer OMAS for getAssetProperties() with no authentication
      * information being attached to the HTTP requests.  The calling user of the specific
      * request flows as a property in the URL.
      *
@@ -221,11 +221,25 @@ public class ConnectedAssetUniverse extends AssetUniverse
     {
         super();
 
-        OCFRESTClient
-                      restClient    = new OCFRESTClient(remoteServerName, omasServerURL, localServerUserId, localServerPassword);
-        AssetResponse assetResponse = this.getConnectedAssetSummary(serviceName, remoteServerName, omasServerURL, restClient, userId, assetGUID, connectionGUID);
+        OCFRESTClient restClient    = new OCFRESTClient(remoteServerName,
+                                                        omasServerURL,
+                                                        localServerUserId,
+                                                        localServerPassword);
+        AssetResponse assetResponse = this.getConnectedAssetSummary(serviceName,
+                                                                    remoteServerName,
+                                                                    omasServerURL,
+                                                                    restClient,
+                                                                    userId,
+                                                                    assetGUID,
+                                                                    connectionGUID);
 
-        this.processAssetResponse(serviceName, remoteServerName, omasServerURL, userId, assetGUID, restClient, assetResponse);
+        this.processAssetResponse(serviceName,
+                                  remoteServerName,
+                                  omasServerURL,
+                                  userId,
+                                  assetGUID,
+                                  restClient,
+                                  assetResponse);
     }
 
 
@@ -246,10 +260,10 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                        String           omasServerURL,
                                        String           userId,
                                        String           assetGUID,
-                                       OCFRESTClient restClient,
+                                       OCFRESTClient    restClient,
                                        AssetResponse    assetResponse)
     {
-        super.assetBean = assetResponse.getAsset();
+        super.setAssetBean(assetResponse.getAsset());
 
         if (assetResponse.getExternalIdentifierCount() > 0)
         {
