@@ -894,7 +894,34 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+    /**
+     * Return the connection.  This is used by open lineage graph connectors.
+     *
+     * @param serverName  name of the real repository server
+     * @param url  url for the Open Lineage Server
+     * @param configurationProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection getOpenLineageServerConfiguration(String              serverName,
+                                                        String              connectorProviderClassName,
+                                                        String              url,
+                                                        Map<String, Object> configurationProperties)
+    {
+        final String endpointGUID          = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
 
+        final String endpointDescription      = "OpenLineage native endpoint.";
+        final String connectionDescription    = "Open Lineage native connection.";
+
+        String endpointName    = "OpenLineage.Endpoint." + serverName;
+        String connectionName  = "OpenLineage.Connection." + serverName;
+
+        Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
+
+        return getConnection(configurationProperties, endpoint, connectionName,
+                connectionGUID, connectionDescription, connectorProviderClassName);
+    }
+  
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.
