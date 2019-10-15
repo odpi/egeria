@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
-import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.OpenLineageException;
-import org.odpi.openmetadata.governanceservers.openlineage.services.BufferGraphFactory;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -32,16 +29,6 @@ public class JobConfiguration {
 
         } catch (SchedulerException e) {
             log.error("{} could not run the job for buffergraph", methodName);
-            OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
-
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, JobConfiguration.class.getName());
-
-            throw new OpenLineageException(400,
-                    BufferGraphFactory.class.getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
         }
 
         Trigger trigger = buildSimpleSchedulerTrigger();

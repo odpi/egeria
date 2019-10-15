@@ -2,27 +2,22 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
-
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 
 public class OpenLineageServicesInstance {
     private String serverName;
-    private MockGraphGenerator mockGraphGenerator;
-    private GraphServices graphServices;
+    private GraphQueryingServices graphQueryingServices;
 
-    public OpenLineageServicesInstance(MockGraphGenerator mockGraphGenerator,
-                                       GraphServices graphServices,
+    public OpenLineageServicesInstance(GraphQueryingServices graphQueryingServices,
                                        String serverName) {
-        this.mockGraphGenerator = mockGraphGenerator;
         this.serverName = serverName;
-        this.graphServices = graphServices;
+        this.graphQueryingServices = graphQueryingServices;
 
         OpenLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
     }
 
-    public GraphServices getGraphServices() {
-        return this.graphServices;
+    public GraphQueryingServices getGraphQueryingServices() {
+        return this.graphQueryingServices;
     }
 
 
@@ -33,7 +28,4 @@ public class OpenLineageServicesInstance {
         OpenLineageServicesInstanceMap.removeInstanceForJVM(serverName);
     }
 
-    public MockGraphGenerator getMockGraphGenerator() {
-        return this.mockGraphGenerator;
-    }
 }
