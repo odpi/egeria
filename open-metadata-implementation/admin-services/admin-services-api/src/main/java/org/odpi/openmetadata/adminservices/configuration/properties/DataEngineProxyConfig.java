@@ -41,7 +41,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     /**
      * Copy data from template
      *
-     * @param template
+     * @param template an existing Data Engine proxy configuration from which to copy
      */
     public DataEngineProxyConfig(DataEngineProxyConfig template) {
         if (template != null) {
@@ -60,7 +60,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
 
     /**
      * Set the root URL of the Data Engine OMAS
-     * @param accessServiceRootURL
+     * @param accessServiceRootURL the URL of the Data Engine OMAS
      */
     public void setAccessServiceRootURL(String accessServiceRootURL) { this.accessServiceRootURL = accessServiceRootURL; }
 
@@ -72,7 +72,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
 
     /**
      * Set the server name of the Data Engine OMAS
-     * @param accessServiceServerName
+     * @param accessServiceServerName the name of the Data Engine OMAS
      */
     public void setAccessServiceServerName(String accessServiceServerName) { this.accessServiceServerName = accessServiceServerName; }
 
@@ -86,7 +86,7 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
 
     /**
      * Set the connection to the Data Engine proxy
-     * @param dataEngineProxyConnection
+     * @param dataEngineProxyConnection the connection to the Data Engine proxy
      */
     public void setDataEngineProxyConnection(Connection dataEngineProxyConnection) { this.dataEngineProxyConnection = dataEngineProxyConnection; }
 
@@ -100,10 +100,13 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
     /**
      * Set the number of seconds to wait between each polling of the data engine for changes. Note that this is only
      * used by Data Engine Connectors that require polling in order to find changes.
-     * @param pollIntervalInSeconds
+     * @param pollIntervalInSeconds the number of seconds to wait between each poll for changes
      */
     public void setPollIntervalInSeconds(int pollIntervalInSeconds) { this.pollIntervalInSeconds = pollIntervalInSeconds; }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -115,6 +118,9 @@ public class DataEngineProxyConfig extends AdminServicesConfigHeader {
                 Objects.equals(getPollIntervalInSeconds(), that.getPollIntervalInSeconds());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int hashCode() {
         return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(),
