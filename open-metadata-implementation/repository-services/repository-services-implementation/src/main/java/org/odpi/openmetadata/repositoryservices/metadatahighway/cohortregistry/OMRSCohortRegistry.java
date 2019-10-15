@@ -2,13 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway.cohortregistry;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEventProcessor;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorException;
@@ -80,8 +77,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * metadata exchange activity they are involved in.  The Logger is for standard debug.
      */
     private OMRSAuditLog auditLog;
-
-    private static final Logger       log      = LoggerFactory.getLogger(OMRSCohortRegistry.class);
 
 
     /**
@@ -307,7 +302,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
         /*
-         * Fill in the local registration with details from the caller.  Any value from the local repository
+         * Fill in the local registration with details from the this server.  Any value from the local repository
          * can change except the localMetadataCollectionId and this value has already been validated.
          */
         localRegistration.setMetadataCollectionId(localMetadataCollectionId);
@@ -317,52 +312,54 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         localRegistration.setOrganizationName(localOrganizationName);
         localRegistration.setRepositoryConnection(localRepositoryRemoteConnection);
 
-        if (localMetadataCollectionId == null)
-        {
-            /*
-             * If the local metadata collection Id is null it means there is no local repository.  No registration
-             * is required but the cohort registry sends a registration refresh request to ensure it has a complete
-             * list of the remote members for the connection consumer.
-             */
-            this.requestReRegistrationFromCohort(localRegistration);
-        }
-        else if (localRegistration.getRegistrationTime() == null)
-        {
-            /*
-             * This repository has never registered with the open metadata repository cohort, so send registration
-             * request.
-             */
-            localRegistration.setRegistrationTime(new Date());
 
-            if (this.registerLocalRepositoryWithCohort(localRegistration))
-            {
-                /*
-                 * Successfully registered so save the local registration to the registry store.
-                 */
-                registryStore.saveLocalRegistration(localRegistration);
-            }
-        }
-        else
+        /*
+         * If the local metadata collection Id is null it means there is no local repository.  No registration
+         * is required.   If there is a local repository, a registration request is sent when first connecting
+         * and a re-registration request is sent on subsequent restarts.
+         */
+        if (localMetadataCollectionId != null)
         {
             /*
-             * Successfully registered already so save the local registration to the registry store.
-             * in case some of the server details (name, type, organization name) have changed.
+             * Save basic information about the local registration.  This is done on each restart in case information
+             * about the local repository has changed.
              */
             registryStore.saveLocalRegistration(localRegistration);
 
             /*
-             * No registration is required but the cohort registry sends a registration refresh request to
-             * ensure it has a complete list of the remote members for the connection consumer.
-             * The connection consumer will be null if enterprise access is disabled.
+             * Work out if this server's repository has been registered with this cohort before.
              */
-            if (connectionConsumer != null)
+            if (localRegistration.getRegistrationTime() == null)
             {
-                this.requestReRegistrationFromCohort(localRegistration);
+                /*
+                 * This repository has never registered with the open metadata repository cohort, so send registration
+                 * request.
+                 */
+                localRegistration.setRegistrationTime(new Date());
+
+                if (this.registerLocalRepositoryWithCohort(localRegistration))
+                {
+                    /*
+                     * Successfully registered so save the local registration to the registry store so that the
+                     * registration time is recorded.
+                     */
+                    registryStore.saveLocalRegistration(localRegistration);
+                }
+            }
+            else /* already registered */
+            {
+                /*
+                 * No new registration is required but the cohort registry sends a re-registration request to
+                 * ensure remote members have the latest information about this server.
+                 */
+                this.reRegisterLocalRepositoryWithCohort(localRegistration);
             }
         }
 
         /*
          * Now read the remote registrations from the registry store and publish them to the connection consumer.
+         * This configures the enterprise connectors used by the OMASs with the members of the cohort known from
+         * the previous connection to the cohort.
          */
         if (connectionConsumer != null)
         {
@@ -388,6 +385,12 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                 }
             }
         }
+
+        /*
+         * Finally request that the other members of the cohort send this server their details in case something has
+         * changed.  These are processed asynchronously and update the connection consumer as required.
+         */
+        this.requestRegistrationRefreshFromCohort(localRegistration);
     }
 
 
@@ -510,6 +513,36 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
     /**
+     * Send a registration event to the open metadata repository cohort.  This means the
+     * server has never registered with the cohort before.
+     *
+     * @param localRegistration details of the local server that are needed to build the event
+     */
+    private void reRegisterLocalRepositoryWithCohort(MemberRegistration   localRegistration)
+    {
+        final String    actionDescription = "ReRegistering with cohort";
+
+        OMRSAuditCode   auditCode = OMRSAuditCode.RE_REGISTERED_WITH_COHORT;
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           auditCode.getSeverity(),
+                           auditCode.getFormattedLogMessage(cohortName, localMetadataCollectionId),
+                           null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+
+        outboundRegistryEventProcessor.processReRegistrationEvent(cohortName,
+                                                                  localRegistration.getMetadataCollectionId(),
+                                                                  localRegistration.getMetadataCollectionName(),
+                                                                  localRegistration.getServerName(),
+                                                                  localRegistration.getServerType(),
+                                                                  localRegistration.getOrganizationName(),
+                                                                  localRegistration.getRegistrationTime(),
+                                                                  localRegistration.getRepositoryConnection());
+    }
+
+
+    /**
      * Request that the remote members of the cohort send details of their registration to enable the local
      * server to ensure it has details of every member.  There are two use cases.  It may have missed a
      * registration event from a remote member because it was not online for some time.
@@ -518,11 +551,11 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      *
      * @param localRegistration information needed to sent the refresh request
      */
-    private void requestReRegistrationFromCohort(MemberRegistration   localRegistration)
+    private void requestRegistrationRefreshFromCohort(MemberRegistration   localRegistration)
     {
         final String    actionDescription = "Re-registering with cohort";
 
-        OMRSAuditCode   auditCode = OMRSAuditCode.RE_REGISTERED_WITH_COHORT;
+        OMRSAuditCode   auditCode = OMRSAuditCode.REFRESH_REGISTRATION_REQUEST_WITH_COHORT;
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
@@ -679,6 +712,85 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * OMRSRegistryEventProcessor
      */
 
+
+    /**
+     * Process the information from either a registration or reregistration request.
+     *
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionName display for the metadata collection that is registering with the cohort.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param registrationTimestamp the time that the server/repository issued the registration request.
+     * @param remoteConnection the Connection properties for the connector used to call the registering server.
+     */
+    private void actionInboundRegistration(String      originatorMetadataCollectionId,
+                                           String      originatorMetadataCollectionName,
+                                           String      originatorServerName,
+                                           String      originatorServerType,
+                                           String      originatorOrganizationName,
+                                           Date        registrationTimestamp,
+                                           Connection  remoteConnection)
+    {
+        /*
+         * Store information about the remote repository in the cohort registry store.
+         */
+        MemberRegistration remoteRegistration = new MemberRegistration();
+
+        remoteRegistration.setMetadataCollectionId(originatorMetadataCollectionId);
+        remoteRegistration.setMetadataCollectionName(originatorMetadataCollectionName);
+        remoteRegistration.setServerName(originatorServerName);
+        remoteRegistration.setServerType(originatorServerType);
+        remoteRegistration.setOrganizationName(originatorOrganizationName);
+        remoteRegistration.setRegistrationTime(registrationTimestamp);
+        remoteRegistration.setRepositoryConnection(remoteConnection);
+
+        registryStore.saveRemoteRegistration(remoteRegistration);
+
+        if (remoteConnection != null)
+        {
+            /*
+             * Pass the new remote connection to the connection consumer.
+             */
+            this.registerRemoteConnectionWithConsumer(originatorMetadataCollectionId,
+                                                      originatorMetadataCollectionName,
+                                                      originatorServerName,
+                                                      originatorServerType,
+                                                      originatorOrganizationName,
+                                                      remoteConnection);
+        }
+    }
+
+
+    /**
+     * Check that the registry store is available.
+     *
+     * @param eventName calling method
+     * @param originatingServerName server name
+     * @return boolean true if registry store is available, false if not
+     */
+    private boolean verifyRegistryStore(String   eventName,
+                                        String   originatingServerName)
+    {
+        if (registryStore != null)
+        {
+            return true;
+        }
+        else
+        {
+            OMRSAuditCode   auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
+            auditLog.logRecord(eventName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(eventName, cohortName, originatingServerName),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+            return false;
+        }
+    }
+
+
     /**
      * Introduces a new server/repository to the metadata repository cohort.
      *
@@ -702,36 +814,17 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                          Connection  remoteConnection)
     {
         final String    actionDescription = "Receiving Registration event";
+        final String    eventName = "Registration";
 
-        if (registryStore != null)
+        if (verifyRegistryStore(eventName, originatorServerName))
         {
-            /*
-             * Store information about the remote repository in the cohort registry store.
-             */
-            MemberRegistration remoteRegistration = new MemberRegistration();
-
-            remoteRegistration.setMetadataCollectionId(originatorMetadataCollectionId);
-            remoteRegistration.setMetadataCollectionName(originatorMetadataCollectionName);
-            remoteRegistration.setServerName(originatorServerName);
-            remoteRegistration.setServerType(originatorServerType);
-            remoteRegistration.setOrganizationName(originatorOrganizationName);
-            remoteRegistration.setRegistrationTime(registrationTimestamp);
-            remoteRegistration.setRepositoryConnection(remoteConnection);
-
-            registryStore.saveRemoteRegistration(remoteRegistration);
-
-            if (remoteConnection != null)
-            {
-                /*
-                 * Pass the new remote connection to the connection consumer.
-                 */
-                this.registerRemoteConnectionWithConsumer(originatorMetadataCollectionId,
-                                                          originatorMetadataCollectionName,
-                                                          originatorServerName,
-                                                          originatorServerType,
-                                                          originatorOrganizationName,
-                                                          remoteConnection);
-            }
+            actionInboundRegistration(originatorMetadataCollectionId,
+                                      originatorMetadataCollectionName,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      registrationTimestamp,
+                                      remoteConnection);
 
             OMRSAuditCode   auditCode = OMRSAuditCode.NEW_MEMBER_IN_COHORT;
             auditLog.logRecord(actionDescription,
@@ -754,6 +847,62 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 
 
     /**
+     * Refreshes the other servers in the cohort with the originator server's registration.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionName display name for the metadata collection that is registering with the cohort.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param registrationTimestamp the time that the server/repository first registered with the cohort.
+     * @param remoteConnection the Connection properties for the connector used to call the registering server.
+     */
+    public synchronized boolean processReRegistrationEvent(String         sourceName,
+                                                           String         originatorMetadataCollectionId,
+                                                           String         originatorMetadataCollectionName,
+                                                           String         originatorServerName,
+                                                           String         originatorServerType,
+                                                           String         originatorOrganizationName,
+                                                           Date           registrationTimestamp,
+                                                           Connection     remoteConnection)
+    {
+        final String    actionDescription = "Receiving ReRegistration event";
+        final String    eventName = "Re-Registration";
+
+        if (verifyRegistryStore(eventName, originatorServerName))
+        {
+            actionInboundRegistration(originatorMetadataCollectionId,
+                                      originatorMetadataCollectionName,
+                                      originatorServerName,
+                                      originatorServerType,
+                                      originatorOrganizationName,
+                                      registrationTimestamp,
+                                      remoteConnection);
+
+            OMRSAuditCode   auditCode = OMRSAuditCode.REFRESHED_MEMBER_IN_COHORT;
+            auditLog.logRecord(actionDescription,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(cohortName,
+                                                                originatorServerName,
+                                                                originatorMetadataCollectionId),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+
+
+    /**
      * Requests that the other servers in the cohort send re-registration events.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
@@ -768,8 +917,9 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                                   String    originatorOrganizationName)
     {
         final String    actionDescription = "Receiving Registration Refresh event";
+        final String    eventName = "Registration Refresh";
 
-        if (registryStore != null)
+        if (verifyRegistryStore(eventName, originatorServerName))
         {
             MemberRegistration localRegistration = registryStore.retrieveLocalRegistration();
 
@@ -802,102 +952,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
         else
         {
-            OMRSAuditCode   auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(originatorServerName,
-                                                                cohortName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            return false;
-        }
-    }
-
-
-    /**
-     * Refreshes the other servers in the cohort with the originator server's registration.
-     *
-     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
-     *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
-     * @param originatorMetadataCollectionName display name for the metadata collection that is registering with the cohort.
-     * @param originatorServerName name of the server that the event came from.
-     * @param originatorServerType type of server that the event came from.
-     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param registrationTimestamp the time that the server/repository first registered with the cohort.
-     * @param remoteConnection the Connection properties for the connector used to call the registering server.
-     */
-    public synchronized boolean processReRegistrationEvent(String         sourceName,
-                                                           String         originatorMetadataCollectionId,
-                                                           String         originatorMetadataCollectionName,
-                                                           String         originatorServerName,
-                                                           String         originatorServerType,
-                                                           String         originatorOrganizationName,
-                                                           Date           registrationTimestamp,
-                                                           Connection     remoteConnection)
-    {
-        final String    actionDescription = "Receiving ReRegistration event";
-
-        if (registryStore != null)
-        {
-            /*
-             * Store information about the remote repository in the cohort registry store.  If the
-             * repository is already stored in the registry store, its entry is refreshed.
-             */
-            MemberRegistration remoteRegistration = new MemberRegistration();
-
-            remoteRegistration.setMetadataCollectionId(originatorMetadataCollectionId);
-            remoteRegistration.setMetadataCollectionName(originatorMetadataCollectionName);
-            remoteRegistration.setServerName(originatorServerName);
-            remoteRegistration.setServerType(originatorServerType);
-            remoteRegistration.setOrganizationName(originatorOrganizationName);
-            remoteRegistration.setRegistrationTime(registrationTimestamp);
-            remoteRegistration.setRepositoryConnection(remoteConnection);
-
-            registryStore.saveRemoteRegistration(remoteRegistration);
-
-            if (remoteConnection != null)
-            {
-                /*
-                 * Pass the new remote connection to the connection consumer.  It may have been updated since
-                 * the last registration request was received.
-                 */
-                this.registerRemoteConnectionWithConsumer(originatorMetadataCollectionId,
-                                                          originatorMetadataCollectionName,
-                                                          originatorServerName,
-                                                          originatorServerType,
-                                                          originatorOrganizationName,
-                                                          remoteConnection);
-            }
-
-            OMRSAuditCode   auditCode = OMRSAuditCode.REFRESHED_MEMBER_IN_COHORT;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(cohortName,
-                                                                originatorServerName,
-                                                                originatorMetadataCollectionId),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
-            return true;
-        }
-        else
-        {
-            OMRSAuditCode   auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(originatorServerName,
-                                                                cohortName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
             return false;
         }
     }
@@ -922,8 +976,9 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                            String    originatorOrganizationName)
     {
         final String    actionDescription = "Receiving unregistration event";
+        final String    eventName = "UnRegistration";
 
-        if (registryStore != null)
+        if (verifyRegistryStore(eventName, originatorServerName))
         {
 
             /*
@@ -951,16 +1006,6 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
         }
         else
         {
-            OMRSAuditCode   auditCode = OMRSAuditCode.MISSING_MEMBER_REGISTRATION;
-            auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(originatorServerName,
-                                                                cohortName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-
             return false;
         }
     }

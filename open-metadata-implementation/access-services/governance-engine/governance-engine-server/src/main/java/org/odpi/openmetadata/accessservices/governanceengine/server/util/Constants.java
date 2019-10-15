@@ -8,8 +8,9 @@ public final class Constants {
     public static final String SECURITY_LABELS = "securityLabels";
     public static final String SECURITY_PROPERTIES = "securityProperties";
     public static final String SECURITY_TAG = "SecurityTags";
-    public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
-    public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
+    public static final String ATTRIBUTE_FOR_SCHEMA_GUID_GUID = "86b176a2-015c-44a6-8106-54d5d69ba661";
+    public static final String SCHEMA_ATTRIBUTE_TYPE_GUID = "2d955049-e59b-45dd-8e62-cde1add59f9e";
+    public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String NAME = "name";
     public static final String DESCRIPTION = "description";
     public static final String TYPE = "type";

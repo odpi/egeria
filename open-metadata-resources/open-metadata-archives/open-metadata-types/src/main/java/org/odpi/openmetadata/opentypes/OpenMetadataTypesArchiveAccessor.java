@@ -18,30 +18,32 @@ import java.util.Map;
  */
 public class OpenMetadataTypesArchiveAccessor
 {
+    private final Map<String, TypeDef>           typeDefsByName         = new HashMap<>();
+    private final Map<String, TypeDef>           typeDefsByGUID         = new HashMap<>();
     private final Map<String, EntityDef>         entityDefsByName       = new HashMap<>();
-    private final Map<String, EntityDef>         entityDefsByGuid       = new HashMap<>();
+    private final Map<String, EntityDef>         entityDefsByGUID       = new HashMap<>();
     private final Map<String, ClassificationDef> classificationDefs     = new HashMap<>();
     private final Map<String, RelationshipDef>   relationshipDefsByName = new HashMap<>();
-    private final Map<String, RelationshipDef>   relationshipDefsByGuid = new HashMap<>();
+    private final Map<String, RelationshipDef>   relationshipDefsByGUID = new HashMap<>();
     private final Map<String, EnumDef>           enumDefs               = new HashMap<>();
 
-    private static OpenMetadataTypesArchiveAccessor
-            instance = null;
+    private static OpenMetadataTypesArchiveAccessor instance = null;
+
 
     /**
      * Return a special singleton for the open metadata types archive (note not thread safe).
      *
      * @return OpenMetadataTypesArchiveAccessor instance loaded with the open metadata types
      */
-    public static OpenMetadataTypesArchiveAccessor getInstance()
+    public synchronized static OpenMetadataTypesArchiveAccessor getInstance()
     {
         if (instance == null)
         {
             instance = new OpenMetadataTypesArchiveAccessor(new OpenMetadataTypesArchive().getOpenMetadataArchive());
         }
+
         return instance;
     }
-
 
 
     /**
@@ -58,11 +60,14 @@ public class OpenMetadataTypesArchiveAccessor
          */
         for (TypeDef typeDef : typeStore.getNewTypeDefs())
         {
+            this.typeDefsByName.put(typeDef.getName(), typeDef);
+            this.typeDefsByGUID.put(typeDef.getGUID(), typeDef);
+
             switch (typeDef.getCategory())
             {
                 case ENTITY_DEF:
                     this.entityDefsByName.put(typeDef.getName(), ((EntityDef) typeDef));
-                    this.entityDefsByGuid.put(typeDef.getGUID(), ((EntityDef) typeDef));
+                    this.entityDefsByGUID.put(typeDef.getGUID(), ((EntityDef) typeDef));
                     break;
 
                 case CLASSIFICATION_DEF:
@@ -71,7 +76,7 @@ public class OpenMetadataTypesArchiveAccessor
 
                 case RELATIONSHIP_DEF:
                     this.relationshipDefsByName.put(typeDef.getName(), (RelationshipDef) typeDef);
-                    this.relationshipDefsByGuid.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                    this.relationshipDefsByGUID.put(typeDef.getGUID(), (RelationshipDef) typeDef);
                     break;
             }
         }
@@ -97,6 +102,30 @@ public class OpenMetadataTypesArchiveAccessor
 
 
     /**
+     * Return the type definition for the supplied name.
+     *
+     * @param typeName name of type
+     * @return TypeDef object from the archive
+     */
+    public TypeDef getTypeDefByName(String typeName)
+    {
+        return typeDefsByName.get(typeName);
+    }
+
+
+    /**
+     * Return the type definition for the supplied type guid.
+     *
+     * @param typeGUID guid of the type
+     * @return TypeDef object from the archive
+     */
+    public TypeDef getTypeDefByGUID(String typeGUID)
+    {
+        return typeDefsByGUID.get(typeGUID);
+    }
+
+
+    /**
      * Return the entity type definition for the supplied name.
      *
      * @param typeName name of type
@@ -116,7 +145,7 @@ public class OpenMetadataTypesArchiveAccessor
      */
     public EntityDef getEntityDefByGuid(String typeGuid)
     {
-        return entityDefsByGuid.get(typeGuid);
+        return entityDefsByGUID.get(typeGuid);
     }
 
 
@@ -140,7 +169,7 @@ public class OpenMetadataTypesArchiveAccessor
      */
     public RelationshipDef getRelationshipDefByGuid(String typeGuid)
     {
-        return relationshipDefsByGuid.get(typeGuid);
+        return relationshipDefsByGUID.get(typeGuid);
     }
 
 
