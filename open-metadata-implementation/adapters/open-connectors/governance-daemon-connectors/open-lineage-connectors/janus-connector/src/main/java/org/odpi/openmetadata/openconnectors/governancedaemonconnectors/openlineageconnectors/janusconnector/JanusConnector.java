@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.JanusFactory.openBufferGraph;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.CassandraJanusBufferFactory.openBufferGraph;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 public class JanusConnector extends OpenLineageConnectorBase {
@@ -60,6 +60,10 @@ public class JanusConnector extends OpenLineageConnectorBase {
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB){
             case "berkeleydb":
+                this.mainGraph = BerkeleyJanusFactory.openMainGraph();
+                this.bufferGraph = BufferGraphFactory.openBufferGraph();
+                this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
+                this.mockGraph = BerkeleyJanusFactory.openMockGraph();
                 break;
             case "cassandra":
             default:

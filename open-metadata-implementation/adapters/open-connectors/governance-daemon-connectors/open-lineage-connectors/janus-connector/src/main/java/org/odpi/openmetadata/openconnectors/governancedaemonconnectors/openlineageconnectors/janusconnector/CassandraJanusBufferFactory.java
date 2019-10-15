@@ -19,10 +19,10 @@ import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class JanusFactory extends IndexingFactory {
+public class CassandraJanusBufferFactory extends IndexingFactory {
 
 
-    private static final Logger log = LoggerFactory.getLogger(JanusFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(CassandraJanusBufferFactory.class);
 
 
     public static JanusGraph openBufferGraph(ConnectionProperties connectionProperties){
@@ -45,10 +45,10 @@ public class JanusFactory extends IndexingFactory {
             log.error("{} could not open graph stored", e);
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, JanusFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, CassandraJanusBufferFactory.class.getName());
 
             throw new OpenLineageException(400,
-                    JanusFactory.class.getName(),
+                    CassandraJanusBufferFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -106,7 +106,7 @@ public class JanusFactory extends IndexingFactory {
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
             throw new OpenLineageException(400,
-                    JanusFactory.class.getName(),
+                    CassandraJanusBufferFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
