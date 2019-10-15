@@ -130,7 +130,9 @@ public class ConnectedAssetClientBase
         catch (Throwable error)
         {
             OMAGOCFErrorCode errorCode    = OMAGOCFErrorCode.NO_ASSET_PROPERTIES;
-            String           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, error.getMessage());
+            String           errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
+                                                                                                               error.getClass().getName(),
+                                                                                                               error.getMessage());
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
                                               this.getClass().getName(),

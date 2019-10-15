@@ -48,13 +48,14 @@ class AssetLineageView extends PolymerElement {
     ready() {
         super.ready();
         this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
+        this.$.radioViews.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
     }
 
     static get properties() {
         return {
             guid: {
                 type: String,
-                observer: '_ultimateSource'
+                observer: '_guidChanged'
             },
             graphData: {
                 type: Object,
@@ -120,7 +121,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/end2end?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/end2end?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -169,6 +170,11 @@ class AssetLineageView extends PolymerElement {
                 this._sourceAndDestination(this.guid, view);
                 break;
         }
+    }
+
+
+    _guidChanged() {
+        this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value);
     }
 }
 
