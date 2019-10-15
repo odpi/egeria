@@ -5,7 +5,6 @@ package org.odpi.openmetadata.userinterface.accessservices.api;
 import org.odpi.openmetadata.userinterface.accessservices.auth.AuthService;
 import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.security.core.Authentication;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpSession;
  * This class provides a method to access the user name from the servlet session. This class should be subclassed so that the user
  * can be obtained and then used on omas calls.
  */
-@DependsOn("securityConfig")
 public class SecureController {
 
     @Autowired
