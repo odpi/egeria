@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Asse
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetLineageEntityEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.DeletePurgedRelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -22,11 +22,11 @@ public class InTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(InTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private GraphBuilder graphBuilder;
+    private GraphStoringServices graphStoringServices;
 
-    public InTopicListener(GraphBuilder gremlinBuilder, OMRSAuditLog auditLog) {
+    public InTopicListener(GraphStoringServices graphStoringServices, OMRSAuditLog auditLog) {
 
-        this.graphBuilder = gremlinBuilder;
+        this.graphStoringServices = graphStoringServices;
         this.auditLog = auditLog;
 
     }
@@ -60,15 +60,12 @@ public class InTopicListener implements OpenMetadataTopicListener {
             switch (event.getOmrsInstanceEventType()) {
                 case NEW_ENTITY_EVENT:
                     AssetLineageEntityEvent newEntityEvent = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEntityEvent.class);
-                    graphBuilder.createEntity(newEntityEvent);
                     break;
                 case NEW_RELATIONSHIP_EVENT:
                         RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
-                    graphBuilder.createRelationship(relationshipEvent);
                     break;
                 case DELETE_PURGED_RELATIONSHIP_EVENT:
                          DeletePurgedRelationshipEvent deletePurgedRelationshipEvent =OBJECT_MAPPER.readValue(eventAsString, DeletePurgedRelationshipEvent.class);
-                         graphBuilder.removeSemanticRelationship(deletePurgedRelationshipEvent);
                     break;
             }
         }catch (IOException e){

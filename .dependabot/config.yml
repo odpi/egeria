@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+
+version: 1
+
+update_configs:
+
+  # Main java project - will cover the whole tree
+  - package_manager: "java:maven"
+    directory: "/"
+    update_schedule: "daily"
+    default_reviewers:
+      - "planetf1"
+      - "grahamwallis"
+      - "mandy-chessell"
+  # Explicit references to package.json (see https://github.com/dependabot/feedback/issues/705 )
+  
+  - package_manager: "javascript"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor/dist"
+    update_schedule: "daily"
+    default_reviewers:
+      - "grahamwallis"
+      - "davidradl"
+  - package_manager: "javascript"
+    directory: "/open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static"
+    update_schedule: "daily"
+    default_reviewers:
+      - "grahamwallis"
+      - "davidradl"
+
+  # Explicit entries also needed for dockerfile
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/omrs-monitor"
+    update_schedule: "daily"
+    default_reviewers:
+      - "grahamwallis"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/ranger"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/build-images/apache/atlas"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/configure"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/egeria"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/apache-atlas"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/gaian"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+  - package_manager: "docker"
+    directory: "/open-metadata-resources/open-metadata-deployment/docker/apache-ranger-admin"
+    update_schedule: "daily"
+    default_reviewers:
+      - "cmgrote"
+      - "planetf1"
+
