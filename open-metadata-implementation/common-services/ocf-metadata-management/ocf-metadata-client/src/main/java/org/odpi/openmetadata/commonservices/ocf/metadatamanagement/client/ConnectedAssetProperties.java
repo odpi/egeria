@@ -150,7 +150,6 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     public void refresh() throws PropertyServerException, UserNotAuthorizedException
     {
         final  String  methodName  = "refresh";
-        final  String  serviceName = "ConnectedAssetProperties";
 
         log.debug("Calling method: " + methodName);
 
