@@ -16,16 +16,11 @@ import java.io.Serializable;
 public class OMRSLine extends Line implements Serializable {
     protected static final long serialVersionUID = 1L;
     protected String entity1Guid;
-    protected String entity1Name;
-    protected String entity1Type;
     protected String entity1PropertyName;
     protected String entity1Label;
     protected String entity2Guid;
-    protected String entity2Name;
-    protected String entity2Type;
     protected String entity2PropertyName;
     protected String entity2Label;
-    protected String name;
 
     /**
      * Default constructor
