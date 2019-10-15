@@ -16,7 +16,7 @@ import java.util.List;
  * AssetCatalogServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
+class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
 
     private static final AccessServiceDescription description = AccessServiceDescription.ASSET_CATALOG_OMAS;
 
@@ -36,8 +36,8 @@ public class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-            relationshipHandler = new RelationshipHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+            relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper);
 
         } else {
             final String methodName = "new ServiceInstance";

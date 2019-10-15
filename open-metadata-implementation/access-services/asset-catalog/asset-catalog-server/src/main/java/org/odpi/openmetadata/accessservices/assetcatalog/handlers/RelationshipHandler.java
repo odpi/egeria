@@ -10,8 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class RelationshipHandler {
 
-    private final String serviceName;
-    private final String serverName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
@@ -19,16 +17,11 @@ public class RelationshipHandler {
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName             name of this service
-     * @param serverName              name of the local server
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      */
-    public RelationshipHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                               RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
+    public RelationshipHandler(InvalidParameterHandler invalidParameterHandler, RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
@@ -43,6 +36,8 @@ public class RelationshipHandler {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(entity1GUID, "entity1GUID", methodName);
+        invalidParameterHandler.validateGUID(entity2GUID, "entity2GUID", methodName);
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,
@@ -53,8 +48,8 @@ public class RelationshipHandler {
                 methodName);
 
         if (relationshipBetweenEntities != null) {
-            AssetConverter assetConvertor = new AssetConverter(repositoryHelper);
-            return assetConvertor.convertRelationship(relationshipBetweenEntities);
+            AssetConverter converter = new AssetConverter(repositoryHelper);
+            return converter.convertRelationship(relationshipBetweenEntities);
         }
         return null;
     }
