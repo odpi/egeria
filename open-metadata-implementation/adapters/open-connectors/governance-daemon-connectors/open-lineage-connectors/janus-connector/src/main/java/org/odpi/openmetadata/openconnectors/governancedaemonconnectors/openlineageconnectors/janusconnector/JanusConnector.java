@@ -52,8 +52,19 @@ public class JanusConnector extends OpenLineageConnectorBase {
 
         super.initialize(connectorInstanceId, connectionProperties);
         this.connectionProperties = connectionProperties;
-        this.bufferGraph = openBufferGraph(connectionProperties);
+        initializeGraphDB();
+    }
 
+    private void initializeGraphDB(){
+
+        String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
+        switch (graphDB){
+            case "berkeleydb":
+                break;
+            case "cassandra":
+            default:
+                this.bufferGraph = openBufferGraph(connectionProperties);
+        }
     }
 
     @Override
