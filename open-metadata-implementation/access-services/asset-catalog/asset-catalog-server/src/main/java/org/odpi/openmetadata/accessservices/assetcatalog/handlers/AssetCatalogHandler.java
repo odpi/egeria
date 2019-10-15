@@ -37,9 +37,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorExceptio
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -127,8 +125,8 @@ public class AssetCatalogHandler {
     }
 
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets
-            (String serverName, String userId, String startAssetGUID, String endAssetGUID) throws
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            (String serverName, String userId, String startAssetGUID, String endAssetGUID)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -159,11 +157,11 @@ public class AssetCatalogHandler {
     }
 
 
-    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String
-                                                                                                               userId, String assetGUID, String assetType,
+    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId, String assetGUID, String assetType,
                                                                                                        String relationshipTypeGUID, String relationshipTypeName,
-                                                                                                       Integer startingFrom, Integer maximumResults) throws
-            UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                                                                       Integer startingFrom, Integer maximumResults)
+            throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+
         String methodName = "getRelationships";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
@@ -270,9 +268,8 @@ public class AssetCatalogHandler {
 
 
     public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String
-            entityGUID, List<String> entityTypesGuid,
-                                                              List<String> relationshipTypes, Integer level) throws
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            entityGUID, List<String> entityTypesGuid, List<String> relationshipTypes, Integer level)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
         String methodName = "getEntitiesFromNeighborhood";
 
@@ -299,9 +296,8 @@ public class AssetCatalogHandler {
         return converter.getAssetsDetails(entities);
     }
 
-    public List<Term> searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters
-            searchParameters) throws
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+    public List<Term> searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
         String methodName = "searchAssetsAndGlossaryTerms";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -315,35 +311,32 @@ public class AssetCatalogHandler {
     }
 
     public Term buildContextByAssetType(String userId, AssetCatalogHandler assetCatalogHandler, EntityDetail
-            entityDetail, String typeDefName, List<String> superTypes) throws
-            org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+            entityDetail, String typeDefName, List<String> superTypes)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         String methodName = "buildContextByAssetType";
         invalidParameterHandler.validateUserId(userId, methodName);
 
         AssetElement assetElement = new AssetElement();
-        Map<String, List<Connection>> knownAssetConnection = new HashMap<>();
 
         if (typeDefName.equals(GLOSSARY_TERM)) {
-            return assetCatalogHandler.getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
+            return assetCatalogHandler.getStructureForGlossaryTerm(userId, entityDetail);
         } else if (typeDefName.equals(DEPLOYED_API)) {
             return assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
         } else if (typeDefName.equals(IT_INFRASTRUCTURE) || superTypes.contains(IT_INFRASTRUCTURE)) {
-            return assetCatalogHandler.getContextForInfrastructure(userId, knownAssetConnection, entityDetail, assetElement);
+            return assetCatalogHandler.getContextForInfrastructure(userId, entityDetail, assetElement);
         } else if (typeDefName.equals(PROCESS) || superTypes.contains(PROCESS)) {
-            return assetCatalogHandler.getContextForProcess(userId, knownAssetConnection, entityDetail, assetElement);
+            return assetCatalogHandler.getContextForProcess(userId, entityDetail, assetElement);
         } else if (typeDefName.equals(DATA_STORE) || superTypes.contains(DATA_STORE)) {
-            return assetCatalogHandler.getContextForDataStore(userId, knownAssetConnection, entityDetail, assetElement);
+            return assetCatalogHandler.getContextForDataStore(userId, entityDetail, assetElement);
         } else {
             Term term = buildTerm(entityDetail);
-            assetCatalogHandler.getContextForDataSet(userId, knownAssetConnection, entityDetail, assetElement);
+            assetCatalogHandler.getContextForDataSet(userId, entityDetail, assetElement);
             term.setElements(Collections.singletonList(assetElement));
             return term;
         }
     }
 
-    private Term getStructureForGlossaryTerm(String
-                                                     userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail glossaryTerm) throws
-            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private Term getStructureForGlossaryTerm(String userId, EntityDetail glossaryTerm) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getStructureForGlossaryTerm";
         Term term = buildTerm(glossaryTerm);
 
@@ -356,7 +349,7 @@ public class AssetCatalogHandler {
                 0,
                 method);
 
-        if (schemas == null || schemas.isEmpty()) {
+        if (CollectionUtils.isEmpty(schemas)) {
             return term;
         }
 
@@ -368,7 +361,7 @@ public class AssetCatalogHandler {
             elements.add(buildElement(schema));
             assetElement.setContext(elements);
 
-            findAsset(userId, Collections.singletonList(schema), assetElement, knownAssetConnection);
+            findAsset(userId, Collections.singletonList(schema), assetElement);
             assets.add(assetElement);
         }
 
@@ -403,23 +396,22 @@ public class AssetCatalogHandler {
         return term;
     }
 
-    private Term getContextForInfrastructure(String
-                                                     userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement
-                                                     assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private Term getContextForInfrastructure(String userId, EntityDetail entityDetail, AssetElement
+            assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         Term term = buildTerm(entityDetail);
 
         switch (entityDetail.getType().getTypeDefName()) {
             case HOST:
-                getContextForHost(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForHost(userId, entityDetail, assetElement);
                 break;
             case NETWORK:
-                getContextForNetwork(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForNetwork(userId, entityDetail, assetElement);
                 break;
             case SOFTWARE_SERVER_PLATFORM:
-                getContextForSoftwareServerPlatform(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForSoftwareServerPlatform(userId, entityDetail, assetElement);
                 break;
             case SOFTWARE_SERVER:
-                getContextForSoftwareServer(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForSoftwareServer(userId, entityDetail, assetElement);
                 break;
             default:
                 break;
@@ -429,8 +421,8 @@ public class AssetCatalogHandler {
         return term;
     }
 
-    private Term getContextForProcess(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail,
-                                      AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private Term getContextForProcess(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForProcess";
         Term term = buildTerm(entityDetail);
 
@@ -444,7 +436,7 @@ public class AssetCatalogHandler {
                 0,
                 method);
 
-        if (ports != null && !ports.isEmpty()) {
+        if (CollectionUtils.isNotEmpty(ports)) {
             for (EntityDetail port : ports) {
                 addContextElement(assetElement, port);
                 if (port.getType().getTypeDefName().equals(PORT_IMPLEMENTATION)) {
@@ -457,7 +449,7 @@ public class AssetCatalogHandler {
 
                     if (schemaType != null) {
                         addElement(assetElement, schemaType);
-                        getContextForSchemaType(userId, assetElement, knownAssetConnection, schemaType);
+                        getContextForSchemaType(userId, assetElement, schemaType);
                     }
                 }
             }
@@ -466,17 +458,17 @@ public class AssetCatalogHandler {
         return term;
     }
 
-    private Term getContextForDataStore(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail,
-                                        AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private Term getContextForDataStore(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         Term term = buildTerm(entityDetail);
 
         if (entityDetail.getType().getTypeDefName().equals(DATABASE)) {
-            getContextForDatabase(userId, knownAssetConnection, entityDetail, assetElement);
+            getContextForDatabase(userId, entityDetail, assetElement);
         } else {
             if (entityDetail.getType().getTypeDefName().equals(DATA_FILE)) {
-                getContextForDataFile(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForDataFile(userId, entityDetail, assetElement);
             } else if (entityDetail.getType().getTypeDefName().equals(FILE_FOLDER)) {
-                getContextForFileFolder(userId, knownAssetConnection, entityDetail, assetElement);
+                getContextForFileFolder(userId, entityDetail, assetElement);
             }
         }
         term.setElements(Collections.singletonList(assetElement));
@@ -484,9 +476,8 @@ public class AssetCatalogHandler {
         return term;
     }
 
-    private void getContextForDatabase(String
-                                               userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement
-                                               assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForDatabase(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDatabase";
 
         List<EntityDetail> dataSets = repositoryHandler.getEntitiesForRelationshipType(
@@ -501,13 +492,12 @@ public class AssetCatalogHandler {
 
         if (dataSets != null && !dataSets.isEmpty()) {
             for (EntityDetail dataSet : dataSets) {
-                getContextForDataSet(userId, knownAssetConnection, dataSet, assetElement);
+                getContextForDataSet(userId, dataSet, assetElement);
             }
         }
     }
 
-    private void getContextForDataSet(String
-                                              userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail dataSet, AssetElement assetElement) throws
+    private void getContextForDataSet(String userId, EntityDetail dataSet, AssetElement assetElement) throws
             UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDataSet";
 
@@ -526,14 +516,14 @@ public class AssetCatalogHandler {
 
         addElement(assetElement, schemaType);
         if (isComplexSchemaType(schemaType.getType().getTypeDefName()).isPresent()) {
-            getContextForSchemaType(userId, assetElement, knownAssetConnection, schemaType);
+            getContextForSchemaType(userId, assetElement, schemaType);
         } else {
-            getAsset(userId, assetElement, knownAssetConnection, schemaType);
+            getAsset(userId, assetElement, schemaType);
         }
     }
 
-    private void getContextForFileFolder(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail,
-                                         AssetElement assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForFileFolder(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForFileFolder";
 
         List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
@@ -548,7 +538,7 @@ public class AssetCatalogHandler {
 
 
         if (CollectionUtils.isNotEmpty(connections)) {
-            setConnections(userId, assetElement, knownAssetConnection, entityDetail);
+            setConnections(userId, assetElement, entityDetail);
             return;
         }
 
@@ -574,20 +564,19 @@ public class AssetCatalogHandler {
                 method);
 
         addElement(assetElement, parentFolder);
-        getContextForFileFolder(userId, knownAssetConnection, parentFolder, assetElement);
+        getContextForFileFolder(userId, parentFolder, assetElement);
     }
 
-    private void getContextForEachParentFolder(String userId, Map<String, List<Connection>> knownAssetConnection,
-                                               AssetElement assetElement, List<EntityDetail> parentFolders) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForEachParentFolder(String userId, AssetElement assetElement, List<EntityDetail> parentFolders)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         for (EntityDetail folder : parentFolders) {
             addElement(assetElement, folder);
-            getContextForFileFolder(userId, knownAssetConnection, folder, assetElement);
+            getContextForFileFolder(userId, folder, assetElement);
         }
     }
 
-    private void getContextForDataFile(String
-                                               userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement
-                                               assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForDataFile(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForDataFile";
 
         List<EntityDetail> fileFolders = repositoryHandler.getEntitiesForRelationshipType(
@@ -604,12 +593,11 @@ public class AssetCatalogHandler {
             return;
         }
 
-        getContextForEachParentFolder(userId, knownAssetConnection, assetElement, fileFolders);
+        getContextForEachParentFolder(userId, assetElement, fileFolders);
     }
 
-    private void getContextForSoftwareServerPlatform(String
-                                                             userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement
-                                                             assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForSoftwareServerPlatform(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForSoftwareServerPlatform";
 
         EntityDetail host = repositoryHandler.getEntityForRelationshipType(
@@ -622,11 +610,11 @@ public class AssetCatalogHandler {
 
         if (host != null) {
             addElement(assetElement, host);
-            getContextForHost(userId, knownAssetConnection, host, assetElement);
+            getContextForHost(userId, host, assetElement);
         }
     }
 
-    private void getContextForNetwork(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement)
+    private void getContextForNetwork(String userId, EntityDetail entityDetail, AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForNetwork";
 
@@ -658,12 +646,12 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(hosts)) {
             for (EntityDetail host : hosts) {
                 addElement(assetElement, host);
-                getContextForHost(userId, knownAssetConnection, host, assetElement);
+                getContextForHost(userId, host, assetElement);
             }
         }
     }
 
-    private void getContextForHost(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement assetElement)
+    private void getContextForHost(String userId, EntityDetail entityDetail, AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForHost";
         List<EntityDetail> hosts = null;
@@ -709,13 +697,13 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(locations)) {
             for (EntityDetail location : locations) {
                 addElement(assetElement, location);
-                getContextForLocation(userId, assetElement, knownAssetConnection, location);
+                getContextForLocation(userId, assetElement, location);
             }
         }
     }
 
-    private void getContextForLocation(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail location) throws
-            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForLocation(String userId, AssetElement assetElement, EntityDetail location)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForLocation";
 
         List<EntityDetail> assetLocations = repositoryHandler.getEntitiesForRelationshipType(
@@ -731,7 +719,7 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(assetLocations)) {
             for (EntityDetail assetLocation : assetLocations) {
                 addElement(assetElement, assetLocation);
-                getAsset(userId, assetElement, knownAssetConnection, assetLocation);
+                getAsset(userId, assetElement, assetLocation);
             }
         }
 
@@ -749,14 +737,13 @@ public class AssetCatalogHandler {
         if (CollectionUtils.isNotEmpty(nestedLocations)) {
             for (EntityDetail nestedLocation : nestedLocations) {
                 addElement(assetElement, nestedLocation);
-                getContextForLocation(userId, assetElement, knownAssetConnection, nestedLocation);
+                getContextForLocation(userId, assetElement, nestedLocation);
             }
         }
     }
 
-    private void getContextForSoftwareServer(String
-                                                     userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail, AssetElement
-                                                     assetElement) throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForSoftwareServer(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForSoftwareServer";
         Element parentElement = null;
 
@@ -772,7 +759,7 @@ public class AssetCatalogHandler {
         if (softwareServerPlatform != null) {
             parentElement = getLastNode(assetElement);
             addElement(assetElement, softwareServerPlatform);
-            getContextForSoftwareServerPlatform(userId, knownAssetConnection, softwareServerPlatform, assetElement);
+            getContextForSoftwareServerPlatform(userId, softwareServerPlatform, assetElement);
         }
 
         EntityDetail endpoint = repositoryHandler.getEntityForRelationshipType(
@@ -794,8 +781,8 @@ public class AssetCatalogHandler {
 
     }
 
-    private void getConnectionContext(String userId, EntityDetail endpoint, AssetElement assetElement) throws
-            UserNotAuthorizedException, PropertyServerException {
+    private void getConnectionContext(String userId, EntityDetail endpoint, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException {
         String method = "getConnectionContext";
 
         List<EntityDetail> connections = repositoryHandler.getEntitiesForRelationshipType(
@@ -840,9 +827,8 @@ public class AssetCatalogHandler {
         }
     }
 
-    private void findAsset(String userId, List<EntityDetail> entitiesByType, AssetElement assetElement,
-                           Map<String, List<Connection>> knownAssetConnection) throws
-            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void findAsset(String userId, List<EntityDetail> entitiesByType, AssetElement assetElement)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
 
         String method = "findAsset";
         for (EntityDetail entityDetail : entitiesByType) {
@@ -864,7 +850,7 @@ public class AssetCatalogHandler {
 
                 Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(schemaAttribute.getType().getTypeDefName());
                 if (isComplexSchemaType.isPresent()) {
-                    setAssetDetails(userId, assetElement, knownAssetConnection, schemaAttribute);
+                    setAssetDetails(userId, assetElement, schemaAttribute);
                     return;
                 } else {
                     List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
@@ -879,21 +865,20 @@ public class AssetCatalogHandler {
 
                     if (CollectionUtils.isNotEmpty(schemaAttributeTypeEntities)) {
                         schemaAttributeTypeEntities.forEach(element -> addElement(assetElement, element));
-                        findAsset(userId, schemaAttributeTypeEntities, assetElement, knownAssetConnection);
+                        findAsset(userId, schemaAttributeTypeEntities, assetElement);
                     }
                 }
             }
         }
     }
 
-    private void getContextForSchemaType(String userId, AssetElement
-            assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail) throws
-            UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+    private void getContextForSchemaType(String userId, AssetElement assetElement, EntityDetail entityDetail)
+            throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(entityDetail.getType().getTypeDefName());
         String method = "getContextForSchemaType";
 
         if (isComplexSchemaType.isPresent()) {
-            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
+            setAssetDetails(userId, assetElement, entityDetail);
         } else {
             List<EntityDetail> attributeForSchemas = repositoryHandler.getEntitiesForRelationshipType(
                     userId,
@@ -912,7 +897,7 @@ public class AssetCatalogHandler {
                 addElement(assetElement, attributeForSchema);
 
                 if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
-                    setAssetDetails(userId, assetElement, knownAssetConnection, attributeForSchema);
+                    setAssetDetails(userId, assetElement, attributeForSchema);
                     return;
                 } else {
                     List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
@@ -927,16 +912,15 @@ public class AssetCatalogHandler {
 
                     schemaAttributeTypeEntities.forEach(element -> addElement(assetElement, element));
                     for (EntityDetail schema : schemaAttributeTypeEntities) {
-                        getContextForSchemaType(userId, assetElement, knownAssetConnection, schema);
+                        getContextForSchemaType(userId, assetElement, schema);
                     }
                 }
             }
         }
     }
 
-    private void setAssetDetails(String userId, AssetElement
-            assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail entity) throws
-            InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void setAssetDetails(String userId, AssetElement assetElement, EntityDetail entity)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String method = "setAssetDetails";
 
         EntityDetail dataSet = repositoryHandler.getEntityForRelationshipType(userId,
@@ -952,11 +936,11 @@ public class AssetCatalogHandler {
             assetElement.setContext(Collections.singletonList(buildElement(dataSet)));
         }
 
-        getAsset(userId, assetElement, knownAssetConnection, dataSet);
+        getAsset(userId, assetElement, dataSet);
     }
 
-    private void getAsset(String userId, AssetElement assetElement, Map<String,
-            List<Connection>> knownAssetConnection, EntityDetail dataSet) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private void getAsset(String userId, AssetElement assetElement, EntityDetail dataSet)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         if (dataSet == null) return;
 
         String method = "getAsset";
@@ -971,26 +955,19 @@ public class AssetCatalogHandler {
         for (Relationship assetToDataSetRelationship : assetToDataSetRelationships) {
             EntityProxy entityOneProxy = assetToDataSetRelationship.getEntityOneProxy();
             if (entityOneProxy.getGUID().equals(dataSet.getGUID())) {
-                setConnections(userId, assetElement, knownAssetConnection, dataSet);
+                setConnections(userId, assetElement, dataSet);
             } else {
                 EntityDetail asset = repositoryHandler.getEntityByGUID(userId, entityOneProxy.getGUID(), ASSET_GUID_PARAMETER, entityOneProxy.getType().getTypeDefName(), method);
 
                 setAssetElementAttributes(assetElement, asset);
-                setConnections(userId, assetElement, knownAssetConnection, asset);
+                setConnections(userId, assetElement, asset);
             }
         }
     }
 
-    private void setConnections(String userId, AssetElement assetElement, Map<String, List<Connection>> knownAssetConnection, EntityDetail asset)
-            throws UserNotAuthorizedException, PropertyServerException {
-
-        if (knownAssetConnection.containsKey(asset.getGUID())) {
-            assetElement.setConnections(knownAssetConnection.get(asset.getGUID()));
-        } else {
-            List<Connection> connections = getConnections(userId, asset.getGUID());
-            knownAssetConnection.put(asset.getGUID(), connections);
-            assetElement.setConnections(connections);
-        }
+    private void setConnections(String userId, AssetElement assetElement, EntityDetail asset) throws UserNotAuthorizedException, PropertyServerException {
+        List<Connection> connections = getConnections(userId, asset.getGUID());
+        assetElement.setConnections(connections);
     }
 
     private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
