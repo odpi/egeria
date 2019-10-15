@@ -43,12 +43,21 @@ public enum OpenLineageAuditCode {
             "Unable to initialize the Open Lineage Services  topic connection {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
-
-    ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION("OPEN-LINEAGE-0006",
+    ERROR_INITIALIZING_CONNECTOR("OPEN-LINEAGE-0006",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to initialize the Open Lineage Services connector {0} for server instance {1}; error message was: {2}",
+            "The connection could not be initialized.",
+            "Review the exception and resolve the configuration. "),
+    ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION("OPEN-LINEAGE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Open Lineage Services  instance for server {1} ",
             "The connection to open lineage topic could not be initialized.",
-            "Review the exception and resolve the configuration. ")
+            "Review the exception and resolve the configuration. "),
+    NO_CONFIG_DOC("OPEN-LINEAGE-0008",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "Open Lineage {0} is not configured with a configuration document",
+            "The server is not able to retrieve its configuration.  It fails to start.",
+            "Add the configuration document for this open lineage service."),
     ;
 
     private static final Logger log = LoggerFactory.getLogger(OpenLineageAuditCode.class);
