@@ -10,7 +10,6 @@ public interface OpenLineageGraphStore {
      * Process the serialized  information view event
      *
      * @param processLineageEvent event
-     * @return the table of created views for generating the kafka events
      */
     void addEntity(ProcessLineageEvent processLineageEvent);
 }

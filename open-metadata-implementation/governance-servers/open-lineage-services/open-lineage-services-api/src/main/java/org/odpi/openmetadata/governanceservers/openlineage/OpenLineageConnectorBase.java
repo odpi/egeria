@@ -23,7 +23,6 @@ public class OpenLineageConnectorBase extends ConnectorBase implements OpenLinea
      * Process the serialized  information view event
      *
      * @param processLineageEvent event
-     * @return the table of created views for generating the kafka events
      */
     @Override
     public void addEntity(ProcessLineageEvent processLineageEvent) { }
