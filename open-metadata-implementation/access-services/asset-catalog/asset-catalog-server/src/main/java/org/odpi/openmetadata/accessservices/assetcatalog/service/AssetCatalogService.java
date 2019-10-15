@@ -18,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
@@ -345,8 +344,6 @@ public class AssetCatalogService {
             Term term = assetCatalogHandler.buildContextByAssetType(userId, assetCatalogHandler, entityDetail, typeDefName, superTypes);
             response.setAssets(Collections.singletonList(term));
 
-        } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | EntityNotKnownException | EntityProxyOnlyException e) {
-            exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
