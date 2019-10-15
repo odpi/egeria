@@ -11,6 +11,9 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengin
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Required methods expected to be implemented by any Data Engine Connector.
+ */
 public interface DataEngineInterface {
 
     /**

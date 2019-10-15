@@ -11,10 +11,17 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Base implementation of a Data Engine Connector, implementing all of the required methods any Data Engine Connector
+ * is expected to provide (via the DataEngineInterface).
+ */
 public class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineConnectorBase.class);
 
+    /**
+     * Default constructor
+     */
     public DataEngineConnectorBase() { super(); }
 
     /**
