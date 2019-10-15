@@ -4,7 +4,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageProviderBase;
-
 public class JanusConnectorProvider extends OpenLineageProviderBase {
 
     static final String connectorTypeGUID = "e2f657d6-e5bd-11e9-81b4-2a2ae2dbcce4";
@@ -16,7 +15,6 @@ public class JanusConnectorProvider extends OpenLineageProviderBase {
      * registry store implementation.
      */
     public JanusConnectorProvider() {
-        super();
         Class connectorClass = JanusConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 

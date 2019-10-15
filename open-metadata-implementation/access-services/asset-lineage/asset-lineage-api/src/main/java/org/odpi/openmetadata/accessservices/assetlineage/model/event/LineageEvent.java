@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.odpi.openmetadata.accessservices.assetlineage.Edge;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
 
 import java.util.Map;
@@ -21,15 +21,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         property = "class")
-public class ProcessLineageEvent extends AssetLineageEvent {
+public class LineageEvent extends AssetLineageEvent {
 
-   private Map<String, Set<Edge>> processContext;
+   private Map<String, Set<GraphContext>> processContext;
 
-    public Map<String, Set<Edge>> getProcessContext() {
+    public Map<String, Set<GraphContext>> getProcessContext() {
         return processContext;
     }
 
-    public void setProcessContext(Map<String, Set<Edge>> processContext) {
+    public void setProcessContext(Map<String, Set<GraphContext>> processContext) {
 
         this.processContext = processContext;
     }

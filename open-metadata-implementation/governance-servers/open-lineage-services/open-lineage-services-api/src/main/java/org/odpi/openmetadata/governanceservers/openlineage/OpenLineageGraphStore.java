@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 
 public interface OpenLineageGraphStore {
 
     /**
      * Process the serialized  information view event
      *
-     * @param processLineageEvent event
+     * @param lineageEvent event
      */
-    void addEntity(ProcessLineageEvent processLineageEvent);
+    void addEntity(LineageEvent lineageEvent);
 }

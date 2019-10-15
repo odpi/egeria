@@ -6,8 +6,8 @@ import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.OpenLineageErrorCode;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.OpenLineageException;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabels;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabels;
 import org.slf4j.Logger;
@@ -43,11 +43,11 @@ public class JanusFactory extends IndexingFactory {
 
         } catch (Exception e) {
             log.error("{} could not open graph stored", e);
-            OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
+            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, JanusFactory.class.getName());
 
-            throw new OpenLineageException(400,
+            throw new JanusConnectorException(400,
                     JanusFactory.class.getName(),
                     methodName,
                     errorMessage,
@@ -61,7 +61,7 @@ public class JanusFactory extends IndexingFactory {
             log.info("Updating graph schema, if necessary");
             initializeGraph(janusGraph);
         }
-        catch (OpenLineageException e) {
+        catch (JanusConnectorException e) {
             log.error("{} Caught exception during graph initialize operation", "open");
             throw e;
         }
@@ -104,9 +104,9 @@ public class JanusFactory extends IndexingFactory {
 
         } catch (Exception e) {
 
-            OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
+            JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
-            throw new OpenLineageException(400,
+            throw new JanusConnectorException(400,
                     JanusFactory.class.getName(),
                     methodName,
                     errorMessage,

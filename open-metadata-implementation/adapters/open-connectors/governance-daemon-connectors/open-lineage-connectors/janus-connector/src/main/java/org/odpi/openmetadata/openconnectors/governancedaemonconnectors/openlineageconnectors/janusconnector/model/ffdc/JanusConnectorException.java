@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc;
 
 
-public class OpenLineageException extends RuntimeException {
+public class JanusConnectorException extends RuntimeException {
     private int reportedHTTPCode;
     private String reportingClassName;
     private String reportingActionDescription;
@@ -13,12 +13,12 @@ public class OpenLineageException extends RuntimeException {
     private Throwable reportedCaughtException = null;
 
 
-    public OpenLineageException(int    httpCode,
-                                String className,
-                                String actionDescription,
-                                String errorMessage,
-                                String systemAction,
-                                String userAction)
+    public JanusConnectorException(int    httpCode,
+                                   String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction)
     {
         super(errorMessage);
         this.reportedHTTPCode = httpCode;
@@ -29,13 +29,13 @@ public class OpenLineageException extends RuntimeException {
         this.reportedUserAction = userAction;
     }
 
-    public OpenLineageException(int    httpCode,
-                                String className,
-                                String actionDescription,
-                                String errorMessage,
-                                String systemAction,
-                                String userAction,
-                                Throwable throwable)
+    public JanusConnectorException(int    httpCode,
+                                   String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction,
+                                   Throwable throwable)
     {
         super(errorMessage);
         this.reportedHTTPCode = httpCode;

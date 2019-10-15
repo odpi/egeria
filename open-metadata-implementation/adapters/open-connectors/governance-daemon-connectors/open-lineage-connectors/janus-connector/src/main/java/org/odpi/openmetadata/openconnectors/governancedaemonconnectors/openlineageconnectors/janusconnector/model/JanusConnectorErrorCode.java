@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-public enum OpenLineageErrorCode {
+public enum JanusConnectorErrorCode {
 
 
     PROCESS_EVENT_EXCEPTION("OPEN-LINEAGE-SERVICES-001 ",
@@ -69,13 +69,13 @@ public enum OpenLineageErrorCode {
                                       "The system was unable to retrieve the entities for copying to the main graph.",
                                       "Correct the caller's code and retry the request.");
 
-    private static final Logger log = LoggerFactory.getLogger(OpenLineageErrorCode.class);
+    private static final Logger log = LoggerFactory.getLogger(JanusConnectorErrorCode.class);
     private String errorMessageId;
     private String errorMessage;
     private String systemAction;
     private String userAction;
 
-    OpenLineageErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
+    JanusConnectorErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
         this.errorMessageId = errorMessageId;
         this.errorMessage = errorMessage;
         this.systemAction = systemAction;
@@ -101,13 +101,13 @@ public enum OpenLineageErrorCode {
 
     public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
 
-        log.debug(String.format("<== OpenLineageErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== JanusConnectorErrorCode.getMessage(%s)", Arrays.toString(params)));
 
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> OpenLineageErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> JanusConnectorErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }
