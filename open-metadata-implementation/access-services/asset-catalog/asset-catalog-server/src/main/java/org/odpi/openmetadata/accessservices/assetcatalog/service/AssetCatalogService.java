@@ -45,14 +45,14 @@ public class AssetCatalogService {
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    public AssetDescriptionResponse getAssetDetailsById(String serverName, String userId, String assetId, String assetType) {
+    public AssetDescriptionResponse getAssetDetailsById(String serverName, String userId, String assetGUID, String assetType) {
         String methodName = "getAssetDetailsById";
         log.debug("Calling method: {}", methodName);
         AssetDescriptionResponse response = new AssetDescriptionResponse();
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetId, assetType);
+            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetType);
             response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -92,14 +92,14 @@ public class AssetCatalogService {
         return response;
     }
 
-    public ClassificationsResponse getClassificationByAssetGUID(String serverName, String userId, String assetId, String assetType, String classificationName) {
+    public ClassificationsResponse getClassificationByAssetGUID(String serverName, String userId, String assetGUID, String assetType, String classificationName) {
         String methodName = "getClassificationByAssetGUID";
         log.debug("Calling method: {}", methodName);
 
         ClassificationsResponse response = new ClassificationsResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId, assetId, assetType, classificationName));
+            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId, assetGUID, assetType, classificationName));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -145,7 +145,7 @@ public class AssetCatalogService {
         return response;
     }
 
-    public RelationshipsResponse getAssetRelationships(String serverName, String userId, String assetId, String assetType, String relationshipTypeName, Integer startFrom, Integer limit) {
+    public RelationshipsResponse getAssetRelationships(String serverName, String userId, String assetGUID, String assetType, String relationshipTypeName, Integer startFrom, Integer limit) {
         String methodName = "getAssetRelationships";
         log.debug("Calling method: {}", methodName);
 
@@ -156,7 +156,7 @@ public class AssetCatalogService {
             if (relationshipTypeName != null) {
                 relationshipTypeGUID = assetCatalogHandler.getTypeDefGUID(userId, relationshipTypeName);
             }
-            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetId, assetType, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
+            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID, assetType, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
@@ -326,13 +326,13 @@ public class AssetCatalogService {
         return response;
     }
 
-    public AssetResponse buildAssetContext(String serverName, String userId, String assetId, String assetType) {
+    public AssetResponse buildAssetContext(String serverName, String userId, String assetGUID, String assetType) {
         AssetResponse response = new AssetResponse();
         String methodName = "buildAssetContext";
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            EntityDetail entityDetail = assetCatalogHandler.getEntity(userId, assetId, assetType);
+            EntityDetail entityDetail = assetCatalogHandler.getEntity(userId, assetGUID, assetType);
 
             if (entityDetail.getType() == null) {
                 return response;

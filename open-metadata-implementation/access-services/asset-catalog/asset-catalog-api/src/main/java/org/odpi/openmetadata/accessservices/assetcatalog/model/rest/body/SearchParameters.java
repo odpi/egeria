@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.SequenceOrderType;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,14 +26,24 @@ public class SearchParameters implements Serializable {
     private Integer limit = 0;
     private Integer offset = 0;
     private String orderProperty;
-    private SequenceOrderType orderType;
-    private Status status;
+    private SequencingOrder orderType;
+    private List<InstanceStatus> status;
     private Boolean excludeDeleted = Boolean.TRUE;
     private Integer level = 0;
     private List<String> types;
     private String propertyName;
     private String propertyValue;
 
+//    String                userId,
+//    String                entityTypeGUID,
+//    String                searchCriteria,
+//    int                   fromEntityElement,
+//    List<InstanceStatus>  limitResultsByStatus,
+//    List<String>          limitResultsByClassification,
+//    Date asOfTime,
+//    String                sequencingProperty,
+//    SequencingOrder sequencingOrder,
+//    int                   pageSize
     /**
      * Return the maximum page size supported by this server.
      *
@@ -93,7 +103,7 @@ public class SearchParameters implements Serializable {
      *
      * @return the enum defining how the results should be ordered
      */
-    public SequenceOrderType getOrderType() {
+    public SequencingOrder getOrderType() {
         return orderType;
     }
 
@@ -102,14 +112,14 @@ public class SearchParameters implements Serializable {
      *
      * @param orderType the enum defining how the results should be ordered
      */
-    public void setOrderType(SequenceOrderType orderType) {
+    public void setOrderType(SequencingOrder orderType) {
         this.orderType = orderType;
     }
 
     /**
      * @return Status to restrict the result
      */
-    public Status getStatus() {
+    public List<InstanceStatus> getStatus() {
         return status;
     }
 
@@ -119,7 +129,7 @@ public class SearchParameters implements Serializable {
      *
      * @param status to restrict the result
      */
-    public void setStatus(Status status) {
+    public void setStatus(List<InstanceStatus> status) {
         this.status = status;
     }
 

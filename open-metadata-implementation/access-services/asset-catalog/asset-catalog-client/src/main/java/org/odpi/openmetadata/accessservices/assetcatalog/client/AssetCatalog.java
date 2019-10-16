@@ -6,13 +6,17 @@ import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogInterface;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides an interface to search for assets including
@@ -128,8 +132,8 @@ public class AssetCatalog implements AssetCatalogInterface {
     /**
      * Fetch the relationships for a specific asset and relationship type
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId           the unique identifier for the user
+     * @param assetId          the unique identifier for the asset
      * @param relationshipType the the type of relationship required
      * @return list of relationships for the given asset
      * @throws PropertyServerException   there is a problem retrieving information from the property server
@@ -347,11 +351,11 @@ public class AssetCatalog implements AssetCatalogInterface {
         return postRestCall(url, requestBody, AssetResponse.class, serverName, userId, searchCriteria);
     }
 
-    private <T> T postRestCall(String url, Object requestBody,  Class<T> clazz, Object... params){
+    private <T> T postRestCall(String url, Object requestBody, Class<T> clazz, Object... params) {
         return restTemplate.postForObject(omasServerURL + url, requestBody, clazz, params);
     }
 
-    private <T> T getRestCall(String url, Class<T> clazz, Object... params){
+    private <T> T getRestCall(String url, Class<T> clazz, Object... params) {
         return restTemplate.getForObject(omasServerURL + url, clazz, params);
     }
 
@@ -400,7 +404,7 @@ public class AssetCatalog implements AssetCatalogInterface {
         SearchParameters searchParameters = new SearchParameters();
         searchParameters.setLimit(0);
         searchParameters.setOffset(0);
-        searchParameters.setStatus(Status.ACTIVE);
+        searchParameters.setStatus(Collections.singletonList(InstanceStatus.ACTIVE));
         return searchParameters;
     }
 

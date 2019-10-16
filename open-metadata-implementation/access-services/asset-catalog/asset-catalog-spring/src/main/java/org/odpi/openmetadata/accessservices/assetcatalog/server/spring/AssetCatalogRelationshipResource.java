@@ -34,9 +34,9 @@ public class AssetCatalogRelationshipResource {
                                                 @PathVariable("userId") String userId,
                                                 @PathVariable("entity1GUID") String entity1GUID,
                                                 @PathVariable("entity2GUID") String entity2GUID,
-                                                @RequestParam("entity1TypeName") String entity1TypeName,
-                                                @RequestParam("relationshipTypeGUID") String relationshipTypeGUID,
-                                                @RequestParam("relationshipTypeName") String relationshipTypeName) {
+                                                @RequestParam(name = "entity1TypeName") String entity1TypeName,
+                                                @RequestParam(name = "relationshipTypeGUID") String relationshipTypeGUID,
+                                                @RequestParam(name = "relationshipTypeName") String relationshipTypeName) {
         return relationshipService.getRelationshipBetweenEntities(serverName, userId, entity1GUID, entity2GUID, entity1TypeName, relationshipTypeGUID, relationshipTypeName);
     }
 }

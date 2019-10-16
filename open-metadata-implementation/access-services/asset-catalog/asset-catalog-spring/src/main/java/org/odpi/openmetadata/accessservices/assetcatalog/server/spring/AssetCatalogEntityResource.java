@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
+
 /**
  * The AssetCatalogEntityResource provides the server-side implementation of the
  * Asset Catalog Open Metadata Assess Service (OMAS).
@@ -41,13 +45,12 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
-                                                   @PathVariable("assetId") String assetId,
-                                                   @RequestParam("assetType") String assetType) {
+                                                   @PathVariable("assetId") @NotBlank String assetId,
+                                                   @RequestParam(name = "assetType") @NotNull String assetType) {
         return assetService.getAssetDetailsById(serverName, userId, assetId, assetType);
     }
 
     /**
-     *
      * Fetch asset's header, classification, properties and relationships
      *
      * @param serverName unique identifier for requested server.
@@ -61,22 +64,21 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
-                                                     @PathVariable("assetId") String assetId,
-                                                     @RequestParam("assetType") String assetType) {
+                                                     @PathVariable("assetId") @NotBlank String assetId,
+                                                     @RequestParam(name = "assetType") @NotNull String assetType) {
         return assetService.getAssetUniverseByGUID(serverName, userId, assetId, assetType);
     }
 
     /**
-     *
      * Fetch the relationships for a specific asset
      *
-     * @param serverName        unique identifier for requested server
-     * @param userId            the unique identifier for the user
-     * @param assetId           the unique identifier for the asset
-     * @param assetType         the type of the asset
-     * @param relationshipType  the type of the relationship
-     * @param startFrom         offset
-     * @param limit             limit the number of the assets returned
+     * @param serverName       unique identifier for requested server
+     * @param userId           the unique identifier for the user
+     * @param assetId          the unique identifier for the asset
+     * @param assetType        the type of the asset
+     * @param relationshipType the type of the relationship
+     * @param startFrom        offset
+     * @param limit            limit the number of the assets returned
      * @return list of relationships for the given asset
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -84,21 +86,21 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
-                                                       @PathVariable("assetId") String assetId,
-                                                       @RequestParam("assetType") String assetType,
-                                                       @RequestParam("relationshipType") String  relationshipType,
-                                                       @RequestParam("startFrom")Integer startFrom,
-                                                       @RequestParam("limit") Integer limit) {
+                                                       @PathVariable("assetId") @NotBlank String assetId,
+                                                       @RequestParam(name = "assetType") @NotNull String assetType,
+                                                       @RequestParam(name = "relationshipType") String relationshipType,
+                                                       @RequestParam(name = "from") @PositiveOrZero Integer startFrom,
+                                                       @RequestParam(name = "size") @PositiveOrZero Integer limit) {
         return assetService.getAssetRelationships(serverName, userId, assetId, assetType, relationshipType, startFrom, limit);
     }
 
     /**
      * Fetch the classification for a specific asset
      *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetId          the unique identifier for the asset
-     * @param assetType        the type of the asset
+     * @param serverName         unique identifier for requested server.
+     * @param userId             the unique identifier for the user
+     * @param assetId            the unique identifier for the asset
+     * @param assetType          the type of the asset
      * @param classificationName the name of the classification
      * @return ClassificationsResponse the classification for the asset
      */
@@ -107,9 +109,9 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ClassificationsResponse getClassificationsForAssets(@PathVariable("serverName") String serverName,
                                                                @PathVariable("userId") String userId,
-                                                               @PathVariable("assetId") String assetId,
-                                                               @RequestParam("assetType") String assetType,
-                                                               @RequestParam("classificationName") String classificationName) {
+                                                               @PathVariable("assetId") @NotBlank String assetId,
+                                                               @RequestParam(name = "assetType") @NotNull String assetType,
+                                                               @RequestParam(name = "classificationName") String classificationName) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetId, assetType, classificationName);
     }
 
@@ -146,8 +148,8 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getLinkingAssets(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
-                                                     @PathVariable("assetId") String startAssetId,
-                                                     @PathVariable("endAssetId") String endAssetId) {
+                                                     @PathVariable("assetId") @NotBlank String startAssetId,
+                                                     @PathVariable("endAssetId") @NotBlank String endAssetId) {
         return assetService.getLinkingAssets(serverName, userId, startAssetId, endAssetId);
     }
 
@@ -167,7 +169,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getRelatedAssets(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
-                                                     @PathVariable("assetId") String assetId,
+                                                     @PathVariable("assetId") @NotBlank String assetId,
                                                      @RequestBody SearchParameters searchParameters) {
         return assetService.getRelatedAssets(serverName, userId, assetId, searchParameters);
     }
@@ -186,7 +188,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
-                                                              @PathVariable("assetId") String assetId,
+                                                              @PathVariable("assetId") @NotBlank String assetId,
                                                               @RequestBody SearchParameters searchParameters) {
         return assetService.getAssetsFromNeighborhood(serverName, userId, assetId, searchParameters);
     }
@@ -205,7 +207,7 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchAssetsAndGlossaryTerms(@PathVariable("serverName") String serverName,
                                                       @PathVariable("userId") String userId,
-                                                      @PathVariable("searchCriteria") String searchCriteria,
+                                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
                                                       @RequestBody SearchParameters searchParameters) {
         return assetService.findAssetsBySearchedPropertyValue(serverName, userId, searchCriteria, searchParameters);
     }
@@ -225,8 +227,8 @@ public class AssetCatalogEntityResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                          @PathVariable("userId") String userId,
-                                         @PathVariable("assetId") String assetId,
-                                         @RequestParam("assetType") String assetType) {
+                                         @PathVariable("assetId") @NotBlank String assetId,
+                                         @RequestParam(name = "assetType") @NotNull String assetType) {
         return assetService.buildAssetContext(serverName, userId, assetId, assetType);
     }
 }

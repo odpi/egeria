@@ -6,7 +6,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -45,7 +44,7 @@ public class AssetConverter {
         assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
         assetDescription.setTypeDefDescription(entityDetail.getType().getTypeDefDescription());
         assetDescription.setUrl(entityDetail.getInstanceURL());
-        assetDescription.setStatus(getStatus(entityDetail.getStatus().getName()));
+        assetDescription.setStatus(entityDetail.getStatus().getName());
 
         assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
         if (entityDetail.getClassifications() != null) {
@@ -74,7 +73,7 @@ public class AssetConverter {
         relationship.setUpdateTime(rel.getUpdateTime());
 
         relationship.setVersion(rel.getVersion());
-        relationship.setStatus(getStatus(rel.getStatus().getName()));
+        relationship.setStatus(rel.getStatus().getName());
 
         relationship.setTypeDefName(rel.getType().getTypeDefName());
         relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
@@ -108,7 +107,7 @@ public class AssetConverter {
             classification.setUpdateTime(classificationEntity.getUpdateTime());
 
             classification.setVersion(classificationEntity.getVersion());
-            classification.setStatus(getStatus(classificationEntity.getStatus().getName()));
+            classification.setStatus(classificationEntity.getStatus().getName());
             classification.setTypeDefName(classificationEntity.getType().getTypeDefName());
             classification.setTypeDefDescription(classificationEntity.getType().getTypeDefDescription());
             if (classificationEntity.getProperties() != null) {
@@ -119,26 +118,6 @@ public class AssetConverter {
         }
 
         return classifications;
-    }
-
-    private Status getStatus(String statusName) {
-
-        switch (statusName) {
-            case "<Unknown>":
-                return Status.UNKNOWN;
-            case "Proposed":
-                return Status.PROPOSED;
-            case "Draft":
-                return Status.DRAFT;
-            case "Prepared":
-                return Status.PREPARED;
-            case "Active":
-                return Status.ACTIVE;
-            case "Deleted":
-                return Status.DELETED;
-            default:
-                return Status.UNKNOWN;
-        }
     }
 
     private Asset getAsset(EntityProxy entityProxy) {
@@ -154,7 +133,7 @@ public class AssetConverter {
         asset.setCreateTime(entityProxy.getCreateTime());
         asset.setUpdatedBy(entityProxy.getUpdatedBy());
         asset.setUpdateTime(entityProxy.getUpdateTime());
-        asset.setStatus(getStatus(entityProxy.getStatus().getName()));
+        asset.setStatus(entityProxy.getStatus().getName());
         asset.setVersion(entityProxy.getVersion());
         asset.setTypeDefName(entityProxy.getType().getTypeDefName());
         asset.setTypeDefDescription(entityProxy.getType().getTypeDefDescription());
