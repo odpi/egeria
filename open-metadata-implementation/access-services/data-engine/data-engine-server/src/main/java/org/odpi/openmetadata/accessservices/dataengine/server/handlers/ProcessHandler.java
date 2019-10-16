@@ -218,9 +218,8 @@ public class ProcessHandler {
     /**
      * Retrieve all port objects of portTypeName that are connected to the process
      *
-     * @param userId       the name of the calling user
-     * @param processGUID  the unigue identifier of the process
-     * @param portTypeName the port type name to search for. Can be PortAlias or PortImplementation
+     * @param userId      the name of the calling user
+     * @param processGUID the unigue identifier of the process
      *
      * @return A set of unique identifiers for the retrieved ports or an empty set
      *
@@ -228,10 +227,9 @@ public class ProcessHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public Set<String> getPortsForProcess(String userId, String processGUID, String portTypeName) throws
-                                                                                                  InvalidParameterException,
-                                                                                                  UserNotAuthorizedException,
-                                                                                                  PropertyServerException {
+    public Set<String> getPortsForProcess(String userId, String processGUID) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
+                                                                                    PropertyServerException {
         final String methodName = "getPortsForProcess";
 
         invalidParameterHandler.validateUserId(userId, methodName);

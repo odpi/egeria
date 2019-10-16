@@ -577,14 +577,14 @@ public class DataEngineRESTServices {
         ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID, portTypeName);
+        Set<String> oldPortGUIDs = processHandler.getPortsForProcess(userId, processGUID);
 
         // delete ports that are not in the process payload anymore
         List<String> obsoletePorts =
                 oldPortGUIDs.parallelStream().collect(partitioningBy(newPortGUIDs::contains)).get(Boolean.FALSE);
         obsoletePorts.parallelStream().forEach(portGUID -> {
             try {
-                portHandler.removePortEntity(userId, portGUID, portTypeName);
+                portHandler.removePort(userId, portGUID, portTypeName);
             } catch (InvalidParameterException error) {
                 restExceptionHandler.captureInvalidParameterException(response, error);
             } catch (PropertyServerException error) {
@@ -740,12 +740,10 @@ public class DataEngineRESTServices {
         } else {
             portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
                     portImplementation.getDisplayName(), portImplementation.getPortType());
-
-            String oldSchemaTypeGUID = portHandler.getSchemaTypeForPort(userId, portImplementationGUID);
-            if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
-                deleteObsoleteSchemaType(userId, oldSchemaTypeGUID);
-            }
         }
+
+        deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID,
+                portHandler.getSchemaTypeForPort(userId, portImplementationGUID));
 
         portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
 
@@ -754,12 +752,22 @@ public class DataEngineRESTServices {
         return portImplementationGUID;
     }
 
-    private void deleteObsoleteSchemaType(String userId, String oldSchemaTypeGUID) {
-        //TODO implement - delete for schema type & all attributes & schema types for schema attributes
-        // find schema attributes for schema type
-        // for each attribute: -find schema type for schema attribute
-        // -delete schema type
-        // -delete schema type
+    private void deleteObsoleteSchemaType(String userId, String serverName, String schemaTypeGUID,
+                                          String oldSchemaTypeGUID) throws InvalidParameterException,
+                                                                           UserNotAuthorizedException,
+                                                                           PropertyServerException {
+        final String methodName = "deleteObsoleteSchemaType";
+
+        log.debug("Calling method: {}", methodName);
+
+        if (!oldSchemaTypeGUID.equalsIgnoreCase(schemaTypeGUID)) {
+            DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
+                    instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
+
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, serverName, oldSchemaTypeGUID);
+        }
+
+        log.debug("Returning from method: {} with void response: {}", methodName);
     }
 
     private String createOrUpdatePortAliasWithDelegation(String userId, String serverName, PortAlias portAlias) throws

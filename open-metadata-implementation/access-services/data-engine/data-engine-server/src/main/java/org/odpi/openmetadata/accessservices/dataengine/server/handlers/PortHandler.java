@@ -301,11 +301,10 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removePortEntity(String userId, String portGUID, String entityTypeName) throws
-                                                                                        InvalidParameterException,
-                                                                                        PropertyServerException,
-                                                                                        UserNotAuthorizedException {
-        final String methodName = "removePortEntity";
+    public void removePort(String userId, String portGUID, String entityTypeName) throws InvalidParameterException,
+                                                                                         PropertyServerException,
+                                                                                         UserNotAuthorizedException {
+        final String methodName = "removePort";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
@@ -401,12 +400,10 @@ public class PortHandler {
         return portTypeValue.getSymbolicName();
     }
 
-    private InstanceProperties buildPortInstanceProperties(String qualifiedName, String displayName,
-                                                           PortType portType, String methodName) throws
-                                                                                                 InvalidParameterException {
+    private InstanceProperties buildPortInstanceProperties(String qualifiedName, String displayName, PortType portType,
+                                                           String methodName) throws InvalidParameterException {
         PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, portType,
-                repositoryHelper,
-                serviceName, serverName);
+                repositoryHelper, serviceName, serverName);
         return builder.getInstanceProperties(methodName);
     }
 

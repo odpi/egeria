@@ -11,4 +11,5 @@ public class SchemaTypePropertiesMapper {
 
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
+    public static final String GUID_PROPERTY_NAME = "guid";
 }
