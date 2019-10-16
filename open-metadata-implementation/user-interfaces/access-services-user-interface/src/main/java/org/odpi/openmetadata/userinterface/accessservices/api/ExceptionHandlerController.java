@@ -37,11 +37,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {MalformedInputException.class})
     protected ResponseEntity<Object> handleMalformedInput(MalformedInputException ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        String bodyOfResponse = "Received response does not have the expected format.";
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, bodyOfResponse, httpStatus);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.MALFORMED_INPUT_EXCEPTION);
         return handleExceptionInternal(ex, errorAttributes,
-                new HttpHeaders(), httpStatus, request);
+                new HttpHeaders(), UserInterfaceErrorCodes.MALFORMED_INPUT_EXCEPTION.getHttpErrorCode(), request);
     }
 
     /**
@@ -50,15 +48,12 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
      * @param request - the initial web request
      * @return the entity containing the response exception
      */
-    @ExceptionHandler(value = {InvalidParameterException.class, PropertyServerException.class,
-            InvalidParameterException.class})
+    @ExceptionHandler(value = {InvalidParameterException.class, PropertyServerException.class})
     protected ResponseEntity<Object> handleAssetCatalogException(AssetCatalogException ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-        String bodyOfResponse = "Invalid request to asset catalog.";
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, bodyOfResponse, httpStatus);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG);
         return handleExceptionInternal(ex, errorAttributes,
-                new HttpHeaders(), httpStatus, request);
+                new HttpHeaders(), UserInterfaceErrorCodes.INVALID_REQUEST_FOR_ASSET_CATALOG.getHttpErrorCode(), request);
     }
 
     /**
@@ -70,11 +65,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {RestClientException.class})
     protected ResponseEntity<Object> handleResourceException(RestClientException ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        String bodyOfResponse = "Unable to access resource.";
-        HttpStatus httpStatus =  HttpStatus.SERVICE_UNAVAILABLE;
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, bodyOfResponse, httpStatus);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.RESOURCE_NOT_FOUND);
         return handleExceptionInternal(ex, errorAttributes,
-                new HttpHeaders(), httpStatus, request);
+                new HttpHeaders(), UserInterfaceErrorCodes.RESOURCE_NOT_FOUND.getHttpErrorCode(), request);
     }
 
     /**
@@ -86,9 +79,8 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {UserNotAuthorizedException.class})
     protected ResponseEntity<Object> handleUnauthorizedException(UserNotAuthorizedException ex, WebRequest request) {
         LOG.error(ex.getMessage(), ex);
-        HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
-        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, "Unauthorized user.", httpStatus);
-        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), httpStatus, request);
+        Map<String, Object> errorAttributes = this.errorAttributes.getErrorAttributes(request, UserInterfaceErrorCodes.USER_NOT_AUTHORIZED);
+        return handleExceptionInternal(ex, errorAttributes, new HttpHeaders(), UserInterfaceErrorCodes.USER_NOT_AUTHORIZED.getHttpErrorCode(), request);
     }
 
 }
