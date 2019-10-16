@@ -40,4 +40,18 @@ public class OMRSEventProcessingContext {
     public static void addAsyncProcessingResult(OMRSFuture future) {
         InternalOMRSEventProcessingContext.getInstance().addAsyncProcessingResult(future);
     }
+    
+    /**
+     * Gets unique identifier for the current message.  The identifier is specific to
+     * the underlying messaging system.  If a message is being reprocessed (eg due
+     * to a server restart before the message was fully processed)(, the identifier
+     * will be the same.  The identifier should be different if content happens
+     * to be the same as the content of another message but they are actually different
+     * messages.
+     * 
+     * @return
+     */
+    public static String getCurrentMessageId() {
+        return InternalOMRSEventProcessingContext.getInstance().getCurrentMessageId();
+    }
 }

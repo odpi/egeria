@@ -17,8 +17,12 @@ import org.slf4j.LoggerFactory;
  */
 public class IncomingEvent {
     
+    /**
+     * Unique identifier for the message
+     */
+    private final String messageId;
+    
     private final long creationTime = System.currentTimeMillis();
-    private static final Logger logger = LoggerFactory.getLogger(IncomingEvent.class);
     private volatile IncomingEventState currentState = IncomingEventState.CREATED;
     
     private final String json;
@@ -29,8 +33,9 @@ public class IncomingEvent {
      * 
      * @param json the json for the event
      */
-    public IncomingEvent(String json) {
+    public IncomingEvent(String json, String messageId) {
         this.json = json;
+        this.messageId = messageId;
     }
     
     public String getJson() {
@@ -61,6 +66,10 @@ public class IncomingEvent {
     
     public long getCreationTime() {
         return creationTime;
+    }
+    
+    public String getMessageId() {
+        return messageId;
     }
     
     /**

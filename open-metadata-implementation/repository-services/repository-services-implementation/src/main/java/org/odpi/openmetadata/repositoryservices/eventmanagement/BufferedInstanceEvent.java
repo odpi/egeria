@@ -15,10 +15,13 @@ import org.odpi.openmetadata.repositoryservices.events.future.DelegatableFuture;
 public class BufferedInstanceEvent {
     
     private final OMRSInstanceEvent event;
+    
+    private final String messageId;
     private final DelegatableFuture associatedFuture = new DelegatableFuture();
     
-    public BufferedInstanceEvent(OMRSInstanceEvent event) {
+    public BufferedInstanceEvent(OMRSInstanceEvent event, String messageId) {
         this.event = event;
+        this.messageId = messageId;
     }
     public OMRSInstanceEvent getEvent() {
         return event;
@@ -26,6 +29,10 @@ public class BufferedInstanceEvent {
     
     public DelegatableFuture getFuture() {
         return associatedFuture;
+    }
+    
+    public String getMessageId() {
+        return messageId;
     }
     
 }
