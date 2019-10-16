@@ -1,3 +1,5 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 # Egeria Workshop Day 1
 ### Introduction :
  - [Agenda](https://github.com/odpi/egeria/wiki/Egeria-Meeting-1st,-2nd-October-2019-@-Huizen,-Netherlands)
