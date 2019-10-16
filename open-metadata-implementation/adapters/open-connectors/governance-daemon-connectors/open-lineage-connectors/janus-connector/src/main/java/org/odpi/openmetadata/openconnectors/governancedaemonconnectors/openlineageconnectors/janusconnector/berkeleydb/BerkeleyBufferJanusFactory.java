@@ -9,6 +9,7 @@ import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.OpenLineageException;
 
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabels;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabels;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,9 @@ import java.util.stream.Stream;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
 
-public class BufferGraphFactory extends IndexingFactory {
+public class BerkeleyBufferJanusFactory extends IndexingFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(BerkeleyBufferJanusFactory.class);
 
 
     public static JanusGraph openBufferGraph(){
@@ -47,10 +48,10 @@ public class BufferGraphFactory extends IndexingFactory {
             log.error("{} could not open graph stored at {}", "open", storagePath);
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, BufferGraphFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, BerkeleyBufferJanusFactory.class.getName());
 
             throw new OpenLineageException(400,
-                    BufferGraphFactory.class.getName(),
+                    BerkeleyBufferJanusFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -109,7 +110,7 @@ public class BufferGraphFactory extends IndexingFactory {
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
             throw new OpenLineageException(400,
-                    BufferGraphFactory.class.getName(),
+                    BerkeleyBufferJanusFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),

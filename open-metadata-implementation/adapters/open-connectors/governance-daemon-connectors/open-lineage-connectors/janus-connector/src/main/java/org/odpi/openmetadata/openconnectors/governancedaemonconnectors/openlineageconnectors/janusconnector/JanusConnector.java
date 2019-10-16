@@ -19,6 +19,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorB
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
@@ -63,11 +64,11 @@ public class JanusConnector extends OpenLineageConnectorBase {
             case "berkeleydb":
                 try {
                     this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                    this.bufferGraph = BufferGraphFactory.openBufferGraph();
+                    this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
                     this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
                     this.mockGraph = BerkeleyJanusFactory.openMockGraph();
                 } catch (Exception e) {
-                    log.error("{} Could not open graph database", "GraphBuilder constructor"); //TODO  elaborate error
+                    log.error("{} Could not open graph database", "JanusConnector"); //TODO  elaborate error
                 }
                 break;
             case "cassandra":
