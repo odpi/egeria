@@ -13,6 +13,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlinea
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,13 +30,18 @@ public class JanusFactory extends IndexingFactory {
 
         final String methodName = "open";
         JanusGraph janusGraph;
+        String listString = String.join(",", (ArrayList) connectionProperties.getConfigurationProperties().get("storageHostname"));
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
                 set("storage.backend",connectionProperties.getConfigurationProperties().get("storageBackend")).
-                set("storage.hostname", connectionProperties.getConfigurationProperties().get("storageHostname")).
+                set("storage.username",connectionProperties.getConfigurationProperties().get("username")).
+                set("storage.password",connectionProperties.getConfigurationProperties().get("password")).
+                set("storage.hostname", listString).
+                set("storage.cql.cluster-name",connectionProperties.getConfigurationProperties().get("clusterName")).
                 set("storage.cql.keyspace",connectionProperties.getConfigurationProperties().get("storageCqlKeyspace")).
                 set("index.search.backend",connectionProperties.getConfigurationProperties().get("indexSearchBackend")).
                 set("index.search.hostname",connectionProperties.getConfigurationProperties().get("indexSearchHostname"));
+
 
         try {
 
