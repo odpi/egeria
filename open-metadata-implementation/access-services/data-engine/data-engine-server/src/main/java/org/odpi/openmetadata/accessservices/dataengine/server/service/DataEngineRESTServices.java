@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortImplementation;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
@@ -214,7 +215,7 @@ public class DataEngineRESTServices {
             }
 
             String portImplementationGUID = createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                    portImplementationRequestBody.getPortImplementation());
+                    portImplementationRequestBody.getPortImplementation(), UpdateSemantic.REPLACE);
 
             response.setGUID(portImplementationGUID);
 
@@ -487,12 +488,13 @@ public class DataEngineRESTServices {
         List<PortImplementation> portImplementations = process.getPortImplementations();
         List<PortAlias> portAliases = process.getPortAliases();
         List<LineageMapping> lineageMappings = process.getLineageMappings();
+        UpdateSemantic updateSemantic = process.getUpdateSemantic();
 
         GUIDResponse response = new GUIDResponse();
 
         try {
             Set<String> portImplementationGUIDs = createOrUpdatePortImplementations(userId, serverName,
-                    portImplementations, response);
+                    portImplementations, updateSemantic, response);
 
             Set<String> portAliasGUIDs = createOrUpdatePortAliases(userId, serverName, portAliases, response);
 
@@ -513,11 +515,13 @@ public class DataEngineRESTServices {
                         latestChange, zoneMembership, displayName, formula, owner, ownerType);
                 processHandler.updateProcessStatus(userId, processGUID, InstanceStatus.DRAFT);
 
-                deleteObsoletePorts(userId, serverName, portImplementationGUIDs, processGUID,
-                        PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, response);
+                if (updateSemantic == UpdateSemantic.REPLACE) {
+                    deleteObsoletePorts(userId, serverName, portImplementationGUIDs, processGUID,
+                            PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, response);
 
-                deleteObsoletePorts(userId, serverName, portAliasGUIDs, processGUID,
-                        PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response);
+                    deleteObsoletePorts(userId, serverName, portAliasGUIDs, processGUID,
+                            PortPropertiesMapper.PORT_ALIAS_TYPE_NAME, response);
+                }
             }
 
             addProcessPortRelationships(userId, serverName, processGUID,
@@ -600,7 +604,7 @@ public class DataEngineRESTServices {
 
     private Set<String> createOrUpdatePortImplementations(String userId, String serverName,
                                                           List<PortImplementation> portImplementations,
-                                                          GUIDResponse response) {
+                                                          UpdateSemantic updateSemantic, GUIDResponse response) {
         final String methodName = "createOrUpdatePortImplementations";
 
         log.debug("Calling method: {}", methodName);
@@ -612,7 +616,7 @@ public class DataEngineRESTServices {
             {
                 try {
                     portImplementationGUIDs.add(createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                            portImplementation));
+                            portImplementation, updateSemantic));
                 } catch (InvalidParameterException error) {
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
@@ -719,10 +723,11 @@ public class DataEngineRESTServices {
     }
 
     private String createOrUpdatePortImplementationWithSchemaType(String userId, String serverName,
-                                                                  PortImplementation portImplementation) throws
-                                                                                                         InvalidParameterException,
-                                                                                                         PropertyServerException,
-                                                                                                         UserNotAuthorizedException {
+                                                                  PortImplementation portImplementation,
+                                                                  UpdateSemantic updateSemantic) throws
+                                                                                                 InvalidParameterException,
+                                                                                                 PropertyServerException,
+                                                                                                 UserNotAuthorizedException {
         final String methodName = "createOrUpdatePortImplementationWithSchemaType";
 
         log.debug("Calling method: {}", methodName);
@@ -740,10 +745,12 @@ public class DataEngineRESTServices {
         } else {
             portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
                     portImplementation.getDisplayName(), portImplementation.getPortType());
-        }
 
-        deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID,
-                portHandler.getSchemaTypeForPort(userId, portImplementationGUID));
+            if (updateSemantic == UpdateSemantic.REPLACE) {
+                deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.getSchemaTypeForPort(userId,
+                        portImplementationGUID));
+            }
+        }
 
         portHandler.addPortSchemaRelationship(userId, portImplementationGUID, schemaTypeGUID);
 

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.dataengine.model.PortType;
 import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
+import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
@@ -66,6 +67,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
      *
      * @param serverName            name of the server to connect to
      * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     *
      * @throws InvalidParameterException null URL or server name
      */
     public DataEngineImpl(String serverName, String serverPlatformRootURL) throws InvalidParameterException {
@@ -95,14 +97,15 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createProcess(String userId, String qualifiedName, String processName, String description,
-                                String latestChange, List<String> zoneMembership, String displayName, String formula,
-                                String owner, OwnerType ownerType, List<PortImplementation> portImplementations,
-                                List<PortAlias> portAliases, List<LineageMapping> lineageMappings) throws
-                                                                                                   PropertyServerException,
-                                                                                                   InvalidParameterException,
-                                                                                                   UserNotAuthorizedException {
-        final String methodName = "createProcess";
+    public String createOrUpdateProcess(String userId, String qualifiedName, String processName, String description,
+                                        String latestChange, List<String> zoneMembership, String displayName,
+                                        String formula, String owner, OwnerType ownerType,
+                                        List<PortImplementation> portImplementations, List<PortAlias> portAliases,
+                                        List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) throws
+                                                                                                             PropertyServerException,
+                                                                                                             InvalidParameterException,
+                                                                                                             UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcesses";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -110,16 +113,16 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(Collections.singletonList(new Process(qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
-                portAliases, lineageMappings)));
+                portAliases, lineageMappings, updateSemantic)));
 
         return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
     }
 
     @Override
-    public String createProcess(String userId, Process process) throws InvalidParameterException,
-                                                                       PropertyServerException,
-                                                                       UserNotAuthorizedException {
-        final String methodName = "createProcess";
+    public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
+                                                                               PropertyServerException,
+                                                                               UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcesses";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -128,17 +131,19 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         List<String> result = callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
 
-        if(CollectionUtils.isEmpty(result)) {
+        if (CollectionUtils.isEmpty(result)) {
             return null;
         }
 
         return result.get(0);
     }
+
     @Override
-    public List<String> createProcesses(String userId, List<Process> processes) throws InvalidParameterException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException {
-        final String methodName = "createProcesses";
+    public List<String> createOrUpdateProcesses(String userId, List<Process> processes) throws
+                                                                                        InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcesses";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -149,13 +154,14 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
-                                                 String type, String version, String patchLevel, String source) throws
-                                                                                                                InvalidParameterException,
-                                                                                                                UserNotAuthorizedException,
-                                                                                                                PropertyServerException {
+    public String createOrUpdateSoftwareServerCapability(String userId, String qualifiedName, String name,
+                                                         String description, String type, String version,
+                                                         String patchLevel, String source) throws
+                                                                                           InvalidParameterException,
+                                                                                           UserNotAuthorizedException,
+                                                                                           PropertyServerException {
 
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createOrUpdateSoftwareServerCapability";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -168,11 +174,12 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
-                                                                                                                   InvalidParameterException,
-                                                                                                                   UserNotAuthorizedException,
-                                                                                                                   PropertyServerException {
-        final String methodName = "createSoftwareServerCapability";
+    public String createOrUpdateSoftwareServerCapability(String userId,
+                                                         SoftwareServerCapability softwareServerCapability) throws
+                                                                                                            InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException {
+        final String methodName = "createOrUpdateSoftwareServerCapability";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -183,12 +190,12 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createSchemaType(String userId, String qualifiedName, String displayName, String author,
-                                   String encodingStandard, String usage, String versionNumber,
-                                   List<Attribute> attributeList) throws InvalidParameterException,
-                                                                         PropertyServerException,
-                                                                         UserNotAuthorizedException {
-        final String methodName = "createSoftwareServerCapability";
+    public String createOrUpdateSchemaType(String userId, String qualifiedName, String displayName, String author,
+                                           String encodingStandard, String usage, String versionNumber,
+                                           List<Attribute> attributeList) throws InvalidParameterException,
+                                                                                 PropertyServerException,
+                                                                                 UserNotAuthorizedException {
+        final String methodName = "createOrUpdateSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -201,10 +208,10 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException {
-        final String methodName = "createSoftwareServerCapability";
+    public String createOrUpdateSchemaType(String userId, SchemaType schemaType) throws InvalidParameterException,
+                                                                                        PropertyServerException,
+                                                                                        UserNotAuthorizedException {
+        final String methodName = "createOrUpdateSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -215,11 +222,12 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createPortImplementation(String userId, String qualifiedName, String displayName, PortType portType,
-                                           SchemaType schemaType) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException {
-        final String methodName = "createPortImplementation";
+    public String createOrUpdatePortImplementation(String userId, String qualifiedName, String displayName,
+                                                   PortType portType, SchemaType schemaType) throws
+                                                                                             InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException {
+        final String methodName = "createOrUpdatePortImplementation";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -231,11 +239,11 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createPortImplementation(String userId, PortImplementation portImplementation) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException {
-        final String methodName = "createPortImplementation";
+    public String createOrUpdatePortImplementation(String userId, PortImplementation portImplementation) throws
+                                                                                                         InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException {
+        final String methodName = "createOrUpdatePortImplementation";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -246,11 +254,11 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createPortAlias(String userId, String qualifiedName, String displayName, PortType portType,
-                                  String delegatesTo) throws InvalidParameterException,
-                                                             UserNotAuthorizedException,
-                                                             PropertyServerException {
-        final String methodName = "createPortAlias";
+    public String createOrUpdatePortAlias(String userId, String qualifiedName, String displayName, PortType portType,
+                                          String delegatesTo) throws InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException {
+        final String methodName = "createOrUpdatePortAlias";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -262,10 +270,10 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createPortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException {
-        final String methodName = "createPortAlias";
+    public String createOrUpdatePortAlias(String userId, PortAlias portAlias) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException {
+        final String methodName = "createOrUpdatePortAlias";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -335,9 +343,9 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
     private List<String> callProcessListPostRESTCall(String userId, String methodName, String urlTemplate,
                                                      ProcessesRequestBody requestBody, Object... params) throws
-                                                                                                                PropertyServerException,
-                                                                                                                InvalidParameterException,
-                                                                                                                UserNotAuthorizedException {
+                                                                                                         PropertyServerException,
+                                                                                                         InvalidParameterException,
+                                                                                                         UserNotAuthorizedException {
         ProcessListResponse restResult = super.callPostRESTCall(methodName, ProcessListResponse.class,
                 serverPlatformRootURL + urlTemplate, requestBody, serverName, userId, params);
 
