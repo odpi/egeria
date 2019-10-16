@@ -128,11 +128,11 @@ public class DataEngineSchemaTypeHandler {
                                                                                                                UserNotAuthorizedException {
         final String methodName = "saveAttributeSchemaTypes";
 
-        for (SchemaAttribute schemaAttribute : newSchemaAttributes.keySet()) {
-            String attributeSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId,
-                    newSchemaAttributes.get(schemaAttribute), null, methodName);
+        for (Map.Entry<SchemaAttribute, SchemaType> schemaAttribute : newSchemaAttributes.entrySet()) {
+            String attributeSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, schemaAttribute.getValue(),
+                    null, methodName);
 
-            String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getQualifiedName());
+            String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getKey().getQualifiedName());
 
             Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, schemaAttributeGUID,
                     SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, attributeSchemaTypeGUID,
@@ -172,20 +172,8 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateGUID(targetSchemaAttributeQualifiedName,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
-        String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
-
-        if (sourceSchemaAttributeGUID == null) {
-            throwNoSchemaAttributeException(sourceSchemaAttributeQualifiedName);
-        }
-        if (targetSchemaAttributeGUID == null) {
-            throwNoSchemaAttributeException(targetSchemaAttributeQualifiedName);
-        }
-
-        SchemaType sourceSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID,
-                methodName);
-        SchemaType targetSchemaType = schemaTypeHandler.getSchemaTypeForAttribute(userId, targetSchemaAttributeGUID,
-                methodName);
+        SchemaType sourceSchemaType = getSchemaTypeForSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
+        SchemaType targetSchemaType = getSchemaTypeForSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaType.getGUID(),
                 SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaType.getGUID(),
@@ -208,10 +196,9 @@ public class DataEngineSchemaTypeHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void removeSchemaType(String userId, String serverName, String schemaTypeGUID) throws
-                                                                                          InvalidParameterException,
-                                                                                          PropertyServerException,
-                                                                                          UserNotAuthorizedException {
+    public void removeSchemaType(String userId, String schemaTypeGUID) throws InvalidParameterException,
+                                                                              PropertyServerException,
+                                                                              UserNotAuthorizedException {
         final String methodName = "removeSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -229,6 +216,22 @@ public class DataEngineSchemaTypeHandler {
         }
 
         schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
+    }
+
+    private SchemaType getSchemaTypeForSchemaAttribute(String userId, String schemaAttributeQualifiedName) throws
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException,
+                                                                                                           NoSchemaAttributeException,
+                                                                                                           InvalidParameterException {
+        final String methodName = "getSchemaTypeForSchemaAttribute";
+
+        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, schemaAttributeQualifiedName);
+
+        if (sourceSchemaAttributeGUID == null) {
+            throwNoSchemaAttributeException(schemaAttributeQualifiedName);
+        }
+
+        return schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID, methodName);
     }
 
     private void throwNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {

@@ -302,9 +302,9 @@ public class DataEngineRESTServices {
             Map<Boolean, List<GUIDResponse>> mappedResponses =
                     guidResponses.parallelStream().collect(partitioningBy(processStatusPredicate));
 
-            List<GUIDResponse> createdProcesses = getGuidResponses(response, mappedResponses);
+            List<GUIDResponse> createdProcesses = getGuidResponses(response, mappedResponses.get(Boolean.TRUE));
 
-            handleFailedProcesses(response, mappedResponses);
+            handleFailedProcesses(response, mappedResponses.get(Boolean.FALSE));
 
             createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
                     guidResponse.getGUID(), InstanceStatus.ACTIVE));
@@ -317,17 +317,12 @@ public class DataEngineRESTServices {
         return response;
     }
 
-    private void handleFailedProcesses(ProcessListResponse response, Map<Boolean, List<GUIDResponse>> mappedResponses) {
-        List<GUIDResponse> failedProcesses = mappedResponses.get(Boolean.FALSE);
-
+    private void handleFailedProcesses(ProcessListResponse response, List<GUIDResponse> failedProcesses) {
         response.setFailedGUIDs((failedProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList())));
         failedProcesses.parallelStream().forEach(guidResponse -> captureException(guidResponse, response));
     }
 
-    private List<GUIDResponse> getGuidResponses(ProcessListResponse response,
-                                                Map<Boolean, List<GUIDResponse>> mappedResponses) {
-        List<GUIDResponse> createdProcesses = mappedResponses.get(Boolean.TRUE);
-
+    private List<GUIDResponse> getGuidResponses(ProcessListResponse response, List<GUIDResponse> createdProcesses) {
         response.setGUIDs(createdProcesses.parallelStream().map(GUIDResponse::getGUID).collect(Collectors.toList()));
 
         return createdProcesses;
@@ -641,7 +636,7 @@ public class DataEngineRESTServices {
 
         if (CollectionUtils.isNotEmpty(portAliases)) {
 
-            // port aliases can not be processed in parallel, as multiple processes define the same port alias
+            // port aliases can not be processed in parallel, as multiple processes can define the same port alias
             portAliases.forEach(portAlias ->
             {
                 try {
@@ -771,7 +766,7 @@ public class DataEngineRESTServices {
             DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler =
                     instanceHandler.getDataEngineSchemaTypeHandler(userId, serverName, methodName);
 
-            dataEngineSchemaTypeHandler.removeSchemaType(userId, serverName, oldSchemaTypeGUID);
+            dataEngineSchemaTypeHandler.removeSchemaType(userId, oldSchemaTypeGUID);
         }
 
         log.debug("Returning from method: {} with void response: {}", methodName);
