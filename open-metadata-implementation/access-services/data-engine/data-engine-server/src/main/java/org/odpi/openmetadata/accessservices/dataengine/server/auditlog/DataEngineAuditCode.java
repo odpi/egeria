@@ -31,13 +31,13 @@ public enum DataEngineAuditCode {
 
     SERVICE_INITIALIZED("OMAS-DATA-ENGINE-0002",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+            "The Data Engine Open Metadata Access Service (OMAS) has initialized a new instance for server {}",
             "The Data Engine OMAS has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-DATA-ENGINE-0003",
             OMRSAuditLogRecordSeverity.INFO,
-            "The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+            "The Data Engine Open Metadata Access Service (OMAS) is shutting down its instance for server {}",
             "The local server has requested shut down of an Data Engine OMAS instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
