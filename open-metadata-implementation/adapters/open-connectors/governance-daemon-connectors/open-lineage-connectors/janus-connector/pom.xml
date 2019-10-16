@@ -62,6 +62,11 @@
             <artifactId>asset-lineage-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.tinkerpop</groupId>
+            <artifactId>tinkergraph-gremlin</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>

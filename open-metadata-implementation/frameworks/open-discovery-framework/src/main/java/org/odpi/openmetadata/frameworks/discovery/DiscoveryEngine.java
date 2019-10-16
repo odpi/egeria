@@ -38,7 +38,6 @@ public abstract class DiscoveryEngine
                                                                                UserNotAuthorizedException,
                                                                                DiscoveryEngineException;
 
-
     /**
      * Request the execution of a discovery service to explore a specific asset.
      *
