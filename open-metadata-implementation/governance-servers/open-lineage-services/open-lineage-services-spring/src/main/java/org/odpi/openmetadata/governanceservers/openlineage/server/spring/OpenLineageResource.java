@@ -82,20 +82,6 @@ public class OpenLineageResource {
         return restAPI.exportGraph(serverName, userId, graph);
     }
 
-    /**
-     * Generate the MOCK graph, which can be used for performance testing, or demoing lineage with large amounts of
-     * data.
-     *
-     * @param userId     calling user.
-     * @param serverName name of the server instance to connect to.
-     * @return Voidresponse.
-     */
-    @GetMapping(path = "/generate-mock-graph")
-    public VoidResponse generateGraph(@PathVariable("userId") String userId,
-                                      @PathVariable("serverName") String serverName) {
-        return restAPI.generateGraph(serverName, userId);
-    }
-
     @InitBinder
     public void initBinder(final WebDataBinder webdataBinder) {
         webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
