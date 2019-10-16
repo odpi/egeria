@@ -206,29 +206,8 @@ public class AssetCatalogService {
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
-            Integer limit = 0;
-            List<String> instanceType = null;
-            Integer offset = null;
-            String orderProperty = null;
-
-            if (searchParameters != null) {
-                limit = searchParameters.getLimit();
-                offset = searchParameters.getOffset();
-                orderProperty = searchParameters.getOrderProperty();
-
-                if (searchParameters.getTypes() != null) {
-                    instanceType = searchParameters.getTypes();
-                }
-            }
-
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-
-            List<AssetDescription> relatedAsset = assetCatalogHandler.getRelatedAsset(serverName, userId, startAssetId,
-                    instanceType,
-                    limit,
-                    offset,
-                    orderProperty);
-
+            List<AssetDescription> relatedAsset = assetCatalogHandler.getRelatedAsset(serverName, userId, startAssetId, searchParameters);
 
             response.setAssetDescriptionList(relatedAsset);
 
@@ -261,25 +240,8 @@ public class AssetCatalogService {
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
-
-            Integer level = null;
-            List<String> entityTypesGuid = null;
-            List<String> relationshipTypes = null;
-
-            if (searchParameters != null) {
-                level = searchParameters.getLevel();
-                if (searchParameters.getTypes() != null) {
-                    entityTypesGuid = searchParameters.getTypes();
-                }
-            }
-
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            List<AssetDescription> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(serverName,
-                    userId,
-                    entityGUID,
-                    entityTypesGuid,
-                    relationshipTypes,
-                    level);
+            List<AssetDescription> entitiesFromNeighborhood = assetCatalogHandler.getEntitiesFromNeighborhood(serverName, userId, entityGUID, searchParameters);
 
             response.setAssetDescriptionList(entitiesFromNeighborhood);
 

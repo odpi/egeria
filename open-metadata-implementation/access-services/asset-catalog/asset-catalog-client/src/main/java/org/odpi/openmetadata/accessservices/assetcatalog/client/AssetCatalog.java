@@ -14,9 +14,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Re
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides an interface to search for assets including
@@ -402,9 +400,9 @@ public class AssetCatalog implements AssetCatalogInterface {
 
     private SearchParameters getSearchParameters() {
         SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setLimit(0);
-        searchParameters.setOffset(0);
-        searchParameters.setStatus(Collections.singletonList(InstanceStatus.ACTIVE));
+        searchParameters.setPageSize(0);
+        searchParameters.setFrom(0);
+        searchParameters.setLimitResultsByStatus(Collections.singletonList(InstanceStatus.ACTIVE));
         return searchParameters;
     }
 

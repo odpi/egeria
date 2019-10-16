@@ -46,6 +46,7 @@ import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*
 public class AssetCatalogHandler {
 
     private static final String ASSET_GUID_PARAMETER = "assetGUID";
+    private static final String SEARCH_PARAMETER = "searchParameter";
 
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -226,28 +227,29 @@ public class AssetCatalogHandler {
     }
 
 
-    public List<AssetDescription> getRelatedAsset(String serverName, String userId, String startAssetId,
-                                                  List<String> instanceTypes,
-                                                  Integer limit, Integer offset,
-                                                  String orderProperty) throws
+    public List<AssetDescription> getRelatedAsset(String serverName,
+                                                  String userId,
+                                                  String startAssetId,
+                                                  SearchParameters searchParameters) throws
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         String methodName = "getRelatedAsset";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startAssetId, "startAssetGUID", methodName);
+        invalidParameterHandler.validateObject(searchParameters, "searchParameters", methodName);
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
 
         List<EntityDetail> relatedEntities = metadataCollection.getRelatedEntities(
                 userId,
                 startAssetId,
-                instanceTypes,
-                offset,
-                Collections.singletonList(InstanceStatus.ACTIVE),
+                searchParameters.getEntityTypeGUIDs(),
+                searchParameters.getFrom(),
+                searchParameters.getLimitResultsByStatus() == null ? Collections.singletonList(InstanceStatus.ACTIVE) : searchParameters.getLimitResultsByStatus(),
+                searchParameters.getLimitResultsByClassification(),
                 null,
-                null,
-                orderProperty,
-                SequencingOrder.ANY,
-                limit);
+                searchParameters.getSequencingProperty(),
+                searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
+                searchParameters.getPageSize());
 
         if (CollectionUtils.isEmpty(relatedEntities)) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.NO_RELATED_ASSETS;
@@ -267,16 +269,16 @@ public class AssetCatalogHandler {
     }
 
 
-    public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String
-            entityGUID, List<String> entityTypesGuid, List<String> relationshipTypes, Integer level)
+    public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
         String methodName = "getEntitiesFromNeighborhood";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(entityGUID, ASSET_GUID_PARAMETER, methodName);
+        invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
 
-        InstanceGraph entityNeighborhood = getAssetNeighborhood(serverName, userId, entityGUID, entityTypesGuid, relationshipTypes, level);
+        InstanceGraph entityNeighborhood = getAssetNeighborhood(serverName, userId, entityGUID, searchParameters);
 
         List<EntityDetail> entities = entityNeighborhood.getEntities();
         if (CollectionUtils.isEmpty(entities)) {
@@ -302,6 +304,7 @@ public class AssetCatalogHandler {
         String methodName = "searchAssetsAndGlossaryTerms";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(userId, searchCriteria, methodName);
+        invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
 
         List<EntityDetail> entities = searchEntityByCriteria(userId, searchCriteria, GLOSSARY_TERM_GUID, searchParameters);
         List<EntityDetail> assets = searchEntityByCriteria(userId, searchCriteria, ASSET_GUID, searchParameters);
@@ -1075,22 +1078,20 @@ public class AssetCatalogHandler {
         return entityDetails.getClassifications();
     }
 
-    private List<EntityDetail> searchEntityByCriteria(String userId, String searchCriteria, String
-            entityTypeGUID, SearchParameters searchParameters)
-            throws
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+    private List<EntityDetail> searchEntityByCriteria(String userId, String searchCriteria, String entityTypeGUID, SearchParameters searchParameters)
+            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
         List<EntityDetail> entitiesByPropertyValue = metadataCollection.findEntitiesByPropertyValue(userId,
                 entityTypeGUID,
                 searchCriteria,
-                searchParameters.getOffset() != null ? searchParameters.getOffset() : 0,
-                Collections.singletonList(InstanceStatus.ACTIVE),
+                searchParameters.getFrom(),
+                searchParameters.getLimitResultsByStatus() == null ? Collections.singletonList(InstanceStatus.ACTIVE) : searchParameters.getLimitResultsByStatus(),
+                searchParameters.getLimitResultsByClassification(),
                 null,
-                null,
-                searchParameters.getOrderProperty(),
-                SequencingOrder.ANY,
-                searchParameters.getLimit() != null ? searchParameters.getLimit() : 0);
+                searchParameters.getSequencingProperty(),
+                searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
+                searchParameters.getPageSize());
 
         return entitiesByPropertyValue != null ? entitiesByPropertyValue : new ArrayList<>();
     }
@@ -1099,9 +1100,7 @@ public class AssetCatalogHandler {
         return classifications.stream().filter(classification -> classification.getName().equals(classificationName)).collect(Collectors.toList());
     }
 
-    private InstanceGraph getAssetNeighborhood(String serverName, String userId, String
-            entityGUID, List<String> entityTypesGuid,
-                                               List<String> relationshipTypes, Integer level)
+    private InstanceGraph getAssetNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             EntityNotKnownException,
             FunctionNotSupportedException,
@@ -1114,12 +1113,12 @@ public class AssetCatalogHandler {
         InstanceGraph entityNeighborhood = metadataCollection.getEntityNeighborhood(
                 userId,
                 entityGUID,
-                entityTypesGuid,
-                relationshipTypes,
-                Collections.singletonList(InstanceStatus.ACTIVE),
+                searchParameters.getEntityTypeGUIDs(),
+                searchParameters.getRelationshipTypeGUIDs(),
+                searchParameters.getLimitResultsByStatus() == null ? Collections.singletonList(InstanceStatus.ACTIVE) : searchParameters.getLimitResultsByStatus(),
+                searchParameters.getLimitResultsByClassification(),
                 null,
-                null,
-                level);
+                searchParameters.getLevel());
 
         if (entityNeighborhood == null) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND;

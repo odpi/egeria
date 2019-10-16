@@ -170,7 +170,7 @@ public class AssetCatalogEntityResource {
     public AssetDescriptionResponse getRelatedAssets(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
                                                      @PathVariable("assetId") @NotBlank String assetId,
-                                                     @RequestBody SearchParameters searchParameters) {
+                                                     @RequestBody @NotNull SearchParameters searchParameters) {
         return assetService.getRelatedAssets(serverName, userId, assetId, searchParameters);
     }
 
