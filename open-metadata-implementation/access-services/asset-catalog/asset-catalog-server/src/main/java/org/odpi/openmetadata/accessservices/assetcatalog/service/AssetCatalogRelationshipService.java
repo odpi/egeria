@@ -24,10 +24,8 @@ public class AssetCatalogRelationshipService {
 
     public RelationshipResponse getRelationshipBetweenEntities(String serverName, String userId,
                                                                String entity1GUID,
-                                                               String entity1TypeName,
                                                                String entity2GUID,
-                                                               String relationshipTypeGUID,
-                                                               String relationshipTypeName) {
+                                                               String relationshipTypeGUID) {
         final String methodName = "getRelationshipBetweenEntities";
 
         log.debug("Calling method: {}", methodName);
@@ -36,7 +34,7 @@ public class AssetCatalogRelationshipService {
 
         try {
             RelationshipHandler relationshipHandler = instanceHandler.getRelationshipHandler(userId, serverName, methodName);
-            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, entity1GUID, entity1TypeName, entity2GUID, relationshipTypeGUID, relationshipTypeName);
+            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, entity1GUID, entity2GUID, relationshipTypeGUID);
             response.setRelationship(relationshipBetweenEntities);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -46,7 +44,7 @@ public class AssetCatalogRelationshipService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response.toString());
+        log.debug("Returning from method: {} with response: {}", methodName, response);
 
         return response;
     }

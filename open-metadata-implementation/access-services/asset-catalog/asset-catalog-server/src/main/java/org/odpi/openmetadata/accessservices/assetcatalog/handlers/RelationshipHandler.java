@@ -29,10 +29,8 @@ public class RelationshipHandler {
 
     public org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship getRelationshipBetweenEntities(String userId,
                                                                                                                String entity1GUID,
-                                                                                                               String entity1TypeName,
                                                                                                                String entity2GUID,
-                                                                                                               String relationshipTypeGUID,
-                                                                                                               String relationshipTypeName) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
+                                                                                                               String relationshipTypeGUID) throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException, org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException {
         final String methodName = "getRelationshipBetweenEntities";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -41,10 +39,10 @@ public class RelationshipHandler {
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
                 entity1GUID,
-                entity1TypeName,
+                "",
                 entity2GUID,
                 relationshipTypeGUID,
-                relationshipTypeName,
+                "",
                 methodName);
 
         if (relationshipBetweenEntities != null) {

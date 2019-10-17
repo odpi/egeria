@@ -15,28 +15,29 @@ import org.springframework.web.bind.annotation.RestController;
  * Assess Service (OMAS). This interface facilitates the searching for asset's relationships, fetch the details about a specific relationship.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}/relationships")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogRelationshipResource {
 
     private AssetCatalogRelationshipService relationshipService = new AssetCatalogRelationshipService();
 
     /**
-     * Fetch relationship details based on its unique identifier
+     * Fetch relationship between entities details based on its unique identifier of the ends
      *
-     * @param serverName     unique identifier for requested server.
-     * @param userId         String unique identifier for the user
-     * @return relationship details
+     * @param serverName           unique identifier for requested server.
+     * @param userId               String unique identifier for the user
+     * @param entity1GUID          Entity guid of the first end of the relationship
+     * @param entity2GUID          Entity guid of the second end of the relationship
+     * @param relationshipTypeGUID Type of the relationship
+     * @return relationships between entities
      */
     @RequestMapping(method = RequestMethod.GET,
-            path = "/{entity1GUID}/{entity2GUID}",
+            path = "/relationship-between-entities/{entity1GUID}/{entity2GUID}",
             produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipResponse getRelationship(@PathVariable("serverName") String serverName,
-                                                @PathVariable("userId") String userId,
-                                                @PathVariable("entity1GUID") String entity1GUID,
-                                                @PathVariable("entity2GUID") String entity2GUID,
-                                                @RequestParam(name = "entity1TypeName") String entity1TypeName,
-                                                @RequestParam(name = "relationshipTypeGUID") String relationshipTypeGUID,
-                                                @RequestParam(name = "relationshipTypeName") String relationshipTypeName) {
-        return relationshipService.getRelationshipBetweenEntities(serverName, userId, entity1GUID, entity2GUID, entity1TypeName, relationshipTypeGUID, relationshipTypeName);
+    public RelationshipResponse getRelationshipBetweenEntities(@PathVariable("serverName") String serverName,
+                                                               @PathVariable("userId") String userId,
+                                                               @PathVariable("entity1GUID") String entity1GUID,
+                                                               @PathVariable("entity2GUID") String entity2GUID,
+                                                               @RequestParam(name = "relationshipTypeGUID") String relationshipTypeGUID) {
+        return relationshipService.getRelationshipBetweenEntities(serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
     }
 }

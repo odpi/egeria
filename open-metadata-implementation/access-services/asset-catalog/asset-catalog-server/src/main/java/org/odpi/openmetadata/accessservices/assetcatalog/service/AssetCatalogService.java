@@ -45,8 +45,8 @@ public class AssetCatalogService {
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    public AssetDescriptionResponse getAssetDetailsById(String serverName, String userId, String assetGUID, String assetType) {
-        String methodName = "getAssetDetailsById";
+    public AssetDescriptionResponse getAssetDetailsByGUID(String serverName, String userId, String assetGUID, String assetType) {
+        String methodName = "getAssetDetailsByGUID";
         log.debug("Calling method: {}", methodName);
         AssetDescriptionResponse response = new AssetDescriptionResponse();
 
