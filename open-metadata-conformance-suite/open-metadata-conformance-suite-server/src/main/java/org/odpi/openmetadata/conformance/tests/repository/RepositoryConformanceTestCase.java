@@ -276,7 +276,9 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
                 propertyValue.setPrimitiveValue("Test" + propertyName + "Value");
                 break;
             case OM_PRIMITIVE_TYPE_DATE:
-                propertyValue.setPrimitiveValue(new Date());
+                Date date = new Date();              // Date and Time now
+                Long timestamp = date.getTime();
+                propertyValue.setPrimitiveValue(timestamp);    // Dates are stored as Long values
                 break;
             case OM_PRIMITIVE_TYPE_INT:
                 propertyValue.setPrimitiveValue(42);

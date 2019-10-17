@@ -4,6 +4,18 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengi
 
 import java.text.MessageFormat;
 
+/**
+ * The DataEngineConnectorErrorCode is used to define the errors for Data Engine Connectors.
+ *
+ * The 5 fields in the enum are:
+ * <ul>
+ *     <li>HTTP Error Code - to provide guidance on the type of error</li>
+ *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
+ *     <li>SystemAction - describes the result of the situation</li>
+ *     <li>UserAction - describes how a user should correct the situation</li>
+ * </ul>
+ */
 public enum DataEngineConnectorErrorCode {
 
     OMAS_CONNECTION_ERROR(500, "DATA-ENGINE-CONNECTOR-500-001",
@@ -49,6 +61,11 @@ public enum DataEngineConnectorErrorCode {
     }
 
 
+    /**
+     * Returns the numeric error code that can be used in REST responses.
+     *
+     * @return int
+     */
     public int getHTTPErrorCode() {
         return httpErrorCode;
     }

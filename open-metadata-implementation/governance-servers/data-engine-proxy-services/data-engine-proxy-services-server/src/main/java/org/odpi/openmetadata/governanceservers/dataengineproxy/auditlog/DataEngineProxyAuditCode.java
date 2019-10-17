@@ -6,6 +6,19 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 
 import java.text.MessageFormat;
 
+/**
+ * The DataEngineProxyAuditCode is used to define the message content for the OMRS Audit Log.
+ *
+ * The 5 fields in the enum are:
+ * <ul>
+ *     <li>Log Message Id - to uniquely identify the message</li>
+ *     <li>Severity - is this an event, decision, action, error or exception</li>
+ *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
+ *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
+ *     <li>SystemAction - describes the result of the situation</li>
+ *     <li>UserAction - describes how a user should correct the situation</li>
+ * </ul>
+ */
 public enum DataEngineProxyAuditCode {
 
     SERVICE_INITIALIZING("DATA-ENGINE-PROXY-0001",
