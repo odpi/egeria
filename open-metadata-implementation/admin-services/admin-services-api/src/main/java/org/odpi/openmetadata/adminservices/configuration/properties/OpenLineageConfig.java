@@ -232,6 +232,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
         this.openLineageMainGraphConnection = openLineageMainGraphConnection;
     }
 
+
+
     /**
      * Return the configuration properties for BufferGraph that will be used for Open Lineage
      *
