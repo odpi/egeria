@@ -192,8 +192,7 @@ class AssetCatalogOMASServiceTest {
         ClassificationsResponse expectedResponse = new ClassificationsResponse();
         List<Classification> expectedClassificationList = new ArrayList<>();
         Classification expectedClassification = new Classification();
-        expectedClassification.setTypeDefName(typeDef);
-        expectedClassification.setTypeDefDescription(classificationDescription);
+        expectedClassification.setTypeDefName("Confidentiality");
         expectedClassificationList.add(expectedClassification);
         expectedResponse.setClassifications(expectedClassificationList);
         return expectedResponse;
@@ -219,7 +218,6 @@ class AssetCatalogOMASServiceTest {
     private void verifyClassificationResponse(List<Classification> resultList) {
         assertFalse(resultList.isEmpty());
         Classification classification = resultList.get(0);
-        assertEquals(classification.getTypeDefName(), typeDef);
-        assertEquals(classification.getTypeDefDescription(), classificationDescription);
+        assertEquals(classification.getTypeDefName(), "Confidentiality");
     }
 }

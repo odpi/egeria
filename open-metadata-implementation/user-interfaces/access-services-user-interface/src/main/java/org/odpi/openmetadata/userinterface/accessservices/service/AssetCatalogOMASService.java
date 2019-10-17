@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -42,11 +43,14 @@ public class AssetCatalogOMASService {
      */
     public List<AssetDescription> getAssetDetails(String user, String assetId, String assetType) throws PropertyServerException, InvalidParameterException {
         try {
-            return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescriptionList();
+            if (assetCatalog.getAssetDetails(user, assetId, assetType) != null) {
+                return assetCatalog.getAssetDetails(user, assetId, assetType).getAssetDescriptionList();
+            }
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
+        return Collections.emptyList();
     }
 
     /**
