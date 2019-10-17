@@ -996,7 +996,8 @@ public class PrimitivePropertyValueTest
         testObject.setTypeGUID(typeGUID);
         testObject.setTypeName(typeName);
         testObject.setPrimitiveDefCategory(dateCategory);
-        testObject.setPrimitiveValue(dateValue);
+        Long timestamp = ((Date)dateValue).getTime();
+        testObject.setPrimitiveValue(timestamp);
 
         return testObject;
     }
@@ -1013,7 +1014,8 @@ public class PrimitivePropertyValueTest
         assertTrue(testObject.getTypeName().equals(typeName));
         assertTrue(testObject.getInstancePropertyCategory().equals(category));
         assertTrue(testObject.getPrimitiveDefCategory().equals(dateCategory));
-        assertTrue(testObject.getPrimitiveValue().equals(dateValue));
+        Long timestamp = ((Date)dateValue).getTime();
+        assertTrue(testObject.getPrimitiveValue().equals(timestamp));
     }
 
 
