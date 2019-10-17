@@ -17,44 +17,35 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * DataEngineProxyOperationalServices is responsible for controlling the startup and shutdown of
+ * of the Data Engine Proxies.
+ */
 public class DataEngineProxyOperationalServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineProxyOperationalServices.class);
 
     private String localServerName;
-    private String localServerType;
-    private String localMetadataCollectionName;
-    private String localOrganizationName;
     private String localServerUserId;
     private String localServerPassword;
-    private String localServerURL;
 
     private OMRSAuditLog auditLog;
-    private DataEngineConnectorBase dataEngineProxyConnector;
+    private DataEngineConnectorBase dataEngineConnector;
     private Thread changePoller;
 
     /**
      * Constructor used at server startup.
      *
      * @param localServerName       name of the local server
-     * @param localServerType       type of the local server
-     * @param localOrganizationName name of the organization that owns the local server
      * @param localServerUserId     user id for this server to use if processing inbound messages
      * @param localServerPassword   password for this server to use if processing inbound messages
-     * @param localServerURL        URL root for this server
      */
     public DataEngineProxyOperationalServices(String localServerName,
-                                              String localServerType,
-                                              String localOrganizationName,
                                               String localServerUserId,
-                                              String localServerPassword,
-                                              String localServerURL) {
+                                              String localServerPassword) {
         this.localServerName = localServerName;
-        this.localServerType = localServerType;
-        this.localOrganizationName = localOrganizationName;
         this.localServerUserId = localServerUserId;
         this.localServerPassword = localServerPassword;
-        this.localServerURL = localServerURL;
     }
 
     /**
@@ -150,16 +141,16 @@ public class DataEngineProxyOperationalServices {
         }
 
         // Configure the connector
-        Connection dataEngineProxy = dataEngineProxyConfig.getDataEngineProxyConnection();
-        if (dataEngineProxy != null) {
-            log.info("Found connection: " + dataEngineProxy);
+        Connection dataEngineConnection = dataEngineProxyConfig.getDataEngineConnection();
+        if (dataEngineConnection != null) {
+            log.info("Found connection: " + dataEngineConnection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                dataEngineProxyConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineProxy);
+                dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 // If the config says we should poll for changes, do so via a new thread
-                if (dataEngineProxyConfig.pollForChanges()) {
+                if (dataEngineConnector.requiresPolling()) {
                     DataEngineProxyChangePoller poller = new DataEngineProxyChangePoller(
-                            dataEngineProxyConnector,
+                            dataEngineConnector,
                             dataEngineProxyConfig,
                             dataEngineClient,
                             auditLog
@@ -199,7 +190,7 @@ public class DataEngineProxyOperationalServices {
                 changePoller.interrupt();
             }
             // Disconnect the data engine connector
-            dataEngineProxyConnector.disconnect();
+            dataEngineConnector.disconnect();
             auditCode = DataEngineProxyAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",
                     auditCode.getLogMessageId(),
