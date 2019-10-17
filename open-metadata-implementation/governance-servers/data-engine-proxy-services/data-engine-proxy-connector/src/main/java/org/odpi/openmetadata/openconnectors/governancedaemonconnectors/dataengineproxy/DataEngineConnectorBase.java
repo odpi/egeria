@@ -11,10 +11,19 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.List;
 
-public class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
+/**
+ * Base implementation of a Data Engine Connector, implementing all of the required methods any Data Engine Connector
+ * is expected to provide (via the DataEngineInterface). It is an abstract class as on its own it does absolutely
+ * nothing, and therefore a Data Engine Connector needs to extend it and override at least one of the methods to
+ * actually do something.
+ */
+public abstract class DataEngineConnectorBase extends ConnectorBase implements DataEngineInterface {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineConnectorBase.class);
 
+    /**
+     * Default constructor
+     */
     public DataEngineConnectorBase() { super(); }
 
     /**
@@ -26,6 +35,14 @@ public class DataEngineConnectorBase extends ConnectorBase implements DataEngine
         log.warn("DataEngineConnectorBase::getDataEngineDetails() is not overridden (unimplemented).");
         return null;
     }
+
+    /**
+     * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
+     * (false).
+     *
+     * @return boolean
+     */
+    public boolean requiresPolling() { return true; };
 
     /**
      * Retrieve the date and time at which changes were last synchronized.

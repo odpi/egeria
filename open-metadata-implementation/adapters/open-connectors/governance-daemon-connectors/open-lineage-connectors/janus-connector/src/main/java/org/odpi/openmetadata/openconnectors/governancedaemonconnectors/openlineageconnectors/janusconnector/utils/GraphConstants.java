@@ -37,9 +37,6 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_DISPLAY_NAME                   = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_DISPLAY_NAME;
 
 
-    public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
-
-    //Edge can go in either direction
     public static final String NODE_LABEL_PROCESS = "process";
     public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
     public static final String NODE_LABEL_TABLE = "table";
@@ -60,18 +57,15 @@ public class GraphConstants {
 
     }};
 
+    public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
     public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
-
     public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
-
-
-    /*
-     *  Elements
-     */
-
+    public static final String EDGE_LABEL_SUBPROCESS_TO_PROCESS = "sub-process";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
+
+
 
     //Column
 //    public static final String PROPERTY_KEY_DISPLAY_NAME = "displayName";
