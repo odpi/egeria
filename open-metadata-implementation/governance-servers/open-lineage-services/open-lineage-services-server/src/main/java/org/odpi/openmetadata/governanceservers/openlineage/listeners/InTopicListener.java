@@ -37,9 +37,9 @@ public class InTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-        AssetLineageEvent event = null;
+        LineageEvent event = null;
         try {
-            event = OBJECT_MAPPER.readValue(eventAsString, AssetLineageEvent.class);
+            event = OBJECT_MAPPER.readValue(eventAsString, LineageEvent.class);
             log.info("Started processing OpenLineageEvent");
         } catch (Exception e) {
             log.error("Exception processing event from in topic", e);
@@ -55,11 +55,11 @@ public class InTopicListener implements OpenMetadataTopicListener {
                     e);
         }
 
-        try {
+//        try {
             switch (event.getAssetLineageEventType()) {
                 case PROCESS_CONTEXT_EVENT:
-                    LineageEvent mappedEvent = OBJECT_MAPPER.readValue(eventAsString, LineageEvent.class);
-                    graphStoringServices.addEntity(mappedEvent);
+//                    LineageEvent mappedEvent = OBJECT_MAPPER.readValue(eventAsString, LineageEvent.class);
+                    graphStoringServices.addEntity(event);
                     break;
 //                case NEW_RELATIONSHIP_EVENT:
 //                        RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
@@ -70,9 +70,9 @@ public class InTopicListener implements OpenMetadataTopicListener {
                     break;
 
             }
-        }catch (IOException e){
-            log.debug(e.getMessage());
-        }
+//        }catch (IOException e){
+//            log.debug(e.getMessage());
+//        }
 
     }
 }

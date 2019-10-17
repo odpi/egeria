@@ -27,9 +27,7 @@ public class GraphVertexMapper {
         Map<String,String> instanceProperties = lineageEntity.getProperties();
         if (instanceProperties != null) {
 
-            //TODO check which is the best way for InstanceProperties either seperate values or as one String and create properties with prefix in GraphConstants
             for(Map.Entry<String,String> entry: instanceProperties.entrySet()){
-
                 String key = "ve"+entry.getKey();
                 vertex.property(key,entry.getValue());
             }

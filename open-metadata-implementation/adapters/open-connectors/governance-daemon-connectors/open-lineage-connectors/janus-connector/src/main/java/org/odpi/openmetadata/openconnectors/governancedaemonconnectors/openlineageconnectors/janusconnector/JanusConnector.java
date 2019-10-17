@@ -45,7 +45,6 @@ public class JanusConnector extends OpenLineageConnectorBase {
 
     @Override
     public void addEntity(LineageEvent lineageEvent){
-        final String methodName = "createEntity";
 
         GraphTraversalSource g =  bufferGraph.traversal();
 
@@ -56,29 +55,17 @@ public class JanusConnector extends OpenLineageConnectorBase {
                     {
                         if(entry.getValue().size()>1){
                             verticesToBeAdded.addAll(entry.getValue());
-//                            entry.getValue().stream().forEach(setEntry -> test.);
                         }else {
                             verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
                         }
                     }
             );
-//            context.entrySet().parallelStream().forEach(entry ->
-//                    {
-//                        if(entry.getValue().size()>1){
-//                            entry.getValue().stream().forEach(setEntry -> addVerticesAndRelationship(g,setEntry));
-//                        }else {
-//                            addVerticesAndRelationship(g,entry.getValue().stream().findFirst().get());
-//                        }
-//                    }
-//                    );
+
             System.out.println(verticesToBeAdded.size());
             verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
         }catch (Exception e){
-            System.out.println("ERRORRRRRRR");
             log.error(e.getMessage());
         }
-
-
 
         long end = System.currentTimeMillis();
 
@@ -110,8 +97,8 @@ public class JanusConnector extends OpenLineageConnectorBase {
         }
         else {
             vertex = vertexIt.next();
-                log.debug("{} found existing vertex {}", methodName, vertex);
-                g.tx().rollback();
+            log.debug("{} found existing vertex {}", methodName, vertex);
+            g.tx().rollback();
         }
         return vertex;
     }

@@ -118,6 +118,9 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case NEW_ENTITY_EVENT:
                         processNewEntityEvent(instanceEvent.getEntity(), serviceOperationName);
                         break;
+                    case UPDATED_ENTITY_EVENT:
+                        processUpdatedEntityEvent(instanceEvent.getEntity(), serviceOperationName);
+
                     case NEW_RELATIONSHIP_EVENT:
                         break;
 //                  case DELETE_PURGED_RELATIONSHIP_EVENT:
@@ -143,7 +146,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         if (!isValidEntityEvent(typeDefName)) {
             log.info(("Event is ignored as the entity is not relevant type for the Asset Lineage OMAS."));
         } else {
-            processNewEntity(entityDetail, typeDefName, serviceOperationName);
+            processNewEntity(entityDetail, serviceOperationName);
+        }
+    }
+
+    private void processUpdatedEntityEvent(EntityDetail entityDetail,String serviceOperationName) {
+
+        if(entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().equals("ACTIVE")){
+            processNewEntity(entityDetail, serviceOperationName);
+
+        }else{
+            log.info("Event is ignored as the process is not a ready yet");
         }
     }
 
@@ -151,14 +164,13 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * Takes the entity  based on the type of the entity it delegates to the appropriate method
      *
      * @param entityDetail         entity to get context
-     * @param typeName             the type of the entity
      * @param serviceOperationName name of the calling operation
      */
-    private void processNewEntity(EntityDetail entityDetail, String typeName, String serviceOperationName) {
+    private void processNewEntity(EntityDetail entityDetail,String serviceOperationName) {
         final String methodName = "processNewEntity";
 
         try {
-            if (typeName.equals(PROCESS)) {
+            if (entityDetail.getType().getTypeDefName().equals(PROCESS)) {
                 getContextForProcess(entityDetail, serviceOperationName);
             }
             else {
@@ -225,7 +237,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
 
     private boolean isValidEntityEvent(String typeDefName) {
-        final List<String> types = Arrays.asList(PROCESS, GLOSSARY_TERM,TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
+        final List<String> types = Arrays.asList(GLOSSARY_TERM,TABULAR_SCHEMA_TYPE, TABULAR_COLUMN, RELATIONAL_COLUMN, RELATIONAL_TABLE, DATA_FILE);
         return types.contains(typeDefName);
     }
 
@@ -275,13 +287,6 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         }
     }
-
-    private void processUpdatedEntityEvent(EntityDetail originalEntity, EntityDetail entity) {
-    }
-
-    private void processDeletedEntity(EntityDetail entity) {
-    }
-
 
     /**
      * Takes the entities of the the relationship, extracts the relevant types

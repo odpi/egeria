@@ -11,7 +11,9 @@ public class GraphContext {
     private LineageEntity fromVertex;
     private LineageEntity toVertex;
 
-   public GraphContext(String relationshipType, String relationshipGuid, LineageEntity fromVertex, LineageEntity toVertex) {
+    public GraphContext(){}
+    
+    public GraphContext(String relationshipType, String relationshipGuid, LineageEntity fromVertex, LineageEntity toVertex) {
        this.relationshipType = relationshipType;
        this.relationshipGuid = relationshipGuid;
        this.fromVertex = fromVertex;
