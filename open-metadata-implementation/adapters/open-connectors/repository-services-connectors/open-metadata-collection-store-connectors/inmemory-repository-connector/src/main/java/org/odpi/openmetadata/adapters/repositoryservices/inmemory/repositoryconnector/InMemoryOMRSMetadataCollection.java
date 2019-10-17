@@ -331,10 +331,10 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
         }
 
         return repositoryHelper.formatRelationshipResults(entityRelationships,
-                                         fromRelationshipElement,
-                                         sequencingProperty,
-                                         sequencingOrder,
-                                         pageSize);
+                                                          fromRelationshipElement,
+                                                          sequencingProperty,
+                                                          sequencingOrder,
+                                                          pageSize);
     }
 
 

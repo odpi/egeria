@@ -1,7 +1,7 @@
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector;
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector;
+
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageProviderBase;
 public class JanusConnectorProvider extends OpenLineageProviderBase {
@@ -15,6 +15,7 @@ public class JanusConnectorProvider extends OpenLineageProviderBase {
      * registry store implementation.
      */
     public JanusConnectorProvider() {
+        super();
         Class connectorClass = JanusConnector.class;
         super.setConnectorClassName(connectorClass.getName());
 
@@ -28,6 +29,5 @@ public class JanusConnectorProvider extends OpenLineageProviderBase {
 
         super.connectorTypeBean = connectorType;
     }
-
 
 }

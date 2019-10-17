@@ -4,7 +4,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 
 public class JanusConnectorException extends RuntimeException {
-    private int reportedHTTPCode;
     private String reportingClassName;
     private String reportingActionDescription;
     private String reportedErrorMessage;
@@ -13,15 +12,13 @@ public class JanusConnectorException extends RuntimeException {
     private Throwable reportedCaughtException = null;
 
 
-    public JanusConnectorException(int    httpCode,
-                                   String className,
+    public JanusConnectorException(String className,
                                    String actionDescription,
                                    String errorMessage,
                                    String systemAction,
                                    String userAction)
     {
         super(errorMessage);
-        this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
         this.reportedErrorMessage = errorMessage;
@@ -38,23 +35,12 @@ public class JanusConnectorException extends RuntimeException {
                                    Throwable throwable)
     {
         super(errorMessage);
-        this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
         this.reportedErrorMessage = errorMessage;
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
         this.reportedCaughtException = throwable;
-    }
-
-
-
-    public int getReportedHTTPCode() {
-        return reportedHTTPCode;
-    }
-
-    public void setReportedHTTPCode(int reportedHTTPCode) {
-        this.reportedHTTPCode = reportedHTTPCode;
     }
 
     public String getReportingClassName() {

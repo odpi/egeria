@@ -12,6 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -30,8 +31,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SCHEMA_ELEMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SECURITY_OFFICER;
 import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.securityofficer.server.admin.utils.Constants.SEMANTIC_ASSIGNMENT_GUID;
 
 public class SecurityOfficerHandler {
 
@@ -95,18 +99,16 @@ public class SecurityOfficerHandler {
     private List<Relationship> getSemanticAssigmentRelationships(String userId, String glossaryTermGUID) {
 
         try {
-            String semanticAssigmentGUID = metadataCollection.getTypeDefByGUID(userId, SEMANTIC_ASSIGNMENT).getGUID();
-
             return metadataCollection.getRelationshipsForEntity(userId,
                     glossaryTermGUID,
-                    semanticAssigmentGUID,
+                    SEMANTIC_ASSIGNMENT_GUID,
                     0,
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     null,
                     null,
                     SequencingOrder.ANY,
                     0);
-        } catch (InvalidParameterException | PagingErrorException | FunctionNotSupportedException | EntityNotKnownException | PropertyErrorException | TypeErrorException | UserNotAuthorizedException | TypeDefNotKnownException | RepositoryErrorException e) {
+        } catch (InvalidParameterException | PagingErrorException | FunctionNotSupportedException | EntityNotKnownException | PropertyErrorException | TypeErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
             log.debug("Unable to fetch semantic assignments for {}", glossaryTermGUID);
         }
 
@@ -124,15 +126,25 @@ public class SecurityOfficerHandler {
                     return metadataCollection.getEntityDetail(userId, relationship.getEntityOneProxy().getGUID());
                 }
             }
-        } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | EntityNotKnownException e) {
+        } catch (TypeDefNotKnownException| EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | EntityNotKnownException e) {
             log.debug("Unable to get schema element entity");
         }
 
         return null;
     }
 
-    private boolean isSchemaElement(InstanceType type) {
-        return type.getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ELEMENT));
+    private boolean isSchemaElement(InstanceType instanceType) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
+        List<TypeDefLink> typeDefSuperTypes =instanceType.getTypeDefSuperTypes();
+        if (typeDefSuperTypes.stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ATTRIBUTE))) {
+            return true;
+        }
+
+        for(TypeDefLink typeDefLink : typeDefSuperTypes){
+            if(metadataCollection.getTypeDefByName(SECURITY_OFFICER, typeDefLink.getName()).getSuperType().getName().equals(SCHEMA_ATTRIBUTE)){
+                return true;
+            }
+        }
+        return false;
     }
 
 }

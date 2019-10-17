@@ -37,7 +37,7 @@ public enum JanusConnectorErrorCode {
                                    "The system is unable to perform the request because there is already an entity with the same GUID.",
                                    "Correct the caller's code and retry the request."),
     GRAPH_INITIALIZATION_ERROR( "OPEN-LINEAGE-SERVICES-007",
-                                        "The graph database could not be initialized for open metadata repository {0}",
+                                        "The graph database could not be initialized for open metadata repository",
                                         "The system was unable to initialize.",
                                         "Please raise a github issue."),
     ENTITY_PROPERTIES_ERROR("OPEN-LINEAGE-SERVICES-008",

@@ -66,16 +66,12 @@ public class GraphConstants {
 
     public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
-
     public static final String EDGE_LABEL_SEMANTIC = "semantic-assignment";
     public static final String EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM = "synonym";
-
-
-    /*
-     *  Elements
-     */
-
+    public static final String EDGE_LABEL_SUBPROCESS_TO_PROCESS = "sub-process";
     public static final String EDGE_LABEL_CONDENSED = "condensed";
+
+
 
     //Column
 //    public static final String PROPERTY_KEY_DISPLAY_NAME = "displayName";

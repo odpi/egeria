@@ -69,7 +69,7 @@ public class GraphVertexMapper {
                     methodName,
                     this.getClass().getName());
 
-            throw new JanusConnectorException(400,
+            throw new JanusConnectorException(
                     this.getClass().getName(),
                     methodName,
                     errorMessage,

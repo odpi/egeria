@@ -152,7 +152,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
     private void processUpdatedEntityEvent(EntityDetail entityDetail,String serviceOperationName) {
 
-        if(entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().equals("ACTIVE")){
+        if(entityDetail.getType().getTypeDefName().equals(PROCESS) && entityDetail.getStatus().getName().equals("Active")){
             processNewEntity(entityDetail, serviceOperationName);
 
         }else{

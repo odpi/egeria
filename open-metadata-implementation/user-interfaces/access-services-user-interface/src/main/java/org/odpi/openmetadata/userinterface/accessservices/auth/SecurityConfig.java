@@ -4,6 +4,8 @@ package org.odpi.openmetadata.userinterface.accessservices.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -15,6 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
 
 @EnableWebSecurity
 @Configuration
@@ -22,10 +26,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    TokenAuthService tokenAuthService;
+    private AuthService authService;
 
     @Value("${ldap.user.search.base}")
     private String userSearchBase;
@@ -70,9 +74,10 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/open-metadata/ui-admin-services/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new TokenAuthFilter(tokenAuthService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), tokenAuthService),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), authService),
+                        UsernamePasswordAuthenticationFilter.class)
+                ;
     }
 
     @Bean
@@ -109,4 +114,26 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
         return userDetailsService;
     }
 
+
+    @Bean
+    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
+    @ConditionalOnMissingBean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher();
+    }
+
+
+    @Bean(name="token")
+    @ConditionalOnProperty(name = "authentication.mode", havingValue = "token", matchIfMissing = true)
+    @ConditionalOnMissingBean
+    public TokenAuthService getTokenAuth()  {
+        return new TokenAuthService();
+    }
+
+    @Bean(name="session")
+    @ConditionalOnProperty(name = "authentication.mode", havingValue = "session")
+    @ConditionalOnMissingBean
+    public SessionAuthService getSessionAuth()  {
+        return new SessionAuthService();
+    }
 }
