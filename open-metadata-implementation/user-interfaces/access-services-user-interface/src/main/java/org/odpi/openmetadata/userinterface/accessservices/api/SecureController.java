@@ -26,17 +26,14 @@ public class SecureController {
      * @return userName or null if there is not one
      */
     protected String getUser(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String userName =null;
-        if (session !=null) {
-            Authentication auth = authService.getAuthentication(request);
-            if(auth == null || auth.getDetails() == null || !(auth.getDetails() instanceof TokenUser)){
-                throw new UserNotAuthorizedException("User is not authorized");
-            }
-            TokenUser tokenUser = (TokenUser) auth.getDetails();
-             if (tokenUser!= null && tokenUser.getUser().getName() !=null) {
-                 userName = tokenUser.getUser().getUsername();
-             }
+        String userName = null;
+        Authentication auth = authService.getAuthentication(request);
+        if(auth != null && auth.getDetails() != null && (auth.getDetails() instanceof TokenUser)){
+            userName = ((TokenUser) auth.getDetails()).getUser().getUsername();
+        }
+
+        if(userName ==  null){
+            throw new UserNotAuthorizedException("User is not authorized");
         }
         return userName;
     }
