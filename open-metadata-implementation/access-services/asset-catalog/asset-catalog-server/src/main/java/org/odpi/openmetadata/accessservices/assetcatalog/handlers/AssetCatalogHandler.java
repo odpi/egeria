@@ -310,10 +310,10 @@ public class AssetCatalogHandler {
         return converter.getAssetsDetails(entities);
     }
 
-    public List<Term> searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters)
+    public List<Term> searchAssetsGlossaryTermsSchemaElements(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
-        String methodName = "searchAssetsAndGlossaryTerms";
+        String methodName = "searchAssetsGlossaryTermsSchemaElements";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(userId, searchCriteria, methodName);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
@@ -328,41 +328,52 @@ public class AssetCatalogHandler {
         return entities.stream().map(this::buildTerm).collect(Collectors.toList());
     }
 
-    public Term buildContextByAssetType(String userId,
-                                        AssetCatalogHandler assetCatalogHandler,
-                                        EntityDetail entityDetail,
-                                        String typeDefName,
-                                        List<String> superTypes)
+    public Term buildContextByType(String userId,
+                                   AssetCatalogHandler assetCatalogHandler,
+                                   EntityDetail entityDetail,
+                                   String typeDefName,
+                                   List<String> superTypes)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
-        String methodName = "buildContextByAssetType";
+
+        String methodName = "buildContextByType";
         invalidParameterHandler.validateUserId(userId, methodName);
 
         AssetElement assetElement = new AssetElement();
 
         if (typeDefName.equals(GLOSSARY_TERM)) {
-            return assetCatalogHandler.getStructureForGlossaryTerm(userId, entityDetail);
-        } else if (typeDefName.equals(DEPLOYED_API)) {
-            return assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
-        } else if (typeDefName.equals(IT_INFRASTRUCTURE) || superTypes.contains(IT_INFRASTRUCTURE)) {
-            return assetCatalogHandler.getContextForInfrastructure(userId, entityDetail, assetElement);
-        } else if (typeDefName.equals(PROCESS) || superTypes.contains(PROCESS)) {
-            return assetCatalogHandler.getContextForProcess(userId, entityDetail, assetElement);
-        } else if (typeDefName.equals(DATA_STORE) || superTypes.contains(DATA_STORE)) {
-            return assetCatalogHandler.getContextForDataStore(userId, entityDetail, assetElement);
+            return assetCatalogHandler.getContextForGlossaryTerm(userId, entityDetail);
         } else {
             Term term = buildTerm(entityDetail);
-            assetCatalogHandler.getContextForDataSet(userId, entityDetail, assetElement);
+            if (typeDefName.equals("RelationalColumn") || superTypes.contains(SCHEMA_ELEMENT)) {
+                assetCatalogHandler.getContextForSchemaElement(userId, entityDetail, assetElement);
+            } else if (typeDefName.equals(DEPLOYED_API)) {
+                assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
+            } else if (typeDefName.equals(IT_INFRASTRUCTURE) || superTypes.contains(IT_INFRASTRUCTURE)) {
+                assetCatalogHandler.getContextForInfrastructure(userId, entityDetail, assetElement);
+            } else if (typeDefName.equals(PROCESS) || superTypes.contains(PROCESS)) {
+                assetCatalogHandler.getContextForProcess(userId, entityDetail, assetElement);
+            } else if (typeDefName.equals(DATA_STORE) || superTypes.contains(DATA_STORE)) {
+                assetCatalogHandler.getContextForDataStore(userId, entityDetail, assetElement);
+            } else if (typeDefName.equals(DATA_SET) || superTypes.contains(DATA_SET)) {
+                assetCatalogHandler.getContextForDataSet(userId, entityDetail, assetElement);
+            }
+
             term.setElements(Collections.singletonList(assetElement));
             return term;
         }
     }
 
-    private Term getStructureForGlossaryTerm(String userId,
-                                             EntityDetail glossaryTerm)
+    private void getContextForSchemaElement(String userId, EntityDetail entityDetail, AssetElement assetElement)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        findAsset(userId, Collections.singletonList(entityDetail), assetElement);
+    }
+
+    private Term getContextForGlossaryTerm(String userId,
+                                           EntityDetail glossaryTerm)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        String method = "getStructureForGlossaryTerm";
+        String method = "getContextForGlossaryTerm";
         Term term = buildTerm(glossaryTerm);
 
         List<EntityDetail> schemas = repositoryHandler.getEntitiesForRelationshipType(userId,
@@ -395,12 +406,11 @@ public class AssetCatalogHandler {
         return term;
     }
 
-    private Term getContextForDeployedAPI(String userId,
+    private void getContextForDeployedAPI(String userId,
                                           EntityDetail entityDetail,
                                           AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException {
         String method = "getContextForDeployedAPI";
-        Term term = buildTerm(entityDetail);
 
         List<EntityDetail> endpoints = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -412,7 +422,7 @@ public class AssetCatalogHandler {
                 0,
                 method);
         if (CollectionUtils.isEmpty(endpoints)) {
-            return term;
+            return;
         }
 
         for (EntityDetail endpoint : endpoints) {
@@ -420,15 +430,12 @@ public class AssetCatalogHandler {
             getConnectionContext(userId, endpoint, assetElement);
         }
 
-        return term;
     }
 
-    private Term getContextForInfrastructure(String userId,
+    private void getContextForInfrastructure(String userId,
                                              EntityDetail entityDetail,
                                              AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        Term term = buildTerm(entityDetail);
-
         switch (entityDetail.getType().getTypeDefName()) {
             case HOST:
                 getContextForHost(userId, entityDetail, assetElement);
@@ -446,16 +453,13 @@ public class AssetCatalogHandler {
                 break;
         }
 
-        term.setElements(Collections.singletonList(assetElement));
-        return term;
     }
 
-    private Term getContextForProcess(String userId,
+    private void getContextForProcess(String userId,
                                       EntityDetail entityDetail,
                                       AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String method = "getContextForProcess";
-        Term term = buildTerm(entityDetail);
 
         List<EntityDetail> ports = repositoryHandler.getEntitiesForRelationshipType(
                 userId,
@@ -486,14 +490,12 @@ public class AssetCatalogHandler {
             }
         }
 
-        return term;
     }
 
-    private Term getContextForDataStore(String userId,
+    private void getContextForDataStore(String userId,
                                         EntityDetail entityDetail,
                                         AssetElement assetElement)
             throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
-        Term term = buildTerm(entityDetail);
 
         if (entityDetail.getType().getTypeDefName().equals(DATABASE)) {
             getContextForDatabase(userId, entityDetail, assetElement);
@@ -504,9 +506,6 @@ public class AssetCatalogHandler {
                 getContextForFileFolder(userId, entityDetail, assetElement);
             }
         }
-        term.setElements(Collections.singletonList(assetElement));
-
-        return term;
     }
 
     private void getContextForDatabase(String userId,
@@ -899,7 +898,7 @@ public class AssetCatalogHandler {
                     0,
                     method);
             if (CollectionUtils.isEmpty(schemaAttributes)) {
-                return;
+                continue;
             }
 
             for (EntityDetail schemaAttribute : schemaAttributes) {
@@ -912,8 +911,8 @@ public class AssetCatalogHandler {
                 } else {
                     List<EntityDetail> schemaAttributeTypeEntities = repositoryHandler.getEntitiesForRelationshipType(
                             userId,
-                            entityDetail.getGUID(),
-                            entityDetail.getType().getTypeDefName(),
+                            schemaAttribute.getGUID(),
+                            schemaAttribute.getType().getTypeDefName(),
                             SCHEMA_ATTRIBUTE_TYPE_GUID,
                             SCHEMA_ATTRIBUTE_TYPE,
                             0,

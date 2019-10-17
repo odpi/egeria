@@ -274,7 +274,7 @@ public class AssetCatalogService {
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssets(assetCatalogHandler.searchAssetsAndGlossaryTerms(userId, searchCriteria, searchParameters));
+            response.setAssets(assetCatalogHandler.searchAssetsGlossaryTermsSchemaElements(userId, searchCriteria, searchParameters));
         } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException e) {
             exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -303,7 +303,7 @@ public class AssetCatalogService {
             String typeDefName = entityDetail.getType().getTypeDefName();
             List<String> superTypes = getSuperTypes(entityDetail.getType());
 
-            Term term = assetCatalogHandler.buildContextByAssetType(userId, assetCatalogHandler, entityDetail, typeDefName, superTypes);
+            Term term = assetCatalogHandler.buildContextByType(userId, assetCatalogHandler, entityDetail, typeDefName, superTypes);
             response.setAssets(Collections.singletonList(term));
 
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
