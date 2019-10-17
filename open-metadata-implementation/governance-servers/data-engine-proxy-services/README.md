@@ -20,13 +20,23 @@ run server-side within the OMAG Server Platform.
     ```json
     {
         "class": "DataEngineProxyConfig",
-        "dataEngineProxyProvider": "org.odpi.egeria.connectors.ibm.datastage.dataengineconnector.DataStageConnectorProvider",
-        "dataEngineConfig": {
-            "ibm.igc.services.host": "myhost.somewhere.com",
-            "ibm.igc.services.port": "9445",
-            "ibm.igc.username": "igcuser",
-            "ibm.igc.password": "password"
-        }
+        "accessServiceRootURL": "http://localhost:8080",
+        "accessServiceServerName": "omas",
+        "dataEngineConnection": {
+            "class": "Connection",
+            "connectorType": {
+                "class": "ConnectorType",
+                "connectorProviderClassName": "org.odpi.egeria.connectors.ibm.datastage.dataengineconnector.DataStageConnectorProvider"
+            },
+            "endpoint": {
+                "class": "Endpoint",
+                "address": "myhost.somewhere.com:9445",
+                "protocol": "https"
+            },
+            "userId": "igcuser",
+            "clearPassword": "igcpassword"
+        },
+        "pollIntervalInSeconds": 60
     }
     ```
     
