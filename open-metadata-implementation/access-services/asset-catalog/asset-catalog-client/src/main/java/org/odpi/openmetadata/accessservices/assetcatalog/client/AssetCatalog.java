@@ -100,13 +100,16 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
      * {@inheritDoc}
      */
     @Override
-    public RelationshipsResponse getAssetRelationships(String userId, String assetGUID, String assetType, String relationshipType, Integer from, Integer pageSize) throws InvalidParameterException, PropertyServerException {
+    public RelationshipsResponse getAssetRelationships(String userId, String assetGUID, String assetType,
+                                                       String relationshipType, Integer from, Integer pageSize)
+            throws InvalidParameterException, PropertyServerException {
         String methodName = "getAssetRelationships";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
+        invalidParameterHandler.validatePaging(from, pageSize, methodName);
 
         return callGetRESTCall(methodName, RelationshipsResponse.class,
-                BASE_PATH + ASSET_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+                BASE_PATH + ASSET_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
     }
 
     /**
