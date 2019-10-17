@@ -7,15 +7,10 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * OMAGServerDataEngineProxyService supports the configuration requests for Data Engine Proxies.
@@ -42,40 +37,10 @@ public class OMAGServerDataEngineProxyService {
 
         try {
 
-            final String endpointGUID          = UUID.randomUUID().toString();
-            final String connectionGUID        = UUID.randomUUID().toString();
-            final String endpointDescription   = "Data Engine native endpoint.";
-            final String connectionDescription = "Data Engine native connection.";
-
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            Connection templateConnection = dataEngineProxyConfig.getDataEngineConnection();
-            Endpoint templateEndpoint = templateConnection.getEndpoint();
-
-            String endpointName = "DataEngineNative.Endpoint." + serverName;
-
-            Endpoint endpoint = new Endpoint(templateEndpoint);
-            endpoint.setType(this.getEndpointType());
-            endpoint.setGUID(endpointGUID);
-            endpoint.setQualifiedName(endpointName);
-            endpoint.setDisplayName(endpointName);
-            endpoint.setDescription(endpointDescription);
-
-            String connectionName = "DataEngineNative.Connection." + serverName;
-
-            Connection connection = new Connection(templateConnection);
-            connection.setType(this.getConnectionType());
-            connection.setGUID(connectionGUID);
-            connection.setQualifiedName(connectionName);
-            connection.setDisplayName(connectionName);
-            connection.setDescription(connectionDescription);
-            connection.setEndpoint(endpoint);
-
-            dataEngineProxyConfig.setDataEngineConnection(connection);
-
             serverConfig.setDataEngineProxyConfig(dataEngineProxyConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
@@ -126,28 +91,6 @@ public class OMAGServerDataEngineProxyService {
         }
 
         return response;
-    }
-
-    /**
-     * Return the standard type for an endpoint.
-     *
-     * @return ElementType object
-     */
-    private ElementType getEndpointType() {
-        ElementType elementType = Endpoint.getEndpointType();
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
-        return elementType;
-    }
-
-    /**
-     * Return the standard type for a connection type.
-     *
-     * @return ElementType object
-     */
-    private ElementType getConnectionType() {
-        ElementType elementType = Connection.getConnectionType();
-        elementType.setElementOrigin(ElementOrigin.CONFIGURATION);
-        return elementType;
     }
 
 }
