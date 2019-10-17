@@ -37,7 +37,6 @@ public class SearchParameters implements Serializable {
     private String sequencingProperty;
     private SequencingOrder sequencingOrder;
 
-    private List<InstanceStatus> limitResultsByStatus = new ArrayList<>();
     private List<String> limitResultsByClassification;
 
     private List<String> entityTypeGUIDs;
@@ -114,23 +113,6 @@ public class SearchParameters implements Serializable {
      */
     public void setSequencingOrder(SequencingOrder sequencingOrder) {
         this.sequencingOrder = sequencingOrder;
-    }
-
-    /**
-     * @return Status to restrict the result
-     */
-    public List<InstanceStatus> getLimitResultsByStatus() {
-        return limitResultsByStatus;
-    }
-
-    /**
-     * By default, all the assets/relationships are returned.
-     * However, it is possible to specify a single status (eg ACTIVE) to restrict the results to.
-     *
-     * @param limitResultsByStatus to restrict the result
-     */
-    public void setLimitResultsByStatus(List<InstanceStatus> limitResultsByStatus) {
-        this.limitResultsByStatus = limitResultsByStatus;
     }
 
     /**
