@@ -11,6 +11,9 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.dataengin
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Required methods expected to be implemented by any Data Engine Connector.
+ */
 public interface DataEngineInterface {
 
     /**
@@ -19,6 +22,14 @@ public interface DataEngineInterface {
      * @return DataEngineSoftwareServerCapability
      */
     DataEngineSoftwareServerCapability getDataEngineDetails();
+
+    /**
+     * Indicates whether the data engine requires polling (true) or is capable of notifying of changes on its own
+     * (false).
+     *
+     * @return boolean
+     */
+    boolean requiresPolling();
 
     /**
      * Retrieve the date and time at which changes were last synchronized.

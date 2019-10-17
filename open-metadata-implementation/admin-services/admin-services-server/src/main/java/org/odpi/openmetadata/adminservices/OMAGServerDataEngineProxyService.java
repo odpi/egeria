@@ -2,15 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
-import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataEngineProxyConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * OMAGServerDataEngineProxyService supports the configuration requests for Data Engine Proxies.
+ */
 public class OMAGServerDataEngineProxyService {
 
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
@@ -18,8 +22,14 @@ public class OMAGServerDataEngineProxyService {
     private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
     private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
-    private Logger log = LoggerFactory.getLogger(this.getClass());
-
+    /**
+     * Store the provided Data Engine Proxy configuration
+     *
+     * @param userId                user that is issuing the request
+     * @param serverName            local server name
+     * @param dataEngineProxyConfig configuration for the data engine proxy
+     * @return void response
+     */
     public VoidResponse setDataEngineProxyConfig(String userId, String serverName, DataEngineProxyConfig dataEngineProxyConfig) {
 
         final String methodName = "setDataEngineProxyConfig";
@@ -31,18 +41,6 @@ public class OMAGServerDataEngineProxyService {
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-
-            ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
-
-            dataEngineProxyConfig.setDataEngineProxyConnection(
-                    connectorConfigurationFactory.getDataEngineProxyConnection(
-                            serverName,
-                            dataEngineProxyConfig.getDataEngineProxyProvider(),
-                            serverConfig.getLocalServerURL(),
-                            dataEngineProxyConfig.getDataEngineConfig()
-                    )
-            );
-
             serverConfig.setDataEngineProxyConfig(dataEngineProxyConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
@@ -57,20 +55,33 @@ public class OMAGServerDataEngineProxyService {
         return response;
     }
 
-    public VoidResponse enableDataEngineProxy(String userId, String serverName) {
+    /**
+     * Remove Data Engine Proxy from the server configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response
+     */
+    public VoidResponse deleteDataEngineProxy(String userId, String serverName) {
 
-        final String methodName = "enableDataEngineProxy";
+        final String methodName = "deleteDataEngineProxy";
         VoidResponse response = new VoidResponse();
 
         try {
-
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(userId, serverName, methodName);
-            DataEngineProxyConfig dataEngineProxyConfig = serverConfig.getDataEngineProxyConfig();
-            this.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig);
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
+            if (configAuditTrail == null) {
+                configAuditTrail = new ArrayList<>();
+            }
+            configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serverName + ".");
 
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setDataEngineProxyConfig(null);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
         } catch (OMAGInvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
         } catch (OMAGNotAuthorizedException error) {
