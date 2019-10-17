@@ -270,7 +270,7 @@ public abstract class OpenMetadataTestCase
     {
         if (condition)
         {
-            successfulAssertions.add(assertionMessage);
+            successfulAssertions.add(assertionId + ": " + assertionMessage);
             workPad.addSuccessfulCondition(profileId, requirementId, testCaseId, testCaseName, testCaseDescriptionURL, assertionMessage);
             return;
         }

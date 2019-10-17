@@ -314,7 +314,17 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Process operation
          */
-        return graphStore.getRelationshipFromStore(guid);
+        Relationship relationship;
+        try {
+            relationship = graphStore.getRelationshipFromStore(guid);
+            repositoryValidator.validateRelationshipFromStore(repositoryName, guid, relationship, methodName);
+        }
+        catch (RelationshipNotKnownException e) {
+            log.error("{} relationship with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
+            relationship = null;
+        }
+        return relationship;
+
     }
 
     // getEntitySummary
@@ -410,7 +420,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Validation complete - ok to create new instance
          */
         Relationship relationship = repositoryHelper.getNewRelationship(repositoryName,
-                null,
+                metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
                 userId,
                 typeDef.getName(),
@@ -627,6 +637,28 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+            log.error("{} entity wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
@@ -720,6 +752,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
 
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+            log.error("{} entity wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
         repositoryValidator.validateInstanceType(repositoryName, entity);
 
         String entityTypeGUID = entity.getType().getTypeDefGUID();
@@ -794,6 +846,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+            log.error("{} relationship wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, relationshipGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
@@ -877,6 +949,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+            log.error("{} relationship wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, relationshipGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         repositoryValidator.validateInstanceType(repositoryName, relationship);
 
@@ -1037,6 +1129,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String  methodName = "purgeRelationship";
         final String  parameterName  = "deletedRelationshipGUID";
 
+
         /*
          * Validate parameters
          */
@@ -1060,6 +1153,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         /*
          * Validation is complete - ok to remove the relationship
          */
+
         graphStore.removeRelationshipFromStore(relationship.getGUID());
     }
 
@@ -1229,7 +1323,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.debug("{}: checking entity type {}", methodName, typeDef.getName());
+                // TODO - remove log.debug("{}: checking entity type {}", methodName, typeDef.getName());
 
                 String actualTypeName = typeDef.getName();
 
@@ -1240,10 +1334,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                        // TODO - remove log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                    // TODO - remove log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
 
 
                 }
@@ -1522,7 +1616,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.info("{}: checking entity type {}", methodName, typeDef.getName());
+                // TODO - remove log.info("{}: checking entity type {}", methodName, typeDef.getName());
 
                 String actualTypeName = typeDef.getName();
 
@@ -1533,10 +1627,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.info("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                        // TODO - remove log.info("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.info("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                    // TODO - remove log.info("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
 
                 }
 
@@ -1982,7 +2076,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         for (TypeDef typeDef : allTypeDefs) {
             if (typeDef.getCategory() == TypeDefCategory.ENTITY_DEF) {
 
-                log.debug("{}: checking entity type {}", methodName, typeDef.getName());
+                // TODO - remove log.debug("{}: checking entity type {}", methodName, typeDef.getName());
 
                 String actualTypeName = typeDef.getName();
 
@@ -1993,10 +2087,10 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
 
                     boolean typeMatch = repositoryHelper.isTypeOf(metadataCollectionId, actualTypeName, specifiedTypeName);
                     if (!typeMatch) {
-                        log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                        // TODO - remove log.debug("{}: not searching entity type {} because not a subtype of {}", methodName, actualTypeName, specifiedTypeName);
                         continue;
                     }
-                    log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
+                    // TODO - remove log.debug("{}: continuing with search for entity type {} because it is a subtype of {}", methodName, actualTypeName, specifiedTypeName);
 
 
                 }
@@ -2215,6 +2309,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         final String  methodName = "deleteRelationship";
         final String  parameterName = "obsoleteRelationshipGUID";
 
+
         /*
          * Validate parameters
          */
@@ -2331,6 +2426,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+            log.error("{} entity wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -2497,6 +2612,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
         }
 
         /*
+         * Check that the entity is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the entity is a reference copy - in which case we should not attempt to update it.
+         */
+        String entityHome = entity.getMetadataCollectionId();
+        if (entityHome != null && !entityHome.equals(metadataCollectionId)) {
+            log.error("{} entity wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    entityHome, methodName, entityGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        /*
          * Validation complete - ok to make changes
          */
         EntityDetail   updatedEntity = new EntityDetail(entity);
@@ -2544,6 +2679,27 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
          * Locate relationship
          */
         Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
+
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+            log.error("{} relationship wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, relationshipGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes
@@ -2609,6 +2765,26 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
                 newTypeDefSummary,
                 relationship.getProperties(),
                 methodName);
+
+        /*
+         * Check that the relationship is locally homed. If not throw an InvalidParameterException.
+         * This will happen if the relationship is a reference copy - in which case we should not attempt to update it.
+         */
+        String relationshipHome = relationship.getMetadataCollectionId();
+        if (relationshipHome != null && !relationshipHome.equals(metadataCollectionId)) {
+            log.error("{} relationship wth GUID {} is not locally homed so cannot be updated by the local repository", methodName, relationshipGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.INSTANCE_HOME_NOT_LOCAL;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipHome, methodName, relationshipGUID, metadataCollectionId, repositoryName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes

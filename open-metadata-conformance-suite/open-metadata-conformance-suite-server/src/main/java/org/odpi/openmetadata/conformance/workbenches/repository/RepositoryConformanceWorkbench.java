@@ -8,7 +8,13 @@ import org.odpi.openmetadata.conformance.tests.repository.connector.TestReposito
 import org.odpi.openmetadata.conformance.tests.repository.instances.TestClassificationHasSupportedEntities;
 import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedClassificationLifecycle;
 import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedEntityLifecycle;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedEntityPropertySearch;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedEntityReferenceCopyLifecycle;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedEntityReidentify;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedReferenceCopyClassificationLifecycle;
 import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedRelationshipLifecycle;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedRelationshipReferenceCopyLifecycle;
+import org.odpi.openmetadata.conformance.tests.repository.instances.TestSupportedRelationshipReidentify;
 import org.odpi.openmetadata.conformance.tests.repository.types.*;
 import org.odpi.openmetadata.conformance.workbenches.OpenMetadataConformanceWorkbench;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -147,9 +153,31 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             testFindTypeDefsByCategory.executeTest();
 
 
+            /*
+             * Lifecycle testcases
+             */
             List<TestSupportedEntityLifecycle>           entityTestCases                 = new ArrayList<>();
             List<TestSupportedRelationshipLifecycle>     relationshipTestCases           = new ArrayList<>();
             List<TestSupportedClassificationLifecycle>   classificationTestCases         = new ArrayList<>();
+            /*
+             * Reference Copy Lifecycle testcases
+             */
+            List<TestSupportedEntityReferenceCopyLifecycle>         entityReferenceCopyTestCases            = new ArrayList<>();
+            List<TestSupportedRelationshipReferenceCopyLifecycle>   relationshipReferenceCopyTestCases      = new ArrayList<>();
+            List<TestSupportedReferenceCopyClassificationLifecycle>   referenceCopyClassificationTestCases  = new ArrayList<>();
+            /*
+             * Reidentification testcases
+             */
+            List<TestSupportedEntityReidentify>         entityReidentifyTestCases            = new ArrayList<>();
+            List<TestSupportedRelationshipReidentify>   relationshipReidentifyTestCases      = new ArrayList<>();
+
+            /*
+             * Search testcases
+             */
+            List<TestSupportedEntityPropertySearch>         entityPropertySearchTestCases            = new ArrayList<>();
+            // TODO - add relationship search tests
+            //List<TestSupportedRelationshipPropertySearch>   relationshipPropertySearchTestCases      = new ArrayList<>();
+
 
             Map<String, EntityDef>  entityDefs         = testFindTypeDefsByCategory.getEntityDefs();
             List<RelationshipDef>   relationshipDefs   = testFindTypeDefsByCategory.getRelationshipDefs();
@@ -158,44 +186,74 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
             /*
              * Build the test cases for the entities, relationships and classifications
              */
-            if (entityDefs != null)
-            {
-                for (EntityDef  entityDef : entityDefs.values())
-                {
-                    TestSupportedEntityLifecycle testEntityLifecycle = new TestSupportedEntityLifecycle(workPad, entityDef);
 
-                    entityTestCases.add(testEntityLifecycle);
+                if (entityDefs != null) {
+                    for (EntityDef entityDef : entityDefs.values()) {
+
+                        if (entityDef.getName().equals("Project")) {
+
+                            TestSupportedEntityLifecycle testEntityLifecycle = new TestSupportedEntityLifecycle(workPad, entityDef);
+
+                            entityTestCases.add(testEntityLifecycle);
+
+                            TestSupportedEntityReferenceCopyLifecycle testEntityReferenceCopyLifecycle = new TestSupportedEntityReferenceCopyLifecycle(workPad, entityDef);
+
+                            entityReferenceCopyTestCases.add(testEntityReferenceCopyLifecycle);
+
+                            TestSupportedEntityReidentify testEntityReidentify = new TestSupportedEntityReidentify(workPad, entityDef);
+
+                            entityReidentifyTestCases.add(testEntityReidentify);
+
+                            TestSupportedEntityPropertySearch testEntityPropertySearch = new TestSupportedEntityPropertySearch(workPad, entityDef);
+
+                            entityPropertySearchTestCases.add(testEntityPropertySearch);
+
+                        }
+                    }
+                }
+
+
+            if (relationshipDefs != null) {
+                for (RelationshipDef relationshipDef : relationshipDefs) {
+
+                    if (relationshipDef.getName().equals("License")) {
+
+                        TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
+
+                        relationshipTestCases.add(testRelationshipLifecycle);
+
+                        TestSupportedRelationshipReferenceCopyLifecycle testRelationshipReferenceCopyLifecycle = new TestSupportedRelationshipReferenceCopyLifecycle(workPad, relationshipDef);
+
+                        relationshipReferenceCopyTestCases.add(testRelationshipReferenceCopyLifecycle);
+
+                        TestSupportedRelationshipReidentify testRelationshipReidentify = new TestSupportedRelationshipReidentify(workPad, relationshipDef);
+
+                        relationshipReidentifyTestCases.add(testRelationshipReidentify);
+                    }
                 }
             }
 
-            if (relationshipDefs != null)
-            {
-                for (RelationshipDef  relationshipDef : relationshipDefs)
-                {
-                    TestSupportedRelationshipLifecycle testRelationshipLifecycle = new TestSupportedRelationshipLifecycle(workPad, entityDefs, relationshipDef);
+            if (false) {
+                if (classificationDefs != null) {
+                    for (ClassificationDef classificationDef : classificationDefs) {
+                        TestClassificationHasSupportedEntities testClassificationHasSupportedEntities = new TestClassificationHasSupportedEntities(workPad, entityDefs, classificationDef);
 
-                    relationshipTestCases.add(testRelationshipLifecycle);
-                }
-            }
+                        testClassificationHasSupportedEntities.executeTest();
 
-            if (classificationDefs != null)
-            {
-                for (ClassificationDef  classificationDef : classificationDefs)
-                {
-                    TestClassificationHasSupportedEntities testClassificationHasSupportedEntities = new TestClassificationHasSupportedEntities(workPad, entityDefs, classificationDef);
+                        List<EntityDef> supportedEntitiesForClassification = testClassificationHasSupportedEntities.getSupportedEntityDefsForClassification();
 
-                    testClassificationHasSupportedEntities.executeTest();
+                        if (supportedEntitiesForClassification != null) {
+                            for (EntityDef entityDef : supportedEntitiesForClassification) {
+                                TestSupportedClassificationLifecycle testClassificationLifecycle =
+                                        new TestSupportedClassificationLifecycle(workPad, entityDef, classificationDef);
 
-                    List<EntityDef>  supportedEntitiesForClassification = testClassificationHasSupportedEntities.getSupportedEntityDefsForClassification();
+                                classificationTestCases.add(testClassificationLifecycle);
 
-                    if (supportedEntitiesForClassification != null)
-                    {
-                        for (EntityDef entityDef : supportedEntitiesForClassification)
-                        {
-                            TestSupportedClassificationLifecycle testClassificationLifecycle =
-                                    new TestSupportedClassificationLifecycle(workPad, entityDef, classificationDef);
+                                TestSupportedReferenceCopyClassificationLifecycle testReferenceCopyClassificationLifecycle =
+                                        new TestSupportedReferenceCopyClassificationLifecycle(workPad, entityDef, classificationDef);
 
-                            classificationTestCases.add(testClassificationLifecycle);
+                                referenceCopyClassificationTestCases.add(testReferenceCopyClassificationLifecycle);
+                            }
                         }
                     }
                 }
@@ -214,10 +272,56 @@ public class RepositoryConformanceWorkbench extends OpenMetadataConformanceWorkb
                 testCase.executeTest();
             }
 
+
             for (TestSupportedClassificationLifecycle testCase : classificationTestCases)
             {
                 testCase.executeTest();
             }
+
+            /*
+             * Validate all of the entity and relationship reference copies
+             */
+            for (TestSupportedEntityReferenceCopyLifecycle testCase : entityReferenceCopyTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            for (TestSupportedRelationshipReferenceCopyLifecycle testCase : relationshipReferenceCopyTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            for (TestSupportedReferenceCopyClassificationLifecycle testCase : referenceCopyClassificationTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            /*
+             * Validate all of the entity and relationship reidentify operations
+             */
+            for (TestSupportedEntityReidentify testCase : entityReidentifyTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            for (TestSupportedRelationshipReidentify testCase : relationshipReidentifyTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            /*
+             * Validate all of the entity and relationship property searches
+             */
+            for (TestSupportedEntityPropertySearch testCase : entityPropertySearchTestCases)
+            {
+                testCase.executeTest();
+            }
+
+            // TODO - add relationship search tests
+            //for (TestSupportedRelationshipPropertySearch testCase : relationshipPropertySearchTestCases)
+           // {
+            //    testCase.executeTest();
+           // }
 
             /*
              * Retrieve the type definitions by external standard mappings

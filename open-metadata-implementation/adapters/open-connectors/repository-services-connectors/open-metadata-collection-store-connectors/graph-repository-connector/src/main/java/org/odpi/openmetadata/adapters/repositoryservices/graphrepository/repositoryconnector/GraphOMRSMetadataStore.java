@@ -47,12 +47,14 @@ import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.out;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSConstants.*;
 import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSGraphFactory.corePropertyMixedIndexMappings;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -774,14 +776,23 @@ class GraphOMRSMetadataStore {
 
 
     /*
-     *  Need to perform some checks on both the relationship and the entities referred to by the relationship ends.
+     *  This method will save a copy of the relationship to the graph.
      *
-     *  First, on each of the relationship ends, check for the existence of an entity with the GUID of the proxy in
-     *  the passed relationship. For eac h end:
+     *  The save could be the result of creation of a new relationship or it could be an update to an existing relationship.
+     *  For example, a property update or soft delete of a remotely homed relationship. Accordingly, there may already be
+     *  an edge in the graph, or not.
+     *
+     *  If there is already an edge - update it. If there is not an existing edge create one and map it.
+     *
+     *  In bth cases (create and update)...
+     *
+     *  Check that both the entities exist in the graph, using the entity GUID of the proxy in
+     *  the passed relationship. For each end:
+     *
      *
      *  If there is no entity that has the GUID of the passed entity, create a proxy entity using the passed entity.
      *
-     *  If there is an entity with the same GUID then it is reused. This is currently true for any of the following
+     *  If there is an entity with the same GUID then use it. The existing entity may be any of the following
      *  cases:
      *     * An existing EntityDetail for a locally homed entity
      *     * An existing EntityDetail for a remotely homed entity - i.e. a reference copy
@@ -791,8 +802,8 @@ class GraphOMRSMetadataStore {
      *  the stored proxy versus the passed proxy. It is not clear what to do if certain fields differ. For example,
      *  the core properties of the two proxies could differ - they could have been created/updated at different times by
      *  different users. But their unique attributes should match. If they differ it is not clear which is 'correct'. For
-     *  this reason the repository will currently treat a procxy the same as the other two cases, and will use what it
-     *  alreday has stored, ignoring the specific content of the proxy passed in the relationship.
+     *  this reason the repository will currently treat a proxy the same as the other two cases, and will use what it
+     *  already has stored, ignoring the specific content of the proxy passed in the relationship.
      *
      *
      *  In summary
@@ -827,6 +838,7 @@ class GraphOMRSMetadataStore {
 
         // Process end 1
         EntityProxy entityOne = relationship.getEntityOneProxy();
+
         Iterator<Vertex> vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityOne.getGUID());
 
         if (vertexIt.hasNext()) {
@@ -1028,7 +1040,7 @@ class GraphOMRSMetadataStore {
                     errorCode.getUserAction());
         }
 
-        log.debug("{} Commit tx containing creation of edge", methodName);
+        log.debug("{} Commit tx containing creation or update of edge", methodName);
         g.tx().commit();
 
         return;
@@ -1452,7 +1464,7 @@ class GraphOMRSMetadataStore {
     synchronized void removeRelationshipFromStore(String relationshipGUID)
     {
         final String methodName = "removeRelationshipFromStore";
-        // TODO - could capture existing entity and move it to 'history'
+        // TODO - could capture existing relationship and move it to 'history'
 
         // Look in the graph
         GraphTraversalSource g = instanceGraph.traversal();

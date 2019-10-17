@@ -457,6 +457,8 @@ public enum OMRSErrorCode
             "A null log record originator has been passed by the audit log to the audit log store.",
             "The audit log store throws an exception and the log record is not written to the audit log store.",
             "This is probably an internal error in the audit log.  Raise a Github issue to get this fixed."),
+
+
     REPOSITORY_NOT_AVAILABLE(404, "OMRS-REPOSITORY-404-001 ",
             "The open metadata repository connector for server {0} is not active and is unable to service the {1} request",
             "The system is unable to retrieve any metadata properties from this repository.",
@@ -586,6 +588,10 @@ public enum OMRSErrorCode
            "During the {0} operation, open metadata repository {1} retrieved an instance (guid={2}) from its metadata store that has an inactive type called {3} (type guid = {4})",
            "There is an internal error in the OMRS repository connector.",
            "Raise a Github issue to get this fixed."),
+    INSTANCE_HOME_NOT_LOCAL(500, "OMRS-METADATA-COLLECTION-500-015 ",
+            "The home metadata collection identifier {0} found by method {1} for instance with GUID {2} is not the metadata collection identifier {3} for the local metadata repository {4}",
+            "A request to update a metadata instance (entity or relationship) has been encountered on a reference copy metadata instance.",
+            "Locate the open metadata repository that has the home instance and perform the update at that repository."),
     NULL_COHORT_NAME(500, "OMRS-COHORT-MANAGER-500-001 ",
             "OMRSCohortManager has been initialized with a null cohort name",
             "There is an internal error in the OMRS initialization.",
@@ -748,6 +754,7 @@ public enum OMRSErrorCode
             "A client-side exception was received from API call {0} to repository {1}.  The error message was {2}",
             "The server has issued a call to the open metadata repository REST API services in a remote repository and has received an exception from the local client libraries.",
             "Look for errors in the local repository's audit log and console to understand and correct the source of the error.")
+
 
     ;
 

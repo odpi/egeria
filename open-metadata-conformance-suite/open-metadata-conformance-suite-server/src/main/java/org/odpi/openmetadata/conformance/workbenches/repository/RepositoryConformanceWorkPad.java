@@ -442,46 +442,47 @@ public class RepositoryConformanceWorkPad extends OpenMetadataConformanceWorkben
                 List<OpenMetadataConformanceRequirementResults> requirementResultsList = new ArrayList<>();
                 OpenMetadataConformanceRequirementResults       requirementResults;
 
-                for (RepositoryConformanceProfileRequirement requirement : requirements)
-                {
-                    requirementResults = new OpenMetadataConformanceRequirementResults();
+                for (RepositoryConformanceProfileRequirement requirement : requirements) {
 
-                    requirementResults.setId(requirement.getRequirementId());
-                    requirementResults.setName(requirement.getName());
-                    requirementResults.setDescription(requirement.getDescription());
-                    requirementResults.setDocumentationURL(requirement.getDocumentationURL());
+                    /*
+                     * If (and only if) this requirement is relevant to the current profile, process it...
+                     */
+                    if (requirement.getProfileId().equals(profile.getProfileId())) {
 
-                    List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+                        requirementResults = new OpenMetadataConformanceRequirementResults();
 
-                    for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence)
-                    {
-                        if (testEvidenceItem != null)
-                        {
-                            if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue())
-                            {
-                                requirementTestEvidence.add(testEvidenceItem);
+                        requirementResults.setId(requirement.getRequirementId());
+                        requirementResults.setName(requirement.getName());
+                        requirementResults.setDescription(requirement.getDescription());
+                        requirementResults.setDocumentationURL(requirement.getDocumentationURL());
+
+                        List<OpenMetadataConformanceTestEvidence> requirementTestEvidence = new ArrayList<>();
+
+                        for (OpenMetadataConformanceTestEvidence testEvidenceItem : profileTestEvidence) {
+                            if (testEvidenceItem != null) {
+                                if (testEvidenceItem.getRequirementId().intValue() == requirementResults.getId().intValue()) {
+                                    requirementTestEvidence.add(testEvidenceItem);
+                                }
                             }
                         }
+
+                        positiveTestEvidence = new ArrayList<>();
+                        negativeTestEvidence = new ArrayList<>();
+
+                        requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
+                                positiveTestEvidence,
+                                negativeTestEvidence));
+
+                        if (!positiveTestEvidence.isEmpty()) {
+                            requirementResults.setPositiveTestEvidence(positiveTestEvidence);
+                        }
+
+                        if (!negativeTestEvidence.isEmpty()) {
+                            requirementResults.setNegativeTestEvidence(negativeTestEvidence);
+                        }
+
+                        requirementResultsList.add(requirementResults);
                     }
-
-                    positiveTestEvidence = new ArrayList<>();
-                    negativeTestEvidence = new ArrayList<>();
-
-                    requirementResults.setConformanceStatus(super.processEvidence(requirementTestEvidence,
-                                                                                  positiveTestEvidence,
-                                                                                  negativeTestEvidence));
-
-                    if (! positiveTestEvidence.isEmpty())
-                    {
-                        requirementResults.setPositiveTestEvidence(positiveTestEvidence);
-                    }
-
-                    if (! negativeTestEvidence.isEmpty())
-                    {
-                        requirementResults.setNegativeTestEvidence(negativeTestEvidence);
-                    }
-
-                    requirementResultsList.add(requirementResults);
                 }
 
                 profileResults.setRequirementResults(requirementResultsList);

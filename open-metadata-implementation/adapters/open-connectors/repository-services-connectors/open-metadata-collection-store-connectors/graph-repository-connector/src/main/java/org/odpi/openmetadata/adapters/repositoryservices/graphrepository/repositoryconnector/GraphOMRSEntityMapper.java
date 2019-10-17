@@ -70,6 +70,10 @@ public class GraphOMRSEntityMapper {
             return vp.value();
     }
 
+    /*
+     * method to add/set property on vertex.
+     * qualfiiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
+     */
     private void addProperty(Vertex vertex, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
         InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
         if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
@@ -86,6 +90,10 @@ public class GraphOMRSEntityMapper {
         }
     }
 
+    /*
+     * method to remove property from vertex.
+     * qualfiiedPropName is the non-prefixed name - qualified by typename if a TDA; or simple core property name
+     */
     private void removeProperty(Vertex vertex, String qualifiedPropName) {
         // no value has been specified - remove the property from the vertex
         VertexProperty vp = vertex.property(getPropertyKeyEntity(qualifiedPropName));
@@ -93,6 +101,21 @@ public class GraphOMRSEntityMapper {
             vp.remove();
         }
     }
+
+    /*
+     * method to remove property from vertex. Easier to use for core properties where a prefixed name is available.
+     * prefixedPropName is the prefixed name - i.e. it includes the 've', 'er' or 'vc' prefix.
+     */
+    private void removeCoreProperty(Vertex vertex, String prefixedPropName) {
+        // no value has been specified - remove the property from the vertex
+        VertexProperty vp = vertex.property(prefixedPropName);
+        if (vp != null) {
+            vp.remove();
+        }
+    }
+
+
+
 
 
     // Inbound methods - i.e. writing to store
@@ -301,63 +324,63 @@ public class GraphOMRSEntityMapper {
             vertex.property(PROPERTY_KEY_ENTITY_CREATED_BY, entity.getCreatedBy());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_CREATED_BY);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_CREATED_BY);
         }
 
         if (entity.getCreateTime() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_CREATE_TIME, entity.getCreateTime());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_CREATE_TIME);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_CREATE_TIME);
         }
 
         if (entity.getUpdatedBy() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_UPDATED_BY, entity.getUpdatedBy());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_UPDATED_BY);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_UPDATED_BY);
         }
 
         if (entity.getUpdateTime() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_UPDATE_TIME, entity.getUpdateTime());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_UPDATE_TIME);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_UPDATE_TIME);
         }
 
         if (entity.getInstanceProvenanceType() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_PROVENANCE_TYPE, entity.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
         }
 
         if (entity.getStatus() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_STATUS, entity.getStatus().getOrdinal());                              // ** ordinal mapping
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_STATUS);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_STATUS);
         }
 
         if (entity.getStatusOnDelete() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_STATUS_ON_DELETE, entity.getStatusOnDelete().getOrdinal());            // ** ordinal mapping
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_STATUS_ON_DELETE);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_STATUS_ON_DELETE);
         }
 
         if (entity.getInstanceURL() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_URL, entity.getInstanceURL());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_URL);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_URL);
         }
 
         if (entity.getInstanceLicense() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_LICENSE, entity.getInstanceLicense());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
         }
 
         // maintainedBy is a List<String>. This could be implemented using multi-properties for Entity and Classification instances,
@@ -387,14 +410,14 @@ public class GraphOMRSEntityMapper {
             }
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
         }
 
         if (entity.getReplicatedBy() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_REPLICATED_BY, entity.getReplicatedBy());
         }
         else {
-            removeProperty(vertex, PROPERTY_KEY_ENTITY_REPLICATED_BY);
+            removeCoreProperty(vertex, PROPERTY_KEY_ENTITY_REPLICATED_BY);
         }
 
 

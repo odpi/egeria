@@ -70,11 +70,15 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
     private static final String assertion22    = testCaseId + "-22";
     private static final String assertionMsg22 = " entity no longer retrievable after delete.";
     private static final String assertion23    = testCaseId + "-23";
-    private static final String assertionMsg23 = " entity restored version number is ";
+    private static final String assertionMsg23 = " entity restored ";
     private static final String assertion24    = testCaseId + "-24";
-    private static final String assertionMsg24 = " entity purged.";
+    private static final String assertionMsg24 = " entity restored version number is ";
+    private static final String assertion25    = testCaseId + "-25";
+    private static final String assertionMsg25 = " entity retrieved following restore ";
+    private static final String assertion26    = testCaseId + "-26";
+    private static final String assertionMsg26 = " entity purged.";
 
-    private static final String discoveredProperty_undoSupport = " undo support";
+    private static final String discoveredProperty_undoSupport       = " undo support";
     private static final String discoveredProperty_softDeleteSupport = " soft delete support";
 
 
@@ -197,11 +201,13 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                         testTypeName + assertionMsg9,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
                         assertion10,
                         testTypeName + assertionMsg10,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                         assertion11,
                         testTypeName + assertionMsg11,
@@ -230,6 +236,7 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
          * Update entity status
          */
         long  nextVersion = newEntity.getVersion() + 1;
+
         for (InstanceStatus validInstanceStatus : entityDef.getValidInstanceStatusList())
         {
             if (validInstanceStatus != InstanceStatus.DELETED)
@@ -241,16 +248,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                 testTypeName + assertionMsg13,
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
                 assertCondition((updatedEntity.getStatus() == validInstanceStatus),
                                 assertion14,
                                 testTypeName + assertionMsg14 + validInstanceStatus.getName(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                                 RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
                 assertCondition((updatedEntity.getVersion() >= nextVersion),
                                 assertion15,
                                 testTypeName + assertionMsg15 + nextVersion,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                                RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
+
                 nextVersion = updatedEntity.getVersion() + 1;
             }
         }
@@ -344,11 +354,19 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             {
                 super.addDiscoveredProperty(testTypeName + discoveredProperty_undoSupport,
                                             "Disabled",
-                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getProfileId(),
+                                            RepositoryConformanceProfileRequirement.RETURN_PREVIOUS_VERSION.getRequirementId());
 
             }
         }
+
+        /*
+         * Test that the entity can be soft deleted, that the soft deleted entity has a higher version.
+         * Verify that the soft deleted entity cannot be retrieved, but can be restored and thatthe restored entity has
+         * a valid version (higher than when it was deleted).
+         * Check that the restored entity can be retrieved.
+         */
+
 
         try
         {
@@ -358,16 +376,16 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                                                                          newEntity.getGUID());
             super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
                                         "Enabled",
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
 
             assertCondition(((deletedEntity != null) && (deletedEntity.getVersion() >= nextVersion)),
                             assertion21,
                             testTypeName + assertionMsg21 + nextVersion,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getProfileId(),
+                            RepositoryConformanceProfileRequirement.INSTANCE_VERSIONING.getRequirementId());
 
-            nextVersion = deletedEntity.getVersion() + 1;
+
 
             try
             {
@@ -376,26 +394,48 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                 assertCondition((false),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
             catch (EntityNotKnownException exception)
             {
                 assertCondition((true),
                                 assertion22,
                                 testTypeName + assertionMsg22,
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
             }
+
+
+            /*
+             * Performing the restore should advance the version number again
+             */
+            nextVersion = deletedEntity.getVersion() + 1;
+
 
             EntityDetail restoredEntity = metadataCollection.restoreEntity(workPad.getLocalServerUserId(),
                                                                            newEntity.getGUID());
 
-            assertCondition(((restoredEntity != null) && (restoredEntity.getVersion() >= nextVersion)),
+            assertCondition((restoredEntity != null),
                             assertion23,
-                            testTypeName + assertionMsg23 + nextVersion,
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                            RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                            testTypeName + assertionMsg23,
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getProfileId(),
+                            RepositoryConformanceProfileRequirement.UNDELETE_INSTANCE.getRequirementId());
+
+            assertCondition((restoredEntity.getVersion() >= nextVersion),
+                    assertion24,
+                    testTypeName + assertionMsg24 + nextVersion,
+                    RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.NEW_VERSION_NUMBER_ON_RESTORE.getRequirementId());
+
+            /*
+             * Verify that entity can be retrieved following restore
+             */
+            verifyCondition((restoredEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), restoredEntity.getGUID()))),
+                    assertion25,
+                    testTypeName + assertionMsg25,
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
+                    RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
 
             metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
                                             newEntity.getType().getTypeDefGUID(),
@@ -406,8 +446,8 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         {
             super.addDiscoveredProperty(testTypeName + discoveredProperty_softDeleteSupport,
                                         "Disabled",
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getProfileId(),
+                                        RepositoryConformanceProfileRequirement.SOFT_DELETE_INSTANCE.getRequirementId());
         }
 
         metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
@@ -420,16 +460,16 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
             metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID());
 
             assertCondition((false),
-                            assertion24,
-                            testTypeName + assertionMsg24,
+                            assertion26,
+                            testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
         }
         catch (EntityNotKnownException exception)
         {
             assertCondition((true),
-                            assertion24,
-                            testTypeName + assertionMsg24,
+                            assertion26,
+                            testTypeName + assertionMsg26,
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                             RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
         }

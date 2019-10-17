@@ -2053,6 +2053,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
             entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
         }
+        // TODO - clean up
+        //*
+        // * Ensure that the home metadataCollectionID is in the proxy....
+        // */
+        //if (entityOneProxy.getMetadataCollectionId() == null) {
+        //    entityOneProxy.setMetadataCollectionId(metadataCollectionId);
+        //}
+        ///*
+        // * Ensure that the home metadataCollectionName is in the proxy....
+        // */
+        //if (entityOneProxy.getMetadataCollectionName() == null) {
+        //    entityOneProxy.setMetadataCollectionName(repositoryName);
+        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
@@ -2070,6 +2083,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
             entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
         }
+        // TODO - clean up
+        //*
+        // * Ensure that the home metadataCollectionID is in the proxy....
+        // */
+        //if (entityTwoProxy.getMetadataCollectionId() == null) {
+        //    entityTwoProxy.setMetadataCollectionId(metadataCollectionId);
+        //}
+        ///*
+        // * Ensure that the home metadataCollectionName is in the proxy....
+        // */
+        //if (entityTwoProxy.getMetadataCollectionName() == null) {
+        //    entityTwoProxy.setMetadataCollectionName(repositoryName);
+        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
@@ -2176,6 +2202,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityOneDetail = repositoryStore.getEntity(entityOneGUID);
             entityOneProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityOneDetail);
         }
+        // TODO - clean up
+        //*
+        // * Ensure that the home metadataCollectionID is in the proxy....
+        // */
+        //if (entityOneProxy.getMetadataCollectionId() == null) {
+        //    entityOneProxy.setMetadataCollectionId(metadataCollectionId);
+        //}
+        ///*
+        // * Ensure that the home metadataCollectionName is in the proxy....
+        // */
+        //if (entityOneProxy.getMetadataCollectionName() == null) {
+        //    entityOneProxy.setMetadataCollectionName(repositoryName);
+        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityOneGUID, entityOneProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityOneProxy, methodName);
@@ -2193,6 +2232,19 @@ public class InMemoryOMRSMetadataCollection extends OMRSDynamicTypeMetadataColle
             EntityDetail entityTwoDetail = repositoryStore.getEntity(entityTwoGUID);
             entityTwoProxy = repositoryHelper.getNewEntityProxy(repositoryName, entityTwoDetail);
         }
+        // TODO - clean up
+        //*
+        // * Ensure that the home metadataCollectionID is in the proxy....
+        // */
+        //if (entityTwoProxy.getMetadataCollectionId() == null) {
+        //    entityTwoProxy.setMetadataCollectionId(metadataCollectionId);
+        //}
+        ///*
+        // * Ensure that the home metadataCollectionName is in the proxy....
+        // */
+        // if (entityTwoProxy.getMetadataCollectionName() == null) {
+        //     entityTwoProxy.setMetadataCollectionName(repositoryName);
+        //}
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityTwoGUID, entityTwoProxy, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entityTwoProxy, methodName);
