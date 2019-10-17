@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.services;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb;
 
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.core.JanusGraphFactory;
@@ -14,11 +14,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.*;
 
-public class GraphFactory {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphFactory.class);
+public class BerkeleyJanusFactory {
+
+    private static final Logger log = LoggerFactory.getLogger(BerkeleyJanusFactory.class);
 
 
     public static JanusGraph openMainGraph() throws RepositoryErrorException {
@@ -58,10 +59,10 @@ public class GraphFactory {
             log.error("{} could not open graph stored at {}", "open", storagePath);
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, "open", GraphFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, "open", BerkeleyJanusFactory.class.getName());
 
             throw new RepositoryErrorException(400,
-                    GraphFactory.class.getName(),
+                    BerkeleyJanusFactory.class.getName(),
                     "open",
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -109,7 +110,7 @@ public class GraphFactory {
             OpenLineageErrorCode errorCode = OpenLineageErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
             throw new RepositoryErrorException(400,
-                    GraphFactory.class.getName(),
+                    BerkeleyJanusFactory.class.getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
@@ -123,7 +124,7 @@ public class GraphFactory {
                 management.makeVertexLabel(label).make();
         }
 
-       return management;
+        return management;
 
     }
 }

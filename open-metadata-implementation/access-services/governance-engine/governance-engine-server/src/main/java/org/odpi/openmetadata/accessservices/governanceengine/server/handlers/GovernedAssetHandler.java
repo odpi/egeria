@@ -16,6 +16,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
@@ -45,6 +47,7 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.QUALIFIED_NAME;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SCHEMA_ATTRIBUTE;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_LABELS;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_PROPERTIES;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SECURITY_TAG;
@@ -158,8 +161,19 @@ public class GovernedAssetHandler {
         return false;
     }
 
-    public boolean isSchemaElement(EntityDetail entityDetail) {
-        return entityDetail.getType().getTypeDefSuperTypes().stream().anyMatch(typeDefLink -> typeDefLink.getName().equals("SchemaElement"));
+    public boolean isSchemaElement(EntityDetail entityDetail) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
+        List<TypeDefLink> typeDefSuperTypes = entityDetail.getType().getTypeDefSuperTypes();
+        boolean schemaAttribute = typeDefSuperTypes.stream().anyMatch(typeDefLink -> typeDefLink.getName().equals(SCHEMA_ATTRIBUTE));
+        if (schemaAttribute) {
+            return true;
+        }
+        for(TypeDefLink typeDefLink : typeDefSuperTypes){
+            TypeDef typeDef = metadataCollection.getTypeDefByName(GOVERNANCE_ENGINE, typeDefLink.getName());
+            if(typeDef.getSuperType().getName().equals(SCHEMA_ATTRIBUTE)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public GovernedAsset getGovernedAsset(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
@@ -321,18 +335,18 @@ public class GovernedAssetHandler {
         InstanceProperties properties = new InstanceProperties();
         OMRSRepositoryHelper repositoryHelper = repositoryConnector.getRepositoryHelper();
 
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getName(), NAME, properties, repositoryHelper);
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getDescription(), DESCRIPTION, properties, repositoryHelper);
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getType(), TYPE, properties, repositoryHelper);
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getVersion(), VERSION, properties, repositoryHelper);
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getPatchLevel(), PATCH_LEVEL, properties, repositoryHelper);
-        addSoftwareServerCapabilityProperty(softwareServerCapability.getSource(), SOURCE, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getName(), NAME, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getDescription(), DESCRIPTION, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getType(), TYPE, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getVersion(), VERSION, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getPatchLevel(), PATCH_LEVEL, properties, repositoryHelper);
+        addStringProperty(softwareServerCapability.getSource(), SOURCE, properties, repositoryHelper);
 
         return properties;
     }
 
-    private void addSoftwareServerCapabilityProperty(String propertyValue, String propertyName, InstanceProperties properties, OMRSRepositoryHelper repositoryHelper) {
-        String methodName = "addSoftwareServerCapabilityProperty";
+    private void addStringProperty(String propertyValue, String propertyName, InstanceProperties properties, OMRSRepositoryHelper repositoryHelper) {
+        String methodName = "addStringProperty";
 
         if (propertyValue != null) {
             repositoryHelper.addStringPropertyToInstance(GOVERNANCE_ENGINE, properties, propertyName, propertyValue, methodName);

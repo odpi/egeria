@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.services;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
@@ -13,7 +13,8 @@ import org.slf4j.LoggerFactory;
 
 import java.time.temporal.ChronoUnit;
 
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.corePropertyTypes;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.corePropertyTypes;
+
 
 public class IndexingFactory {
 

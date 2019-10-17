@@ -1,7 +1,6 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.services;
-
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -14,10 +13,15 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
-import org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,15 +31,55 @@ import java.io.OutputStream;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.inE;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.outE;
-import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.until;
-import static org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices.*;
-import static org.odpi.openmetadata.governanceservers.openlineage.util.GraphConstants.*;
+import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.CassandraJanusBufferFactory.openBufferGraph;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class GraphServices {
+public class JanusConnector extends OpenLineageConnectorBase {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphServices.class);
+    private static final Logger log = LoggerFactory.getLogger(JanusConnector.class);
+    private JanusGraph mainGraph;
+    private JanusGraph bufferGraph;
+    private JanusGraph historyGraph;
+    private JanusGraph mockGraph;
+
+    /**
+     * Initialize the connector.
+     *
+     * @param connectorInstanceId  - unique id for the connector instance - useful for messages etc
+     * @param connectionProperties - POJO for the configuration used to create the connector.
+     */
+    @Override
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
+
+        super.initialize(connectorInstanceId, connectionProperties);
+        this.connectionProperties = connectionProperties;
+        initializeGraphDB();
+    }
+
+    private void initializeGraphDB(){
+
+        String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
+        switch (graphDB){
+            case "berkeleydb":
+                try {
+                    this.mainGraph = BerkeleyJanusFactory.openMainGraph();
+                    this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
+                    this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
+                    this.mockGraph = BerkeleyJanusFactory.openMockGraph();
+                } catch (Exception e) {
+                    log.error("{} Could not open graph database", "JanusConnector"); //TODO  elaborate error
+                }
+                break;
+            case "cassandra":
+            default:
+                this.bufferGraph = openBufferGraph(connectionProperties);
+        }
+    }
+
+    @Override
+    public void addEntity(ProcessLineageEvent processLineageEvent) {
+    }
 
     /**
      * Returns a lineage subgraph.
@@ -123,10 +167,10 @@ public class GraphServices {
         Graph endToEndGraph = (Graph)
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
-                        until(inE(edgeLabel).count().is(0)).
-                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
-                        until(outE(edgeLabel).count().is(0)).
-                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                                until(inE(edgeLabel).count().is(0)).
+                                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
+                                until(outE(edgeLabel).count().is(0)).
+                                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
                         ).cap("subGraph").next();
 
         return janusGraphToGraphson(endToEndGraph);
@@ -245,7 +289,8 @@ public class GraphServices {
     }
 
     /**
-     * Returns a subgraph containing all columns or tables connected to the queried glossary term.
+     * Returns a subgraph containing all columns or tables connected to the queried glossary term, as well as all
+     * columns or tables connected to synonyms of the queried glossary term.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
      * @param guid  The guid of the glossary term of which the lineage is queried of.
@@ -253,10 +298,13 @@ public class GraphServices {
      */
     private String glossary(Graph graph, String guid) {
         GraphTraversalSource g = graph.traversal();
+
         Graph subGraph = (Graph)
-                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
-                        inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV().
-                        cap("subGraph").next();
+                g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid)
+                        .emit().
+                        repeat(bothE(EDGE_LABEL_GLOSSARYTERM_TO_GLOSSARYTERM).subgraph("subGraph").simplePath().bothV())
+                        .inE(EDGE_LABEL_SEMANTIC).subgraph("subGraph").outV()
+                        .cap("subGraph").next();
         return janusGraphToGraphson(subGraph);
     }
 
@@ -366,5 +414,4 @@ public class GraphServices {
         }
         return graph;
     }
-
 }
