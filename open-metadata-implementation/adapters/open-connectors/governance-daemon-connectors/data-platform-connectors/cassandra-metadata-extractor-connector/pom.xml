@@ -45,7 +45,11 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-services-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>cassandra-data-store-connector</artifactId>
         </dependency>
     </dependencies>
 

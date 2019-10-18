@@ -26,10 +26,6 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     private static final String DEPLOYED_DATABASE_SCHEMA_URL_TEMPLATE = "/servers/{0}/open-metadata/access-services" +
             "/data-platform/users/{1}/deployed-database-schema";
 
-
-    private String serverName;
-    private String serverPlatformRootURL;
-
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
@@ -44,7 +40,7 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     public DataPlatformClient(String serverName, String serverPlatformURLRoot) throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot);
         this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformURLRoot;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
     }
 
 
@@ -61,7 +57,7 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     public DataPlatformClient(String serverName, String serverPlatformURLRoot, String userId, String password) throws InvalidParameterException {
         super(serverName, serverPlatformURLRoot, userId, password);
         this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformURLRoot;
+        this.serverPlatformURLRoot = serverPlatformURLRoot;
     }
 
     /**

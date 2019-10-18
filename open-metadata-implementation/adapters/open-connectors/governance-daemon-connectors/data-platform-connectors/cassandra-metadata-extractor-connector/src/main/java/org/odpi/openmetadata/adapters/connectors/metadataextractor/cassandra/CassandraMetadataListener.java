@@ -1,19 +1,59 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra;
 
 import com.datastax.oss.driver.api.core.metadata.schema.*;
 import com.datastax.oss.driver.api.core.type.UserDefinedType;
 import edu.umd.cs.findbugs.annotations.NonNull;
-import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformDeployedDatabaseSchema;
+import org.odpi.openmetadata.accessservices.dataplatform.client.DataPlatformClient;
+import org.odpi.openmetadata.accessservices.dataplatform.properties.asset.DeployedDatabaseSchema;
+import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 
 import java.io.Closeable;
+import java.util.UUID;
 
 public class CassandraMetadataListener implements SchemaChangeListener,Runnable {
 
-    DataPlatformDeployedDatabaseSchema dataPlatformDeployedDatabaseSchema;
+    private String userId;
+    private OMRSAuditLog omrsAuditLog;
+    private CassandraMetadataExtractorAuditCode auditLog;
+    private DataPlatformClient dataPlatformClient;
+
+    public CassandraMetadataListener(String userId, DataPlatformClient dataPlatformClient) {
+        this.userId = userId;
+        this.dataPlatformClient = dataPlatformClient;
+    }
+
+    public CassandraMetadataListener(DataPlatformClient dataPlatformClient) {
+        this.dataPlatformClient = dataPlatformClient;
+    }
 
     @Override
     public void onKeyspaceCreated(@NonNull KeyspaceMetadata keyspaceMetadata) {
 
+        String actionDescription = "creating Cassandra Keyspace";
+        try {
+            DeployedDatabaseSchema deployedDatabaseSchema = null;
+            deployedDatabaseSchema.setName(keyspaceMetadata.getName().toString());
+            deployedDatabaseSchema.setQualifiedName(keyspaceMetadata.getName().asCql(true));
+            deployedDatabaseSchema.setGuid(UUID.randomUUID().toString());
+            deployedDatabaseSchema.setDisplayName(keyspaceMetadata.getName().toString());
+            deployedDatabaseSchema.setAdditionalProperties(keyspaceMetadata.getReplication());
+            dataPlatformClient.createDeployedDatabaseSchema(userId, deployedDatabaseSchema);
+        } catch (InvalidParameterException | PropertyServerException | NullPointerException e){
+            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_CREATING_KEYSPACE;
+            omrsAuditLog.logRecord(
+                    actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+        }
 
     }
 

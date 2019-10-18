@@ -3,12 +3,12 @@
 
 package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra;
 
-import org.odpi.openmetadata.dataplatformservices.api.DataPlatformConnectorProvider;
+import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorProvider;
 
 /**
  * The type Apache Cassandra Database Metadata Extractor provider.
  */
-public class CassandraMetadataExtractorProvider extends DataPlatformConnectorProvider {
+public class CassandraMetadataExtractorProvider extends DataPlatformMetadataExtractorProvider {
 
     /**
      * Typical constructor

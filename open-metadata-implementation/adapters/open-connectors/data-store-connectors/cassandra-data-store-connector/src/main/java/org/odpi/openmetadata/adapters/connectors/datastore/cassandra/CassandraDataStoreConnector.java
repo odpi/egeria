@@ -16,12 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 
-
-/**
- *
- */
-public class CassandraDataStoreConnector extends ConnectorBase
-{
+public class CassandraDataStoreConnector extends ConnectorBase {
     private static final Logger log = LoggerFactory.getLogger(CassandraDataStoreConnector.class);
     private CassandraDataStoreAuditCode auditLog;
     private OMRSAuditLog omrsAuditLog;
@@ -29,7 +24,7 @@ public class CassandraDataStoreConnector extends ConnectorBase
     private CqlSession cqlSession;
     private String username = null;
     private String password = null;
-    private String serverAddresses =null;
+    private String serverAddresses = null;
     private Integer port = 9042;
 
     /**
@@ -50,7 +45,7 @@ public class CassandraDataStoreConnector extends ConnectorBase
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
         super.initialize(connectorInstanceId, connectionProperties);
 
-        final String actionDescription = "initialize";
+        final String actionDescription = "initialize Cassandra Data Store Connection";
 
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
@@ -58,6 +53,7 @@ public class CassandraDataStoreConnector extends ConnectorBase
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
         this.password = connectionProperties.getClearPassword();
+        this.username = connectionProperties.getDisplayName();
 
         super.initialize(connectorInstanceId, connectionProperties);
 
@@ -73,15 +69,10 @@ public class CassandraDataStoreConnector extends ConnectorBase
                     auditLog.getUserAction());
         }
 
-        if (endpoint != null) {
+        if (endpoint != null ) {
             serverAddresses = endpoint.getAddress();
-
-            if (serverAddresses != null) {
-                log.debug("The connecting cassandra cluster server address is: {}.", serverAddresses);
-
-            } else {
-                log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
-                if (omrsAuditLog != null) {
+        } else {
+            if (omrsAuditLog!=null){
                     auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
                     omrsAuditLog.logRecord(actionDescription,
                             auditLog.getLogMessageId(),
@@ -89,28 +80,20 @@ public class CassandraDataStoreConnector extends ConnectorBase
                             auditLog.getFormattedLogMessage(),
                             null,
                             auditLog.getSystemAction(),
-                            auditLog.getUserAction());
-                }
-            }
-        } else {
-            log.error("Errors in Cassandra server address. The endpoint containing the server address is invalid.");
-            if (omrsAuditLog != null) {
-                auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_ADDRESS_ERROR;
-                omrsAuditLog.logRecord(actionDescription,
-                        auditLog.getLogMessageId(),
-                        auditLog.getSeverity(),
-                        auditLog.getFormattedLogMessage(),
-                        null,
-                        auditLog.getSystemAction(),
-                        auditLog.getUserAction());
-            }
+                            auditLog.getUserAction());}
         }
 
-        startCassandraConnection();
-
-        if (omrsAuditLog != null)
-        {
+        if (startCassandraConnection()) {
             auditLog = CassandraDataStoreAuditCode.CONNECTOR_INITIALIZED;
+            omrsAuditLog.logRecord(actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+        } else {
+            auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
             omrsAuditLog.logRecord(actionDescription,
                     auditLog.getLogMessageId(),
                     auditLog.getSeverity(),
@@ -125,13 +108,27 @@ public class CassandraDataStoreConnector extends ConnectorBase
     /**
      * Set up the Cassandra Cluster Connection
      */
-    public void startCassandraConnection() {
-
-        CqlSessionBuilder builder = CqlSession.builder();
-        builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
-        builder.withAuthCredentials(username, password);
-        this.cqlSession = builder.build();
-
+    private boolean startCassandraConnection() {
+        String actionDescription = "start Cassandra Data Store Connection";
+        try {
+            CqlSessionBuilder builder = CqlSession.builder();
+            builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
+            //builder.withAuthCredentials(username, password);
+            this.cqlSession = builder.build();
+            if (cqlSession.isSchemaMetadataEnabled()) {
+                return true;
+            }
+        } catch (ExceptionInInitializerError e) {
+            auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR;
+            omrsAuditLog.logRecord(actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+        }
+        return false;
     }
 
     /**

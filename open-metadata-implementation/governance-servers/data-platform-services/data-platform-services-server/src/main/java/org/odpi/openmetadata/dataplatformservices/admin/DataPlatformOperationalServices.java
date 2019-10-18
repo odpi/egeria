@@ -5,7 +5,7 @@ package org.odpi.openmetadata.dataplatformservices.admin;
 import org.odpi.openmetadata.accessservices.dataplatform.client.DataPlatformClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DataPlatformConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
-import org.odpi.openmetadata.dataplatformservices.api.DataPlatformConnectorBase;
+import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorBase;
 import org.odpi.openmetadata.dataplatformservices.auditlog.DataPlatformServicesAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -31,7 +31,7 @@ public class DataPlatformOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector dataPlatformServiceOutTopicConnector;
-    private DataPlatformConnectorBase dataPlatformConnectorBase;
+    private DataPlatformMetadataExtractorBase dataPlatformMetadataExtractorBase;
     private DataPlatformConfig dataPlatformConfig;
 
     /**
@@ -66,6 +66,9 @@ public class DataPlatformOperationalServices {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
+            /*
+             * Configuring the Data Platform OMAS client
+             */
             DataPlatformClient dataPlatformClient;
             try {
                 dataPlatformClient = new DataPlatformClient(
@@ -90,7 +93,7 @@ public class DataPlatformOperationalServices {
                 try {
                     dataPlatformServiceOutTopicConnector = getTopicConnector(dataPlatformConfig.getDataPlatformServiceOutTopic(), auditLog);
                 } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_IN_TOPIC_CONNECTION;
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -102,17 +105,17 @@ public class DataPlatformOperationalServices {
             }
 
             /*
-             * Configuring the Data Platform connector
+             * Configuring the Data Platform Metadata Extractor Connector
              */
             Connection dataPlatformConnection = dataPlatformConfig.getDataPlatformConnection();
+            ConnectorBroker connectorBroker = new ConnectorBroker();
 
             if (dataPlatformConnection != null) {
                 try {
-                    ConnectorBroker connectorBroker = new ConnectorBroker();
-                    dataPlatformConnectorBase =(DataPlatformConnectorBase) connectorBroker.getConnector(dataPlatformConnection);
-                    log.debug("Found connection: ", dataPlatformConnection);
+                    dataPlatformMetadataExtractorBase =(DataPlatformMetadataExtractorBase) connectorBroker.getConnector(dataPlatformConnection);
+                    dataPlatformMetadataExtractorBase.setDataPlatformClient(dataPlatformClient);
                 } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_CONNECTION;
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -139,7 +142,7 @@ public class DataPlatformOperationalServices {
                             auditCode.getUserAction());
 
                 } catch (Exception e) {
-                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_IN_TOPIC_CONNECTION;
+                    auditCode = DataPlatformServicesAuditCode.ERROR_INITIALIZING_DP_OMAS_IN_TOPIC_CONNECTION;
                     auditLog.logRecord(actionDescription,
                             auditCode.getLogMessageId(),
                             auditCode.getSeverity(),
@@ -170,9 +173,8 @@ public class DataPlatformOperationalServices {
     public boolean disconnect(boolean permanent) {
         DataPlatformServicesAuditCode auditCode;
         try {
-
-            // Disconnect the cassandra connector
-            dataPlatformConnectorBase.disconnect();
+            // Disconnect the data platform connector
+            dataPlatformMetadataExtractorBase.disconnect();
             dataPlatformServiceOutTopicConnector.disconnect();
             auditCode = DataPlatformServicesAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord("Disconnecting",

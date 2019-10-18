@@ -17,7 +17,7 @@
         Apache Cassandra Database.
     </description>
 
-    <artifactId>cassandra-data-connector</artifactId>
+    <artifactId>cassandra-data-store-connector</artifactId>
 
     <dependencies>
         <dependency>
