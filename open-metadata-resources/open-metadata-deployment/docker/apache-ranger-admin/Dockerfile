@@ -3,7 +3,7 @@
 ARG REGISTRY=registry-1.docker.io
 ARG REPO=odpi
 FROM $REGISTRY/$REPO/apache-ranger:build AS build
-FROM openjdk:8-jdk-alpine
+FROM openjdk:13-jdk-alpine
 
 LABEL org.label-schema.schema-version = "1.0"
 LABEL org.label-schema.vendor = "ODPi"
