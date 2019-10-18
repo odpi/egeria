@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -33,13 +34,16 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetcatalog.util.Constants.*;
@@ -49,10 +53,12 @@ public class AssetCatalogHandler {
     private static final String ASSET_GUID_PARAMETER = "assetGUID";
     private static final String SEARCH_PARAMETER = "searchParameter";
 
+
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
+    private final RepositoryErrorHandler errorHandler;
     private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
 
     /**
@@ -62,13 +68,15 @@ public class AssetCatalogHandler {
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param errorHandler            provides common validation routines for the other handler classes
      */
     public AssetCatalogHandler(String serverName, InvalidParameterHandler invalidParameterHandler,
-                               RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+                               RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper, RepositoryErrorHandler errorHandler) {
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.errorHandler = errorHandler;
     }
 
     public EntityDetail getEntity(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
@@ -138,7 +146,7 @@ public class AssetCatalogHandler {
 
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getLinkingRelationshipsBetweenAssets
             (String serverName, String userId, String startAssetGUID, String endAssetGUID)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getLinkingRelationshipsBetweenAssets";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -146,11 +154,23 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
-        InstanceGraph linkingEntities = metadataCollection.getLinkingEntities(userId,
-                startAssetGUID,
-                endAssetGUID,
-                Collections.singletonList(InstanceStatus.ACTIVE),
-                null);
+        InstanceGraph linkingEntities = null;
+        try {
+            linkingEntities = metadataCollection.getLinkingEntities(userId,
+                    startAssetGUID,
+                    endAssetGUID,
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    null);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | FunctionNotSupportedException | RepositoryErrorException
+                | PropertyErrorException e) {
+            errorHandler.handleRepositoryError(e, methodName);
+        } catch (EntityNotKnownException e) {
+            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, "guidParameter");
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getRelationships())) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.LINKING_RELATIONSHIPS_NOT_FOUND;
             String errorMessage = errorCode.getErrorMessageId() +
@@ -206,7 +226,7 @@ public class AssetCatalogHandler {
     }
 
     public List<AssetDescription> getIntermediateAssets(String userId, String startAssetId, String endAssetId)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "getIntermediateAssets";
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -215,11 +235,22 @@ public class AssetCatalogHandler {
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
 
-        InstanceGraph linkingEntities = metadataCollection.getLinkingEntities(userId,
-                startAssetId,
-                endAssetId,
-                Collections.singletonList(InstanceStatus.ACTIVE),
-                null);
+        InstanceGraph linkingEntities = null;
+        try {
+            linkingEntities = metadataCollection.getLinkingEntities(userId,
+                    startAssetId,
+                    endAssetId,
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    null);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | FunctionNotSupportedException
+                | PropertyErrorException | RepositoryErrorException e) {
+            errorHandler.handleRepositoryError(e, methodName);
+        } catch (EntityNotKnownException e) {
+            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, "guidParameter");
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
 
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getEntities())) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND;
@@ -242,8 +273,8 @@ public class AssetCatalogHandler {
     public List<AssetDescription> getRelatedAsset(String serverName,
                                                   String userId,
                                                   String startAssetId,
-                                                  SearchParameters searchParameters) throws
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                                  SearchParameters searchParameters)
+            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getRelatedAsset";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(startAssetId, "startAssetGUID", methodName);
@@ -252,17 +283,28 @@ public class AssetCatalogHandler {
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
 
-        List<EntityDetail> relatedEntities = metadataCollection.getRelatedEntities(
-                userId,
-                startAssetId,
-                searchParameters.getEntityTypeGUIDs(),
-                searchParameters.getFrom(),
-                Collections.singletonList(InstanceStatus.ACTIVE),
-                searchParameters.getLimitResultsByClassification(),
-                null,
-                searchParameters.getSequencingProperty(),
-                searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
-                searchParameters.getPageSize());
+        List<EntityDetail> relatedEntities = null;
+        try {
+            relatedEntities = metadataCollection.getRelatedEntities(
+                    userId,
+                    startAssetId,
+                    searchParameters.getEntityTypeGUIDs(),
+                    searchParameters.getFrom(),
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    searchParameters.getLimitResultsByClassification(),
+                    null,
+                    searchParameters.getSequencingProperty(),
+                    searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
+                    searchParameters.getPageSize());
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | TypeErrorException | FunctionNotSupportedException
+                | PropertyErrorException | RepositoryErrorException | PagingErrorException e) {
+            errorHandler.handleRepositoryError(e, methodName);
+        } catch (EntityNotKnownException e) {
+            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, "guidParameter");
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
 
         if (CollectionUtils.isEmpty(relatedEntities)) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.NO_RELATED_ASSETS;
@@ -283,7 +325,7 @@ public class AssetCatalogHandler {
 
 
     public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, AssetNotFoundException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "getEntitiesFromNeighborhood";
 
@@ -333,9 +375,8 @@ public class AssetCatalogHandler {
 
     public Term buildContextByType(String userId,
                                    AssetCatalogHandler assetCatalogHandler,
-                                   EntityDetail entityDetail,
-                                   String typeDefName,
-                                   List<String> superTypes)
+                                   String entityGUID,
+                                   String entityTypeDefName)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException,
             org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
@@ -343,23 +384,32 @@ public class AssetCatalogHandler {
         String methodName = "buildContextByType";
         invalidParameterHandler.validateUserId(userId, methodName);
 
+        EntityDetail entityDetail = getEntity(userId, entityGUID, entityTypeDefName);
+
+        if (entityDetail.getType() == null) {
+            return null;
+        }
+
+        String typeDefName = entityDetail.getType().getTypeDefName();
+        Set<String> superTypes = collectSuperTypes(userId, entityDetail.getType().getTypeDefName());
+
         AssetElement assetElement = new AssetElement();
 
         if (typeDefName.equals(GLOSSARY_TERM)) {
             return assetCatalogHandler.getContextForGlossaryTerm(userId, entityDetail);
         } else {
             Term term = buildTerm(entityDetail);
-            if (typeDefName.equals("RelationalColumn") || superTypes.contains(SCHEMA_ELEMENT)) {
+            if (superTypes.contains(SCHEMA_ELEMENT)) {
                 assetCatalogHandler.getContextForSchemaElement(userId, entityDetail, assetElement);
-            } else if (typeDefName.equals(DEPLOYED_API)) {
+            } else if (superTypes.contains(DEPLOYED_API)) {
                 assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
-            } else if (typeDefName.equals(IT_INFRASTRUCTURE) || superTypes.contains(IT_INFRASTRUCTURE)) {
+            } else if (superTypes.contains(IT_INFRASTRUCTURE)) {
                 assetCatalogHandler.getContextForInfrastructure(userId, entityDetail, assetElement);
-            } else if (typeDefName.equals(PROCESS) || superTypes.contains(PROCESS)) {
+            } else if (superTypes.contains(PROCESS)) {
                 assetCatalogHandler.getContextForProcess(userId, entityDetail, assetElement);
-            } else if (typeDefName.equals(DATA_STORE) || superTypes.contains(DATA_STORE)) {
+            } else if (superTypes.contains(DATA_STORE)) {
                 assetCatalogHandler.getContextForDataStore(userId, entityDetail, assetElement);
-            } else if (typeDefName.equals(DATA_SET) || superTypes.contains(DATA_SET)) {
+            } else if (superTypes.contains(DATA_SET)) {
                 assetCatalogHandler.getContextForDataSet(userId, entityDetail, assetElement);
             }
 
@@ -1057,7 +1107,8 @@ public class AssetCatalogHandler {
     private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
         String method = "setAssetElementAttributes";
         assetElement.setGuid(asset.getGUID());
-        assetElement.setType(asset.getType().getTypeDefName());
+        assetElement.setTypeDef(asset.getType().getTypeDefName());
+        assetElement.setTypeDefGUID(asset.getType().getTypeDefGUID());
         assetElement.setProperties(repositoryHelper.getInstancePropertiesAsMap(asset.getProperties()));
         assetElement.setQualifiedName(repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, asset.getProperties(), method));
     }
@@ -1071,7 +1122,8 @@ public class AssetCatalogHandler {
 
         Term term = new Term();
         term.setGuid(entity.getGUID());
-        term.setType(entity.getType().getTypeDefName());
+        term.setTypeDef(entity.getType().getTypeDefName());
+        term.setTypeDefGUID(entity.getType().getTypeDefGUID());
         term.setQualifiedName(repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, entity.getProperties(), method));
         term.setProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
 
@@ -1192,24 +1244,31 @@ public class AssetCatalogHandler {
     }
 
     private InstanceGraph getAssetNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
-            throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            TypeErrorException, AssetNotFoundException {
+            throws AssetNotFoundException, PropertyServerException, InvalidParameterException, UserNotAuthorizedException {
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
 
-        InstanceGraph entityNeighborhood = metadataCollection.getEntityNeighborhood(
-                userId,
-                entityGUID,
-                searchParameters.getEntityTypeGUIDs(),
-                searchParameters.getRelationshipTypeGUIDs(),
-                Collections.singletonList(InstanceStatus.ACTIVE),
-                searchParameters.getLimitResultsByClassification(),
-                null,
-                searchParameters.getLevel());
+        InstanceGraph entityNeighborhood = null;
+        String methodName = "getAssetNeighborhood";
+        try {
+            entityNeighborhood = metadataCollection.getEntityNeighborhood(
+                    userId,
+                    entityGUID,
+                    searchParameters.getEntityTypeGUIDs(),
+                    searchParameters.getRelationshipTypeGUIDs(),
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    searchParameters.getLimitResultsByClassification(),
+                    null,
+                    searchParameters.getLevel());
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | TypeErrorException
+                | FunctionNotSupportedException
+                | PropertyErrorException | RepositoryErrorException e) {
+            errorHandler.handleRepositoryError(e, methodName);
+        } catch (EntityNotKnownException e) {
+            errorHandler.handleUnknownEntity(e, entityGUID, searchParameters.getEntityTypeGUIDs().get(0), methodName, "guidParameter");
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
 
         if (entityNeighborhood == null) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.ASSET_NEIGHBORHOOD_NOT_FOUND;
@@ -1225,6 +1284,43 @@ public class AssetCatalogHandler {
         }
 
         return entityNeighborhood;
+    }
+
+    private Set<String> collectSuperTypes(String userId, String typeDefName) throws PropertyServerException, UserNotAuthorizedException {
+        Set<String> superTypes = new HashSet<>();
+
+        TypeDef typeDefByName = getTypeDefByName(userId, typeDefName);
+        if (typeDefByName != null) {
+            collectSuperTypes(userId, typeDefByName, superTypes);
+        }
+
+        return superTypes;
+    }
+
+    private TypeDef getTypeDefByName(String userId, String type) throws PropertyServerException, UserNotAuthorizedException {
+        String methodName = "getTypeDefByName";
+
+        try {
+            OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
+            return metadataCollection.getTypeDefByName(userId, type);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException | TypeDefNotKnownException e) {
+            errorHandler.handleRepositoryError(e, methodName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        return null;
+    }
+
+
+    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) throws PropertyServerException, UserNotAuthorizedException {
+        if (type.getName().equals(REFERENCEABLE)) {
+            return;
+        }
+        superTypes.add(type.getName());
+        TypeDef typeDefByName = getTypeDefByName(userId, type.getSuperType().getName());
+        if (typeDefByName != null) {
+            collectSuperTypes(userId, typeDefByName, superTypes);
+        }
     }
 
 }

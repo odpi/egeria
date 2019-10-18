@@ -229,6 +229,6 @@ public class AssetCatalogEntityResource {
                                          @PathVariable("userId") String userId,
                                          @PathVariable("assetGUID") @NotBlank String assetGUID,
                                          @RequestParam(name = "assetType") @NotNull String assetType) {
-        return assetService.buildAssetContext(serverName, userId, assetGUID, assetType);
+        return assetService.buildContext(serverName, userId, assetGUID, assetType);
     }
 }
