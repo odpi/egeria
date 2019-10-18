@@ -2,22 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
-
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
-import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
-
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 
 class OpenLineageInstanceHandler
 {
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
-    public GraphServices queryHandler(String serverName) throws PropertyServerException {
+    public GraphQueryingServices queryHandler(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getGraphServices();
+            return instance.getGraphQueryingServices();
         } else {
             final String methodName = "queryHandler";
             throwError(serverName, methodName);
@@ -36,15 +33,4 @@ class OpenLineageInstanceHandler
                 errorCode.getUserAction());
     }
 
-    public MockGraphGenerator mockGraphGenerator(String serverName) throws PropertyServerException {
-        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
-
-        if (instance != null) {
-            return instance.getMockGraphGenerator();
-        } else {
-            final String methodName = "queryHandler";
-            throwError(serverName, methodName);
-            return null;
-        }
-    }
 }

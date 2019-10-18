@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.repositoryservices.archiveutilities;
 
 
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
@@ -16,16 +15,20 @@ import java.util.List;
  */
 public class OMRSArchiveHelper
 {
-    private OMRSArchiveBuilder archiveBuilder;
-    private String             archiveGUID;
-    private String             originatorName;
-    private Date               creationDate;
-    private long               versionNumber;
-    private String             versionName;
+    private OMRSArchiveBuilder     archiveBuilder;
+    private String                 archiveGUID;
+    private String                 archiveName;
+    private String                 originatorName;
+    private Date                   creationDate;
+    private long                   versionNumber;
+    private String                 versionName;
+    private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.CONTENT_PACK;
+    private String                 license = null;
 
 
     /**
      * Constructor receives information about the archive being built.
+     * This constructor is suitable if only creating typeDefs.
      *
      * @param archiveBuilder archive builder with the archive contents in it.
      * @param archiveGUID unique identifier for the archive.
@@ -47,6 +50,42 @@ public class OMRSArchiveHelper
         this.creationDate = creationDate;
         this.versionNumber = versionNumber;
         this.versionName = versionName;
+    }
+
+
+    /**
+     * Constructor receives information about the archive being built.
+     * This constructor is suitable for creating TypeDefs and instances.
+     *
+     * @param archiveBuilder archive builder with the archive contents in it.
+     * @param archiveGUID unique identifier for the archive.
+     * @param archiveName unique name for the archive.
+     * @param originatorName name of the person / process creating the archive.
+     * @param creationDate date that the archive was first built.
+     * @param versionNumber version number of the archive.
+     * @param versionName version name for the archive.
+     * @param instanceProvenanceType type of archive.
+     * @param license license for the archive contents.
+     */
+    public OMRSArchiveHelper(OMRSArchiveBuilder     archiveBuilder,
+                             String                 archiveGUID,
+                             String                 archiveName,
+                             String                 originatorName,
+                             Date                   creationDate,
+                             long                   versionNumber,
+                             String                 versionName,
+                             InstanceProvenanceType instanceProvenanceType,
+                             String                 license)
+    {
+        this.archiveBuilder = archiveBuilder;
+        this.archiveGUID = archiveGUID;
+        this.archiveName = archiveName;
+        this.originatorName = originatorName;
+        this.creationDate = creationDate;
+        this.versionNumber = versionNumber;
+        this.versionName = versionName;
+        this.instanceProvenanceType = instanceProvenanceType;
+        this.license = license;
     }
 
 
@@ -895,46 +934,225 @@ public class OMRSArchiveHelper
     }
 
 
-    void setInstanceHeader(InstanceHeader  instanceHeader)
+    /*
+     * ----------------------------------------------
+     * Working with instances
+     * ----------------------------------------------
+     */
+
+    /**
+     * Return the list of valid properties for the instance
+     *
+     * @param definedAttributes list of attributes defined for the typedef
+     * @param currentList current list of properties extracted from the subtypes
+     * @return accumulated list of properties.
+     */
+    public List<String>  getPropertiesList(List<TypeDefAttribute>  definedAttributes,
+                                           List<String>            currentList)
     {
-        instanceHeader.setGUID("");
-        instanceHeader.setInstanceURL("");
-        instanceHeader.setCreatedBy("");
-        instanceHeader.setCreateTime(creationDate);
-        instanceHeader.setInstanceLicense("");
-        instanceHeader.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
-        instanceHeader.setMaintainedBy(null);
-        instanceHeader.setMetadataCollectionId(archiveGUID);
-        instanceHeader.setMetadataCollectionName("");
-        instanceHeader.setReplicatedBy("");
-        instanceHeader.setStatus(InstanceStatus.ACTIVE);
-        instanceHeader.setStatusOnDelete(null);
-        instanceHeader.setType(null);
-        instanceHeader.setUpdatedBy("");
-        instanceHeader.setUpdateTime(null);
-        instanceHeader.setVersion(0L);
+        List<String>   newList = currentList;
+
+        if (newList == null)
+        {
+            newList = new ArrayList<>();
+        }
+
+        if (definedAttributes != null)
+        {
+            for (TypeDefAttribute  attribute : definedAttributes)
+            {
+                if (attribute != null)
+                {
+                    newList.add(attribute.getAttributeName());
+                }
+            }
+        }
+
+        if (newList.isEmpty())
+        {
+            return null;
+        }
+
+        return newList;
     }
 
 
-    EntityDetail getEntityDetail(TypeDef               type,
+    /**
+     * Returns the instance type object with the fields that can be directly extracted from the
+     * supplied type definition.  This leaves the super types and valid properties list that needs
+     * to be able to loop through the super types.
+     *
+     * @param typeDef supplied typeDef.
+     * @return new instance type object
+     */
+    public InstanceType getInstanceTypeHeader(TypeDef  typeDef)
+    {
+        InstanceType instanceType = null;
+
+        if (typeDef != null)
+        {
+            instanceType = new InstanceType();
+
+            instanceType.setTypeDefCategory(typeDef.getCategory());
+            instanceType.setTypeDefGUID(typeDef.getGUID());
+            instanceType.setTypeDefName(typeDef.getName());
+            instanceType.setTypeDefVersion(typeDef.getVersion());
+            instanceType.setTypeDefDescription(typeDef.getDescription());
+            instanceType.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
+            instanceType.setValidStatusList(typeDef.getValidInstanceStatusList());
+        }
+
+        return instanceType;
+    }
+
+
+    /**
+     * Set up the common fields for an entity or a relationship.
+     *
+     * @param instanceAuditHeader instance object to fill
+     * @param type type of the object
+     * @param status instance status
+     */
+    private void setInstanceAuditHeader(InstanceAuditHeader  instanceAuditHeader,
+                                        InstanceType         type,
+                                        InstanceStatus       status)
+    {
+        instanceAuditHeader.setCreatedBy(originatorName);
+        instanceAuditHeader.setCreateTime(creationDate);
+        instanceAuditHeader.setInstanceLicense(license);
+        instanceAuditHeader.setInstanceProvenanceType(instanceProvenanceType);
+        instanceAuditHeader.setMaintainedBy(null);
+        instanceAuditHeader.setMetadataCollectionId(archiveGUID);
+        instanceAuditHeader.setMetadataCollectionName(archiveName);
+        instanceAuditHeader.setReplicatedBy(null);
+        instanceAuditHeader.setStatus(InstanceStatus.ACTIVE);
+        instanceAuditHeader.setStatusOnDelete(null);
+        instanceAuditHeader.setType(type);
+        instanceAuditHeader.setUpdatedBy(null);
+        instanceAuditHeader.setUpdateTime(null);
+        instanceAuditHeader.setVersion(1L);
+        instanceAuditHeader.setStatus(status);
+    }
+
+
+    /**
+     * Set up the common fields for an entity or a relationship.
+     *
+     * @param instanceHeader instance object to fill
+     * @param type type of the object
+     * @param guid unique identifier
+     * @param status instance status
+     */
+    private void setInstanceHeader(InstanceHeader  instanceHeader,
+                                   InstanceType    type,
+                                   String          guid,
+                                   InstanceStatus  status)
+    {
+        setInstanceAuditHeader(instanceHeader, type, status);
+
+        instanceHeader.setGUID(guid);
+        instanceHeader.setInstanceURL(null);
+    }
+
+
+    /**
+     * Return a specific entity detail instance.
+     *
+     * @param type type of the entity
+     * @param guid unique identifier of the entity
+     * @param properties properties (attributes) for the entity
+     * @param status instance status
+     * @param classifications list of classifications
+     * @return assembled entity
+     */
+    EntityDetail getEntityDetail(InstanceType          type,
+                                 String                guid,
                                  InstanceProperties    properties,
                                  InstanceStatus        status,
                                  List<Classification>  classifications)
     {
         EntityDetail  entityDetail = new EntityDetail();
 
-        entityDetail.setInstanceProvenanceType(InstanceProvenanceType.CONTENT_PACK);
-        entityDetail.setMetadataCollectionName("");
+        this.setInstanceHeader(entityDetail, type, guid, status);
+        entityDetail.setProperties(properties);
+        entityDetail.setClassifications(classifications);
 
-        return null;
+        return entityDetail;
     }
 
-    EntityDetail getRelationship(TypeDef               type,
+
+    /**
+     * Return a specific relationship instance.
+     *
+     * @param type type of the relationship
+     * @param guid unique identifier of the relationship
+     * @param properties properties (attributes) for the relationship
+     * @param status instance status
+     * @param end1 relationship end 1
+     * @param end2 relationship end 2
+     * @return relationship instance
+     */
+    Relationship getRelationship(InstanceType          type,
+                                 String                guid,
                                  InstanceProperties    properties,
                                  InstanceStatus        status,
                                  EntityProxy           end1,
                                  EntityProxy           end2)
     {
-        return null;
+        Relationship  relationship = new Relationship();
+
+        this.setInstanceHeader(relationship, type, guid, status);
+        relationship.setProperties(properties);
+        relationship.setEntityOneProxy(end1);
+        relationship.setEntityTwoProxy(end2);
+
+        return relationship;
+    }
+
+
+    /**
+     * Return a specific classification instance.
+     *
+     * @param type type of the classification
+     * @param properties properties (attributes) for the classification
+     * @param status instance status
+     * @return classification instance
+     */
+    Classification getClassification(InstanceType          type,
+                                     InstanceProperties    properties,
+                                     InstanceStatus        status)
+    {
+        Classification  classification = new Classification();
+
+        this.setInstanceAuditHeader(classification, type, status);
+        classification.setProperties(properties);
+
+        return classification;
+    }
+
+
+    /**
+     * Return a specific entity proxy instance.
+     *
+     * @param type type of the classification
+     * @param guid unique identifier of the entity
+     * @param properties unique properties (attributes) for the entity
+     * @param status instance status
+     * @param classifications list of classifications
+     * @return classification instance
+     */
+    EntityProxy getEntityProxy(InstanceType          type,
+                               String                guid,
+                               InstanceProperties    properties,
+                               InstanceStatus        status,
+                               List<Classification>  classifications)
+    {
+        EntityProxy  entityProxy = new EntityProxy();
+
+        this.setInstanceHeader(entityProxy, type, guid, status);
+        entityProxy.setUniqueProperties(properties);
+        entityProxy.setClassifications(classifications);
+
+        return entityProxy;
     }
 }
