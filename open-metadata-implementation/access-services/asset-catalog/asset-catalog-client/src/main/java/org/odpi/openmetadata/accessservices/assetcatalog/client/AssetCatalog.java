@@ -4,12 +4,14 @@ package org.odpi.openmetadata.accessservices.assetcatalog.client;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogInterface;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -50,6 +52,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
     private String serverPlatformRootURL;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
 
     /**
      * Create a new AssetConsumer client.
@@ -69,31 +72,35 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getAssetDetails";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + ASSET_DETAILS, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
-    }
 
-    private void validateUserAndAssetGUID(String userId, String assetGUID, String methodName, String guidParameter) throws InvalidParameterException {
-        invalidParameterHandler.validateUserId(methodName, userId);
-        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
+        detectExeptions(methodName, response);
+        return response;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getAssetUniverse";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + ASSET_UNIVERSE, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+
+        detectExeptions(methodName, response);
+
+        return response;
     }
 
     /**
@@ -102,122 +109,167 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
     @Override
     public RelationshipsResponse getAssetRelationships(String userId, String assetGUID, String assetType,
                                                        String relationshipType, Integer from, Integer pageSize)
-            throws InvalidParameterException, PropertyServerException {
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getAssetRelationships";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
         invalidParameterHandler.validatePaging(from, pageSize, methodName);
 
-        return callGetRESTCall(methodName, RelationshipsResponse.class,
+        RelationshipsResponse relationshipsResponse = callGetRESTCall(methodName, RelationshipsResponse.class,
                 BASE_PATH + ASSET_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
+
+        detectExeptions(methodName, relationshipsResponse);
+        return relationshipsResponse;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public ClassificationsResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws InvalidParameterException, PropertyServerException {
+    public ClassificationsResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getClassificationsForAsset";
 
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        return callGetRESTCall(methodName, ClassificationsResponse.class,
+        ClassificationsResponse classificationsResponse = callGetRESTCall(methodName, ClassificationsResponse.class,
                 BASE_PATH + ASSET_CLASSIFICATIONS, serverPlatformRootURL,
                 serverName, userId, assetGUID, assetType, classificationName);
+
+        detectExeptions(methodName, classificationsResponse);
+        return classificationsResponse;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getLinkingAssets";
 
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + LINKING_ASSET, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
+
+        detectExeptions(methodName, response);
+        return response;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getLinkingRelationships";
 
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + LINKING_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
+        detectExeptions(methodName, response);
+
+        return response;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getRelatedAssets(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getRelatedAssets(String userId, String assetGUID, SearchParameters searchParameters)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getRelatedAssets";
 
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + RELATED_ASSETS, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
+
+        detectExeptions(methodName, response);
+
+        return response;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+    public AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getAssetsFromNeighborhood";
 
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
-        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
                 BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
+
+        detectExeptions(methodName, response);
+
+        return response;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetResponse searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+    public AssetResponse searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "searchAssetsAndGlossaryTerms";
 
         invalidParameterHandler.validateUserId(methodName, userId);
         invalidParameterHandler.validateSearchString(searchCriteria, "searchCriteria", methodName);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
 
-        return callPostRESTCall(methodName, AssetResponse.class,
+        AssetResponse assetResponse = callPostRESTCall(methodName, AssetResponse.class,
                 BASE_PATH + SEARCH, serverPlatformRootURL, serverName, userId, searchCriteria, searchParameters);
+
+        detectExeptions(methodName, assetResponse);
+
+        return assetResponse;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetResponse getAssetContext(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+    public AssetResponse getAssetContext(String userId, String assetGUID, String assetType)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getAssetContext";
 
         invalidParameterHandler.validateUserId(methodName, userId);
         invalidParameterHandler.validateSearchString(assetGUID, GUID_PARAMETER, methodName);
 
-        return callGetRESTCall(methodName, AssetResponse.class,
+        AssetResponse assetResponse = callGetRESTCall(methodName, AssetResponse.class,
                 BASE_PATH + ASSET_CONTEXT, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+
+        detectExeptions(methodName, assetResponse);
+
+        return assetResponse;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipTypeGUID) throws InvalidParameterException, PropertyServerException {
+    public RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipTypeGUID)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         String methodName = "getRelationshipBetweenEntities";
 
         validateStartAndEndAssetsGUIDs(userId, entity1GUID, entity2GUID, methodName);
 
-        return callGetRESTCall(methodName, RelationshipResponse.class,
+        RelationshipResponse relationshipResponse = callGetRESTCall(methodName, RelationshipResponse.class,
                 BASE_PATH + RELATIONSHIPS, serverPlatformRootURL, serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
+
+        detectExeptions(methodName, relationshipResponse);
+
+        return relationshipResponse;
+    }
+
+    private void validateUserAndAssetGUID(String userId, String assetGUID, String methodName, String guidParameter) throws InvalidParameterException {
+        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
     }
 
     private void validateStartAndEndAssetsGUIDs(String userId, String startAssetGUID, String endAssetGUID, String methodName) throws InvalidParameterException {
@@ -229,4 +281,11 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
     }
+
+    private void detectExeptions(String methodName, AssetCatalogOMASAPIResponse response)
+            throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, response);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, response);
+    }
+
 }
