@@ -1019,8 +1019,11 @@ public class AssetCatalogHandler {
 
         String method = "getAsset";
         List<Relationship> assetToDataSetRelationships = repositoryHandler.getRelationshipsByType(userId,
-                dataSet.getGUID(), dataSet.getType().getTypeDefName(),
-                DATA_CONTENT_FOR_DATA_SET_GUID, DATA_CONTENT_FOR_DATA_SET, method);
+                dataSet.getGUID(),
+                dataSet.getType().getTypeDefName(),
+                DATA_CONTENT_FOR_DATA_SET_GUID,
+                DATA_CONTENT_FOR_DATA_SET,
+                method);
 
         if (CollectionUtils.isEmpty(assetToDataSetRelationships)) {
             return;
@@ -1031,7 +1034,11 @@ public class AssetCatalogHandler {
             if (entityOneProxy.getGUID().equals(dataSet.getGUID())) {
                 setConnections(userId, assetElement, dataSet);
             } else {
-                EntityDetail asset = repositoryHandler.getEntityByGUID(userId, entityOneProxy.getGUID(), ASSET_GUID_PARAMETER, entityOneProxy.getType().getTypeDefName(), method);
+                EntityDetail asset = repositoryHandler.getEntityByGUID(userId,
+                        entityOneProxy.getGUID(),
+                        ASSET_GUID_PARAMETER,
+                        entityOneProxy.getType().getTypeDefName(),
+                        method);
 
                 setAssetElementAttributes(assetElement, asset);
                 setConnections(userId, assetElement, asset);
@@ -1177,7 +1184,7 @@ public class AssetCatalogHandler {
                 searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
                 searchParameters.getPageSize());
 
-        return entitiesByPropertyValue != null ? entitiesByPropertyValue : new ArrayList<>();
+        return CollectionUtils.isNotEmpty(entitiesByPropertyValue) ? entitiesByPropertyValue : new ArrayList<>();
     }
 
     private List<Classification> filterClassificationByName(List<Classification> classifications, String classificationName) {
