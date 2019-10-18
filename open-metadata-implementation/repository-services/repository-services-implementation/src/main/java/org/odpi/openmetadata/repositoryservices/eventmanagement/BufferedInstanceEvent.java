@@ -19,18 +19,39 @@ public class BufferedInstanceEvent {
     private final String messageId;
     private final DelegatableFuture associatedFuture = new DelegatableFuture();
     
+    /**
+     * Constructor
+     * 
+     * @param event
+     * @param messageId
+     */
     public BufferedInstanceEvent(OMRSInstanceEvent event, String messageId) {
         this.event = event;
         this.messageId = messageId;
     }
+    
+    
+    /**
+     * Gets the associated {@link OMRSInstanceEvent}
+     * 
+     * @return
+     */
     public OMRSInstanceEvent getEvent() {
         return event;
     }
     
+    /**
+     * Gets the {@link DelegatableFuture} associated with the event
+     * @return
+     */
     public DelegatableFuture getFuture() {
         return associatedFuture;
     }
-    
+
+    /**
+     * Gets the message id for the event
+     * @return
+     */
     public String getMessageId() {
         return messageId;
     }
