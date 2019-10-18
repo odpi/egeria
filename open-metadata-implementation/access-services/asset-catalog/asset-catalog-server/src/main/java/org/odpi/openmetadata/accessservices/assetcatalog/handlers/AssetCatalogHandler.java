@@ -36,6 +36,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -52,6 +53,7 @@ public class AssetCatalogHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
+    private List<String> defaultSearchTypes = new ArrayList<>(Arrays.asList(GLOSSARY_TERM_GUID, ASSET_GUID, SCHEMA_ELEMENT_GUID));
 
     /**
      * Construct the handler information needed to interact with the repository services
@@ -319,13 +321,14 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);
         invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
 
-        List<EntityDetail> entities = searchEntityByCriteria(userId, searchCriteria, GLOSSARY_TERM_GUID, searchParameters);
-        List<EntityDetail> assets = searchEntityByCriteria(userId, searchCriteria, ASSET_GUID, searchParameters);
-        List<EntityDetail> schemaElements = searchEntityByCriteria(userId, searchCriteria, SCHEMA_ELEMENT_GUID, searchParameters);
-        entities.addAll(assets);
-        entities.addAll(schemaElements);
+        List<EntityDetail> result;
+        if (CollectionUtils.isNotEmpty(searchParameters.getEntityTypeGUIDs())) {
+            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, searchParameters.getEntityTypeGUIDs());
+        } else {
+            result = collectSearchedEntitiesByType(userId, searchCriteria, searchParameters, defaultSearchTypes);
+        }
 
-        return entities.stream().map(this::buildTerm).collect(Collectors.toList());
+        return result.stream().map(this::buildTerm).collect(Collectors.toList());
     }
 
     public Term buildContextByType(String userId,
@@ -363,6 +366,15 @@ public class AssetCatalogHandler {
             term.setElements(Collections.singletonList(assetElement));
             return term;
         }
+    }
+
+    private List<EntityDetail> collectSearchedEntitiesByType(String userId, String searchCriteria, SearchParameters searchParameters, List<String> types) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        List<EntityDetail> result = new ArrayList<>();
+
+        for (String type : types) {
+            result.addAll(searchEntityByCriteria(userId, searchCriteria, type, searchParameters));
+        }
+        return result;
     }
 
     private void getContextForSchemaElement(String userId, EntityDetail entityDetail, AssetElement assetElement)
