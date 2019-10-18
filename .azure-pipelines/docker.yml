@@ -5,6 +5,9 @@ trigger:
   paths:
     include:
       - open-metadata-resources/open-metadata-deployment/docker
+  branches:
+    include:
+      - master
 pr: none
 schedules:
   - cron: "11 0 * * *"
