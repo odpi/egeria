@@ -79,15 +79,6 @@ public class AssetCatalogHandler {
         this.errorHandler = errorHandler;
     }
 
-    public EntityDetail getEntity(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getEntityDetails";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
-
-        return repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetType, methodName);
-    }
-
     public AssetDescription getEntityDetails(String userId, String assetGUID, String assetType)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
@@ -166,7 +157,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, "guidParameter");
+            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, ASSET_GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -247,7 +238,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, "guidParameter");
+            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, ASSET_GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -301,7 +292,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException | PagingErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, "guidParameter");
+            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, ASSET_GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -416,6 +407,15 @@ public class AssetCatalogHandler {
             term.setElements(Collections.singletonList(assetElement));
             return term;
         }
+    }
+
+    private EntityDetail getEntity(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        String methodName = "getEntityDetails";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
+
+        return repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetType, methodName);
     }
 
     private List<EntityDetail> collectSearchedEntitiesByType(String userId, String searchCriteria, SearchParameters searchParameters, List<String> types) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
@@ -1265,7 +1265,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, entityGUID, searchParameters.getEntityTypeGUIDs().get(0), methodName, "guidParameter");
+            errorHandler.handleUnknownEntity(e, entityGUID, searchParameters.getEntityTypeGUIDs().get(0), methodName, ASSET_GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
