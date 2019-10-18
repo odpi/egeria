@@ -136,21 +136,25 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
                         testTypeName + assertionMsg1,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition(workPad.getLocalServerUserId().equals(newEntity.getCreatedBy()),
                         assertion2,
                         testTypeName + assertionMsg2,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getCreateTime() != null),
                         assertion3,
                         testTypeName + assertionMsg3,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT),
                         assertion4,
                         testTypeName + assertionMsg4,
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+
         verifyCondition((newEntity.getStatus() == entityDef.getInitialStatus()),
                         assertion5,
                         testTypeName + assertionMsg5,
@@ -199,20 +203,20 @@ public class TestSupportedEntityLifecycle extends RepositoryConformanceTestCase
         verifyCondition((newEntity.equals(metadataCollection.isEntityKnown(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                         assertion9,
                         testTypeName + assertionMsg9,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
         verifyCondition((metadataCollection.getEntitySummary(workPad.getLocalServerUserId(), newEntity.getGUID()) != null),
                         assertion10,
                         testTypeName + assertionMsg10,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
         verifyCondition((newEntity.equals(metadataCollection.getEntityDetail(workPad.getLocalServerUserId(), newEntity.getGUID()))),
                         assertion11,
                         testTypeName + assertionMsg11,
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.ENTITY_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
         /*
          * No relationships have been created so none should be returned.

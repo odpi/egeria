@@ -144,21 +144,25 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
 
+
         verifyCondition(workPad.getLocalServerUserId().equals(newRelationship.getCreatedBy()),
                         assertion2,
                         testTypeName + assertionMsg2,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
         verifyCondition((newRelationship.getCreateTime() != null),
                         assertion3,
                         testTypeName + assertionMsg3,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
         verifyCondition((newRelationship.getInstanceProvenanceType() == InstanceProvenanceType.LOCAL_COHORT),
                         assertion4,
                         testTypeName + assertionMsg4,
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
                         RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+
         verifyCondition((newRelationship.getStatus() == relationshipDef.getInitialStatus()),
                         assertion5,
                         testTypeName + assertionMsg5,
@@ -211,15 +215,15 @@ public class TestSupportedRelationshipLifecycle extends RepositoryConformanceTes
                                                                                        newRelationship.getGUID()))),
                         assertion9,
                         testTypeName + assertionMsg9,
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
         verifyCondition((newRelationship.equals(metadataCollection.getRelationship(workPad.getLocalServerUserId(),
                                                                                    newRelationship.getGUID()))),
                         assertion10,
                         testTypeName + assertionMsg10,
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getProfileId(),
-                        RepositoryConformanceProfileRequirement.RELATIONSHIP_LIFECYCLE.getRequirementId());
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getProfileId(),
+                        RepositoryConformanceProfileRequirement.METADATA_INSTANCE_ACCESS.getRequirementId());
 
 
         /*
