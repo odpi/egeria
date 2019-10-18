@@ -11,10 +11,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Objects;
 
@@ -129,11 +125,7 @@ public class PrimitivePropertyValue extends InstancePropertyValue
      *
      * @return Object containing the primitive value.
      */
-    public Object getPrimitiveValue()
-    {
-
-        return convertValueByType(primitiveDefCategory, primitiveValue);
-    }
+    public Object getPrimitiveValue() { return primitiveValue; }
 
 
     /**
@@ -203,51 +195,14 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         return Objects.hash(super.hashCode(), getPrimitiveDefCategory(), getPrimitiveValue());
     }
 
+
     /**
-     * Convert the type of the supplied value if necessary
+     * Ensure that the type and value supplied are compatible.
      *
      * @param primitiveDefCategory category to test
      * @param primitiveValue value to test
      * @return validated primitive value
      */
-    private Object convertValueByType(PrimitiveDefCategory   primitiveDefCategory,
-                                      Object                 primitiveValue)
-    {
-        final String methodName = "convertValueByType";
-
-        /*
-         * Return if one of the values is missing
-         */
-        if ((primitiveDefCategory == null) || (primitiveValue == null)) {
-            return null;
-        }
-
-
-        /*
-         * A Date object is stored as a Long. This helps with serialization and with internatioalization
-         * The getter/converter will return a Date
-         */
-
-        if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
-        {
-
-            Long timestamp = (Long)primitiveValue;
-            //Date dateValue = new Date(timestamp);
-            return timestamp;
-        }
-
-
-        return primitiveValue;
-    }
-
-
-        /**
-         * Ensure that the type and value supplied are compatible.
-         *
-         * @param primitiveDefCategory category to test
-         * @param primitiveValue value to test
-         * @return validated primitive value
-         */
     private Object validateValueAgainstType(PrimitiveDefCategory   primitiveDefCategory,
                                             Object                 primitiveValue)
     {
@@ -265,44 +220,46 @@ public class PrimitivePropertyValue extends InstancePropertyValue
         {
             Class    testJavaClass = Class.forName(primitiveDefCategory.getJavaClassName());
 
-            /*
-             * A Date object is stored as a Long. This helps with serialization and with internatioalization
-             * The setter/validator will accept Date, Long or Integer and convert accordingly.
-             */
-
-            if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
-            {
-
-                if (primitiveValue instanceof Date)
-                {
-                    Long timestamp = ((Date) primitiveValue).getTime();
-                    return timestamp;
-
-                }
-                else if (primitiveValue instanceof Long)
-                {
-                    Long longValue = (Long)primitiveValue;
-                    return longValue;
-                }
-                else if (primitiveValue instanceof Integer)
-                {
-                    Long longValue = ((Integer)primitiveValue).longValue();
-                    return longValue;
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            /*
-             * Perform conversion of other types, if necessary.
-             */
-
-
             if (!testJavaClass.isInstance(primitiveValue))
             {
-               if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
+                if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                {
+                    /*
+                     * Date values are stored as Longs. The RepositoryHelper helper methods
+                     * will accept and return Java Date objects, for convenience for callers,
+                     * but internally the OMRS stores a date as a Java Long.
+                     *
+                     * However, with the combination of Spring and Jackson it is possible
+                     * for a date that was serialized as a Long to be deserialized as an
+                     * Integer. The following conversion repatriates it to Long.
+                     */
+
+                    if (primitiveValue instanceof Integer)
+                    {
+                        Integer castValue = (Integer)primitiveValue;
+                        return castValue.longValue();
+                    }
+                    else
+                    {
+                        /*
+                         * The type of the primitiveValue cannot be used as a date.
+                         * It is likely that this has been caused by an invalid deserialization or by
+                         * some other code trying to set the value as a type other than Long.
+                         * This is an internal error that needs to be debugged and fixed.
+                         */
+                        OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_TYPE;
+                        String        errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage("OM_PRIMITIVE_TYPE_DATE", primitiveDefCategory.getJavaClassName(), primitiveValue.getClass().getName());
+
+                        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                this.getClass().getName(),
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
+                    }
+                }
+                else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)
                 {
                     Integer    castValue = (Integer)primitiveValue;
 

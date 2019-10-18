@@ -33,7 +33,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-discovery-framework</artifactId>
-    </dependency>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>

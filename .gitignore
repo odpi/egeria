@@ -69,10 +69,13 @@ maven-eclipse.xml
 # Mac OS
 __MACOSX
 
-# specific OMAG config files
+# specific Egeria config files
 omag.server.*.config
+ui.server.*.config
+
 *.registrystore
 *.testlab.results
+keystore_*/**
 
 # other files
 .DS_Store

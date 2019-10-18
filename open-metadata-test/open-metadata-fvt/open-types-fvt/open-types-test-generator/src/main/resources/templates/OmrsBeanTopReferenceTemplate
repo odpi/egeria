@@ -66,14 +66,14 @@ public class <$$uname$$>References implements Serializable {
      public <$$uname$$>References(String entityGuid, Set<Line> lines)  {
 
         if (lines !=null) {
-         for (Line relationships: lines) {
+         for (Line relationshipLines: lines) {
             for (int i=0;i< RELATIONSHIP_NAMES_SET_VALUES.length; i++) {
-               if (relationships.getName().equals(RELATIONSHIP_NAMES_SET_VALUES[i])) {
+               if (relationshipLines.getName().equals(RELATIONSHIP_NAMES_SET_VALUES[i])) {
                     String referenceName = REFERENCE_NAMES_SET_VALUES[i];
 
                    <$SetAttr$$
                     if ("<$$setReferenceName$$>".equals(referenceName)) {
-                         <$$uRelationshipName$$> <$$RelationshipName$$>_relationship = (<$$uRelationshipName$$>)relationships;
+                         <$$uRelationshipName$$> <$$RelationshipName$$>_relationship = (<$$uRelationshipName$$>)relationshipLines;
                          <$$uSetReferenceName$$>Reference <$$setReferenceName$$>Reference = new <$$uSetReferenceName$$>Reference(entityGuid,<$$RelationshipName$$>_relationship);
                          if ( <$$setReferenceName$$>== null ) {
                               <$$setReferenceName$$> = new HashSet();
@@ -84,7 +84,7 @@ public class <$$uname$$>References implements Serializable {
 
                     <$SingleAttr$$
                     if ("<$$singleReferenceName$$>".equals(referenceName)) {
-                         <$$uRelationshipName$$> <$$RelationshipName$$>_relationship = (<$$uRelationshipName$$>)relationships;
+                         <$$uRelationshipName$$> <$$RelationshipName$$>_relationship = (<$$uRelationshipName$$>)relationshipLines;
                          <$$singleReferenceName$$> = new <$$uSingleReferenceName$$>Reference(entityGuid, <$$RelationshipName$$>_relationship);
                     }
                     $SingleAttr$$>

@@ -468,14 +468,13 @@ public class OMAGServerOperationalServices
                         configuration.getLocalServerType(),
                         configuration.getOrganizationName(),
                         configuration.getLocalServerUserId(),
-                        configuration.getLocalServerURL(),
-                        configuration.getMaxPageSize());
+                        configuration.getLocalServerURL());
                 instance.setOpenLineageOperationalServices(openLineageOperationalServices);
                 openLineageOperationalServices.initialize(openLineageConfig,
                         operationalRepositoryServices.getAuditLog(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
-                                                                  GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
+                                GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
 
                 activatedServiceList.add(GovernanceServicesDescription.OPEN_LINEAGE_SERVICES.getServiceName());
             }
@@ -553,12 +552,10 @@ public class OMAGServerOperationalServices
              */
             if (dataEngineProxyConfig != null)
             {
-                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
-                        configuration.getLocalServerType(),
-                        configuration.getOrganizationName(),
+                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(
+                        configuration.getLocalServerName(),
                         configuration.getLocalServerUserId(),
-                        configuration.getLocalServerPassword(),
-                        configuration.getLocalServerURL());
+                        configuration.getLocalServerPassword());
 
                 instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
                 operationalDataEngineProxyServices.initialize(
@@ -695,8 +692,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOpenLineageOperationalServices() != null)
         {
-            // TODO
-            // instance.getOpenLineageOperationalServices().terminate(permanentDeactivation);
+             instance.getOpenLineageOperationalServices().disconnect(permanentDeactivation);
         }
 
         /*

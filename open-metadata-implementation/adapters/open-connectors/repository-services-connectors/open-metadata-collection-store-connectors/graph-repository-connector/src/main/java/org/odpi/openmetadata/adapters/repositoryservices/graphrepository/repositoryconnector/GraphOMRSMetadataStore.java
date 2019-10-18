@@ -1648,18 +1648,22 @@ class GraphOMRSMetadataStore {
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
                     switch (pCat) {
                         case OM_PRIMITIVE_TYPE_STRING:
+                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+                            String searchString = convertSearchStringToJanusRegex((String) primValue);
+                            log.debug("{} primitive match property search string ", methodName, searchString);
+
                             // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
                                 if (!fullMatch) {
                                     // A partial match is sufficient...i.e. a value containing the search value as a substring will match
                                     String ANYCHARS = ".*";
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
                                 }
                                 else {
                                     // Must be a full match...
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue ));
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString ));
                                 }
                             }
                             break;
@@ -1731,6 +1735,107 @@ class GraphOMRSMetadataStore {
 
     }
 
+    private String convertSearchStringToJanusRegex(String str) {
+
+        if (str == null || str.length() ==0)
+            return null;
+
+        boolean prefixed   = false;
+
+        // A string may consist only of '.*' in which case it is referred to as suffixed rather than prefixed
+        // This is to ensure that we don't double the prefix/suffix in the resultant string
+        boolean suffixed   = str.endsWith(".*");
+        if (!suffixed || str.length()>2) {
+            prefixed = str.startsWith(".*");
+        }
+        //System.out.println("suffixed = "+suffixed+" prefixed = "+prefixed);
+
+        String  innerString = str;
+        if (suffixed)
+        {
+            innerString = innerString.substring(0, innerString.length() - 2);
+            //System.out.println("suffix removed innerString = "+innerString);
+        }
+        if (prefixed)
+        {
+            innerString = innerString.substring(2);
+            //System.out.println("prefix removed innerString = "+innerString);
+        }
+        if (innerString.length() ==0 ) {
+            // There is nothing left after removing any suffix and prefix - return the original string
+            //System.out.println("No residual innerString");
+            return str;
+        }
+
+        // There is at least some some substance to the inner string.
+        // Check whether it has been entirely literalised
+        String literalisedString;
+
+        if (repositoryHelper.isExactMatchRegex(innerString)) {
+            if (innerString.length()==4) {
+                // Although the innerString is wrapped as by exact match qualifiers, there is nothing else
+                return null;
+            }
+            else {
+                //System.out.println("Exact match processing");
+                innerString = innerString.substring(2, innerString.length() - 2);
+                StringBuilder literalisedStringBldr = new StringBuilder();
+                // Literalise individual special chars
+                for (int i = 0; i < innerString.length(); i++) {
+                    Character c = innerString.charAt(i);
+                    //System.out.println("process char "+c);
+                    // No need to escape a '-' char as it is only significant if inside '[]' brackets, and these will be escaped,
+                    // so the '-' character has no special meaning
+                    switch (c) {
+                        case '.':
+                        case '[':
+                        case ']':
+                        case '^':
+                        case '*':
+                        case '(':
+                        case ')':
+                        case '$':
+                        case '{':
+                        case '}':
+                        case '|':
+                        case '+':
+                        case '?':
+                        case '\\':  // single backslash escaped for Java
+                            //System.out.println("escape char "+c);
+                            literalisedStringBldr.append('\\').append(c);
+                            break;
+                        default:
+                            literalisedStringBldr.append(c);
+                    }
+                }
+                literalisedString = literalisedStringBldr.toString();
+            }
+        }
+        else {
+            // Not exact match - leave innerString as is
+            //System.out.println("Non-exact processing");
+            // i.e. add no escaping - treat the inner string as a regex
+            literalisedString = innerString;
+        }
+
+
+
+        // Re-frame depending on whether suffixed or prefixed
+        if (suffixed) {
+            literalisedString = literalisedString + ".*";
+        }
+        if (prefixed) {
+            literalisedString = ".*" + literalisedString;
+        }
+
+
+
+        return literalisedString;
+
+    }
+
+
+
 
     // findRelationshipsByProperty
     List<Relationship> findRelationshipsByProperty(String             typeDefName,
@@ -1789,17 +1894,21 @@ class GraphOMRSMetadataStore {
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
                     switch (pCat) {
                         case OM_PRIMITIVE_TYPE_STRING:
+                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+                            String searchString = convertSearchStringToJanusRegex((String) primValue);
+                            log.debug("{} primitive match property search string ", methodName, searchString);
+
                             // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
                                 if (!fullMatch) {
                                     // A partial match is sufficient...i.e. a value containing the search value as a substring will match
                                     String ANYCHARS = ".*";
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
                                 } else {
                                     // Must be a full match...
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue));
+                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));
                                 }
                             }
                             break;
@@ -2219,15 +2328,17 @@ class GraphOMRSMetadataStore {
                     DefaultGraphTraversal t = new DefaultGraphTraversal();
                     switch (pCat) {
                         case OM_PRIMITIVE_TYPE_STRING:
+                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+                            String searchString = convertSearchStringToJanusRegex((String) primValue);
+                            log.debug("{} primitive match property search string ", methodName, searchString);
+
                             // NB This is using a JG specific approach to text predicates - see the static import above.
                             // From TP 3.4.0 try to use the TP text predicates.
                             if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(primValue)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
                             } else {
                                 // Pattern given for classification name is assumed to be a full match
-                                //String ANYCHARS = ".*";
-                                //t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + primValue + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(primValue));         // for a field indexed using String mapping use textRegex
+                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));         // for a field indexed using String mapping use textRegex
                             }
                             break;
                         default:

@@ -7,29 +7,26 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.ldap.userdetails.InetOrgPerson;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private TokenAuthService tokenAuthenticationService;
+    private AuthService authenticationService;
 
-    protected LoginFilter(String urlMapping, AuthenticationManager authenticationManager, TokenAuthService tokenAuthenticationService) {
+    protected LoginFilter(String urlMapping, AuthenticationManager authenticationManager, AuthService authenticationService) {
         super(new AntPathRequestMatcher(urlMapping));
         setAuthenticationManager(authenticationManager);
-        this.tokenAuthenticationService = tokenAuthenticationService;
+        this.authenticationService = authenticationService;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-            throws AuthenticationException, IOException, ServletException {
+            throws AuthenticationException {
 
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(
@@ -38,17 +35,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authentication) throws IOException, ServletException {
-
-        TokenUser token;
-        if (authentication.getPrincipal() instanceof TokenUser) {
-            token = (TokenUser) authentication.getPrincipal();
-        }
-        else {
-            token = new TokenUser((InetOrgPerson)authentication.getPrincipal());
-        }
-        tokenAuthenticationService.addAuthentication(response, token);
+                                            FilterChain chain, Authentication authentication)  {
+        authenticationService.addAuthentication(request, response, authentication);
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        request.getSession().setAttribute("user",token.getUser());
+
     }
 }

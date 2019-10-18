@@ -56,7 +56,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
+            <artifactId>open-metadata-types</artifactId>
         </dependency>
 
         <dependency>
