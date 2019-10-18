@@ -41,14 +41,14 @@ public class AssetCatalogService {
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    public AssetDescriptionResponse getAssetDetailsByGUID(String serverName, String userId, String assetGUID, String assetType) {
+    public AssetDescriptionResponse getAssetDetailsByGUID(String serverName, String userId, String assetGUID, String assetTypeName) {
         String methodName = "getAssetDetailsByGUID";
         log.debug("Calling method: {}", methodName);
         AssetDescriptionResponse response = new AssetDescriptionResponse();
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetType);
+            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
             response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
@@ -63,7 +63,7 @@ public class AssetCatalogService {
         return response;
     }
 
-    public AssetDescriptionResponse getAssetUniverseByGUID(String serverName, String userId, String assetGUID, String assetType) {
+    public AssetDescriptionResponse getAssetUniverseByGUID(String serverName, String userId, String assetGUID, String assetTypeName) {
         String methodName = "getAssetUniverseByGUID";
 
         log.debug("Calling method: {}", methodName);
@@ -71,8 +71,8 @@ public class AssetCatalogService {
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetType);
-            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetType, ""));
+            AssetDescription assetDescription = assetCatalogHandler.getEntityDetails(userId, assetGUID, assetTypeName);
+            assetDescription.setRelationships(assetCatalogHandler.getRelationshipsByEntityGUID(userId, assetGUID, assetTypeName, ""));
 
             response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
@@ -88,14 +88,14 @@ public class AssetCatalogService {
         return response;
     }
 
-    public ClassificationsResponse getClassificationByAssetGUID(String serverName, String userId, String assetGUID, String assetType, String classificationName) {
+    public ClassificationsResponse getClassificationByAssetGUID(String serverName, String userId, String assetGUID, String assetTypeName, String classificationName) {
         String methodName = "getClassificationByAssetGUID";
         log.debug("Calling method: {}", methodName);
 
         ClassificationsResponse response = new ClassificationsResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId, assetGUID, assetType, classificationName));
+            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId, assetGUID, assetTypeName, classificationName));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -133,7 +133,7 @@ public class AssetCatalogService {
         return response;
     }
 
-    public RelationshipsResponse getAssetRelationships(String serverName, String userId, String assetGUID, String assetType, String relationshipTypeName, Integer startFrom, Integer limit) {
+    public RelationshipsResponse getAssetRelationships(String serverName, String userId, String assetGUID, String assetTypeName, String relationshipTypeName, Integer startFrom, Integer limit) {
         String methodName = "getAssetRelationships";
         log.debug("Calling method: {}", methodName);
 
@@ -144,7 +144,7 @@ public class AssetCatalogService {
             if (relationshipTypeName != null) {
                 relationshipTypeGUID = assetCatalogHandler.getTypeDefGUID(userId, relationshipTypeName);
             }
-            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID, assetType, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
+            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID, assetTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {

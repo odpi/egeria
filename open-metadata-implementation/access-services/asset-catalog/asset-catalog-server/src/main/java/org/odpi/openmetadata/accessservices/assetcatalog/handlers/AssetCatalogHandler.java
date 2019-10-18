@@ -79,21 +79,21 @@ public class AssetCatalogHandler {
         this.errorHandler = errorHandler;
     }
 
-    public AssetDescription getEntityDetails(String userId, String assetGUID, String assetType)
+    public AssetDescription getEntityDetails(String userId, String assetGUID, String assetTypeName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
-        EntityDetail entityByGUID = repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetType, methodName);
+        EntityDetail entityByGUID = repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetTypeName, methodName);
         AssetConverter converter = new AssetConverter(repositoryHelper);
         return converter.getAssetDescription(entityByGUID);
     }
 
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationshipsByEntityGUID(String userId,
                                                                                                                    String assetGUID,
-                                                                                                                   String assetType,
+                                                                                                                   String assetTypeName,
                                                                                                                    String relationshipType)
             throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         String methodName = "getRelationshipsByEntityGUID";
@@ -101,7 +101,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
-        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId, assetGUID, assetType, null, relationshipType, methodName);
+        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId, assetGUID, assetTypeName, null, relationshipType, methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
             AssetConverter converter = new AssetConverter(repositoryHelper);
@@ -113,7 +113,7 @@ public class AssetCatalogHandler {
 
     public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Classification> getEntityClassificationByName(String userId,
                                                                                                                       String assetGUID,
-                                                                                                                      String assetType,
+                                                                                                                      String assetTypeName,
                                                                                                                       String classificationName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityClassificationByName";
@@ -121,7 +121,7 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
-        List<Classification> entityClassifications = getEntityClassifications(userId, assetGUID, assetType);
+        List<Classification> entityClassifications = getEntityClassifications(userId, assetGUID, assetTypeName);
         AssetConverter converter = new AssetConverter(repositoryHelper);
 
         if (CollectionUtils.isEmpty(entityClassifications)) {
@@ -180,7 +180,7 @@ public class AssetCatalogHandler {
     }
 
 
-    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId, String assetGUID, String assetType,
+    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId, String assetGUID, String assetTypeName,
                                                                                                        String relationshipTypeGUID, String relationshipTypeName,
                                                                                                        Integer from, Integer pageSize)
             throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
@@ -192,7 +192,7 @@ public class AssetCatalogHandler {
 
         List<Relationship> pagedRelationshipsByType = repositoryHandler.getPagedRelationshipsByType(userId,
                 assetGUID,
-                assetType,
+                assetTypeName,
                 relationshipTypeGUID,
                 relationshipTypeName,
                 from,
@@ -409,13 +409,13 @@ public class AssetCatalogHandler {
         }
     }
 
-    private EntityDetail getEntity(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    private EntityDetail getEntity(String userId, String assetGUID, String assetTypeName) throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
-        return repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetType, methodName);
+        return repositoryHandler.getEntityByGUID(userId, assetGUID, ASSET_GUID_PARAMETER, assetTypeName, methodName);
     }
 
     private List<EntityDetail> collectSearchedEntitiesByType(String userId, String searchCriteria, SearchParameters searchParameters, List<String> types) throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
@@ -1208,11 +1208,11 @@ public class AssetCatalogHandler {
         assetElement.setContext(context);
     }
 
-    private List<Classification> getEntityClassifications(String userId, String assetId, String assetType) throws
+    private List<Classification> getEntityClassifications(String userId, String assetId, String assetTypeName) throws
             InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityClassifications";
 
-        EntityDetail entityDetails = repositoryHandler.getEntityByGUID(userId, assetId, ASSET_GUID_PARAMETER, assetType, methodName);
+        EntityDetail entityDetails = repositoryHandler.getEntityByGUID(userId, assetId, ASSET_GUID_PARAMETER, assetTypeName, methodName);
         return entityDetails.getClassifications();
     }
 
