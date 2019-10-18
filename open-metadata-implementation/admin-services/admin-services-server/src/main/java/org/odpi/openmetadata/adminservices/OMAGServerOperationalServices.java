@@ -552,12 +552,10 @@ public class OMAGServerOperationalServices
              */
             if (dataEngineProxyConfig != null)
             {
-                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(configuration.getLocalServerName(),
-                        configuration.getLocalServerType(),
-                        configuration.getOrganizationName(),
+                DataEngineProxyOperationalServices operationalDataEngineProxyServices = new DataEngineProxyOperationalServices(
+                        configuration.getLocalServerName(),
                         configuration.getLocalServerUserId(),
-                        configuration.getLocalServerPassword(),
-                        configuration.getLocalServerURL());
+                        configuration.getLocalServerPassword());
 
                 instance.setOperationalDataEngineProxyServices(operationalDataEngineProxyServices);
                 operationalDataEngineProxyServices.initialize(
