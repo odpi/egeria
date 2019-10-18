@@ -98,7 +98,7 @@ public class JanusConnector extends OpenLineageConnectorBase {
         long begin = System.currentTimeMillis();
         try {
             Set<GraphContext> verticesToBeAdded = new HashSet<>();
-            lineageEvent.getProcessContext().entrySet().stream().forEach(entry ->
+            lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
                     {
                         if(entry.getValue().size()>1){
                             verticesToBeAdded.addAll(entry.getValue());

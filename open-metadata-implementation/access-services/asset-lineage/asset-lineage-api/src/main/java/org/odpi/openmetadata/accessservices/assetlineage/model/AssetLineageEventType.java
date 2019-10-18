@@ -7,7 +7,8 @@ import java.io.Serializable;
 public enum AssetLineageEventType implements Serializable {
 
     PROCESS_CONTEXT_EVENT(0, "ProcessContextEvent", "Has the full context for a Process"),
-    UNKNOWN_SECURITY_OFFICER_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
+    TECHNICAL_ELEMENT_CONTEXT_EVENT(1, "ProcessContextEvent", "Has the full context for a technical element"),
+    UNKNOWN_ASSET_LINEAGE_EVENT(100, "UnknownAssetLineageEvent", "An AssetLineage OMAS event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
 

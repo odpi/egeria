@@ -23,15 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class LineageEvent extends AssetLineageEvent {
 
-   private Map<String, Set<GraphContext>> processContext;
+   private Map<String, Set<GraphContext>> assetContext;
 
-    public Map<String, Set<GraphContext>> getProcessContext() {
-        return processContext;
+    public Map<String, Set<GraphContext>> getAssetContext() {
+        return assetContext;
     }
 
-    public void setProcessContext(Map<String, Set<GraphContext>> processContext) {
+    public void setAssetContext(Map<String, Set<GraphContext>> assetContext) {
 
-        this.processContext = processContext;
+        this.assetContext = assetContext;
     }
 
 

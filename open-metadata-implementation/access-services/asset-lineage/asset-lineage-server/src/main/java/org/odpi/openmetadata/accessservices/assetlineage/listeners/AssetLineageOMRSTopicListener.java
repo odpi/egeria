@@ -205,8 +205,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
         Map<String, Set<GraphContext>>  processContext = processHandler.getProcessContext(serverUserName, entityDetail.getGUID());
 
         LineageEvent event = new LineageEvent();
-        event.setProcessContext(processContext);
-
+        event.setAssetContext(processContext);
+        event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
     }
 
@@ -224,14 +224,14 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
         LineageEvent event = new LineageEvent();
         if(context.size() != 0){
-            event.setProcessContext(context);
+            event.setAssetContext(context);
         }
         else
         {
-            event.setProcessContext(assetContext.getNeighbors());
+            event.setAssetContext(assetContext.getNeighbors());
         }
 
-        event.setAssetLineageEventType(AssetLineageEventType.PROCESS_CONTEXT_EVENT);
+        event.setAssetLineageEventType(AssetLineageEventType.TECHNICAL_ELEMENT_CONTEXT_EVENT);
         publisher.publishRelationshipEvent(event);
     }
 
