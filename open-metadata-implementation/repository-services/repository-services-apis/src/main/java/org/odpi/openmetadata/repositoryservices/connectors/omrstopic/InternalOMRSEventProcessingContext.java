@@ -86,7 +86,7 @@ public class InternalOMRSEventProcessingContext {
      * Gets the unique identifier for the current message that
      * is being processed.
      * 
-     * @return
+     * @return the current message id
      */
     public String getCurrentMessageId() {
         return currentMessageId;
@@ -96,7 +96,7 @@ public class InternalOMRSEventProcessingContext {
      * Sets the unique identifier for the current message that
      * is being processed.
      * 
-     * @param messageId
+     * @param messageId The mesageId to set
      */
     public void setCurrentMessageId(String messageId) { 
         this.currentMessageId = messageId;

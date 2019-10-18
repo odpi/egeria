@@ -9,8 +9,6 @@ import java.util.concurrent.Future;
 
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.future.OMRSFuture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An event that was received from a connector
@@ -38,6 +36,11 @@ public class IncomingEvent {
         this.messageId = messageId;
     }
     
+    /**
+     * Gets the json for the event
+     * 
+     * @return
+     */
     public String getJson() {
         return json;
     }
@@ -64,10 +67,20 @@ public class IncomingEvent {
         }
     }
     
+    /**
+     * Gets the time when this {@link IncomingEvent} instance was created.
+     * This is different from the time when the message was generated.
+     * 
+     * @return
+     */
     public long getCreationTime() {
         return creationTime;
     }
     
+    /**
+     * Gets the unique message id for this event
+     * @return
+     */
     public String getMessageId() {
         return messageId;
     }
