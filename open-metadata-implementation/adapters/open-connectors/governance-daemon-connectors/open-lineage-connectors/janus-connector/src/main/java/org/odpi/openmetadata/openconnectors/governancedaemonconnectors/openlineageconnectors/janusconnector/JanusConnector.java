@@ -4,6 +4,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openline
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__;
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.Graph;
@@ -34,11 +35,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
 
@@ -117,8 +121,46 @@ public class JanusConnector extends OpenLineageConnectorBase {
         long end = System.currentTimeMillis();
 
         float sec = (end - begin) / 1000F;
-        System.out.println(sec + " seconds");    }
+        System.out.println(sec + " seconds");
+    }
 
+    @Override
+    public void schedulerTask(){
+        GraphTraversalSource g = bufferGraph.traversal();
+        List<Vertex> vertices = g.V().has(PROPERTY_KEY_ENTITY_NAME, "Process").toList();
+
+        List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
+
+        for (String guid : guidList) {
+            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("displayName","initial_load");
+            if(!initial.hasNext()) {
+
+
+                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "portType", "INPUT_PORT")
+                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").in("LineageMapping").in("SchemaAttributeType")
+                        .toList();
+
+                Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
+                for (Vertex vertex : inputPath) {
+                    String vertexGuid = vertex.value(PROPERTY_KEY_ENTITY_GUID);
+                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").out("LineageMapping");
+
+                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(), g);
+                    if (columnOut != null && columnOut.hasNext()) {
+                        String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+                        String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
+
+
+                        if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
+                            MainGraphMapper mainGraphMapper = new MainGraphMapper();
+                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid,mainGraph);
+                        }
+                    }
+                }
+            }
+        }
+        g.tx().commit();
+    }
 
     private void addVerticesAndRelationship(GraphTraversalSource g, GraphContext nodeToNode){
         LineageEntity fromEntity = nodeToNode.getFromVertex();
@@ -168,6 +210,7 @@ public class JanusConnector extends OpenLineageConnectorBase {
         if (edgeIt.hasNext()) {
             g.tx().rollback();
             throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+            return;
         }
         //TODO add try catch
         fromVertex.addEdge(relationshipType, toVertex);
@@ -184,6 +227,24 @@ public class JanusConnector extends OpenLineageConnectorBase {
             g.tx().rollback();
             throwException(JanusConnectorErrorCode.ENTITY_NOT_CREATED,lineageEntity.getGuid(),methodName);
 
+        }
+    }
+
+    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g)  {
+
+        try{
+            Iterator<Vertex> end = g.V(v.id()).both("SchemaAttributeType").or(__.has(PROPERTY_KEY_ENTITY_NAME, RELATIONAL_COLUMN),
+                    __.has(PROPERTY_KEY_ENTITY_NAME, TABULAR_COLUMN));
+
+            if (!end.hasNext()) {
+
+                Iterator<Vertex> next = g.V(v.id()).out("LineageMapping");
+                return findPathForOutputAsset(next.next(), g);
+            }
+            return end;}
+        catch (Exception e){
+            log.debug("Vertex does not exitst");
+            return null;
         }
     }
 

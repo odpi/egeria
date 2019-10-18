@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.scheduler.JobConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,9 +13,12 @@ public class GraphStoringServices {
     private static final Logger log = LoggerFactory.getLogger(GraphStoringServices.class);
 
     private OpenLineageGraphStore openLineageGraphStore;
+    private JobConfiguration jobConfiguration;
 
     public GraphStoringServices(OpenLineageGraphStore graphStore) {
         this.openLineageGraphStore = graphStore;
+        this.jobConfiguration = new JobConfiguration(graphStore);
+
     }
 
     public void addEntity(LineageEvent lineageEvent){

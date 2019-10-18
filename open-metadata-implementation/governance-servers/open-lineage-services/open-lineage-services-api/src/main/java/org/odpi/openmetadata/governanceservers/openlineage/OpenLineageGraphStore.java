@@ -16,6 +16,13 @@ public interface OpenLineageGraphStore {
     void addEntity(LineageEvent lineageEvent);
 
     /**
+     * Task that the scheduler performs based on the interval
+     *
+     */
+    void schedulerTask();
+
+
+    /**
      * Returns a lineage subgraph.
      *
      * @param graphName main, buffer, mock, history.

@@ -22,6 +22,12 @@ public class OpenLineageConnectorBase extends ConnectorBase implements OpenLinea
     }
 
     /**
+     * Task that the scheduler performs based on the interval
+     */
+    @Override
+    public void schedulerTask() { }
+
+    /**
      * Process the serialized  information view event
      *
      * @param lineageEvent event
