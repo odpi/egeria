@@ -61,7 +61,7 @@ public class DataPlatformClient extends OCFRESTClient implements DataPlatformInt
     }
 
     /**
-     * Create the software server capability entity for registering data platforms.
+     * Create the software server capability entity for registering external data platforms.
      *
      * @param userId                   the name of the calling user
      * @param softwareServerCapability the software server capability bean

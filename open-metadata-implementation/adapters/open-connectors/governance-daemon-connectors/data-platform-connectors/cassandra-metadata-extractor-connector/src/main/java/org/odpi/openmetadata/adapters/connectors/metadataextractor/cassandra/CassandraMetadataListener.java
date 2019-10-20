@@ -15,17 +15,12 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import java.io.Closeable;
 import java.util.UUID;
 
-public class CassandraMetadataListener implements SchemaChangeListener,Runnable {
+public class CassandraMetadataListener implements SchemaChangeListener {
 
     private String userId;
     private OMRSAuditLog omrsAuditLog;
     private CassandraMetadataExtractorAuditCode auditLog;
     private DataPlatformClient dataPlatformClient;
-
-    public CassandraMetadataListener(String userId, DataPlatformClient dataPlatformClient) {
-        this.userId = userId;
-        this.dataPlatformClient = dataPlatformClient;
-    }
 
     public CassandraMetadataListener(DataPlatformClient dataPlatformClient) {
         this.dataPlatformClient = dataPlatformClient;
@@ -42,6 +37,7 @@ public class CassandraMetadataListener implements SchemaChangeListener,Runnable 
             deployedDatabaseSchema.setGuid(UUID.randomUUID().toString());
             deployedDatabaseSchema.setDisplayName(keyspaceMetadata.getName().toString());
             deployedDatabaseSchema.setAdditionalProperties(keyspaceMetadata.getReplication());
+            //dataPlatformClient.
             dataPlatformClient.createDeployedDatabaseSchema(userId, deployedDatabaseSchema);
         } catch (InvalidParameterException | PropertyServerException | NullPointerException e){
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_CREATING_KEYSPACE;
@@ -192,19 +188,4 @@ public class CassandraMetadataListener implements SchemaChangeListener,Runnable 
 
     }
 
-    /**
-     * When an object implementing interface <code>Runnable</code> is used
-     * to create a thread, starting the thread causes the object's
-     * <code>run</code> method to be called in that separately executing
-     * thread.
-     * <p>
-     * The general contract of the method <code>run</code> is that it may
-     * take any action whatsoever.
-     *
-     * @see Thread#run()
-     */
-    @Override
-    public void run() {
-
-    }
 }

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adapters.connectors.datastore.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.CqlSessionBuilder;
+import com.datastax.oss.driver.api.core.metadata.schema.SchemaChangeListener;
 import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.ffdc.CassandraDataStoreAuditCode;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -52,9 +53,6 @@ public class CassandraDataStoreConnector extends ConnectorBase {
 
         EndpointProperties endpoint = connectionProperties.getEndpoint();
 
-        this.password = connectionProperties.getClearPassword();
-        this.username = connectionProperties.getDisplayName();
-
         super.initialize(connectorInstanceId, connectionProperties);
 
         if (omrsAuditLog != null) {
@@ -82,42 +80,22 @@ public class CassandraDataStoreConnector extends ConnectorBase {
                             auditLog.getSystemAction(),
                             auditLog.getUserAction());}
         }
-
-        if (startCassandraConnection()) {
-            auditLog = CassandraDataStoreAuditCode.CONNECTOR_INITIALIZED;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditLog.getLogMessageId(),
-                    auditLog.getSeverity(),
-                    auditLog.getFormattedLogMessage(),
-                    null,
-                    auditLog.getSystemAction(),
-                    auditLog.getUserAction());
-        } else {
-            auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditLog.getLogMessageId(),
-                    auditLog.getSeverity(),
-                    auditLog.getFormattedLogMessage(),
-                    null,
-                    auditLog.getSystemAction(),
-                    auditLog.getUserAction());
-        }
     }
 
 
     /**
-     * Set up the Cassandra Cluster Connection
+     * Set up the Cassandra Cluster Connection with schema change listener to track the metadata changes
      */
-    private boolean startCassandraConnection() {
+    private void startCassandraConnection(SchemaChangeListener schemaChangeListener) {
+
         String actionDescription = "start Cassandra Data Store Connection";
         try {
             CqlSessionBuilder builder = CqlSession.builder();
             builder.addContactPoint(new InetSocketAddress(serverAddresses, port));
+            builder.withSchemaChangeListener(schemaChangeListener);
             //builder.withAuthCredentials(username, password);
             this.cqlSession = builder.build();
-            if (cqlSession.isSchemaMetadataEnabled()) {
-                return true;
-            }
+
         } catch (ExceptionInInitializerError e) {
             auditLog = CassandraDataStoreAuditCode.CONNECTOR_SERVER_CONNECTION_ERROR;
             omrsAuditLog.logRecord(actionDescription,
@@ -128,7 +106,14 @@ public class CassandraDataStoreConnector extends ConnectorBase {
                     auditLog.getSystemAction(),
                     auditLog.getUserAction());
         }
-        return false;
+        auditLog = CassandraDataStoreAuditCode.CONNECTOR_INITIALIZED;
+        omrsAuditLog.logRecord(actionDescription,
+                auditLog.getLogMessageId(),
+                auditLog.getSeverity(),
+                auditLog.getFormattedLogMessage(),
+                null,
+                auditLog.getSystemAction(),
+                auditLog.getUserAction());
     }
 
     /**

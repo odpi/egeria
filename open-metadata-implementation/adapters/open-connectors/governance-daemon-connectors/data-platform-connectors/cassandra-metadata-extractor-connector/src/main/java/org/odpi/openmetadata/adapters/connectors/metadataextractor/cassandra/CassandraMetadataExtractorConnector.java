@@ -3,13 +3,10 @@
 package org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra;
 
 import com.datastax.oss.driver.api.core.CqlSession;
-import com.datastax.oss.driver.api.core.metadata.schema.KeyspaceMetadata;
+import org.odpi.openmetadata.adapters.connectors.datastore.cassandra.CassandraDataStoreConnector;
 import org.odpi.openmetadata.adapters.connectors.metadataextractor.cassandra.auditlog.CassandraMetadataExtractorAuditCode;
 import org.odpi.openmetadata.dataplatformservices.api.DataPlatformMetadataExtractorBase;
-import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformDeployedDatabaseSchema;
-import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformSoftwareServerCapability;
-import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularColumn;
-import org.odpi.openmetadata.dataplatformservices.api.model.DataPlatformTabularSchema;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -25,8 +22,8 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
     private static final Logger log = LoggerFactory.getLogger(CassandraMetadataExtractorConnector.class);
     private OMRSAuditLog omrsAuditLog;
     private CassandraMetadataExtractorAuditCode auditLog;
-    private CassandraMetadataListener cassandraMetadataListener;
     private CqlSession cqlSession;
+    private CassandraDataStoreConnector cassandraDataStoreConnector = new CassandraDataStoreConnector();
 
     /**
      * Initialize the connector.
@@ -35,7 +32,7 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
      * @param connectionProperties - POJO for the configuration used to create the connector.
      */
     @Override
-    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties){
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
 
         final String actionDescription = "initialize Cassandra Metadata Extractor Connector";
 
@@ -43,14 +40,11 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
 
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
+        this.cassandraDataStoreConnector.initialize(connectorInstanceId, connectionProperties);
 
-       /* CassandraDataStoreConnector cassandraDataStoreConnector = new CassandraDataStoreConnector();
-        cassandraDataStoreConnector.initialize(connectorInstanceId,connectionProperties);
-*//*        CassandraStoreProvider cassandraStoreProvider= new CassandraStoreProvider();
-        connection.setConnectorType(cassandraStoreProvider.getConnectorType());*//*
         EndpointProperties endpoint = cassandraDataStoreConnector.getConnection().getEndpoint();
-*/
-        if (omrsAuditLog != null) {
+
+        if (omrsAuditLog != null & endpoint.getAddress() != null) {
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_INITIALIZING;
             omrsAuditLog.logRecord(
                     actionDescription,
@@ -61,25 +55,26 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
                     auditLog.getSystemAction(),
                     auditLog.getUserAction());
 
-
-        /*if (endpoint.getAddress() != null) {
-           // serverAddress = endpoint.getAddress();*/
-
         } else {
-                log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
-                if (omrsAuditLog != null) {
-                    auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
-                    omrsAuditLog.logRecord(actionDescription,
-                            auditLog.getLogMessageId(),
-                            auditLog.getSeverity(),
-                            auditLog.getFormattedLogMessage(),
-                            null,
-                            auditLog.getSystemAction(),
-                            auditLog.getUserAction()); }
+            log.error("Errors in the Cassandra server configuration. The address of the server cannot be extracted.");
+            if (omrsAuditLog != null) {
+                auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SERVER_CONFIGURATION_ERROR;
+                omrsAuditLog.logRecord(actionDescription,
+                        auditLog.getLogMessageId(),
+                        auditLog.getSeverity(),
+                        auditLog.getFormattedLogMessage(),
+                        null,
+                        auditLog.getSystemAction(),
+                        auditLog.getUserAction());
+            }
         }
 
-        if (omrsAuditLog != null)
-        {
+        CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener(this.getDataPlatformClient());
+        //cassandraDataStoreConnector.
+
+        this.cqlSession = cassandraDataStoreConnector.getSession();
+
+        if (omrsAuditLog != null) {
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_INITIALIZED;
             omrsAuditLog.logRecord(actionDescription,
                     auditLog.getLogMessageId(),
@@ -92,7 +87,6 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
     }
 
 
-
     /**
      * Provide Cassandra Session.
      *
@@ -103,13 +97,16 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
     }
 
     /**
-     * Terminate Cassandra Metadata Extractor Connector Connection.
+     * Free up any resources held since the connector is no longer needed.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public void shutdown() {
+    @Override
+    public void disconnect() throws ConnectorCheckedException {
+        super.disconnect();
 
         String actionDescription = "Shut down the Cassandra connection.";
-
-        cqlSession.close();
+        this.cqlSession.close();
 
         auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_SHUTDOWN;
         omrsAuditLog.logRecord(actionDescription,
@@ -121,20 +118,29 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
                 auditLog.getUserAction());
     }
 
-
     /**
-     * Register metadata change listener of Cassandra Metadata Extractor Connector.
+     * Register the metadata change listener of Cassandra Metadata Extractor Connector.
      *
-     * @param cassandraMetadataExtractor the cassandra store listener
+     * @param cassandraMetadataListener the cassandra store listener
      */
-    public void registerListener(CassandraMetadataExtractor cassandraMetadataExtractor)
-    {
-        if (cassandraMetadataExtractor != null && this.cqlSession.isSchemaMetadataEnabled())
-        {
+    public void registerListener(CassandraMetadataListener cassandraMetadataListener) {
 
-            log.debug("Registering cassandra cluster listener: {}", cassandraMetadataExtractor.toString());
+        String actionDescription = "register Cassandra Metadata Listener";
+
+        if (cassandraMetadataListener != null && this.cqlSession.isSchemaMetadataEnabled()) {
+
+            //cassandraDataStoreConnector.start
+
+            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_REGISTER_LISTENER_FINISHED;
+            omrsAuditLog.logRecord(actionDescription,
+                    auditLog.getLogMessageId(),
+                    auditLog.getSeverity(),
+                    auditLog.getFormattedLogMessage(),
+                    null,
+                    auditLog.getSystemAction(),
+                    auditLog.getUserAction());
+
         } else {
-            String actionDescription = "Error in registering cassandra store listener.";
 
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_REGISTER_LISTENER_ERROR;
             omrsAuditLog.logRecord(actionDescription,
@@ -145,31 +151,5 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
                     auditLog.getSystemAction(),
                     auditLog.getUserAction());
         }
-    }
-
-
-    @Override
-    public DataPlatformSoftwareServerCapability getDataPlatformSoftwareServerCapability() {
-        return super.getDataPlatformSoftwareServerCapability();
-    }
-
-    @Override
-    public DataPlatformDeployedDatabaseSchema getDataPlatformDeployedDatabaseSchema() {
-
-        KeyspaceMetadata keyspaceMetadata ;
-
-
-
-        return super.getDataPlatformDeployedDatabaseSchema();
-    }
-
-    @Override
-    public DataPlatformTabularSchema getDataPlatformTabularSchema() {
-        return super.getDataPlatformTabularSchema();
-    }
-
-    @Override
-    public DataPlatformTabularColumn getDataPlatformTabularColumn() {
-        return super.getDataPlatformTabularColumn();
     }
 }

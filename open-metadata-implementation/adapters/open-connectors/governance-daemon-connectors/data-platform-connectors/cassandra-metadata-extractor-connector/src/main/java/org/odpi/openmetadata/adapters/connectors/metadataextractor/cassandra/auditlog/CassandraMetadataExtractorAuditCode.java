@@ -58,12 +58,18 @@ public enum CassandraMetadataExtractorAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "The Cassandra metadata change listener can not be registered",
             "No metadata change from cassandra will be listened.",
-            "Check the Cassandra configuration details on whether schema metadata is enabled."),
+            "Check the Cassandra configuration details on whether schema change listener is enabled."),
     CONNECTOR_CREATING_KEYSPACE("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0008",
             OMRSAuditLogRecordSeverity.INFO,
             "The Cassandra keyspace is being created and synchronized to Data Platform OMAS.",
             "No query result will be provided.",
-            "Check if the query is valid."),;
+            "No action is required.  This is part of the normal operation of the service."),
+    CONNECTOR_REGISTER_LISTENER_FINISHED("CASSANDRA-METADATA-EXTRACTOR-CONNECTOR-0010",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Cassandra metadata change listener has been registered",
+            "The metadata change from Cassandra data store will be listened.",
+            "No action is required.  This is part of the normal operation of the service."),
+    ;
     
     
     private String logMessageId;
