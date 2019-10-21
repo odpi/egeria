@@ -21,7 +21,6 @@ public interface OpenLineageGraphStore {
      */
     void schedulerTask();
 
-
     /**
      * Returns a lineage subgraph.
      *

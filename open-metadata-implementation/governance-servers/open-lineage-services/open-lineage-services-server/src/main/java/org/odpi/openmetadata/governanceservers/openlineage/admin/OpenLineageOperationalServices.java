@@ -43,7 +43,6 @@ public class OpenLineageOperationalServices {
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector inTopicConnector;
     private OpenLineageConfig openLineageConfig;
-    private OpenLineageGraphStore openLineageGraphStore;
     private OpenLineageServicesInstance instance;
 
     /**
@@ -79,12 +78,14 @@ public class OpenLineageOperationalServices {
         logAudit(OpenLineageAuditCode.SERVICE_INITIALIZING, ACTION_DESCRIPTION);
 
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
-        getGraphConnector(bufferGraphConnection);
+        OpenLineageGraphStore openLineageGraphStore = getGraphConnector(bufferGraphConnection);
+
+        //TODO check for null
         startGraphServices(openLineageGraphStore);
 
     }
 
-    private void getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
+    private OpenLineageGraphStore getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
@@ -92,12 +93,13 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                openLineageGraphStore = (OpenLineageGraphStore) connectorBroker.getConnector(connection);
+                return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
             }
         }
+        return null;
     }
 
     private void startGraphServices(OpenLineageGraphStore openLineageGraphStore) throws OMAGConfigurationErrorException {
