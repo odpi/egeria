@@ -33,7 +33,7 @@ public enum PrimitiveDefCategory implements Serializable
     OM_PRIMITIVE_TYPE_BIGINTEGER(9,  "biginteger", "java.math.BigInteger",  "8aa56e52-1076-4e0d-9b66-3873a1ed7392"),
     OM_PRIMITIVE_TYPE_BIGDECIMAL(10, "bigdecimal", "java.math.BigDecimal",  "d5c8ad9f-8fee-4a64-80b3-63ce1e47f6bb"),
     OM_PRIMITIVE_TYPE_STRING    (11, "string",     "java.lang.String",      "b34a64b9-554a-42b1-8f8a-7d5c2339f9c4"),
-    OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.util.Date",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
+    OM_PRIMITIVE_TYPE_DATE      (12, "date",       "java.lang.Long",        "1bef35ca-d4f9-48db-87c2-afce4649362d");
 
     private static final long serialVersionUID = 1L;
 

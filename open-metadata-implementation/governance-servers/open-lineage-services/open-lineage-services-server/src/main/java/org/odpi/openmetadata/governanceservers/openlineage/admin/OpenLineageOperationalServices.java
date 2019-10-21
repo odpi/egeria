@@ -103,7 +103,7 @@ public class OpenLineageOperationalServices {
     private void startGraphServices(OpenLineageGraphStore openLineageGraphStore) throws OMAGConfigurationErrorException {
 
         GraphStoringServices graphStoringServices = new GraphStoringServices(openLineageGraphStore);
-        GraphQueryingServices graphServices = new GraphQueryingServices();
+        GraphQueryingServices graphServices = new GraphQueryingServices(openLineageGraphStore);
         this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
 
         startEventBus(graphStoringServices);

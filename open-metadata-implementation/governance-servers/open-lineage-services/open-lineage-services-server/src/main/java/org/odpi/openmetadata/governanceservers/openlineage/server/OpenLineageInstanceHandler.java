@@ -4,22 +4,23 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
 
 class OpenLineageInstanceHandler
 {
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
-//    public GraphQueryingServices queryHandler(String serverName) throws PropertyServerException {
-//        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
-//
-//        if (instance != null) {
-//            return instance.getGraphServices();
-//        } else {
-//            final String methodName = "queryHandler";
-//            throwError(serverName, methodName);
-//            return null;
-//        }
-//    }
+    public GraphQueryingServices queryHandler(String serverName) throws PropertyServerException {
+        OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getGraphQueryingServices();
+        } else {
+            final String methodName = "queryHandler";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
 
     private void throwError(String serverName, String methodName) throws PropertyServerException {
         OpenLineageErrorCode errorCode = OpenLineageErrorCode.SERVICE_NOT_INITIALIZED;
