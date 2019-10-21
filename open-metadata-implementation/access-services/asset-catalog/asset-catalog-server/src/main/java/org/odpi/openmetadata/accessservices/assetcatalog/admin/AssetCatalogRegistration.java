@@ -1,8 +1,7 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetcatalog.service;
+package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogAdmin;
 import org.odpi.openmetadata.adminservices.configuration.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
