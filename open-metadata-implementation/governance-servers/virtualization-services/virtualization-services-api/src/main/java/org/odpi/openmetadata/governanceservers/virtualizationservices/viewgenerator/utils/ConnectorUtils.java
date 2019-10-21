@@ -3,12 +3,12 @@
  * Copyright Contributors to the ODPi Egeria project.
  */
 
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils;
+package org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils;
 
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.LogicTable;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.MappedColumn;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.LogicTable;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.MappedColumn;
 
 
 import java.util.ArrayList;
