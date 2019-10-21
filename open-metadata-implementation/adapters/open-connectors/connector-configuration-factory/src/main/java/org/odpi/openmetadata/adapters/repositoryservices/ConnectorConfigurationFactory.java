@@ -21,6 +21,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnecto
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
+
 
 import java.util.*;
 
@@ -757,7 +759,7 @@ public class ConnectorConfigurationFactory
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
-        if ("org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby".equals(connectorProviderClassName)){
+        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName)){
             endpoint.setType(Endpoint.getEndpointType());
             endpoint.setGUID(endpointGUID);
             endpoint.setQualifiedName(endpointName);
@@ -792,6 +794,10 @@ public class ConnectorConfigurationFactory
             additionalProperties.put("databaseName", virtualizationSolutionConfig.get("databaseName").toString());
 
             connection.setAdditionalProperties(additionalProperties);
+        }
+
+        else {
+            log.error("Provided connector class is not registered in virtualizer api or implemented.");
         }
 
         return connection;
