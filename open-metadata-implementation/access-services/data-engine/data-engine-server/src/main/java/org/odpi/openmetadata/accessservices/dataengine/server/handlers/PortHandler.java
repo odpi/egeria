@@ -152,9 +152,7 @@ public class PortHandler {
                                                            PropertyServerException {
         final String methodName = "createPort";
 
-        validatePortParameters(userId, qualifiedName, displayName, methodName);
-
-        InstanceProperties properties = buildPortInstanceProperties(qualifiedName, displayName, portType,
+        InstanceProperties properties = buildPortInstanceProperties(userId, qualifiedName, displayName, portType,
                 methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTpeName);
@@ -181,9 +179,7 @@ public class PortHandler {
                                                           PropertyServerException {
         final String methodName = "updatePort";
 
-        validatePortParameters(userId, qualifiedName, displayName, methodName);
-
-        InstanceProperties properties = buildPortInstanceProperties(qualifiedName, displayName, portType,
+        InstanceProperties properties = buildPortInstanceProperties(userId, qualifiedName, displayName, portType,
                 methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTypeName);
@@ -209,16 +205,13 @@ public class PortHandler {
                                                                                                  PropertyServerException {
         final String methodName = "addPortSchemaRelationship";
 
-        validateRelationshipParameters(userId, portGUID, schemaTypeGUID, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(schemaTypeGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, portGUID,
-                PortPropertiesMapper.PORT_TYPE_NAME, schemaTypeGUID, PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, methodName);
-
-        if (relationship == null) {
-            repositoryHandler.createRelationship(userId, PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID, portGUID,
-                    schemaTypeGUID, null, methodName);
-        }
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
+        createRelationship(userId, portGUID, schemaTypeGUID, relationshipTypeDef, methodName);
     }
 
     /**
@@ -236,14 +229,17 @@ public class PortHandler {
     public String getSchemaTypeForPort(String userId, String portGUID) throws InvalidParameterException,
                                                                               UserNotAuthorizedException,
                                                                               PropertyServerException {
-        final String methodName = "getSchemaTypForPort";
+        final String methodName = "getSchemaTypeForPort";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(portGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
+
         EntityDetail entity = repositoryHandler.getEntityForRelationshipType(userId, portGUID,
-                PortPropertiesMapper.PORT_TYPE_NAME, PortPropertiesMapper.PORT_SCHEMA_TYPE_GUID,
-                PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME, methodName);
+                PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(),
+                methodName);
 
         if (entity == null) {
             return null;
@@ -271,20 +267,20 @@ public class PortHandler {
                                                                          PropertyServerException {
         final String methodName = "addPortDelegationRelationship";
 
-        validateRelationshipParameters(userId, portGUID, delegatesTo, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(portGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateName(delegatesTo, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
+
 
         EntityDetail delegatedPort = getPortEntityDetailByQualifiedName(userId, delegatesTo);
         String delegatedPortType = getPortType(delegatedPort);
 
         if (delegatedPortType.equalsIgnoreCase(portType.getName())) {
-            Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, portGUID,
-                    PortPropertiesMapper.PORT_TYPE_NAME, delegatesTo, PortPropertiesMapper.PORT_DELEGATION_TYPE_GUID,
-                    PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME, methodName);
+            TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                    PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME);
 
-            if (relationship == null) {
-                repositoryHandler.createRelationship(userId, PortPropertiesMapper.PORT_DELEGATION_TYPE_GUID, portGUID,
-                        delegatedPort.getGUID(), null, methodName);
-            }
+            createRelationship(userId, portGUID, delegatedPort.getGUID(), relationshipTypeDef, methodName);
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
         }
@@ -315,6 +311,44 @@ public class PortHandler {
     }
 
     /**
+     * Find out if the Port Implementation object is already stored in the repository. It uses the fully qualified name
+     * to retrieve the entity
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return unique identifier of the process or null
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String findPortImplementation(String userId, String qualifiedName) throws InvalidParameterException,
+                                                                                     UserNotAuthorizedException,
+                                                                                     PropertyServerException {
+        return findPort(userId, qualifiedName, PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+    }
+
+    /**
+     * Find out if the Port Alias object is already stored in the repository. It uses the fully qualified name
+     * to retrieve the entity
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return unique identifier of the process or null
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public String findPortAlias(String userId, String qualifiedName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException {
+        return findPort(userId, qualifiedName, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+    }
+
+    /**
      * Find out if the Port object is already stored in the repository. It uses the fully qualified name
      * to retrieve the entity
      *
@@ -328,12 +362,15 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String findPort(String userId, String qualifiedName, String entityTypeName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException {
+    private String findPort(String userId, String qualifiedName, String entityTypeName) throws
+                                                                                        InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException {
         final String methodName = "findPort";
 
         invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                methodName);
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
@@ -352,13 +389,6 @@ public class PortHandler {
         return retrievedEntity.getGUID();
     }
 
-    private void validateRelationshipParameters(String userId, String firstGUID, String secondGUID,
-                                                String methodName) throws InvalidParameterException {
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(firstGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-        invalidParameterHandler.validateGUID(secondGUID, PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
-    }
 
     private EntityDetail getPortEntityDetailByQualifiedName(String userId, String qualifiedName) throws
                                                                                                  InvalidParameterException,
@@ -372,13 +402,13 @@ public class PortHandler {
         invalidParameterHandler.validateName(qualifiedName, PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, PortPropertiesMapper.PORT_TYPE_NAME);
         return repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
-                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, PortPropertiesMapper.PORT_TYPE_GUID,
-                PortPropertiesMapper.PORT_TYPE_NAME, methodName);
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(),
+                entityTypeDef.getName(), methodName);
     }
 
     private String getPortType(EntityDetail delegatedPort) {
@@ -400,8 +430,23 @@ public class PortHandler {
         return portTypeValue.getSymbolicName();
     }
 
-    private InstanceProperties buildPortInstanceProperties(String qualifiedName, String displayName, PortType portType,
-                                                           String methodName) throws InvalidParameterException {
+    private void createRelationship(String userId, String firstGUID, String secondGUID, TypeDef relationshipTypeDef,
+                                    String methodName) throws UserNotAuthorizedException, PropertyServerException {
+        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID,
+                PortPropertiesMapper.PORT_TYPE_NAME, secondGUID, relationshipTypeDef.getGUID(),
+                relationshipTypeDef.getName(), methodName);
+
+        if (relationship == null) {
+            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), firstGUID,
+                    secondGUID, null, methodName);
+        }
+    }
+
+    private InstanceProperties buildPortInstanceProperties(String userId, String qualifiedName, String displayName,
+                                                           PortType portType, String methodName) throws
+                                                                                                 InvalidParameterException {
+        validatePortParameters(userId, qualifiedName, displayName, methodName);
+
         PortPropertiesBuilder builder = new PortPropertiesBuilder(qualifiedName, displayName, portType,
                 repositoryHelper, serviceName, serverName);
         return builder.getInstanceProperties(methodName);

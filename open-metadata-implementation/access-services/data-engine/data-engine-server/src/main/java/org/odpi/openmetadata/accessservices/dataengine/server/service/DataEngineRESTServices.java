@@ -307,7 +307,7 @@ public class DataEngineRESTServices {
             handleFailedProcesses(response, mappedResponses.get(Boolean.FALSE));
 
             createdProcesses.parallelStream().forEach(guidResponse -> updateProcessStatus(userId, serverName,
-                    guidResponse.getGUID(), InstanceStatus.ACTIVE));
+                    guidResponse, InstanceStatus.ACTIVE));
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         }
@@ -337,18 +337,16 @@ public class DataEngineRESTServices {
         response.setExceptionProperties(guidResponse.getExceptionProperties());
     }
 
-    private VoidResponse updateProcessStatus(String userId, String serverName, String processGuid,
-                                             InstanceStatus instanceStatus) {
+    private void updateProcessStatus(String userId, String serverName, GUIDResponse response,
+                                     InstanceStatus instanceStatus) {
         final String methodName = "updateProcessStatus";
 
         log.debug("Calling method: {}", methodName);
 
-        VoidResponse response = new VoidResponse();
-
         try {
             ProcessHandler processHandler = instanceHandler.getProcessHandler(userId, serverName, methodName);
 
-            processHandler.updateProcessStatus(userId, processGuid, instanceStatus);
+            processHandler.updateProcessStatus(userId, response.getGUID(), instanceStatus);
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);
         } catch (PropertyServerException error) {
@@ -358,8 +356,6 @@ public class DataEngineRESTServices {
         }
 
         log.debug("Returning from method: {} with response: {}", methodName, response.toString());
-
-        return response;
     }
 
     private List<GUIDResponse> createOrUpdateProcesses(String userId, String serverName, List<Process> processes) {
@@ -731,8 +727,8 @@ public class DataEngineRESTServices {
 
         String schemaTypeGUID = createOrUpdateSchemaType(userId, serverName, portImplementation.getSchemaType());
 
-        String portImplementationGUID = portHandler.findPort(userId, portImplementation.getQualifiedName(),
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+        String portImplementationGUID = portHandler.findPortImplementation(userId,
+                portImplementation.getQualifiedName());
 
         if (StringUtils.isEmpty(portImplementationGUID)) {
             portImplementationGUID = portHandler.createPortImplementation(userId, portImplementation.getQualifiedName(),
@@ -782,8 +778,7 @@ public class DataEngineRESTServices {
 
         PortHandler portHandler = instanceHandler.getPortHandler(userId, serverName, methodName);
 
-        String portAliasGUID = portHandler.findPort(userId, portAlias.getQualifiedName(),
-                PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+        String portAliasGUID = portHandler.findPortAlias(userId, portAlias.getQualifiedName());
 
         if (StringUtils.isEmpty(portAliasGUID)) {
             portAliasGUID = portHandler.createPortAlias(userId, portAlias.getQualifiedName(),

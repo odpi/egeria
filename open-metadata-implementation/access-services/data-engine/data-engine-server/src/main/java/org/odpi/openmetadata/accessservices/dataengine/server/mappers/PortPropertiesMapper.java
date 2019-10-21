@@ -7,7 +7,10 @@ package org.odpi.openmetadata.accessservices.dataengine.server.mappers;
  * PortPropertiesMapper provides property name mapping for Ports and their relationships.
  */
 public class PortPropertiesMapper {
+    public static final String PORT_ALIAS_TYPE_GUID = "DFa5aEb1-bAb4-c25B-bDBD-B95Ce6fAB7F5";
     public static final String PORT_ALIAS_TYPE_NAME = "PortAlias";
+
+    public static final String PORT_IMPLEMENTATION_TYPE_GUID = "ADbbdF06-a6A3-4D5F-7fA3-DB4Cb0eDeC0E";
     public static final String PORT_IMPLEMENTATION_TYPE_NAME = "PortImplementation";
 
     public static final String PORT_TYPE_GUID = "e3d9FD9F-d5eD-2aed-CC98-0bc21aB6f71C";

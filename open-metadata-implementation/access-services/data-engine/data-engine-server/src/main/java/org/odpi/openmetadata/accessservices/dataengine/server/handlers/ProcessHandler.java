@@ -16,6 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.springframework.util.CollectionUtils;
 
@@ -81,13 +82,12 @@ public class ProcessHandler {
                                                                           PropertyServerException {
         final String methodName = "createProcess";
 
-        validateProcessParameters(userId, qualifiedName, methodName);
-
-        InstanceProperties properties = buildProcessInstanceProperties(qualifiedName, processName, description,
+        InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
 
-        return repositoryHandler.createEntity(userId, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, InstanceStatus.DRAFT, methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
+                InstanceStatus.DRAFT, methodName);
     }
 
     /**
@@ -116,13 +116,13 @@ public class ProcessHandler {
                                                                                         PropertyServerException {
         final String methodName = "updateProcess";
 
-        validateProcessParameters(userId, qualifiedName, methodName);
-
-        InstanceProperties properties = buildProcessInstanceProperties(qualifiedName, processName, description,
+        InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
 
-        repositoryHandler.updateEntity(userId, processGUID, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, properties, methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+
+        repositoryHandler.updateEntity(userId, processGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                properties, methodName);
     }
 
     /**
@@ -143,17 +143,17 @@ public class ProcessHandler {
                                                                           InvalidParameterException {
         final String methodName = "findProcess";
 
-        invalidParameterHandler.validateUserId(userId, methodName);
+        validateProcessParameters(userId, qualifiedName, methodName);
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
-                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
-                ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName);
+                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(),
+                entityTypeDef.getName(), methodName);
 
         if (retrievedEntity == null) {
             return null;
@@ -180,13 +180,16 @@ public class ProcessHandler {
         invalidParameterHandler.validateGUID(processGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
         invalidParameterHandler.validateGUID(portGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME);
+
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, processGUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, portGUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, methodName);
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, portGUID, relationshipTypeDef.getGUID(),
+                relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, processGUID,
-                    portGUID, null, methodName);
+            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), processGUID, portGUID, null,
+                    methodName);
         }
     }
 
@@ -206,20 +209,21 @@ public class ProcessHandler {
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException {
 
-        final String methodName = "createProcess";
+        final String methodName = "updateProcessStatus";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(guid, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        invalidParameterHandler.validateGUID(guid, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
-        repositoryHandler.updateEntityStatus(userId, guid, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, instanceStatus, methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
+        repositoryHandler.updateEntityStatus(userId, guid, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                instanceStatus, methodName);
     }
 
     /**
-     * Retrieve all port objects of portTypeName that are connected to the process
+     * Retrieve all port objects that are connected to the process
      *
      * @param userId      the name of the calling user
-     * @param processGUID the unigue identifier of the process
+     * @param processGUID the unique identifier of the process
      *
      * @return A set of unique identifiers for the retrieved ports or an empty set
      *
@@ -235,9 +239,12 @@ public class ProcessHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(processGUID, ProcessPropertiesMapper.GUID_PROPERTY_NAME, methodName);
 
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME);
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, processGUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, 0, 0, methodName);
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(),
+                0, 0, methodName);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();
@@ -246,12 +253,13 @@ public class ProcessHandler {
         return entities.parallelStream().map(InstanceHeader::getGUID).collect(Collectors.toSet());
     }
 
-    private InstanceProperties buildProcessInstanceProperties(String qualifiedName, String processName,
+    private InstanceProperties buildProcessInstanceProperties(String userId, String qualifiedName, String processName,
                                                               String description, String latestChange,
                                                               List<String> zoneMembership, String displayName,
                                                               String formula, String owner, OwnerType ownerType,
-                                                              String methodName) throws
-                                                                                 InvalidParameterException {
+                                                              String methodName) throws InvalidParameterException {
+
+        validateProcessParameters(userId, qualifiedName, methodName);
 
         ProcessPropertiesBuilder builder = new ProcessPropertiesBuilder(qualifiedName, processName, displayName,
                 description, owner, ownerType, zoneMembership, latestChange, formula, null, null, repositoryHelper,

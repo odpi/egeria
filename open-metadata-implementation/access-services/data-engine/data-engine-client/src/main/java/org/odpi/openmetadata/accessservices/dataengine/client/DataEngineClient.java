@@ -156,7 +156,7 @@ public interface DataEngineClient {
                                                                           UserNotAuthorizedException;
 
     /**
-     * Create or update he schema type entity, with the corresponding schema attributes and relationships
+     * Create or update the schema type entity, with the corresponding schema attributes and relationships
      *
      * @param userId     the name of the calling user
      * @param schemaType the schema type bean
@@ -192,7 +192,7 @@ public interface DataEngineClient {
                                                                           PropertyServerException;
 
     /**
-     * Create the or update port implementation entity, with the corresponding schema type and port schema relationship
+     * Create or update the port implementation entity,with the corresponding schema type and port schema relationship
      *
      * @param userId             the name of the calling user
      * @param portImplementation the port implementation bean

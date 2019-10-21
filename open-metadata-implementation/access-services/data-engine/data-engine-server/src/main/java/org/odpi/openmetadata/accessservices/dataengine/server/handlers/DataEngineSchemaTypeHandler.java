@@ -22,6 +22,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,14 +135,15 @@ public class DataEngineSchemaTypeHandler {
 
             String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getKey().getQualifiedName());
 
+            TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                    SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME);
+
             Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, schemaAttributeGUID,
                     SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, attributeSchemaTypeGUID,
-                    SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,
-                    SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME, methodName);
+                    relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
             if (relationship == null) {
-                repositoryHandler.createRelationship(userId,
-                        SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID, schemaAttributeGUID,
+                repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), schemaAttributeGUID,
                         attributeSchemaTypeGUID, null, methodName);
             }
         }
@@ -172,17 +174,21 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateGUID(targetSchemaAttributeQualifiedName,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        SchemaType sourceSchemaType = getSchemaTypeForSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
-        SchemaType targetSchemaType = getSchemaTypeForSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
+        SchemaType sourceSchemaType = getSchemaTypeForSchemaAttribute(userId, sourceSchemaAttributeQualifiedName,
+                methodName);
+        SchemaType targetSchemaType = getSchemaTypeForSchemaAttribute(userId, targetSchemaAttributeQualifiedName,
+                methodName);
+
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME);
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaType.getGUID(),
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaType.getGUID(),
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, methodName);
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaType.getGUID(), relationshipTypeDef.getGUID(),
+                relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
-                    sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
+            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), sourceSchemaType.getGUID(),
+                    targetSchemaType.getGUID(), null, methodName);
         }
     }
 
@@ -218,20 +224,19 @@ public class DataEngineSchemaTypeHandler {
         schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
     }
 
-    private SchemaType getSchemaTypeForSchemaAttribute(String userId, String schemaAttributeQualifiedName) throws
-                                                                                                           UserNotAuthorizedException,
-                                                                                                           PropertyServerException,
-                                                                                                           NoSchemaAttributeException,
-                                                                                                           InvalidParameterException {
-        final String methodName = "getSchemaTypeForSchemaAttribute";
+    private SchemaType getSchemaTypeForSchemaAttribute(String userId, String schemaAttributeQualifiedName,
+                                                       String methodName) throws UserNotAuthorizedException,
+                                                                                 PropertyServerException,
+                                                                                 NoSchemaAttributeException,
+                                                                                 InvalidParameterException {
 
-        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, schemaAttributeQualifiedName);
+        String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttributeQualifiedName);
 
-        if (sourceSchemaAttributeGUID == null) {
+        if (schemaAttributeGUID == null) {
             throwNoSchemaAttributeException(schemaAttributeQualifiedName);
         }
 
-        return schemaTypeHandler.getSchemaTypeForAttribute(userId, sourceSchemaAttributeGUID, methodName);
+        return schemaTypeHandler.getSchemaTypeForAttribute(userId, schemaAttributeGUID, methodName);
     }
 
     private void throwNoSchemaAttributeException(String qualifiedName) throws NoSchemaAttributeException {
@@ -250,14 +255,15 @@ public class DataEngineSchemaTypeHandler {
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
-
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
-                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, methodName);
+                SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties, entityTypeDef.getGUID(),
+                entityTypeDef.getName(), methodName);
 
         if (retrievedEntity == null) {
             log.debug("Searching for entity with qualifiedName: {}. Result is null", qualifiedName);
@@ -273,15 +279,18 @@ public class DataEngineSchemaTypeHandler {
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException,
                                                                                                InvalidParameterException {
-        final String methodName = "findSchemaAttributesForSchemaType";
+        final String methodName = "getSchemaAttributesForSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(schemaTypeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME,
                 methodName);
 
+        TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME);
+
         List<EntityDetail> entities = repositoryHandler.getEntitiesForRelationshipType(userId, schemaTypeGUID,
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
-                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0, methodName);
+                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, relationshipTypeDef.getGUID(),
+                relationshipTypeDef.getName(), 0, 0, methodName);
 
         if (CollectionUtils.isEmpty(entities)) {
             return new HashSet<>();
@@ -309,8 +318,11 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateGUID(schemaAttributeGUID, SchemaTypePropertiesMapper.GUID_PROPERTY_NAME,
                 methodName);
 
-        repositoryHandler.removeEntity(userId, schemaAttributeGUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
-                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, null, null, methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+
+        repositoryHandler.removeEntity(userId, schemaAttributeGUID, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                null, null, methodName);
     }
 
     private Map<SchemaAttribute, SchemaType> createSchemaAttributes(List<Attribute> attributeList) throws
