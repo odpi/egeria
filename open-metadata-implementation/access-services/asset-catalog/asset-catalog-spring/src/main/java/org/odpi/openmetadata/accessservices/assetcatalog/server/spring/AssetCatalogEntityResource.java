@@ -204,11 +204,11 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.POST,
             path = "/search/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetResponse searchAssetsAndGlossaryTerms(@PathVariable("serverName") String serverName,
-                                                      @PathVariable("userId") String userId,
-                                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
-                                                      @RequestBody SearchParameters searchParameters) {
-        return assetService.findAssetsBySearchedPropertyValue(serverName, userId, searchCriteria, searchParameters);
+    public AssetResponse searchByType(@PathVariable("serverName") String serverName,
+                                      @PathVariable("userId") String userId,
+                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
+                                      @RequestBody SearchParameters searchParameters) {
+        return assetService.searchByType(serverName, userId, searchCriteria, searchParameters);
     }
 
 

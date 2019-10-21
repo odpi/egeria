@@ -14,7 +14,6 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Cl
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.ExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
@@ -230,8 +229,8 @@ public class AssetCatalogService {
         return response;
     }
 
-    public AssetResponse findAssetsBySearchedPropertyValue(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
-        String methodName = "findAssetsBySearchedPropertyValue";
+    public AssetResponse searchByType(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
+        String methodName = "searchByType";
         AssetResponse response = new AssetResponse();
 
         try {
