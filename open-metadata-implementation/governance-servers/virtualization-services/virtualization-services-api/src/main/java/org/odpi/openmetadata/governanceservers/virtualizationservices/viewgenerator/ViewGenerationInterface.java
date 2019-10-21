@@ -3,12 +3,10 @@
 /**
  * This is the interface for the generic operations on data virtualization solutions
  */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator;
+package org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator;
 
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.LogicTable;
 
-import java.util.List;
 import java.util.Map;
 
 public interface ViewGenerationInterface {

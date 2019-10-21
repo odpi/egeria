@@ -188,8 +188,8 @@
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+        <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <frontend.plugin.version>1.6</frontend.plugin.version>
         <exec.plugin.version>1.6.0</exec.plugin.version>
@@ -471,29 +471,8 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>tinkergraph-gremlin</artifactId>
-                <scope>compile</scope>
-                <version>${tinkergraph.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers-common</artifactId>
-                <scope>compile</scope>
-                <version>${lucene-analyzers-common.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
-                <version>${janus.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-core</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>

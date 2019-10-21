@@ -129,3 +129,6 @@ Gemfile
 **/.vscode*/**
 **/.factorypath
 **/**.code-workspace
+
+# Jupyter notebook temp/update files
+**/.ipynb_checkpoints
