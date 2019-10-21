@@ -147,7 +147,7 @@
         <commons-collections.version>4.3</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
-        <h2-database.version>1.4.200</h2-database.version>
+        <h2-database.version>1.4.196</h2-database.version>
         <jwt.version>0.6.0</jwt.version>
         <javax-persistence.version>2.2</javax-persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
