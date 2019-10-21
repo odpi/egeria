@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.admin;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.auditlog.AssetCatalogAuditCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -21,9 +20,9 @@ import java.util.List;
 public class AssetCatalogAdmin extends AccessServiceAdmin
 {
 
-    private OMRSAuditLog                 auditLog = null;
-    private AssetCatalogServicesInstance instance = null;
-    private String                       serverName = null;
+    private OMRSAuditLog                 auditLog;
+    private AssetCatalogServicesInstance instance;
+    private String                       serverName;
 
 
     /**
@@ -62,7 +61,7 @@ public class AssetCatalogAdmin extends AccessServiceAdmin
                                                                      accessServiceConfigurationProperties.getAccessServiceName(),
                                                                      auditLog);
 
-            this.instance = new AssetCatalogServicesInstance(repositoryConnector);
+            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog);
             this.serverName = instance.getServerName();
 
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
