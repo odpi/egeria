@@ -260,61 +260,6 @@ public class AssetCatalogHandler {
         return converter.getAssetsDetails(linkingEntities.getEntities());
     }
 
-
-    public List<AssetDescription> getRelatedAsset(String serverName,
-                                                  String userId,
-                                                  String startAssetId,
-                                                  SearchParameters searchParameters)
-            throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getRelatedAsset";
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startAssetId, "startAssetGUID", methodName);
-        invalidParameterHandler.validateObject(searchParameters, "searchParameters", methodName);
-        invalidParameterHandler.validatePaging(searchParameters.getFrom(), searchParameters.getPageSize(), methodName);
-
-        OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
-
-        List<EntityDetail> relatedEntities = null;
-        try {
-            relatedEntities = metadataCollection.getRelatedEntities(
-                    userId,
-                    startAssetId,
-                    searchParameters.getEntityTypeGUIDs(),
-                    searchParameters.getFrom(),
-                    Collections.singletonList(InstanceStatus.ACTIVE),
-                    searchParameters.getLimitResultsByClassification(),
-                    null,
-                    searchParameters.getSequencingProperty(),
-                    searchParameters.getSequencingOrder() == null ? SequencingOrder.ANY : searchParameters.getSequencingOrder(),
-                    searchParameters.getPageSize());
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
-                | TypeErrorException | FunctionNotSupportedException
-                | PropertyErrorException | RepositoryErrorException | PagingErrorException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, ASSET_GUID_PARAMETER);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-
-        if (CollectionUtils.isEmpty(relatedEntities)) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.NO_RELATED_ASSETS;
-            String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(startAssetId, serverName);
-
-            throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    "getRelatedAsset",
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-
-        AssetConverter converter = new AssetConverter(repositoryHelper);
-        return converter.getAssetsDetails(relatedEntities);
-    }
-
-
     public List<AssetDescription> getEntitiesFromNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters)
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
@@ -345,10 +290,10 @@ public class AssetCatalogHandler {
         return converter.getAssetsDetails(entities);
     }
 
-    public List<Term> searchAssetsGlossaryTermsSchemaElements(String userId, String searchCriteria, SearchParameters searchParameters)
+    public List<Term> searchByType(String userId, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
-        String methodName = "searchAssetsGlossaryTermsSchemaElements";
+        String methodName = "searchByType";
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateSearchString(userId, searchCriteria, methodName);
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETER, methodName);

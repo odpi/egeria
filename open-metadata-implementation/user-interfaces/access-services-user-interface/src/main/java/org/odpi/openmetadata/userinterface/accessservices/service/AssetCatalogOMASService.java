@@ -123,7 +123,7 @@ public class AssetCatalogOMASService {
     public List<Term> searchAssets(String user, String searchCriteria, SearchParameters searchParameters)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
         try {
-            return assetCatalog.searchAssetsAndGlossaryTerms(user, searchCriteria, searchParameters).getAssets();
+            return assetCatalog.searchByType(user, searchCriteria, searchParameters).getAssets();
         } catch (PropertyServerException | org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             LOG.error(String.format("Error searching the assets by criteria %s", searchCriteria));
             throw e;

@@ -73,14 +73,6 @@ public class AssetCatalogEntityResourceTest {
     }
 
     @Test
-    void testGetRelatedAssets() {
-        SearchParameters searchParameters = mockSearchParameters();
-        assetCatalogEntityResource.getRelatedAssets(SERVER_NAME, USER, ASSET_GUID, searchParameters);
-
-        verify(assetCatalogService, times(1)).getRelatedAssets(SERVER_NAME, USER, ASSET_GUID, searchParameters);
-    }
-
-    @Test
     void testGetLinkingAssets() {
         assetCatalogEntityResource.getLinkingAssets(SERVER_NAME, USER, ASSET_GUID, SECOND_ASSET_GUID);
 

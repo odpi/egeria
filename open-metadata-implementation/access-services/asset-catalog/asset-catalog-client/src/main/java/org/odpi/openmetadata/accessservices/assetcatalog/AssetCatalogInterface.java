@@ -99,19 +99,6 @@ public interface AssetCatalogInterface {
     AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 
     /**
-     * Return the list of assets that are of the types listed in instanceTypes and are connected,
-     * either directly or indirectly to the asset identified by assetGUID.
-     *
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of assets either directly or indirectly connected to the start asset
-     * @throws PropertyServerException   if a problem occurs while serving the request
-     * @throws InvalidParameterException if parameter validation fails
-     */
-    AssetDescriptionResponse getRelatedAssets(String userId, String assetGUID, SearchParameters searchParameters) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
-
-    /**
      * Returns the sub-graph that represents the returned linked relationships.
      *
      * @param userId           the unique identifier for the user
@@ -133,7 +120,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetResponse searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    AssetResponse searchByType(String userId, String searchCriteria, SearchParameters searchParameters) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 
     /**
      * Return the full context of an asset/glossary term based on its identifier.

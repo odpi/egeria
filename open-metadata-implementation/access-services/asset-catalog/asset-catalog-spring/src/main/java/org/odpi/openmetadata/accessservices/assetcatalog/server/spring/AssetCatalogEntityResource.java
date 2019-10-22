@@ -104,7 +104,7 @@ public class AssetCatalogEntityResource {
      * @param classificationName the name of the classification
      * @return ClassificationsResponse the classification for the asset
      */
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.GET,
             path = "/asset-classifications/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
@@ -151,26 +151,6 @@ public class AssetCatalogEntityResource {
                                                          @PathVariable("assetGUID") String startAssetGUID,
                                                          @PathVariable("endAssetGUID") String endAssetGUID) {
         return assetService.getLinkingRelationships(serverName, userId, startAssetGUID, endAssetGUID);
-    }
-
-    /**
-     * Return the list of assets that are of the types listed in instanceTypes and are connected,
-     * either directly or indirectly to the asset identified by assetGUID.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of assets either directly or indirectly connected to the start asset
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/related-assets/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getRelatedAssets(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                     @RequestBody @NotNull SearchParameters searchParameters) {
-        return assetService.getRelatedAssets(serverName, userId, assetGUID, searchParameters);
     }
 
     /**

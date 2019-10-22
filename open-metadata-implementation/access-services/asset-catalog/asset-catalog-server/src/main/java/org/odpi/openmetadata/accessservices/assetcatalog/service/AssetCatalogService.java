@@ -180,30 +180,6 @@ public class AssetCatalogService {
         return response;
     }
 
-    public AssetDescriptionResponse getRelatedAssets(String serverName, String userId, String startAssetId, SearchParameters searchParameters) {
-        String methodName = "getRelatedAssets";
-        log.debug("Calling method: {}", methodName);
-
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
-        try {
-            AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            List<AssetDescription> relatedAsset = assetCatalogHandler.getRelatedAsset(serverName, userId, startAssetId, searchParameters);
-
-            response.setAssetDescriptionList(relatedAsset);
-        } catch (AssetCatalogException e) {
-            exceptionHandler.captureAssetCatalogExeption(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
-            restExceptionHandler.captureUserNotAuthorizedException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
-            restExceptionHandler.captureInvalidParameterException(response, e);
-        } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException e) {
-            restExceptionHandler.capturePropertyServerException(response, e);
-        }
-
-        log.debug("Returning from method: {} with response: {}", methodName, response);
-        return response;
-    }
-
     public AssetDescriptionResponse getAssetsFromNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters) {
         String methodName = "getAssetsFromNeighborhood";
         log.debug("Calling method: {}", methodName);
@@ -235,7 +211,7 @@ public class AssetCatalogService {
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setAssets(assetCatalogHandler.searchAssetsGlossaryTermsSchemaElements(userId, searchCriteria, searchParameters));
+            response.setAssets(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
         } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException e) {
             exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
