@@ -153,7 +153,7 @@ public class JanusConnector extends OpenLineageConnectorBase {
 
                         if (!columnOutGuid.isEmpty() && !columnInGuid.isEmpty()) {
                             MainGraphMapper mainGraphMapper = new MainGraphMapper();
-                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid,mainGraph);
+//                            mainGraphMapper.mapStructure(columnInGuid, process, columnOutGuid,mainGraph);
                         }
                     }
                 }
