@@ -38,7 +38,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
     private static final String ASSETS_FROM_NEIGHBORHOOD = "/assets-from-neighborhood/{2}";
     private static final String SEARCH = "/search/{2}";
     private static final String ASSET_CONTEXT = "/asset-context/{2}?assetType={3}";
-    private static final String RELATIONSHIP_BETWEEN_ENTITIES = "/relationship-between-entities/{2}/{3}";
+    private static final String RELATIONSHIP_BETWEEN_ENTITIES = "/relationship-between-entities/{2}/{3}?relationshipTypeGUID={4}";
 
     private static final String GUID_PARAMETER = "assetGUID";
     private static final String START_ASSET_GUID = "startAssetGUID";
