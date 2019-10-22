@@ -6,15 +6,15 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.ViewGeneratorConnectorProvider;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.ViewGeneratorConnectorProvider;
 
-public class DerbyConnectorProvider extends ViewGeneratorConnectorProvider {
+public class ViewGeneratorDerbyConnectorProvider extends ViewGeneratorConnectorProvider {
     private static final String  connectorTypeGUID = "35657b2b-c472-494f-81c5-99f08bbf8a36";
     private static final String  connectorTypeName = "Derby Database Connector";
     private static final String  connectorTypeDescription = "Connector supports retrieving the data via derby connection.";
 
-    public DerbyConnectorProvider(){
-        Class connectorClass = DerbyConnector.class;
+    public ViewGeneratorDerbyConnectorProvider(){
+        Class connectorClass = ViewGeneratorDerbyConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

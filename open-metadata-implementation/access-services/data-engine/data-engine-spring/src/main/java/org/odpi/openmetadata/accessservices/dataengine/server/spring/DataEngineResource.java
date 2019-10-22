@@ -79,10 +79,10 @@ public class DataEngineResource {
      * @return unique identifier of the created entity
      */
     @PostMapping(path = "/schema-types")
-    public GUIDResponse createSchemaType(@PathVariable("userId") String userId,
-                                         @PathVariable("serverName") String serverName,
-                                         @RequestBody SchemaTypeRequestBody requestBody) {
-        return restAPI.createSchemaType(userId, serverName, requestBody);
+    public GUIDResponse createOrUpdateSchemaType(@PathVariable("userId") String userId,
+                                                 @PathVariable("serverName") String serverName,
+                                                 @RequestBody SchemaTypeRequestBody requestBody) {
+        return restAPI.createOrUpdateSchemaType(userId, serverName, requestBody);
     }
 
 
@@ -96,10 +96,10 @@ public class DataEngineResource {
      * @return unique identifier of the created port implementation
      */
     @PostMapping(path = "/port-implementations")
-    public GUIDResponse createPortImplementation(@PathVariable("userId") String userId,
-                                                 @PathVariable("serverName") String serverName,
-                                                 @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
-        return restAPI.createPortImplementation(userId, serverName, portImplementationRequestBody);
+    public GUIDResponse createOrUpdatePortImplementation(@PathVariable("userId") String userId,
+                                                         @PathVariable("serverName") String serverName,
+                                                         @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
+        return restAPI.createOrUpdatePortImplementation(userId, serverName, portImplementationRequestBody);
     }
 
 
@@ -113,26 +113,26 @@ public class DataEngineResource {
      * @return unique identifier of the created port alias
      */
     @PostMapping(path = "/port-aliases")
-    public GUIDResponse createPortAlias(@PathVariable("userId") String userId,
-                                        @PathVariable("serverName") String serverName,
-                                        @RequestBody PortAliasRequestBody portAliasRequestBody) {
-        return restAPI.createPortAlias(userId, serverName, portAliasRequestBody);
+    public GUIDResponse createOrUpdatePortAlias(@PathVariable("userId") String userId,
+                                                @PathVariable("serverName") String serverName,
+                                                @RequestBody PortAliasRequestBody portAliasRequestBody) {
+        return restAPI.createOrUpdatePortAlias(userId, serverName, portAliasRequestBody);
     }
 
     /**
-     * Create the Process entity with ports, schema types and all needed relationships
+     * Create or update  the Process entities with ports, schema types and all needed relationships
      *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
      * @param processesRequestBody properties of the process
      *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/processes")
-    public GUIDListResponse createProcesses(@PathVariable("userId") String userId,
-                                            @PathVariable("serverName") String serverName,
-                                            @RequestBody ProcessesRequestBody processesRequestBody) {
-        return restAPI.createProcesses(userId, serverName, processesRequestBody);
+    public GUIDListResponse createOrUpdateProcesses(@PathVariable("userId") String userId,
+                                                    @PathVariable("serverName") String serverName,
+                                                    @RequestBody ProcessesRequestBody processesRequestBody) {
+        return restAPI.createOrUpdateProcesses(userId, serverName, processesRequestBody);
     }
 
     /**

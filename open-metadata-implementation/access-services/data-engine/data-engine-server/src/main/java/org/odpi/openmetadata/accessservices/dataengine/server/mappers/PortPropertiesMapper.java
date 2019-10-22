@@ -17,11 +17,16 @@ public class PortPropertiesMapper {
     public static final String PORT_TYPE_NAME = "Port";
 
     public static final String PORT_SCHEMA_TYPE_GUID = "B216fA00-8281-F9CC-9911-Ae6377f2b457";
-    public static final String PORT_DELEGATION_TYPE_GUIUD = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";
+    public static final String PORT_SCHEMA_TYPE_NAME = "PortSchema";
+
+    public static final String PORT_DELEGATION_TYPE_GUID = "98bB8BA1-dc6A-eb9D-32Cf-F837bEbCbb8E";
+    public static final String PORT_DELEGATION_TYPE_NAME = "PortDelegation";
 
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
     public static final String PORT_TYPE_PROPERTY_NAME = "portType";
     public static final String GUID_PROPERTY_NAME = "guid";
     public static final String QUALIFIED_NAME_PROPERTY_NAME = "qualifiedName";
+
+
 
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.dataengine.server.builders.SoftwareServerPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -11,6 +12,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
@@ -82,9 +84,10 @@ public class SoftwareServerRegistrationHandler {
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
-        return repositoryHandler.createEntity(userId,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, properties, methodName);
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
+                methodName);
     }
 
     /**
@@ -115,10 +118,11 @@ public class SoftwareServerRegistrationHandler {
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
                 SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
+        TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
+                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
                 SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_GUID,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME, methodName);
+                entityTypeDef.getGUID(), entityTypeDef.getName(), methodName);
 
         return retrievedEntity.getGUID();
     }

@@ -618,9 +618,9 @@ public class RepositoryHandler
         {
             EntityDetail obsoleteEntity = this.getEntityByGUID(userId,
                                                                obsoleteEntityGUID,
+                                                               guidParameterName,
                                                                entityTypeName,
-                                                               methodName,
-                                                               guidParameterName);
+                                                               methodName);
 
             if (obsoleteEntity != null)
             {

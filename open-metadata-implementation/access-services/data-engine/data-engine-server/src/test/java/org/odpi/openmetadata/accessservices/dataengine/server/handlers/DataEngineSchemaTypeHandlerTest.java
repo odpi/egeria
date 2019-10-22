@@ -25,15 +25,18 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.PrimitiveSch
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -76,7 +79,7 @@ class DataEngineSchemaTypeHandlerTest {
 
     @Test
     void createSchemaType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        String methodName = "createSchemaType";
+        String methodName = "createOrUpdateSchemaType";
 
         ComplexSchemaType schemaType = new ComplexSchemaType();
         SchemaAttribute schemaAttribute = new SchemaAttribute();
@@ -95,7 +98,10 @@ class DataEngineSchemaTypeHandlerTest {
 
         mockFindSchemaAttribute(ATTRIBUTE_QUALIFIED_NAME, ATTRIBUTE_GUID);
 
-        String result = dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+        mockTypeDef(SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_NAME,
+                SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID);
+
+        String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
                         ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null)));
 
@@ -117,7 +123,7 @@ class DataEngineSchemaTypeHandlerTest {
                                                                     UserNotAuthorizedException,
                                                                     InvocationTargetException, NoSuchMethodException,
                                                                     InstantiationException, IllegalAccessException {
-        String methodName = "createSchemaType";
+        String methodName = "createOrUpdateSchemaType";
 
         ComplexSchemaType schemaType = new ComplexSchemaType();
         SchemaAttribute schemaAttribute = new SchemaAttribute();
@@ -134,7 +140,8 @@ class DataEngineSchemaTypeHandlerTest {
                 methodName)).thenThrow(mockedException);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                dataEngineSchemaTypeHandler.createSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
+                dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
+                        ENCODING_STANDARD,
                         USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
                                 ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null))));
 
@@ -144,18 +151,19 @@ class DataEngineSchemaTypeHandlerTest {
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
                                                 InvalidParameterException, NoSchemaAttributeException {
-        final String methodName = "addLineageMappingRelationship";
-
         mockFindSchemaAttribute(SOURCE_QUALIFIED_NAME, SOURCE_GUID);
         mockFindSchemaAttribute(TARGET_QUALIFIED_NAME, TARGET_GUID);
 
         SchemaType sourceSchemaType = Mockito.mock(SchemaType.class);
         when(sourceSchemaType.getGUID()).thenReturn(SOURCE_GUID);
-        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, methodName)).thenReturn(sourceSchemaType);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, "getSchemaTypeForSchemaAttribute")).thenReturn(sourceSchemaType);
 
         SchemaType targetSchemaType = Mockito.mock(SchemaType.class);
         when(targetSchemaType.getGUID()).thenReturn(TARGET_GUID);
-        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, TARGET_GUID, methodName)).thenReturn(targetSchemaType);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, TARGET_GUID, "getSchemaTypeForSchemaAttribute")).thenReturn(targetSchemaType);
+
+        mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
 
         dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME);
 
@@ -185,6 +193,9 @@ class DataEngineSchemaTypeHandlerTest {
         when(targetSchemaType.getGUID()).thenReturn(TARGET_GUID);
         when(schemaTypeHandler.getSchemaTypeForAttribute(USER, TARGET_GUID, methodName)).thenReturn(targetSchemaType);
 
+        mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
+
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(repositoryHandler).createRelationship(USER,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID, SOURCE_GUID, TARGET_GUID, null,
@@ -209,6 +220,9 @@ class DataEngineSchemaTypeHandlerTest {
         when(sourceSchemaType.getGUID()).thenReturn(SOURCE_GUID);
         when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, methodName)).thenReturn(sourceSchemaType);
 
+        mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
+
         NoSchemaAttributeException thrown = assertThrows(NoSchemaAttributeException.class, () ->
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
                         TARGET_QUALIFIED_NAME));
@@ -216,13 +230,62 @@ class DataEngineSchemaTypeHandlerTest {
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-002 "));
     }
 
+    @Test
+    void removeSchemaType() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        final String methodName = "removeSchemaType";
+
+        //mock getSchemaAttributesForSchemaType
+        mockTypeDef(SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME,
+                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID);
+        EntityDetail entityDetail = mock(EntityDetail.class);
+        when(entityDetail.getGUID()).thenReturn(ATTRIBUTE_GUID);
+        List<EntityDetail> entityDetails = Collections.singletonList(entityDetail);
+        when(repositoryHandler.getEntitiesForRelationshipType(USER, GUID, SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
+                SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_NAME, 0, 0,
+                "getSchemaAttributesForSchemaType")).thenReturn(entityDetails);
+
+        // mock schema type for schema attribute
+        SchemaType schemaType = mock(SchemaType.class);
+        when(schemaType.getGUID()).thenReturn(SOURCE_GUID);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, ATTRIBUTE_GUID, methodName)).thenReturn(schemaType);
+
+        //mock type for removeSchemaAttribute
+        mockTypeDef(SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID);
+
+        dataEngineSchemaTypeHandler.removeSchemaType(USER, GUID);
+
+        verify(schemaTypeHandler, times(1)).removeSchemaType(USER, SOURCE_GUID);
+
+        verify(repositoryHandler, times(1)).removeEntity(USER, ATTRIBUTE_GUID,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                null, null, "removeSchemaAttribute");
+
+        verify(schemaTypeHandler, times(1)).removeSchemaType(USER, GUID);
+    }
+
     private void mockFindSchemaAttribute(String qualifiedName, String guid) throws UserNotAuthorizedException,
                                                                                    PropertyServerException {
+        TypeDef mockedType = mock(TypeDef.class);
+        when(mockedType.getName()).thenReturn(SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME);
+        when(mockedType.getGUID()).thenReturn(SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID);
+        when(repositoryHelper.getTypeDefByName(USER, SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME)).thenReturn(mockedType);
+
+        when(repositoryHelper.getExactMatchRegex(qualifiedName)).thenReturn(qualifiedName);
+
         EntityDetail mockedEntity = Mockito.mock(EntityDetail.class);
         when(mockedEntity.getGUID()).thenReturn(guid);
         when(repositoryHandler.getUniqueEntityByName(USER, qualifiedName,
                 SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
                 SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_GUID,
                 SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, "findSchemaAttribute")).thenReturn(mockedEntity);
+    }
+
+    private void mockTypeDef(String typeName, String typeGUID) {
+        TypeDef entityTypeDef = mock(TypeDef.class);
+        when(repositoryHelper.getTypeDefByName(USER, typeName)).thenReturn(entityTypeDef);
+
+        when(entityTypeDef.getName()).thenReturn(typeName);
+        when(entityTypeDef.getGUID()).thenReturn(typeGUID);
     }
 }
