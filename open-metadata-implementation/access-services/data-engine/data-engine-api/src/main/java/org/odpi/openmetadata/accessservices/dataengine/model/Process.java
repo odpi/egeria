@@ -40,7 +40,7 @@ public class Process implements Serializable {
     public Process(String qualifiedName, String name, String description, String latestChange,
                    List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
                    List<PortImplementation> portImplementations, List<PortAlias> portAliases,
-                   List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) {
+                   List<LineageMapping> lineageMappings) {
         this.qualifiedName = qualifiedName;
         this.name = name;
         this.description = description;
@@ -53,8 +53,16 @@ public class Process implements Serializable {
         this.portImplementations = portImplementations;
         this.portAliases = portAliases;
         this.lineageMappings = lineageMappings;
-        this.updateSemantic = updateSemantic;
+        this.updateSemantic = UpdateSemantic.REPLACE;
+    }
 
+    public Process(String qualifiedName, String name, String description, String latestChange,
+                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
+                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
+                   List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) {
+        this(qualifiedName, name, description, latestChange, zoneMembership, displayName, formula, owner, ownerType,
+                portImplementations, portAliases, lineageMappings);
+        this.updateSemantic = updateSemantic;
     }
 
     public String getQualifiedName() {

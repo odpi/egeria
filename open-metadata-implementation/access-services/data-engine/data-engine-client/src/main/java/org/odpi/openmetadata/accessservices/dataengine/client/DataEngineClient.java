@@ -57,6 +57,39 @@ public interface DataEngineClient {
                                                                        UserNotAuthorizedException;
 
     /**
+     * Create or update the process, with all the ports, schema types and corresponding relationships. Uses the default
+     * UpdateSemantic.REPLACE on update
+     *
+     * @param userId              the name of the calling user
+     * @param qualifiedName       the qualifiedName name of the process
+     * @param processName         the name of the process
+     * @param description         the description of the process
+     * @param latestChange        the description for the latest change done for the process
+     * @param zoneMembership      the list of zones of the process
+     * @param displayName         the display name of the process
+     * @param formula             the formula for the process
+     * @param owner               the name of the owner for this process
+     * @param ownerType           the type of the owner for this process
+     * @param portImplementations the list of port implementations
+     * @param portAliases         the list of port aliases
+     * @param lineageMappings     the list of lineage mappings
+     *
+     * @return unique identifier of the process in the repository
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     * @see UpdateSemantic
+     */
+    String createOrUpdateProcess(String userId, String qualifiedName, String processName, String description,
+                                 String latestChange, List<String> zoneMembership, String displayName, String formula,
+                                 String owner, OwnerType ownerType, List<PortImplementation> portImplementations,
+                                 List<PortAlias> portAliases, List<LineageMapping> lineageMappings) throws
+                                                                                                    InvalidParameterException,
+                                                                                                    PropertyServerException,
+                                                                                                    UserNotAuthorizedException;
+
+    /**
      * Create or update the process, with all the ports, schema types and corresponding relationships
      *
      * @param userId  the name of the calling user
@@ -108,11 +141,11 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createOrUpdateSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
-                                                  String type, String version, String patchLevel, String source) throws
-                                                                                                                 InvalidParameterException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 PropertyServerException;
+    String createSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
+                                          String type, String version, String patchLevel, String source) throws
+                                                                                                         InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
 
     /**
      * Create or update the software server capability entity
@@ -126,10 +159,10 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createOrUpdateSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
-                                                                                                                    InvalidParameterException,
-                                                                                                                    UserNotAuthorizedException,
-                                                                                                                    PropertyServerException;
+    String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
+                                                                                                            InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 
     /**
      * Create or update the schema type entity, with the corresponding schema attributes and relationships
@@ -172,7 +205,8 @@ public interface DataEngineClient {
                                                                                  UserNotAuthorizedException;
 
     /**
-     * Create or update the port implementation entity, with the corresponding schema type and port schema relationship
+     * Create or update the port implementation entity, with the corresponding schema type and port schema relationship.
+     * Uses the default UpdateSemantic.REPLACE on update
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the port
@@ -185,11 +219,34 @@ public interface DataEngineClient {
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
+     * @see UpdateSemantic
      */
     String createOrUpdatePortImplementation(String userId, String qualifiedName, String displayName, PortType portType,
                                             SchemaType schemaType) throws InvalidParameterException,
                                                                           UserNotAuthorizedException,
                                                                           PropertyServerException;
+
+    /**
+     * Create or update the port implementation entity, with the corresponding schema type and port schema relationship
+     *
+     * @param userId         the name of the calling user
+     * @param qualifiedName  the qualifiedName name of the port
+     * @param displayName    the display name of the port
+     * @param portType       the type of the port
+     * @param schemaType     the schema type attached to the port implementation
+     * @param updateSemantic the update type for the schema type
+     *
+     * @return unique identifier of the port implementation in the repository
+     *
+     * @throws InvalidParameterException the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException problem accessing the property server
+     */
+    String createOrUpdatePortImplementation(String userId, String qualifiedName, String displayName, PortType portType,
+                                            SchemaType schemaType, UpdateSemantic updateSemantic) throws
+                                                                                                  InvalidParameterException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  PropertyServerException;
 
     /**
      * Create or update the port implementation entity,with the corresponding schema type and port schema relationship

@@ -215,7 +215,7 @@ public class DataEngineRESTServices {
             }
 
             String portImplementationGUID = createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                    portImplementationRequestBody.getPortImplementation(), UpdateSemantic.REPLACE);
+                    portImplementationRequestBody.getPortImplementation());
 
             response.setGUID(portImplementationGUID);
 
@@ -485,7 +485,7 @@ public class DataEngineRESTServices {
 
         try {
             Set<String> portImplementationGUIDs = createOrUpdatePortImplementations(userId, serverName,
-                    portImplementations, updateSemantic, response);
+                    portImplementations, response);
 
             Set<String> portAliasGUIDs = createOrUpdatePortAliases(userId, serverName, portAliases, response);
 
@@ -595,7 +595,7 @@ public class DataEngineRESTServices {
 
     private Set<String> createOrUpdatePortImplementations(String userId, String serverName,
                                                           List<PortImplementation> portImplementations,
-                                                          UpdateSemantic updateSemantic, GUIDResponse response) {
+                                                          GUIDResponse response) {
         final String methodName = "createOrUpdatePortImplementations";
 
         log.debug("Calling method: {}", methodName);
@@ -607,7 +607,7 @@ public class DataEngineRESTServices {
             {
                 try {
                     portImplementationGUIDs.add(createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                            portImplementation, updateSemantic));
+                            portImplementation));
                 } catch (InvalidParameterException error) {
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
@@ -714,11 +714,10 @@ public class DataEngineRESTServices {
     }
 
     private String createOrUpdatePortImplementationWithSchemaType(String userId, String serverName,
-                                                                  PortImplementation portImplementation,
-                                                                  UpdateSemantic updateSemantic) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 PropertyServerException,
-                                                                                                 UserNotAuthorizedException {
+                                                                  PortImplementation portImplementation) throws
+                                                                                                         InvalidParameterException,
+                                                                                                         PropertyServerException,
+                                                                                                         UserNotAuthorizedException {
         final String methodName = "createOrUpdatePortImplementationWithSchemaType";
 
         log.debug("Calling method: {}", methodName);
@@ -737,7 +736,7 @@ public class DataEngineRESTServices {
             portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
                     portImplementation.getDisplayName(), portImplementation.getPortType());
 
-            if (updateSemantic == UpdateSemantic.REPLACE) {
+            if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
                 deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.getSchemaTypeForPort(userId,
                         portImplementationGUID));
             }
