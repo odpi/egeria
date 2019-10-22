@@ -43,7 +43,8 @@ public enum DataEngineAuditCode {
 
     SERVICE_INSTANCE_FAILURE("OMAS-DATA-ENGINE-0005",
             OMRSAuditLogRecordSeverity.ERROR,
-            "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The Data Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error " +
+                    "message is {0}",
             "The access service detected an error during the start up of a specific server instance.  " +
                     "Its services are not available for the server.",
             "Review the error message and any other reported failures to determine the cause of the problem. " +
@@ -102,19 +103,16 @@ public enum DataEngineAuditCode {
      * Returns the log message with the placeholders filled out with the supplied parameters.
      *
      * @param params - strings that plug into the placeholders in the logMessage
+     *
      * @return logMessage (formatted with supplied parameters)
      */
     public String getFormattedLogMessage(String... params) {
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("<== DataEngine Audit Code.getMessage(%s)", Arrays.toString(params)));
-        }
+        log.debug("<== DataEngine Audit Code.getMessage({})", Arrays.toString(params));
 
         MessageFormat mf = new MessageFormat(logMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("==> DataEngine Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
-        }
+        log.debug("==> DataEngine Audit Code.getMessage({}): {}", Arrays.toString(params), result);
 
         return result;
     }

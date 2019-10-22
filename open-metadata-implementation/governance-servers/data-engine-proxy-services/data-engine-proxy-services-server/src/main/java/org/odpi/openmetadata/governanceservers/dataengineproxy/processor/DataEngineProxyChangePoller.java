@@ -139,26 +139,26 @@ public class DataEngineProxyChangePoller implements Runnable {
                 List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
                 if (changedSchemaTypes != null) {
                     for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
-                        dataEngineOMASClient.createSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
+                        dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
                     }
                 }
                 List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
                 if (changedPortImplementations != null) {
                     for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
-                        dataEngineOMASClient.createPortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
+                        dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
                     }
                 }
                 List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
                 if (changedPortAliases != null) {
                     for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
-                        dataEngineOMASClient.createPortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
+                        dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
                     }
                 }
                 if (log.isInfoEnabled()) { log.info(" ... getting changed processes."); }
                 List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
                 if (changedProcesses != null) {
                     for (DataEngineProcess changedProcess : changedProcesses) {
-                        dataEngineOMASClient.createProcess(changedProcess.getUserId(), changedProcess.getProcess());
+                        dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
                     }
                     if (log.isInfoEnabled()) { log.info(" ... completing process changes."); }
                 }
