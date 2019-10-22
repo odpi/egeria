@@ -174,10 +174,8 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateGUID(targetSchemaAttributeQualifiedName,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        SchemaType sourceSchemaType = getSchemaTypeForSchemaAttribute(userId, sourceSchemaAttributeQualifiedName,
-                methodName);
-        SchemaType targetSchemaType = getSchemaTypeForSchemaAttribute(userId, targetSchemaAttributeQualifiedName,
-                methodName);
+        SchemaType sourceSchemaType = getSchemaTypeForSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
+        SchemaType targetSchemaType = getSchemaTypeForSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME);
@@ -224,11 +222,12 @@ public class DataEngineSchemaTypeHandler {
         schemaTypeHandler.removeSchemaType(userId, schemaTypeGUID);
     }
 
-    private SchemaType getSchemaTypeForSchemaAttribute(String userId, String schemaAttributeQualifiedName,
-                                                       String methodName) throws UserNotAuthorizedException,
-                                                                                 PropertyServerException,
-                                                                                 NoSchemaAttributeException,
-                                                                                 InvalidParameterException {
+    private SchemaType getSchemaTypeForSchemaAttribute(String userId, String schemaAttributeQualifiedName) throws
+                                                                                                           UserNotAuthorizedException,
+                                                                                                           PropertyServerException,
+                                                                                                           NoSchemaAttributeException,
+                                                                                                           InvalidParameterException {
+        final String methodName = "getSchemaTypeForSchemaAttribute";
 
         String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttributeQualifiedName);
 

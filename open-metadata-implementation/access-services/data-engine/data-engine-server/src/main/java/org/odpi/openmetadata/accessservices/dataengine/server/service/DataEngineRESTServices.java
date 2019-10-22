@@ -463,7 +463,7 @@ public class DataEngineRESTServices {
      * @return the unique identifier (guid) of the created process
      */
     private GUIDResponse createOrUpdateProcess(String userId, String serverName, Process process) {
-        final String methodName = "createProcess";
+        final String methodName = "createOrUpdateProcess";
 
         log.debug("Calling method: {}", methodName);
 
