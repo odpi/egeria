@@ -133,7 +133,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.9.9</jackson.version>
+        <jackson.version>2.10.0</jackson.version>
         <kafka.version>2.3.0</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
