@@ -2,7 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
@@ -22,13 +23,18 @@ public class OpenLineageConnectorBase extends ConnectorBase implements OpenLinea
     }
 
     /**
-     * Process the serialized  information view event
-     *
-     * @param processLineageEvent event
+     * Task that the scheduler performs based on the interval
      */
     @Override
-    public void addEntity(ProcessLineageEvent processLineageEvent) { }
+    public void schedulerTask() { }
 
+    /**
+     * Process the serialized  information view event
+     *
+     * @param lineageEvent event
+     */
+    @Override
+    public void addEntity(LineageEvent lineageEvent) { }
 
     /**
      * Returns a lineage subgraph.

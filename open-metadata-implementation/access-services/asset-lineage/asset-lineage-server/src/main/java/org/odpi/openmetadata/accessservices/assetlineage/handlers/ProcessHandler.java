@@ -62,7 +62,7 @@ public class ProcessHandler {
      * @param processGuid guid of the asset that has been created
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
-    public Map<String, Set<Edge>> getProcessContext(String userId, String processGuid) {
+    public Map<String, Set<GraphContext>> getProcessContext(String userId, String processGuid) {
 
         graph = new AssetContext();
 
@@ -92,7 +92,7 @@ public class ProcessHandler {
         }
     }
 
-    private Map<String,Set<Edge>> checkIfAllRelationshipsExist(String userId,EntityDetail entityDetail) throws InvalidParameterException,
+    private Map<String,Set<GraphContext>> checkIfAllRelationshipsExist(String userId, EntityDetail entityDetail) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 

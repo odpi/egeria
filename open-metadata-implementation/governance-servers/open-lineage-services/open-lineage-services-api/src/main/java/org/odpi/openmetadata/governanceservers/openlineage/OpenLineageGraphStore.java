@@ -2,18 +2,25 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 
 public interface OpenLineageGraphStore {
 
     /**
      * Process the serialized  information view event
      *
-     * @param processLineageEvent event
+     * @param lineageEvent event
      */
-    void addEntity(ProcessLineageEvent processLineageEvent);
+    void addEntity(LineageEvent lineageEvent);
+
+    /**
+     * Task that the scheduler performs based on the interval
+     *
+     */
+    void schedulerTask();
 
     /**
      * Returns a lineage subgraph.

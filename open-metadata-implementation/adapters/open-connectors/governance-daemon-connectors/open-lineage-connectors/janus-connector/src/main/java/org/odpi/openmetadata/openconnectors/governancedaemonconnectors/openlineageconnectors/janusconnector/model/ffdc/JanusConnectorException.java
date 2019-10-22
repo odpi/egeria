@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc;
 
 
-public class OpenLineageException extends RuntimeException {
-    private int reportedHTTPCode;
+public class JanusConnectorException extends RuntimeException {
     private String reportingClassName;
     private String reportingActionDescription;
     private String reportedErrorMessage;
@@ -13,15 +12,13 @@ public class OpenLineageException extends RuntimeException {
     private Throwable reportedCaughtException = null;
 
 
-    public OpenLineageException(int    httpCode,
-                                String className,
-                                String actionDescription,
-                                String errorMessage,
-                                String systemAction,
-                                String userAction)
+    public JanusConnectorException(String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction)
     {
         super(errorMessage);
-        this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
         this.reportedErrorMessage = errorMessage;
@@ -29,32 +26,21 @@ public class OpenLineageException extends RuntimeException {
         this.reportedUserAction = userAction;
     }
 
-    public OpenLineageException(int    httpCode,
-                                String className,
-                                String actionDescription,
-                                String errorMessage,
-                                String systemAction,
-                                String userAction,
-                                Throwable throwable)
+    public JanusConnectorException(int    httpCode,
+                                   String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction,
+                                   Throwable throwable)
     {
         super(errorMessage);
-        this.reportedHTTPCode = httpCode;
         this.reportingClassName = className;
         this.reportingActionDescription = actionDescription;
         this.reportedErrorMessage = errorMessage;
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
         this.reportedCaughtException = throwable;
-    }
-
-
-
-    public int getReportedHTTPCode() {
-        return reportedHTTPCode;
-    }
-
-    public void setReportedHTTPCode(int reportedHTTPCode) {
-        this.reportedHTTPCode = reportedHTTPCode;
     }
 
     public String getReportingClassName() {

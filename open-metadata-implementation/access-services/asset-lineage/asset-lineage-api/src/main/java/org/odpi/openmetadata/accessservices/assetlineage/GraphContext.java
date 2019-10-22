@@ -4,16 +4,20 @@ package org.odpi.openmetadata.accessservices.assetlineage;
 
 import java.util.Objects;
 
-public class Edge {
+public class GraphContext {
 
     private String relationshipType;
+    private String relationshipGuid;
     private LineageEntity fromVertex;
     private LineageEntity toVertex;
 
-   public  Edge(String relationshipType, LineageEntity fromVertex, LineageEntity toVertex) {
+    public GraphContext(){}
+    
+    public GraphContext(String relationshipType, String relationshipGuid, LineageEntity fromVertex, LineageEntity toVertex) {
        this.relationshipType = relationshipType;
-        this.fromVertex = fromVertex;
-        this.toVertex = toVertex;
+       this.relationshipGuid = relationshipGuid;
+       this.fromVertex = fromVertex;
+       this.toVertex = toVertex;
     }
 
     public String getRelationshipType() {
@@ -22,6 +26,14 @@ public class Edge {
 
     public void setRelationshipType(String relationshipType) {
         this.relationshipType = relationshipType;
+    }
+
+    public String getRelationshipGuid() {
+        return relationshipGuid;
+    }
+
+    public void setRelationshipGuid(String relationshipGuid) {
+        this.relationshipGuid = relationshipGuid;
     }
 
     public LineageEntity getFromVertex() {
@@ -44,7 +56,7 @@ public class Edge {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Edge edgeTest = (Edge) o;
+        GraphContext edgeTest = (GraphContext) o;
         return Objects.equals(relationshipType, edgeTest.relationshipType) &&
                 Objects.equals(fromVertex, edgeTest.fromVertex) &&
                 Objects.equals(toVertex, edgeTest.toVertex);

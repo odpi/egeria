@@ -4,7 +4,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.Edge;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -64,14 +64,14 @@ public class GlossaryHandler {
      * @param userID    String - userId of user making request.
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
      */
-    public Map<String, Set<Edge>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
+    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
 
         try {
             graph = assetContext;
             boolean glossary = getGlossary(userID, assetGuid, entityDetail.getType().getTypeDefName());
 
             if (!glossary) {
-                log.error("No Semantic assignment for the asset with guid {} found", assetGuid);
+                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
                 return Collections.emptyMap();
             }
 
