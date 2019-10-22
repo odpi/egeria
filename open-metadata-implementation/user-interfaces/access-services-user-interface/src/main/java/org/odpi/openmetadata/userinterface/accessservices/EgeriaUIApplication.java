@@ -21,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @SpringBootApplication
 @ComponentScan({"org.odpi.openmetadata.*"})
 @Configuration
-
 public class EgeriaUIApplication {
 
     private static final Logger LOG = LoggerFactory.getLogger(EgeriaUIApplication.class);
@@ -47,7 +46,7 @@ public class EgeriaUIApplication {
 
     @Bean
     public AssetCatalog getAssetCatalog(@Value("${omas.server.url}") String serverUrl,
-                                        @Value("${omas.server.name}") String serverName) {
+                                        @Value("${omas.server.name}") String serverName) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         return new AssetCatalog(serverName, serverUrl);
     }
 
@@ -62,5 +61,7 @@ public class EgeriaUIApplication {
                                       @Value("${open.lineage.server.name}") String serverName)  {
         return new OpenLineage(serverName, serverUrl);
     }
+
+
 
 }

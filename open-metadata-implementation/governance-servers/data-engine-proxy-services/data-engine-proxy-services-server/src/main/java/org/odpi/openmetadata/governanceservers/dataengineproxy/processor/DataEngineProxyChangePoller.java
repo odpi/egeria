@@ -31,6 +31,14 @@ public class DataEngineProxyChangePoller implements Runnable {
     private DataEngineConnectorBase connector;
     private String engineGuid;
 
+    /**
+     * Default constructor
+     *
+     * @param connector             Data Engine Connector through which to connect to the data engine to poll
+     * @param dataEngineProxyConfig configuration of the Data Engine (Proxy)
+     * @param dataEngineOMASClient  Data Engine OMAS client through which to push any changes into Egeria
+     * @param auditLog              audit log through which to record activities
+     */
     public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
                                        DataEngineProxyConfig dataEngineProxyConfig,
                                        DataEngineImpl dataEngineOMASClient,
@@ -96,7 +104,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             this.auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(dataEngineProxyConfig.getDataEngineProxyProvider()),
+                    auditCode.getFormattedLogMessage(connector.getConnection().getConnectorType().getConnectorProviderClassName()),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
@@ -192,8 +200,6 @@ public class DataEngineProxyChangePoller implements Runnable {
                         errorCode.getUserAction(),
                         e
                 );
-            } catch (OCFCheckedExceptionBase e) {
-                log.error("There was a problem updating the last sync time -- will revert to previous sync time at next synchronization.", e);
             } catch (Exception e) {
                 log.error("Fatal error occurred during processing.", e);
             }

@@ -2229,7 +2229,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return (Date)primitivePropertyValue.getPrimitiveValue();
+                                Long timestamp = (Long)primitivePropertyValue.getPrimitiveValue();
+                                return new Date(timestamp);
+
                             }
                         }
                     }
@@ -2568,6 +2570,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                                                         Date               propertyValue,
                                                         String             methodName)
     {
+
+
         InstanceProperties  resultingProperties;
 
         log.debug("Adding property " + propertyName + " for " + methodName);
@@ -2586,8 +2590,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        /*
+         * Date objects are stored in PrimitivePropertyValue as Java Long.
+         */
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        Long longValue = propertyValue.getTime();
+        primitivePropertyValue.setPrimitiveValue(longValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2966,7 +2974,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    /*
+                     * Internally, dates are stored as Java Long.
+                     */
+                    Long timestamp = ((Date) mapPropertyValue).getTime();
+                    primitivePropertyValue.setPrimitiveValue(timestamp);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
@@ -3291,7 +3303,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             return null;
         }
-        int fullResultsSize =fullResults.size();
+
+        int fullResultsSize = fullResults.size();
 
         if (fromElement > fullResultsSize)
         {
@@ -3308,8 +3321,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -3320,15 +3335,16 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression
      * @return string that is interpreted literally rather than as a regular expression
      * @see #isExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getExactMatchRegex(String s)
+    public String getExactMatchRegex(String searchString)
     {
-        return s == null ? null : Pattern.quote(s);
+        return searchString == null ? null : Pattern.quote(searchString);
     }
+
 
     /**
      * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
@@ -3342,18 +3358,19 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isExactMatchRegex(String s)
+    public boolean isExactMatchRegex(String searchString)
     {
-        return s == null
-                || (s.startsWith("\\Q")
-                    && s.endsWith("\\E")
-                    && s.indexOf("\\E") == s.length() - 2);
+        return searchString == null
+                || (searchString.startsWith("\\Q")
+                    && searchString.endsWith("\\E")
+                    && searchString.indexOf("\\E") == searchString.length() - 2);
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -3364,15 +3381,16 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
      * @return string that is interpreted literally, wrapped for a "contains" semantic
      * @see #isContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getContainsRegex(String s)
+    public String getContainsRegex(String searchString)
     {
-        return s == null ? null : ".*" + getExactMatchRegex(s) + ".*";
+        return searchString == null ? null : ".*" + getExactMatchRegex(searchString) + ".*";
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
@@ -3384,37 +3402,39 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "contains"
+     * @param searchString - the string to check whether it should be interpreted as a simple "contains"
      * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
      * @see #getContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isContainsRegex(String s)
+    public boolean isContainsRegex(String searchString)
     {
-        return s != null
-                && s.startsWith(".*")
-                && s.endsWith(".*")
-                && isExactMatchRegex(s.substring(2, s.length() - 2));
+        return searchString != null
+                && searchString.startsWith(".*")
+                && searchString.endsWith(".*")
+                && isExactMatchRegex(searchString.substring(2, searchString.length() - 2));
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
+     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
      *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
      * @return string that is interpreted literally, wrapped for a "startswith" semantic
      * @see #isStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getStartsWithRegex(String s)
+    public String getStartsWithRegex(String searchString)
     {
-        return s == null ? null : getExactMatchRegex(s) + ".*";
+        return searchString == null ? null : getExactMatchRegex(searchString) + ".*";
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
@@ -3426,58 +3446,61 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "startswith"
-     * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
+     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
+     * @return true if the provided string should be interpreted as a simple "starts with", false if it should be interpreted as a full regex
      * @see #getStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isStartsWithRegex(String s)
+    public boolean isStartsWithRegex(String searchString)
     {
-        return s != null
-                && s.endsWith(".*")
-                && isExactMatchRegex(s.substring(0, s.length() - 2));
+        return searchString != null
+                && searchString.endsWith(".*")
+                && isExactMatchRegex(searchString.substring(0, searchString.length() - 2));
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
-     * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
+     * to search for the string with an "ends with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "ends with" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
      *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
-     * @return string that is interpreted literally, wrapped for an "endswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @return string that is interpreted literally, wrapped for an "ends with" semantic
      * @see #isEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getEndsWithRegex(String s)
+    public String getEndsWithRegex(String searchString)
     {
-        return s == null ? null : ".*" + getExactMatchRegex(s);
+        return searchString == null ? null : ".*" + getExactMatchRegex(searchString);
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
      * other regular expression (false).
      *
      * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
-     * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
+     * qualify a string when it should be treated primarily as a literal with only very basic "ends with" wrapping.
      *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "endswith"
-     * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
+     * @param searchString - the string to check whether it should be interpreted as a simple "ends with"
+     * @return true if the provided string should be interpreted as a simple "ends with", false if it should be interpreted as a full regex
      * @see #getEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isEndsWithRegex(String s)
+    public boolean isEndsWithRegex(String searchString)
     {
-        return s != null
-                && s.startsWith(".*")
-                && isExactMatchRegex(s.substring(2));
+        return searchString != null
+                && searchString.startsWith(".*")
+                && isExactMatchRegex(searchString.substring(2));
     }
+
 
     /**
      * Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).
@@ -3487,36 +3510,37 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.
      *
-     * @param s - the (potentially) wrapped and escaped string to un-escape and un-wrap
+     * @param searchString - the (potentially) wrapped and escaped string to un-escape and un-wrap
      * @return the un-escaped, un-wrapped literal string
      * @see #getExactMatchRegex(String)
      * @see #getContainsRegex(String)
      * @see #getStartsWithRegex(String)
      * @see #getEndsWithRegex(String)
      */
-    public String getUnqualifiedLiteralString(String s)
+    public String getUnqualifiedLiteralString(String searchString)
     {
-        if (s == null)
+        if (searchString == null)
         {
             return null;
         }
-        if (isExactMatchRegex(s))
+        if (isExactMatchRegex(searchString))
         {
-            return s.substring(2, s.length() - 2);
+            return searchString.substring(2, searchString.length() - 2);
         }
-        if (isStartsWithRegex(s))
+        if (isStartsWithRegex(searchString))
         {
-            return s.substring(2, s.length() - 4);
+            return searchString.substring(2, searchString.length() - 4);
         }
-        if (isEndsWithRegex(s))
+        if (isEndsWithRegex(searchString))
         {
-            return s.substring(4, s.length() - 2);
+            return searchString.substring(4, searchString.length() - 2);
         }
-        if (isContainsRegex(s)) {
-            return s.substring(4, s.length() - 4);
+        if (isContainsRegex(searchString)) {
+            return searchString.substring(4, searchString.length() - 4);
         }
-        return s;
+        return searchString;
     }
+
 
     /**
      * When issuing find requests with paging, it can be that we have all the data, but need to only return
@@ -3527,15 +3551,19 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param totalSize the total size of the data.
      * @return the to index.
      */
-    private int getToIndex(int fromIndex, int pageSize, int totalSize) {
+    private int getToIndex(int fromIndex, int pageSize, int totalSize)
+    {
         int toIndex = 0;
+
         if (totalSize < fromIndex + pageSize)
         {
             toIndex = totalSize;
-        } else
+        }
+        else
         {
             toIndex = fromIndex + pageSize;
         }
+
         return toIndex;
     }
 

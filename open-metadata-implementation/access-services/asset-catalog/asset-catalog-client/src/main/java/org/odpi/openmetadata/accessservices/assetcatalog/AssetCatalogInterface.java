@@ -1,12 +1,14 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides services to search for data assets including
@@ -21,168 +23,143 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Re
 public interface AssetCatalogInterface {
 
     /**
-     * Fetch asset's header and classification
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    AssetDescriptionResponse getAssetSummary(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
-
-    /**
      * Fetch asset's header, classification and properties
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId    the unique identifier for the user
+     * @param assetGUID the unique identifier for the asset
+     * @param assetType the type of the asset
      * @return the asset with its header and the list of associated classifications and specific properties
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetDetails(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch asset's header, classification, properties and relationships
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @param userId    the unique identifier for the user
+     * @param assetGUID the unique identifier for the asset
+     * @param assetType the asset type
+     * @return the asset with its header and the list of associated classifications and relationship
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetUniverse(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch the relationships for a specific asset
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
+     * @param userId           the unique identifier for the user
+     * @param assetGUID        the unique identifier for the asset
+     * @param assetType        the type of the asset
+     * @param relationshipType the type of the relationship
+     * @param from             offset
+     * @param pageSize         limit the number of the assets returned
      * @return list of relationships for the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    RelationshipsResponse getAssetRelationships(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Fetch the relationships for a specific asset and type
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @param relationshipType the the type of relationship required
-     * @return list of relationships for the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    RelationshipsResponse getAssetRelationshipsForType(String userId, String assetId, String relationshipType) throws PropertyServerException, InvalidParameterException;
+    RelationshipsResponse getAssetRelationships(String userId, String assetGUID, String assetType, String relationshipType, Integer from, Integer pageSize) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Fetch the classification for a specific asset
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the classification for the asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @param userId             the unique identifier for the user
+     * @param assetGUID          the unique identifier for the asset
+     * @param assetType          the type of the asset
+     * @param classificationName the name of the classification
+     * @return ClassificationsResponse the classification for the asset
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    ClassificationsResponse getClassificationForAsset(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    ClassificationsResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns a sub-graph of intermediate assets that connected two assets
      *
-     * @param userId       the unique identifier for the user
-     * @param startAssetId the starting asset identifier of the query
-     * @param endAssetId   the ending asset identifier of the query
+     * @param userId         the unique identifier for the user
+     * @param startAssetGUID the starting asset identifier of the query
+     * @param endAssetGUID   the ending asset identifier of the query
      * @return a list of assets between the given assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getLinkingAssets(String userId, String startAssetId, String endAssetId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
 
+    /**
+     * Return a sub-graph of relationships that connect two assets
+     *
+     * @param userId         the unique identifier for the user
+     * @param startAssetGUID the starting asset identifier of the query
+     * @param endAssetGUID   the ending asset identifier of the query
+     * @return a list of relationships that connects the assets
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Return the list of assets that are of the types listed in instanceTypes and are connected,
-     * either directly or indirectly to the asset identified by assetId.
+     * either directly or indirectly to the asset identified by assetGUID.
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
+     * @param userId           the unique identifier for the user
+     * @param assetGUID        the starting asset identifier of the query
+     * @param searchParameters constrains to make the assets's search results more precise
      * @return list of assets either directly or indirectly connected to the start asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getRelatedAssets(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getRelatedAssets(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
      * Returns the sub-graph that represents the returned linked relationships.
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
+     * @param userId           the unique identifier for the user
+     * @param assetGUID        the starting asset identifier of the query
+     * @param searchParameters constrains to make the assets's search results more precise
      * @return a list of assets that in neighborhood of the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
+    AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
 
     /**
-     * Returns the sub-graph that represents the returned linked assets
+     * Return a list of assets matching the search criteria without the full context
      *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
-     * @return a list of relationships that are linked between the assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    RelationshipsResponse getRelationshipsFromNeighborhood(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Returns the last created assets
-     *
-     * @param userId the unique identifier for the user
-     * @return a list of the last created assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    AssetDescriptionResponse getLastCreatedAssets(String userId) throws InvalidParameterException, PropertyServerException;
-
-    /**
-     * Returns  the last updated assets
-     *
-     * @param userId the unique identifier for the user
-     * @return a list of the last updated assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    AssetDescriptionResponse getLastUpdatedAssets(String userId) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Fetch relationship details based on its unique identifier
-     *
-     * @param userId         String unique identifier for the user
-     * @param relationshipId String unique identifier for the relationship
-     * @return relationship details
-     */
-    RelationshipsResponse getRelationship(String userId, String relationshipId) throws InvalidParameterException, PropertyServerException;
-
-    /**
-     * Return a list of relationships that match the search criteria.
-     *
-     * @param userId             String unique identifier for the user
-     * @param relationshipTypeId limit the result set to only include the specified types for relationships
-     * @param criteria           String for searching the relationship
-     * @return a list of relationships that match the search criteria
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    RelationshipsResponse searchForRelationships(String userId, String relationshipTypeId, String criteria) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Return a list of assets matching the search criteria
-     *
-     * @param userId         the unique identifier for the user
-     * @param searchCriteria a string expression of the characteristics of the required assets
+     * @param userId           the unique identifier for the user
+     * @param searchCriteria   a string expression of the characteristics of the required assets
+     * @param searchParameters constrains to make the assets's search results more precise
      * @return list of properties used to narrow the search
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
      */
-    AssetResponse searchForAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
+    AssetResponse searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException;
+
+    /**
+     * Return the full context of an asset/glossary term based on its identifier.
+     * The response contains the list of the connections assigned to the asset.
+     *
+     * @param userId    the unique identifier for the user
+     * @param assetGUID the global unique identifier of the asset
+     * @param assetType the type of the asset
+     * @return list of properties used to narrow the search
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    AssetResponse getAssetContext(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException;
+
+
+    /**
+     * Fetch relationship between entities details based on its unique identifier of the ends
+     * Filtering based on the relationship type is supported
+     *
+     * @param userId               the unique identifier for the user
+     * @param entity1GUID          Entity guid of the first end of the relationship
+     * @param entity2GUID          Entity guid of the second end of the relationship
+     * @param relationshipTypeGUID Type of the relationship
+     * @return relationships between entities
+     * @throws PropertyServerException   if a problem occurs while serving the request
+     * @throws InvalidParameterException if parameter validation fails
+     */
+    RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipTypeGUID) throws InvalidParameterException, PropertyServerException;
 }

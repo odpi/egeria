@@ -80,22 +80,47 @@ public enum DataEngineErrorCode {
         return mf.format(params);
     }
 
+    /**
+     * Returns the numeric code that can be used in a REST response.
+     *
+     * @return int
+     */
     public int getHTTPErrorCode() {
         return HTTPErrorCode;
     }
 
+    /**
+     * Returns the unique error message identifier of the error.
+     *
+     * @return String
+     */
     public String getErrorMessageId() {
         return errorMessageId;
     }
 
+    /**
+     * Returns the un-formatted error message.
+     *
+     * @return String
+     */
     public String getErrorMessage() {
         return errorMessage;
     }
 
+    /**
+     * Returns the action taken by the system when the error occurred.
+     *
+     * @return String
+     */
     public String getSystemAction() {
         return systemAction;
     }
 
+    /**
+     * Returns the proposed action for a user to take when encountering the error.
+     *
+     * @return String
+     */
     public String getUserAction() {
         return userAction;
     }

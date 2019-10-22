@@ -21,6 +21,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnecto
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
+
 
 import java.util.*;
 
@@ -757,7 +759,7 @@ public class ConnectorConfigurationFactory
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
-        if ("org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby".equals(connectorProviderClassName)){
+        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName)){
             endpoint.setType(Endpoint.getEndpointType());
             endpoint.setGUID(endpointGUID);
             endpoint.setQualifiedName(endpointName);
@@ -794,51 +796,9 @@ public class ConnectorConfigurationFactory
             connection.setAdditionalProperties(additionalProperties);
         }
 
-        return connection;
-    }
-
-    /**
-     * Returns the connection for an arbitrary data engine proxy.
-     *
-     * @param serverName  name of the real data engine server
-     * @param connectorProviderClassName  class name of the connector provider
-     * @param url  location of the data engine proxy
-     * @param configurationProperties name value pairs for the connection
-     * @return Connection object
-     */
-    public Connection  getDataEngineProxyConnection(String              serverName,
-                                                    String              connectorProviderClassName,
-                                                    String              url,
-                                                    Map<String, Object> configurationProperties)
-    {
-        final String endpointGUID             = UUID.randomUUID().toString();
-        final String connectionGUID           = UUID.randomUUID().toString();
-        final String endpointDescription      = "Data Engine native endpoint.";
-        final String connectionDescription    = "Data Engine native connection.";
-
-        String endpointName    = "DataEngineNative.Endpoint." + serverName;
-
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setType(this.getEndpointType());
-        endpoint.setGUID(endpointGUID);
-        endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
-        endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(url);
-
-        String connectionName = "DataEngineNative.Connection." + serverName;
-
-        Connection connection = new Connection();
-
-        connection.setType(this.getConnectionType());
-        connection.setGUID(connectionGUID);
-        connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
-        connection.setDescription(connectionDescription);
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setConfigurationProperties(configurationProperties);
+        else {
+            log.error("Provided connector class is not registered in virtualizer api or implemented.");
+        }
 
         return connection;
     }
@@ -888,7 +848,34 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
+    /**
+     * Return the connection.  This is used by open lineage graph connectors.
+     *
+     * @param serverName  name of the real repository server
+     * @param url  url for the Open Lineage Server
+     * @param configurationProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection getOpenLineageServerConfiguration(String              serverName,
+                                                        String              connectorProviderClassName,
+                                                        String              url,
+                                                        Map<String, Object> configurationProperties)
+    {
+        final String endpointGUID          = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
 
+        final String endpointDescription      = "OpenLineage native endpoint.";
+        final String connectionDescription    = "Open Lineage native connection.";
+
+        String endpointName    = "OpenLineage.Endpoint." + serverName;
+        String connectionName  = "OpenLineage.Connection." + serverName;
+
+        Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
+
+        return getConnection(configurationProperties, endpoint, connectionName,
+                connectionGUID, connectionDescription, connectorProviderClassName);
+    }
+  
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.

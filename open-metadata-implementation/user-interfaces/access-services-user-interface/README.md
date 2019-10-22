@@ -27,8 +27,9 @@ be available through the the open metadata repositories.
 ![Figure 1: Drill-down from catalog search results to explore the content and qualities of a data set](drilldown-of-metadata-entity-pharma.png)
 > Figure 1: Drill-down from catalog search results to explore the content and qualities of a data set
 
-This metadata is returned by the 
-**[Connected Asset OMAS](../../../open-metadata-implementation/access-services/connected-asset/README.md)**.
+This metadata is returned by the connector whose connection is lined to the retrieved asset.
+The connector is created by the 
+**[Asset Consumer OMAS](../../../open-metadata-implementation/access-services/asset-consumer)**.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

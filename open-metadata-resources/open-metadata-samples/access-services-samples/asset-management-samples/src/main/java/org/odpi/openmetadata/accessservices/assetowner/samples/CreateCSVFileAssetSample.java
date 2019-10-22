@@ -71,17 +71,15 @@ public class CreateCSVFileAssetSample
     {
         org.apache.log4j.BasicConfigurator.configure(new NullAppender());
 
-        if ((args == null) || (args.length < 1))
-        {
-            System.out.println("Please specify the file name in the first parameter");
-            System.exit(-1);
-        }
-
-        String  fileName = args[0];
+        String  fileName = "open-metadata-resources/open-metadata-samples/access-services-samples/asset-management-samples/ContactList.csv";
         String  serverName = "cocoMDS1";
-        String  serverURLRoot = "http://localhost:8080";
-        String  clientUserId = "garygeeke";
+        String  serverURLRoot = "http://localhost:8081";
+        String  clientUserId = "peterprofile";
 
+        if (args.length > 0)
+        {
+            fileName = args[0];
+        }
 
         if (args.length > 1)
         {
@@ -103,6 +101,7 @@ public class CreateCSVFileAssetSample
         System.out.println("===============================");
         System.out.println("Running against server: " + serverName + " at " + serverURLRoot);
         System.out.println("Using userId: " + clientUserId);
+        System.out.println("Creating file: " + fileName);
         System.out.println();
 
         try
