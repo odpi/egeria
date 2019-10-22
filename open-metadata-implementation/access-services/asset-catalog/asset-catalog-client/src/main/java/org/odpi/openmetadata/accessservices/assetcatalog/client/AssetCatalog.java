@@ -3,16 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.client;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogInterface;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
-import org.springframework.web.client.RestTemplate;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
  * The Asset Catalog Open Metadata Access Service (OMAS) provides an interface to search for assets including
@@ -24,384 +24,209 @@ import org.springframework.web.client.RestTemplate;
  * <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
  * </ul>
  */
-public class AssetCatalog implements AssetCatalogInterface {
+public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface {
+
+    private static final String BASE_PATH = "{0}/servers/{1}/open-metadata/access-services/asset-catalog/users/{2}";
+
+    private static final String ASSET_DETAILS = "/asset-details/{3}";
+    private static final String ASSET_UNIVERSE = "/asset-universe/{3}";
+    private static final String ASSET_RELATIONSHIPS = "/asset-relationships/{3}";
+    private static final String ASSET_CLASSIFICATIONS = "/asset-classifications/{3}";
+    private static final String LINKING_ASSET = "/linking-assets/from/{3}/to/{4}";
+    private static final String LINKING_RELATIONSHIPS = "/linking-assets-relationships/from/{3}/to/{4}";
+    private static final String RELATED_ASSETS = "/related-assets/{3}";
+    private static final String ASSETS_FROM_NEIGHBORHOOD = "/assets-from-neighborhood/{3}";
+    private static final String SEARCH = "/search/{3}";
+    private static final String ASSET_CONTEXT = "/asset-context/{3}";
+    private static final String RELATIONSHIPS = "relationships-between-entities/{3}/{4}";
+
+    private static final String GUID_PARAMETER = "assetGUID";
+    private static final String START_ASSET_GUID = "startAssetGUID";
+    private static final String END_ASSET_GUID = "endAssetGUID";
+    private static final String SEARCH_PARAMETERS = "searchParameters";
+
 
     private String serverName;
-    private String omasServerURL;
-    private RestTemplate restTemplate;
+    private String serverPlatformRootURL;
+
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
     /**
      * Create a new AssetConsumer client.
      *
-     * @param serverName   name of the server to connect to
-     * @param newServerURL the network address of the server running the OMAS REST servers
+     * @param serverName            name of the server to connect to
+     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException if parameter validation fails
      */
-    public AssetCatalog(String serverName,
-                        String newServerURL) {
+    public AssetCatalog(String serverName, String serverPlatformRootURL) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformRootURL);
+
         this.serverName = serverName;
-        this.omasServerURL = newServerURL;
-        this.restTemplate = new RestTemplate();
-    }
-
-    /**
-     * Fetch asset's header and classification
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetSummary(String userId,
-                                                    String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetSummary";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-summary/{2}";
-        return getRestCall(url, AssetDescriptionResponse.class, serverName, userId, assetId);
-
-    }
-
-    /**
-     * Fetch asset's header, classification and properties
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications and specific properties
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetDetails(String userId,
-                                                    String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetDetails";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-details/{2}";
-        return getRestCall(url, AssetDescriptionResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Fetch asset's header, classification, properties and relationships
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the asset with its header and the list of associated classifications
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetUniverse(String userId,
-                                                     String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetUniverse";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-universe/{2}";
-        return getRestCall(url, AssetDescriptionResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Fetch the relationships for a specific asset
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return list of relationships for the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse getAssetRelationships(String userId, String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetRelationships";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-relationships/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, RelationshipsResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Fetch the relationships for a specific asset and relationship type
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @param relationshipType the the type of relationship required
-     * @return list of relationships for the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse getAssetRelationshipsForType(String userId, String assetId, String relationshipType) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetRelationshipsForType";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-        validateParameter(methodName, relationshipType);
-
-        String url = "/{0}/asset-relationships/{1}?type={2}";
-        return getRestCall(url, RelationshipsResponse.class, userId, assetId, relationshipType);
-    }
-
-    /**
-     * Fetch the classification for a specific asset
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the unique identifier for the asset
-     * @return the classification for the asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public ClassificationsResponse getClassificationForAsset(String userId, String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getClassificationForAsset";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/asset-classifications/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, ClassificationsResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Returns a sub-graph of intermediate assets that connected two assets
-     *
-     * @param userId       the unique identifier for the user
-     * @param startAssetId the starting asset identifier of the query
-     * @param endAssetId   the ending asset identifier of the query
-     * @return a list of assets between the given assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getLinkingAssets(String userId, String startAssetId, String endAssetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getLinkingAssets";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, startAssetId);
-        validateParameter(methodName, endAssetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/linking-assets/from/{2}/to/{3}";
-        return getRestCall(url, AssetDescriptionResponse.class, serverName, userId, startAssetId, endAssetId);
-    }
-
-    /**
-     * Return the list of assets that are of the types listed in instanceTypes and are connected,
-     * either directly or indirectly to the asset identified by assetId.
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
-     * @return list of assets either directly or indirectly connected to the start asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getRelatedAssets(String userId, String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getRelatedAssets";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/related-assets/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, AssetDescriptionResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Returns the sub-graph that represents the returned linked relationships.
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
-     * @return a list of assets that in neighborhood of the given asset
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetsFromNeighborhood";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-from-neighborhood/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, AssetDescriptionResponse.class, serverName, userId, assetId);
-    }
-
-    /**
-     * Returns the sub-graph that represents the returned linked assets
-     *
-     * @param userId  the unique identifier for the user
-     * @param assetId the starting asset identifier of the query
-     * @return a list of relationships that are linked between the assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse getRelationshipsFromNeighborhood(String userId, String assetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getRelationshipsFromNeighborhood";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, assetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/related-relationships/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, RelationshipsResponse.class, serverName, userId, assetId);
-
-    }
-
-    /**
-     * Returns the last created assets
-     *
-     * @param userId the unique identifier for the user
-     * @return a list of the last created assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getLastCreatedAssets(String userId) throws InvalidParameterException, PropertyServerException {
-        String methodName = "getLastCreatedAssets";
-        doBasicChecks(methodName, userId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/last-created";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, AssetDescriptionResponse.class, serverName, userId);
-    }
-
-
-    /**
-     * Returns  the last updated assets
-     *
-     * @param userId the unique identifier for the user
-     * @return a list of the last updated assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getLastUpdatedAssets(String userId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getLastUpdatedAssets";
-        doBasicChecks(methodName, userId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/last-updated";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, AssetDescriptionResponse.class, serverName, userId);
-    }
-
-    /**
-     * Fetch relationship details based on its unique identifier
-     *
-     * @param userId         String unique identifier for the user
-     * @param relationshipId String unique identifier for the relationship
-     * @return relationship details
-     */
-    @Override
-    public RelationshipsResponse getRelationship(String userId, String relationshipId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getRelationship";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, relationshipId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/relationships/{2}";
-        return getRestCall(url, RelationshipsResponse.class, serverName, userId, relationshipId);
-    }
-
-    /**
-     * Return a list of relationships that match the search criteria.
-     *
-     * @param userId             String unique identifier for the user
-     * @param relationshipTypeId limit the result set to only include the specified types for relationships
-     * @param criteria           String for searching the relationship
-     * @return a list of relationships that match the search criteria
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse searchForRelationships(String userId, String relationshipTypeId, String criteria) throws PropertyServerException, InvalidParameterException {
-        String methodName = "searchForRelationships";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, relationshipTypeId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/type/{2}/search/{3}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return postRestCall(url, requestBody, RelationshipsResponse.class, serverName, userId, relationshipTypeId, criteria);
-
+        this.serverPlatformRootURL = serverPlatformRootURL;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public AssetResponse searchForAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException {
-        String methodName = "searchAssets";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, searchCriteria);
+    public AssetDescriptionResponse getAssetDetails(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getAssetDetails";
 
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/search/{2}";
-        final SearchParameters requestBody = getSearchParameters();
+        validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
-        return postRestCall(url, requestBody, AssetResponse.class, serverName, userId, searchCriteria);
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + ASSET_DETAILS, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
     }
 
-    private <T> T postRestCall(String url, Object requestBody,  Class<T> clazz, Object... params){
-        return restTemplate.postForObject(omasServerURL + url, requestBody, clazz, params);
+    private void validateUserAndAssetGUID(String userId, String assetGUID, String methodName, String guidParameter) throws InvalidParameterException {
+        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateGUID(assetGUID, guidParameter, methodName);
     }
 
-    private <T> T getRestCall(String url, Class<T> clazz, Object... params){
-        return restTemplate.getForObject(omasServerURL + url, clazz, params);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetDescriptionResponse getAssetUniverse(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getAssetUniverse";
+
+        validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
+
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + ASSET_UNIVERSE, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
     }
 
-    private void doBasicChecks(String methodName, String userId) throws PropertyServerException, InvalidParameterException {
-        validateServerURL(methodName);
-        validateUserId(methodName, userId);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RelationshipsResponse getAssetRelationships(String userId, String assetGUID, String assetType,
+                                                       String relationshipType, Integer from, Integer pageSize)
+            throws InvalidParameterException, PropertyServerException {
+        String methodName = "getAssetRelationships";
+
+        validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
+        invalidParameterHandler.validatePaging(from, pageSize, methodName);
+
+        return callGetRESTCall(methodName, RelationshipsResponse.class,
+                BASE_PATH + ASSET_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
     }
 
-    private void validateServerURL(String methodName) throws PropertyServerException {
-        if (omasServerURL == null || omasServerURL.isEmpty()) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.SERVER_URL_NOT_SPECIFIED;
-            throw new PropertyServerException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ClassificationsResponse getClassificationsForAsset(String userId, String assetGUID, String assetType, String classificationName) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getClassificationsForAsset";
+
+        validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
+
+        return callGetRESTCall(methodName, ClassificationsResponse.class,
+                BASE_PATH + ASSET_CLASSIFICATIONS, serverPlatformRootURL,
+                serverName, userId, assetGUID, assetType, classificationName);
     }
 
-    private void validateUserId(String methodName, String userId) throws InvalidParameterException {
-        if (userId == null || "".equals(userId)) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.NULL_USER_ID;
-            throw new InvalidParameterException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetDescriptionResponse getLinkingAssets(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getLinkingAssets";
+
+        validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
+
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + LINKING_ASSET, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
     }
 
-    private void validateParameter(String methodName, Object parameter) throws InvalidParameterException {
-        if (parameter == null || "".equals(parameter)) {
-            AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.PARAMETER_NULL;
-            throw new InvalidParameterException(errorCode.getHttpErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(),
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getLinkingRelationships";
+
+        validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
+
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + LINKING_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
     }
 
-    private SearchParameters getSearchParameters() {
-        SearchParameters searchParameters = new SearchParameters();
-        searchParameters.setLimit(0);
-        searchParameters.setOffset(0);
-        searchParameters.setStatus(Status.ACTIVE);
-        return searchParameters;
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetDescriptionResponse getRelatedAssets(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getRelatedAssets";
+
+        validateSearchParams(userId, assetGUID, searchParameters, methodName);
+
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + RELATED_ASSETS, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetDescriptionResponse getAssetsFromNeighborhood(String userId, String assetGUID, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getAssetsFromNeighborhood";
+
+        validateSearchParams(userId, assetGUID, searchParameters, methodName);
+
+        return callGetRESTCall(methodName, AssetDescriptionResponse.class,
+                BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetResponse searchAssetsAndGlossaryTerms(String userId, String searchCriteria, SearchParameters searchParameters) throws InvalidParameterException, PropertyServerException {
+        String methodName = "searchAssetsAndGlossaryTerms";
+
+        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateSearchString(searchCriteria, "searchCriteria", methodName);
+        invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
+
+        return callPostRESTCall(methodName, AssetResponse.class,
+                BASE_PATH + SEARCH, serverPlatformRootURL, serverName, userId, searchCriteria, searchParameters);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AssetResponse getAssetContext(String userId, String assetGUID, String assetType) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getAssetContext";
+
+        invalidParameterHandler.validateUserId(methodName, userId);
+        invalidParameterHandler.validateSearchString(assetGUID, GUID_PARAMETER, methodName);
+
+        return callGetRESTCall(methodName, AssetResponse.class,
+                BASE_PATH + ASSET_CONTEXT, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipTypeGUID) throws InvalidParameterException, PropertyServerException {
+        String methodName = "getRelationshipBetweenEntities";
+
+        validateStartAndEndAssetsGUIDs(userId, entity1GUID, entity2GUID, methodName);
+
+        return callGetRESTCall(methodName, RelationshipResponse.class,
+                BASE_PATH + RELATIONSHIPS, serverPlatformRootURL, serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
+    }
+
+    private void validateStartAndEndAssetsGUIDs(String userId, String startAssetGUID, String endAssetGUID, String methodName) throws InvalidParameterException {
+        validateUserAndAssetGUID(userId, startAssetGUID, methodName, START_ASSET_GUID);
+        invalidParameterHandler.validateGUID(endAssetGUID, END_ASSET_GUID, methodName);
+    }
+
+    private void validateSearchParams(String userId, String assetGUID, SearchParameters searchParameters, String methodName) throws InvalidParameterException {
+        validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
+        invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
+    }
 }

@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-conformance-suite</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Conformance Suite Client</name>
@@ -52,6 +52,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+
+        <dependency>
+             <groupId>ch.qos.logback</groupId>
+             <artifactId>logback-classic</artifactId>
+             <scope>compile</scope>
         </dependency>
 
      </dependencies>

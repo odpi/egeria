@@ -98,7 +98,7 @@ public class SoftwareServerCapability implements Serializable {
 
     @Override
     public String toString() {
-        return "SoftwareServerCapabilityRequestBody{" +
+        return "DataEngineRegistrationRequestBody{" +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", displayName='" + displayName + '\'' +
                 ", description='" + description + '\'' +

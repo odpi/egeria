@@ -18,7 +18,7 @@ The Egeria content is organized into the following modules:
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
     * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
-    * **[data-process](open-metadata-implementation/access-services/data-process)** - manage metadata about process flows.
+    * **[design-model](open-metadata-implementation/access-services/design-model)** - manage content from design models.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
     * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
@@ -50,7 +50,6 @@ The Egeria content is organized into the following modules:
           * **[graph-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)** - provides a local repository that uses a graph store as its persistence store.
           * **[inmemory-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)** - provides a local repository that is entirely in memory.  It is useful for testing/developing OMASs and demos.
           * **[omrs-rest-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** - enables IBM Information Governance Catalog to support open metadata.
-          * **[ibm-igc-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector)** - uses the OMRS REST API to call an open metadata conformant repository.
       * **[rest-client-connectors](open-metadata-implementation/adapters/open-connectors/rest-client-connectors)** contains connector implementations for issuing REST calls.
   * **[admin-services](open-metadata-implementation/admin-services)** - supports the configuration of the OMAG Server Platform.  This configuration determines which of the open metadata and governance services are active.
   * **[common-services](open-metadata-implementation/common-services)** - support modules that are reused by other services.

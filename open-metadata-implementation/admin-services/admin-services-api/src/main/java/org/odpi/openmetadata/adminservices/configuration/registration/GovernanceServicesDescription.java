@@ -4,7 +4,9 @@ package org.odpi.openmetadata.adminservices.configuration.registration;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * GovernanceServicesDescription provides a list of registered governance servers.
@@ -68,7 +70,7 @@ public enum GovernanceServicesDescription implements Serializable
 
 
     /**
-     * Return a list containing each of the access service descriptions defined in this enum class.
+     * Return a list containing each of the governance service descriptions defined in this enum class.
      *
      * @return List of enums
      */
@@ -88,15 +90,33 @@ public enum GovernanceServicesDescription implements Serializable
         return serviceDescriptionList;
     }
 
+    /**
+     * Return a set of non null url markers (short names) of the governance services
+     *
+     * @return set of url markers
+     */
+    public static Set<String> getGovernanceServersURLMarkers()
+    {
+        Set<String> urlMarkerSet = new HashSet<>();
+        for (GovernanceServicesDescription governanceServicesDescription:getGovernanceServersDescriptionList()) {
+            String urlMarker = governanceServicesDescription.getServiceURLMarker();
+            if (urlMarker != null) {
+                urlMarkerSet.add(urlMarker);
+            }
+        }
+
+        return urlMarkerSet;
+    }
+
 
     /**
      * Default Constructor
      *
-     * @param serviceCode ordinal for this access service
-     * @param serviceName symbolic name for this access service
+     * @param serviceCode ordinal for this governance service
+     * @param serviceName symbolic name for this governance service
      * @param serviceURLMarker string used in URLs
-     * @param serviceDescription short description for this access service
-     * @param serviceWiki wiki page for the access service for this access service
+     * @param serviceDescription short description for this governance service
+     * @param serviceWiki wiki page for the governance service for this governance service
      */
     GovernanceServicesDescription(int    serviceCode,
                                   String serviceName,
@@ -158,7 +178,7 @@ public enum GovernanceServicesDescription implements Serializable
 
 
     /**
-     * Return the URL for the wiki page describing this access service.
+     * Return the URL for the wiki page describing this governance service.
      *
      * @return String URL name for the wiki page
      */

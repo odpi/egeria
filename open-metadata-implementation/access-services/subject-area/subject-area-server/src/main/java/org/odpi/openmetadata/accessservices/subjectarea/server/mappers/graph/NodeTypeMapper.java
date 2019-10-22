@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.graph;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
+import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchiveAccessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public class NodeTypeMapper {
         } else if (nodeType.name().equals("GlossaryProject")) {
               entityTypeName = "Project";
         }
-        return OMRSArchiveAccessor.getInstance().getEntityDefByName(entityTypeName).getGUID();
+        return OpenMetadataTypesArchiveAccessor.getInstance().getEntityDefByName(entityTypeName).getGUID();
     }
 
     /**
@@ -52,7 +52,7 @@ public class NodeTypeMapper {
      * @return NodeType nodetype
      */
     public static NodeType mapEntityTypeGuidToNodeType(String guid) {
-        String nodeTypeName = OMRSArchiveAccessor.getInstance().getEntityDefByGuid(guid).getName();
+        String nodeTypeName = OpenMetadataTypesArchiveAccessor.getInstance().getEntityDefByGuid(guid).getName();
         if (nodeTypeName.equals("GlossaryTerm")) {
             nodeTypeName = "Term";
         }

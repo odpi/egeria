@@ -9,8 +9,6 @@ body {
 }
 
 img {
-
-  width:100%;
   padding-top:2%;
   padding-bottom:2%;
 }
@@ -104,13 +102,13 @@ button {
 }
 
 .links {
-  text-align:center;
+  text-align:left;
   padding-top:5%;
   color: #28adba;
   font-weight:bold;
-  font-size:1.1em;
-  width:60%;
-  margin-left:20%;
+  font-size:0.7em;
+  width:80%;
+  margin-left:15%;
   line-height:1.5em;
   margin-top:15%;
 }
@@ -241,7 +239,6 @@ a {
   border:0px solid white !important;
   -webkit-box-shadow: 0 0 0px white !important;
   box-shadow: 0px !important;
-  width:100%;
   padding-top:2%;
   padding-bottom:2%;
 }

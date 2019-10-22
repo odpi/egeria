@@ -58,7 +58,6 @@ Different providers of these properties can plug into the OCF.
 Egeria provides an implementation of this interface to supply Asset properties stored in open metadata repositories
 in the [OCF Metadata Management modules](../../common-services/ocf-metadata-management) service.
 
-
 ## Terminology
 
 There are a number of key components within the OCF:
@@ -78,6 +77,12 @@ It is used by the Connector Broker. See [docs](docs/concepts/connector-provider.
 * **Connected Asset Properties** - this is the properties of the Asset that the connector is accessing.
 It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-properties.md) for more information.
 
+## Implementation scenarios
+
+For further information on implementing OCF components:
+
+* [Creating an OCF connector to access an underlying system](docs/design/connector-to-system.md)
+* [Creating an OCF connector to access the contents of an asset](docs/design/connector-to-asset.md)
 
 ## Open Metadata Types
 
@@ -116,6 +121,8 @@ The [Open Metadata Repository Services (OMRS)](../../repository-services)
 makes extensive use of OCF connectors for accessing open metadata repository servers and other resources.
 These connectors are collectively called the [OMRS Connectors](../../repository-services/docs/component-descriptions/connectors).
 
+Many of the [Open Metadata Governance Servers](../../governance-servers) make use of OCF connectors to
+loosely-couple integration with a variety of underlying technologies.
 
 
 ----

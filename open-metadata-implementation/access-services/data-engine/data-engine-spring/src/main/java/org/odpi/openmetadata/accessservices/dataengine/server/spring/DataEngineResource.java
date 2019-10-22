@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRe
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -38,7 +38,7 @@ public class DataEngineResource {
     }
 
     /**
-     * Create a software server capability entity
+     * Register external data engine as source of metadata by creating a software server capability entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
@@ -46,15 +46,15 @@ public class DataEngineResource {
      *
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/software-server-capabilities")
-    public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
-                                                       @PathVariable("userId") String userId,
-                                                       @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
-        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+    @PostMapping(path = "/registration")
+    public GUIDResponse createExternalDataEngine(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
+                                                 @RequestBody DataEngineRegistrationRequestBody requestBody) {
+        return restAPI.createExternalDataEngine(serverName, userId, requestBody);
     }
 
     /**
-     * Return the unique identifier from a software server capability definition.
+     * Return the unique identifier of an external data engine from a software server capability definition.
      *
      * @param serverName    name of server instance to call
      * @param userId        identifier of calling user
@@ -62,11 +62,11 @@ public class DataEngineResource {
      *
      * @return unique identified of the software server
      */
-    @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
-    public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerByQualifiedName(serverName, userId, qualifiedName);
+    @GetMapping(path = "/registration/{qualifiedName}")
+    public GUIDResponse getExternalDataEngineByQualifiedName(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String qualifiedName) {
+        return restAPI.getExternalDataEngineByQualifiedName(serverName, userId, qualifiedName);
     }
 
     /**
@@ -79,10 +79,10 @@ public class DataEngineResource {
      * @return unique identifier of the created entity
      */
     @PostMapping(path = "/schema-types")
-    public GUIDResponse createSchemaType(@PathVariable("userId") String userId,
-                                         @PathVariable("serverName") String serverName,
-                                         @RequestBody SchemaTypeRequestBody requestBody) {
-        return restAPI.createSchemaType(userId, serverName, requestBody);
+    public GUIDResponse createOrUpdateSchemaType(@PathVariable("userId") String userId,
+                                                 @PathVariable("serverName") String serverName,
+                                                 @RequestBody SchemaTypeRequestBody requestBody) {
+        return restAPI.createOrUpdateSchemaType(userId, serverName, requestBody);
     }
 
 
@@ -96,10 +96,10 @@ public class DataEngineResource {
      * @return unique identifier of the created port implementation
      */
     @PostMapping(path = "/port-implementations")
-    public GUIDResponse createPortImplementation(@PathVariable("userId") String userId,
-                                                 @PathVariable("serverName") String serverName,
-                                                 @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
-        return restAPI.createPortImplementation(userId, serverName, portImplementationRequestBody);
+    public GUIDResponse createOrUpdatePortImplementation(@PathVariable("userId") String userId,
+                                                         @PathVariable("serverName") String serverName,
+                                                         @RequestBody PortImplementationRequestBody portImplementationRequestBody) {
+        return restAPI.createOrUpdatePortImplementation(userId, serverName, portImplementationRequestBody);
     }
 
 
@@ -113,26 +113,26 @@ public class DataEngineResource {
      * @return unique identifier of the created port alias
      */
     @PostMapping(path = "/port-aliases")
-    public GUIDResponse createPortAlias(@PathVariable("userId") String userId,
-                                        @PathVariable("serverName") String serverName,
-                                        @RequestBody PortAliasRequestBody portAliasRequestBody) {
-        return restAPI.createPortAlias(userId, serverName, portAliasRequestBody);
+    public GUIDResponse createOrUpdatePortAlias(@PathVariable("userId") String userId,
+                                                @PathVariable("serverName") String serverName,
+                                                @RequestBody PortAliasRequestBody portAliasRequestBody) {
+        return restAPI.createOrUpdatePortAlias(userId, serverName, portAliasRequestBody);
     }
 
     /**
-     * Create the Process entity with ports, schema types and all needed relationships
+     * Create or update  the Process entities with ports, schema types and all needed relationships
      *
-     * @param serverName         name of server instance to call
-     * @param userId             the name of the calling user
+     * @param serverName           name of server instance to call
+     * @param userId               the name of the calling user
      * @param processesRequestBody properties of the process
      *
      * @return unique identifier of the created process
      */
     @PostMapping(path = "/processes")
-    public GUIDListResponse createProcesses(@PathVariable("userId") String userId,
-                                            @PathVariable("serverName") String serverName,
-                                            @RequestBody ProcessesRequestBody processesRequestBody) {
-        return restAPI.createProcesses(userId, serverName, processesRequestBody);
+    public GUIDListResponse createOrUpdateProcesses(@PathVariable("userId") String userId,
+                                                    @PathVariable("serverName") String serverName,
+                                                    @RequestBody ProcessesRequestBody processesRequestBody) {
+        return restAPI.createOrUpdateProcesses(userId, serverName, processesRequestBody);
     }
 
     /**

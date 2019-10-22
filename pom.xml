@@ -17,7 +17,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria</url>
 
@@ -135,7 +135,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.9.9</jackson.version>
         <jackson.databind.version>2.9.9.3</jackson.databind.version>
-        <kafka.version>2.1.1</kafka.version>
+        <kafka.version>2.3.0</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
@@ -144,7 +144,7 @@
         <spring-security.version>5.1.5.RELEASE</spring-security.version>
         <tomcat.version>9.0.21</tomcat.version>
         <commons-io.version>2.4</commons-io.version>
-        <commons-collections.version>4.3</commons-collections.version>
+        <commons-collections.version>4.</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
@@ -162,6 +162,10 @@
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
         <cassandra.version>3.5.0</cassandra.version>
         <guava.version>20.0</guava.version>
+        <tink.version>1.3.0-rc1</tink.version>
+        <commons-logging.version>1.2</commons-logging.version>
+        <commons-codec.version>1.13</commons-codec.version>
+        <joda-time.version>2.10.1</joda-time.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -173,13 +177,13 @@
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.0.0</owasp.version>
-        <spotbugs-maven.version>3.1.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-beta2</spotbugs.version>
+        <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
+        <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+        <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <frontend.plugin.version>1.6</frontend.plugin.version>
         <exec.plugin.version>1.6.0</exec.plugin.version>
@@ -418,14 +422,51 @@
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-berkeleyje</artifactId>
+                <artifactId>janusgraph-core</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-core</artifactId>
+                <artifactId>janusgraph-cql</artifactId>
+                <scope>compile</scope>
+                <version>${janus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${commons-logging.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${commons-codec.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-cassandra</artifactId>
+                <version>${janus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-es</artifactId>
+                <version>${janus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>joda-time</groupId>
+                <artifactId>joda-time</artifactId>
+                <version>${joda-time.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.janusgraph</groupId>
+                <artifactId>janusgraph-berkeleyje</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
@@ -517,6 +558,39 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>admin-services-spring</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-admin-services</artifactId>
+                <scope>runtime</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-admin-services-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-admin-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-admin-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>ui-admin-services-spring</artifactId>
                 <scope>runtime</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -684,6 +758,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>configuration-encrypted-file-store-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>connector-configuration-factory</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -747,7 +828,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-privacy-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-privacy-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-privacy-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -761,14 +856,7 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-process-client</artifactId>
-                <scope>compile</scope>
-                <version>${open-metadata.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.odpi.egeria</groupId>
-                <artifactId>data-process-spring</artifactId>
+                <artifactId>data-science-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -782,7 +870,56 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-science-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-science-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-archives</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>design-model-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>dev-ops-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -796,6 +933,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>dev-ops-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>dev-ops-spring</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -803,7 +947,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-architecture-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>digital-architecture-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>digital-architecture-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1013,7 +1171,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>it-infrastructure-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>it-infrastructure-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>it-infrastructure-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1160,6 +1332,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-services-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-metadata-archive-file-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1195,6 +1374,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-metadata-types</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>open-types-test-generator</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1223,7 +1409,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>project-management-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>project-management-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>project-management-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1252,6 +1452,20 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>repository-services-apis</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-archive-utilities</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>repository-services-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1335,7 +1549,21 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>software-developer-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>software-developer-client</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>software-developer-server</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1356,6 +1584,13 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-action-api</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>stewardship-action-client</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
@@ -1363,7 +1598,28 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
+                <artifactId>stewardship-action-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
                 <artifactId>stewardship-action-spring</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>open-lineage-connectors</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>janus-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1593,6 +1849,12 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-webmvc</artifactId>
+                <version>${spring-web.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
                 <scope>test</scope>
@@ -1618,6 +1880,19 @@
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+              <groupId>com.sleepycat</groupId>
+              <artifactId>je</artifactId>
+              <version>18.3.12</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.crypto.tink</groupId>
+                <artifactId>tink</artifactId>
+                <version>${tink.version}</version>
                 <scope>compile</scope>
             </dependency>
 
@@ -1876,12 +2151,6 @@
                                     <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
                                     </message>
                                 </requireJavaVersion>
-                                <requireJavaVersion>
-                                    <level>WARN</level>
-                                    <version>(,1.9]</version>
-                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
-                                    </message>
-                                </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
                                 <requireSameVersions/>
                                 <reactorModuleConvergence/>
@@ -1938,6 +2207,7 @@
                         <exclude>**/.vscode*/**</exclude>
                         <exclude>**/.factorypath/**</exclude>
                         <exclude>**/**.code-workspace</exclude>
+                        <exclude>config</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
@@ -2224,6 +2494,21 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>artifactory</id>
+            <distributionManagement>
+                <repository>
+                    <id>central</id>
+                    <name>odpi-artifactory-primary-0-staging</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+                </repository>
+                <snapshotRepository>
+                    <id>snapshots</id>
+                    <name>odpi-artifactory-primary-0-snapshots</name>
+                    <url>https://odpi.jfrog.io/odpi/egeria-snapshot</url>
+                </snapshotRepository>
+            </distributionManagement>
         </profile>
     </profiles>
 

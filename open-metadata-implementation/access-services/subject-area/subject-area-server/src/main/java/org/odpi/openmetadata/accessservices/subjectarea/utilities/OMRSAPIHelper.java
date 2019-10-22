@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.VoidResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -1343,7 +1342,7 @@ public class OMRSAPIHelper {
     }
 
 
-    public static SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(OMRSAPIHelper oMRSAPIHelper, String restAPIName, String userId , String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
+    public SubjectAreaOMASAPIResponse findEntitiesByPropertyValue(String restAPIName, String userId, String typeName, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) {
                   // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         if (offset == null) {
             offset = new Integer(0);
@@ -1365,11 +1364,11 @@ public class OMRSAPIHelper {
                 // TODO error
             }
         }
+
         SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
-        TypeDef typeDef =archiveAccessor.getEntityDefByName(type);
+        TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("findEntitiesByPropertyValue",typeName);
         String entityTypeGUID = typeDef.getGUID();
-        return  oMRSAPIHelper.callFindEntitiesByPropertyValue(
+        return  this.callFindEntitiesByPropertyValue(
                 restAPIName,
                 userId,
                 entityTypeGUID,
@@ -1382,7 +1381,7 @@ public class OMRSAPIHelper {
                 omrsSequencingOrder,
                 pageSize);
     }
-    public static SubjectAreaOMASAPIResponse getEntitiesByType(OMRSAPIHelper oMRSAPIHelper,
+    public SubjectAreaOMASAPIResponse getEntitiesByType(OMRSAPIHelper oMRSAPIHelper,
                                                                String restAPIName,
                                                                String userId,
                                                                String typeName,
@@ -1396,8 +1395,8 @@ public class OMRSAPIHelper {
         if (pageSize == null) {
             pageSize = new Integer(0);
         }
-        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
-        TypeDef typeDef =archiveAccessor.getEntityDefByName(typeName);
+      
+        TypeDef typeDef = this.omrsRepositoryHelper.getTypeDefByName("getEntitiesByType",typeName);
         String entityTypeGUID = typeDef.getGUID();
         return oMRSAPIHelper.callGetEntitiesByType(
                 restAPIName,
