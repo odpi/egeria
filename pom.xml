@@ -134,7 +134,6 @@
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.9.9</jackson.version>
-        <jackson.databind.version>2.9.9.3</jackson.databind.version>
         <kafka.version>2.3.0</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
@@ -236,7 +235,7 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <scope>compile</scope>
-                <version>${jackson.databind.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>
