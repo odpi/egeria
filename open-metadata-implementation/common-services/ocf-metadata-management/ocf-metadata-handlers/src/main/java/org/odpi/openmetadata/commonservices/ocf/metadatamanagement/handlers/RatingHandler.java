@@ -5,7 +5,6 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.RatingBuilder;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.RatingConverter;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.RatingMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -327,7 +326,7 @@ public class RatingHandler
                                                         PropertyServerException,
                                                         UserNotAuthorizedException
     {
-        repositoryHandler.deleteUniqueEntityTypeFromAnchor(userId,
+        repositoryHandler.removeUniqueEntityTypeFromAnchor(userId,
                                                            anchorGUID,
                                                            ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
                                                            RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,

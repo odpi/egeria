@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTer
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermListResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.GlossaryTermResponse;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.LogRecordRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -194,65 +195,73 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @throws PropertyServerException there is a problem access in the property server
      * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    private List<Asset> getAssetsByName(String   userId,
-                                        String   name,
-                                        int      startFrom,
-                                        int      pageSize,
-                                        String   methodName) throws InvalidParameterException,
+    private List<String> getAssetsByName(String   userId,
+                                         String   name,
+                                         int      startFrom,
+                                         int      pageSize,
+                                         String   methodName) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name?startFrom={2}&pageSize={3}";
 
-        AssetsResponse restResult = restClient.callAssetsPostRESTCall(methodName,
-                                                                     serverPlatformRootURL + urlTemplate,
-                                                                     name,
-                                                                     serverName,
-                                                                     userId,
-                                                                     startFrom,
-                                                                     pageSize);
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                          serverPlatformRootURL + urlTemplate,
+                                                                          name,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          pageSize);
 
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-        return restResult.getAssets();
+        return restResult.getGUIDs();
     }
 
 
+
+
+
     /**
-     * Return a list of GUIDs based on a list of Assets.
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.  The search string is interpreted as a regular expression (RegEx).
      *
-     * @param assets list of assets
-     * @return list of GUIDs
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string.
+     *
+     * @throws InvalidParameterException the searchString is invalid
+     * @throws PropertyServerException there is a problem access in the property server
+     * @throws UserNotAuthorizedException the user does not have access to the properties
      */
-    private List<String>   getGUIDs(List<Asset>  assets)
+    public List<String>  findAssets(String   userId,
+                                    String   searchString,
+                                    int      startFrom,
+                                    int      pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException
     {
-        if ((assets != null) && (! assets.isEmpty()))
-        {
-            List<String>  results = new ArrayList<>();
+        final String methodName = "findAssets";
+        final String urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-search-string?startFrom={2}&pageSize={3}";
 
-            for (Asset asset : assets)
-            {
-                if (asset != null)
-                {
-                    String guid = asset.getGUID();
+        GUIDListResponse restResult = restClient.callGUIDListPostRESTCall(methodName,
+                                                                        serverPlatformRootURL + urlTemplate,
+                                                                          searchString,
+                                                                          serverName,
+                                                                          userId,
+                                                                          startFrom,
+                                                                          pageSize);
 
-                    if (guid != null)
-                    {
-                        results.add(guid);
-                    }
-                }
-            }
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
-            if (! results.isEmpty())
-            {
-                return  results;
-            }
-
-        }
-
-        return null;
+        return restResult.getGUIDs();
     }
 
 
@@ -283,9 +292,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameter, methodName);
 
-        List<Asset>  assets = this.getAssetsByName(userId, name, startFrom, pageSize, methodName);
-
-        return this.getGUIDs(assets);
+        return this.getAssetsByName(userId, name, startFrom, pageSize, methodName);
     }
 
 
@@ -299,7 +306,7 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
      * @param assetToken     token used to find the Asset - may be a name or GUID
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
-     *                 *
+     *
      * @return a list of unique identifiers for the matching assets
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -319,8 +326,6 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(assetToken, tokenParameter, methodName);
 
-        List<Asset>  retrievedAssets = new ArrayList<>();
-
         Asset asset;
 
         try
@@ -334,14 +339,14 @@ public class AssetConsumer extends ConnectedAssetClientBase implements AssetCons
 
         if (asset != null)
         {
-            retrievedAssets.add(asset);
+            List<String>  retrievedAssets = new ArrayList<>();
+            retrievedAssets.add(asset.getGUID());
+            return retrievedAssets;
         }
         else
         {
-            retrievedAssets = this.getAssetsByName(userId, assetToken, startFrom, pageSize, methodName);
+            return this.getAssetsByName(userId, assetToken, startFrom, pageSize, methodName);
         }
-
-        return this.getGUIDs(retrievedAssets);
     }
 
 

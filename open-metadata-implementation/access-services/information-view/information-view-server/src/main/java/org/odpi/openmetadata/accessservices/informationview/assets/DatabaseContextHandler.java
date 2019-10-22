@@ -50,6 +50,7 @@ public class DatabaseContextHandler {
     }
 
     public List<DatabaseSource> getDatabases(int startFrom, int pageSize) {
+        // GDW - nothing to convert to regex here as the map is empty
         InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
             List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATABASE, startFrom, pageSize);
             return buildDatabaseContext(entities);

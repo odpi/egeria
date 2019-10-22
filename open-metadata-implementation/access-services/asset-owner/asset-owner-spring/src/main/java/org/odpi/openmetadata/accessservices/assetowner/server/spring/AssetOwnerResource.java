@@ -379,6 +379,33 @@ public class AssetOwnerResource
 
 
     /**
+     * Return a list of assets with the requested search string in their name, qualified name
+     * or description.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param searchString string to search for in text
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of assets that match the search string or
+     * InvalidParameterException the searchString is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/assets/by-search-string")
+
+    public AssetsResponse  findAssets(@PathVariable String   serverName,
+                                      @PathVariable String   userId,
+                                      @RequestParam int      startFrom,
+                                      @RequestParam int      pageSize,
+                                      @RequestBody  String   searchString)
+    {
+        return restAPI.findAssets(serverName, userId, searchString, startFrom, pageSize);
+    }
+
+
+    /**
      * Return the discovery analysis reports about the asset.
      *
      * @param serverName name of the server instance to connect to

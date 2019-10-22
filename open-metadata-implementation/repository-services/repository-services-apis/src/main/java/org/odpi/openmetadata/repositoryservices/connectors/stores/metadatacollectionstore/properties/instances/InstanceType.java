@@ -120,6 +120,7 @@ public class InstanceType extends InstanceElementHeader
         this.typeDefCategory = typeDefCategory;
     }
 
+
     /**
      * Return the unique identifier for the type of this instance.
      *

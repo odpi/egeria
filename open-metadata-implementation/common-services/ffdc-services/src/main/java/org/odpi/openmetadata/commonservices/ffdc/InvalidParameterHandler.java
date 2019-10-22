@@ -187,6 +187,37 @@ public class InvalidParameterHandler
     /**
      * Throw an exception if the supplied userId is null
      *
+     * @param searchString   searchString to validate
+     * @param searchParameter  name of the parameter that passed the searchString.
+     * @param methodName     name of the method making the call.
+     *
+     * @throws InvalidParameterException the searchString is null
+     */
+    public void validateSearchString(String searchString,
+                                     String searchParameter,
+                                     String methodName) throws InvalidParameterException
+    {
+        if ((searchString == null) || (searchString.isEmpty()))
+        {
+            OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NULL_SEARCH_STRING;
+            String              errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(searchParameter,
+                                                                                  methodName);
+
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                searchParameter);
+        }
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is null
+     *
      * @param object         object to validate
      * @param nameParameter  name of the parameter that passed the object.
      * @param methodName     name of the method making the call.
@@ -506,6 +537,80 @@ public class InvalidParameterHandler
         OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.NOT_IN_THE_ZONE;
         String              errorMessage = errorCode.getErrorMessageId()
                                          + errorCode.getFormattedErrorMessage(assetGUID, serviceName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            parameterName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that the call to a method is not supported.
+     * This is a temporary situation.
+     *
+     * @param userId      user name to validate
+     * @param serviceName name of called service
+     * @param serverName name of this server
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    public void throwMethodNotSupported(String userId,
+                                        String serviceName,
+                                        String serverName,
+                                        String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "methodName";
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                              userId,
+                                                                                                              serverName,
+                                                                                                              serviceName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction(),
+                                                parameterName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that the call to a method is not supported.
+     * This is a temporary situation.
+     *
+     * @param userId      user name to validate
+     * @param guid  unique identifier of element
+     * @param type  type of element
+     * @param serviceName name of called service
+     * @param serverName name of this server
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the userId is null
+     */
+    public void throwUnknownElement(String userId,
+                                    String guid,
+                                    String type,
+                                    String serviceName,
+                                    String serverName,
+                                    String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "guid";
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                                                                                                              type,
+                                                                                                              userId,
+                                                                                                              methodName,
+                                                                                                              serviceName,
+                                                                                                              serverName);
 
         throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),

@@ -247,7 +247,7 @@ public class ConnectorTypeHandler
         final String  methodName = "removeConnectorType";
         final String  guidParameterName = "connectorTypeGUID";
 
-        repositoryHandler.deleteEntityOnLastUse(userId,
+        repositoryHandler.removeEntityOnLastUse(userId,
                                                 connectorTypeGUID,
                                                 guidParameterName,
                                                 ConnectorTypeMapper.CONNECTOR_TYPE_GUID,

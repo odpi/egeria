@@ -16,11 +16,11 @@ import java.util.List;
  * the Data Engine OMAS.  The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class DataEngineAdmin extends AccessServiceAdmin
-{
+public class DataEngineAdmin extends AccessServiceAdmin {
 
     private OMRSAuditLog auditLog;
     private DataEngineServicesInstance instance;
+    private String serverName;
 
     /**
      * Initialize the access service.
@@ -50,7 +50,7 @@ public class DataEngineAdmin extends AccessServiceAdmin
                     auditLog);
 
             instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, auditLog);
-            String serverName = instance.getServerName();
+            serverName = instance.getServerName();
 
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
@@ -81,7 +81,7 @@ public class DataEngineAdmin extends AccessServiceAdmin
 
             auditCode = DataEngineAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
+                    auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
         }
     }

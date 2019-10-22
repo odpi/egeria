@@ -10,7 +10,7 @@
     <parent>
         <artifactId>egeria</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -24,6 +24,7 @@
 
     <packaging>pom</packaging>
     <modules>
+        <module>open-metadata-archives</module>
         <module>open-metadata-samples</module>
         <module>open-metadata-demos</module>
         <module>open-metadata-tutorials</module>

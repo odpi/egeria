@@ -4,6 +4,7 @@
 echo 'Starting to load open metadata labs from github'
 sudo  apt-get -y update && sudo apt-get -y install git
 cd 
+rm -fr egeria
 git init . 
 git remote add origin https://github.com/odpi/egeria.git 
 git config core.sparsecheckout true 

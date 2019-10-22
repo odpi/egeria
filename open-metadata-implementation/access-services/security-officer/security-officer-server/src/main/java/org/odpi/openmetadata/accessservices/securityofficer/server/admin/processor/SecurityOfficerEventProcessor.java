@@ -38,7 +38,7 @@ public class SecurityOfficerEventProcessor {
         EntityDetail glossaryTerm = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityTwoProxy().getGUID());
         EntityDetail schemaElement = securityOfficerHandler.getEntityDetailById(SECURITY_OFFICER_OMAS, relationship.getEntityOneProxy().getGUID());
 
-       return buildSecurityOfficerNewTagEvent(schemaElement, glossaryTerm);
+        return buildSecurityOfficerNewTagEvent(schemaElement, glossaryTerm);
     }
 
     public List<SecurityOfficerTagEvent> processClassifiedGlossaryTerm(EntityDetail glossaryTerm) {
@@ -48,7 +48,7 @@ public class SecurityOfficerEventProcessor {
         }
 
         List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
-        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+        for (EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms) {
             SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerNewTagEvent(schemaElement, glossaryTerm);
             securityOfficerEvents.add(securityOfficerTagEvent);
         }
@@ -63,7 +63,7 @@ public class SecurityOfficerEventProcessor {
         }
 
         List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
-        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+        for (EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms) {
             SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerUpdatedTagEvent(schemaElement, glossaryTerm);
             securityOfficerEvents.add(securityOfficerTagEvent);
         }
@@ -78,7 +78,7 @@ public class SecurityOfficerEventProcessor {
         }
 
         List<SecurityOfficerTagEvent> securityOfficerEvents = new ArrayList<>();
-        for(EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms){
+        for (EntityDetail schemaElement : schemaElementsAssignedToBusinessTerms) {
             SecurityOfficerTagEvent securityOfficerTagEvent = buildSecurityOfficerDeletedTagEvent(schemaElement, glossaryTerm);
             securityOfficerEvents.add(securityOfficerTagEvent);
         }
@@ -86,7 +86,7 @@ public class SecurityOfficerEventProcessor {
         return securityOfficerEvents;
     }
 
-    private SecurityOfficerTagEvent buildSecurityOfficerNewTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+    private SecurityOfficerTagEvent buildSecurityOfficerNewTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm) {
         SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
 
         securityOfficerEvent.setEventType(SecurityOfficerEventType.NEW_SECURITY_ASSIGNMENT);
@@ -95,7 +95,7 @@ public class SecurityOfficerEventProcessor {
         return securityOfficerEvent;
     }
 
-    private SecurityOfficerTagEvent buildSecurityOfficerUpdatedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+    private SecurityOfficerTagEvent buildSecurityOfficerUpdatedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm) {
         SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
 
         securityOfficerEvent.setEventType(SecurityOfficerEventType.UPDATED_SECURITY_ASSIGNMENT);
@@ -104,7 +104,7 @@ public class SecurityOfficerEventProcessor {
         return securityOfficerEvent;
     }
 
-    private SecurityOfficerTagEvent buildSecurityOfficerDeletedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm){
+    private SecurityOfficerTagEvent buildSecurityOfficerDeletedTagEvent(EntityDetail schemaElement, EntityDetail glossaryTerm) {
         SecurityOfficerTagEvent securityOfficerEvent = new SecurityOfficerTagEvent();
 
         securityOfficerEvent.setEventType(SecurityOfficerEventType.DELETED_SECURITY_ASSIGNMENT);

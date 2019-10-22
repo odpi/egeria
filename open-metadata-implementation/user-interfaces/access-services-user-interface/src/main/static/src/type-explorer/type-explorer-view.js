@@ -52,7 +52,7 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
 
                 * { font-size: 12px ; font-family: sans-serif; }
 
-                :host { display: block;  padding: 10px 20px; }
+                :host { display: block;  padding: 10px 10px; }
 
                 .user-input {
                     width: 200px;
@@ -79,13 +79,13 @@ class TypeExplorerView extends mixinBehaviors([AppLocalizeBehavior], PolymerElem
                     <connection-manager id="connectionManager" type-manager="[[theTypeManager]]"></connection-manager>
 
                     <!-- LHS-->
-                    <div id="lhs" style="position:absolute;left:0px;top:200px; height:1200px; width:400px; overflow-x: hidden;  overflow: auto; background-color:#CCCCCC">
+                    <div id="lhs" style="position:absolute;left:0px;top:130px; height:1200px; width:400px; overflow-x: hidden;  overflow: auto; background-color:#CCCCCC">
                        <focus-manager id="focusManager" type-manager="[[theTypeManager]]"></focus-manager>
                        <details-panel id="detailsPanel" type-manager="[[theTypeManager]]"></details-panel>
                     </div>
 
                     <!-- RHS-->
-                    <div id="rhs" style="position:absolute;left:400px;top:200px; height:1200px; width:1200px; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF">
+                    <div id="rhs" style="position:absolute;left:400px;top:130px; height:1200px; width:1200px; overflow-x: hidden;  overflow: auto; background-color:#FFFFFF">
                         <diagram-manager id="diagramManager" style="overflow:auto;" type-manager="[[theTypeManager]]"></diagram-manager>
                     </div>
 

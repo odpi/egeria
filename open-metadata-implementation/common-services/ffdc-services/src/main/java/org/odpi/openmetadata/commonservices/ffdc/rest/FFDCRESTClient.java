@@ -168,22 +168,26 @@ public class FFDCRESTClient
         return this.callGetRESTCall(methodName, GUIDListResponse.class, urlTemplate, params);
     }
 
+
     /**
      * Issue a POST REST call that returns a list of GUIDs object.
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param requestBody request body for the request.
      * @param params      a list of parameters that are slotted into the url template.
      *
-     * @return ConnectionResponse
+     * @return GUIDListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    public GUIDListResponse callGUIDListPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object... params) throws PropertyServerException
+    public GUIDListResponse callGUIDListPostRESTCall(String     methodName,
+                                                     String     urlTemplate,
+                                                     Object     requestBody,
+                                                     Object...  params) throws PropertyServerException
     {
-        return this.callPostRESTCall(methodName, GUIDListResponse.class, urlTemplate, params);
+        return this.callPostRESTCall(methodName, GUIDListResponse.class, urlTemplate, requestBody, params);
     }
+
 
     /**
      * Issue a POST REST call that returns a VoidResponse object.  This is typically a create

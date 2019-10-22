@@ -291,7 +291,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response == null) {
 
-            response = OMRSAPIHelper.findEntitiesByPropertyValue(oMRSAPIHelper, methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = this.oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
                 List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();

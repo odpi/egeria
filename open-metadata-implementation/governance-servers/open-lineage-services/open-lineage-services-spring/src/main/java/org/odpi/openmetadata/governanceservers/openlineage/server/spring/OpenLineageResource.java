@@ -3,10 +3,17 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server.spring;
 
 
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
+import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.http.MediaType;
+
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,8 +45,8 @@ public class OpenLineageResource {
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("graph") String graph,
-            @PathVariable("scope") String scope,
-            @PathVariable("view") String view,
+            @PathVariable("scope") Scope scope,
+            @PathVariable("view") View view,
             @PathVariable("guid") String guid) {
         return restAPI.lineage(serverName, userId, graph, scope, view, guid);
     }
@@ -75,17 +82,10 @@ public class OpenLineageResource {
         return restAPI.exportGraph(serverName, userId, graph);
     }
 
-    /**
-     * Generate the MOCK graph, which can be used for performance testing, or demoing lineage with large amounts of
-     * data.
-     *
-     * @param userId     calling user.
-     * @param serverName name of the server instance to connect to.
-     * @return Voidresponse.
-     */
-    @GetMapping(path = "/generate-mock-graph")
-    public VoidResponse generateGraph(@PathVariable("userId") String userId,
-                                      @PathVariable("serverName") String serverName) {
-        return restAPI.generateGraph(serverName, userId);
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(View.class, new ViewEnumConverter());
+        webdataBinder.registerCustomEditor(Scope.class, new ScopeEnumConverter());
     }
+
 }

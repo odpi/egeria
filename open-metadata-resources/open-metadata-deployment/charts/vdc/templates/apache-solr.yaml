@@ -67,7 +67,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ include "myapp.fullname" . }}-zookeeper-service
+              value: {{ include "myapp.fullname" . }}-apache-zookeeper-service
       containers:
         - name: apache-solr
           image: "{{ if (.Values.image.solr.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.solr.registry | default .Values.imageDefaults.registry }}/{{ end }}\

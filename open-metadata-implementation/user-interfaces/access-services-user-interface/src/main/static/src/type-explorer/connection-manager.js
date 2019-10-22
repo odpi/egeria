@@ -35,65 +35,51 @@ class ConnectionManager extends PolymerElement {
 
     static get template() {
         return html`
+            <style include="shared-styles">
+                * { font-size: 12px ; font-family: sans-serif; }
+                :host { display: block;  padding: 0px 10px; }
+                .inline-element {
+                    display: inline-block;
+                }
+            </style>
 
-
-               <style include="shared-styles">
-
-                   * { font-size: 12px ; font-family: sans-serif; }
-
-                   .inline-element {
-                       display: inline-block;
-                   }
-
-                </style>
-
-                <body>
-
-                    <div id='connectionParmeters'>
-
-                        Load types from:
-
-                        <paper-input
-                            class="inline-element"
-                            style="width:150px"
-                            id = 'serverNameInput'
-                            class='user-input'
-                            label = "Server Name"
-                            value={{serverName}}
-                            on-change="serverNameChanged">
-                        </paper-input>
-
-                        <paper-input
-                            class="inline-element"
-                            style="width:150px; padding:20px;"
-                            class='user-input'
-                            label = "Server URL Root"
-                            value={{serverURLRoot}}
-                            on-change="serverURLRootChanged">
-                        </paper-input>
-
-                        <paper-checkbox disabled
-                             class="inline-element"
-                             style="padding:20px;"
-                             id="enterpriseQuery"
-                             checked="{{enterpriseQuery}}"
-                             on-change="enterpriseQueryChanged">
-                             Enterprise Query
-                        </paper-checkbox>
-
-                        <paper-button
-                            class="inline-element"
-                            style="padding:20px;"
-                            id = "loadButton"
-                            raised
-                            on-click="doLoad" >
-                            Load!
-                        </paper-button>
-
-                         <div class="inline-element" id='statusMsg'></div>
-
-                    </div>
-              </body>
+            <div id='connectionParameters' >
+                Load types from:
+                <paper-input
+                    no-label-float
+                    class="inline-element"
+                    style="width:150px; height:0px; padding-left:20px; padding-right:20px; "
+                    id = 'serverNameInput'
+                    label = "Server Name"
+                    value={{serverName}}
+                    on-change="serverNameChanged">
+                </paper-input>
+                <paper-input
+                    no-label-float
+                    class="inline-element"
+                    style="width:200px; height:0px; padding-right:20px;"
+                    label = "Server URL Root"
+                    value={{serverURLRoot}}
+                    on-change="serverURLRootChanged">
+                </paper-input>
+                <paper-checkbox disabled
+                    class="inline-element"
+                    style="padding-right:20px; "
+                    id="enterpriseQuery"
+                    checked="{{enterpriseQuery}}"
+                    on-change="enterpriseQueryChanged">
+                    Enterprise Query
+                </paper-checkbox>
+                <paper-button
+                    class="inline-element"
+                    style="padding-left:10px; padding-right:10px; "
+                    id = "loadButton"
+                    raised
+                    on-click="doLoad" >
+                    Load!
+                </paper-button>
+                <div class="inline-element" id='statusMsg'></div>
+            </div>
 
         `; }
 

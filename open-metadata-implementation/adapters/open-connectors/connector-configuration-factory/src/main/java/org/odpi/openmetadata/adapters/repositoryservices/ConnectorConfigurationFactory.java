@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedUIServerConfigStoreProvider;
 import org.odpi.openmetadata.adapters.connectors.cassandra.CassandraStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.openconnector.governancedarmonconnectors.securityofficerconnectors.securitytagconnector.SecurityTagConnectorProvider;
@@ -20,12 +21,14 @@ import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnecto
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProvider;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicProvider;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorClassName;
+
 
 import java.util.*;
 
 
 /**
- * ConnectorConfigurationFactory sets up default configuration for the OMRS components.  It is used by the OMAG server
+ * ConnectorConfigurationFactory sets up default configuration for the OMRS components.  It is used by the OMAG and UI server
  * while it manages the changes made to the server configuration by the server administrator.  The aim is to
  * build up the RepositoryServicesConfig object that is used to initialize the OMRSOperationalServices.
  */
@@ -39,11 +42,6 @@ public class ConnectorConfigurationFactory
 
     private static final String defaultEnterpriseTopicConnectorRootName = defaultTopicRootName + "enterprise.";
     private static final String defaultCohortTopicConnectorRootName     = defaultTopicRootName + "cohort.";
-
-    private static final String defaultEventMapperTopicName = defaultTopicRootName + "localrepository.events";
-
-    private static final String defaultOpenMetadataArchiveFileName = "OpenMetadataTypes.json";
-
 
     private static final Logger log = LoggerFactory.getLogger(ConnectorConfigurationFactory.class);
 
@@ -70,6 +68,24 @@ public class ConnectorConfigurationFactory
         Connection connection = new Connection();
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(FileBasedServerConfigStoreProvider.class.getName()));
+        connection.setQualifiedName(endpoint.getAddress());
+
+        return connection;
+    }
+    /**
+     * Returns the connection for the user interface server configuration file.
+     *
+     * @param serverName  name of the server
+     * @return Connection object
+     */
+    public Connection getUIServerConfigConnection(String serverName)
+    {
+        Endpoint   endpoint = new Endpoint();
+        endpoint.setAddress("ui.server." + serverName + ".config");
+
+        Connection connection = new Connection();
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(FileBasedUIServerConfigStoreProvider.class.getName()));
         connection.setQualifiedName(endpoint.getAddress());
 
         return connection;
@@ -204,18 +220,6 @@ public class ConnectorConfigurationFactory
         connection.setEndpoint(endpoint);
 
         return connection;
-    }
-
-
-    /**
-     * Return the connection for the default open metadata types archive file.
-     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
-     *
-     * @return OCF Connection used to create the file-based open metadata archive
-     */
-    public Connection getOpenMetadataTypesConnection()
-    {
-        return this.getOpenMetadataArchiveFileConnection(defaultOpenMetadataArchiveFileName);
     }
 
 
@@ -755,7 +759,7 @@ public class ConnectorConfigurationFactory
 
         String endpointName    = "Virtualizer.Endpoint." + serverName;
 
-        if ("org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby".equals(connectorProviderClassName)){
+        if (ConnectorClassName.GAIAN_DB_CONNECTOR.equals(connectorProviderClassName)){
             endpoint.setType(Endpoint.getEndpointType());
             endpoint.setGUID(endpointGUID);
             endpoint.setQualifiedName(endpointName);
@@ -792,51 +796,9 @@ public class ConnectorConfigurationFactory
             connection.setAdditionalProperties(additionalProperties);
         }
 
-        return connection;
-    }
-
-    /**
-     * Returns the connection for an arbitrary data engine proxy.
-     *
-     * @param serverName  name of the real data engine server
-     * @param connectorProviderClassName  class name of the connector provider
-     * @param url  location of the data engine proxy
-     * @param configurationProperties name value pairs for the connection
-     * @return Connection object
-     */
-    public Connection  getDataEngineProxyConnection(String              serverName,
-                                                    String              connectorProviderClassName,
-                                                    String              url,
-                                                    Map<String, Object> configurationProperties)
-    {
-        final String endpointGUID             = UUID.randomUUID().toString();
-        final String connectionGUID           = UUID.randomUUID().toString();
-        final String endpointDescription      = "Data Engine native endpoint.";
-        final String connectionDescription    = "Data Engine native connection.";
-
-        String endpointName    = "DataEngineNative.Endpoint." + serverName;
-
-        Endpoint endpoint = new Endpoint();
-
-        endpoint.setType(this.getEndpointType());
-        endpoint.setGUID(endpointGUID);
-        endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
-        endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(url);
-
-        String connectionName = "DataEngineNative.Connection." + serverName;
-
-        Connection connection = new Connection();
-
-        connection.setType(this.getConnectionType());
-        connection.setGUID(connectionGUID);
-        connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
-        connection.setDescription(connectionDescription);
-        connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setConfigurationProperties(configurationProperties);
+        else {
+            log.error("Provided connector class is not registered in virtualizer api or implemented.");
+        }
 
         return connection;
     }
@@ -885,6 +847,35 @@ public class ConnectorConfigurationFactory
         connection.setConnectorType(cassandraStoreProvider.getConnectorType());
         return connection;
     }
+
+    /**
+     * Return the connection.  This is used by open lineage graph connectors.
+     *
+     * @param serverName  name of the real repository server
+     * @param url  url for the Open Lineage Server
+     * @param configurationProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection getOpenLineageServerConfiguration(String              serverName,
+                                                        String              connectorProviderClassName,
+                                                        String              url,
+                                                        Map<String, Object> configurationProperties)
+    {
+        final String endpointGUID          = UUID.randomUUID().toString();
+        final String connectionGUID           = UUID.randomUUID().toString();
+
+        final String endpointDescription      = "OpenLineage native endpoint.";
+        final String connectionDescription    = "Open Lineage native connection.";
+
+        String endpointName    = "OpenLineage.Endpoint." + serverName;
+        String connectionName  = "OpenLineage.Connection." + serverName;
+
+        Endpoint endpoint = getEndpoint(url, endpointName, endpointGUID, endpointDescription);
+
+        return getConnection(configurationProperties, endpoint, connectionName,
+                connectionGUID, connectionDescription, connectorProviderClassName);
+    }
+  
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
      * can return their own connector type.  Otherwise it makes one up.

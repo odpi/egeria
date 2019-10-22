@@ -12,7 +12,7 @@
 
     <parent>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
         <artifactId>governance-engines-plugins</artifactId>
     </parent>
 
@@ -141,12 +141,6 @@
                                     <level>ERROR</level>
                                     <version>[1.8,)</version>
                                     <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.
-                                    </message>
-                                </requireJavaVersion>
-                                <requireJavaVersion>
-                                    <level>WARN</level>
-                                    <version>(,1.9]</version>
-                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested.
                                     </message>
                                 </requireJavaVersion>
                                 <banDuplicatePomDependencyVersions/>
