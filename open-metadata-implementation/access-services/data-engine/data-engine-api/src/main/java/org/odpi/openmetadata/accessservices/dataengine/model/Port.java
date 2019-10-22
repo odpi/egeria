@@ -22,11 +22,17 @@ public class Port implements Serializable {
     private String qualifiedName;
     @JsonProperty("type")
     private PortType portType;
+    private UpdateSemantic updateSemantic;
 
     Port(String displayName, String qualifiedName, PortType portType) {
         this.displayName = displayName;
         this.qualifiedName = qualifiedName;
         this.portType = portType;
+    }
+
+    Port(String displayName, String qualifiedName, PortType portType, UpdateSemantic updateSemantic) {
+        this(displayName, qualifiedName, portType);
+        this.updateSemantic = updateSemantic;
     }
 
     Port() {
@@ -56,12 +62,25 @@ public class Port implements Serializable {
         this.portType = portType;
     }
 
+    public UpdateSemantic getUpdateSemantic() {
+        if (updateSemantic == null) {
+            return UpdateSemantic.REPLACE;
+        }
+
+        return updateSemantic;
+    }
+
+    public void setUpdateSemantic(UpdateSemantic updateSemantic) {
+        this.updateSemantic = updateSemantic;
+    }
+
     @Override
     public String toString() {
         return "Port{" +
                 "displayName='" + displayName + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", portType=" + portType +
+                ", updateSemantic=" + updateSemantic +
                 '}';
     }
 
@@ -72,11 +91,12 @@ public class Port implements Serializable {
         Port port = (Port) o;
         return Objects.equals(displayName, port.displayName) &&
                 Objects.equals(qualifiedName, port.qualifiedName) &&
-                portType == port.portType;
+                portType == port.portType &&
+                updateSemantic == port.updateSemantic;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(displayName, qualifiedName, portType);
+        return Objects.hash(displayName, qualifiedName, portType, updateSemantic);
     }
 }

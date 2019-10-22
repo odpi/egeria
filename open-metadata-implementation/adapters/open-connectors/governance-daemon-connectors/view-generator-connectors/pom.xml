@@ -10,7 +10,7 @@
     <parent>
         <artifactId>governance-daemon-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -41,6 +41,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>virtualization-services-api</artifactId>
             <scope>compile</scope>
         </dependency>
 
