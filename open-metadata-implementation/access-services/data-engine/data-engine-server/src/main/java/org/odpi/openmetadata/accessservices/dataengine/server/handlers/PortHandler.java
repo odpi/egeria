@@ -99,7 +99,7 @@ public class PortHandler {
     }
 
     /**
-     * Create the port implementation
+     * Update the port implementation
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the port
@@ -222,8 +222,9 @@ public class PortHandler {
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                 PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
-        createRelationship(userId, portGUID, schemaTypeGUID, relationshipTypeDef, methodName, externalSourceGUID,
-                externalSourceName);
+        createRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef,
+                methodName,externalSourceGUID, externalSourceName);
+
     }
 
     /**
@@ -294,8 +295,8 @@ public class PortHandler {
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                     PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME);
 
-            createRelationship(userId, portGUID, delegatedPort.getGUID(), relationshipTypeDef, methodName,
-                    externalSourceGUID, externalSourceName);
+            createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME,relationshipTypeDef,
+                    methodName, externalSourceGUID, externalSourceName);
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
         }
@@ -445,13 +446,13 @@ public class PortHandler {
         return portTypeValue.getSymbolicName();
     }
 
-    private void createRelationship(String userId, String firstGUID, String secondGUID, TypeDef relationshipTypeDef,
-                                    String methodName, String externalSourceGUID, String externalSourceName )
+    private void createRelationship(String userId, String firstGUID, String secondGUID, String firstEntityTypeName,
+                                    TypeDef relationshipTypeDef, String methodName, String externalSourceGUID, String externalSourceName)
             throws UserNotAuthorizedException, PropertyServerException {
 
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID,
-                PortPropertiesMapper.PORT_TYPE_NAME, secondGUID, relationshipTypeDef.getGUID(),
-                relationshipTypeDef.getName(), methodName);
+                firstEntityTypeName, secondGUID, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(),
+                methodName);
 
         if (relationship == null) {
             repositoryHandler.createExternalRelationship(userId, externalSourceGUID, externalSourceName,

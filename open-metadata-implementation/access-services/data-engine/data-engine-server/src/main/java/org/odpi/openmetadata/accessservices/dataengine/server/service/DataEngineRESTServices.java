@@ -210,8 +210,9 @@ public class DataEngineRESTServices {
             }
 
             String portImplementationGUID = createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                    portImplementationRequestBody.getPortImplementation(), UpdateSemantic.REPLACE,
-                    portImplementationRequestBody.getExternalSourceGUID(), portImplementationRequestBody.getExternalSourceName());
+                    portImplementationRequestBody.getPortImplementation(),
+                    portImplementationRequestBody.getExternalSourceGUID(),
+                    portImplementationRequestBody.getExternalSourceName());
 
             response.setGUID(portImplementationGUID);
 
@@ -487,7 +488,7 @@ public class DataEngineRESTServices {
 
         try {
             Set<String> portImplementationGUIDs = createOrUpdatePortImplementations(userId, serverName,
-                    portImplementations, updateSemantic, response, externalSourceGUID, externalSourceName);
+                    portImplementations, response,externalSourceGUID, externalSourceName);
 
             Set<String> portAliasGUIDs = createOrUpdatePortAliases(userId, serverName, portAliases, response,
                     externalSourceGUID, externalSourceName);
@@ -600,7 +601,7 @@ public class DataEngineRESTServices {
 
     private Set<String> createOrUpdatePortImplementations(String userId, String serverName,
                                                           List<PortImplementation> portImplementations,
-                                                          UpdateSemantic updateSemantic, GUIDResponse response,
+                                                          GUIDResponse response,
                                                           String externalSourceGUID, String externalSourceName) {
         final String methodName = "createOrUpdatePortImplementations";
 
@@ -613,7 +614,7 @@ public class DataEngineRESTServices {
             {
                 try {
                     portImplementationGUIDs.add(createOrUpdatePortImplementationWithSchemaType(userId, serverName,
-                            portImplementation, updateSemantic, externalSourceGUID, externalSourceName));
+                            portImplementation, externalSourceGUID, externalSourceName));
                 } catch (InvalidParameterException error) {
                     restExceptionHandler.captureInvalidParameterException(response, error);
                 } catch (PropertyServerException error) {
@@ -723,7 +724,6 @@ public class DataEngineRESTServices {
     private String createOrUpdatePortImplementationWithSchemaType(String userId,
                                                                   String serverName,
                                                                   PortImplementation portImplementation,
-                                                                  UpdateSemantic updateSemantic,
                                                                   String externalSourceGUID,
                                                                   String externalSourceName )throws
                                                                                              InvalidParameterException,
@@ -748,7 +748,7 @@ public class DataEngineRESTServices {
             portHandler.updatePortImplementation(userId, portImplementationGUID, portImplementation.getQualifiedName(),
                     portImplementation.getDisplayName(), portImplementation.getPortType());
 
-            if (updateSemantic == UpdateSemantic.REPLACE) {
+            if (portImplementation.getUpdateSemantic() == UpdateSemantic.REPLACE) {
                 deleteObsoleteSchemaType(userId, serverName, schemaTypeGUID, portHandler.getSchemaTypeForPort(userId,
                         portImplementationGUID));
             }

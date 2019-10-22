@@ -144,7 +144,7 @@
         <spring-security.version>5.1.5.RELEASE</spring-security.version>
         <tomcat.version>9.0.21</tomcat.version>
         <commons-io.version>2.4</commons-io.version>
-        <commons-collections.version>4.3</commons-collections.version>
+        <commons-collections.version>4.</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
@@ -178,7 +178,7 @@
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.0.0</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-beta2</spotbugs.version>
+        <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>

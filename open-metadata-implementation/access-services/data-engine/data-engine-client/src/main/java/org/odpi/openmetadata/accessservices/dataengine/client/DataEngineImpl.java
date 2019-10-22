@@ -133,6 +133,29 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
+    public String createOrUpdateProcess(String userId, String qualifiedName, String processName, String description,
+                                        String latestChange, List<String> zoneMembership, String displayName,
+                                        String formula, String owner, OwnerType ownerType,
+                                        List<PortImplementation> portImplementations, List<PortAlias> portAliases,
+                                        List<LineageMapping> lineageMappings) throws PropertyServerException,
+                                                                                     InvalidParameterException,
+                                                                                     UserNotAuthorizedException {
+        final String methodName = "createOrUpdateProcesses";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
+
+        ProcessesRequestBody requestBody = new ProcessesRequestBody();
+        requestBody.setProcesses(Collections.singletonList(new Process(qualifiedName, processName, description,
+                latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
+                portAliases, lineageMappings, UpdateSemantic.REPLACE)));
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
+    }
+
+    @Override
     public String createOrUpdateProcess(String userId, Process process) throws InvalidParameterException,
                                                                                PropertyServerException,
                                                                                UserNotAuthorizedException {
@@ -172,14 +195,14 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createOrUpdateExternalDataEngine(String userId, String qualifiedName, String name,
-                                                   String description, String type, String version,
-                                                   String patchLevel, String source) throws
+    public String createExternalDataEngine(String userId, String qualifiedName, String name,
+                                           String description, String type, String version,
+                                           String patchLevel, String source) throws
                                                                                            InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException {
 
-        final String methodName = "createOrUpdateExternalDataEngine";
+        final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
@@ -195,12 +218,12 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createOrUpdateExternalDataEngine(String userId,
-                                                   SoftwareServerCapability softwareServerCapability) throws
+    public String createExternalDataEngine(String userId,
+                                           SoftwareServerCapability softwareServerCapability) throws
                                                                                                       InvalidParameterException,
                                                                                                       UserNotAuthorizedException,
                                                                                                       PropertyServerException {
-        final String methodName = "createOrUpdateExternalDataEngine";
+        final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
@@ -261,7 +284,28 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
-        requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType));
+        requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
+                UpdateSemantic.REPLACE));
+        requestBody.setExternalSourceGUID(externalSourceGUID);
+        requestBody.setExternalSourceName(externalSourceName);
+
+        return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
+    }
+
+    @Override
+    public String createOrUpdatePortImplementation(String userId, String qualifiedName, String displayName,
+                                                   PortType portType, SchemaType schemaType,
+                                                   UpdateSemantic updateSemantic) throws InvalidParameterException,
+                                                                                         UserNotAuthorizedException,
+                                                                                         PropertyServerException {
+        final String methodName = "createOrUpdatePortImplementation";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
+
+        PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
+        requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
+                updateSemantic));
         requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 

@@ -305,7 +305,7 @@ public class DataEngineSchemaTypeHandler {
     }
 
     /**
-     * Remove the port
+     * Remove the schema attribute
      *
      * @param userId              the name of the calling user
      * @param schemaAttributeGUID the unique identifier of the schemaType to be removed
