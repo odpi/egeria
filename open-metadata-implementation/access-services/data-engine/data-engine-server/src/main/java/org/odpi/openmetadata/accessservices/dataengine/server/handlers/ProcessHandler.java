@@ -68,6 +68,8 @@ public class ProcessHandler {
      * @param formula        the formula for the process
      * @param owner          the name of the owner for this process
      * @param ownerType      the type of the owner for this process
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the process in the repository
      *
@@ -77,17 +79,16 @@ public class ProcessHandler {
      */
     public String createProcess(String userId, String qualifiedName, String processName, String description,
                                 String latestChange, List<String> zoneMembership, String displayName, String formula,
-                                String owner, OwnerType ownerType) throws InvalidParameterException,
-                                                                          UserNotAuthorizedException,
-                                                                          PropertyServerException {
+                                String owner, OwnerType ownerType, String externalSourceGUID, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "createProcess";
 
         InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
-        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
-                InstanceStatus.DRAFT, methodName);
+        return repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), externalSourceGUID,
+                externalSourceName, properties, InstanceStatus.DRAFT, methodName);
     }
 
     /**
@@ -169,8 +170,12 @@ public class ProcessHandler {
      * @param userId      the name of the calling user
      * @param processGUID the unique identifier of the process
      * @param portGUID    the unique identifier of the port
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      */
-    public void addProcessPortRelationship(String userId, String processGUID, String portGUID) throws
+    public void addProcessPortRelationship(String userId, String processGUID, String portGUID,
+                                           String externalSourceGUID, String externalSourceName)
+                                                                                               throws
                                                                                                InvalidParameterException,
                                                                                                UserNotAuthorizedException,
                                                                                                PropertyServerException {
@@ -188,8 +193,8 @@ public class ProcessHandler {
                 relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), processGUID, portGUID, null,
-                    methodName);
+            repositoryHandler.createExternalRelationship(userId, externalSourceGUID, externalSourceName,
+                    relationshipTypeDef.getGUID(), processGUID, portGUID, null, methodName);
         }
     }
 

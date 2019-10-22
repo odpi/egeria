@@ -28,10 +28,33 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
+
+    /* unique identifier (guid) for the external source */
+    private String externalSourceGUID;
+
+    /* unique name for the external source */
+    private String externalSourceName;
+
     /**
      * Default constructor
      */
     DataEngineOMASAPIRequestBody() {
+    }
+
+    public String getExternalSourceGUID() {
+        return externalSourceGUID;
+    }
+
+    public void setExternalSourceGUID(String externalSourceGUID) {
+        this.externalSourceGUID = externalSourceGUID;
+    }
+
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 
     /**
@@ -41,7 +64,10 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
      */
     @Override
     public String toString() {
-        return "DataEngineOMASAPIRequestBody{}";
+        return "DataEngineOMASAPIRequestBody{" +
+                "externalSourceGUID='" + externalSourceGUID + '\'' +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                '}';
     }
 }
 
