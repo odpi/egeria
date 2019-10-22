@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogInterface;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
@@ -123,7 +122,8 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
         invalidParameterHandler.validatePaging(from, pageSize, methodName);
 
         RelationshipsResponse relationshipsResponse = callGetRESTCall(methodName, RelationshipsResponse.class,
-                serverPlatformURLRoot + BASE_PATH + ASSET_RELATIONSHIPS, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
+                serverPlatformURLRoot + BASE_PATH + ASSET_RELATIONSHIPS, serverName,
+                userId, assetGUID, assetType, relationshipType, from, pageSize);
 
         detectExceptions(methodName, relationshipsResponse);
         return relationshipsResponse;
@@ -174,7 +174,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
      * {@inheritDoc}
      */
     @Override
-    public AssetDescriptionResponse getLinkingRelationships(String userId,
+    public RelationshipsResponse getLinkingRelationships(String userId,
                                                             String startAssetGUID,
                                                             String endAssetGUID)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException {
@@ -182,7 +182,7 @@ public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterfac
 
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
-        AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
+        RelationshipsResponse response = callGetRESTCall(methodName, RelationshipsResponse.class,
                 serverPlatformURLRoot + BASE_PATH + LINKING_RELATIONSHIPS, serverName,
                 userId, startAssetGUID, endAssetGUID);
         detectExceptions(methodName, response);

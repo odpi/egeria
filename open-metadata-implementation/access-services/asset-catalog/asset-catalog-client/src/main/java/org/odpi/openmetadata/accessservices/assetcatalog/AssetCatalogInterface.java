@@ -96,7 +96,7 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    AssetDescriptionResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    RelationshipsResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 
     /**
      * Returns the sub-graph that represents the returned linked relationships.
