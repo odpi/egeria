@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetcatalog.client;
+package org.odpi.openmetadata.accessservices.assetcatalog;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalogInterface;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
