@@ -99,29 +99,18 @@ public class JanusConnector extends OpenLineageConnectorBase {
 
         GraphTraversalSource g =  bufferGraph.traversal();
 
-        long begin = System.currentTimeMillis();
-        try {
-            Set<GraphContext> verticesToBeAdded = new HashSet<>();
-            lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
-                    {
-                        if(entry.getValue().size()>1){
-                            verticesToBeAdded.addAll(entry.getValue());
-                        }else {
-                            verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
-                        }
+        Set<GraphContext> verticesToBeAdded = new HashSet<>();
+        lineageEvent.getAssetContext().entrySet().stream().forEach(entry ->
+                {
+                    if(entry.getValue().size()>1){
+                        verticesToBeAdded.addAll(entry.getValue());
+                    }else {
+                        verticesToBeAdded.add(entry.getValue().stream().findFirst().get());
                     }
+                }
             );
 
-            System.out.println(verticesToBeAdded.size());
-            verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
-        }catch (Exception e){
-            log.error(e.getMessage());
-        }
-
-        long end = System.currentTimeMillis();
-
-        float sec = (end - begin) / 1000F;
-        System.out.println(sec + " seconds");
+        verticesToBeAdded.stream().forEach(entry -> addVerticesAndRelationship(g,entry));
     }
 
     @Override
