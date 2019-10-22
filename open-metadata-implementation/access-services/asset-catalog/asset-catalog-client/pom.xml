@@ -22,53 +22,11 @@
 
     <artifactId>asset-catalog-client</artifactId>
 
-    <properties>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <junit.surefire.version>1.2.0</junit.surefire.version>
-        <junit.version>4.12</junit.version>
-    </properties>
-
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-client</artifactId>
         </dependency>
 
         <dependency>
@@ -81,21 +39,28 @@
             <artifactId>ffdc-services</artifactId>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
 
-    <build>
-        <plugins>
-            <!-- Disable surefire tests as per github issue #1193 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*Test.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rest-client-connectors-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+        </dependency>
+
+    </dependencies>
 
 </project>

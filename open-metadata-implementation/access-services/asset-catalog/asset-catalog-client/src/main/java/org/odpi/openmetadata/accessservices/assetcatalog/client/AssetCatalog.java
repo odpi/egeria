@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Re
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.client.OCFRESTClient;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
@@ -26,30 +26,27 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
  * <li>OMAS Server calls to retrieve assets and information related to the assets.</li>
  * </ul>
  */
-public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface {
+public class AssetCatalog extends FFDCRESTClient implements AssetCatalogInterface {
 
-    private static final String BASE_PATH = "{0}/servers/{1}/open-metadata/access-services/asset-catalog/users/{2}";
+    private static final String BASE_PATH = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}";
 
-    private static final String ASSET_DETAILS = "/asset-details/{3}";
-    private static final String ASSET_UNIVERSE = "/asset-universe/{3}";
-    private static final String ASSET_RELATIONSHIPS = "/asset-relationships/{3}";
-    private static final String ASSET_CLASSIFICATIONS = "/asset-classifications/{3}";
-    private static final String LINKING_ASSET = "/linking-assets/from/{3}/to/{4}";
-    private static final String LINKING_RELATIONSHIPS = "/linking-assets-relationships/from/{3}/to/{4}";
-    private static final String RELATED_ASSETS = "/related-assets/{3}";
-    private static final String ASSETS_FROM_NEIGHBORHOOD = "/assets-from-neighborhood/{3}";
-    private static final String SEARCH = "/search/{3}";
-    private static final String ASSET_CONTEXT = "/asset-context/{3}";
-    private static final String RELATIONSHIPS = "relationships-between-entities/{3}/{4}";
+    private static final String ASSET_DETAILS = "/asset-details/{2}?assetType={3}";
+    private static final String ASSET_UNIVERSE = "/asset-universe/{2}";
+    private static final String ASSET_RELATIONSHIPS = "/asset-relationships/{2}";
+    private static final String ASSET_CLASSIFICATIONS = "/asset-classifications/{2}";
+    private static final String LINKING_ASSET = "/linking-assets/from/{2}/to/{3}";
+    private static final String LINKING_RELATIONSHIPS = "/linking-assets-relationships/from/{2}/to/{3}";
+    private static final String RELATED_ASSETS = "/related-assets/{2}";
+    private static final String ASSETS_FROM_NEIGHBORHOOD = "/assets-from-neighborhood/{2}";
+    private static final String SEARCH = "/search/{2}";
+    private static final String ASSET_CONTEXT = "/asset-context/{2}";
+    private static final String RELATIONSHIPS = "relationships-between-entities/{2}/{3}";
 
     private static final String GUID_PARAMETER = "assetGUID";
     private static final String START_ASSET_GUID = "startAssetGUID";
     private static final String END_ASSET_GUID = "endAssetGUID";
     private static final String SEARCH_PARAMETERS = "searchParameters";
 
-
-    private String serverName;
-    private String serverPlatformRootURL;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler exceptionHandler = new RESTExceptionHandler();
@@ -58,14 +55,16 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
      * Create a new AssetConsumer client.
      *
      * @param serverName            name of the server to connect to
-     * @param serverPlatformRootURL the network address of the server running the OMAS REST servers
+     * @param serverPlatformURLRoot the network address of the server running the OMAS REST servers
      * @throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException if parameter validation fails
      */
-    public AssetCatalog(String serverName, String serverPlatformRootURL) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
-        super(serverName, serverPlatformRootURL);
+    public AssetCatalog(String serverName, String serverPlatformURLRoot) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformURLRoot);
+    }
 
-        this.serverName = serverName;
-        this.serverPlatformRootURL = serverPlatformRootURL;
+    public AssetCatalog(String serverName, String serverPlatformURLRoot, String userId, String password) throws
+            org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
     /**
@@ -79,7 +78,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + ASSET_DETAILS, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+                serverPlatformURLRoot + BASE_PATH + ASSET_DETAILS, serverName, userId, assetGUID, assetType);
 
         detectExeptions(methodName, response);
         return response;
@@ -96,7 +95,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + ASSET_UNIVERSE, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+                serverPlatformURLRoot + BASE_PATH + ASSET_UNIVERSE, serverName, userId, assetGUID, assetType);
 
         detectExeptions(methodName, response);
 
@@ -116,7 +115,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         invalidParameterHandler.validatePaging(from, pageSize, methodName);
 
         RelationshipsResponse relationshipsResponse = callGetRESTCall(methodName, RelationshipsResponse.class,
-                BASE_PATH + ASSET_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
+                serverPlatformURLRoot + BASE_PATH + ASSET_RELATIONSHIPS, serverName, userId, assetGUID, assetType, relationshipType, from, pageSize);
 
         detectExeptions(methodName, relationshipsResponse);
         return relationshipsResponse;
@@ -133,7 +132,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateUserAndAssetGUID(userId, assetGUID, methodName, GUID_PARAMETER);
 
         ClassificationsResponse classificationsResponse = callGetRESTCall(methodName, ClassificationsResponse.class,
-                BASE_PATH + ASSET_CLASSIFICATIONS, serverPlatformRootURL,
+                serverPlatformURLRoot + BASE_PATH + ASSET_CLASSIFICATIONS,
                 serverName, userId, assetGUID, assetType, classificationName);
 
         detectExeptions(methodName, classificationsResponse);
@@ -151,7 +150,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + LINKING_ASSET, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
+                serverPlatformURLRoot + BASE_PATH + LINKING_ASSET, serverName, userId, startAssetGUID, endAssetGUID);
 
         detectExeptions(methodName, response);
         return response;
@@ -168,7 +167,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateStartAndEndAssetsGUIDs(userId, startAssetGUID, endAssetGUID, methodName);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + LINKING_RELATIONSHIPS, serverPlatformRootURL, serverName, userId, startAssetGUID, endAssetGUID);
+                serverPlatformURLRoot + BASE_PATH + LINKING_RELATIONSHIPS, serverName, userId, startAssetGUID, endAssetGUID);
         detectExeptions(methodName, response);
 
         return response;
@@ -185,7 +184,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + RELATED_ASSETS, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
+                serverPlatformURLRoot + BASE_PATH + RELATED_ASSETS, serverName, userId, assetGUID, searchParameters);
 
         detectExeptions(methodName, response);
 
@@ -203,7 +202,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateSearchParams(userId, assetGUID, searchParameters, methodName);
 
         AssetDescriptionResponse response = callGetRESTCall(methodName, AssetDescriptionResponse.class,
-                BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, serverPlatformRootURL, serverName, userId, assetGUID, searchParameters);
+                serverPlatformURLRoot + BASE_PATH + ASSETS_FROM_NEIGHBORHOOD, serverName, userId, assetGUID, searchParameters);
 
         detectExeptions(methodName, response);
 
@@ -223,7 +222,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         invalidParameterHandler.validateObject(searchParameters, SEARCH_PARAMETERS, methodName);
 
         AssetResponse assetResponse = callPostRESTCall(methodName, AssetResponse.class,
-                BASE_PATH + SEARCH, serverPlatformRootURL, serverName, userId, searchCriteria, searchParameters);
+                serverPlatformURLRoot + BASE_PATH + SEARCH, serverName, userId, searchCriteria, searchParameters);
 
         detectExeptions(methodName, assetResponse);
 
@@ -242,7 +241,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         invalidParameterHandler.validateSearchString(assetGUID, GUID_PARAMETER, methodName);
 
         AssetResponse assetResponse = callGetRESTCall(methodName, AssetResponse.class,
-                BASE_PATH + ASSET_CONTEXT, serverPlatformRootURL, serverName, userId, assetGUID, assetType);
+                serverPlatformURLRoot + BASE_PATH + ASSET_CONTEXT, serverName, userId, assetGUID, assetType);
 
         detectExeptions(methodName, assetResponse);
 
@@ -260,7 +259,7 @@ public class AssetCatalog extends OCFRESTClient implements AssetCatalogInterface
         validateStartAndEndAssetsGUIDs(userId, entity1GUID, entity2GUID, methodName);
 
         RelationshipResponse relationshipResponse = callGetRESTCall(methodName, RelationshipResponse.class,
-                BASE_PATH + RELATIONSHIPS, serverPlatformRootURL, serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
+                serverPlatformURLRoot + BASE_PATH + RELATIONSHIPS, serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
 
         detectExeptions(methodName, relationshipResponse);
 
