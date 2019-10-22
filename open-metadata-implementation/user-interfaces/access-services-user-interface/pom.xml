@@ -270,6 +270,11 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ui-admin-services-spring</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
+        </dependency>
     </dependencies>
 
     <profiles>
