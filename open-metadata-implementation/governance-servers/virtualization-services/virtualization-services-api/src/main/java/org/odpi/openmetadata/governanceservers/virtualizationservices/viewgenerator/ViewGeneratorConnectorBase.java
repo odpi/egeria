@@ -3,16 +3,14 @@
 /**
  * This is the interface for the generic operations on data virtualization solutions
  */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator;
+package org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator;
 
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.LogicTable;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.auditable.AuditableConnector;
 
-import java.util.List;
 import java.util.Map;
 
 public class ViewGeneratorConnectorBase extends ConnectorBase implements ViewGenerationInterface, AuditableConnector {

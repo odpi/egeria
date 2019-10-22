@@ -9,11 +9,10 @@ import org.odpi.openmetadata.accessservices.informationview.events.TableContextE
 import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.ViewGeneratorConnectorBase;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.ViewGeneratorConnectorBase;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.derby.auditlog.DerbyConnectorAuditCode;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.LogicTable;
-
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.model.MappedColumn;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.LogicTable;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.model.MappedColumn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,15 +22,15 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils.ConnectorUtils;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorUtils;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils.ConnectorUtils.BUSINESS_PREFIX;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.viewgenerator.utils.ConnectorUtils.TECHNICAL_PREFIX;
+import static org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorUtils.BUSINESS_PREFIX;
+import static org.odpi.openmetadata.governanceservers.virtualizationservices.viewgenerator.utils.ConnectorUtils.TECHNICAL_PREFIX;
 
 
-public class DerbyConnector extends ViewGeneratorConnectorBase {
+public class ViewGeneratorDerbyConnector extends ViewGeneratorConnectorBase {
 
-    private static final Logger log = LoggerFactory.getLogger(DerbyConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(ViewGeneratorDerbyConnector.class);
     private static String databaseUrl;
     private static java.sql.Connection derbyConnection;
     private static java.sql.Statement derbyStatement;

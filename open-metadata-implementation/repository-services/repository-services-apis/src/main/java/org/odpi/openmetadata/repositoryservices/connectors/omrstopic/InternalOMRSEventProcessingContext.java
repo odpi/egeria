@@ -19,7 +19,7 @@ public class InternalOMRSEventProcessingContext {
     
     private static final ThreadLocal<InternalOMRSEventProcessingContext> INSTANCE = new ThreadLocal<>();
 
-    private static volatile CompoundFuture processingResult = new CompoundFuture();
+    private final CompoundFuture processingResult = new CompoundFuture();
     
     /**
      * Registers a {@link Future} associated with asynchronous message processing.
