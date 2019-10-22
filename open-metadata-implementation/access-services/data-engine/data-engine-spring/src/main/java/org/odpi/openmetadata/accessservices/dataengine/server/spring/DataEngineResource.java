@@ -38,7 +38,7 @@ public class DataEngineResource {
     }
 
     /**
-     * Create a software server capability entity
+     * Register external data engine as source of metadata by creating a software server capability entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
@@ -46,7 +46,7 @@ public class DataEngineResource {
      *
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/external-data-engine")
+    @PostMapping(path = "/registration")
     public GUIDResponse createExternalDataEngine(@PathVariable("serverName") String serverName,
                                                  @PathVariable("userId") String userId,
                                                  @RequestBody DataEngineRegistrationRequestBody requestBody) {
@@ -54,7 +54,7 @@ public class DataEngineResource {
     }
 
     /**
-     * Return the unique identifier from a software server capability definition.
+     * Return the unique identifier of an external data engine from a software server capability definition.
      *
      * @param serverName    name of server instance to call
      * @param userId        identifier of calling user
@@ -62,7 +62,7 @@ public class DataEngineResource {
      *
      * @return unique identified of the software server
      */
-    @GetMapping(path = "/external-data-engine/{qualifiedName}")
+    @GetMapping(path = "/registration/{qualifiedName}")
     public GUIDResponse getExternalDataEngineByQualifiedName(@PathVariable String serverName,
                                                              @PathVariable String userId,
                                                              @PathVariable String qualifiedName) {
