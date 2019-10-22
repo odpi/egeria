@@ -17,15 +17,27 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,6 +55,8 @@ class ProcessHandlerTest {
     private static final String FORMULA = "formula";
     private static final String OWNER = "OWNER";
     private static final String PROCESS_GUID = "processGuid";
+    private static final String PORT_IMPL_GUID = "portImplGUID";
+    private static final String PORT_ALIAS_GUID = "portAliasGUID";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -59,6 +73,8 @@ class ProcessHandlerTest {
     @Test
     void createProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
         String methodName = "createProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
 
         when(repositoryHandler.createEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, null, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
@@ -79,6 +95,8 @@ class ProcessHandlerTest {
                                                                  IllegalAccessException {
         String methodName = "createProcess";
 
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(repositoryHandler.createEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, null, InstanceStatus.DRAFT, methodName)).thenThrow(mockedException);
@@ -91,9 +109,92 @@ class ProcessHandlerTest {
     }
 
     @Test
+    void updateProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        String methodName = "updateProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+
+        processHandler.updateProcess(USER, PROCESS_GUID, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
+                null, NAME, FORMULA, OWNER, OwnerType.USER_ID);
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
+                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+
+        verify(repositoryHandler, times(1)).updateEntity(USER, PROCESS_GUID, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, null, methodName);
+    }
+
+    @Test
+    void updateProcess_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException,
+                                                                 InvocationTargetException, NoSuchMethodException,
+                                                                 InstantiationException,
+                                                                 IllegalAccessException {
+        String methodName = "updateProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+
+        UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
+        doThrow(mockedException).when(repositoryHandler).updateEntity(USER, PROCESS_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, null,
+                methodName);
+
+        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
+                processHandler.updateProcess(USER, PROCESS_GUID, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
+                        null, NAME, FORMULA, OWNER, OwnerType.USER_ID));
+
+        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
+    }
+
+    @Test
+    void findProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        String methodName = "findProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+        when(repositoryHelper.getExactMatchRegex(QUALIFIED_NAME)).thenReturn(QUALIFIED_NAME);
+
+        EntityDetail entityDetail = mock(EntityDetail.class);
+        when(entityDetail.getGUID()).thenReturn(GUID);
+        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME,
+                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName)).
+                thenReturn(entityDetail);
+
+        String result = processHandler.findProcess(USER, QUALIFIED_NAME);
+
+        assertTrue(result.equalsIgnoreCase(GUID));
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void findProcess_notExisting() throws UserNotAuthorizedException, PropertyServerException,
+                                          InvalidParameterException {
+        String methodName = "findProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+        when(repositoryHelper.getExactMatchRegex(QUALIFIED_NAME)).thenReturn(QUALIFIED_NAME);
+
+        when(repositoryHandler.getUniqueEntityByName(USER, QUALIFIED_NAME,
+                ProcessPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, null,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME, methodName)).
+                thenReturn(null);
+
+        String result = processHandler.findProcess(USER, QUALIFIED_NAME);
+
+        assertNull(result);
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateName(QUALIFIED_NAME,
+                PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
+    }
+
+    @Test
     void addProcessPortRelationship() throws UserNotAuthorizedException, PropertyServerException,
-                                             org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
+                                             InvalidParameterException {
         String methodName = "addProcessPortRelationship";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
 
         processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID);
 
@@ -115,6 +216,8 @@ class ProcessHandlerTest {
                                                                               IllegalAccessException {
         String methodName = "addProcessPortRelationship";
 
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
+
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(repositoryHandler).createRelationship(USER,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, PROCESS_GUID, GUID, null, methodName);
@@ -123,5 +226,75 @@ class ProcessHandlerTest {
                 processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
+    }
+
+    @Test
+    void addProcessPortRelationship_existingRelationship() throws UserNotAuthorizedException, PropertyServerException,
+                                                                  InvalidParameterException {
+        String methodName = "addProcessPortRelationship";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
+
+        Relationship relationship = mock(Relationship.class);
+        when(repositoryHandler.getRelationshipBetweenEntities(USER, PROCESS_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, GUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, methodName)).thenReturn(relationship);
+
+        processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID);
+
+        verify(repositoryHandler, times(0)).createRelationship(USER,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, PROCESS_GUID, GUID, null, methodName);
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(GUID,
+                PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID,
+                PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+    }
+
+    @Test
+    void updateProcessStatus() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+        final String methodName = "updateProcessStatus";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
+
+        processHandler.updateProcessStatus(USER, PROCESS_GUID, InstanceStatus.ACTIVE);
+
+        verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+        verify(invalidParameterHandler, times(1)).validateGUID(PROCESS_GUID,
+                PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
+
+        verify(repositoryHandler, times(1)).updateEntityStatus(USER, PROCESS_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_GUID, ProcessPropertiesMapper.PROCESS_TYPE_NAME,
+                InstanceStatus.ACTIVE, methodName);
+    }
+
+    @Test
+    void getPortsForProcess() throws UserNotAuthorizedException, PropertyServerException, InvalidParameterException {
+        final String methodName = "getPortsForProcess";
+
+        mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
+
+        EntityDetail portImplementation = mock(EntityDetail.class);
+        when(portImplementation.getGUID()).thenReturn(PORT_IMPL_GUID);
+        EntityDetail portAlias = mock(EntityDetail.class);
+        when(portAlias.getGUID()).thenReturn(PORT_ALIAS_GUID);
+        List<EntityDetail> portEntityGUIDs = Arrays.asList(portAlias, portImplementation);
+        when(repositoryHandler.getEntitiesForRelationshipType(USER, PROCESS_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, 0, 0, methodName)).thenReturn(portEntityGUIDs);
+
+
+        Set<String> resultGUIDs = processHandler.getPortsForProcess(USER, PROCESS_GUID);
+        assertEquals(2, resultGUIDs.size());
+        assertTrue(resultGUIDs.contains(PORT_IMPL_GUID));
+        assertTrue(resultGUIDs.contains(PORT_ALIAS_GUID));
+    }
+
+    private void mockTypeDef(String typeName, String typeGUID) {
+        TypeDef entityTypeDef = mock(TypeDef.class);
+        when(repositoryHelper.getTypeDefByName(USER, typeName)).thenReturn(entityTypeDef);
+
+        when(entityTypeDef.getName()).thenReturn(typeName);
+        when(entityTypeDef.getGUID()).thenReturn(typeGUID);
     }
 }
