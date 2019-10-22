@@ -16,11 +16,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
- * SoftwareServerRegistrationHandler manages SoftwareServerCapability objects from the property server.  It runs
+ * DataEngineRegistrationHandler manages SoftwareServerCapability objects from the external data engine. It runs
  * server-side in the DataEngine OMAS and creates software server capability entities through the
  * OMRSRepositoryConnector.
  */
-public class SoftwareServerRegistrationHandler {
+public class DataEngineRegistrationHandler {
     private final String serviceName;
     private final String serverName;
     private final RepositoryHandler repositoryHandler;
@@ -37,10 +37,10 @@ public class SoftwareServerRegistrationHandler {
      * @param repositoryHandler       manages calls to the repository services
      * @param repositoryHelper        provides utilities for manipulating the repository services objects
      */
-    public SoftwareServerRegistrationHandler(String serviceName, String serverName,
-                                             InvalidParameterHandler invalidParameterHandler,
-                                             RepositoryHandler repositoryHandler,
-                                             OMRSRepositoryHelper repositoryHelper) {
+    public DataEngineRegistrationHandler(String serviceName, String serverName,
+                                         InvalidParameterHandler invalidParameterHandler,
+                                         RepositoryHandler repositoryHandler,
+                                         OMRSRepositoryHelper repositoryHelper) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
@@ -50,7 +50,7 @@ public class SoftwareServerRegistrationHandler {
     }
 
     /**
-     * Create the software server capability entity
+     * Create the software server capability entity from an external data engine
      *
      * @param userId        the name of the calling user
      * @param qualifiedName the qualifiedName name of the server
@@ -67,12 +67,12 @@ public class SoftwareServerRegistrationHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
-                                                 String type, String version, String patchLevel, String source) throws
+    public String createExternalDataEngine(String userId, String qualifiedName, String name, String description,
+                                           String type, String version, String patchLevel, String source) throws
                                                                                                                 InvalidParameterException,
                                                                                                                 UserNotAuthorizedException,
                                                                                                                 PropertyServerException {
-        final String methodName = "createSoftwareServerCapability";
+        final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
@@ -91,7 +91,7 @@ public class SoftwareServerRegistrationHandler {
     }
 
     /**
-     * Return the guid of a software server capability entity
+     * Return the guid of a software server capability entity from an external data engine
      *
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the server
@@ -102,11 +102,11 @@ public class SoftwareServerRegistrationHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem retrieving the discovery engine definition
      */
-    public String getSoftwareServerCapabilityByQualifiedName(String userId,
-                                                             String qualifiedName) throws InvalidParameterException,
+    public String getExternalDataEngineByQualifiedName(String userId,
+                                                       String qualifiedName) throws InvalidParameterException,
                                                                                           UserNotAuthorizedException,
                                                                                           PropertyServerException {
-        final String methodName = "getSoftwareServerCapabilityByQualifiedName";
+        final String methodName = "getExternalDataEngineByQualifiedName";
 
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 

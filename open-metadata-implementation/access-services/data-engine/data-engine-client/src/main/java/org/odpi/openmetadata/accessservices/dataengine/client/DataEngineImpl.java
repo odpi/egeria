@@ -11,15 +11,8 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineOMASAPIRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -154,19 +147,19 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createOrUpdateSoftwareServerCapability(String userId, String qualifiedName, String name,
-                                                         String description, String type, String version,
-                                                         String patchLevel, String source) throws
+    public String createOrUpdateExternalDataEngine(String userId, String qualifiedName, String name,
+                                                   String description, String type, String version,
+                                                   String patchLevel, String source) throws
                                                                                            InvalidParameterException,
                                                                                            UserNotAuthorizedException,
                                                                                            PropertyServerException {
 
-        final String methodName = "createOrUpdateSoftwareServerCapability";
+        final String methodName = "createOrUpdateExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, QUALIFIED_NAME_PARAMETER, methodName);
 
-        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(new SoftwareServerCapability(qualifiedName, name, description, type,
                 version, patchLevel, source));
 
@@ -174,16 +167,16 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     }
 
     @Override
-    public String createOrUpdateSoftwareServerCapability(String userId,
-                                                         SoftwareServerCapability softwareServerCapability) throws
+    public String createOrUpdateExternalDataEngine(String userId,
+                                                   SoftwareServerCapability softwareServerCapability) throws
                                                                                                             InvalidParameterException,
                                                                                                             UserNotAuthorizedException,
                                                                                                             PropertyServerException {
-        final String methodName = "createOrUpdateSoftwareServerCapability";
+        final String methodName = "createOrUpdateExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(softwareServerCapability);
 
         return callGUIDPostRESTCall(userId, methodName, SOFTWARE_SERVER_CAPABILITY_URL_TEMPLATE, requestBody);

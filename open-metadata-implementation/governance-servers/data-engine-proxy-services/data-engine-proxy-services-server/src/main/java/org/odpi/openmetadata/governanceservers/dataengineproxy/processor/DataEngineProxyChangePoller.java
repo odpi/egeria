@@ -58,7 +58,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             try {
                 connector.start();
                 DataEngineSoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                engineGuid = dataEngineOMASClient.createOrUpdateSoftwareServerCapability(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
+                engineGuid = dataEngineOMASClient.createOrUpdateExternalDataEngine(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
             } catch (InvalidParameterException | PropertyServerException e) {
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();

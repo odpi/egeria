@@ -11,19 +11,13 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.mappers.PortPropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCResponseBase;
@@ -72,7 +66,7 @@ public class DataEngineRESTServices {
     }
 
     /**
-     * Create the software server capability entity
+     * Create the external data engine as software server capability entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
@@ -80,9 +74,9 @@ public class DataEngineRESTServices {
      *
      * @return the unique identifier (guid) of the created server
      */
-    public GUIDResponse createSoftwareServer(String serverName, String userId,
-                                             SoftwareServerCapabilityRequestBody requestBody) {
-        final String methodName = "createSoftwareServer";
+    public GUIDResponse createExternalDataEngine(String serverName, String userId,
+                                                 DataEngineRegistrationRequestBody requestBody) {
+        final String methodName = "createExternalDataEngine";
 
         log.debug("Calling method: {}", methodName);
 
@@ -94,11 +88,11 @@ public class DataEngineRESTServices {
                 return response;
             }
 
-            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
+            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
                     methodName);
 
             SoftwareServerCapability softwareServerCapability = requestBody.getSoftwareServerCapability();
-            response.setGUID(handler.createSoftwareServerCapability(userId, softwareServerCapability.getQualifiedName(),
+            response.setGUID(handler.createExternalDataEngine(userId, softwareServerCapability.getQualifiedName(),
                     softwareServerCapability.getDisplayName(), softwareServerCapability.getDescription(),
                     softwareServerCapability.getEngineType(), softwareServerCapability.getEngineVersion(),
                     softwareServerCapability.getPatchLevel(), softwareServerCapability.getSource()));
@@ -118,26 +112,26 @@ public class DataEngineRESTServices {
 
 
     /**
-     * Get the unique identifier from a software server capability definition
+     * Get the unique identifier from a external data engine qualified name
      *
      * @param serverName    name of the service to route the request to
      * @param userId        identifier of calling user
      * @param qualifiedName qualified name of the server
      *
-     * @return the unique identifier from a software server capability definition
+     * @return the unique identifier from a software server capability definition for an external data engine
      */
-    public GUIDResponse getSoftwareServerByQualifiedName(String serverName, String userId, String qualifiedName) {
-        final String methodName = "getSoftwareServerByQualifiedName";
+    public GUIDResponse getExternalDataEngineByQualifiedName(String serverName, String userId, String qualifiedName) {
+        final String methodName = "getExternalDataEngineByQualifiedName";
 
         log.debug("Calling method: {}", methodName);
 
         GUIDResponse response = new GUIDResponse();
 
         try {
-            SoftwareServerRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
+            DataEngineRegistrationHandler handler = instanceHandler.getRegistrationHandler(userId, serverName,
                     methodName);
 
-            response.setGUID(handler.getSoftwareServerCapabilityByQualifiedName(userId, qualifiedName));
+            response.setGUID(handler.getExternalDataEngineByQualifiedName(userId, qualifiedName));
 
         } catch (InvalidParameterException error) {
             restExceptionHandler.captureInvalidParameterException(response, error);

@@ -20,19 +20,13 @@ import org.odpi.openmetadata.accessservices.dataengine.model.Process;
 import org.odpi.openmetadata.accessservices.dataengine.model.SchemaType;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 import org.odpi.openmetadata.accessservices.dataengine.model.UpdateSemantic;
-import org.odpi.openmetadata.accessservices.dataengine.rest.LineageMappingsRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortAliasRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessListResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.admin.DataEngineInstanceHandler;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
@@ -97,7 +91,7 @@ class DataEngineRESTServicesTest {
     private DataEngineRESTServices dataEngineRESTServices;
 
     @Mock
-    private SoftwareServerRegistrationHandler softwareServerRegistrationHandler;
+    private DataEngineRegistrationHandler dataEngineRegistrationHandler;
 
     @Mock
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
@@ -127,14 +121,14 @@ class DataEngineRESTServicesTest {
 
     @Test
     void createSoftwareServer() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
-        mockRegistrationHandler("createSoftwareServer");
+        mockRegistrationHandler("createExternalDataEngine");
 
-        when(softwareServerRegistrationHandler.createSoftwareServerCapability(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenReturn(GUID);
 
-        SoftwareServerCapabilityRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createSoftwareServer(SERVER_NAME, USER, requestBody);
+        GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
         assertEquals(GUID, response.getGUID());
 
     }
@@ -148,17 +142,17 @@ class DataEngineRESTServicesTest {
                                                                                      InstantiationException,
                                                                                      IllegalAccessException {
 
-        String methodName = "createSoftwareServer";
+        String methodName = "createExternalDataEngine";
         mockRegistrationHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class,
                 methodName);
-        when(softwareServerRegistrationHandler.createSoftwareServerCapability(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
 
-        SoftwareServerCapabilityRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createSoftwareServer(SERVER_NAME, USER, requestBody);
+        GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
 
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
     }
@@ -172,16 +166,16 @@ class DataEngineRESTServicesTest {
                                                                                       InstantiationException,
                                                                                       IllegalAccessException {
 
-        String methodName = "createSoftwareServer";
+        String methodName = "createExternalDataEngine";
         mockRegistrationHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(softwareServerRegistrationHandler.createSoftwareServerCapability(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
+        when(dataEngineRegistrationHandler.createExternalDataEngine(USER, QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
 
-        SoftwareServerCapabilityRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
 
-        GUIDResponse response = dataEngineRESTServices.createSoftwareServer(SERVER_NAME, USER, requestBody);
+        GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
 
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
@@ -189,11 +183,11 @@ class DataEngineRESTServicesTest {
     @Test
     void getSoftwareServerByQualifiedName() throws InvalidParameterException, PropertyServerException,
                                                    UserNotAuthorizedException {
-        mockRegistrationHandler("getSoftwareServerByQualifiedName");
+        mockRegistrationHandler("getExternalDataEngineByQualifiedName");
 
-        when(softwareServerRegistrationHandler.getSoftwareServerCapabilityByQualifiedName(USER, QUALIFIED_NAME)).thenReturn(GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, QUALIFIED_NAME)).thenReturn(GUID);
 
-        GUIDResponse response = dataEngineRESTServices.getSoftwareServerByQualifiedName(SERVER_NAME, USER,
+        GUIDResponse response = dataEngineRESTServices.getExternalDataEngineByQualifiedName(SERVER_NAME, USER,
                 QUALIFIED_NAME);
         assertEquals(GUID, response.getGUID());
     }
@@ -208,14 +202,14 @@ class DataEngineRESTServicesTest {
                                                                                            InstantiationException,
                                                                                            IllegalAccessException {
 
-        String methodName = "getSoftwareServerByQualifiedName";
+        String methodName = "getExternalDataEngineByQualifiedName";
         mockRegistrationHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(softwareServerRegistrationHandler.getSoftwareServerCapabilityByQualifiedName(USER, QUALIFIED_NAME)).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, QUALIFIED_NAME)).thenThrow(mockedException);
 
 
-        GUIDResponse response = dataEngineRESTServices.getSoftwareServerByQualifiedName(SERVER_NAME, USER,
+        GUIDResponse response = dataEngineRESTServices.getExternalDataEngineByQualifiedName(SERVER_NAME, USER,
                 QUALIFIED_NAME);
 
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
@@ -231,14 +225,14 @@ class DataEngineRESTServicesTest {
                                                                                           InstantiationException,
                                                                                           IllegalAccessException {
 
-        String methodName = "getSoftwareServerByQualifiedName";
+        String methodName = "getExternalDataEngineByQualifiedName";
         mockRegistrationHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(softwareServerRegistrationHandler.getSoftwareServerCapabilityByQualifiedName(USER, QUALIFIED_NAME)).thenThrow(mockedException);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, QUALIFIED_NAME)).thenThrow(mockedException);
 
 
-        GUIDResponse response = dataEngineRESTServices.getSoftwareServerByQualifiedName(SERVER_NAME, USER,
+        GUIDResponse response = dataEngineRESTServices.getExternalDataEngineByQualifiedName(SERVER_NAME, USER,
                 QUALIFIED_NAME);
 
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
@@ -752,7 +746,7 @@ class DataEngineRESTServicesTest {
 
     private void mockRegistrationHandler(String methodName) throws InvalidParameterException, PropertyServerException,
                                                                    UserNotAuthorizedException {
-        when(instanceHandler.getRegistrationHandler(USER, SERVER_NAME, methodName)).thenReturn(softwareServerRegistrationHandler);
+        when(instanceHandler.getRegistrationHandler(USER, SERVER_NAME, methodName)).thenReturn(dataEngineRegistrationHandler);
     }
 
     private void mockSchemaTypeHandler(String methodName) throws InvalidParameterException, UserNotAuthorizedException,
@@ -770,8 +764,8 @@ class DataEngineRESTServicesTest {
         when(instanceHandler.getProcessHandler(USER, SERVER_NAME, methodName)).thenReturn(processHandler);
     }
 
-    private SoftwareServerCapabilityRequestBody mockSoftwareServerCapabilityRequestBody() {
-        SoftwareServerCapabilityRequestBody requestBody = new SoftwareServerCapabilityRequestBody();
+    private DataEngineRegistrationRequestBody mockSoftwareServerCapabilityRequestBody() {
+        DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         requestBody.setSoftwareServerCapability(new SoftwareServerCapability(QUALIFIED_NAME, NAME, DESCRIPTION, TYPE,
                 VERSION, PATCH_LEVEL, SOURCE));
         return requestBody;

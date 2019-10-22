@@ -108,8 +108,8 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createOrUpdateSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
-                                                  String type, String version, String patchLevel, String source) throws
+    String createOrUpdateExternalDataEngine(String userId, String qualifiedName, String name, String description,
+                                            String type, String version, String patchLevel, String source) throws
                                                                                                                  InvalidParameterException,
                                                                                                                  UserNotAuthorizedException,
                                                                                                                  PropertyServerException;
@@ -126,7 +126,7 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createOrUpdateSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
+    String createOrUpdateExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
                                                                                                                     InvalidParameterException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     PropertyServerException;
