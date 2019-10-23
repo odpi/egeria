@@ -1722,7 +1722,14 @@
 
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
-                <artifactId>cassandra-open-metadata-connector</artifactId>
+                <artifactId>cassandra-data-store-connector</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>cassandra-metadata-extractor-connector</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>
@@ -1730,6 +1737,13 @@
             <dependency>
                 <groupId>org.odpi.egeria</groupId>
                 <artifactId>data-platform-services-server</artifactId>
+                <scope>compile</scope>
+                <version>${open-metadata.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.odpi.egeria</groupId>
+                <artifactId>data-platform-services-api</artifactId>
                 <scope>compile</scope>
                 <version>${open-metadata.version}</version>
             </dependency>

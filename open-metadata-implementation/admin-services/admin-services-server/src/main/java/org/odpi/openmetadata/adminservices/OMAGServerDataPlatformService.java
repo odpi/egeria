@@ -41,12 +41,12 @@ public class OMAGServerDataPlatformService {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
 
-            dataPlatformConfig.setDataPlatformServerOutTopic(
+            dataPlatformConfig.setDataPlatformServiceOutTopic(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
                             defaultOutTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            dataPlatformConfig.getDataPlatformServerOutTopicName(),
+                            dataPlatformConfig.getDataPlatformServiceOutTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getConfigurationProperties()
                     )

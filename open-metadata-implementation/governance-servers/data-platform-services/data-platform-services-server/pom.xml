@@ -20,7 +20,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>data-platform-services-api</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>1.2-SNAPSHOT</version>
         </dependency>
 
         <dependency>
