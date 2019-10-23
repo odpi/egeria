@@ -25,8 +25,8 @@ public class AssetCatalogRelationshipServiceTest {
 
     private final String USER = "test-user";
     private final String SERVER_NAME = "omas";
-    private final String FIRST_GUID = "";
-    private final String SECOND_GUID = "";
+    private static final String FIRST_GUID = "ababa-123-acbd";
+    private static final String SECOND_GUID = "ababc-2134-2341f";
     private final String RELATIONSHIP_TYPE = "SemanticAssigment";
     private Relationship response;
 
