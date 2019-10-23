@@ -42,7 +42,7 @@ public class AssetCatalogServiceTest {
     private static final String SECOND_GUID = "ababc-2134-2341f";
     private static final String RELATIONSHIP_TYPE = "SemanticAssigment";
     private static final String RELATIONSHIP_TYPE_GUID = "adadad-bcba-123";
-    public static final String CLASSIFICATION_NAME = "Confidentiality";
+    private static final String CLASSIFICATION_NAME = "Confidentiality";
     private static final String SEARCH_CRITERIA = "employee";
 
     @Mock
