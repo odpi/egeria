@@ -10,6 +10,7 @@ public class ProcessPropertiesMapper {
     public static final String PROCESS_TYPE_NAME = "Process";
 
     public static final String PROCESS_PORT_TYPE_GUID = "fB4E00CF-37e4-88CE-4a94-233BAdB84DA2";
+    public static final String PROCESS_PORT_TYPE_NAME = "ProcessPort";
 
     public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
     public static final String GUID_PROPERTY_NAME = "guid";
