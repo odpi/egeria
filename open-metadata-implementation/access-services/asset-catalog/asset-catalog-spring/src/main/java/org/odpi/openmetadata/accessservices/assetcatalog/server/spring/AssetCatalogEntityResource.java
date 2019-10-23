@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.As
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ import javax.validation.constraints.PositiveOrZero;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogEntityResource {
 
-    private AssetCatalogService assetService = new AssetCatalogService();
+    private AssetCatalogRESTService assetService = new AssetCatalogRESTService();
 
     /**
      * Fetch asset's header, classification and properties

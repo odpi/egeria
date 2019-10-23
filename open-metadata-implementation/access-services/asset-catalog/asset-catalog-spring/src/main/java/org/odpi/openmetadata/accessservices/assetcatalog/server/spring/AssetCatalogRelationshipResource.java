@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetcatalog.server.spring;
 
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipService;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipRESTService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogRelationshipResource {
 
-    private AssetCatalogRelationshipService relationshipService = new AssetCatalogRelationshipService();
+    private AssetCatalogRelationshipRESTService relationshipService = new AssetCatalogRelationshipRESTService();
 
     /**
      * Fetch relationship between entities details based on its unique identifier of the ends

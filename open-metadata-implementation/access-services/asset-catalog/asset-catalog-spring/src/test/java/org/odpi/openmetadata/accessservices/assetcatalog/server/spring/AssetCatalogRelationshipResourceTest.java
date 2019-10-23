@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipService;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipRESTService;
 
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
@@ -26,7 +26,7 @@ public class AssetCatalogRelationshipResourceTest {
     private static final String RELATIONSHIP_TYPE_NAME = "SemanticAssignment";
 
     @Mock
-    private AssetCatalogRelationshipService assetCatalogRelationshipService;
+    private AssetCatalogRelationshipRESTService assetCatalogRelationshipService;
 
     @InjectMocks
     private AssetCatalogRelationshipResource assetCatalogRelationshipResource;

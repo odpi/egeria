@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
 import static org.mockito.Mockito.times;
@@ -31,7 +31,7 @@ public class AssetCatalogEntityResourceTest {
     private static final String CONFIDENTIALITY = "Confidentiality";
 
     @Mock
-    private AssetCatalogService assetCatalogService;
+    private AssetCatalogRESTService assetCatalogService;
 
     @InjectMocks
     private AssetCatalogEntityResource assetCatalogEntityResource;

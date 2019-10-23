@@ -32,9 +32,9 @@ import java.util.List;
  * Assess Service (OMAS).
  * This service provide the functionality to fetch asset's header, classification and properties.
  */
-public class AssetCatalogService {
+public class AssetCatalogRESTService {
 
-    private static final Logger log = LoggerFactory.getLogger(AssetCatalogService.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetCatalogRESTService.class);
 
     private final AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
