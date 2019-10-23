@@ -82,7 +82,7 @@ spec:
             - "-c"
             - >
                 cd /opt/egeria/connectors &&
-                wget https://odpi.jfrog.io/odpi/egeria-snapshot-local/org/odpi/egeria/egeria-connector-apache-atlas-package/1.1-SNAPSHOT/egeria-connector-apache-atlas-package-1.1-SNAPSHOT.jar
+                wget https://odpi.jfrog.io/odpi/egeria-snapshot-local/org/odpi/egeria/egeria-connector-apache-atlas-package/1.2-SNAPSHOT/egeria-connector-apache-atlas-package-1.2-SNAPSHOT.jar
           volumeMounts:
             - mountPath: /opt/egeria/connectors
               name: egeria-connector-volume
