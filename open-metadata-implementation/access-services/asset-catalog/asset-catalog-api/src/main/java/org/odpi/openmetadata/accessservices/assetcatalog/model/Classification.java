@@ -33,7 +33,7 @@ public class Classification implements Serializable {
     private Date updateTime;
 
     private Long version;
-    private Status status;
+    private String status;
 
     private String typeDefName;
     private String typeDefDescription;
@@ -104,11 +104,11 @@ public class Classification implements Serializable {
         this.version = version;
     }
 
-    public Status getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

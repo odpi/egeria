@@ -28,6 +28,12 @@ public class PortImplementation extends Port {
         this.schemaType = schemaType;
     }
 
+    public PortImplementation(String displayName, String qualifiedName, PortType portType, SchemaType schemaType,
+                              UpdateSemantic updateSemantic) {
+        super(displayName, qualifiedName, portType, updateSemantic);
+        this.schemaType = schemaType;
+    }
+
     public SchemaType getSchemaType() {
         return schemaType;
     }

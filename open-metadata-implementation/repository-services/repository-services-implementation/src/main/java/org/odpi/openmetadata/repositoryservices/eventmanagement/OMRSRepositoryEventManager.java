@@ -299,7 +299,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                     //results from processing this event
                     
                     InternalOMRSEventProcessingContext.clear();
-                    
+                    InternalOMRSEventProcessingContext.getInstance().setCurrentMessageId(event.getMessageId());
                     this.distributeInstanceEvent(event.getEvent());
                     //Now that the buffered event has been distributed, we need to update the Future
                     //that the OpenMetadataTopicConnector is monitoring the reflect the state of
@@ -464,9 +464,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
             //OMRSAsyncEventProcessingContext so that the event will not be
             //treated as consumed quite yet.
             
-            BufferedInstanceEvent event = new BufferedInstanceEvent(instanceEvent);
+            BufferedInstanceEvent event = new BufferedInstanceEvent(instanceEvent, InternalOMRSEventProcessingContext.getInstance()
+                    .getCurrentMessageId());
             instanceEventBuffer.add(event);
-            
             InternalOMRSEventProcessingContext context = InternalOMRSEventProcessingContext.getInstance();
             context.addAsyncProcessingResult(event.getFuture());
         }

@@ -3400,10 +3400,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 try
                 {
                     PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
-                    Date                   matchValue = (Date)primitivePropertyValue.getPrimitiveValue();
+                    Long timestamp = (Long)primitivePropertyValue.getPrimitiveValue();
 
-                    if (matchValue != null)
+                    if (timestamp != null)
                     {
+                        Date matchValue = new Date(timestamp);
                         if (matchValue.equals(expectedValue))
                         {
                             result = true;
