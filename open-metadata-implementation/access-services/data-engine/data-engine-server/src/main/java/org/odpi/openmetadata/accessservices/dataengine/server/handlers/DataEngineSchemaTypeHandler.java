@@ -88,6 +88,8 @@ public class DataEngineSchemaTypeHandler {
      * @param usage            the usage for the schema type
      * @param versionNumber    the version number for the schema type
      * @param attributeList    the list of attributes for the schema type
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the schema type in the repository
      *
@@ -97,9 +99,8 @@ public class DataEngineSchemaTypeHandler {
      */
     public String createOrUpdateSchemaType(String userId, String qualifiedName, String displayName, String author,
                                            String encodingStandard, String usage, String versionNumber,
-                                           List<Attribute> attributeList) throws InvalidParameterException,
-                                                                                 PropertyServerException,
-                                                                                 UserNotAuthorizedException {
+                                           List<Attribute> attributeList, String externalSourceGUID, String externalSourceName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "createOrUpdateSchemaType";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -113,25 +114,25 @@ public class DataEngineSchemaTypeHandler {
 
         Map<SchemaAttribute, SchemaType> newSchemaAttributes = createSchemaAttributes(attributeList);
 
-        String newSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, newSchemaType,
-                new ArrayList<>(newSchemaAttributes.keySet()), methodName);
+        String newSchemaTypeGUID = schemaTypeHandler.saveExternalSchemaType(userId, newSchemaType,
+                new ArrayList<>(newSchemaAttributes.keySet()),externalSourceGUID,externalSourceName, methodName);
 
         //TODO update SchemaTypeHandler to save attributes along with the attribute schema types and
         // SchemaAttributeType relationships
-        saveAttributeSchemaTypes(userId, newSchemaAttributes);
+        saveAttributeSchemaTypes(userId, newSchemaAttributes,externalSourceGUID,externalSourceName);
 
         return newSchemaTypeGUID;
     }
 
-    private void saveAttributeSchemaTypes(String userId, Map<SchemaAttribute, SchemaType> newSchemaAttributes) throws
-                                                                                                               InvalidParameterException,
-                                                                                                               PropertyServerException,
-                                                                                                               UserNotAuthorizedException {
+    private void saveAttributeSchemaTypes(String userId, Map<SchemaAttribute, SchemaType> newSchemaAttributes,
+                                          String externalSourceGUID, String externalSourceName)
+            throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+
         final String methodName = "saveAttributeSchemaTypes";
 
         for (Map.Entry<SchemaAttribute, SchemaType> schemaAttribute : newSchemaAttributes.entrySet()) {
-            String attributeSchemaTypeGUID = schemaTypeHandler.saveSchemaType(userId, schemaAttribute.getValue(),
-                    null, methodName);
+            String attributeSchemaTypeGUID = schemaTypeHandler.saveExternalSchemaType(userId, schemaAttribute.getValue(),
+                    null, externalSourceGUID, externalSourceName, methodName);
 
             String schemaAttributeGUID = findSchemaAttribute(userId, schemaAttribute.getKey().getQualifiedName());
 
@@ -143,8 +144,8 @@ public class DataEngineSchemaTypeHandler {
                     relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
             if (relationship == null) {
-                repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), schemaAttributeGUID,
-                        attributeSchemaTypeGUID, null, methodName);
+                repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(),externalSourceGUID,
+                        externalSourceName, schemaAttributeGUID, attributeSchemaTypeGUID, null, methodName);
             }
         }
     }
@@ -155,13 +156,18 @@ public class DataEngineSchemaTypeHandler {
      * @param userId                             the name of the calling user
      * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute
      * @param targetSchemaAttributeQualifiedName the qualified name of the target schema attribute
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addLineageMappingRelationship(String userId, String sourceSchemaAttributeQualifiedName,
-                                              String targetSchemaAttributeQualifiedName) throws
+    public void addLineageMappingRelationship(String userId,
+                                              String sourceSchemaAttributeQualifiedName,
+                                              String targetSchemaAttributeQualifiedName,
+                                              String externalSourceGUID,
+                                              String externalSourceName) throws
                                                                                          InvalidParameterException,
                                                                                          UserNotAuthorizedException,
                                                                                          PropertyServerException,
@@ -185,8 +191,8 @@ public class DataEngineSchemaTypeHandler {
                 relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), sourceSchemaType.getGUID(),
-                    targetSchemaType.getGUID(), null, methodName);
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(),externalSourceGUID, externalSourceName,
+                    sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
         }
     }
 

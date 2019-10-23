@@ -57,6 +57,8 @@ public class PortHandler {
      * @param qualifiedName the qualifiedName name of the port
      * @param displayName   the display name of the port
      * @param portType      the type of the port
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the port implementation in the repository
      *
@@ -65,11 +67,10 @@ public class PortHandler {
      * @throws PropertyServerException problem accessing the property server
      */
     public String createPortImplementation(String userId, String qualifiedName, String displayName,
-                                           PortType portType) throws InvalidParameterException,
-                                                                     UserNotAuthorizedException,
-                                                                     PropertyServerException {
+                                           PortType portType, String externalSourceGUID, String externalSourceName
+    ) throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         return createPort(userId, qualifiedName, displayName, portType,
-                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME);
+                PortPropertiesMapper.PORT_IMPLEMENTATION_TYPE_NAME, externalSourceGUID, externalSourceName);
     }
 
     /**
@@ -79,6 +80,8 @@ public class PortHandler {
      * @param qualifiedName the qualifiedName name of the port
      * @param displayName   the display name of the port
      * @param portType      the type of the port
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the port alias in the repository
      *
@@ -86,11 +89,13 @@ public class PortHandler {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public String createPortAlias(String userId, String qualifiedName, String displayName, PortType portType) throws
-                                                                                                              InvalidParameterException,
-                                                                                                              UserNotAuthorizedException,
-                                                                                                              PropertyServerException {
-        return createPort(userId, qualifiedName, displayName, portType, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME);
+    public String createPortAlias(String userId, String qualifiedName, String displayName, PortType portType,
+                                  String externalSourceGUID, String externalSourceName )  throws
+                                                                                          InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException {
+        return createPort(userId, qualifiedName, displayName, portType, PortPropertiesMapper.PORT_ALIAS_TYPE_NAME,
+                externalSourceGUID, externalSourceName);
     }
 
     /**
@@ -140,6 +145,8 @@ public class PortHandler {
      * @param displayName   the display name of the port
      * @param portType      the type of the port
      * @param entityTpeName the type name
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the port in the repository
      *
@@ -148,16 +155,17 @@ public class PortHandler {
      * @throws PropertyServerException problem accessing the property server
      */
     private String createPort(String userId, String qualifiedName, String displayName, PortType portType,
-                              String entityTpeName) throws InvalidParameterException, UserNotAuthorizedException,
-                                                           PropertyServerException {
+                              String entityTpeName, String externalSourceGUID, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException,
+            PropertyServerException {
         final String methodName = "createPort";
 
         InstanceProperties properties = buildPortInstanceProperties(userId, qualifiedName, displayName, portType,
                 methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, entityTpeName);
-        return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
-                methodName);
+        return repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(),
+                externalSourceGUID, externalSourceName,properties, methodName);
     }
 
     /**
@@ -194,15 +202,18 @@ public class PortHandler {
      * @param userId         the name of the calling user
      * @param portGUID       the unique identifier of the port
      * @param schemaTypeGUID the unique identifier of the schema type
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    public void addPortSchemaRelationship(String userId, String portGUID, String schemaTypeGUID) throws
-                                                                                                 InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 PropertyServerException {
+    public void addPortSchemaRelationship(String userId, String portGUID, String schemaTypeGUID, String externalSourceGUID,
+                                          String externalSourceName) throws
+                                                                     InvalidParameterException,
+                                                                     UserNotAuthorizedException,
+                                                                     PropertyServerException {
         final String methodName = "addPortSchemaRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -212,7 +223,8 @@ public class PortHandler {
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                 PortPropertiesMapper.PORT_SCHEMA_TYPE_NAME);
         createRelationship(userId, portGUID, schemaTypeGUID, PortPropertiesMapper.PORT_TYPE_NAME, relationshipTypeDef,
-                methodName);
+                methodName,externalSourceGUID, externalSourceName);
+
     }
 
     /**
@@ -257,15 +269,17 @@ public class PortHandler {
      * @param portGUID    the unique identifier of the source port
      * @param portType    the type of the source port
      * @param delegatesTo the unique identifier of the target port
+     * @param externalSourceGUID     the unique identifier of the external source
+     * @param externalSourceName     the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
     public void addPortDelegationRelationship(String userId, String portGUID, PortType portType,
-                                              String delegatesTo) throws InvalidParameterException,
-                                                                         UserNotAuthorizedException,
-                                                                         PropertyServerException {
+                                              String delegatesTo, String externalSourceGUID, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         final String methodName = "addPortDelegationRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -281,8 +295,8 @@ public class PortHandler {
             TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                     PortPropertiesMapper.PORT_DELEGATION_TYPE_NAME);
 
-            createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME,
-                    relationshipTypeDef, methodName);
+            createRelationship(userId, portGUID, delegatedPort.getGUID(), PortPropertiesMapper.PORT_TYPE_NAME,relationshipTypeDef,
+                    methodName, externalSourceGUID, externalSourceName);
         } else {
             throwInvalidParameterException(portGUID, methodName, delegatedPort, delegatedPortType);
         }
@@ -433,15 +447,16 @@ public class PortHandler {
     }
 
     private void createRelationship(String userId, String firstGUID, String secondGUID, String firstEntityTypeName,
-                                    TypeDef relationshipTypeDef, String methodName) throws UserNotAuthorizedException,
-                                                                                           PropertyServerException {
+                                    TypeDef relationshipTypeDef, String methodName, String externalSourceGUID, String externalSourceName)
+            throws UserNotAuthorizedException, PropertyServerException {
+
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, firstGUID,
                 firstEntityTypeName, secondGUID, relationshipTypeDef.getGUID(), relationshipTypeDef.getName(),
                 methodName);
 
         if (relationship == null) {
-            repositoryHandler.createRelationship(userId, relationshipTypeDef.getGUID(), firstGUID,
-                    secondGUID, null, methodName);
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID, externalSourceName,
+                   firstGUID, secondGUID, null, methodName);
         }
     }
 
