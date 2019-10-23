@@ -2270,9 +2270,9 @@ public class RepositoryHandler
      * Create a relationship from an external source between two entities.
      *
      * @param userId calling user
+     * @param relationshipTypeGUID unique identifier of the relationship's type
      * @param externalSourceGUID unique identifier (guid) for the external source.
      * @param externalSourceName unique name for the external source.
-     * @param relationshipTypeGUID unique identifier of the relationship's type
      * @param end1GUID entity to store at end 1
      * @param end2GUID entity to store at end 2
      * @param relationshipProperties properties for the relationship
@@ -2282,9 +2282,9 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      */
     public void createExternalRelationship(String                  userId,
+                                           String                  relationshipTypeGUID,
                                            String                  externalSourceGUID,
                                            String                  externalSourceName,
-                                           String                  relationshipTypeGUID,
                                            String                  end1GUID,
                                            String                  end2GUID,
                                            InstanceProperties      relationshipProperties,
@@ -2294,9 +2294,9 @@ public class RepositoryHandler
         try
         {
             metadataCollection.addExternalRelationship(userId,
+                                                       relationshipTypeGUID,
                                                        externalSourceGUID,
                                                        externalSourceName,
-                                                       relationshipTypeGUID,
                                                        relationshipProperties,
                                                        end1GUID,
                                                        end2GUID,

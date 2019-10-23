@@ -61,6 +61,8 @@ class DataEngineSchemaTypeHandlerTest {
     private static final String SOURCE_QUALIFIED_NAME = "sourceQualifiedName";
     private static final String TARGET_GUID = "targetGuid";
     private static final String TARGET_QUALIFIED_NAME = "targetQualifiedName";
+    private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
+    private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -103,7 +105,8 @@ class DataEngineSchemaTypeHandlerTest {
 
         String result = dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
                 ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
-                        ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null)));
+                        ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null)),
+                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
 
@@ -113,9 +116,9 @@ class DataEngineSchemaTypeHandlerTest {
         verify(invalidParameterHandler, times(1)).validateName(NAME,
                 SchemaTypePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, methodName);
 
-        verify(repositoryHandler, times(1)).createRelationship(USER,
-                SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID, ATTRIBUTE_GUID,
-                ATTRIBUTE_SCHEMA_TYPE_GUID, null, "saveAttributeSchemaTypes");
+        verify(repositoryHandler, times(1)).createExternalRelationship(USER,
+                SchemaElementMapper.ATTRIBUTE_TO_TYPE_RELATIONSHIP_TYPE_GUID,  EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                ATTRIBUTE_GUID, ATTRIBUTE_SCHEMA_TYPE_GUID, null, "saveAttributeSchemaTypes");
     }
 
     @Test
@@ -141,9 +144,9 @@ class DataEngineSchemaTypeHandlerTest {
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                        ENCODING_STANDARD,
-                        USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
-                                ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null))));
+                        ENCODING_STANDARD, USAGE, VERSION, Collections.singletonList(new Attribute(ATTRIBUTE_QUALIFIED_NAME,
+                                ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null)),
+                        EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -165,11 +168,12 @@ class DataEngineSchemaTypeHandlerTest {
         mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
 
-        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME);
+        dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME,
+                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
-        verify(repositoryHandler, times(1)).createRelationship(USER,
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID, SOURCE_GUID, TARGET_GUID, null,
-                "addLineageMappingRelationship");
+        verify(repositoryHandler, times(1)).createExternalRelationship(USER,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                SOURCE_GUID, TARGET_GUID, null, "addLineageMappingRelationship");
     }
 
     @Test
@@ -197,13 +201,13 @@ class DataEngineSchemaTypeHandlerTest {
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(repositoryHandler).createRelationship(USER,
-                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID, SOURCE_GUID, TARGET_GUID, null,
-                methodName);
+        doThrow(mockedException).when(repositoryHandler).createExternalRelationship(USER,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                SOURCE_GUID, TARGET_GUID, null, methodName);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
-                        TARGET_QUALIFIED_NAME));
+                        TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -225,7 +229,7 @@ class DataEngineSchemaTypeHandlerTest {
 
         NoSchemaAttributeException thrown = assertThrows(NoSchemaAttributeException.class, () ->
                 dataEngineSchemaTypeHandler.addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
-                        TARGET_QUALIFIED_NAME));
+                        TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-002 "));
     }

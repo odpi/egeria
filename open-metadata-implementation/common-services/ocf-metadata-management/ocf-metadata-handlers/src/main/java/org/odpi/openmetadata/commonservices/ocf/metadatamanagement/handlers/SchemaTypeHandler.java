@@ -511,12 +511,12 @@ public class SchemaTypeHandler
 
                     if (schemaAttributeGUID == null)
                     {
-                        schemaAttributeGUID = addSchemaAttribute(userId, schemaAttribute);
+                        schemaAttributeGUID = addExternalSchemaAttribute(userId, schemaAttribute,externalSourceGUID,externalSourceName);
 
                         repositoryHandler.createExternalRelationship(userId,
+                                                                     SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                      externalSourceGUID,
                                                                      externalSourceName,
-                                                                     SchemaElementMapper.TYPE_TO_ATTRIBUTE_RELATIONSHIP_TYPE_GUID,
                                                                      schemaTypeGUID,
                                                                      schemaAttributeGUID,
                                                                      null,
