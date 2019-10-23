@@ -2,10 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage;
 
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
-import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 
 public interface BufferGraphStore extends OpenLineageGraphStore{
@@ -23,8 +19,6 @@ public interface BufferGraphStore extends OpenLineageGraphStore{
      */
     void schedulerTask();
 
-    void setMainGraphConnector(OpenLineageGraphStore mainGraphConnector);
-
-
+    void setMainGraph(Object mainGraph);
 
 }

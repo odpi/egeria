@@ -7,7 +7,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 
-public interface MainGraphStore {
+public interface MainGraphStore extends OpenLineageGraphStore{
 
     /**
      * Process the serialized  information view event
@@ -43,5 +43,7 @@ public interface MainGraphStore {
      * @return The queried graph, in graphSON format.
      */
     String exportGraph(String graphName);
+
+    Object getMainGraph();
 }
 

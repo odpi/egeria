@@ -15,9 +15,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.BufferGraphFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
@@ -39,9 +36,8 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
     private static final Logger log = LoggerFactory.getLogger(BufferGraphConnector.class);
     private JanusGraph bufferGraph;
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
+
     private JanusGraph mainGraph;
-    private JanusGraph historyGraph;
-    private JanusGraph mockGraph;
 
     private MainGraphStore mainGraphConnector;
 
@@ -67,7 +63,6 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
      */
     public void start() throws ConnectorCheckedException
     {
-        mainGraphConnector.addEntity(null);
         super.start();
     }
 
@@ -76,14 +71,6 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB){
             case "berkeleydb":
-                try {
-                    this.mainGraph = BerkeleyJanusFactory.openMainGraph();
-                    this.bufferGraph = BerkeleyBufferJanusFactory.openBufferGraph();
-                    this.historyGraph = BerkeleyJanusFactory.openHistoryGraph();
-                    this.mockGraph = BerkeleyJanusFactory.openMockGraph();
-                } catch (Exception e) {
-                    log.error("{} Could not open graph database", "JanusConnector"); //TODO  elaborate error
-                }
                 break;
             case "cassandra":
                 BufferGraphFactory bufferGraphFactory = new BufferGraphFactory();
@@ -93,6 +80,11 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
                 default:
                     break;
         }
+    }
+
+    @Override
+    public void setMainGraph(Object mainGraph) {
+        this.mainGraph = (JanusGraph) mainGraph;
     }
 
     @Override
@@ -250,8 +242,5 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
                                           errorCode.getUserAction());
     }
 
-    @Override
-    public void setMainGraphConnector(OpenLineageGraphStore mainGraphConnector) {
-        this.mainGraphConnector = (MainGraphStore) mainGraphConnector;
-    }
+
 }

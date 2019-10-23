@@ -44,6 +44,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
     private JanusGraph mainGraph;
     private JanusGraph historyGraph;
+
     private JanusGraph mockGraph;
 
     /**
@@ -432,6 +433,10 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                 log.error(graphNameText + " is not a valid graph");
         }
         return graph;
+    }
+
+    public Object getMainGraph() {
+        return mainGraph;
     }
 
 

@@ -84,8 +84,10 @@ public class OpenLineageOperationalServices {
         Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
 
         BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
-        OpenLineageGraphStore mainGraphConnector = getGraphConnector(mainGraphConnection);
-        bufferGraphConnector.setMainGraphConnector(mainGraphConnector);
+        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection);
+        Object mainGraph = mainGraphConnector.getMainGraph();
+        bufferGraphConnector.setMainGraph(mainGraph);
+
         try {
             bufferGraphConnector.start();
         } catch (ConnectorCheckedException e) {
@@ -98,7 +100,7 @@ public class OpenLineageOperationalServices {
         }
         //TODO check for null
         GraphStoringServices graphStoringServices = new GraphStoringServices(bufferGraphConnector);
-        GraphQueryingServices graphServices = new GraphQueryingServices((MainGraphStore) mainGraphConnector);
+        GraphQueryingServices graphServices = new GraphQueryingServices(mainGraphConnector);
 
         this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
 
