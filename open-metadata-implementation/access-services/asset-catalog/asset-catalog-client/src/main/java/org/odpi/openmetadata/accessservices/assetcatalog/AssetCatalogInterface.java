@@ -140,13 +140,13 @@ public interface AssetCatalogInterface {
      * Fetch relationship between entities details based on its unique identifier of the ends
      * Filtering based on the relationship type is supported
      *
-     * @param userId               the unique identifier for the user
-     * @param entity1GUID          Entity guid of the first end of the relationship
-     * @param entity2GUID          Entity guid of the second end of the relationship
-     * @param relationshipTypeGUID Type of the relationship
+     * @param userId           the unique identifier for the user
+     * @param entity1GUID      Entity guid of the first end of the relationship
+     * @param entity2GUID      Entity guid of the second end of the relationship
+     * @param relationshipType Type of the relationship
      * @return relationships between entities
      * @throws PropertyServerException   if a problem occurs while serving the request
      * @throws InvalidParameterException if parameter validation fails
      */
-    RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipTypeGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
+    RelationshipResponse getRelationshipBetweenEntities(String userId, String entity1GUID, String entity2GUID, String relationshipType) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 }

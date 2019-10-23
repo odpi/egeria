@@ -23,7 +23,7 @@ public class AssetCatalogRelationshipResourceTest {
     private static final String SERVER_NAME = "serverName";
     private static final String FIST_END_GUID = "b1c497ce.60641b50.0v9mgsb1m.9vbkmkr";
     private static final String SECOND_END_GUID = "6662c0f2.e1b1ec6c.00263shmd.6u8o50l.dhhet6.5a7eo9o6q9j8vikjs6ds4";
-    private static final String RELATIONSHIP_TYPE_GUID = "e6670973-645f-441a-bec7-6f5570345b92";
+    private static final String RELATIONSHIP_TYPE_NAME = "SemanticAssignment";
 
     @Mock
     private AssetCatalogRelationshipService assetCatalogRelationshipService;
@@ -36,13 +36,13 @@ public class AssetCatalogRelationshipResourceTest {
         assetCatalogRelationshipResource.getRelationshipBetweenEntities(SERVER_NAME, USER,
                 FIST_END_GUID,
                 SECOND_END_GUID,
-                RELATIONSHIP_TYPE_GUID);
+                RELATIONSHIP_TYPE_NAME);
 
         verify(assetCatalogRelationshipService, atLeastOnce()).getRelationshipBetweenEntities(SERVER_NAME,
                 USER,
                 FIST_END_GUID,
                 SECOND_END_GUID,
-                RELATIONSHIP_TYPE_GUID);
+                RELATIONSHIP_TYPE_NAME);
 
     }
 }

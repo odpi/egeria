@@ -27,7 +27,7 @@ public class AssetCatalogRelationshipResource {
      * @param userId               String unique identifier for the user
      * @param entity1GUID          Entity guid of the first end of the relationship
      * @param entity2GUID          Entity guid of the second end of the relationship
-     * @param relationshipTypeGUID Type of the relationship
+     * @param relationshipType Type of the relationship
      * @return relationships between entities
      */
     @RequestMapping(method = RequestMethod.GET,
@@ -37,7 +37,7 @@ public class AssetCatalogRelationshipResource {
                                                                @PathVariable("userId") String userId,
                                                                @PathVariable("entity1GUID") String entity1GUID,
                                                                @PathVariable("entity2GUID") String entity2GUID,
-                                                               @RequestParam(name = "relationshipTypeGUID") String relationshipTypeGUID) {
-        return relationshipService.getRelationshipBetweenEntities(serverName, userId, entity1GUID, entity2GUID, relationshipTypeGUID);
+                                                               @RequestParam(name = "relationshipType") String relationshipType) {
+        return relationshipService.getRelationshipBetweenEntities(serverName, userId, entity1GUID, entity2GUID, relationshipType);
     }
 }
