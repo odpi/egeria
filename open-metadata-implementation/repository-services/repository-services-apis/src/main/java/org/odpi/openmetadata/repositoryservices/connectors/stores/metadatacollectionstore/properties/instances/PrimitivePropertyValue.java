@@ -224,19 +224,39 @@ public class PrimitivePropertyValue extends InstancePropertyValue
             {
                 if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
                 {
-                    if (primitiveValue instanceof Long)
-                    {
-                        Long    castValue = (Long)primitiveValue;
-                        return new Date(castValue);
-                    }
-                    else if (primitiveValue instanceof Integer)
+                    /*
+                     * Date values are stored as Longs. The RepositoryHelper helper methods
+                     * will accept and return Java Date objects, for convenience for callers,
+                     * but internally the OMRS stores a date as a Java Long.
+                     *
+                     * However, with the combination of Spring and Jackson it is possible
+                     * for a date that was serialized as a Long to be deserialized as an
+                     * Integer. The following conversion repatriates it to Long.
+                     */
+
+                    if (primitiveValue instanceof Integer)
                     {
                         Integer castValue = (Integer)primitiveValue;
-                        return new Date(castValue);
+                        return castValue.longValue();
                     }
                     else
                     {
-                        return null;
+                        /*
+                         * The type of the primitiveValue cannot be used as a date.
+                         * It is likely that this has been caused by an invalid deserialization or by
+                         * some other code trying to set the value as a type other than Long.
+                         * This is an internal error that needs to be debugged and fixed.
+                         */
+                        OMRSErrorCode errorCode    = OMRSErrorCode.INVALID_PRIMITIVE_TYPE;
+                        String        errorMessage = errorCode.getErrorMessageId()
+                                + errorCode.getFormattedErrorMessage("OM_PRIMITIVE_TYPE_DATE", primitiveDefCategory.getJavaClassName(), primitiveValue.getClass().getName());
+
+                        throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                this.getClass().getName(),
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
                     }
                 }
                 else if (primitiveDefCategory == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL)

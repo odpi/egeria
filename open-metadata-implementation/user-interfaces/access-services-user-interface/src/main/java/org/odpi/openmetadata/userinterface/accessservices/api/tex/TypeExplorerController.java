@@ -32,6 +32,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,7 +82,7 @@ public class TypeExplorerController extends SecureController
         String serverURLRoot     = body.get("serverURLRoot");
         boolean enterpriseOption = body.get("enterpriseOption").equals("true");
 
-        String userId = getUser(request);
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // Look up types in server and construct TEX
         TypeExplorerResponse texResp;
@@ -258,7 +259,7 @@ public class TypeExplorerController extends SecureController
             if (metadataCollectionId == null) {
                 error = true;
             }
-            else if (!(metadataCollectionId.equals(metadataCollection.getMetadataCollectionId()))) {
+            else if (!(metadataCollectionId.equals(metadataCollection.getMetadataCollectionId(userId)))) {
                 error = true;
             }
 
@@ -308,6 +309,8 @@ public class TypeExplorerController extends SecureController
             Connector connector = connectorBroker.getConnector(connection);
 
             OMRSRepositoryConnector  repositoryConnector = (OMRSRepositoryConnector)connector;
+
+            repositoryConnector.setRepositoryName(serverName);
 
             /*
              * The metadataCollectionId parameter is not used by the REST connector - but it needs to be non-null and

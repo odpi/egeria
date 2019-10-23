@@ -17,7 +17,7 @@
 
     <groupId>org.odpi.egeria</groupId>
     <artifactId>egeria</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>1.2-SNAPSHOT</version>
 
     <url>https://odpi.github.io/egeria</url>
 
@@ -133,9 +133,8 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.26</slf4j.version>
         <logback.version>1.2.3</logback.version>
-        <jackson.version>2.9.9</jackson.version>
-        <jackson.databind.version>2.9.9.3</jackson.databind.version>
-        <kafka.version>2.1.1</kafka.version>
+        <jackson.version>2.10.0</jackson.version>
+        <kafka.version>2.3.0</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
         <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
@@ -143,8 +142,8 @@
         <spring-web.version>5.1.8.RELEASE</spring-web.version>
         <spring-security.version>5.1.5.RELEASE</spring-security.version>
         <tomcat.version>9.0.21</tomcat.version>
-        <commons-io.version>2.4</commons-io.version>
-        <commons-collections.version>4.3</commons-collections.version>
+        <commons-io.version>2.6</commons-io.version>
+        <commons-collections.version>4.4</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
@@ -177,13 +176,13 @@
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.0.0</owasp.version>
-        <spotbugs-maven.version>3.1.2</spotbugs-maven.version>
-        <spotbugs.version>4.0.0-beta2</spotbugs.version>
+        <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
+        <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
-        <maven-enforcer-plugin.version>3.0.0-M1</maven-enforcer-plugin.version>
-        <jacoco-plugin.version>0.8.3</jacoco-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
+        <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
         <frontend.plugin.version>1.6</frontend.plugin.version>
         <exec.plugin.version>1.6.0</exec.plugin.version>
@@ -236,7 +235,7 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <scope>compile</scope>
-                <version>${jackson.databind.version}</version>
+                <version>${jackson.version}</version>
             </dependency>
 
             <dependency>
@@ -465,29 +464,8 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>tinkergraph-gremlin</artifactId>
-                <scope>compile</scope>
-                <version>${tinkergraph.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.lucene</groupId>
-                <artifactId>lucene-analyzers-common</artifactId>
-                <scope>compile</scope>
-                <version>${lucene-analyzers-common.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-berkeleyje</artifactId>
-                <scope>compile</scope>
-                <version>${janus.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.janusgraph</groupId>
-                <artifactId>janusgraph-core</artifactId>
                 <scope>compile</scope>
                 <version>${janus.version}</version>
             </dependency>
