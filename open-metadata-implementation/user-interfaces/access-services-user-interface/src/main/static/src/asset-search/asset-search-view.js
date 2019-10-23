@@ -83,6 +83,13 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 </template>
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
+            
+             <vaadin-grid-column width="15em" resizable>
+                <template class="header">
+                    <vaadin-grid-sorter path="properties.qualifiedName">Options</vaadin-grid-sorter>
+                </template>
+                <template><a href="#/asset-lineage/[[item.guid]]">Lineage</a></template>
+            </vaadin-grid-column>
   
         </vaadin-grid>
                
@@ -120,7 +127,9 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
         this.dispatchEvent(new CustomEvent('open-page', {
             bubbles: true,
             composed: true,
-            detail: {page: "asset-lineage"}}));
+            detail: {page: "asset-lineage",
+
+                    }}));
     }
 
 

@@ -17,9 +17,13 @@ import org.odpi.openmetadata.repositoryservices.events.future.OMRSFutureImpl;
  */
 public class InternalOMRSEventProcessingContext {
     
+    
     private static final ThreadLocal<InternalOMRSEventProcessingContext> INSTANCE = new ThreadLocal<>();
 
-    private static volatile CompoundFuture processingResult = new CompoundFuture();
+    //unique identifier for the current message
+    private String currentMessageId;
+    
+    private final CompoundFuture processingResult = new CompoundFuture();
     
     /**
      * Registers a {@link Future} associated with asynchronous message processing.
@@ -76,5 +80,25 @@ public class InternalOMRSEventProcessingContext {
      public static void clear() {
         INSTANCE.set(null);
         
+    }
+     
+    /**
+     * Gets the unique identifier for the current message that
+     * is being processed.
+     * 
+     * @return the current message id
+     */
+    public String getCurrentMessageId() {
+        return currentMessageId;
+    }
+    
+    /**
+     * Sets the unique identifier for the current message that
+     * is being processed.
+     * 
+     * @param messageId The mesageId to set
+     */
+    public void setCurrentMessageId(String messageId) { 
+        this.currentMessageId = messageId;
     }
 }

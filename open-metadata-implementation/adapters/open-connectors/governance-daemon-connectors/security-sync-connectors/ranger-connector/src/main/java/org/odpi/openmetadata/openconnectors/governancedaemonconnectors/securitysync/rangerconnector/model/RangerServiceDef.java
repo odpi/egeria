@@ -6,12 +6,12 @@ import java.util.Map;
 
 public class RangerServiceDef extends RangerBaseObject {
 
-    private String                         name;
-    private String                         implClass;
-    private String                         label;
-    private String                         description;
-    private String                         rbKeyLabel;
-    private String                         rbKeyDescription;
+    private String name;
+    private String implClass;
+    private String label;
+    private String description;
+    private String rbKeyLabel;
+    private String rbKeyDescription;
     private Map<String, String> options;
 
     public String getName() {

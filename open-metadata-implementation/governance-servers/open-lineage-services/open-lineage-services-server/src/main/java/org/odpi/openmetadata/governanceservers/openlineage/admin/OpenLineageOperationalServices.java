@@ -2,28 +2,24 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.services.BufferGraphFactory;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphFactory;
-import org.odpi.openmetadata.governanceservers.openlineage.services.GraphServices;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
-import org.odpi.openmetadata.governanceservers.openlineage.mockdata.MockGraphGenerator;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphQueryingServices;
+import org.odpi.openmetadata.governanceservers.openlineage.services.GraphStoringServices;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,23 +30,21 @@ import org.slf4j.LoggerFactory;
  */
 public class OpenLineageOperationalServices {
     private static final Logger log = LoggerFactory.getLogger(OpenLineageOperationalServices.class);
+
+    private static final String ACTION_DESCRIPTION = "initialize";
+
     private String localServerName;
     private String localServerType;
     private String localMetadataCollectionName;
     private String localOrganizationName;
     private String localServerUserId;
     private String localServerURL;
-    private int maxPageSize;
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector inTopicConnector;
-    private GraphBuilder graphBuilder;
+    private OpenLineageConfig openLineageConfig;
+    private OpenLineageGraphStore openLineageGraphStore;
     private OpenLineageServicesInstance instance;
-    public static JanusGraph mainGraph;
-    public static JanusGraph bufferGraph;
-    public static JanusGraph historyGraph;
-    public static JanusGraph mockGraph;
-
 
     /**
      * Constructor used at server startup.
@@ -60,118 +54,91 @@ public class OpenLineageOperationalServices {
      * @param localOrganizationName name of the organization that owns the local server
      * @param localServerUserId     user id for this server to use if processing inbound messages.
      * @param localServerURL        URL root for this server.
-     * @param maxPageSize           maximum number of records that can be requested on the pageSize parameter
      */
     public OpenLineageOperationalServices(String localServerName,
                                           String localServerType,
                                           String localOrganizationName,
                                           String localServerUserId,
-                                          String localServerURL,
-                                          int maxPageSize) {
+                                          String localServerURL) {
         this.localServerName = localServerName;
         this.localServerType = localServerType;
         this.localOrganizationName = localOrganizationName;
         this.localServerUserId = localServerUserId;
         this.localServerURL = localServerURL;
-        this.maxPageSize = maxPageSize;
     }
 
     public void initialize(OpenLineageConfig openLineageConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        if (openLineageConfig != null) {
-            final String actionDescription = "initialize";
-            OpenLineageAuditCode auditCode;
 
-            auditCode = OpenLineageAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+        this.auditLog = auditLog;
 
-            this.auditLog = auditLog;
-
-            try {
-                this.mainGraph = GraphFactory.openMainGraph();
-                this.bufferGraph = BufferGraphFactory.openBufferGraph();
-                this.historyGraph = GraphFactory.openHistoryGraph();
-                this.mockGraph = GraphFactory.openMockGraph();
-
-                this.graphBuilder = new GraphBuilder();
-                MockGraphGenerator mockGraphGenerator = new MockGraphGenerator();
-                GraphServices graphServices = new GraphServices();
-                this.instance = new OpenLineageServicesInstance(mockGraphGenerator, graphServices, localServerName);
-            } catch (RepositoryErrorException e) {
-                log.error("{} Could not open graph database", "GraphBuilder constructor"); //TODO  elaborate error
-            }
-
-
-            Connection inTopicConnection = openLineageConfig.getInTopicConnection();
-            String inTopicName = getTopicName(inTopicConnection);
-
-            inTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
-
-            if (inTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new InTopicListener(graphBuilder, auditLog);
-                this.inTopicConnector.registerListener(ALOutTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
-            }
-
-
-            auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
+        if(openLineageConfig == null) {
+            getError(auditLog,OpenLineageAuditCode.NO_CONFIG_DOC,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
         }
-        //TODO Error handling and logging
+
+        this.openLineageConfig = openLineageConfig;
+        logAudit(OpenLineageAuditCode.SERVICE_INITIALIZING, ACTION_DESCRIPTION);
+
+        Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
+        getGraphConnector(bufferGraphConnection);
+        startGraphServices(openLineageGraphStore);
+
     }
 
-
-    private String getTopicName(Connection connection) {
-        String topicName = null;
+    private void getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
+        /*
+         * Configuring the Graph connectors
+         */
         if (connection != null) {
-            Endpoint topicEndpoint = connection.getEndpoint();
-
-            if (topicEndpoint != null) {
-                topicName = topicEndpoint.getAddress();
-            }
-        }
-        return topicName;
-    }
-
-    /**
-     * Returns the topic created based on connection properties
-     *
-     * @param topicConnection properties of the topic
-     * @return the topic created based on the connection properties
-     */
-    private OpenMetadataTopicConnector initializeOpenLineageTopicConnector(Connection topicConnection) {
-        final String actionDescription = "initialize";
-        if (topicConnection != null) {
+            log.info("Found connection: {}", connection);
             try {
-                return getTopicConnector(topicConnection);
-            } catch (Exception e) {
-                OpenLineageAuditCode auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(topicConnection.toString(), localServerName, e.getMessage()),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                throw e;
+                ConnectorBroker connectorBroker = new ConnectorBroker();
+                openLineageGraphStore = (OpenLineageGraphStore) connectorBroker.getConnector(connection);
+            } catch (ConnectionCheckedException | ConnectorCheckedException e) {
+                log.error("Unable to initialize connector.", e);
+                getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
             }
-
         }
-        return null;
-
     }
 
+    private void startGraphServices(OpenLineageGraphStore openLineageGraphStore) throws OMAGConfigurationErrorException {
+
+        GraphStoringServices graphStoringServices = new GraphStoringServices(openLineageGraphStore);
+        GraphQueryingServices graphServices = new GraphQueryingServices(openLineageGraphStore);
+        this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
+
+        startEventBus(graphStoringServices);
+    }
+
+    private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {
+        inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);
+        if (inTopicConnector != null) {
+
+            OpenMetadataTopicListener governanceEventListener = new InTopicListener(graphStoringServices, auditLog);
+            inTopicConnector.registerListener(governanceEventListener);
+
+            startTopic(inTopicConnector, openLineageConfig.getInTopicName());
+            logAudit(OpenLineageAuditCode.SERVICE_INITIALIZED, ACTION_DESCRIPTION);
+
+        }
+    }
+
+    private void startTopic(OpenMetadataTopicConnector topic, String topicName) throws OMAGConfigurationErrorException {
+        try {
+            topic.start();
+        } catch (ConnectorCheckedException e) {
+            String action = "Unable to initialize the topic connection";
+            OpenLineageAuditCode auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
+            logAudit(auditCode,action);
+
+            throw new OMAGConfigurationErrorException(400,
+                    this.getClass().getSimpleName(),
+                    action,
+                    auditCode.getFormattedLogMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction()
+            );
+        }
+    }
 
     /**
      * Returns the connector created from topic connection properties
@@ -179,64 +146,29 @@ public class OpenLineageOperationalServices {
      * @param topicConnection properties of the topic connection
      * @return the connector created based on the topic connection properties
      */
-    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection) {
+    private OpenMetadataTopicConnector getTopicConnector(Connection topicConnection, OMRSAuditLog auditLog) {
         try {
             ConnectorBroker connectorBroker = new ConnectorBroker();
 
             OpenMetadataTopicConnector topicConnector = (OpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
-
-            topicConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.OPEN_METADATA_TOPIC_CONNECTOR));
+            topicConnector.setAuditLog(auditLog);
 
             return topicConnector;
-        } catch (Throwable error) {
+        } catch (Exception error) {
             String methodName = "getTopicConnector";
-
-            if (log.isDebugEnabled()) {
-                log.debug("Unable to create topic connector: " + error.toString());
-            }
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
+
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
 
-        }
-    }
-
-
-    private void startConnector(OpenLineageAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(topicName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
-
-        try {
-            topicConnector.start();
-        } catch (ConnectorCheckedException e) {
-            auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(topicName, localServerName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-            throw new OMAGConfigurationErrorException(400,
-                    OpenLineageOperationalServices.class.getSimpleName(),
-                    actionDescription,
-                    auditCode.getFormattedLogMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction()
-            );
         }
     }
 
@@ -263,13 +195,33 @@ public class OpenLineageOperationalServices {
         OpenLineageAuditCode auditCode;
 
         auditCode = OpenLineageAuditCode.SERVICE_SHUTDOWN;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(localServerName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        logAudit(auditCode,actionDescription);
+
         return true;
     }
+
+    private void logAudit(OpenLineageAuditCode auditCode, String actionDescription) {
+        auditLog.logRecord(actionDescription,
+                           auditCode.getLogMessageId(),
+                           OMRSAuditLogRecordSeverity.INFO,
+                           auditCode.getFormattedLogMessage("Openlineage"),
+                        null,
+                           auditCode.getSystemAction(),
+                           auditCode.getUserAction());
+    }
+
+    private void getError(OMRSAuditLog auditLog, OpenLineageAuditCode code,
+                          String actionDescription, String methodName) throws OMAGConfigurationErrorException{
+
+        OpenLineageAuditCode auditCode = code;
+        logAudit(auditCode,actionDescription);
+
+        throw new OMAGConfigurationErrorException(500,
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  auditCode.getFormattedLogMessage(localServerName),
+                                                  auditCode.getSystemAction(),
+                                                  auditCode.getUserAction());
+    }
 }
+

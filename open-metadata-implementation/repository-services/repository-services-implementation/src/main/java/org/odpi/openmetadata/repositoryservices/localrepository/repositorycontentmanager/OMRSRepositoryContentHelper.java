@@ -2228,7 +2228,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return (Date)primitivePropertyValue.getPrimitiveValue();
+                                Long timestamp = (Long)primitivePropertyValue.getPrimitiveValue();
+                                return new Date(timestamp);
+
                             }
                         }
                     }
@@ -2567,6 +2569,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                                                         Date               propertyValue,
                                                         String             methodName)
     {
+
+
         InstanceProperties  resultingProperties;
 
         log.debug("Adding property " + propertyName + " for " + methodName);
@@ -2585,8 +2589,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        /*
+         * Date objects are stored in PrimitivePropertyValue as Java Long.
+         */
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        Long longValue = propertyValue.getTime();
+        primitivePropertyValue.setPrimitiveValue(longValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2965,7 +2973,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    /*
+                     * Internally, dates are stored as Java Long.
+                     */
+                    Long timestamp = ((Date) mapPropertyValue).getTime();
+                    primitivePropertyValue.setPrimitiveValue(timestamp);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
