@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.InTopicListener;
@@ -22,6 +24,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.applet.Main;
 
 
 /**
@@ -78,10 +81,19 @@ public class OpenLineageOperationalServices {
         logAudit(OpenLineageAuditCode.SERVICE_INITIALIZING, ACTION_DESCRIPTION);
 
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
-        OpenLineageGraphStore openLineageGraphStore = getGraphConnector(bufferGraphConnection);
+        Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
+
+        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
+        OpenLineageGraphStore mainGraphConnector = getGraphConnector(mainGraphConnection);
+        bufferGraphConnector.setMainGraphConnector(mainGraphConnector);
 
         //TODO check for null
-        startGraphServices(openLineageGraphStore);
+        GraphStoringServices graphStoringServices = new GraphStoringServices(bufferGraphConnector);
+        GraphQueryingServices graphServices = new GraphQueryingServices((MainGraphStore) mainGraphConnector);
+
+        this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
+
+        startEventBus(graphStoringServices);
 
     }
 
@@ -93,7 +105,7 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
+                return (BufferGraphStore) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
@@ -102,14 +114,7 @@ public class OpenLineageOperationalServices {
         return null;
     }
 
-    private void startGraphServices(OpenLineageGraphStore openLineageGraphStore) throws OMAGConfigurationErrorException {
 
-        GraphStoringServices graphStoringServices = new GraphStoringServices(openLineageGraphStore);
-        GraphQueryingServices graphServices = new GraphQueryingServices(openLineageGraphStore);
-        this.instance = new OpenLineageServicesInstance(graphServices, localServerName);
-
-        startEventBus(graphStoringServices);
-    }
 
     private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {
         inTopicConnector = getTopicConnector(openLineageConfig.getInTopicConnection(), auditLog);

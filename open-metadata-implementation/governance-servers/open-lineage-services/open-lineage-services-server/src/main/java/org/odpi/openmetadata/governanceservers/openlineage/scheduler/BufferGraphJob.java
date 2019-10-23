@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
-import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageGraphStore;
+import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -25,12 +25,12 @@ public class BufferGraphJob implements Job {
 
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 
-        OpenLineageGraphStore openLineageGraphStore = (OpenLineageGraphStore) dataMap.get("openLineageGraphStore");
+        BufferGraphStore bufferGraphStore = (BufferGraphStore) dataMap.get("openLineageGraphStore");
 
-        performTask(openLineageGraphStore);
+        performTask(bufferGraphStore);
     }
 
-    private void performTask(OpenLineageGraphStore openLineageGraphStore){
-        openLineageGraphStore.schedulerTask();
+    private void performTask(BufferGraphStore bufferGraphStore){
+        bufferGraphStore.schedulerTask();
     }
 }

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra;
 
 import org.apache.tinkerpop.gremlin.structure.Edge;
 import org.janusgraph.core.JanusGraph;
@@ -8,6 +8,7 @@ import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.accessservices.assetlineage.Vertex;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.IndexingFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.JanusConnectorErrorCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.ffdc.JanusConnectorException;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsBufferGraph;
@@ -23,10 +24,10 @@ import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class JanusFactory extends IndexingFactory {
+public class BufferGraphFactory extends IndexingFactory {
 
 
-    private static final Logger log = LoggerFactory.getLogger(JanusFactory.class);
+    private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
 
 
     public JanusGraph openBufferGraph(ConnectionProperties connectionProperties){
@@ -56,9 +57,9 @@ public class JanusFactory extends IndexingFactory {
             log.error("{} could not open graph stored", e);
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, JanusFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, BufferGraphFactory.class.getName());
             System.out.println(e.getMessage());
-            throw new JanusConnectorException(JanusFactory.class.getName(),
+            throw new JanusConnectorException(BufferGraphFactory.class.getName(),
                                               methodName,
                                               errorMessage,
                                               errorCode.getSystemAction(),
@@ -75,9 +76,9 @@ public class JanusFactory extends IndexingFactory {
             log.error("{} Caught exception during graph initialize operation", "open");
 
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, JanusFactory.class.getName());
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(e.getMessage(), methodName, BufferGraphFactory.class.getName());
 
-            throw new JanusConnectorException(JanusFactory.class.getName(),
+            throw new JanusConnectorException(BufferGraphFactory.class.getName(),
                                               methodName,
                                               errorMessage,
                                               errorCode.getSystemAction(),
@@ -124,7 +125,7 @@ public class JanusFactory extends IndexingFactory {
 
             JanusConnectorErrorCode errorCode = JanusConnectorErrorCode.GRAPH_INITIALIZATION_ERROR;
             String errorMessage = errorCode.getErrorMessageId();
-            throw new JanusConnectorException(JanusFactory.class.getName(),
+            throw new JanusConnectorException(BufferGraphFactory.class.getName(),
                                               methodName,
                                               errorMessage,
                                               errorCode.getSystemAction(),
