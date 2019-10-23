@@ -193,8 +193,8 @@ public class ProcessHandler {
                 relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createExternalRelationship(userId, externalSourceGUID, externalSourceName,
-                    relationshipTypeDef.getGUID(), processGUID, portGUID, null, methodName);
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,
+                    externalSourceName, processGUID, portGUID, null, methodName);
         }
     }
 

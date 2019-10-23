@@ -144,8 +144,8 @@ public class DataEngineSchemaTypeHandler {
                     relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
             if (relationship == null) {
-                repositoryHandler.createExternalRelationship(userId, externalSourceGUID, externalSourceName,
-                        relationshipTypeDef.getGUID(), schemaAttributeGUID, attributeSchemaTypeGUID, null, methodName);
+                repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(),externalSourceGUID,
+                        externalSourceName, schemaAttributeGUID, attributeSchemaTypeGUID, null, methodName);
             }
         }
     }
@@ -191,7 +191,7 @@ public class DataEngineSchemaTypeHandler {
                 relationshipTypeDef.getName(), methodName);
 
         if (relationship == null) {
-            repositoryHandler.createExternalRelationship(userId, externalSourceGUID, externalSourceName, relationshipTypeDef.getGUID(),
+            repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(),externalSourceGUID, externalSourceName,
                     sourceSchemaType.getGUID(), targetSchemaType.getGUID(), null, methodName);
         }
     }
