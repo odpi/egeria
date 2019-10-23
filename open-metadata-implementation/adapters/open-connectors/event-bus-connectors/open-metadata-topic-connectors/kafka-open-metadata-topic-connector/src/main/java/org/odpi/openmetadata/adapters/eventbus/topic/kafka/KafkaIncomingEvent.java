@@ -18,7 +18,8 @@ public class KafkaIncomingEvent extends IncomingEvent {
      * @param offset the kafka offset of the message
      */
     public KafkaIncomingEvent(String json, long offset) {
-        super(json);
+        //use the offset as the message id
+        super(json, String.valueOf(offset));
         this.offset = offset;
     }
     /**

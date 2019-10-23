@@ -32,7 +32,7 @@ public enum DataEngineErrorCode {
             "Check that the server initialized correctly.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-005 ",
-            "The port type passed for the {1} is invalid, or different from {2}",
+            "The port type passed for the {0} is invalid, or different from {1}",
             "The system is unable to create a new PortDelegation relation the request without equal types between the ports.",
             "Correct the code in the caller to provide the correct port type."),
     NO_SCHEMA_ATTRIBUTE(404, "OMAS-DATA-ENGINE-404-002 ",
