@@ -86,7 +86,16 @@ public class OpenLineageOperationalServices {
         BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
         OpenLineageGraphStore mainGraphConnector = getGraphConnector(mainGraphConnection);
         bufferGraphConnector.setMainGraphConnector(mainGraphConnector);
-
+        try {
+            bufferGraphConnector.start();
+        } catch (ConnectorCheckedException e) {
+            log.error("Could not start the buffer graph connector.");
+        }
+        try {
+            mainGraphConnector.start();
+        } catch (ConnectorCheckedException e) {
+            log.error("Could not start the main graph connector.");
+        }
         //TODO check for null
         GraphStoringServices graphStoringServices = new GraphStoringServices(bufferGraphConnector);
         GraphQueryingServices graphServices = new GraphQueryingServices((MainGraphStore) mainGraphConnector);

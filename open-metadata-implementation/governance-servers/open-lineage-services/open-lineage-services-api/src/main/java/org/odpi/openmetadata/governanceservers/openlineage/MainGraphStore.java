@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage;
 
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 
@@ -42,5 +43,5 @@ public interface MainGraphStore {
      * @return The queried graph, in graphSON format.
      */
     String exportGraph(String graphName);
-
 }
+
