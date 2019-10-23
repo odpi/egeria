@@ -65,7 +65,7 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void createSoftwareServerCapability() throws InvalidParameterException, PropertyServerException,
+    void createExternalDataEngine() throws InvalidParameterException, PropertyServerException,
                                                  UserNotAuthorizedException {
         String methodName = "createExternalDataEngine";
 
@@ -83,7 +83,7 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void createSoftwareServerCapability_throwsUserNotAuthorizedException() throws PropertyServerException,
+    void createExternalDataEngine_throwsUserNotAuthorizedException() throws PropertyServerException,
                                                                                   UserNotAuthorizedException,
                                                                                   InvocationTargetException,
                                                                                   NoSuchMethodException,
@@ -104,7 +104,7 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void getSoftwareServerCapabilityByQualifiedName() throws UserNotAuthorizedException, PropertyServerException,
+    void getExternalDataEngineByQualifiedName() throws UserNotAuthorizedException, PropertyServerException,
                                                              InvalidParameterException {
         String methodName = "getExternalDataEngineByQualifiedName";
 
@@ -125,7 +125,7 @@ class DataEngineRegistrationHandlerTest {
     }
 
     @Test
-    void getSoftwareServerCapabilityByQualifiedName_throwsUserNotAuthorizedException() throws
+    void getExternalDataEngineByQualifiedName_throwsUserNotAuthorizedException() throws
                                                                                        UserNotAuthorizedException,
                                                                                        PropertyServerException,
                                                                                        InvocationTargetException,

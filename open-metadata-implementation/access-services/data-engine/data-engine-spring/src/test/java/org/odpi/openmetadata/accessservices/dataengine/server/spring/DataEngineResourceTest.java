@@ -30,7 +30,7 @@ class DataEngineResourceTest {
     private DataEngineResource dataEngineResource;
 
     @Test
-    void testCreateSoftwareCapability() {
+    void testCreateExternalDataEngine() {
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
         dataEngineResource.createExternalDataEngine(SERVER_NAME, USER, requestBody);
 
@@ -38,7 +38,7 @@ class DataEngineResourceTest {
     }
 
     @Test
-    void testGetSoftwareServerCapabiliyty() {
+    void testGetExternalDataEngine() {
         String qualifiedName = "testQualifiedName";
         dataEngineResource.getExternalDataEngineByQualifiedName(SERVER_NAME, USER, qualifiedName);
 
