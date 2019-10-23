@@ -29,7 +29,8 @@ public class CassandraMetadataListener implements SchemaChangeListener {
     @Override
     public void onKeyspaceCreated(@NonNull KeyspaceMetadata keyspaceMetadata) {
 
-        String actionDescription = "creating Cassandra Keyspace";
+        String actionDescription = "creating Deployed Database Schema asset from Cassandra Keyspace";
+
         try {
             DeployedDatabaseSchema deployedDatabaseSchema = null;
             deployedDatabaseSchema.setName(keyspaceMetadata.getName().toString());
@@ -37,7 +38,8 @@ public class CassandraMetadataListener implements SchemaChangeListener {
             deployedDatabaseSchema.setGuid(UUID.randomUUID().toString());
             deployedDatabaseSchema.setDisplayName(keyspaceMetadata.getName().toString());
             deployedDatabaseSchema.setAdditionalProperties(keyspaceMetadata.getReplication());
-            //dataPlatformClient.
+
+            //TODO: map tabularSchemaType and tabularColumn from keyspace metadata
             dataPlatformClient.createDeployedDatabaseSchema(userId, deployedDatabaseSchema);
         } catch (InvalidParameterException | PropertyServerException | NullPointerException e){
             auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_CREATING_KEYSPACE;

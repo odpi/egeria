@@ -86,7 +86,7 @@ public class CassandraDataStoreConnector extends ConnectorBase {
     /**
      * Set up the Cassandra Cluster Connection with schema change listener to track the metadata changes
      */
-    private void startCassandraConnection(SchemaChangeListener schemaChangeListener) {
+    public void startCassandraConnection(SchemaChangeListener schemaChangeListener) {
 
         String actionDescription = "start Cassandra Data Store Connection";
         try {

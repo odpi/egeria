@@ -70,7 +70,7 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
         }
 
         CassandraMetadataListener cassandraMetadataListener = new CassandraMetadataListener(this.getDataPlatformClient());
-        //cassandraDataStoreConnector.
+        cassandraDataStoreConnector.startCassandraConnection(cassandraMetadataListener);
 
         this.cqlSession = cassandraDataStoreConnector.getSession();
 
@@ -118,38 +118,4 @@ public abstract class CassandraMetadataExtractorConnector extends DataPlatformMe
                 auditLog.getUserAction());
     }
 
-    /**
-     * Register the metadata change listener of Cassandra Metadata Extractor Connector.
-     *
-     * @param cassandraMetadataListener the cassandra store listener
-     */
-    public void registerListener(CassandraMetadataListener cassandraMetadataListener) {
-
-        String actionDescription = "register Cassandra Metadata Listener";
-
-        if (cassandraMetadataListener != null && this.cqlSession.isSchemaMetadataEnabled()) {
-
-            //cassandraDataStoreConnector.start
-
-            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_REGISTER_LISTENER_FINISHED;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditLog.getLogMessageId(),
-                    auditLog.getSeverity(),
-                    auditLog.getFormattedLogMessage(),
-                    null,
-                    auditLog.getSystemAction(),
-                    auditLog.getUserAction());
-
-        } else {
-
-            auditLog = CassandraMetadataExtractorAuditCode.CONNECTOR_REGISTER_LISTENER_ERROR;
-            omrsAuditLog.logRecord(actionDescription,
-                    auditLog.getLogMessageId(),
-                    auditLog.getSeverity(),
-                    auditLog.getFormattedLogMessage(),
-                    null,
-                    auditLog.getSystemAction(),
-                    auditLog.getUserAction());
-        }
-    }
 }
