@@ -64,6 +64,11 @@
             <artifactId>governance-engine-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.mikesamuel</groupId>
+            <artifactId>json-sanitizer</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
