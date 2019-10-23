@@ -232,7 +232,7 @@ public class AssetCatalogRESTService {
         try {
 
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            Term term = assetCatalogHandler.buildContextByType(userId, assetCatalogHandler, assetGUID, assetType);
+            Term term = assetCatalogHandler.buildContextByType(userId, assetGUID, assetType);
             if (term != null) {
                 response.setAssets(Collections.singletonList(term));
             }

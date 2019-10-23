@@ -310,7 +310,6 @@ public class AssetCatalogHandler {
     }
 
     public Term buildContextByType(String userId,
-                                   AssetCatalogHandler assetCatalogHandler,
                                    String entityGUID,
                                    String entityTypeDefName)
             throws org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException,
@@ -332,21 +331,21 @@ public class AssetCatalogHandler {
         AssetElement assetElement = new AssetElement();
 
         if (typeDefName.equals(GLOSSARY_TERM)) {
-            return assetCatalogHandler.getContextForGlossaryTerm(userId, entityDetail);
+            return getContextForGlossaryTerm(userId, entityDetail);
         } else {
             Term term = buildTerm(entityDetail);
             if (superTypes.contains(SCHEMA_ELEMENT)) {
-                assetCatalogHandler.getContextForSchemaElement(userId, entityDetail, assetElement);
+                getContextForSchemaElement(userId, entityDetail, assetElement);
             } else if (superTypes.contains(DEPLOYED_API)) {
-                assetCatalogHandler.getContextForDeployedAPI(userId, entityDetail, assetElement);
+                getContextForDeployedAPI(userId, entityDetail, assetElement);
             } else if (superTypes.contains(IT_INFRASTRUCTURE)) {
-                assetCatalogHandler.getContextForInfrastructure(userId, entityDetail, assetElement);
+                getContextForInfrastructure(userId, entityDetail, assetElement);
             } else if (superTypes.contains(PROCESS)) {
-                assetCatalogHandler.getContextForProcess(userId, entityDetail, assetElement);
+                getContextForProcess(userId, entityDetail, assetElement);
             } else if (superTypes.contains(DATA_STORE)) {
-                assetCatalogHandler.getContextForDataStore(userId, entityDetail, assetElement);
+                getContextForDataStore(userId, entityDetail, assetElement);
             } else if (superTypes.contains(DATA_SET)) {
-                assetCatalogHandler.getContextForDataSet(userId, entityDetail, assetElement);
+                getContextForDataSet(userId, entityDetail, assetElement);
             }
 
             term.setElements(Collections.singletonList(assetElement));
