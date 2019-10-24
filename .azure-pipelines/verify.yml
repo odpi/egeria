@@ -9,6 +9,9 @@ pr:
       - master
       - egeria-release-*
 
+variables:
+  - group: Artifactory
+
 stages:
   - stage: Verify
     jobs:
@@ -32,6 +35,7 @@ stages:
               options: >-
                   --batch-mode
                   -e
+                  -s .m2/settings.xml
                   -DskipFVT
                   -Dstream=$(System.PullRequest.TargetBranch)
                   -Dnode.downloadRoot=https://odpi.jfrog.io/odpi/nodejs-dist/

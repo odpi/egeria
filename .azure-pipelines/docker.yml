@@ -17,6 +17,9 @@ schedules:
       include:
         - master
 
+variables:
+  - group: Artifactory
+
 stages:
   - stage: Docker
     jobs:
@@ -60,6 +63,7 @@ stages:
               options: >-
                   --batch-mode
                   -e
+                  -s .m2/settings.xml
                   -Ddocker
                   -Ddocker.repo=odpi
                   -Ddocker.registry=docker.io
