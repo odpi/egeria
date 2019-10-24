@@ -122,9 +122,13 @@ public class AssetConverter {
             classification.setUpdateTime(classificationEntity.getUpdateTime());
 
             classification.setVersion(classificationEntity.getVersion());
-            classification.setStatus(classificationEntity.getStatus().getName());
-            classification.setTypeDefName(classificationEntity.getType().getTypeDefName());
-            classification.setTypeDefDescription(classificationEntity.getType().getTypeDefDescription());
+            if (classificationEntity.getStatus() != null) {
+                classification.setStatus(classificationEntity.getStatus().getName());
+            }
+            if (classificationEntity.getType() != null) {
+                classification.setTypeDefName(classificationEntity.getType().getTypeDefName());
+                classification.setTypeDefDescription(classificationEntity.getType().getTypeDefDescription());
+            }
             if (classificationEntity.getProperties() != null) {
                 classification.setProperties(repositoryHelper.getInstancePropertiesAsMap(classificationEntity.getProperties()));
             }

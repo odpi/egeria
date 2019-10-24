@@ -34,7 +34,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.ArrayList;
@@ -219,24 +218,24 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
 
         TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
-        return Optional.ofNullable(typeDefByName).map(TypeDefLink::getName).orElse(null);
+        return Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
     }
 
-    public List<AssetDescription> getIntermediateAssets(String userId, String startAssetId, String endAssetId)
+    public List<AssetDescription> getIntermediateAssets(String userId, String startAssetGUID, String endAssetGUID)
             throws AssetNotFoundException, InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         String methodName = "getIntermediateAssets";
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(startAssetId, "startAssetId", methodName);
-        invalidParameterHandler.validateGUID(endAssetId, "endAssetId", methodName);
+        invalidParameterHandler.validateGUID(startAssetGUID, "startAssetGUID", methodName);
+        invalidParameterHandler.validateGUID(endAssetGUID, "endAssetGUID", methodName);
 
         OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
 
         InstanceGraph linkingEntities = null;
         try {
             linkingEntities = metadataCollection.getLinkingEntities(userId,
-                    startAssetId,
-                    endAssetId,
+                    startAssetGUID,
+                    endAssetGUID,
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     null);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
@@ -244,7 +243,7 @@ public class AssetCatalogHandler {
                 | PropertyErrorException | RepositoryErrorException e) {
             errorHandler.handleRepositoryError(e, methodName);
         } catch (EntityNotKnownException e) {
-            errorHandler.handleUnknownEntity(e, startAssetId, "", methodName, ASSET_GUID_PARAMETER);
+            errorHandler.handleUnknownEntity(e, startAssetGUID, "", methodName, ASSET_GUID_PARAMETER);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             errorHandler.handleUnauthorizedUser(userId, methodName);
         }
@@ -252,7 +251,7 @@ public class AssetCatalogHandler {
         if (linkingEntities == null || CollectionUtils.isEmpty(linkingEntities.getEntities())) {
             AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.LINKING_ASSETS_NOT_FOUND;
             String errorMessage = errorCode.getErrorMessageId() +
-                    errorCode.getFormattedErrorMessage(startAssetId, endAssetId, serverName);
+                    errorCode.getFormattedErrorMessage(startAssetGUID, endAssetGUID, serverName);
 
             throw new AssetNotFoundException(errorCode.getHttpErrorCode(),
                     this.getClass().getName(),
@@ -1236,10 +1235,10 @@ public class AssetCatalogHandler {
         return entityNeighborhood;
     }
 
-    private Set<String> collectSuperTypes(String userId, String typeDefName) throws PropertyServerException, UserNotAuthorizedException {
+    private Set<String> collectSuperTypes(String userId, String typeDefName) {
         Set<String> superTypes = new HashSet<>();
 
-        TypeDef typeDefByName = getTypeDefByName(userId, typeDefName);
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, typeDefName);
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);
         }
@@ -1247,27 +1246,12 @@ public class AssetCatalogHandler {
         return superTypes;
     }
 
-    private TypeDef getTypeDefByName(String userId, String type) throws PropertyServerException, UserNotAuthorizedException {
-        String methodName = "getTypeDefByName";
-
-        try {
-            OMRSMetadataCollection metadataCollection = repositoryHandler.getMetadataCollection();
-            return metadataCollection.getTypeDefByName(userId, type);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException | TypeDefNotKnownException e) {
-            errorHandler.handleRepositoryError(e, methodName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-            errorHandler.handleUnauthorizedUser(userId, methodName);
-        }
-        return null;
-    }
-
-
-    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) throws PropertyServerException, UserNotAuthorizedException {
+    private void collectSuperTypes(String userId, TypeDef type, Set<String> superTypes) {
         if (type.getName().equals(REFERENCEABLE)) {
             return;
         }
         superTypes.add(type.getName());
-        TypeDef typeDefByName = getTypeDefByName(userId, type.getSuperType().getName());
+        TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, type.getSuperType().getName());
         if (typeDefByName != null) {
             collectSuperTypes(userId, typeDefByName, superTypes);
         }
