@@ -149,6 +149,7 @@
         <jwt.version>0.6.0</jwt.version>
         <jakarta.persistence.version>2.2.3</jakarta.persistence.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
+        <javax-jaxb-api.version>2.3.1</javax-jaxb-api.version>
         <gaian.version>2.1.8</gaian.version>
         <avro.version>1.9.1</avro.version>
         <derby.version>10.8.3.1</derby.version>
@@ -332,6 +333,12 @@
                 <artifactId>validation-api</artifactId>
                 <scope>compile</scope>
                 <version>${javax-validation.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>javax.xml.bind</groupId>
+                <artifactId>jaxb-api</artifactId>
+                <version>${javax-jaxb-api.version}</version>
             </dependency>
 
             <dependency>
