@@ -29,7 +29,7 @@ public class AssetCatalogHandlerTest {
 
     private static final String RELATIONSHIP_GUID = "212123-abc";
     private static final String ASSET_TYPE = "Process";
-    public static final String GUID_PARAMETER = "assetGUID";
+    private static final String GUID_PARAMETER = "assetGUID";
     private final String USER = "test-user";
     private static final String FIRST_GUID = "ababa-123-acbd";
     private static final String SECOND_GUID = "ababc-2134-2341f";
