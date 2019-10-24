@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 
-
 import java.util.ArrayList;
 import java.util.List;
 

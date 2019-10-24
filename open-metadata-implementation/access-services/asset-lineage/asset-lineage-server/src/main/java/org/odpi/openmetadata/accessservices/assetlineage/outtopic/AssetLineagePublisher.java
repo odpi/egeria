@@ -5,9 +5,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.outtopic;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetLineageEvent;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
