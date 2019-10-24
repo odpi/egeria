@@ -280,8 +280,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         // If no page was found in the route data, page will be an empty string.
         // Show 'asset-search' in that case. And if the page doesn't exist, show 'view404'.
 
-        // var breadcrumb = this.shadowRoot.querySelector('#breadcrumb');
-        // breadcrumb.setPath([{label: 'Home', href: this.rootPath + '#'}, {label: page, href: this.rootPath + '#/' + this.subroute }]);
         if (!page) {
             this.page = 'asset-search';
         } else if (this.pages.indexOf(page) !== -1) {
