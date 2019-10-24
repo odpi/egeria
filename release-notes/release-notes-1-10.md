@@ -1,21 +1,15 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.10
+# Release 1.10 (Planned July 2020)
 
 Release 1.10 adds support for:
-   * Project management of IT change
-   * IoT and large scale cohorts
-
+    * Digital architecture
+    * Digital service lifecycle management
+    
 Below are the highlights:
 
-* There is a new access service called the [Project Management OMAS](../open-metadata-implementation/access-services/project-management)
-  provides support for projects, task tracking and to dos.
-  It is designed to integrate with project management tools and link the progress of work with the governance requirements and outcomes.
-
-* The [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services)
-  have been enhanced to scale to hundreds of members of the open metadata
-  cohort.
+* There is a new access service called the [Digital Architecture OMAS](../open-metadata-implementation/access-services/digital-architecture) provides support for the architecture and design of digital services.
 
 * There are new [tutorials](../open-metadata-resources/open-metadata-tutorials),
   [hands-on labs](../open-metadata-resources/open-metadata-labs),
