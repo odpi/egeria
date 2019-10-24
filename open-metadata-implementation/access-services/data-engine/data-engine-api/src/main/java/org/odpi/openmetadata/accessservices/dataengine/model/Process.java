@@ -32,6 +32,7 @@ public class Process implements Serializable {
     private List<PortImplementation> portImplementations;
     private List<PortAlias> portAliases;
     private List<LineageMapping> lineageMappings;
+    private UpdateSemantic updateSemantic;
 
     public Process() {
     }
@@ -52,7 +53,16 @@ public class Process implements Serializable {
         this.portImplementations = portImplementations;
         this.portAliases = portAliases;
         this.lineageMappings = lineageMappings;
+        this.updateSemantic = UpdateSemantic.REPLACE;
+    }
 
+    public Process(String qualifiedName, String name, String description, String latestChange,
+                   List<String> zoneMembership, String displayName, String formula, String owner, OwnerType ownerType,
+                   List<PortImplementation> portImplementations, List<PortAlias> portAliases,
+                   List<LineageMapping> lineageMappings, UpdateSemantic updateSemantic) {
+        this(qualifiedName, name, description, latestChange, zoneMembership, displayName, formula, owner, ownerType,
+                portImplementations, portAliases, lineageMappings);
+        this.updateSemantic = updateSemantic;
     }
 
     public String getQualifiedName() {
@@ -151,6 +161,18 @@ public class Process implements Serializable {
         this.lineageMappings = lineageMappings;
     }
 
+    public UpdateSemantic getUpdateSemantic() {
+        if (updateSemantic == null) {
+            return UpdateSemantic.REPLACE;
+        }
+
+        return updateSemantic;
+    }
+
+    public void setUpdateSemantic(UpdateSemantic updateSemantic) {
+        this.updateSemantic = updateSemantic;
+    }
+
     @Override
     public String toString() {
         return "Process{" +
@@ -166,6 +188,7 @@ public class Process implements Serializable {
                 ", portImplementations=" + portImplementations +
                 ", portAliases=" + portAliases +
                 ", lineageMappings=" + lineageMappings +
+                ", updateSemantic=" + updateSemantic +
                 '}';
     }
 
@@ -185,13 +208,14 @@ public class Process implements Serializable {
                 Objects.equals(formula, process.formula) &&
                 Objects.equals(portImplementations, process.portImplementations) &&
                 Objects.equals(portAliases, process.portAliases) &&
-                Objects.equals(lineageMappings, process.lineageMappings);
+                Objects.equals(lineageMappings, process.lineageMappings) &&
+                updateSemantic == process.updateSemantic;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(qualifiedName, name, description, latestChange, zoneMembership, displayName, owner,
-                ownerType, formula, portImplementations, portAliases, lineageMappings);
+                ownerType, formula, portImplementations, portAliases, lineageMappings, updateSemantic);
     }
 }
 

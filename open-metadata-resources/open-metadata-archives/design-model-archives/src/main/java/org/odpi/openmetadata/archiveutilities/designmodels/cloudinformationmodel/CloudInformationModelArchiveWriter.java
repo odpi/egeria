@@ -4,44 +4,69 @@ package org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmode
 
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveWriter;
 
+import java.io.IOException;
+
 
 /**
- * OpenMetadataTypesArchiveWriter create a physical open metadata archive file for the supplied open metadata archives
+ * OpenMetadataTypesArchiveWriter creates a physical open metadata archive file for the supplied open metadata archives
  * encoded using Open Metadata Repository Services (OMRS) formats.
  */
 public class CloudInformationModelArchiveWriter extends OMRSArchiveWriter
 {
-    private static final String defaultOpenMetadataArchiveFileName = "CloudInformationModel.json";
+    static final String defaultOpenMetadataArchiveFileName = "CloudInformationModel.json";
+
+    private String cimModelLocation;
+
 
     /**
      * Default constructor
+     *
+     * @param cimModelLocation directory name for the CIM model's JSON-LD files.
      */
-    private CloudInformationModelArchiveWriter()
+    CloudInformationModelArchiveWriter(String cimModelLocation)
     {
+        this.cimModelLocation = cimModelLocation;
     }
 
 
     /**
      * Generates and writes out an open metadata archive containing all of the open metadata types.
      */
-    private void writeOpenMetadataTypesArchive()
+    void writeOpenMetadataArchive() throws IOException
     {
-        CloudInformationModelArchive cloudInformationModelArchive = new CloudInformationModelArchive();
+        CloudInformationModelParser         cloudInformationModelParser         = new CloudInformationModelParser(cimModelLocation);
+        CloudInformationModelArchiveBuilder
+                                            cloudInformationModelArchiveBuilder = new CloudInformationModelArchiveBuilder(cloudInformationModelParser);
 
-        this.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
-                                      cloudInformationModelArchive.getOpenMetadataArchive());
+        super.writeOpenMetadataArchive(defaultOpenMetadataArchiveFileName,
+                                       cloudInformationModelArchiveBuilder.getOpenMetadataArchive());
     }
 
 
     /**
-     * Main program to control the archive writer.
+     * Main program to initiate the archive writer.
      *
-     * @param args ignored arguments
+     * @param args list of arguments - first one should be the directory where the model
+     *             content is located.  Any other arguments passed are ignored.
      */
     public static void main(String[] args)
     {
-        CloudInformationModelArchiveWriter archiveWriter = new CloudInformationModelArchiveWriter();
+        if (args.length == 0)
+        {
+            System.err.println("USAGE: filename");
+            System.exit(-1);
+        }
 
-        archiveWriter.writeOpenMetadataTypesArchive();
+        try
+        {
+            CloudInformationModelArchiveWriter archiveWriter = new CloudInformationModelArchiveWriter(args[0]);
+
+            archiveWriter.writeOpenMetadataArchive();
+        }
+        catch (Throwable error)
+        {
+            System.err.println("Exception: " + error.toString());
+            System.exit(-1);
+        }
     }
 }

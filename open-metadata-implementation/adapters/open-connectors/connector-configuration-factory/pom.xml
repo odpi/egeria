@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -103,6 +103,10 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>cassandra-open-metadata-connector</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>virtualization-services-api</artifactId>
         </dependency>
     </dependencies>
 

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.p
 import org.testng.annotations.Test;
 
 /**
- * Test that the open metadata archive types load without error.
+ * Test that the open metadata archive types load without error.  This archive only contains types.
  */
 public class TestOpenMetadataTypesArchive
 {

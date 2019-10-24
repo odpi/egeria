@@ -10,8 +10,7 @@ metadata repositories:
 * The [Open Connector Framework (OCF)](../open-metadata-implementation/frameworks/open-connector-framework)
   provides standard interfaces for implementing connectors.  These are used
   to access the data stored in [Assets](../open-metadata-implementation/access-services/docs/concepts/assets)
-  and to plug in platform capabilities
-  into the Open Metadata Repository Services (OMRS).
+  and to plug in platform capabilities into the Open Metadata Repository Services (OMRS).
 
 * The implementation of the [Open Metadata Repository Services (OMRS)](../open-metadata-implementation/repository-services).
   The repository services provide support for the [open metadata types](../open-metadata-publication/website/open-metadata-types),

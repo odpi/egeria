@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.userinterface.accessservices.api;
 
 import org.odpi.openmetadata.userinterface.accessservices.auth.AuthService;
+import org.odpi.openmetadata.userinterface.accessservices.auth.TokenUser;
 import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,14 +26,14 @@ public class SecureController {
      * @return userName or null if there is not one
      */
     protected String getUser(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        String userName =null;
-        if (session !=null) {
-            Authentication auth = authService.getAuthentication(request);
-             User user = (User) session.getAttribute("user");
-             if (user.getName() !=null) {
-                 userName = user.getUsername();
-             }
+        String userName = null;
+        Authentication auth = authService.getAuthentication(request);
+        if(auth != null && auth.getDetails() != null && (auth.getDetails() instanceof TokenUser)){
+            userName = ((TokenUser) auth.getDetails()).getUser().getUsername();
+        }
+
+        if(userName ==  null){
+            throw new UserNotAuthorizedException("User is not authorized");
         }
         return userName;
     }

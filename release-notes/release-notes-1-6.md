@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.6
+# Release 1.6 (Planned March 2020)
 
 Release 1.6 adds support for:
   * Glossaries, reference data and model support
