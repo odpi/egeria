@@ -165,7 +165,6 @@
         <jsonld.version>0.12.5</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.13</commons-codec.version>
-        <joda-time.version>2.10.1</joda-time.version>
 
 
         <!-- Versions of plugins -->
@@ -463,12 +462,6 @@
                 <groupId>org.janusgraph</groupId>
                 <artifactId>janusgraph-es</artifactId>
                 <version>${janus.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>joda-time</groupId>
-                <artifactId>joda-time</artifactId>
-                <version>${joda-time.version}</version>
             </dependency>
 
             <dependency>
