@@ -26,7 +26,9 @@ public class OMRSArchiveBuilder
     private OpenMetadataArchiveProperties archiveProperties;
 
     /*
-     * Hash maps for accumulating TypeDefs and instances as the content of the archive is built up.
+     * Maps and lists for accumulating TypeDefs and instances as the content of the archive is built up.
+     * The maps accumulate content from both dependent archives and the new archive being built.
+     * The lists contain only the new content, and will ultimately be used when assembling the archive.
      */
     private Map<String, PrimitiveDef>                  primitiveDefMap       = new HashMap<>();
     private List<PrimitiveDef>                         primitiveDefList      = new ArrayList<>();
@@ -67,23 +69,15 @@ public class OMRSArchiveBuilder
      * @param creationDate data that this archive was created.
      * @param dependsOnArchives list of GUIDs for archives that this archive depends on (null for no dependencies).
      */
-    public OMRSArchiveBuilder(String                  archiveGUID,
-                              String                  archiveName,
-                              String                  archiveDescription,
-                              OpenMetadataArchiveType archiveType,
-                              String                  originatorName,
-                              Date                    creationDate,
-                              List<String>            dependsOnArchives)
+    public OMRSArchiveBuilder(String                     archiveGUID,
+                              String                     archiveName,
+                              String                     archiveDescription,
+                              OpenMetadataArchiveType    archiveType,
+                              String                     originatorName,
+                              Date                       creationDate,
+                              List<OpenMetadataArchive>  dependsOnArchives)
     {
-        this.archiveProperties = new OpenMetadataArchiveProperties();
-
-        this.archiveProperties.setArchiveGUID(archiveGUID);
-        this.archiveProperties.setArchiveName(archiveName);
-        this.archiveProperties.setArchiveDescription(archiveDescription);
-        this.archiveProperties.setArchiveType(archiveType);
-        this.archiveProperties.setOriginatorName(originatorName);
-        this.archiveProperties.setCreationDate(creationDate);
-        this.archiveProperties.setDependsOnArchives(dependsOnArchives);
+        this(archiveGUID, archiveName, archiveDescription, archiveType, originatorName, null, creationDate, dependsOnArchives);
     }
 
 
@@ -104,20 +98,141 @@ public class OMRSArchiveBuilder
      * @param originatorName name of the originator (person or organization) of the archive.
      * @param originatorLicense default license string for content.
      * @param creationDate data that this archive was created.
-     * @param dependsOnArchives list of GUIDs for archives that this archive depends on (null for no dependencies).
+     * @param dependsOnArchives list of archives that this archive depends on (null for no dependencies).
      */
-    public OMRSArchiveBuilder(String                  archiveGUID,
-                              String                  archiveName,
-                              String                  archiveDescription,
-                              OpenMetadataArchiveType archiveType,
-                              String                  originatorName,
-                              String                  originatorLicense,
-                              Date                    creationDate,
-                              List<String>            dependsOnArchives)
+    public OMRSArchiveBuilder(String                     archiveGUID,
+                              String                     archiveName,
+                              String                     archiveDescription,
+                              OpenMetadataArchiveType    archiveType,
+                              String                     originatorName,
+                              String                     originatorLicense,
+                              Date                       creationDate,
+                              List<OpenMetadataArchive>  dependsOnArchives)
     {
-        this(archiveGUID, archiveName, archiveDescription, archiveType, originatorName, creationDate, dependsOnArchives);
 
+        this.archiveProperties = new OpenMetadataArchiveProperties();
+
+        this.archiveProperties.setArchiveGUID(archiveGUID);
+        this.archiveProperties.setArchiveName(archiveName);
+        this.archiveProperties.setArchiveDescription(archiveDescription);
+        this.archiveProperties.setArchiveType(archiveType);
+        this.archiveProperties.setOriginatorName(originatorName);
         this.archiveProperties.setOriginatorLicense(originatorLicense);
+        this.archiveProperties.setCreationDate(creationDate);
+
+        if (dependsOnArchives == null)
+        {
+            this.archiveProperties.setDependsOnArchives(null);
+        }
+        else
+        {
+            List<String>  dependsOnArchiveGUIDs = new ArrayList<>();
+
+            for (OpenMetadataArchive  openMetadataArchive : dependsOnArchives)
+            {
+                if (openMetadataArchive != null)
+                {
+                    /*
+                     * Extract the guid for the new archive dependencies.
+                     */
+                    OpenMetadataArchiveProperties dependentArchiveProperties = openMetadataArchive.getArchiveProperties();
+
+                    if (dependentArchiveProperties != null)
+                    {
+                        if (dependentArchiveProperties.getArchiveGUID() != null)
+                        {
+                            dependsOnArchiveGUIDs.add(dependentArchiveProperties.getArchiveGUID());
+                        }
+                    }
+
+                    /*
+                     * Load up the types from the archive into the maps.
+                     */
+                    OpenMetadataArchiveTypeStore typeStore = openMetadataArchive.getArchiveTypeStore();
+
+                    if (typeStore != null)
+                    {
+                        List<AttributeTypeDef> attributeTypeDefs = typeStore.getAttributeTypeDefs();
+
+                        if (attributeTypeDefs != null)
+                        {
+                            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs)
+                            {
+                                if (attributeTypeDef != null)
+                                {
+                                    guidMap.put(attributeTypeDef.getGUID(), attributeTypeDef);
+                                    nameMap.put(attributeTypeDef.getName(), attributeTypeDef);
+
+                                    switch (attributeTypeDef.getCategory())
+                                    {
+                                        case PRIMITIVE:
+                                            primitiveDefMap.put(attributeTypeDef.getGUID(), (PrimitiveDef) attributeTypeDef);
+                                            break;
+
+                                        case COLLECTION:
+                                            collectionDefMap.put(attributeTypeDef.getGUID(), (CollectionDef) attributeTypeDef);
+                                            break;
+
+                                        case ENUM_DEF:
+                                            enumDefMap.put(attributeTypeDef.getGUID(), (EnumDef) attributeTypeDef);
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+
+                        List<TypeDef> typeDefs = typeStore.getNewTypeDefs();
+
+                        if (typeDefs != null)
+                        {
+                            for (TypeDef typeDef : typeDefs)
+                            {
+                                if (typeDef != null)
+                                {
+                                    guidMap.put(typeDef.getGUID(), typeDef);
+                                    nameMap.put(typeDef.getName(), typeDef);
+
+                                    switch (typeDef.getCategory())
+                                    {
+                                        case ENTITY_DEF:
+                                            entityDefMap.put(typeDef.getGUID(), (EntityDef) typeDef);
+                                            break;
+
+                                        case RELATIONSHIP_DEF:
+                                            relationshipDefMap.put(typeDef.getGUID(), (RelationshipDef) typeDef);
+                                            break;
+
+                                        case CLASSIFICATION_DEF:
+                                            classificationDefMap.put(typeDef.getGUID(), (ClassificationDef) typeDef);
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    /*
+                     * Load up the instances from the archive into the maps.
+                     */
+                    OpenMetadataArchiveInstanceStore instanceStore = openMetadataArchive.getArchiveInstanceStore();
+
+                    if (instanceStore != null)
+                    {
+
+                    }
+
+                }
+            }
+
+            if (! dependsOnArchiveGUIDs.isEmpty())
+            {
+                this.archiveProperties.setDependsOnArchives(dependsOnArchiveGUIDs);
+            }
+            else
+            {
+                this.archiveProperties.setDependsOnArchives(null);
+            }
+        }
     }
 
 
@@ -699,7 +814,7 @@ public class OMRSArchiveBuilder
      * Retrieve the entityDef or null if it is not defined.
      *
      * @param entityDefName name of the entity
-     * @return the retrieved Entity def
+     * @return the retrieved entity def
      */
     public EntityDef  getEntityDef(String   entityDefName)
     {
@@ -1039,6 +1154,27 @@ public class OMRSArchiveBuilder
 
 
     /**
+     * Return the requested type definition if known.
+     *
+     * @param typeName name ot type
+     * @return type definition
+     */
+    public TypeDef getTypeDefByName(String  typeName)
+    {
+        Object  namedObject = nameMap.get(typeName);
+
+        if (namedObject instanceof TypeDef)
+        {
+            return (TypeDef)namedObject;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+
+    /**
      * Add a new entity to the archive.
      *
      * @param entity instance to add
@@ -1261,9 +1397,9 @@ public class OMRSArchiveBuilder
         /*
          * Set up the TypeStore.  The types are added in a strict order to ensure that the dependencies are resolved.
          */
-        ArrayList<AttributeTypeDef>  attributeTypeDefs = new ArrayList<>();
-        ArrayList<TypeDef>           typeDefs = new ArrayList<>();
-        ArrayList<TypeDefPatch>      typeDefPatches = new ArrayList<>();
+        List<AttributeTypeDef>  attributeTypeDefs = new ArrayList<>();
+        List<TypeDef>           typeDefs = new ArrayList<>();
+        List<TypeDefPatch>      typeDefPatches = new ArrayList<>();
 
         if (! primitiveDefList.isEmpty())
         {
