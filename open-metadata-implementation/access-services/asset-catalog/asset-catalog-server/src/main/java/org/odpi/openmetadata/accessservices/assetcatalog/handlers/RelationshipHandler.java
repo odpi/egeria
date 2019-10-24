@@ -44,7 +44,7 @@ public class RelationshipHandler {
         String relationshipTypeGUID = null;
         if (relationshipType != null) {
             TypeDef typeDefByName = repositoryHelper.getTypeDefByName(userId, relationshipType);
-            relationshipTypeGUID = Optional.ofNullable(typeDefByName).map(TypeDefLink::getName).orElse(null);
+            relationshipTypeGUID = Optional.ofNullable(typeDefByName).map(TypeDefLink::getGUID).orElse(null);
         }
 
         Relationship relationshipBetweenEntities = repositoryHandler.getRelationshipBetweenEntities(userId,
@@ -52,7 +52,7 @@ public class RelationshipHandler {
                 "",
                 entity2GUID,
                 relationshipTypeGUID,
-                "",
+                relationshipType,
                 methodName);
 
         if (relationshipBetweenEntities != null) {

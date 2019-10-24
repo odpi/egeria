@@ -41,12 +41,19 @@ public class AssetConverter {
         assetDescription.setUpdateTime(entityDetail.getUpdateTime());
         assetDescription.setVersion(entityDetail.getVersion());
 
-        assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
-        assetDescription.setTypeDefDescription(entityDetail.getType().getTypeDefDescription());
-        assetDescription.setUrl(entityDetail.getInstanceURL());
-        assetDescription.setStatus(entityDetail.getStatus().getName());
+        if (entityDetail.getType() != null) {
+            assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
+            assetDescription.setTypeDefDescription(entityDetail.getType().getTypeDefDescription());
+        }
 
-        assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
+        assetDescription.setUrl(entityDetail.getInstanceURL());
+        if (entityDetail.getStatus() != null) {
+            assetDescription.setStatus(entityDetail.getStatus().getName());
+        }
+
+        if (entityDetail.getProperties() != null) {
+            assetDescription.setProperties(repositoryHelper.getInstancePropertiesAsMap(entityDetail.getProperties()));
+        }
         if (entityDetail.getClassifications() != null) {
             assetDescription.setClassifications(convertClassifications(entityDetail.getClassifications()));
         }
@@ -73,13 +80,21 @@ public class AssetConverter {
         relationship.setUpdateTime(rel.getUpdateTime());
 
         relationship.setVersion(rel.getVersion());
-        relationship.setStatus(rel.getStatus().getName());
+        if (rel.getStatus() != null) {
+            relationship.setStatus(rel.getStatus().getName());
+        }
 
-        relationship.setTypeDefName(rel.getType().getTypeDefName());
-        relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
+        if (rel.getType() != null) {
+            relationship.setTypeDefName(rel.getType().getTypeDefName());
+            relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
+        }
 
-        relationship.setFromEntity(getAsset(rel.getEntityOneProxy()));
-        relationship.setToEntity(getAsset(rel.getEntityTwoProxy()));
+        if (rel.getEntityOneProxy() != null) {
+            relationship.setFromEntity(getAsset(rel.getEntityOneProxy()));
+        }
+        if (rel.getEntityTwoProxy() != null) {
+            relationship.setToEntity(getAsset(rel.getEntityTwoProxy()));
+        }
 
         return relationship;
     }

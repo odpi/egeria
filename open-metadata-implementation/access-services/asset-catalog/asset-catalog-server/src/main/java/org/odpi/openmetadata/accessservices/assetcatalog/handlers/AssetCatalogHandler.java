@@ -101,7 +101,12 @@ public class AssetCatalogHandler {
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(assetGUID, ASSET_GUID_PARAMETER, methodName);
 
-        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId, assetGUID, assetTypeName, null, relationshipType, methodName);
+        List<Relationship> relationshipsByType = repositoryHandler.getRelationshipsByType(userId,
+                assetGUID,
+                assetTypeName,
+                null,
+                relationshipType,
+                methodName);
 
         if (CollectionUtils.isNotEmpty(relationshipsByType)) {
             AssetConverter converter = new AssetConverter(repositoryHelper);
@@ -180,9 +185,10 @@ public class AssetCatalogHandler {
     }
 
 
-    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship> getRelationships(String userId, String assetGUID, String assetTypeName,
-                                                                                                       String relationshipTypeGUID, String relationshipTypeName,
-                                                                                                       Integer from, Integer pageSize)
+    public List<org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship>
+    getRelationships(String userId, String assetGUID, String assetTypeName,
+                     String relationshipTypeGUID, String relationshipTypeName,
+                     Integer from, Integer pageSize)
             throws UserNotAuthorizedException, PropertyServerException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
         String methodName = "getRelationships";
