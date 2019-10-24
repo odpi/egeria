@@ -140,7 +140,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
         //Initially clear the async event processing context to ensure that it will only
         //have results from processing this event
         InternalOMRSEventProcessingContext.clear();
-        
+        InternalOMRSEventProcessingContext.getInstance().setCurrentMessageId(event.getMessageId());
         for (OpenMetadataTopicListener  topicListener : topicListeners)
         {
             try
@@ -185,7 +185,7 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
     protected List<IncomingEvent> checkForIncomingEvents() {
         List<IncomingEvent> result = new ArrayList<>();
         for(String event : checkForEvents()) {
-            result.add(new IncomingEvent(event));
+            result.add(new IncomingEvent(event, String.valueOf(event.hashCode())));
         }
         return result;
     }
