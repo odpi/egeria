@@ -60,9 +60,9 @@ class BreadCrumb extends PolymerElement{
 
     static get properties() {
         return {
-            path: {
+            items: {
                 type: Array,
-                observer: 'setPath'
+                observer: 'setItems'
             },
             crumbs: {
                 type: Array
@@ -80,7 +80,7 @@ class BreadCrumb extends PolymerElement{
         window.location.reload();
     }
 
-    renderPath(self, items) {
+    renderItems(self, items) {
         var crumbs = [];
 
         items.forEach(function(item, idx) {
@@ -97,9 +97,9 @@ class BreadCrumb extends PolymerElement{
         return crumbs;
     }
 
-    setPath(path) {
-        this.path = path;
-        this.crumbs = this.renderPath(this, path);
+    setItems(items) {
+        this.items = items;
+        this.crumbs = this.renderItems(this, items);
     };
 
    _onActivateCrumb (event) {

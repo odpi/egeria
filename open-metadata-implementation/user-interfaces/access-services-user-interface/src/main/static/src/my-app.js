@@ -174,7 +174,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                     </app-toolbar>
                   </app-header>
                   <div class="breadcrumb">
-                     <bread-crumb id="breadcrumb" path="[[crumbs]]"></bread-crumb>
+                     <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
                   </div>
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
