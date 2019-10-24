@@ -141,7 +141,7 @@
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
         <spring.version>5.2.0.RELEASE</spring.version>
         <tomcat.version>9.0.27</tomcat.version>
-        <commons-io.version>2.4</commons-io.version>
+        <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.3</commons-collections.version>
         <commons-lang.version>3.8.1</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
