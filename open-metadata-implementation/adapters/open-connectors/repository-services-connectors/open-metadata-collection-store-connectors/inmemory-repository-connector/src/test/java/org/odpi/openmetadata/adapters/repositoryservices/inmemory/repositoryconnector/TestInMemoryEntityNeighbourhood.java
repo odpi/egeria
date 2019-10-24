@@ -7,8 +7,6 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -21,9 +19,9 @@ import java.util.Map;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
-;
 
 public class TestInMemoryEntityNeighbourhood
 {
@@ -34,15 +32,15 @@ public class TestInMemoryEntityNeighbourhood
 
     @BeforeMethod
 
-    public void setup() throws Exception
+    public void setup()
     {
         MockitoAnnotations.initMocks(this);
     }
 
     @Test
-    void testGetGraph() throws RepositoryErrorException, InvalidParameterException, TypeErrorException {
+    void testGetGraph() throws TypeErrorException {
         Map<String, EntityDetail> entityStore = new HashMap<>();
-        Map<String, Relationship> relationshipStore = new HashMap();
+        Map<String, Relationship> relationshipStore = new HashMap<>();
         String rootEntityGUID = "1111";
         List<String> entityTypeGUIDs = null;
         List<String> relationshipTypeGUIDs = null;
@@ -59,7 +57,7 @@ public class TestInMemoryEntityNeighbourhood
         InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper,"", repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 0);
         InstanceGraph graph = inMemoryEntityNeighbourhood.createInstanceGraph();
         assertTrue(graphContainsEntityWithGuid(graph, "1111"));
-        assertTrue(graph.getRelationships() == null);
+        assertNull(graph.getRelationships());
 
         // test with 2 entities 1 relationship
         EntityDetail entity2 = new EntityDetail();
@@ -129,7 +127,7 @@ public class TestInMemoryEntityNeighbourhood
             {
                 if (entity.getGUID().equals(guid))
                 {
-                    if (valid == true)
+                    if (valid)
                     {
                         // it should only appear once
                         valid = false;
@@ -152,11 +150,12 @@ public class TestInMemoryEntityNeighbourhood
             {
                 if (relationship.getGUID().equals(guid))
                 {
-                    if (valid == true)
+                    if (valid)
                     {
                         // it should only appear once
                         valid = false;
-                    } else
+                    }
+                    else
                     {
                         valid = true;
                     }
