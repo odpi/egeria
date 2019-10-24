@@ -17,10 +17,6 @@ class BreadCrumb extends PolymerElement{
       border-radius: 4px;
     }    
         
-    /*.breadcrumbs{*/
-    /*display: inline-block;*/
-     /*z-index: 5*/
-    /*}    */
     .crumb,
     .crumb-separator {
             padding: 4px;
