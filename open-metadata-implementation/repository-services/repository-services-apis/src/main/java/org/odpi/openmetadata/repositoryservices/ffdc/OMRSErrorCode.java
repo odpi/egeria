@@ -628,7 +628,7 @@ public enum OMRSErrorCode
             "Raise a Github issue to get this fixed."),
     ARCHIVE_UNAVAILABLE(500, "OMRS-OPEN-METADATA-TYPES-500-001 ",
             "The archive builder failed to initialize.",
-            "There is an internal error in the OMRS initialization.",
+            "There is an internal error in the archive building process.",
             "Raise a Github issue to get this fixed."),
     NULL_EXCHANGE_RULE(500, "OMRS-EVENT-MANAGEMENT-500-001 ",
             "A null exchange rule has been passed to one of the event management components on method {0}.",
