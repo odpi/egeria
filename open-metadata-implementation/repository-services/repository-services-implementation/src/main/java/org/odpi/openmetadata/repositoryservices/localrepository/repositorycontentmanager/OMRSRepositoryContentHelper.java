@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -3221,6 +3220,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         return null;
     }
+
+
     /**
      * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
      * entity instances.
@@ -3255,14 +3256,29 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             return null;
         }
 
-        int fullResultsSize =fullResults.size();
-
-        List<EntityDetail>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        if (pageSize == 0)
         {
-            return sortedResults;
+            return fullResults;
+        }
+
+        int fullResultsSize = fullResults.size();
+
+        Collections.sort(fullResults,
+                         new java.util.Comparator<EntityDetail>()
+                         {
+                             @Override
+                             public int compare(final EntityDetail object1, final EntityDetail object2)
+                             {
+                                 return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
+                                                                                      object2.getProperties(),
+                                                                                      sequencingProperty,
+                                                                                      sequencingOrder);
+                             }
+                         });
+
+        if ((fromElement == 0) && (pageSize > fullResults.size()))
+        {
+            return fullResults;
         }
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
@@ -3304,6 +3320,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             return null;
         }
 
+        if (pageSize == 0)
+        {
+            return fullResults;
+        }
+
         int fullResultsSize = fullResults.size();
 
         if (fromElement > fullResultsSize)
@@ -3311,18 +3332,185 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             return null;
         }
 
+        Collections.sort(fullResults,
+                         new java.util.Comparator<Relationship>()
+                        {
+                            @Override
+                            public int compare(final Relationship object1, final Relationship object2)
+                            {
+                                return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
+                                                                                     object2.getProperties(),
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder);
+                            }
+                        });
 
-        List<Relationship>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        if ((fromElement == 0) && (pageSize > fullResults.size()))
         {
-            return sortedResults;
+            return fullResults;
         }
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
 
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+
+    /**
+     * Compare the properties of two instances and determine the sort order based on the nominated property value and
+     * sort order.
+     *
+     * @param instance1Properties properties from first instance
+     * @param instance2Properties properties from second instance
+     * @param propertyName name of property to compare
+     * @param sequencingOrder ascending or descending order
+     * @return sort result
+     */
+    private static int  compareProperties(InstanceProperties     instance1Properties,
+                                          InstanceProperties     instance2Properties,
+                                          String                 propertyName,
+                                          SequencingOrder        sequencingOrder)
+    {
+
+        // todo need to add support for properties in the instance header eg createdBy
+         /*
+          * Ideally we would not include all this type inspection in the comparison
+          * function - but we do not know the types until we are comparing the
+          * pair of instances. There is no guarantee the list is homogeneous or that
+          * the objects to be compared are of the same type.
+          */
+
+         int    sortResult;
+         String o1PropertyTypeName = null;
+         String o2PropertyTypeName = null;
+         Object o1PropertyValue    = null;
+         Object o2PropertyValue    = null;
+
+         /*
+          * If instance1 has the named property, retrieve its value. Same for instance2.
+          * If neither object has the property return 0
+          * If one object has the property sort that higher: +1 if instance1, -1 if instance2
+          * If both have a value for the property, of different types, return 0.
+          * If both have a value for the property, of the same type, compare them...
+          * This is only performed for primitives, anything else is treated as ignored
+          */
+         if (instance1Properties != null)
+         {
+             InstancePropertyValue o1PropValue = instance1Properties.getPropertyValue(propertyName);
+             if (o1PropValue != null)
+             {
+                 InstancePropertyCategory o1PropCat = o1PropValue.getInstancePropertyCategory();
+                 if (o1PropCat == InstancePropertyCategory.PRIMITIVE)
+                 {
+                     o1PropertyTypeName = o1PropValue.getTypeName();
+                     o1PropertyValue = ((PrimitivePropertyValue) o1PropValue).getPrimitiveValue();
+                 }
+             }
+         }
+
+         if (instance2Properties != null)
+         {
+             InstancePropertyValue o2PropValue = instance2Properties.getPropertyValue(propertyName);
+             if (o2PropValue != null)
+             {
+                 InstancePropertyCategory o2PropCat = o2PropValue.getInstancePropertyCategory();
+                 if (o2PropCat == InstancePropertyCategory.PRIMITIVE)
+                 {
+                     o2PropertyTypeName = o2PropValue.getTypeName();
+                     o2PropertyValue = ((PrimitivePropertyValue) o2PropValue).getPrimitiveValue();
+                 }
+             }
+         }
+
+         if (o1PropertyTypeName == null && o2PropertyTypeName == null)
+         {
+             sortResult = 0;
+         }
+         else if (o1PropertyTypeName != null && o2PropertyTypeName == null)
+         {
+             sortResult = 1;
+         }
+         else if (o1PropertyTypeName == null) // implicit: o2PropertyTypeName != null
+         {
+             sortResult = -1;
+         }
+         else if (!o1PropertyTypeName.equals(o2PropertyTypeName))
+         {
+             sortResult = 0;
+         }
+         else
+         {
+             // Both objects have values, of the same type for the named property - compare...
+             sortResult = typeSpecificCompare(o1PropertyTypeName, o1PropertyValue, o2PropertyValue);
+
+         }
+         if (sequencingOrder == SequencingOrder.PROPERTY_DESCENDING)
+         {
+             sortResult = sortResult * (-1);
+         }
+
+         return sortResult;
+
+    }
+
+
+    /**
+     * Compare two objects based on their type.
+     * It must have been previously established that both objects are of the type
+     * indicated by the supplied typeName
+     *
+     * @param typeName name of type
+     * @param v1 value from instance 1
+     * @param v2 value from instance 2
+     * @return sort order
+     */
+    private static int typeSpecificCompare(String typeName, Object v1, Object v2)
+    {
+        int sortOrder;
+        switch (typeName)
+        {
+            case "boolean":
+                sortOrder = ((Boolean) v1).compareTo((Boolean) v2);
+                break;
+            case "byte":
+                sortOrder = ((Byte) v1).compareTo((Byte) v2);
+                break;
+            case "char":
+                sortOrder = ((Character) v1).compareTo((Character) v2);
+                break;
+            case "short":
+                sortOrder = ((Short) v1).compareTo((Short) v2);
+                break;
+            case "integer":
+                sortOrder = ((Integer) v1).compareTo((Integer) v2);
+                break;
+            case "long":
+                sortOrder = ((Long) v1).compareTo((Long) v2);
+                break;
+            case "float":
+                sortOrder = ((Float) v1).compareTo((Float) v2);
+                break;
+            case "double":
+                sortOrder = ((Double) v1).compareTo((Double) v2);
+                break;
+            case "biginteger":
+                sortOrder = ((BigInteger) v1).compareTo((BigInteger) v2);
+                break;
+            case "bigdecimal":
+                sortOrder = ((BigDecimal) v1).compareTo((BigDecimal) v2);
+                break;
+            case "string":
+                sortOrder = ((String) v1).compareTo((String) v2);
+                break;
+            case "date":
+                sortOrder = ((Date) v1).compareTo((Date) v2);
+                break;
+            default:
+                log.debug("Property type not catered for in compare function");
+                sortOrder = 0;
+        }
+
+        return sortOrder;
     }
 
 
