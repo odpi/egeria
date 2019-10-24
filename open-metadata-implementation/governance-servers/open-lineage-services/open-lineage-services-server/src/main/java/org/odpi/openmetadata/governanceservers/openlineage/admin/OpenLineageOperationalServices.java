@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectionCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
