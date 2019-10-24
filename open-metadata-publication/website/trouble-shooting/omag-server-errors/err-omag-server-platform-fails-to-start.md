@@ -52,7 +52,7 @@ address of `http://localhost:8080`.
 ```bash
 
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform-origin
-ODPi Egeria OMAG Server Platform (version 1.1-SNAPSHOT)
+ODPi Egeria OMAG Server Platform (version 1.2-SNAPSHOT)
 $
 
 ```

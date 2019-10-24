@@ -53,33 +53,33 @@ class DataEngineResourceTest {
     @Test
     void testCreateSchemaType() {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
-        dataEngineResource.createSchemaType(SERVER_NAME, USER, requestBody);
+        dataEngineResource.createOrUpdateSchemaType(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createSchemaType(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).createOrUpdateSchemaType(SERVER_NAME, USER, requestBody);
     }
 
     @Test
     void testCreatePortImplementation() {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
-        dataEngineResource.createPortImplementation(SERVER_NAME, USER, requestBody);
+        dataEngineResource.createOrUpdatePortImplementation(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createPortImplementation(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).createOrUpdatePortImplementation(SERVER_NAME, USER, requestBody);
     }
 
     @Test
     void testCreatePortAlias() {
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
-        dataEngineResource.createPortAlias(SERVER_NAME, USER, requestBody);
+        dataEngineResource.createOrUpdatePortAlias(SERVER_NAME, USER, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createPortAlias(SERVER_NAME, USER, requestBody);
+        verify(dataEngineRestServices, times(1)).createOrUpdatePortAlias(SERVER_NAME, USER, requestBody);
     }
 
     @Test
     void testCreateProcesses() {
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
-        dataEngineResource.createProcesses(USER, SERVER_NAME, requestBody);
+        dataEngineResource.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
-        verify(dataEngineRestServices, times(1)).createProcesses(USER, SERVER_NAME, requestBody);
+        verify(dataEngineRestServices, times(1)).createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
     }
 
     @Test
