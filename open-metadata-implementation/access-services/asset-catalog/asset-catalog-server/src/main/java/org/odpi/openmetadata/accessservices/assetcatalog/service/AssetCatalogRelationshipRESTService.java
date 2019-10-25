@@ -16,16 +16,16 @@ import org.slf4j.LoggerFactory;
  * Assess Service (OMAS).
  * This service provide the functionality to fetch asset relationships and details about specific relationships.
  */
-public class AssetCatalogRelationshipService {
+public class AssetCatalogRelationshipRESTService {
 
-    private static final Logger log = LoggerFactory.getLogger(AssetCatalogRelationshipService.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetCatalogRelationshipRESTService.class);
     private final AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     public RelationshipResponse getRelationshipBetweenEntities(String serverName, String userId,
                                                                String entity1GUID,
                                                                String entity2GUID,
-                                                               String relationshipTypeGUID) {
+                                                               String relationshipType) {
         final String methodName = "getRelationshipBetweenEntities";
 
         log.debug("Calling method: {}", methodName);
@@ -34,7 +34,7 @@ public class AssetCatalogRelationshipService {
 
         try {
             RelationshipHandler relationshipHandler = instanceHandler.getRelationshipHandler(userId, serverName, methodName);
-            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, entity1GUID, entity2GUID, relationshipTypeGUID);
+            Relationship relationshipBetweenEntities = relationshipHandler.getRelationshipBetweenEntities(userId, entity1GUID, entity2GUID, relationshipType);
             response.setRelationship(relationshipBetweenEntities);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);

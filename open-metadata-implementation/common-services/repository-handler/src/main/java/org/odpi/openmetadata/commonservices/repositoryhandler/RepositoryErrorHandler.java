@@ -249,7 +249,7 @@ public class RepositoryErrorHandler
      *
      * @throws UserNotAuthorizedException the userId is unauthorised for the request
      */
-    void handleUnauthorizedUser(String userId,
+    public void handleUnauthorizedUser(String userId,
                                 String methodName) throws UserNotAuthorizedException
     {
         RepositoryHandlerErrorCode errorCode = RepositoryHandlerErrorCode.USER_NOT_AUTHORIZED;
