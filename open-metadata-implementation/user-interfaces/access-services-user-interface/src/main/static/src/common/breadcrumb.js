@@ -9,13 +9,7 @@ class BreadCrumb extends PolymerElement{
   static get template() {
     return html`
         <style>
-    .breadcrumbs {
-      padding: 8px 15px;
-      margin-bottom: 20px;
-      list-style: none;
-      background-color: #f5f5f5;
-      border-radius: 4px;
-    }    
+   
         
     .crumb,
     .crumb-separator {
@@ -26,6 +20,9 @@ class BreadCrumb extends PolymerElement{
             border: 1px solid transparent;
             border-radius: 4px;
             text-decoration: underline;
+            background-color: #eeeeee;
+            color: var(--app-secondary-color);
+       
         }
     .crumb:hover,
     .crumb:focus {
