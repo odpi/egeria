@@ -8,12 +8,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.VoidResponse;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.util.Arrays;
+import static com.google.json.JsonSanitizer.sanitize;
 
 /**
  * Methods to issue rest calls for the SubjectAreaOMAS using the RestTemplate Spring API
@@ -178,6 +177,7 @@ public class RestCaller {
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
+            resultBody= sanitize(resultBody);
             restResponse =  mapper.readValue(resultBody,SubjectAreaOMASAPIResponse.class);
         } catch (IOException ioException) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CLIENT_SIDE_API_REST_RESPONSE_ERROR;

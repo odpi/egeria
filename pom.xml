@@ -144,7 +144,7 @@
         <tomcat.version>9.0.21</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.4</commons-collections.version>
-        <commons-lang.version>3.8.1</commons-lang.version>
+        <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
         <jwt.version>0.6.0</jwt.version>
@@ -165,6 +165,8 @@
         <jsonld.version>0.12.5</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.13</commons-codec.version>
+        <json-sanitizer.version>1.2.0</json-sanitizer.version>
+
 
 
         <!-- Versions of plugins -->
@@ -1894,6 +1896,12 @@
                 <artifactId>tink</artifactId>
                 <version>${tink.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mikesamuel</groupId>
+                <artifactId>json-sanitizer</artifactId>
+                <version>${json-sanitizer.version}</version>
             </dependency>
 
         </dependencies>
