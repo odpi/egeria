@@ -165,6 +165,8 @@
         <jsonld.version>0.12.5</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.13</commons-codec.version>
+        <json-sanitizer.version>1.2.0</json-sanitizer.version>
+
 
 
         <!-- Versions of plugins -->
@@ -1894,6 +1896,12 @@
                 <artifactId>tink</artifactId>
                 <version>${tink.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mikesamuel</groupId>
+                <artifactId>json-sanitizer</artifactId>
+                <version>${json-sanitizer.version}</version>
             </dependency>
 
         </dependencies>
