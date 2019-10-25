@@ -215,6 +215,11 @@
         </dependency>
 
         <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
         </dependency>
@@ -433,6 +438,7 @@
                             <ignoredUnusedDeclaredDependencies combine.children="append">
                                 <!-- Egeria ui admin needs to be in the component scan -->
                                 <ignoredUnusedDeclaredDependency>org.odpi.egeria:*spring*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>javax.xml.bind:*jaxb*</ignoredUnusedDeclaredDependency>
                                 <!-- Spring enablement - false positives from dependency checker -->
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
