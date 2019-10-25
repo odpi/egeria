@@ -17,12 +17,11 @@ import java.util.List;
  * the Asset Catalog OMAS.  The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class AssetCatalogAdmin extends AccessServiceAdmin
-{
+public class AssetCatalogAdmin extends AccessServiceAdmin {
 
-    private OMRSAuditLog                 auditLog;
+    private OMRSAuditLog auditLog;
     private AssetCatalogServicesInstance instance;
-    private String                       serverName;
+    private String serverName;
 
 
     /**
@@ -34,59 +33,53 @@ public class AssetCatalogAdmin extends AccessServiceAdmin
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      */
-    public void initialize(AccessServiceConfig      accessServiceConfigurationProperties,
-                           OMRSTopicConnector       enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector  repositoryConnector,
-                           OMRSAuditLog             auditLog,
-                           String                   serverUserName) throws OMAGConfigurationErrorException
-    {
-        final String          actionDescription = "initialize";
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+                           OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector repositoryConnector,
+                           OMRSAuditLog auditLog,
+                           String serverUserName) throws OMAGConfigurationErrorException {
+        final String actionDescription = "initialize";
 
         AssetCatalogAuditCode auditCode;
 
-        try
-        {
+        try {
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZING;
             auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
 
             this.auditLog = auditLog;
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
-                                                                     accessServiceConfigurationProperties.getAccessServiceName(),
-                                                                     auditLog);
+                    accessServiceConfigurationProperties.getAccessServiceName(),
+                    auditLog);
 
             instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog);
             this.serverName = instance.getServerName();
 
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
-        }
-        catch (OMAGConfigurationErrorException error)
-        {
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(serverName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+        } catch (OMAGConfigurationErrorException error) {
             throw error;
-        }
-        catch (Exception  error)
-        {
+        } catch (Exception error) {
             auditCode = AssetCatalogAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(error.getMessage()),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
     }
 
@@ -94,25 +87,22 @@ public class AssetCatalogAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
-    public void shutdown()
-    {
-        if (instance != null)
-        {
+    public void shutdown() {
+        if (instance != null) {
             instance.shutdown();
         }
 
-        if (auditLog != null)
-        {
+        if (auditLog != null) {
             final String actionDescription = "shutdown";
 
             AssetCatalogAuditCode auditCode = AssetCatalogAuditCode.SERVICE_SHUTDOWN;
             auditLog.logRecord(actionDescription,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(serverName),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(serverName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
     }
 }

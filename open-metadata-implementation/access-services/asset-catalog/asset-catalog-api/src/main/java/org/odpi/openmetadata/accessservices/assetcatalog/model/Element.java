@@ -1,6 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.model;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,7 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Element {
 
     private String guid;
-    private String type;
+    private String typeDef;
+    private String typeDefGUID;
     private String qualifiedName;
     private Map<String, Object> properties;
     private List<Element> parentElement;
@@ -30,12 +32,20 @@ public class Element {
         this.guid = guid;
     }
 
-    public String getType() {
-        return type;
+    public String getTypeDef() {
+        return typeDef;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setTypeDef(String typeDef) {
+        this.typeDef = typeDef;
+    }
+
+    public String getTypeDefGUID() {
+        return typeDefGUID;
+    }
+
+    public void setTypeDefGUID(String typeDefGUID) {
+        this.typeDefGUID = typeDefGUID;
     }
 
     public String getQualifiedName() {
