@@ -188,7 +188,7 @@ class DataEngineSchemaTypeHandlerTest {
                 SOURCE_GUID, TARGET_GUID, null, "addLineageMappingRelationship");
     }
 
-    /*@Test
+    @Test
     void addLineageMappingRelationship_throwsUserNotAuthorizedException() throws UserNotAuthorizedException,
                                                                                  PropertyServerException,
                                                                                  InvocationTargetException,
@@ -203,16 +203,16 @@ class DataEngineSchemaTypeHandlerTest {
 
         SchemaType sourceSchemaType = Mockito.mock(SchemaType.class);
         when(sourceSchemaType.getGUID()).thenReturn(SOURCE_GUID);
-        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, methodName)).thenReturn(sourceSchemaType);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, "getSchemaTypeForSchemaAttribute")).thenReturn(sourceSchemaType);
 
         SchemaType targetSchemaType = Mockito.mock(SchemaType.class);
         when(targetSchemaType.getGUID()).thenReturn(TARGET_GUID);
-        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, TARGET_GUID, methodName)).thenReturn(targetSchemaType);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, TARGET_GUID, "getSchemaTypeForSchemaAttribute")).thenReturn(targetSchemaType);
+
+        mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
+                SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
 
         when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
-
-       // schemaTypeHandler.getSchemaTypeForAttribute(userId, schemaAttributeGUID, methodName)
-        mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME, SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
 
         when(repositoryHandler.getRelationshipBetweenEntities(USER,sourceSchemaType.getGUID(),SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
                 targetSchemaType.getGUID(), SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID,
@@ -229,7 +229,7 @@ class DataEngineSchemaTypeHandlerTest {
                         TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
-    }*/
+    }
 
     @Test
     void addLineageMappingRelationship_throwsNoSchemaAttributeException() throws UserNotAuthorizedException,
@@ -242,7 +242,8 @@ class DataEngineSchemaTypeHandlerTest {
 
         SchemaType sourceSchemaType = Mockito.mock(SchemaType.class);
         when(sourceSchemaType.getGUID()).thenReturn(SOURCE_GUID);
-        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, methodName)).thenReturn(sourceSchemaType);
+        when(schemaTypeHandler.getSchemaTypeForAttribute(USER, SOURCE_GUID, "getSchemaTypeForSchemaAttribute"))
+                .thenReturn(sourceSchemaType);
 
         mockTypeDef(SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_GUID);
