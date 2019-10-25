@@ -144,7 +144,7 @@
         <tomcat.version>9.0.21</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
         <commons-collections.version>4.4</commons-collections.version>
-        <commons-lang.version>3.8.1</commons-lang.version>
+        <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
         <jwt.version>0.6.0</jwt.version>
