@@ -81,7 +81,7 @@ The draft release notes for our future planned releases are below:
     * Digital Architecture
     * Digital service lifecycle management
     
-* [Release 1.11](release-notes-1-11.md) - Planned July 2020
+* [Release 1.11](release-notes-1-11.md) - Planned August 2020
     * Project management of IT change
     * IoT and large scale cohorts
 
