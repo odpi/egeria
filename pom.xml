@@ -142,8 +142,8 @@
         <spring.version>5.2.0.RELEASE</spring.version>
         <tomcat.version>9.0.27</tomcat.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-collections.version>4.3</commons-collections.version>
-        <commons-lang.version>3.8.1</commons-lang.version>
+        <commons-collections.version>4.4</commons-collections.version>
+        <commons-lang.version>3.9</commons-lang.version>
         <springfox.version>2.9.2</springfox.version>
         <h2-database.version>1.4.196</h2-database.version>
         <jwt.version>0.6.0</jwt.version>
@@ -160,12 +160,13 @@
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
         <cassandra.version>3.5.0</cassandra.version>
-        <guava.version>20.0</guava.version>
+        <guava.version>23.0</guava.version>
         <tink.version>1.3.0-rc1</tink.version>
         <jsonld.version>0.12.5</jsonld.version>
         <commons-logging.version>1.2</commons-logging.version>
         <commons-codec.version>1.13</commons-codec.version>
-
+        <json-sanitizer.version>1.2.0</json-sanitizer.version>
+        <googlefindbugs.version>3.0.2</googlefindbugs.version>
 
         <!-- Versions of plugins -->
         <enunciate-maven-plugin.version>2.10.1</enunciate-maven-plugin.version>
@@ -322,10 +323,10 @@
             </dependency>
 
             <dependency>
-                <groupId>jakarta.persistence</groupId>
-                <artifactId>jakarta.persistence-api</artifactId>
+                <groupId>javax.persistence</groupId>
+                <artifactId>javax.persistence-api</artifactId>
                 <scope>compile</scope>
-                <version>${jakarta.persistence.version}</version>
+                <version>${javax-persistence.version}</version>
             </dependency>
 
             <dependency>
@@ -333,12 +334,6 @@
                 <artifactId>validation-api</artifactId>
                 <scope>compile</scope>
                 <version>${javax-validation.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>javax.xml.bind</groupId>
-                <artifactId>jaxb-api</artifactId>
-                <version>${javax-jaxb-api.version}</version>
             </dependency>
 
             <dependency>
@@ -1752,115 +1747,112 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-autoconfigure</artifactId>
+                <scope>compile</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
+                <scope>compile</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-security</artifactId>
+                <scope>compile</scope>
                 <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-aop</artifactId>
-                <version>${spring.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <scope>compile</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot</artifactId>
+                <scope>compile</scope>
                 <version>${spring-boot.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-                <version>${spring-boot.version}</version>
+                <scope>compile</scope>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-jpa</artifactId>
-                <version>${spring-boot.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-jdbc</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-data.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-config</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-core</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-ldap</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework.security</groupId>
                 <artifactId>spring-security-web</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-security.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-beans</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-web.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-web.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-web.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-web</artifactId>
-                <version>${spring.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-expression</artifactId>
-                <version>${spring.version}</version>
+                <scope>compile</scope>
+                <version>${spring-web.version}</version>
             </dependency>
 
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-webmvc</artifactId>
-                <version>${spring.version}</version>
+                <version>${spring-web.version}</version>
             </dependency>
 
             <dependency>
@@ -1874,7 +1866,7 @@
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-tx</artifactId>
                 <scope>compile</scope>
-                <version>${spring.version}</version>
+                <version>${spring-web.version}</version>
             </dependency>
 
 
@@ -1903,6 +1895,18 @@
                 <artifactId>tink</artifactId>
                 <version>${tink.version}</version>
                 <scope>compile</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.mikesamuel</groupId>
+                <artifactId>json-sanitizer</artifactId>
+                <version>${json-sanitizer.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.google.code.findbugs</groupId>
+                <artifactId>jsr305</artifactId>
+                <version>${googlefindbugs.version}</version>
             </dependency>
 
         </dependencies>

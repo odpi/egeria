@@ -20,14 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
-
+    protected Map<String, Object> securedProperties = null;
     private String guid;
     private String displayName;
     private String description;
     private String qualifiedName;
-    protected Map<String, Object> securedProperties = null;
 
-    public Connection(){}
+    public Connection() {
+    }
 
     public Connection(String guid, String qualifiedName) {
         this.guid = guid;
