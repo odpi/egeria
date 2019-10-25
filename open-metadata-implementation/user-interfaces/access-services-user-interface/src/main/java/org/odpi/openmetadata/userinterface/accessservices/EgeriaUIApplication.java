@@ -8,6 +8,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.governanceservers.openlineage.client.OpenLineage;
 import org.odpi.openmetadata.http.HttpHelper;
+import org.odpi.openmetadata.userinterface.accessservices.auth.AuthService;
+import org.odpi.openmetadata.userinterface.accessservices.auth.SessionAuthService;
+import org.odpi.openmetadata.userinterface.accessservices.auth.TokenAuthService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -62,6 +65,12 @@ public class EgeriaUIApplication {
         return new OpenLineage(serverName, serverUrl);
     }
 
-
+    @Bean
+    public AuthService getAuthService(@Value("${authentication.mode}") String authenticationMode)  {
+        if(null == authenticationMode || authenticationMode.isEmpty() || "token".equals(authenticationMode)){
+            return new TokenAuthService();
+        }
+        return new SessionAuthService();
+    }
 
 }
