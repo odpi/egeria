@@ -40,14 +40,14 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper);
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName,
                     invalidParameterHandler, repositoryHandler, repositoryHelper);
+            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper,dataEngineRegistrationHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler);
+                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler,dataEngineRegistrationHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper);
+                    repositoryHelper,dataEngineRegistrationHandler);
 
         } else {
             final String methodName = "new ServiceInstance";

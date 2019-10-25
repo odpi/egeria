@@ -35,24 +35,29 @@ public class ProcessHandler {
     private final RepositoryHandler repositoryHandler;
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
+    private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName             name of this service
-     * @param serverName              name of the local server
-     * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
-     * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param serviceName                       name of this service
+     * @param serverName                        name of the local server
+     * @param invalidParameterHandler           handler for managing parameter errors
+     * @param repositoryHandler                 manages calls to the repository services
+     * @param repositoryHelper                  provides utilities for manipulating the repository services objects
+     * @param dataEngineRegistrationHandler     provides calls for retrieving external data engine guid
+     *
      */
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
-                          RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper) {
+                          RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
+                          DataEngineRegistrationHandler dataEngineRegistrationHandler) {
 
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
+        this.dataEngineRegistrationHandler = dataEngineRegistrationHandler;
     }
 
     /**
@@ -68,7 +73,6 @@ public class ProcessHandler {
      * @param formula        the formula for the process
      * @param owner          the name of the owner for this process
      * @param ownerType      the type of the owner for this process
-     * @param externalSourceGUID     the unique identifier of the external source
      * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the process in the repository
@@ -79,12 +83,14 @@ public class ProcessHandler {
      */
     public String createProcess(String userId, String qualifiedName, String processName, String description,
                                 String latestChange, List<String> zoneMembership, String displayName, String formula,
-                                String owner, OwnerType ownerType, String externalSourceGUID, String externalSourceName)
+                                String owner, OwnerType ownerType, String externalSourceName)
             throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
         final String methodName = "createProcess";
 
         InstanceProperties properties = buildProcessInstanceProperties(userId, qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, methodName);
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId, ProcessPropertiesMapper.PROCESS_TYPE_NAME);
         return repositoryHandler.createExternalEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), externalSourceGUID,
@@ -170,15 +176,11 @@ public class ProcessHandler {
      * @param userId      the name of the calling user
      * @param processGUID the unique identifier of the process
      * @param portGUID    the unique identifier of the port
-     * @param externalSourceGUID     the unique identifier of the external source
      * @param externalSourceName     the unique name of the external source
      */
-    public void addProcessPortRelationship(String userId, String processGUID, String portGUID,
-                                           String externalSourceGUID, String externalSourceName)
-                                                                                               throws
-                                                                                               InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException {
+    public void addProcessPortRelationship(String userId, String processGUID, String portGUID, String externalSourceName)
+            throws InvalidParameterException, UserNotAuthorizedException, PropertyServerException {
+
         final String methodName = "addProcessPortRelationship";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -191,6 +193,8 @@ public class ProcessHandler {
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, processGUID,
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, portGUID, relationshipTypeDef.getGUID(),
                 relationshipTypeDef.getName(), methodName);
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         if (relationship == null) {
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,

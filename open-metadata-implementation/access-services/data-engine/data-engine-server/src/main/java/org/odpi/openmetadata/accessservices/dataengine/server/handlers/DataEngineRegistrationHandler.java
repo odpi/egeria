@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.handlers;
 
-import org.odpi.openmetadata.accessservices.dataengine.server.builders.SoftwareServerPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.ProcessPropertiesMapper;
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.builders.ExternalDataEnginePropertiesBuilder;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.DataEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -16,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 /**
- * DataEngineRegistrationHandler manages SoftwareServerCapability objects from the external data engine. It runs
+ * DataEngineRegistrationHandler manages SoftwareServerCapability objects from external data engines. It runs
  * server-side in the DataEngine OMAS and creates software server capability entities through the
  * OMRSRepositoryConnector.
  */
@@ -61,7 +60,7 @@ public class DataEngineRegistrationHandler {
      * @param patchLevel    the patch level of the server
      * @param source        the source of the server
      *
-     * @return unique identifier of the server in the repository
+     * @return unique identifier of the external data engine in the repository
      *
      * @throws InvalidParameterException the bean properties are invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -75,17 +74,17 @@ public class DataEngineRegistrationHandler {
         final String methodName = "createExternalDataEngine";
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+        invalidParameterHandler.validateName(qualifiedName, DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
-        SoftwareServerPropertiesBuilder builder = new SoftwareServerPropertiesBuilder(qualifiedName, name, description,
+        ExternalDataEnginePropertiesBuilder builder = new ExternalDataEnginePropertiesBuilder(qualifiedName, name, description,
                 type, version, patchLevel, source, null, null, repositoryHelper,
                 serviceName, serverName);
 
         InstanceProperties properties = builder.getInstanceProperties(methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         return repositoryHandler.createEntity(userId, entityTypeDef.getGUID(), entityTypeDef.getName(), properties,
                 methodName);
     }
@@ -94,9 +93,9 @@ public class DataEngineRegistrationHandler {
      * Return the guid of a software server capability entity from an external data engine
      *
      * @param userId        identifier of calling user
-     * @param qualifiedName qualified name of the server
+     * @param qualifiedName qualified name of the external data engine
      *
-     * @return the guid of the server
+     * @return the guid of the the external data engine
      *
      * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws UserNotAuthorizedException user not authorized to issue this request
@@ -111,17 +110,17 @@ public class DataEngineRegistrationHandler {
         qualifiedName = repositoryHelper.getExactMatchRegex(qualifiedName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateName(qualifiedName, SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
+        invalidParameterHandler.validateName(qualifiedName, DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
                 methodName);
 
 
         InstanceProperties properties = repositoryHelper.addStringPropertyToInstance(serviceName, null,
-                SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
+                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, qualifiedName, methodName);
 
         TypeDef entityTypeDef = repositoryHelper.getTypeDefByName(userId,
-                SoftwareServerPropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
+                DataEnginePropertiesMapper.SOFTWARE_SERVER_CAPABILITY_TYPE_NAME);
         EntityDetail retrievedEntity = repositoryHandler.getUniqueEntityByName(userId, qualifiedName,
-                SoftwareServerPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
+                DataEnginePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, properties,
                 entityTypeDef.getGUID(), entityTypeDef.getName(), methodName);
 
         return retrievedEntity.getGUID();
