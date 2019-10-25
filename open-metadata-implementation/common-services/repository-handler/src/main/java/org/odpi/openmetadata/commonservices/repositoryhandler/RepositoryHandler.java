@@ -1616,7 +1616,7 @@ public class RepositoryHandler
 
 
     /**
-     * Return the requested entity by name.
+     * Return the requested entities that match the requested type.
      *
      * @param userId calling userId
      * @param entityTypeGUID type of entity required
@@ -1628,12 +1628,12 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the entity.
      */
-    public List<EntityDetail>  getEntityByType(String                 userId,
-                                               String                 entityTypeGUID,
-                                               int                    startingFrom,
-                                               int                    pageSize,
-                                               String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+    public List<EntityDetail> getEntitiesByType(String                 userId,
+                                                String                 entityTypeGUID,
+                                                int                    startingFrom,
+                                                int                    pageSize,
+                                                String                 methodName) throws UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         try
         {

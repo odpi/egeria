@@ -8,7 +8,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -99,7 +98,7 @@ public class OMRSClient {
         List<EntityDetail> entities;
         try {
             entities = instanceHandler.getRepositoryHandler(userId, serverName, methodName)
-                    .getEntitiesByName(userId, new InstanceProperties(), entityTypeGUID, from, size, methodName);
+                    .getEntitiesByType(userId, entityTypeGUID, from, size, methodName);
         }catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException e){
             throw new GlossaryViewOmasException(e.getReportedHTTPCode(), e.getReportingClassName(), e.getReportingActionDescription(),
                     e.getErrorMessage(), e.getReportedSystemAction(), e.getReportedUserAction());
