@@ -33,10 +33,6 @@
         <exec.plugin.version>1.6.0</exec.plugin.version>
         <jjwt.version>0.6.0</jjwt.version>
         <h2.version>1.4.196</h2.version>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <junit.surefire.version>1.2.0</junit.surefire.version>
-        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
