@@ -72,8 +72,8 @@ public class OpenLineageOperationalServices {
 
         this.auditLog = auditLog;
 
-        if(openLineageConfig == null) {
-            getError(auditLog,OpenLineageAuditCode.NO_CONFIG_DOC,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
+        if (openLineageConfig == null) {
+            getError(auditLog, OpenLineageAuditCode.NO_CONFIG_DOC, ACTION_DESCRIPTION, ACTION_DESCRIPTION);
         }
 
         this.openLineageConfig = openLineageConfig;
@@ -82,8 +82,10 @@ public class OpenLineageOperationalServices {
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
 
-        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection,"buffer");
-        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection,"main");
+        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
+        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection);
+
+
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
@@ -107,7 +109,7 @@ public class OpenLineageOperationalServices {
 
     }
 
-    private OpenLineageGraphStore getGraphConnector(Connection connection,String type) throws OMAGConfigurationErrorException {
+    private OpenLineageGraphStore getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
@@ -115,20 +117,14 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                if (type.equals("buffer")){
-                    return (BufferGraphStore) connectorBroker.getConnector(connection);
-                }
-                else if (type.equals("main")){
-                    return (MainGraphStore) connectorBroker.getConnector(connection);
-                }
+                return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
-                getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
+                getError(auditLog, OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR, ACTION_DESCRIPTION, ACTION_DESCRIPTION);
             }
         }
         return null;
     }
-
 
 
     private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {
@@ -150,7 +146,7 @@ public class OpenLineageOperationalServices {
         } catch (ConnectorCheckedException e) {
             String action = "Unable to initialize the topic connection";
             OpenLineageAuditCode auditCode = OpenLineageAuditCode.ERROR_INITIALIZING_OPEN_LINEAGE_TOPIC_CONNECTION;
-            logAudit(auditCode,action);
+            logAudit(auditCode, action);
 
             throw new OMAGConfigurationErrorException(400,
                     this.getClass().getSimpleName(),
@@ -184,12 +180,12 @@ public class OpenLineageOperationalServices {
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
 
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction(),
-                                               error);
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    error);
 
         }
     }
@@ -217,33 +213,33 @@ public class OpenLineageOperationalServices {
         OpenLineageAuditCode auditCode;
 
         auditCode = OpenLineageAuditCode.SERVICE_SHUTDOWN;
-        logAudit(auditCode,actionDescription);
+        logAudit(auditCode, actionDescription);
 
         return true;
     }
 
     private void logAudit(OpenLineageAuditCode auditCode, String actionDescription) {
         auditLog.logRecord(actionDescription,
-                           auditCode.getLogMessageId(),
-                           OMRSAuditLogRecordSeverity.INFO,
-                           auditCode.getFormattedLogMessage("Openlineage"),
-                        null,
-                           auditCode.getSystemAction(),
-                           auditCode.getUserAction());
+                auditCode.getLogMessageId(),
+                OMRSAuditLogRecordSeverity.INFO,
+                auditCode.getFormattedLogMessage("Openlineage"),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
     }
 
     private void getError(OMRSAuditLog auditLog, OpenLineageAuditCode code,
-                          String actionDescription, String methodName) throws OMAGConfigurationErrorException{
+                          String actionDescription, String methodName) throws OMAGConfigurationErrorException {
 
         OpenLineageAuditCode auditCode = code;
-        logAudit(auditCode,actionDescription);
+        logAudit(auditCode, actionDescription);
 
         throw new OMAGConfigurationErrorException(500,
-                                                  this.getClass().getName(),
-                                                  methodName,
-                                                  auditCode.getFormattedLogMessage(localServerName),
-                                                  auditCode.getSystemAction(),
-                                                  auditCode.getUserAction());
+                this.getClass().getName(),
+                methodName,
+                auditCode.getFormattedLogMessage(localServerName),
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
     }
 }
 
