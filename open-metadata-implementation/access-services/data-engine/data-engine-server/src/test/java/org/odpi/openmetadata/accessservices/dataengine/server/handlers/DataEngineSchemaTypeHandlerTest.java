@@ -146,7 +146,7 @@ class DataEngineSchemaTypeHandlerTest {
                                 ATTRIBUTE_DISPLAY_NAME, null, 1, null, null, null))));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
-    }
+}
 
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,
