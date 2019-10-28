@@ -2473,7 +2473,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>LATEST</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.10.0</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>
