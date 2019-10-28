@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.assetcatalog.util.MockedExceptionUtil;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -16,8 +16,6 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-
-import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -81,11 +79,12 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities_throwsUserNotAuthorizedException()
-            throws PropertyServerException, UserNotAuthorizedException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+            throws PropertyServerException, UserNotAuthorizedException{
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        UserNotAuthorizedException mockedException = MockedExceptionUtil.mockException(UserNotAuthorizedException.class, methodName);
+        UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "", "");
         doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
                 FIRST_GUID,
                 "",
@@ -100,37 +99,31 @@ public class RelationshipHandlerTest {
                         SECOND_GUID,
                         RELATIONSHIP_TYPE));
 
-        assertTrue(thrown.getErrorMessage().contains("OMAS-ASSET-CATALOG"));
-
     }
 
     @Test
-    public void getRelationshipBetweenEntities_throwsInvalidParameterException()
-            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
-        String methodName = "getRelationshipBetweenEntities";
+    public void getRelationshipBetweenEntities_throwsInvalidParameterException() {
+
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        InvalidParameterException mockedException = MockedExceptionUtil.mockException(InvalidParameterException.class, methodName);
-
-        doThrow(mockedException).when(invalidParameterHandler).validateUserId(USER, methodName);
 
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(USER,
+                relationshipHandler.getRelationshipBetweenEntities(null,
                         FIRST_GUID,
                         SECOND_GUID,
                         RELATIONSHIP_TYPE));
 
-        assertTrue(thrown.getErrorMessage().contains("OMAS-ASSET-CATALOG"));
 
     }
 
     @Test
     public void getRelationshipBetweenEntities_throwsPropertyServerException()
-            throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, UserNotAuthorizedException, PropertyServerException{
+            throws UserNotAuthorizedException, PropertyServerException{
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
-        PropertyServerException mockedException = MockedExceptionUtil.mockException(PropertyServerException.class, methodName);
+        PropertyServerException mockedException = new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "");
 
         doThrow(mockedException).when(repositoryHandler).getRelationshipBetweenEntities(USER,
                 FIRST_GUID,
@@ -145,8 +138,6 @@ public class RelationshipHandlerTest {
                         FIRST_GUID,
                         SECOND_GUID,
                         RELATIONSHIP_TYPE));
-
-        assertTrue(thrown.getErrorMessage().contains("OMAS-ASSET-CATALOG"));
 
     }
 
