@@ -85,7 +85,6 @@ public class OpenLineageOperationalServices {
         BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
         MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection);
 
-
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
