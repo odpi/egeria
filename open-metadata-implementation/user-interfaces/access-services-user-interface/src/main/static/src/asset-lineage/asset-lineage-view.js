@@ -7,7 +7,10 @@ import '../common/vis-graph.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-button.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
 import '@vaadin/vaadin-tabs/vaadin-tabs.js';
-import '@vaadin/vaadin-tabs/vaadin-dropdown-menu.js';
+import '@vaadin/vaadin-select/vaadin-select.js';
+import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
+import '@vaadin/vaadin-item/vaadin-item.js';
+import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 
 class AssetLineageView extends PolymerElement {
   static get template() {
@@ -52,13 +55,14 @@ class AssetLineageView extends PolymerElement {
     <!--</div>    -->
     
     <div>
-    <vaadin-dropdown-menu id ="viewsMenu"  value="column-view">
-    <vaadin-list-box>
-      <vaadin-item value="column-view">Column View</vaadin-item>
-      <vaadin-item value="table-view">Table view</vaadin-item>
-    </vaadin-list-box>
-
-    </vaadin-dropdown-menu>
+        <vaadin-select id="viewsMenu" value="column-view" label="View">
+          <template>
+            <vaadin-list-box>
+              <vaadin-item value="column-view" selected="true">Column View</vaadin-item>
+              <vaadin-item value="table-view">Table view</vaadin-item>
+            </vaadin-list-box>
+            </template>
+        </vaadin-select>
     </div>
     
     <div class="container" id="container">
@@ -69,11 +73,8 @@ class AssetLineageView extends PolymerElement {
 
     ready() {
         super.ready();
-        //this.$.useCases.__data.items[index]
-        // this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
-        // var index = this.$.useCases.selected;
         this.$.useCases.addEventListener('selected-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
-        this.$.radioViews.addEventListener('value-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
+        this.$.viewsMenu.addEventListener('value-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
     }
 
     static get properties() {
@@ -203,12 +204,12 @@ class AssetLineageView extends PolymerElement {
 
 
     _guidChanged() {
-        this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value);
+        this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value);
     }
 
     _subviewChanged() {
       // this.subview=this.$.radioUsecases.value;
-      this._usecaseChanged(this.subview, this.$.radioViews.value);
+      this._usecaseChanged(this.subview, this.$.viewsMenu.value);
     }
 }
 
