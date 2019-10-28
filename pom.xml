@@ -128,7 +128,7 @@
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
-        <mockito.version>2.28.2</mockito.version>
+        <mockito.version>3.1.0</mockito.version>
         <testng.version>6.14.3</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.28</slf4j.version>
@@ -155,11 +155,11 @@
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
-        <plexus.version>3.2.0</plexus.version>
-        <quartz.version>2.3.1</quartz.version>
+        <plexus.version>3.3.0</plexus.version>
+        <quartz.version>2.3.2</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
-        <cassandra.version>3.5.0</cassandra.version>
+        <cassandra.version>3.7.2</cassandra.version>
         <guava.version>23.0</guava.version>
         <tink.version>1.3.0-rc1</tink.version>
         <jsonld.version>0.12.5</jsonld.version>
@@ -191,7 +191,7 @@
         <resources.plugin.version>3.1.0</resources.plugin.version>
         <rat-plugin.version>0.13</rat-plugin.version>
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
-        <maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
+        <maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
         <maven-source-plugin.version>3.1.0</maven-source-plugin.version>
         <maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin>1.6.8</nexus-staging-maven-plugin>
@@ -2092,6 +2092,11 @@
                             <version>${junit.jupiter.version}</version>
                         </dependency>
                         <dependency>
+                            <groupId>org.junit.jupiter</groupId>
+                            <artifactId>junit-jupiter-api</artifactId>
+                            <version>${junit.jupiter.version}</version>
+                        </dependency>
+                        <dependency>
                             <groupId>org.mockito</groupId>
                             <artifactId>mockito-inline</artifactId>
                             <version>${mockito.version}</version>
@@ -2473,7 +2478,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>LATEST</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.10.0</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>
