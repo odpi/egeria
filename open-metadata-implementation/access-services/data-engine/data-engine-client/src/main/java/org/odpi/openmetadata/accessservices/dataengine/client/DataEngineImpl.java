@@ -51,7 +51,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
     private String serverName;
     private String serverPlatformRootURL;
 
-    private String externalSourceGUID;
     private String externalSourceName;
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
@@ -92,14 +91,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         this.serverPlatformRootURL = serverPlatformRootURL;
     }
 
-    public String getExternalSourceGUID() {
-        return externalSourceGUID;
-    }
-
-    public void setExternalSourceGUID(String externalSourceGUID) {
-        this.externalSourceGUID = externalSourceGUID;
-    }
-
     public String getExternalSourceName() {
         return externalSourceName;
     }
@@ -126,7 +117,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         requestBody.setProcesses(Collections.singletonList(new Process(qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
                 portAliases, lineageMappings, updateSemantic)));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
@@ -149,7 +139,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         requestBody.setProcesses(Collections.singletonList(new Process(qualifiedName, processName, description,
                 latestChange, zoneMembership, displayName, formula, owner, ownerType, portImplementations,
                 portAliases, lineageMappings, UpdateSemantic.REPLACE)));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody).get(0);
@@ -165,7 +154,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(Collections.singletonList(process));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
         List<String> result = callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
@@ -188,7 +176,6 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(processes);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
         requestBody.setExternalSourceName(externalSourceName);
 
         return callProcessListPostRESTCall(userId, methodName, PROCESS_URL_TEMPLATE, requestBody);
@@ -212,9 +199,8 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
                 version, patchLevel, source));
 
         setExternalSourceName(qualifiedName);
-        setExternalSourceGUID(callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody));
 
-        return getExternalSourceGUID();
+        return  callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -231,9 +217,8 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         requestBody.setSoftwareServerCapability(softwareServerCapability);
 
         setExternalSourceName(softwareServerCapability.getQualifiedName());
-        setExternalSourceGUID(callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody));
 
-        return getExternalSourceGUID();
+        return callGUIDPostRESTCall(userId, methodName, DATA_ENGINE_REGISTRATION_URL_TEMPLATE, requestBody);
     }
 
     @Override
@@ -250,7 +235,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(new SchemaType(qualifiedName, displayName, author, usage, encodingStandard,
                 versionNumber, attributeList));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
@@ -266,7 +251,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(schemaType);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, SCHEMA_TYPE_URL_TEMPLATE, requestBody);
@@ -286,7 +271,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
                 UpdateSemantic.REPLACE));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -306,7 +291,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(new PortImplementation(qualifiedName, displayName, portType, schemaType,
                 updateSemantic));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -323,7 +308,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortImplementationRequestBody requestBody = new PortImplementationRequestBody();
         requestBody.setPortImplementation(portImplementation);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_IMPLEMENTATION_URL_TEMPLATE, requestBody);
@@ -341,7 +326,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPort(new PortAlias(qualifiedName, displayName, portType, delegatesTo));
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         return callGUIDPostRESTCall(userId, methodName, PORT_ALIAS_URL_TEMPLATE, requestBody);
@@ -357,7 +342,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPort(portAlias);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
 
@@ -375,7 +360,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(lineageMappings);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, LINEAGE_MAPPINGS_URL_TEMPLATE, requestBody);
@@ -392,7 +377,7 @@ public class DataEngineImpl extends OCFRESTClient implements DataEngineClient {
 
         PortListRequestBody requestBody = new PortListRequestBody();
         requestBody.setPorts(portGUIDs);
-        requestBody.setExternalSourceGUID(externalSourceGUID);
+       
         requestBody.setExternalSourceName(externalSourceName);
 
         callVoidPostRESTCall(userId, methodName, PORTS_TO_PROCESS_URL_TEMPLATE, requestBody, processGUID);

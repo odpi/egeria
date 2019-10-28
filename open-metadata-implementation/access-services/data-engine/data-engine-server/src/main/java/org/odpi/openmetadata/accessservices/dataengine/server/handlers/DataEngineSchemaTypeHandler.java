@@ -55,26 +55,31 @@ public class DataEngineSchemaTypeHandler {
     private final OMRSRepositoryHelper repositoryHelper;
     private final InvalidParameterHandler invalidParameterHandler;
     private final SchemaTypeHandler schemaTypeHandler;
+    private final DataEngineRegistrationHandler dataEngineRegistrationHandler;
 
     /**
      * Construct the handler information needed to interact with the repository services
      *
-     * @param serviceName             name of this service
-     * @param serverName              name of the local server
-     * @param invalidParameterHandler handler for managing parameter errors
-     * @param repositoryHandler       manages calls to the repository services
-     * @param repositoryHelper        provides utilities for manipulating the repository services objects
+     * @param serviceName                       name of this service
+     * @param serverName                        name of the local server
+     * @param invalidParameterHandler           handler for managing parameter errors
+     * @param repositoryHandler                 manages calls to the repository services
+     * @param repositoryHelper                  provides utilities for manipulating the repository services objects
+     * @param dataEngineRegistrationHandler     provides calls for retrieving external data engine guid
      */
     public DataEngineSchemaTypeHandler(String serviceName, String serverName,
                                        InvalidParameterHandler invalidParameterHandler,
-                                       RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
-                                       SchemaTypeHandler schemaTypeHandler) {
+                                       RepositoryHandler repositoryHandler,
+                                       OMRSRepositoryHelper repositoryHelper,
+                                       SchemaTypeHandler schemaTypeHandler,
+                                       DataEngineRegistrationHandler dataEngineRegistrationHandler) {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.invalidParameterHandler = invalidParameterHandler;
         this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
         this.schemaTypeHandler = schemaTypeHandler;
+        this.dataEngineRegistrationHandler= dataEngineRegistrationHandler;
     }
 
     /**
@@ -88,7 +93,6 @@ public class DataEngineSchemaTypeHandler {
      * @param usage            the usage for the schema type
      * @param versionNumber    the version number for the schema type
      * @param attributeList    the list of attributes for the schema type
-     * @param externalSourceGUID     the unique identifier of the external source
      * @param externalSourceName     the unique name of the external source
      *
      * @return unique identifier of the schema type in the repository
@@ -99,9 +103,11 @@ public class DataEngineSchemaTypeHandler {
      */
     public String createOrUpdateSchemaType(String userId, String qualifiedName, String displayName, String author,
                                            String encodingStandard, String usage, String versionNumber,
-                                           List<Attribute> attributeList, String externalSourceGUID, String externalSourceName)
+                                           List<Attribute> attributeList, String externalSourceName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         final String methodName = "createOrUpdateSchemaType";
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, SchemaTypePropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME,
@@ -119,16 +125,18 @@ public class DataEngineSchemaTypeHandler {
 
         //TODO update SchemaTypeHandler to save attributes along with the attribute schema types and
         // SchemaAttributeType relationships
-        saveAttributeSchemaTypes(userId, newSchemaAttributes,externalSourceGUID,externalSourceName);
+        saveAttributeSchemaTypes(userId, newSchemaAttributes, externalSourceName);
 
         return newSchemaTypeGUID;
     }
 
     private void saveAttributeSchemaTypes(String userId, Map<SchemaAttribute, SchemaType> newSchemaAttributes,
-                                          String externalSourceGUID, String externalSourceName)
+                                          String externalSourceName)
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
 
         final String methodName = "saveAttributeSchemaTypes";
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         for (Map.Entry<SchemaAttribute, SchemaType> schemaAttribute : newSchemaAttributes.entrySet()) {
             String attributeSchemaTypeGUID = schemaTypeHandler.saveExternalSchemaType(userId, schemaAttribute.getValue(),
@@ -156,7 +164,6 @@ public class DataEngineSchemaTypeHandler {
      * @param userId                             the name of the calling user
      * @param sourceSchemaAttributeQualifiedName the qualified name of the source schema attribute
      * @param targetSchemaAttributeQualifiedName the qualified name of the target schema attribute
-     * @param externalSourceGUID     the unique identifier of the external source
      * @param externalSourceName     the unique name of the external source
      *
      * @throws InvalidParameterException the bean properties are invalid
@@ -166,7 +173,6 @@ public class DataEngineSchemaTypeHandler {
     public void addLineageMappingRelationship(String userId,
                                               String sourceSchemaAttributeQualifiedName,
                                               String targetSchemaAttributeQualifiedName,
-                                              String externalSourceGUID,
                                               String externalSourceName) throws
                                                                                          InvalidParameterException,
                                                                                          UserNotAuthorizedException,
@@ -189,6 +195,8 @@ public class DataEngineSchemaTypeHandler {
         Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaType.getGUID(),
                 SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaType.getGUID(), relationshipTypeDef.getGUID(),
                 relationshipTypeDef.getName(), methodName);
+
+        String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId, externalSourceName);
 
         if (relationship == null) {
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(),externalSourceGUID, externalSourceName,

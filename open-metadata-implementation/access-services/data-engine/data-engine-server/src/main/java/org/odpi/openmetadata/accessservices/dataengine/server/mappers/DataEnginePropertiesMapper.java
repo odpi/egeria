@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.mappers;
 
 /**
- * SoftwareServerPropertiesMapper provides property name mapping for external data engines. Specifically, a single data
+ * DataEnginePropertiesMapper provides property name mapping for external data engines. Specifically, a single data
  * engine is represented as an DataEngineRegistrationRequestBody entity.
  */
-public class SoftwareServerPropertiesMapper {
+public class DataEnginePropertiesMapper {
     public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_GUID = "fe30a033-8f86-4d17-8986-e6166fa24177";
     public static final String SOFTWARE_SERVER_CAPABILITY_TYPE_NAME = "SoftwareServerCapability";
 

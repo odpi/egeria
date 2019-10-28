@@ -122,13 +122,13 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void createSoftwareServer() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    void createExternalDataEngine() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockRegistrationHandler("createExternalDataEngine");
 
         when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
         GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
         assertEquals(EXTERNAL_SOURCE_DE_GUID, response.getGUID());
@@ -136,7 +136,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void createSoftwareServer_ResponseWithCapturedInvalidParameterException() throws InvalidParameterException,
+    void createExternalDataEngine_ResponseWithCapturedInvalidParameterException() throws InvalidParameterException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException,
                                                                                      InvocationTargetException,
@@ -152,7 +152,7 @@ class DataEngineRESTServicesTest {
         when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
 
-        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
         GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
 
@@ -160,7 +160,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void createSoftwareServer_ResponseWithCapturedUserNotAuthorizedException() throws InvalidParameterException,
+    void createExternalDataEngine_ResponseWithCapturedUserNotAuthorizedException() throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException,
                                                                                       InvocationTargetException,
@@ -175,7 +175,7 @@ class DataEngineRESTServicesTest {
         when(dataEngineRegistrationHandler.createExternalDataEngine(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION,
                 TYPE, VERSION, PATCH_LEVEL, SOURCE)).thenThrow(mockedException);
 
-        DataEngineRegistrationRequestBody requestBody = mockSoftwareServerCapabilityRequestBody();
+        DataEngineRegistrationRequestBody requestBody = mockDataEngineRegistrationRequestBody();
 
         GUIDResponse response = dataEngineRESTServices.createExternalDataEngine(SERVER_NAME, USER, requestBody);
 
@@ -183,7 +183,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void getSoftwareServerByQualifiedName() throws InvalidParameterException, PropertyServerException,
+    void getExternalDataEngineByQualifiedName() throws InvalidParameterException, PropertyServerException,
                                                    UserNotAuthorizedException {
         mockRegistrationHandler("getExternalDataEngineByQualifiedName");
 
@@ -195,7 +195,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void getSoftwareServerByQualifiedName_ResponseWithCapturedUserNotAuthorizedException() throws
+    void getExternalDataEngineByQualifiedName_ResponseWithCapturedUserNotAuthorizedException() throws
                                                                                            InvalidParameterException,
                                                                                            PropertyServerException,
                                                                                            UserNotAuthorizedException,
@@ -218,7 +218,7 @@ class DataEngineRESTServicesTest {
     }
 
     @Test
-    void getSoftwareServerByQualifiedName_ResponseWithCapturedInvalidParameterException() throws
+    void getExternalDataEngineByQualifiedName_ResponseWithCapturedInvalidParameterException() throws
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException,
@@ -246,7 +246,7 @@ class DataEngineRESTServicesTest {
         mockSchemaTypeHandler("createOrUpdateSchemaType");
 
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
-                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
@@ -268,7 +268,7 @@ class DataEngineRESTServicesTest {
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
-                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
@@ -290,7 +290,7 @@ class DataEngineRESTServicesTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR, ENCODING_STANDARD,
-                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+                USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         SchemaTypeRequestBody requestBody = mockSchemaTypeRequestBody();
 
@@ -305,14 +305,14 @@ class DataEngineRESTServicesTest {
         mockPortHandler("createOrUpdatePortImplementationWithSchemaType");
 
         when(portHandler.createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
-                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
         GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(GUID, response.getGUID());
     }
 
@@ -331,7 +331,7 @@ class DataEngineRESTServicesTest {
 
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(portHandler.createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
@@ -339,7 +339,7 @@ class DataEngineRESTServicesTest {
         GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
     }
 
@@ -358,7 +358,7 @@ class DataEngineRESTServicesTest {
 
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(portHandler.createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
@@ -366,7 +366,7 @@ class DataEngineRESTServicesTest {
         GUIDResponse response = dataEngineRESTServices.createOrUpdatePortImplementation(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
     }
 
@@ -380,7 +380,7 @@ class DataEngineRESTServicesTest {
 
         when(portHandler.getSchemaTypeForPort(USER, PORT_GUID)).thenReturn(SCHEMA_GUID);
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID,
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
@@ -391,7 +391,7 @@ class DataEngineRESTServicesTest {
                 PortType.INOUT_PORT);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PORT_GUID, response.getGUID());
     }
 
@@ -406,7 +406,7 @@ class DataEngineRESTServicesTest {
 
         when(portHandler.getSchemaTypeForPort(USER, PORT_GUID)).thenReturn(OLD_SCHEMA_GUID);
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID,
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
         PortImplementationRequestBody requestBody = mockPortImplementationRequestBody();
 
@@ -416,7 +416,7 @@ class DataEngineRESTServicesTest {
                 PortType.INOUT_PORT);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(dataEngineSchemaTypeHandler, times(1)).removeSchemaType(USER, OLD_SCHEMA_GUID);
         assertEquals(PORT_GUID, response.getGUID());
@@ -426,7 +426,7 @@ class DataEngineRESTServicesTest {
     void createPortAlias() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         mockPortHandler("createOrUpdatePortAliasWithDelegation");
 
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
@@ -435,7 +435,7 @@ class DataEngineRESTServicesTest {
 
         assertEquals(GUID, response.getGUID());
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
@@ -450,7 +450,7 @@ class DataEngineRESTServicesTest {
         mockPortHandler(methodName);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
@@ -472,7 +472,7 @@ class DataEngineRESTServicesTest {
         mockPortHandler(methodName);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         PortAliasRequestBody requestBody = mockPortAliasRequestBody();
@@ -492,11 +492,11 @@ class DataEngineRESTServicesTest {
         mockProcessHandler("updateProcessStatus");
         mockProcessHandler("addProcessPortRelationships");
 
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         when(processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_GUID,
+                null, NAME, FORMULA, OWNER, OwnerType.USER_ID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
@@ -504,11 +504,11 @@ class DataEngineRESTServicesTest {
         ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT
-                , EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(processHandler, times(1)).updateProcessStatus(USER, GUID, InstanceStatus.ACTIVE);
         assertEquals(GUID, response.getGUIDs().get(0));
@@ -531,12 +531,12 @@ class DataEngineRESTServicesTest {
         String methodName = "createOrUpdateProcess";
         mockProcessHandler(methodName);
 
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         InvalidParameterException mockedException = mockException(InvalidParameterException.class, methodName);
         when(processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_GUID,
+                null, NAME, FORMULA, OWNER, OwnerType.USER_ID,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
@@ -544,11 +544,11 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT
-                , EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(any(GUIDResponse.class),
                 eq(mockedException));
@@ -571,22 +571,22 @@ class DataEngineRESTServicesTest {
         String methodName = "createOrUpdateProcess";
         mockProcessHandler(methodName);
 
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         when(processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
+                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenThrow(mockedException);
 
         ProcessesRequestBody requestBody = mockProcessesRequestBody();
 
         dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).createPortImplementation(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT
-                , EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(any(GUIDResponse.class),
                 eq(mockedException));
@@ -609,10 +609,10 @@ class DataEngineRESTServicesTest {
 
         when(portHandler.getSchemaTypeForPort(USER, PORT_GUID)).thenReturn(OLD_SCHEMA_GUID);
         when(dataEngineSchemaTypeHandler.createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID,
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(SCHEMA_GUID);
 
-        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT, EXTERNAL_SOURCE_DE_GUID,
+        when(portHandler.createPortAlias(USER, QUALIFIED_NAME, NAME, PortType.INOUT_PORT,
                 EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(PORT_GUID);
 
         when(processHandler.findProcess(USER, QUALIFIED_NAME)).thenReturn(GUID);
@@ -623,10 +623,10 @@ class DataEngineRESTServicesTest {
         ProcessListResponse response = dataEngineRESTServices.createOrUpdateProcesses(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).createOrUpdateSchemaType(USER, QUALIFIED_NAME, NAME, AUTHOR,
-                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                ENCODING_STANDARD, USAGE, VERSION_NUMBER, null, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         verify(portHandler, times(1)).updatePortImplementation(USER, PORT_GUID, QUALIFIED_NAME, NAME, PortType.INOUT_PORT);
         verify(portHandler, times(1)).addPortDelegationRelationship(USER, PORT_GUID, PortType.INOUT_PORT,
-                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                DELEGATED_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(processHandler, times(1)).updateProcess(USER, GUID, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
                 null, NAME, FORMULA, OWNER, OwnerType.USER_ID);
@@ -643,7 +643,7 @@ class DataEngineRESTServicesTest {
         GUIDResponse response = dataEngineRESTServices.addPortsToProcess(USER, SERVER_NAME, PROCESS_GUID, requestBody);
 
         verify(processHandler, times(1)).addProcessPortRelationship(USER, PROCESS_GUID, GUID
-                , EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         assertEquals(PROCESS_GUID, response.getGUID());
     }
 
@@ -666,7 +666,7 @@ class DataEngineRESTServicesTest {
                 mockException(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
                         methodName);
         doThrow(mockedException).when(processHandler).addProcessPortRelationship(USER, PROCESS_GUID, GUID
-                , EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                , EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         GUIDResponse response = dataEngineRESTServices.addPortsToProcess(USER, SERVER_NAME, PROCESS_GUID, requestBody);
         verify(restExceptionHandler, times(1)).captureInvalidParameterException(response, mockedException);
@@ -690,7 +690,7 @@ class DataEngineRESTServicesTest {
                 mockException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException.class,
                         methodName);
         doThrow(mockedException).when(processHandler).addProcessPortRelationship(USER, PROCESS_GUID, GUID,
-                EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         GUIDResponse response = dataEngineRESTServices.addPortsToProcess(USER, SERVER_NAME, PROCESS_GUID, requestBody);
         verify(restExceptionHandler, times(1)).captureUserNotAuthorizedException(response, mockedException);
@@ -706,7 +706,7 @@ class DataEngineRESTServicesTest {
         dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
 
         verify(dataEngineSchemaTypeHandler, times(1)).addLineageMappingRelationship(USER, SOURCE_QUALIFIED_NAME,
-                TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
     }
 
     @Test
@@ -727,7 +727,7 @@ class DataEngineRESTServicesTest {
                 mockException(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
                         methodName);
         doThrow(mockedException).when(dataEngineSchemaTypeHandler).addLineageMappingRelationship(USER,
-                SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         VoidResponse response = dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
 
@@ -752,7 +752,7 @@ class DataEngineRESTServicesTest {
                 mockException(org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException.class,
                         methodName);
         doThrow(mockedException).when(dataEngineSchemaTypeHandler).addLineageMappingRelationship(USER,
-                SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+                SOURCE_QUALIFIED_NAME, TARGET_QUALIFIED_NAME, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         VoidResponse response = dataEngineRESTServices.addLineageMappings(USER, SERVER_NAME, requestBody);
 
@@ -763,6 +763,7 @@ class DataEngineRESTServicesTest {
         LineageMappingsRequestBody requestBody = new LineageMappingsRequestBody();
         requestBody.setLineageMappings(Collections.singletonList(new LineageMapping(SOURCE_QUALIFIED_NAME,
                 TARGET_QUALIFIED_NAME)));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 
@@ -786,9 +787,9 @@ class DataEngineRESTServicesTest {
         when(instanceHandler.getProcessHandler(USER, SERVER_NAME, methodName)).thenReturn(processHandler);
     }
 
-    private DataEngineRegistrationRequestBody mockSoftwareServerCapabilityRequestBody() {
+    private DataEngineRegistrationRequestBody mockDataEngineRegistrationRequestBody() {
         DataEngineRegistrationRequestBody requestBody = new DataEngineRegistrationRequestBody();
-        requestBody.setSoftwareServerCapability(new SoftwareServerCapability(QUALIFIED_NAME, NAME, DESCRIPTION, TYPE,
+        requestBody.setSoftwareServerCapability(new SoftwareServerCapability(EXTERNAL_SOURCE_DE_QUALIFIED_NAME, NAME, DESCRIPTION, TYPE,
                 VERSION, PATCH_LEVEL, SOURCE));
         return requestBody;
     }
@@ -797,6 +798,7 @@ class DataEngineRESTServicesTest {
         SchemaTypeRequestBody requestBody = new SchemaTypeRequestBody();
         requestBody.setSchemaType(new SchemaType(QUALIFIED_NAME, NAME, AUTHOR, USAGE, ENCODING_STANDARD,
                 VERSION_NUMBER, null));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 
@@ -805,12 +807,14 @@ class DataEngineRESTServicesTest {
         requestBody.setPortImplementation(new PortImplementation(NAME, QUALIFIED_NAME, PortType.INOUT_PORT,
                 new SchemaType(QUALIFIED_NAME, NAME, AUTHOR, USAGE, ENCODING_STANDARD,
                         VERSION_NUMBER, null)));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 
     private PortAliasRequestBody mockPortAliasRequestBody() {
         PortAliasRequestBody requestBody = new PortAliasRequestBody();
         requestBody.setPort(new PortAlias(NAME, QUALIFIED_NAME, PortType.INOUT_PORT, DELEGATED_QUALIFIED_NAME));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 
@@ -828,12 +832,14 @@ class DataEngineRESTServicesTest {
 
         ProcessesRequestBody requestBody = new ProcessesRequestBody();
         requestBody.setProcesses(Collections.singletonList(process));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 
     private PortListRequestBody mockPortListRequestBody() {
         PortListRequestBody requestBody = new PortListRequestBody();
         requestBody.setPorts(Collections.singletonList(GUID));
+        requestBody.setExternalSourceName(EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
         return requestBody;
     }
 

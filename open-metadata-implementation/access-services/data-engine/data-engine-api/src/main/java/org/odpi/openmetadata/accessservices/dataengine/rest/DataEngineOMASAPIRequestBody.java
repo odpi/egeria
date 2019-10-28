@@ -29,9 +29,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
     private static final long serialVersionUID = 1L;
 
 
-    /* unique identifier (guid) for the external source */
-    private String externalSourceGUID;
-
     /* unique name for the external source */
     private String externalSourceName;
 
@@ -41,13 +38,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
     DataEngineOMASAPIRequestBody() {
     }
 
-    public String getExternalSourceGUID() {
-        return externalSourceGUID;
-    }
-
-    public void setExternalSourceGUID(String externalSourceGUID) {
-        this.externalSourceGUID = externalSourceGUID;
-    }
 
     public String getExternalSourceName() {
         return externalSourceName;
@@ -65,7 +55,6 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
     @Override
     public String toString() {
         return "DataEngineOMASAPIRequestBody{" +
-                "externalSourceGUID='" + externalSourceGUID + '\'' +
                 ", externalSourceName='" + externalSourceName + '\'' +
                 '}';
     }
