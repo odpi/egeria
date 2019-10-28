@@ -48,10 +48,8 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
      */
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-        this.connectorInstanceId = connectorInstanceId;
-        this.connectionProperties = connectionProperties;
-        initializeGraphDB();
         super.initialize(connectorInstanceId, connectionProperties);
+        initializeGraphDB();
     }
 
     /**
