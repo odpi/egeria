@@ -155,7 +155,7 @@
         <derby.version>10.8.3.1</derby.version>
         <hadoop.version>2.9.2</hadoop.version>
         <ranger.version>1.2.0</ranger.version>
-        <plexus.version>3.2.0</plexus.version>
+        <plexus.version>3.3.0</plexus.version>
         <quartz.version>2.3.1</quartz.version>
         <tinkergraph.version>3.3.3</tinkergraph.version>
         <lucene-analyzers-common.version>7.0.0</lucene-analyzers-common.version>
