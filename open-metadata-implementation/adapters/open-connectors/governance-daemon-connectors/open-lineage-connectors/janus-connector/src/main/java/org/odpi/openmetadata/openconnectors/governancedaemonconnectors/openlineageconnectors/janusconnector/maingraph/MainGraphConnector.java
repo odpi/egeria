@@ -59,6 +59,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         super.initialize(connectorInstanceId, connectionProperties);
         this.connectorInstanceId = connectorInstanceId;
         this.connectionProperties = connectionProperties;
+        initializeGraphDB();
     }
 
     /**
