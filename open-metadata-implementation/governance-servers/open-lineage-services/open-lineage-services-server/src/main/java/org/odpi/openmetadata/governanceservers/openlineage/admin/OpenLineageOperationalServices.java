@@ -82,8 +82,8 @@ public class OpenLineageOperationalServices {
         Connection bufferGraphConnection = openLineageConfig.getOpenLineageBufferGraphConnection();
         Connection mainGraphConnection = openLineageConfig.getOpenLineageMainGraphConnection();
 
-        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection);
-        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection);
+        BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection,"buffer");
+        MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection,"main");
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
@@ -107,7 +107,7 @@ public class OpenLineageOperationalServices {
 
     }
 
-    private OpenLineageGraphStore getGraphConnector(Connection connection) throws OMAGConfigurationErrorException {
+    private OpenLineageGraphStore getGraphConnector(Connection connection,String type) throws OMAGConfigurationErrorException {
         /*
          * Configuring the Graph connectors
          */
@@ -115,7 +115,12 @@ public class OpenLineageOperationalServices {
             log.info("Found connection: {}", connection);
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
-                return (BufferGraphStore) connectorBroker.getConnector(connection);
+                if (type.equals("buffer")){
+                    return (BufferGraphStore) connectorBroker.getConnector(connection);
+                }
+                else if (type.equals("main")){
+                    return (MainGraphStore) connectorBroker.getConnector(connection);
+                }
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
                 getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
