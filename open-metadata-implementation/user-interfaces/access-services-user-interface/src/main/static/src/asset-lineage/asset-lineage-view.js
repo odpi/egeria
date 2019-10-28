@@ -6,6 +6,8 @@ import '../shared-styles.js';
 import '../common/vis-graph.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-button.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
+import '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import '@vaadin/vaadin-tabs/vaadin-dropdown-menu.js';
 
 class AssetLineageView extends PolymerElement {
   static get template() {
@@ -24,19 +26,39 @@ class AssetLineageView extends PolymerElement {
     </style>
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <vaadin-radio-group id ="radioUsecases" class="select-option-group" name="radio-group" value="ultimateSource"  role="radiogroup" >
-      <vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio">Ultimate Source</vaadin-radio-button>
-      <vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>
-      <vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>
-      <vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>
-      <vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio">Source and Destination</vaadin-radio-button>
-    </vaadin-radio-group>
+    <vaadin-tabs id ="useCases" selected="0" >
+      <vaadin-tab value="ultimateSource">Ultimate Source</vaadin-tab>
+      <vaadin-tab value="endToEnd">End to End Lineage</vaadin-tab>
+      <vaadin-tab value="ultimateDestination">Ultimate Destination</vaadin-tab>
+      <vaadin-tab value="glossaryLineage">Glossary Lineage</vaadin-tab>
+      <vaadin-tab value="sourceAndDestination">Source and Destination</vaadin-tab>
+    </vaadin-tabs>
+    
+    <!--protected _selectedChanged(selected): void-->
+    
+    <!--<vaadin-radio-group id ="radioUsecases" class="select-option-group" name="radio-group" value={{subview}}  role="radiogroup" >-->
+      <!--<vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio">Ultimate Source</vaadin-radio-button>-->
+      <!--<vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>-->
+      <!--<vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>-->
+      <!--<vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>-->
+      <!--<vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio">Source and Destination</vaadin-radio-button>-->
+    <!--</vaadin-radio-group>-->
           
+    <!--<div>-->
+    <!--<vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="column-view"  role="radiogroup" >-->
+      <!--<vaadin-radio-button value="column-view" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>-->
+      <!--<vaadin-radio-button value="table-view" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>-->
+    <!--</vaadin-radio-group>-->
+    <!--</div>    -->
+    
     <div>
-    <vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="column-view"  role="radiogroup" >
-      <vaadin-radio-button value="column-view" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>
-      <vaadin-radio-button value="table-view" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>
-    </vaadin-radio-group>
+    <vaadin-dropdown-menu id ="viewsMenu"  value="column-view">
+    <vaadin-list-box>
+      <vaadin-item value="column-view">Column View</vaadin-item>
+      <vaadin-item value="table-view">Table view</vaadin-item>
+    </vaadin-list-box>
+
+    </vaadin-dropdown-menu>
     </div>
     
     <div class="container" id="container">
@@ -47,8 +69,11 @@ class AssetLineageView extends PolymerElement {
 
     ready() {
         super.ready();
-        this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
-        this.$.radioViews.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
+        //this.$.useCases.__data.items[index]
+        // this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
+        // var index = this.$.useCases.selected;
+        this.$.useCases.addEventListener('selected-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
+        this.$.radioViews.addEventListener('value-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
     }
 
     static get properties() {
@@ -56,6 +81,10 @@ class AssetLineageView extends PolymerElement {
             guid: {
                 type: String,
                 observer: '_guidChanged'
+            },
+            subview: {
+                type: String,
+                observer: '_subviewChanged'
             },
             graphData: {
                 type: Object,
@@ -130,7 +159,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -139,7 +168,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -148,7 +177,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -175,6 +204,11 @@ class AssetLineageView extends PolymerElement {
 
     _guidChanged() {
         this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value);
+    }
+
+    _subviewChanged() {
+      // this.subview=this.$.radioUsecases.value;
+      this._usecaseChanged(this.subview, this.$.radioViews.value);
     }
 }
 
