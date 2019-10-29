@@ -67,6 +67,26 @@ public class ReferenceableConverter extends ElementHeaderConverter
 
 
     /**
+     * Return the converted bean.
+     *
+     * @return bean populated with properties from the entity supplied in the constructor
+     */
+    public Referenceable getBean()
+    {
+        Referenceable  bean = null;
+
+        if (entity != null)
+        {
+            bean = new Referenceable();
+
+            updateBean(bean);
+        }
+
+        return bean;
+    }
+
+
+    /**
      * Extract the classifications from the entity.
      *
      * @return list of bean classifications

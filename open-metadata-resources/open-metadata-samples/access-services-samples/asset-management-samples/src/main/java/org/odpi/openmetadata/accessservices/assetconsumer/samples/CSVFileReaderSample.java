@@ -88,8 +88,8 @@ public class CSVFileReaderSample
              * This call extracts the list of assets stored in the open metadata repositories that have a name
              * that matches the requested filename.
              */
-            List<String>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
-            /// List<String>   knownAssets = client.findAssets(clientUserId, ".*", 0, 99);
+            // List<String>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
+            List<String>   knownAssets = client.findAssets(clientUserId, ".*", 2, 4);
             ///AssetUniverse universe = client.getAssetProperties(clientUserId, "0fdd1dbb-b11a-48bd-a82c-a6d7838ffd60" );
 
             ///System.out.println(universe.toString());
