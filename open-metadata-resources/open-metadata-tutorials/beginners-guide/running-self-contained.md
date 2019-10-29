@@ -40,8 +40,8 @@ Running the environment (after Docker is installed and running):
 
 1. From within the `tutorials` directory downloaded in the first step, run the command:
 
-    ```shell script
-    docker-compose -f ./egeria-tutorial.yaml up
+    ```bash
+    $ docker-compose -f ./egeria-tutorial.yaml up
     ```
 
 1. You may need to wait while some containers are downloaded and started up. Once you see the following lines:
@@ -58,8 +58,8 @@ Running the environment (after Docker is installed and running):
 1. To shutdown the environment press `CTRL-C` in the console where it was started.  To remove the containers,
     again within the `tutorials` directory run the command:
 
-    ```shell script
-    docker-compose -f ./egeria-tutorial.yaml down
+    ```bash
+    $ docker-compose -f ./egeria-tutorial.yaml down
     ```
 
 **Important note**: Be aware that each time you run the environment it will reset to a clean tutorial. So if you make

@@ -6,9 +6,7 @@
 An individual can retrieve their personal profile with their userId.
 
 ```
-
 GET <serverRootURL>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}/my-profile
-
 ```
 
 If the server is running then the HTTP Status will be 200 and the response

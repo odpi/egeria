@@ -14,9 +14,7 @@ Open Metadata and Governance REST APIs have the following format
 in their URLs:
 
 ```text
-
-   <server-url-root>/servers/{serverName}/<operation-name-and-parameters>
-
+<server-url-root>/servers/{serverName}/<operation-name-and-parameters>
 ```
 
 The local server URL root is the content of the URL prior to `/servers/`.
