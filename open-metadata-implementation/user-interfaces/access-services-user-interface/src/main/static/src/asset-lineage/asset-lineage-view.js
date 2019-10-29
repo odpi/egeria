@@ -39,23 +39,8 @@ class AssetLineageView extends PolymerElement {
     
     <!--protected _selectedChanged(selected): void-->
     
-    <!--<vaadin-radio-group id ="radioUsecases" class="select-option-group" name="radio-group" value={{subview}}  role="radiogroup" >-->
-      <!--<vaadin-radio-button value="ultimateSource" class="select-option" role="radio" type="radio">Ultimate Source</vaadin-radio-button>-->
-      <!--<vaadin-radio-button value="endToEnd" class="select-option" role="radio" type="radio">End to End Lineage</vaadin-radio-button>-->
-      <!--<vaadin-radio-button value="ultimateDestination" class="select-option" role="radio" type="radio">Ultimate Destination</vaadin-radio-button>-->
-      <!--<vaadin-radio-button value="glossaryLineage" class="select-option" role="radio" type="radio">Glossary Lineage</vaadin-radio-button>-->
-      <!--<vaadin-radio-button value="sourceAndDestination" class="select-option" role="radio" type="radio">Source and Destination</vaadin-radio-button>-->
-    <!--</vaadin-radio-group>-->
-          
-    <!--<div>-->
-    <!--<vaadin-radio-group id ="radioViews" class="select-option-group" name="radio-group" value="column-view"  role="radiogroup" >-->
-      <!--<vaadin-radio-button value="column-view" class="select-option" role="radio" type="radio">Column View</vaadin-radio-button>-->
-      <!--<vaadin-radio-button value="table-view" class="select-option" role="radio" type="radio">Table view</vaadin-radio-button>-->
-    <!--</vaadin-radio-group>-->
-    <!--</div>    -->
-    
     <div>
-        <vaadin-select id="viewsMenu" value="column-view" label="View">
+        <vaadin-select id="viewsMenu" value="column-view" >
           <template>
             <vaadin-list-box>
               <vaadin-item value="column-view" selected="true">Column View</vaadin-item>
@@ -73,8 +58,8 @@ class AssetLineageView extends PolymerElement {
 
     ready() {
         super.ready();
-        this.$.useCases.addEventListener('selected-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
-        this.$.viewsMenu.addEventListener('value-changed', () => this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
+        this.$.useCases.addEventListener('selected-changed', () => this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
+        this.$.viewsMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
     }
 
     static get properties() {
@@ -83,9 +68,16 @@ class AssetLineageView extends PolymerElement {
                 type: String,
                 observer: '_guidChanged'
             },
-            subview: {
+            usecaseIndex:{
+                type: String
+            },
+            usecase: {
                 type: String,
-                observer: '_subviewChanged'
+                observer: '_useCaseChanged'
+            },
+            usecases:{
+                type: Array,
+                value:['ultimateSource','endToEnd', 'ultimateDestination','glossaryLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -182,8 +174,9 @@ class AssetLineageView extends PolymerElement {
           this.$.tokenAjax._go();
       }
 
-    _usecaseChanged(value, view) {
-        switch (value) {
+    _reload(usecase, view) {
+
+        switch (usecase) {
             case 'ultimateSource':
                 this._ultimateSource(this.guid, view);
                 break;
@@ -204,12 +197,21 @@ class AssetLineageView extends PolymerElement {
 
 
     _guidChanged() {
-        this._usecaseChanged(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value);
+        this._reload(this.subview, this.$.viewsMenu.value);
     }
 
-    _subviewChanged() {
-      // this.subview=this.$.radioUsecases.value;
-      this._usecaseChanged(this.subview, this.$.viewsMenu.value);
+    _useCaseChanged() {
+        //this.usecase = this.$.useCases.items[this.$.useCases.selected].value;
+        //this.usecase=this.$.useCases.items[this.$.useCases.selected].value)
+        if(this.$.useCases.selected != this.usecases.indexOf(this.usecase)){
+            this.$.useCases.select(this.usecases.indexOf(this.usecase));
+        }
+      this.subview  =  this.usecase;
+      this._reload(this.usecase, this.$.viewsMenu.value);
+    }
+
+    _useCaseSelectionChanged(){
+        // this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
     }
 }
 
