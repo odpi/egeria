@@ -10,7 +10,6 @@ Check [create-port-implementation](create-port-implementation.md), [create-port-
 and [create-schema-types](create-schema-type.md) for examples of the more granular payloads.
 
 ```
-
 POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes
 
 {
@@ -71,11 +70,12 @@ POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-
       "portAliases": []
     }]
  }
-
-GUIDListResponse - response containing the list of created processes guids and
-the list of failed processes guids, with status and error message if failing
-
 ```
+
+`GUIDListResponse` - response containing the list of created processes guids and
+the list of failed processes guids, with status and error message if failing.
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

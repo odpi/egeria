@@ -17,13 +17,13 @@ to the Data Platform OMAS.
     **POST** following JSON object (following shows an example for IBM DataStage)
 
     ```json
-        {
+    {
         "class": "DataPlatformConfig",
         "dataPlatformGUID": "296bc645-2043-499c-bcd9-ecff90e46899",
         "dataPlatformServerURL":"127.0.0.1",
         "dataPlatformServerOutTopicName": "omas.dataplatform.inTopic",
         "dataPlatformServerName":"Apache Cassandra"
-        }
+    }
     ```
     
     to the following address

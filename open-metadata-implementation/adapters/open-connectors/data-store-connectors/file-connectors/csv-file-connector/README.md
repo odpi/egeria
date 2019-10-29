@@ -62,6 +62,7 @@ RecId,ContactType,FirstName,LastName,Company,JobTitle,WorkLocation
 6,E,Tessa,Tube,Coco Pharmaceuticals,"Lead Researcher, Clinical Trials",3
   :             :          :
 ```
+
 **NoColumnNames.csv** is an example of a CSV file that uses unconventional delimiters and has no column
 headers so it needs to use all three of the additional properties.
 
@@ -74,6 +75,7 @@ headers so it needs to use all three of the additional properties.
 5-O-'31-20-5274986 (ext 3)'
   :             :          :
 ```
+
 The delimiter between columns is a dash (**-**) and a single quote (**'**) has been used to group text that includes the
 delimiter character.  There are also no column names in the file so they need to be supplied in the additional
 properties.  If the column names are not supplied, then the structured file connector assumes the first
