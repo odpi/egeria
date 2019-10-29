@@ -57,7 +57,7 @@ advertised.listeners=PLAINTEXT://localhost:59092
 
 To restart Kafka after making this update, change into Kafka's `bin` directory and issue the following commands:
 
-```
+```bash
 $ ./zookeeper-server-start.sh ../config/zookeeper.properties &
 $ ./kafka-server-start.sh ../config/server.properties &
 ```

@@ -19,24 +19,24 @@ running `mvn dependency:tree` is a useful way to understand what dependencies (d
 
 * Check if the dependency is already listed in the top level pom.
 * If not add a section such as follows within the `<dependencyManagement>` section of the pom:
-```
-<dependency>
-    <groupId>org.apache.kafka</groupId>
-    <artifactId>kafka-clients</artifactId>
-    <scope>compile</scope>
-    <version>${kafka.version}</version>
-</dependency>
-```
-This declaration only means that IF a dependency is used, these are the defaults to use - most critically including version, though scope is a useful default to add too - for example if the dependency is only for tests.
+    ```xml
+    <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-clients</artifactId>
+        <scope>compile</scope>
+        <version>${kafka.version}</version>
+    </dependency>
+    ```
+    This declaration only means that IF a dependency is used, these are the defaults to use - most critically including version, though scope is a useful default to add too - for example if the dependency is only for tests.
 
 * Add the dependency to the `<dependency>` section of your POM:
-```
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-        </dependency>
-```
-Note that the version is not included - it will be picked up from `<dependencyManagement>`.
+    ```xml
+    <dependency>
+        <groupId>org.apache.kafka</groupId>
+        <artifactId>kafka-clients</artifactId>
+    </dependency>
+    ```
+    Note that the version is not included - it will be picked up from `<dependencyManagement>`.
 
 Now build with `mvn clean install` which will include some checks for correct useage of dependencies - see below.
 
@@ -71,7 +71,9 @@ Egeria code itself is also scanned for vulnerabilities using [Sonar](https://son
 
 Additionally any developer can perform similar checks by running:
 
-```mvn clean install -DfindBugs```
+```
+mvn clean install -DfindBugs
+```
 
 This will run (and create a file for each module)
  * [spotBugs](https://spotbugs.github.io/spotbugs-maven-plugin/index.html) including [findsecbugs](https://find-sec-bugs.github.io/) (spotBugsXml.xml)
@@ -81,10 +83,13 @@ This will run (and create a file for each module)
 Note that the scan may take a long time - an hour or more for all checks.
 
 If running against ALL components (ie from the root) an invocation like
+
 ```
 MAVEN_OPTS="-Xmx5000M -Xss512M -XX:MaxPermSize=2048M -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC" mvn clean install -DfindBugs 
 ```
+
 may be needed due to the memory requirements of a security scan
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

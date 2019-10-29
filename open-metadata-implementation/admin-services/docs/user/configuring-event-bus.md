@@ -16,9 +16,7 @@ It is possible to add arbitrary name/value pairs as JSON in the
 request body.  The correct properties to use are defined in the connector type for the event bus.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/event-bus
-
 ```
 
 For example, when using Apache Kafka as your event bus you may want to configure properties such as:
@@ -48,10 +46,7 @@ For example, when using Apache Kafka as your event bus you may want to configure
    		"kafka.omrs.topic.id":"cocoCohort"
 	}
 }
-
 ```
-
-
 
 
 

@@ -12,9 +12,10 @@ This rest call is used by the [get a connector by connection name](../../../asse
 
 ```
 GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/connections/by-name/{{connectionName}}
+```
 
-       
-        ConnectionResponse 
+```java
+ConnectionResponse 
 ```
 
 ----

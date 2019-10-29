@@ -31,6 +31,13 @@
             <artifactId>data-engine-client</artifactId>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-engine-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>

@@ -57,6 +57,8 @@ class ProcessHandlerTest {
     private static final String PROCESS_GUID = "processGuid";
     private static final String PORT_IMPL_GUID = "portImplGUID";
     private static final String PORT_ALIAS_GUID = "portAliasGUID";
+    private static final String EXTERNAL_SOURCE_DE_GUID = "externalSourceDataEngineGuid";
+    private static final String EXTERNAL_SOURCE_DE_QUALIFIED_NAME = "externalSourceDataEngineQualifiedName";
 
     @Mock
     private RepositoryHandler repositoryHandler;
@@ -67,6 +69,9 @@ class ProcessHandlerTest {
     @Mock
     private InvalidParameterHandler invalidParameterHandler;
 
+    @Mock
+    private DataEngineRegistrationHandler dataEngineRegistrationHandler;
+
     @InjectMocks
     private ProcessHandler processHandler;
 
@@ -76,11 +81,15 @@ class ProcessHandlerTest {
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
 
-        when(repositoryHandler.createEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, null, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+
+        when(repositoryHandler.createExternalEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME,EXTERNAL_SOURCE_DE_GUID,EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                null, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
 
         String result = processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                null, NAME, FORMULA, OWNER, OwnerType.USER_ID);
+                null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         assertEquals(GUID, result);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
@@ -92,18 +101,22 @@ class ProcessHandlerTest {
     void createProcess_throwsUserNotAuthorizedException() throws UserNotAuthorizedException, PropertyServerException,
                                                                  InvocationTargetException, NoSuchMethodException,
                                                                  InstantiationException,
-                                                                 IllegalAccessException {
+                                                                 IllegalAccessException, InvalidParameterException {
         String methodName = "createProcess";
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        when(repositoryHandler.createEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME, null, InstanceStatus.DRAFT, methodName)).thenThrow(mockedException);
+        when(repositoryHandler.createExternalEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                null, InstanceStatus.DRAFT, methodName)).thenThrow(mockedException);
+
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
-                        null, NAME, FORMULA, OWNER, OwnerType.USER_ID));
+                        null, NAME, FORMULA, OWNER, OwnerType.USER_ID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -196,10 +209,14 @@ class ProcessHandlerTest {
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
 
-        processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        verify(repositoryHandler, times(1)).createRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, PROCESS_GUID, GUID, null, methodName);
+        processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        verify(repositoryHandler, times(1)).createExternalRelationship(USER,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                 PROCESS_GUID, GUID, null, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
@@ -213,17 +230,22 @@ class ProcessHandlerTest {
                                                                               InvocationTargetException,
                                                                               NoSuchMethodException,
                                                                               InstantiationException,
-                                                                              IllegalAccessException {
+                                                                              IllegalAccessException,
+                                                                              InvalidParameterException {
         String methodName = "addProcessPortRelationship";
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
-        doThrow(mockedException).when(repositoryHandler).createRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, PROCESS_GUID, GUID, null, methodName);
+        doThrow(mockedException).when(repositoryHandler).createExternalRelationship(USER,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                PROCESS_GUID, GUID, null, methodName);
+
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID));
+                processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
     }
@@ -240,10 +262,14 @@ class ProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, GUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, methodName)).thenReturn(relationship);
 
-        processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
+                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
-        verify(repositoryHandler, times(0)).createRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, PROCESS_GUID, GUID, null, methodName);
+        processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
+
+        verify(repositoryHandler, times(0)).createExternalRelationship(USER,
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                PROCESS_GUID, GUID, null, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);

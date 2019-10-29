@@ -42,7 +42,8 @@ This has been verified by running the [Subject Area samples](../../../open-metad
 POST url: `localhost:8080/servers/{serverName}/open-metadata/access-services/subject-area/users/{user}/glossaries`
 
 JSON body:
-```JSON
+
+```json
 {
   "name": "Test glossary 1",
   "description": "This is a Glossary for testing.",

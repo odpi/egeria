@@ -23,18 +23,24 @@ Here are the steps to run Virtualizer
 - Configure event bus
 
 **POST** following JSON object 
-````json
-{"consumer": {
-	"bootstrap.servers" :  "{{kafka-server-address}}"
-},
-"producer": {
-	"bootstrap.servers" :  "{{kafka-server-address}}",
-	"key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
-	"value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
+
+```json
+{
+  "consumer":
+  {
+    "bootstrap.servers" :  "{{kafka-server-address}}"
+  },
+  "producer":
+  {
+    "bootstrap.servers" :  "{{kafka-server-address}}",
+    "key.serializer": "org.apache.kafka.common.serialization.StringSerializer",
+    "value.serializer": "org.apache.kafka.common.serialization.StringSerializer"
+  }
 }
-}
-````
+```
+
 to the following address
+
 ```
 {{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/event-bus?topicURLRoot={{topic-root}}
 ```
@@ -42,30 +48,34 @@ to the following address
 - Set up virtualizer configuration
 
 **POST** following JSON object 
-````json
+
+```json
 {
-	"class": "VirtualizationConfig",
-	"virtualizationProvider": "{{connector-class-name}}",
-	"virtualizerOutboundTopicName": "{{iv-in-topic-name}}",
-	"virtualizerInboundTopicName": "{{iv-out-topic-name}}",
-	 "virtualizationSolutionConfig": {
-            "frontendName": "",
-            "serverAddress": "",
-            "databaseName": "",
-            "schema": "",
-            "username": "",
-            "password": "",
-            "timeoutInSecond": 5,
-            "create": true,
-            "derbyDriver": "org.apache.derby.jdbc.ClientDriver",
-            "gdbNode": "GDB_NODE",
-            "logicTableName": "LTNAME",
-            "logicTableDefinition": "LTDEF",
-            "getLogicTables": "call listlts()"
-        }
+  "class": "VirtualizationConfig",
+  "virtualizationProvider": "{{connector-class-name}}",
+  "virtualizerOutboundTopicName": "{{iv-in-topic-name}}",
+  "virtualizerInboundTopicName": "{{iv-out-topic-name}}",
+  "virtualizationSolutionConfig":
+  {
+    "frontendName": "",
+    "serverAddress": "",
+    "databaseName": "",
+    "schema": "",
+    "username": "",
+    "password": "",
+    "timeoutInSecond": 5,
+    "create": true,
+    "derbyDriver": "org.apache.derby.jdbc.ClientDriver",
+    "gdbNode": "GDB_NODE",
+    "logicTableName": "LTNAME",
+    "logicTableDefinition": "LTDEF",
+    "getLogicTables": "call listlts()"
+  }
 }
-````
+```
+
 to the following address
+
 ```
 {{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/virtualization-service/configuration
 ```
@@ -75,6 +85,7 @@ The object *virtualizationSolutionConfig* is the information required to impleme
 - Start the instance of the OMAG Server
 
 **POST** to the following address
+
 ```
 {{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/instance
 ```
