@@ -845,7 +845,7 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of entities at the other end of the requested relationship type.
+     * Return the list of entities of the requested type.
      *
      * @param userId  user making the request
      * @param entityTypeGUID  identifier for the entity's type
@@ -995,7 +995,97 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of entities at the other end of the requested relationship type.
+     * Return the list of entities at the requested end of the requested relationship type.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param anchorAtEnd1 indicates that the match of the anchor entity must be at end 1 (otherwise it is at end two)
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName  name of calling method
+     * @return retrieved entities or null
+     * @throws PropertyServerException problem accessing the property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public List<EntityDetail> getEntitiesForRelationshipEnd(String                 userId,
+                                                            String                 anchorEntityGUID,
+                                                            String                 anchorEntityTypeName,
+                                                            boolean                anchorAtEnd1,
+                                                            String                 relationshipTypeGUID,
+                                                            String                 relationshipTypeName,
+                                                            int                    startingFrom,
+                                                            int                    pageSize,
+                                                            String                 methodName) throws UserNotAuthorizedException,
+                                                                                                       PropertyServerException
+    {
+        List<EntityDetail> results = new ArrayList<>();
+
+        try
+        {
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            anchorEntityGUID,
+                                                                                            relationshipTypeGUID,
+                                                                                            startingFrom,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            pageSize);
+
+            if (relationships != null)
+            {
+                for (Relationship relationship : relationships)
+                {
+                    EntityProxy anchorEndProxy = relationship.getEntityOneProxy();
+                    EntityProxy requiredEndProxy = relationship.getEntityTwoProxy();
+
+                    if (! anchorAtEnd1)
+                    {
+                        anchorEndProxy = relationship.getEntityTwoProxy();
+                        requiredEndProxy = relationship.getEntityOneProxy();
+                    }
+
+                    if (anchorEntityGUID.equals(anchorEndProxy.getGUID()))
+                    {
+                        results.add(metadataCollection.getEntityDetail(userId, requiredEndProxy.getGUID()));
+                    }
+                }
+            }
+            else
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No relationships of type " + relationshipTypeName +
+                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                }
+            }
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
+     * Return the list of entities at the other end of the requested relationship type thhat were creaed or edited by
+     * the requesting user.
      *
      * @param userId  user making the request
      * @param anchorEntityGUID  starting entity's GUID
@@ -1066,7 +1156,8 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of entities at the other end of the requested relationship type.
+     * Return the list of entities at the other end of the requested relationship type that were created or
+     * edited by the requesting user.
      *
      * @param userId  user making the request
      * @param anchorEntityGUID  starting entity's GUID
