@@ -37,6 +37,9 @@ import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.se
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_SYNC_SERVER;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.SECURITY_TAGS;
 
+import static com.google.json.JsonSanitizer.sanitize;
+
+
 public class SecuritySyncEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(SecuritySyncEventProcessor.class);
@@ -186,7 +189,8 @@ public class SecuritySyncEventProcessor {
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
         try {
-            return mapper.readValue(result.getBody(), className);
+            String resultString = sanitize(result.getBody());
+            return mapper.readValue(resultString, className);
         } catch (IOException e) {
             log.error("403", e.getMessage(), e);
         }

@@ -58,7 +58,8 @@ public class DataEngineProxyChangePoller implements Runnable {
             try {
                 connector.start();
                 DataEngineSoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                engineGuid = dataEngineOMASClient.createSoftwareServerCapability(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
+                dataEngineOMASClient.createExternalDataEngine(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
+                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getSoftwareServerCapability().getQualifiedName());
             } catch (InvalidParameterException | PropertyServerException e) {
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
@@ -135,6 +136,10 @@ public class DataEngineProxyChangePoller implements Runnable {
             try {
                 Date changesLastSynced = connector.getChangesLastSynced();
                 Date changesCutoff = new Date();
+                if (dataEngineOMASClient.getExternalSourceName()==null)
+                {
+                    dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getSoftwareServerCapability().getQualifiedName());
+                }
                 if (log.isInfoEnabled()) { log.info("Polling for changes since: {}", changesLastSynced); }
                 List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
                 if (changedSchemaTypes != null) {
