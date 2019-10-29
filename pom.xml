@@ -124,7 +124,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.4.2</junit.platform.version>
+        <junit.platform.version>1.5.2</junit.platform.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
