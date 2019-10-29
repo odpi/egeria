@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.builders;
 
 
-import org.odpi.openmetadata.accessservices.dataengine.server.mappers.SoftwareServerPropertiesMapper;
+import org.odpi.openmetadata.accessservices.dataengine.server.mappers.DataEnginePropertiesMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import java.util.Map;
 
 
-public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
+public class ExternalDataEnginePropertiesBuilder extends ReferenceableBuilder {
 
     private final String name;
     private final String description;
@@ -37,12 +37,12 @@ public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
      * @param serviceName          name of this OMAS
      * @param serverName           name of local server
      */
-    public SoftwareServerPropertiesBuilder(String qualifiedName, String name, String description,
-                                           String type, String version, String patchLevel, String source,
-                                           Map<String, String> additionalProperties,
-                                           Map<String, Object> extendedProperties,
-                                           OMRSRepositoryHelper repositoryHelper, String serviceName,
-                                           String serverName) {
+    public ExternalDataEnginePropertiesBuilder(String qualifiedName, String name, String description,
+                                               String type, String version, String patchLevel, String source,
+                                               Map<String, String> additionalProperties,
+                                               Map<String, Object> extendedProperties,
+                                               OMRSRepositoryHelper repositoryHelper, String serviceName,
+                                               String serverName) {
 
         super(qualifiedName, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
 
@@ -68,32 +68,32 @@ public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
 
         if (name != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, name, methodName);
+                    DataEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, name, methodName);
         }
 
         if (description != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
+                    DataEnginePropertiesMapper.DESCRIPTION_PROPERTY_NAME, description, methodName);
         }
 
         if (type != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.TYPE_DESCRIPTION_PROPERTY_NAME, type, methodName);
+                    DataEnginePropertiesMapper.TYPE_DESCRIPTION_PROPERTY_NAME, type, methodName);
         }
 
         if (version != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.VERSION_PROPERTY_NAME, version, methodName);
+                    DataEnginePropertiesMapper.VERSION_PROPERTY_NAME, version, methodName);
         }
 
         if (patchLevel != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
+                    DataEnginePropertiesMapper.PATCH_LEVEL_PROPERTY_NAME, patchLevel, methodName);
         }
 
         if (source != null) {
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.SOURCE_PROPERTY_NAME, source, methodName);
+                    DataEnginePropertiesMapper.SOURCE_PROPERTY_NAME, source, methodName);
         }
 
         return properties;
@@ -115,7 +115,7 @@ public class SoftwareServerPropertiesBuilder extends ReferenceableBuilder {
             String literalName = repositoryHelper.getExactMatchRegex(name);
 
             properties = repositoryHelper.addStringPropertyToInstance(serviceName, properties,
-                    SoftwareServerPropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, literalName, methodName);
+                    DataEnginePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME, literalName, methodName);
         }
 
         return properties;
