@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class to handle periodically polling a Data Engine for changes, for those data engines that do not
@@ -30,6 +31,17 @@ public class DataEngineProxyChangePoller implements Runnable {
     private DataEngineImpl dataEngineOMASClient;
     private DataEngineConnectorBase connector;
     private String engineGuid;
+
+    private final AtomicBoolean running = new AtomicBoolean(false);
+
+    public void start() {
+        Thread worker = new Thread(this);
+        worker.start();
+    }
+
+    public void stop() {
+        running.set(false);
+    }
 
     /**
      * Default constructor
@@ -132,7 +144,8 @@ public class DataEngineProxyChangePoller implements Runnable {
 
         final String methodName = "ProcessPollThread::run";
 
-        while (true) {
+        running.set(true);
+        while (running.get()) {
             try {
                 Date changesLastSynced = connector.getChangesLastSynced();
                 Date changesCutoff = new Date();
@@ -175,10 +188,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                     }
                 }
                 connector.setChangesLastSynced(changesCutoff);
-                Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000);
-            } catch (InterruptedException e) {
-                log.error("Thread was interrupted.", e);
-                break;
+                Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
             } catch (InvalidParameterException | PropertyServerException e) {
                 log.error("Exception caught!", e);
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
