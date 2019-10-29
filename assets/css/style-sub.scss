@@ -42,17 +42,16 @@ li {
     box-sizing: border-box;
 }
 
-code {
-  white-space: pre-wrap !important;
-  word-break: break-all !important;
-}
-
 .highlight {
   background-color:#eeeeee;
 }
 
 pre {
-  margin-bottom:1%;
+  white-space: pre !important;
+  padding: 12px;
+  overflow: auto;
+  border-radius: 3px;
+  line-height: 1.45;
 }
 
 

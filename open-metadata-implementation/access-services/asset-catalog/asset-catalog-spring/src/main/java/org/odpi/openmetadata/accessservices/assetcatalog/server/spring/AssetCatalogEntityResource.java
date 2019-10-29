@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.As
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
+import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ import javax.validation.constraints.PositiveOrZero;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-catalog/users/{userId}")
 public class AssetCatalogEntityResource {
 
-    private AssetCatalogService assetService = new AssetCatalogService();
+    private AssetCatalogRESTService assetService = new AssetCatalogRESTService();
 
     /**
      * Fetch asset's header, classification and properties
@@ -104,7 +104,7 @@ public class AssetCatalogEntityResource {
      * @param classificationName the name of the classification
      * @return ClassificationsResponse the classification for the asset
      */
-    @RequestMapping(method = RequestMethod.POST,
+    @RequestMapping(method = RequestMethod.GET,
             path = "/asset-classifications/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
@@ -154,26 +154,6 @@ public class AssetCatalogEntityResource {
     }
 
     /**
-     * Return the list of assets that are of the types listed in instanceTypes and are connected,
-     * either directly or indirectly to the asset identified by assetGUID.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param assetGUID        the starting asset identifier of the query
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of assets either directly or indirectly connected to the start asset
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/related-assets/{assetGUID}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getRelatedAssets(@PathVariable("serverName") String serverName,
-                                                     @PathVariable("userId") String userId,
-                                                     @PathVariable("assetGUID") @NotBlank String assetGUID,
-                                                     @RequestBody @NotNull SearchParameters searchParameters) {
-        return assetService.getRelatedAssets(serverName, userId, assetGUID, searchParameters);
-    }
-
-    /**
      * Returns the sub-graph that represents the returned linked relationships.
      *
      * @param serverName       unique identifier for requested server.
@@ -204,11 +184,11 @@ public class AssetCatalogEntityResource {
     @RequestMapping(method = RequestMethod.POST,
             path = "/search/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetResponse searchAssetsAndGlossaryTerms(@PathVariable("serverName") String serverName,
-                                                      @PathVariable("userId") String userId,
-                                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
-                                                      @RequestBody SearchParameters searchParameters) {
-        return assetService.findAssetsBySearchedPropertyValue(serverName, userId, searchCriteria, searchParameters);
+    public AssetResponse searchByType(@PathVariable("serverName") String serverName,
+                                      @PathVariable("userId") String userId,
+                                      @PathVariable("searchCriteria") @NotBlank String searchCriteria,
+                                      @RequestBody SearchParameters searchParameters) {
+        return assetService.searchByType(serverName, userId, searchCriteria, searchParameters);
     }
 
 
@@ -229,6 +209,6 @@ public class AssetCatalogEntityResource {
                                          @PathVariable("userId") String userId,
                                          @PathVariable("assetGUID") @NotBlank String assetGUID,
                                          @RequestParam(name = "assetType") @NotNull String assetType) {
-        return assetService.buildAssetContext(serverName, userId, assetGUID, assetType);
+        return assetService.buildContext(serverName, userId, assetGUID, assetType);
     }
 }

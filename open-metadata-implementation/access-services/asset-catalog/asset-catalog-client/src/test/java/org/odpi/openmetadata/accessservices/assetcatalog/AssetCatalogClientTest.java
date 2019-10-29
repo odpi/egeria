@@ -1,145 +1,365 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog;
 
-import org.junit.Ignore;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
+import org.springframework.util.ReflectionUtils;
 
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.WARN)
-@Ignore
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
+
 public class AssetCatalogClientTest {
 
-    private static final String defaultOMASServerURL = "http://localhost:8081";
-    private static final String defaultServerName = "TestServer";
-    private static final String defaultUserId = "zebra91";
-    private static final String defaultAssetId = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
-    private static final String defaultRelationshipId = "c7184523-7ca5-4876-9210-fe1bb1b55cd7";
-    private static final String defaultRelationshipType = "SemanticAssignment";
+    private static final String SERVER_URL = "http://localhost:8081";
+    private static final String SERVER_NAME = "TestServer";
+    private static final String USER_ID = "zebra91";
+    private static final String ASSET_ID = "66d7f872-19bd-439c-98ae-c3fe49d8f420";
+    private static final String ASSET_TYPE = "GlossaryTerm";
+    private static final String SEARCH_CRITERIA = "employee";
+    private static final String SECOND_ASSET_ID = "66d7f872-19bd-439c-98ae-3232430022";
+    private static final String SECOND_ASSET_TYPE = "RelationalColumn";
+    private static final String RELATIONSHIP_TYPE = "SemanticAssignment";
+    private static final String CLASSIFICATION_NAME = "Confidentiality";
+    private static final Integer FROM = 0;
+    private static final Integer PAGE_SIZE = 10;
 
-//    @DisplayName("Asset Catalog - Test Invalid Server URL")
-//    @Test
-//    void assetCatalogInvalidServerURLTest() {
-//        AssetCatalog assetCatalog = new AssetCatalog(defaultServerName, "");
-//
-//        Throwable thrown = assertThrows(PropertyServerException.class, () ->
-//                assetCatalog.getAssetSummary(defaultUserId, defaultAssetId));
-//
-//        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-001"));
-//    }
-//
-//    @DisplayName("Asset Catalog - Test Invalid User Id")
-//    @Test
-//    void assetCatalogInvalidUserId() {
-//        Throwable thrown = assertThrows(InvalidParameterException.class, () ->
-//                assetCatalog.getAssetSummary("", defaultAssetId));
-//
-//        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-003"));
-//    }
-//
-//    @DisplayName("Asset Catalog - Test Invalid Parameter Id")
-//    @Test
-//    void assetCatalogInvalidAssetId() {
-//        Throwable thrown = assertThrows(InvalidParameterException.class, () ->
-//                assetCatalog.getAssetSummary(defaultUserId, ""));
-//
-//        assertTrue(thrown.getMessage().contains("OMAS-ASSET-CATALOG-400-002"));
-//    }
+    private AssetCatalog assetCatalog;
 
-//    @Test
-//    @DisplayName("Asset Summary")
-//    void getAssetSummaryTest() {
-//        defaultAssetExpected();
-//
-//        AssetDescriptionResponse response = new AssetDescriptionResponse();
-//        try {
-//            response = assetCatalog.getAssetSummary(defaultUserId, defaultAssetId);
-//        } catch (AssetCatalogException e) {
-//            e.printStackTrace();
-//        }
-//
-//        checkResponse(response);
-//        assertEquals(response.getAssetDescriptionList().size(), 1);
-//        Assert.assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
-//    }
-//
-//    @Test
-//    @DisplayName("Asset Description")
-//    void getAssetDescriptionTest() {
-//        defaultAssetExpected();
-//
-//        AssetDescriptionResponse response = new AssetDescriptionResponse();
-//        try {
-//            response = assetCatalog.getAssetDetails(defaultUserId, defaultAssetId);
-//        } catch (AssetCatalogException e) {
-//            e.printStackTrace();
-//        }
-//
-//        checkResponse(response);
-//        assertEquals(response.getAssetDescriptionList().size(), 1);
-//        Assert.assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
-//    }
-//
-//    @Test
-//    @DisplayName("Asset Universe")
-//    void getAssetUniverseTest() {
-//        defaultAssetExpected();
-//
-//        AssetDescriptionResponse response = new AssetDescriptionResponse();
-//        try {
-//            response = assetCatalog.getAssetUniverse(defaultUserId, defaultUserId, defaultAssetId);
-//        } catch (AssetCatalogException e) {
-//            e.printStackTrace();
-//        }
-//
-//        checkResponse(response);
-//        assertEquals(response.getAssetDescriptionList().size(), 1);
-//        Assert.assertEquals(defaultAssetId, response.getAssetDescriptionList().get(0).getGuid());
-//    }
-//
-//     private void defaultAssetExpected() {
-//        AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
-//        expectedResponse.setRelatedHTTPCode(200);
-//
-//        AssetDescription assetDescription = new AssetDescription();
-//        assetDescription.setGuid(defaultAssetId);
-//        List<AssetDescription> list = new ArrayList<>(1);
-//        list.add(assetDescription);
-//        expectedResponse.setAssetDescriptionList(list);
-//
-//        when(restTemplate.getForObject(ArgumentMatchers.anyString(),
-//                ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
-//    }
-//
-//    private void defaultRelationshipExpected() {
-//        RelationshipsResponse expectedResponse = new RelationshipsResponse();
-//        expectedResponse.setRelatedHTTPCode(200);
-//
-//        List<Relationship> relationships = new ArrayList<>();
-//        Relationship relationship = new Relationship();
-//        relationship.setGuid(defaultRelationshipId);
-//        relationships.add(relationship);
-//        expectedResponse.setRelationships(relationships);
-//
-//        when(restTemplate.getForObject(ArgumentMatchers.anyString(),
-//                ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
-//    }
-//
-//    private void defaultClassificationExpected() {
-//        ClassificationsResponse expectedResponse = new ClassificationsResponse();
-//        expectedResponse.setRelatedHTTPCode(200);
-//
-//        when(restTemplate.getForObject(ArgumentMatchers.anyString(),
-//                ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any())).thenReturn(expectedResponse);
-//    }
-//
-//    private void checkResponse(AssetCatalogOMASAPIResponse expectedResponse) {
-//        verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(),
-//                ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
-//
-//        assertEquals(expectedResponse.getRelatedHTTPCode(), 200);
-//    }
+    @Mock
+    private RESTClientConnector connector;
 
+    @Before
+    public void before() throws Exception {
+        MockitoAnnotations.initMocks(this);
+
+        assetCatalog = new AssetCatalog(SERVER_NAME, SERVER_URL);
+        Field connectorField = ReflectionUtils.findField(AssetCatalog.class, "clientConnector");
+        if (connectorField != null) {
+            connectorField.setAccessible(true);
+            ReflectionUtils.setField(connectorField, assetCatalog, connector);
+            connectorField.setAccessible(false);
+        }
+    }
+
+    @Test
+    public void testGetAssetDetails() throws Exception {
+        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+
+        when(connector.callGetRESTCall(eq("getAssetDetails"), eq(AssetDescriptionResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), eq(response.getAssetDescriptionList().get(0).getGuid()), eq(ASSET_TYPE))).thenReturn(response);
+
+        AssetDescriptionResponse assetDetails = assetCatalog.getAssetDetails(USER_ID,
+                response.getAssetDescriptionList().get(0).getGuid(),
+                ASSET_TYPE);
+
+        Assert.assertEquals(response.getAssetDescriptionList().get(0).getGuid(), assetDetails.getAssetDescriptionList().get(0).getGuid());
+    }
+
+    @Test
+    public void testGetAssetUniverse() throws Exception {
+        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+
+        when(connector.callGetRESTCall(eq("getAssetUniverse"), eq(AssetDescriptionResponse.class), anyString(), eq(SERVER_NAME),
+                eq(USER_ID), eq(response.getAssetDescriptionList().get(0).getGuid()), eq(ASSET_TYPE))).thenReturn(response);
+
+        AssetDescriptionResponse assetDetails = assetCatalog.getAssetUniverse(USER_ID,
+                response.getAssetDescriptionList().get(0).getGuid(),
+                ASSET_TYPE);
+
+        Assert.assertEquals(response.getAssetDescriptionList().get(0).getGuid(), assetDetails.getAssetDescriptionList().get(0).getGuid());
+    }
+
+    @Test
+    public void testGetAssetRelationships() throws Exception {
+        RelationshipsResponse response = mockRelationshipsResponse();
+
+        when(connector.callGetRESTCall(eq("getAssetRelationships"), eq(RelationshipsResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(ASSET_TYPE),
+                eq(RELATIONSHIP_TYPE),
+                eq(FROM),
+                eq(PAGE_SIZE))).thenReturn(response);
+
+        RelationshipsResponse relationshipsResponse = assetCatalog.getAssetRelationships(
+                USER_ID,
+                ASSET_ID,
+                ASSET_TYPE,
+                RELATIONSHIP_TYPE,
+                FROM,
+                PAGE_SIZE);
+
+        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipsResponse.getRelationships().get(0).getTypeDefName());
+    }
+
+    @Test
+    public void testGetClassificationsForAsset() throws Exception {
+        ClassificationsResponse response = mockClassificationsResponse();
+
+        when(connector.callGetRESTCall(eq("getClassificationsForAsset"),
+                eq(ClassificationsResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(ASSET_TYPE),
+                eq(CLASSIFICATION_NAME))).thenReturn(response);
+
+        ClassificationsResponse classificationsResponse = assetCatalog.getClassificationsForAsset(
+                USER_ID,
+                ASSET_ID,
+                ASSET_TYPE,
+                CLASSIFICATION_NAME);
+
+        Assert.assertEquals(CLASSIFICATION_NAME, classificationsResponse.getClassifications().get(0).getName());
+    }
+
+    @Test
+    public void testGetLinkingAssets() throws Exception {
+        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+
+        when(connector.callGetRESTCall(eq("getLinkingAssets"),
+                eq(AssetDescriptionResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(SECOND_ASSET_ID))).thenReturn(response);
+
+        AssetDescriptionResponse assetDescriptionResponse = assetCatalog.getLinkingAssets(USER_ID,
+                ASSET_ID,
+                SECOND_ASSET_ID);
+
+        Assert.assertEquals(ASSET_ID, assetDescriptionResponse.getAssetDescriptionList().get(0).getGuid());
+    }
+
+    @Test
+    public void testGetLinkingRelationships() throws Exception {
+        RelationshipsResponse response = mockRelationshipsResponse();
+
+        when(connector.callGetRESTCall(eq("getLinkingRelationships"),
+                eq(RelationshipsResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(SECOND_ASSET_ID))).thenReturn(response);
+
+        RelationshipsResponse relationshipsResponse = assetCatalog.getLinkingRelationships(USER_ID,
+                ASSET_ID,
+                SECOND_ASSET_ID);
+
+        Assert.assertEquals(ASSET_ID, relationshipsResponse.getRelationships().get(0).getFromEntity().getGuid());
+        Assert.assertEquals(SECOND_ASSET_ID, relationshipsResponse.getRelationships().get(0).getToEntity().getGuid());
+    }
+
+    @Test
+    public void testGetAssetsFromNeighborhood() throws Exception {
+        AssetDescriptionResponse response = mockAssetDescriptionResponse();
+        SearchParameters searchParameters = mockSearchParameters();
+
+        when(connector.callPostRESTCall(eq("getAssetsFromNeighborhood"),
+                eq(AssetDescriptionResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(searchParameters))).thenReturn(response);
+
+        AssetDescriptionResponse assetsFromNeighborhood = assetCatalog.getAssetsFromNeighborhood(USER_ID,
+                ASSET_ID,
+                searchParameters);
+
+        Assert.assertEquals(ASSET_ID, assetsFromNeighborhood.getAssetDescriptionList().get(0).getGuid());
+    }
+
+    @Test
+    public void testSearchByType() throws Exception {
+        AssetResponse response = mockAssetResponse();
+        SearchParameters searchParameters = mockSearchParameters();
+
+        when(connector.callPostRESTCall(eq("searchByType"),
+                eq(AssetResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(SEARCH_CRITERIA),
+                eq(searchParameters))).thenReturn(response);
+
+        AssetResponse assetResponse = assetCatalog.searchByType(USER_ID, SEARCH_CRITERIA, searchParameters);
+
+        Assert.assertEquals(ASSET_ID, assetResponse.getAssets().get(0).getGuid());
+        Assert.assertEquals(ASSET_TYPE, assetResponse.getAssets().get(0).getTypeDef());
+    }
+
+    @Test
+    public void testGetAssetContext() throws Exception {
+        AssetResponse response = mockAssetResponse();
+
+        when(connector.callGetRESTCall(eq("getAssetContext"),
+                eq(AssetResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(ASSET_TYPE))).thenReturn(response);
+
+        AssetResponse assetResponse = assetCatalog.getAssetContext(USER_ID,
+                ASSET_ID,
+                ASSET_TYPE);
+
+        Assert.assertEquals(ASSET_ID, assetResponse.getAssets().get(0).getGuid());
+        Assert.assertEquals(ASSET_TYPE, assetResponse.getAssets().get(0).getTypeDef());
+    }
+
+    @Test
+    public void testGetRelationshipBetweenEntities() throws Exception {
+        RelationshipResponse response = mockRelationshipResponse();
+
+        when(connector.callGetRESTCall(eq("getRelationshipBetweenEntities"),
+                eq(RelationshipResponse.class),
+                anyString(),
+                eq(SERVER_NAME),
+                eq(USER_ID),
+                eq(ASSET_ID),
+                eq(SECOND_ASSET_ID),
+                eq(RELATIONSHIP_TYPE))).thenReturn(response);
+
+        RelationshipResponse relationshipBetweenEntities = assetCatalog.getRelationshipBetweenEntities(
+                USER_ID,
+                ASSET_ID,
+                SECOND_ASSET_ID,
+                RELATIONSHIP_TYPE);
+
+        Assert.assertEquals(RELATIONSHIP_TYPE, relationshipBetweenEntities.getRelationship().getTypeDefName());
+        Assert.assertEquals(ASSET_ID, relationshipBetweenEntities.getRelationship().getFromEntity().getGuid());
+        Assert.assertEquals(SECOND_ASSET_ID, relationshipBetweenEntities.getRelationship().getToEntity().getGuid());
+    }
+
+
+    private AssetResponse mockAssetResponse() {
+        AssetResponse assetResponse = new AssetResponse();
+        assetResponse.setAssets(Collections.singletonList(mockTerm()));
+        return assetResponse;
+    }
+
+    private Term mockTerm() {
+        Term term = new Term();
+        term.setGuid(ASSET_ID);
+        term.setTypeDef(ASSET_TYPE);
+        return term;
+    }
+
+    private RelationshipResponse mockRelationshipResponse() {
+        RelationshipResponse relationshipsResponse = new RelationshipResponse();
+        relationshipsResponse.setRelationship(mockRelationship());
+        return relationshipsResponse;
+    }
+
+    private SearchParameters mockSearchParameters() {
+        SearchParameters searchParameters = new SearchParameters();
+
+        searchParameters.setLevel(2);
+        searchParameters.setFrom(0);
+        searchParameters.setPageSize(10);
+
+        return searchParameters;
+    }
+
+    private ClassificationsResponse mockClassificationsResponse() {
+        ClassificationsResponse classificationsResponse = new ClassificationsResponse();
+        classificationsResponse.setClassifications(mockClassifications());
+        return classificationsResponse;
+    }
+
+
+    private RelationshipsResponse mockRelationshipsResponse() {
+        RelationshipsResponse relationshipsResponse = new RelationshipsResponse();
+        relationshipsResponse.setRelationships(mockRelationships());
+        return relationshipsResponse;
+    }
+
+
+    private AssetDescriptionResponse mockAssetDescriptionResponse() {
+        AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
+        expectedResponse.setRelatedHTTPCode(200);
+
+        AssetDescription assetDescription = mockAssetDescription();
+        expectedResponse.setAssetDescriptionList(Collections.singletonList(assetDescription));
+
+        return expectedResponse;
+    }
+
+    private AssetDescription mockAssetDescription() {
+        AssetDescription assetDescription = new AssetDescription();
+
+        assetDescription.setGuid(ASSET_ID);
+        assetDescription.setTypeDefName(ASSET_TYPE);
+
+        assetDescription.setClassifications(mockClassifications());
+        assetDescription.setRelationships(mockRelationships());
+
+        return assetDescription;
+    }
+
+    private List<Relationship> mockRelationships() {
+        return Collections.singletonList(mockRelationship());
+    }
+
+    private Relationship mockRelationship() {
+        Relationship relationship = new Relationship();
+
+        relationship.setFromEntity(mockAsset(ASSET_ID, ASSET_TYPE));
+        relationship.setToEntity(mockAsset(SECOND_ASSET_ID, SECOND_ASSET_TYPE));
+        relationship.setTypeDefName(RELATIONSHIP_TYPE);
+
+        return relationship;
+    }
+
+    private Asset mockAsset(String defaultAssetId, String typeName) {
+        Asset asset = new Asset();
+
+        asset.setGuid(defaultAssetId);
+        asset.setCreatedBy("admin");
+        asset.setTypeDefName(typeName);
+
+        return asset;
+    }
+
+    private List<Classification> mockClassifications() {
+        return Collections.singletonList(mockClassification(CLASSIFICATION_NAME));
+    }
+
+    private Classification mockClassification(String classificationName) {
+        Classification classification = new Classification();
+
+        classification.setName(classificationName);
+        classification.setCreatedBy("admin");
+        classification.setStatus(InstanceStatus.ACTIVE.getName());
+
+        return classification;
+    }
 }

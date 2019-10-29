@@ -30,6 +30,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private Connection inTopicConnection;
 
     private String     openLineageProvider;
+    private String     openLineageProviderMain;
     private Connection openLineageBufferGraphConnection;
     private Connection openLineageMainGraphConnection;
     private Map<String, Object> bufferGraphConfig;
@@ -59,6 +60,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
             openLineageProvider = template.openLineageProvider;
+            openLineageProviderMain = template.openLineageProviderMain;
             openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
             openLineageMainGraphConnection = template.openLineageMainGraphConnection;
             bufferGraphConfig = template.bufferGraphConfig;
@@ -194,6 +196,24 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      */
     public void setOpenLineageProvider(String openLineageProvider) {
         this.openLineageProvider = openLineageProvider;
+    }
+
+    /**
+     * Return the ConnectorProvider class name for Open Lineage
+     *
+     * @return String Class name
+     */
+    public String getOpenLineageProviderMain() {
+        return openLineageProviderMain;
+    }
+
+    /**
+     * Set up the Open Lineage Connector Provider class
+     *
+     * @param openLineageProviderMain String Connector Provider class name
+     */
+    public void setOpenLineageProviderMain(String openLineageProviderMain) {
+        this.openLineageProviderMain = openLineageProviderMain;
     }
 
     /**

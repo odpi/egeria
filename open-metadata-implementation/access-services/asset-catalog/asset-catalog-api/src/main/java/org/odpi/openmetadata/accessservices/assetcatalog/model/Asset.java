@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Asset implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     private String guid;
     private String metadataCollectionId;
     private String name;
