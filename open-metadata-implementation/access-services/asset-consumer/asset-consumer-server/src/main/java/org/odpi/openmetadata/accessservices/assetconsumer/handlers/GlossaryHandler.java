@@ -91,10 +91,12 @@ public class GlossaryHandler implements AssetConsumerGlossaryInterface
                                                                           serviceName,
                                                                           serverName);
 
-        List<EntityDetail> glossaryTerms = repositoryHandler.getEntityByName(userId,
-                                                                             glossaryTermBuilder.getNameInstanceProperties(methodName),
-                                                                             GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
-                                                                             methodName);
+        List<EntityDetail> glossaryTerms = repositoryHandler.getEntitiesByName(userId,
+                                                                               glossaryTermBuilder.getSearchInstanceProperties(methodName),
+                                                                               GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
 
         if (glossaryTerms != null)
         {
@@ -155,9 +157,11 @@ public class GlossaryHandler implements AssetConsumerGlossaryInterface
                                                                           serviceName,
                                                                           serverName);
 
-        List<EntityDetail> glossaryTerms = repositoryHandler.getEntityByName(userId,
+        List<EntityDetail> glossaryTerms = repositoryHandler.getEntitiesByName(userId,
                                                                              glossaryTermBuilder.getSearchInstanceProperties(methodName),
                                                                              GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                             startFrom,
+                                                                             pageSize,
                                                                              methodName);
 
         if (glossaryTerms != null)
