@@ -135,7 +135,7 @@
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.0</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
-        <kafka.version>2.1.1</kafka.version>
+        <kafka.version>2.3.1</kafka.version>
         <janus.version>0.3.1</janus.version>
         <gremlin.version>3.3.3</gremlin.version>
         <spring-boot.version>2.2.0.RELEASE</spring-boot.version>
@@ -177,7 +177,7 @@
         <maven-compiler.version>3.8.0</maven-compiler.version>
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
-        <owasp.version>5.0.0</owasp.version>
+        <owasp.version>5.2.2</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.1</maven-download.version>
