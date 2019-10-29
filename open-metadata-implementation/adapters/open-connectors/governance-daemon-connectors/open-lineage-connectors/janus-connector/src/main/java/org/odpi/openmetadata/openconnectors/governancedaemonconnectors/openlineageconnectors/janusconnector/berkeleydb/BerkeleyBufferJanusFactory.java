@@ -8,9 +8,8 @@ import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.schema.JanusGraphManagement;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.OpenLineageException;
-
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabels;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabels;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.EdgeLabelsBufferGraph;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.VertexLabelsBufferGraph;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,12 +82,12 @@ public class BerkeleyBufferJanusFactory extends IndexingFactory {
         try {
             JanusGraphManagement management = graph.openManagement();
 
-            Set<String> vertexLabels = Stream.of(VertexLabels.values())
+            Set<String> vertexLabels = Stream.of(VertexLabelsBufferGraph.values())
                     .map(Enum::name)
                     .collect(Collectors.toSet());
 
 
-            Set<String> relationshipsLabels = Stream.of(EdgeLabels.values())
+            Set<String> relationshipsLabels = Stream.of(EdgeLabelsBufferGraph.values())
                     .map(Enum::name)
                     .collect(Collectors.toSet());
 

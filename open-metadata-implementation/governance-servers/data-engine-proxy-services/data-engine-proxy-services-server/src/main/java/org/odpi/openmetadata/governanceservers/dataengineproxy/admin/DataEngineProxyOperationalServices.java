@@ -31,7 +31,7 @@ public class DataEngineProxyOperationalServices {
 
     private OMRSAuditLog auditLog;
     private DataEngineConnectorBase dataEngineConnector;
-    private Thread changePoller;
+    private DataEngineProxyChangePoller changePoller;
 
     /**
      * Constructor used at server startup.
@@ -149,13 +149,12 @@ public class DataEngineProxyOperationalServices {
                 dataEngineConnector = (DataEngineConnectorBase) connectorBroker.getConnector(dataEngineConnection);
                 // If the config says we should poll for changes, do so via a new thread
                 if (dataEngineConnector.requiresPolling()) {
-                    DataEngineProxyChangePoller poller = new DataEngineProxyChangePoller(
+                    changePoller = new DataEngineProxyChangePoller(
                             dataEngineConnector,
                             dataEngineProxyConfig,
                             dataEngineClient,
                             auditLog
                     );
-                    changePoller = new Thread(poller);
                     changePoller.start();
                 }
                 // TODO: otherwise we likely need to look for and process events
@@ -169,6 +168,8 @@ public class DataEngineProxyOperationalServices {
                         e.getErrorMessage(),
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
+            } finally {
+                changePoller.stop();
             }
         }
 
@@ -186,8 +187,8 @@ public class DataEngineProxyOperationalServices {
         DataEngineProxyAuditCode auditCode;
         try {
             // Stop the change polling thread, if there is one and it is active
-            if (changePoller != null && changePoller.isAlive()) {
-                changePoller.interrupt();
+            if (changePoller != null) {
+                changePoller.stop();
             }
             // Disconnect the data engine connector
             dataEngineConnector.disconnect();

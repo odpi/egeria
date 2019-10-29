@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.scheduler;
 
+import org.odpi.openmetadata.governanceservers.openlineage.BufferGraphStore;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
@@ -14,8 +15,9 @@ public class JobConfiguration {
     private static final Logger log = LoggerFactory.getLogger(JobConfiguration.class);
 
     private static Scheduler scheduler;
-
-    public JobConfiguration(){
+    private static BufferGraphStore bufferGraphStore;
+    public JobConfiguration(BufferGraphStore bufferGraphStore){
+        this.bufferGraphStore = bufferGraphStore;
         schedule();
     }
 
@@ -28,7 +30,7 @@ public class JobConfiguration {
             scheduler.start();
 
         } catch (SchedulerException e) {
-            log.error("{} could not run the job for buffergraph", methodName);
+            log.error("{} could not run the job for bufferGraph", methodName);
         }
 
         Trigger trigger = buildSimpleSchedulerTrigger();
@@ -42,16 +44,20 @@ public class JobConfiguration {
 
     private static void scheduleJob(Trigger trigger) throws Exception {
 
-        JobDetail someJobDetail = JobBuilder.newJob(BufferGraphJob.class).withIdentity("BufferGraphJob", GROUP).build();
+        JobDetail jobDetail = JobBuilder.
+                                  newJob(BufferGraphJob.class).
+                                  withIdentity("BufferGraphJob", GROUP).
+                                  build();
+        jobDetail.getJobDataMap().put("openLineageGraphStore", bufferGraphStore);
 
-        scheduler.scheduleJob(someJobDetail, trigger);
+        scheduler.scheduleJob(jobDetail, trigger);
 
     }
 
     private static Trigger buildSimpleSchedulerTrigger() {
 
         //TODO change seconds now is used for developing
-        int INTERVAL_SECONDS = 1800;
+        int INTERVAL_SECONDS = 15;
 
         Trigger trigger = TriggerBuilder.newTrigger().withIdentity("BufferGraphJob", GROUP)
                 .withSchedule(
