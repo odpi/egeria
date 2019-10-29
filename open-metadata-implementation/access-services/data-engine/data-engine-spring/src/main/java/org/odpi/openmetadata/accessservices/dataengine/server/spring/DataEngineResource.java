@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.dataengine.rest.PortImplementationRe
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessesRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.SchemaTypeRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.SoftwareServerCapabilityRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DataEngineRegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
@@ -38,7 +38,7 @@ public class DataEngineResource {
     }
 
     /**
-     * Create a software server capability entity
+     * Register external data engine as source of metadata by creating a software server capability entity
      *
      * @param serverName  name of server instance to call
      * @param userId      the name of the calling user
@@ -46,15 +46,15 @@ public class DataEngineResource {
      *
      * @return unique identifier of the created process
      */
-    @PostMapping(path = "/software-server-capabilities")
-    public GUIDResponse createSoftwareServerCapability(@PathVariable("serverName") String serverName,
-                                                       @PathVariable("userId") String userId,
-                                                       @RequestBody SoftwareServerCapabilityRequestBody requestBody) {
-        return restAPI.createSoftwareServer(serverName, userId, requestBody);
+    @PostMapping(path = "/registration")
+    public GUIDResponse createExternalDataEngine(@PathVariable("serverName") String serverName,
+                                                 @PathVariable("userId") String userId,
+                                                 @RequestBody DataEngineRegistrationRequestBody requestBody) {
+        return restAPI.createExternalDataEngine(serverName, userId, requestBody);
     }
 
     /**
-     * Return the unique identifier from a software server capability definition.
+     * Return the unique identifier of an external data engine from a software server capability definition.
      *
      * @param serverName    name of server instance to call
      * @param userId        identifier of calling user
@@ -62,11 +62,11 @@ public class DataEngineResource {
      *
      * @return unique identified of the software server
      */
-    @GetMapping(path = "/software-server-capabilities/{qualifiedName}")
-    public GUIDResponse getSoftwareServerCapabilityByQualifiedName(@PathVariable String serverName,
-                                                                   @PathVariable String userId,
-                                                                   @PathVariable String qualifiedName) {
-        return restAPI.getSoftwareServerByQualifiedName(serverName, userId, qualifiedName);
+    @GetMapping(path = "/registration/{qualifiedName}")
+    public GUIDResponse getExternalDataEngineByQualifiedName(@PathVariable String serverName,
+                                                             @PathVariable String userId,
+                                                             @PathVariable String qualifiedName) {
+        return restAPI.getExternalDataEngineByQualifiedName(serverName, userId, qualifiedName);
     }
 
     /**

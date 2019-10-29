@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/users")
-@DependsOn("securityConfig")
 public class UserInfoController {
 
     @Autowired

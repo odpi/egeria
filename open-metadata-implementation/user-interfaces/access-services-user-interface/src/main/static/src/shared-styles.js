@@ -83,6 +83,14 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
             color: white;
         }
         
+        .breadcrumbs {
+          padding: 8px 15px;
+          margin-bottom: 20px;
+          list-style: none;
+          background-color: #eeeeee;
+          border-radius: 4px;
+        } 
+        
     </style>
   </template>
 </dom-module>`;

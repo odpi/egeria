@@ -32,6 +32,7 @@ import './toast-feedback';
 import './login-view.js';
 import './user-options-menu';
 import './shared-styles';
+import './common/breadcrumb.js';
 
 // Gesture events like tap and track generated from touch will not be
 // preventable, allowing for better scrolling performance.
@@ -141,7 +142,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <img src="../images/Logo_trademark.jpg" height="60" style="margin: auto; display: block; margin-top: 15pt;"/>
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
-                    <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset search</a></div>
+                    <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
                     <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
@@ -171,8 +172,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                       <div style="float: right"><user-options></user-options></div>
 
                     </app-toolbar>
+                  <div class="breadcrumb">
+                     <bread-crumb id="breadcrumb" items="[[crumbs]]"></bread-crumb>
+                  </div>
                   </app-header>
-                  
+                 
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
@@ -216,6 +220,9 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 type: Object,
                 notify: true,
                 observer: '_feedbackChanged'
+            },
+            crumbs:{
+                type: Array
             }
         };
     }
@@ -250,6 +257,24 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
         }
     }
 
+    _updateBreadcrumb(page){
+        var crumbs = [];
+        var allCrumbs = new Map();
+        allCrumbs.set('home', {label: 'Home', href: this.rootPath + '#'});
+        allCrumbs.set( 'asset-search', {label: 'Asset Search', href: "/asset-search"});
+        allCrumbs.set('subject-area', {label: 'Subject Area', href: "/subject-area"});
+        allCrumbs.set( 'asset-lineage', {label: 'Asset Lineage', href: "/asset-lineage"});
+        allCrumbs.set( 'type-explorer', {label: 'Type Explorer', href: "/type-explorer"});
+
+        crumbs.push(allCrumbs.get('home'));
+        crumbs.push(allCrumbs.get(page));
+        if(this.subrouteData.guid != null && this.subrouteData.guid != undefined ){
+            crumbs.push({label: this.subrouteData.guid, href:  "/" + this.subrouteData.guid });
+        }
+        this.crumbs = crumbs;
+
+    }
+
     _routePageChanged(page) {
         // Show the corresponding page according to the route.
         //
@@ -270,6 +295,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
             this._getDrawer().close();
 
         }
+        this._updateBreadcrumb(this.page);
     }
 
     _onPageChanged(event) {
@@ -314,6 +340,8 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 import('./asset-search/asset-search-view.js');
                 break;
         }
+
+        this._updateBreadcrumb(this.page);
     }
 
     attached() {
