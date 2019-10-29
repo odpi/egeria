@@ -124,12 +124,12 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
         <!-- Versions of dependent libraries -->
-        <junit.platform.version>1.4.2</junit.platform.version>
+        <junit.platform.version>1.5.2</junit.platform.version>
         <junit.jupiter.version>5.5.2</junit.jupiter.version>
         <junit.version>4.12</junit.version>
         <surefire.plugin.version>3.0.0-M3</surefire.plugin.version>
         <mockito.version>3.1.0</mockito.version>
-        <testng.version>6.14.3</testng.version>
+        <testng.version>7.0.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.28</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -174,7 +174,7 @@
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
         <maven-shade.version>3.2.1</maven-shade.version>
         <maven-install.version>3.0.0-M1</maven-install.version>
-        <maven-compiler.version>3.8.0</maven-compiler.version>
+        <maven-compiler.version>3.8.1</maven-compiler.version>
         <maven-jar-plugin.version>3.1.2</maven-jar-plugin.version>
         <maven-pmd.version>3.12.0</maven-pmd.version>
         <owasp.version>5.2.2</owasp.version>
@@ -182,7 +182,7 @@
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
         <maven-download.version>1.4.2</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
-        <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
+        <spotify-docker-plugin.version>1.4.13</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
         <jacoco-plugin.version>0.8.5</jacoco-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
