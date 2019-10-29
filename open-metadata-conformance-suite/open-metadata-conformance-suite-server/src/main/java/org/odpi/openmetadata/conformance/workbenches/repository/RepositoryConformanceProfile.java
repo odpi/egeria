@@ -70,6 +70,10 @@ public enum RepositoryConformanceProfile implements Serializable
     REHOME_INSTANCE       (11, "Rehome instance",
                                "The technology under test supports the command to update the metadata collection id for a metadata instance.",
                                "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/rehome-instance",
+                               OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE),
+    ADVANCED_SEARCH       (12, "Advanced search",
+                               "The technology under test supports the use of regular expressions to search for metadata instances.",
+                               "https://egeria.odpi.org/open-metadata-conformance-suite/docs/repository-workbench/profiles/advanced-search",
                                OpenMetadataConformanceProfilePriority.OPTIONAL_PROFILE);
 
     private static final long serialVersionUID = 1L;

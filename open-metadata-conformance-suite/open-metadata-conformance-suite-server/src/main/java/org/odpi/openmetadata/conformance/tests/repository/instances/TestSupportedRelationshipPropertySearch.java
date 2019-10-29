@@ -2,104 +2,99 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.conformance.tests.repository.instances;
 
-import org.odpi.openmetadata.conformance.beans.OpenMetadataTestCase;
 import org.odpi.openmetadata.conformance.tests.repository.RepositoryConformanceTestCase;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceProfileRequirement;
 import org.odpi.openmetadata.conformance.workbenches.repository.RepositoryConformanceWorkPad;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.EntityDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 
-
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.ArrayList;
-
-import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
 
 
 /**
- * Test that all defined entities can be retrieved by property searches.
+ * Test that all defined entities can be retrieved by property searches
  */
-public class TestSupportedEntityPropertySearch extends RepositoryConformanceTestCase
-{
-    private static final String testCaseId = "repository-entity-property-search";
-    private static final String testCaseName = "Repository entity property search test case";
+public class TestSupportedRelationshipPropertySearch extends RepositoryConformanceTestCase {
+    private static final String testCaseId = "repository-relationship-property-search";
+    private static final String testCaseName = "Repository relationship property search test case";
 
     /* Assertions for multi set tests */
 
     /* Test 1 */
-    private static final String assertion1     = testCaseId + "-01";
-    private static final String assertionMsg1  = " search returned results.";
-    private static final String assertion2     = testCaseId + "-02";
-    private static final String assertionMsg2  = " search contained all expected results.";
-    private static final String assertion3     = testCaseId + "-03";
-    private static final String assertionMsg3  = " search contained only valid results.";
+    private static final String assertion1 = testCaseId + "-01";
+    private static final String assertionMsg1 = " search returned results.";
+    private static final String assertion2 = testCaseId + "-02";
+    private static final String assertionMsg2 = " search contained all expected results.";
+    private static final String assertion3 = testCaseId + "-03";
+    private static final String assertionMsg3 = " search contained only valid results.";
 
     /* Test 2 */
-    private static final String assertion4     = testCaseId + "-04";
-    private static final String assertionMsg4  = " search returned results.";
-    private static final String assertion5     = testCaseId + "-05";
-    private static final String assertionMsg5  = " search contained all expected results.";
-    private static final String assertion6     = testCaseId + "-06";
-    private static final String assertionMsg6  = " search contained only valid results.";
+    private static final String assertion4 = testCaseId + "-04";
+    private static final String assertionMsg4 = " search returned results.";
+    private static final String assertion5 = testCaseId + "-05";
+    private static final String assertionMsg5 = " search contained all expected results.";
+    private static final String assertion6 = testCaseId + "-06";
+    private static final String assertionMsg6 = " search contained only valid results.";
 
     /* Test 3 */
-    private static final String assertion7     = testCaseId + "-07";
-    private static final String assertionMsg7  = " search returned results.";
-    private static final String assertion8     = testCaseId + "-08";
-    private static final String assertionMsg8  = " search contained all expected results.";
-    private static final String assertion9     = testCaseId + "-09";
-    private static final String assertionMsg9  = " search contained only valid results.";
+    private static final String assertion7 = testCaseId + "-07";
+    private static final String assertionMsg7 = " search returned results.";
+    private static final String assertion8 = testCaseId + "-08";
+    private static final String assertionMsg8 = " search contained all expected results.";
+    private static final String assertion9 = testCaseId + "-09";
+    private static final String assertionMsg9 = " search contained only valid results.";
 
     /* Test 4 */
-    private static final String assertion10     = testCaseId + "-10";
-    private static final String assertionMsg10  = " search returned results.";
-    private static final String assertion11     = testCaseId + "-11";
-    private static final String assertionMsg11  = " search contained all expected results.";
-    private static final String assertion12     = testCaseId + "-12";
-    private static final String assertionMsg12  = " search contained only valid results.";
+    private static final String assertion10 = testCaseId + "-10";
+    private static final String assertionMsg10 = " search returned results.";
+    private static final String assertion11 = testCaseId + "-11";
+    private static final String assertionMsg11 = " search contained all expected results.";
+    private static final String assertion12 = testCaseId + "-12";
+    private static final String assertionMsg12 = " search contained only valid results.";
 
     /* Test 5 */
-    private static final String assertion13     = testCaseId + "-13";
-    private static final String assertionMsg13  = " search returned results.";
-    private static final String assertion14     = testCaseId + "-14";
+    private static final String assertion13 = testCaseId + "-13";
+    private static final String assertionMsg13 = " search returned results.";
+    private static final String assertion14 = testCaseId + "-14";
     private static final String assertionMsg14 = " search contained all expected results.";
-    private static final String assertion15     = testCaseId + "-15";
-    private static final String assertionMsg15  = " search contained only valid results.";
+    private static final String assertion15 = testCaseId + "-15";
+    private static final String assertionMsg15 = " search contained only valid results.";
 
     /* Test 6 */
-    private static final String assertion16     = testCaseId + "-16";
-    private static final String assertionMsg16  = " search returned results.";
-    private static final String assertion17     = testCaseId + "-17";
-    private static final String assertionMsg17  = " search contained all expected results.";
-    private static final String assertion18     = testCaseId + "-18";
-    private static final String assertionMsg18  = " search contained only valid results.";
+    private static final String assertion16 = testCaseId + "-16";
+    private static final String assertionMsg16 = " search returned results.";
+    private static final String assertion17 = testCaseId + "-17";
+    private static final String assertionMsg17 = " search contained all expected results.";
+    private static final String assertion18 = testCaseId + "-18";
+    private static final String assertionMsg18 = " search contained only valid results.";
 
     /* Test 7 */
     private static final String assertion19     = testCaseId + "-19";
-    private static final String assertionMsg19  = " search with type filter returned results.";
+    private static final String assertionMsg19  = " search without filtering returned results.";
     private static final String assertion20     = testCaseId + "-20";
-    private static final String assertionMsg20  = " search with type filter returned expected number of results.";
-
+    private static final String assertionMsg20  = " search with filtering return expected number of results.";
     /* Assertions for single set tests */
 
     private static final String assertion21     = testCaseId + "-21";
@@ -114,59 +109,59 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
     private static final String assertion25     = testCaseId + "-25";
     private static final String assertionMsg25  = " search contained all expected results.";
     private static final String assertion26     = testCaseId + "-26";
-    private static final String assertionMsg26  = " search contained no unexpected results.";
+    private static final String assertionMsg26  = " search contained only valid results.";
 
     private static final String assertion27     = testCaseId + "-27";
     private static final String assertionMsg27  = " search return only valid results.";
 
+    private static final String discoveredProperty_searchSupport = " search support";
 
-
-    private static final String discoveredProperty_searchSupport       = " search support";
-
-
-    private String                 metadataCollectionId;
-    private EntityDef              entityDef;
+    private String metadataCollectionId;
+    private Map<String, EntityDef> entityDefs;
+    private RelationshipDef relationshipDef;
     private List<TypeDefAttribute> attrList;
-    private String                 testTypeName;
+    private String testTypeName;
 
-    private boolean                multiSetTest = false;
-    private String                 firstStringAttributeName = null;
-
-    private InstanceProperties    instProps0;
-    private InstanceProperties    instProps1;
-    private InstanceProperties    instProps2;
-
-    private InstanceProperties    literalisedInstanceProperties0;
-    private InstanceProperties    literalisedInstanceProperties1;
-    private InstanceProperties    literalisedInstanceProperties2;
+    private boolean multiSetTest                    = false;
+    private String  firstStringAttributeName        = null;
+    private boolean typeHasTestedInstanceProperties = true; // assumed true until CREATE phase is performed
 
 
-    private List<EntityDetail>    entitySet_0 = null;
-    private List<EntityDetail>    entitySet_1 = null;
-    private List<EntityDetail>    entitySet_2 = null;
+    private InstanceProperties instProps0;
+    private InstanceProperties instProps1;
+    private InstanceProperties instProps2;
+
+    private InstanceProperties literalisedInstanceProperties0;
+    private InstanceProperties literalisedInstanceProperties1;
+    private InstanceProperties literalisedInstanceProperties2;
+
+
+    private List<Relationship> relationshipSet_0 = null;
+    private List<Relationship> relationshipSet_1 = null;
+    private List<Relationship> relationshipSet_2 = null;
 
 
     /**
      * Typical constructor sets up superclass and discovered information needed for tests
      *
-     * @param workPad place for parameters and results
-     * @param entityDef type of valid entities
+     * @param workPad         place for parameters and results
+     * @param relationshipDef type of valid relationships
      */
-    public TestSupportedEntityPropertySearch(RepositoryConformanceWorkPad workPad,
-                                             EntityDef                    entityDef)
+    public TestSupportedRelationshipPropertySearch(RepositoryConformanceWorkPad workPad,
+                                                   Map<String, EntityDef> entityDefs,
+                                                   RelationshipDef relationshipDef)
     {
         super(workPad,
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
-              RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
+                RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         this.metadataCollectionId = workPad.getTutMetadataCollectionId();
-        this.entityDef = entityDef;
+        this.entityDefs = entityDefs;
+        this.relationshipDef = relationshipDef;
 
-        this.testTypeName = this.updateTestIdByType(entityDef.getName(),
-                                                    testCaseId,
-                                                    testCaseName);
-
-
+        this.testTypeName = this.updateTestIdByType(relationshipDef.getName(),
+                testCaseId,
+                testCaseName);
 
         this.instProps0 = null;
         this.instProps1 = null;
@@ -176,9 +171,9 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         this.literalisedInstanceProperties1 = null;
         this.literalisedInstanceProperties2 = null;
 
-        this.entitySet_0 = null;
-        this.entitySet_1 = null;
-        this.entitySet_2 = null;
+        this.relationshipSet_0 = null;
+        this.relationshipSet_1 = null;
+        this.relationshipSet_2 = null;
 
 
     }
@@ -192,7 +187,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
     protected void run() throws Exception
     {
 
-       throw new Exception("This is a multi--phase testcase; please invoke it with a phase parameter");
+        throw new Exception("This is a multi--phase testcase; please invoke it with a phase parameter");
     }
 
     /**
@@ -200,19 +195,17 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
      *
      * @throws Exception something went wrong with the test.
      */
-    protected void run(OpenMetadataTestCase.TestPhase phase) throws Exception
+    protected void run(TestPhase phase) throws Exception
     {
 
         /*
          * This test will:
          *
-         * Create a set of entities of the defined type in the TUT repository, with different/overlapping property values.
-         * The entity is not classified - for find by classification tests see the corresponding testcase (TestSupportedEntityClassificationSearch)
-         * It will then conduct a series of searches against the repository - some of which should retrieve the entity, others should not.
+         * Create a set of relationships of the defined type in the TUT repository, with different/overlapping property values.
          *
-         * The following searches are performed:
-         *   Find By Instance (Match) Properties
-         *   Find By Property Value
+         * It will then conduct a series of searches against the repository - some of which should retrieve relationships, others should not.
+         *
+         * The searches in this testcase are all searches using match properties and all strings are treated as exact match.
          * There are more details on each type of test in the relevant section below.
          *
          */
@@ -221,10 +214,9 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         OMRSMetadataCollection metadataCollection = super.getMetadataCollection();
 
 
+        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
 
-        this.attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), entityDef);
-
-        if (this.attrList == null || this.attrList.isEmpty()) {
+        if (this.attrList == null || this.attrList.isEmpty() || this.typeHasTestedInstanceProperties == false) {
 
             /*
              * If the TypeDef has NO attributes then it is not possible to perform a matchProperties find on instances of that type.
@@ -235,17 +227,18 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         }
 
 
+
         /*
          * Find By Instance (Match) Properties
          *
          *   Since this test uses MatchProperties there have to be some attributes defined on the type. If not, the test returns.
          *   Provided the type has at least one attribute the test can proceed.
          *
-         *   There are three sets of entities (named 0, 1 & 2).
-         *   There will be two entities per set, to ensure multiple 'hits'
-         *   The sets of entities and their property values are as follows:
+         *   There are three sets of relationships (named 0, 1 & 2).
+         *   There will be two relationships per set, to ensure multiple 'hits'
+         *   The sets of relationships and their property values are as follows:
          *
-         *   Entity set 0:   base values for all properties, formed as <property-name>.<set> - e.g. qualifiedName.0
+         *   Entity set 0:   base values for all properties, formed as <property-name>.<set> - e.g. description.0
          *   Entity set 1:   distinct from e0 but overlaps with e2
          *   Entity set 2:   distinct from e0 but overlaps with e1, on the first property
          *
@@ -258,12 +251,12 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
          * MatchProperties with all properties and matchCriteria == ALL. This tests that every property is correctly compared.
          * In the following tests, all String values are passed by the repository helper's exact match helper method
          *
-         *   1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only entities in set 0
-         *   2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only entities in set 0
-         *   3. Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only entities in sets 1 & 2
-         *   4. Use instanceProperties for set 1 & matchCriteria ALL   - this should return all and only entities in set 1
-         *   5. Use instanceProperties for set 1 & matchCriteria ANY   - this should return all and only entities in sets 1 & 2
-         *   6. Use instanceProperties for set 1 & matchCriteria NONE  - this should return all and only entities in set 0
+         *   1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only relationships in set 0
+         *   2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only relationships in set 0
+         *   3. Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only relationships in sets 1 & 2
+         *   4. Use instanceProperties for set 1 & matchCriteria ALL  - this should return all and only relationships in set 1
+         *   5. Use instanceProperties for set 1 & matchCriteria ANY  - this should return all and only relationships in sets 1 & 2
+         *   6. Use instanceProperties for set 1 & matchCriteria NONE  - this should return all and only relationships in set 0
          *   7. Similar to test 1 (above) but tests typeGUID filtering - compares the number of instances returned
          *
          * This testcase does not perform regular expression searches; they are in the corresponding advanced-search testcase.
@@ -271,23 +264,17 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
          *
          */
 
-        /*
-         *
-         * There are attributes for this type
-         *
-         * Due to the earlier validation, it is always the case from here on that the TypeDef has attributes
-         */
 
         switch (phase) {
 
             case CREATE:
-                this.createInstances( metadataCollection );
+                this.createInstances(metadataCollection);
                 break;
             case EXECUTE:
-                this.performFinds( metadataCollection );
+                this.performFinds(metadataCollection);
                 break;
             case CLEAN:
-                this.cleanInstances( metadataCollection );
+                this.cleanInstances(metadataCollection);
                 break;
         }
     }
@@ -300,53 +287,99 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         /*
          *  Generate property values for all the type's defined properties, including inherited properties
          */
-        this.firstStringAttributeName = this.typeDefHasAtLeastOneStringProperty(attrList);
-        this.multiSetTest = this.firstStringAttributeName != null;
+
+        List<TypeDefAttribute> attrList = getAllPropertiesForTypedef(workPad.getLocalServerUserId(), relationshipDef);
 
 
         /*
-         * Create the instance properties for each entity set.
+         * There are attributes for this type - this was verified in the run() method
+         */
+
+        this.firstStringAttributeName = this.typeDefHasAtLeastOneStringProperty(attrList);
+        this.multiSetTest = this.firstStringAttributeName != null;
+
+        /*
+         * Create the instance properties for each entity set. There is a chance that the type does not have any properties that
+         * are used in the test (i.e. set by populatenstanceProperties(). This can be tested by checking if the populated instance
+         * properties is null. In that case, set typeHasTestedInstanceProperties and no further find testing will be performed on
+         * this type. If populatenstanceProperties() is extended in future this predicate may succeed - it will not need to be modified.
          */
 
         this.instProps0 = populateInstanceProperties(attrList, "0");
+
+        if (this.instProps0 == null) {
+            /*
+             * populateinstanceProperties() did not generate any test properties- either because the type has none or those it has are not
+             * supported by populateinstanceProperties().
+             */
+            this.typeHasTestedInstanceProperties = false;
+            return;
+        }
+
+
+
         if (this.multiSetTest) {
             this.instProps1 = populateInstanceProperties(attrList, "1");
             this.instProps2 = populateInstanceProperties(attrList, "2");
         }
 
+
+
         /*
          * Prepare literalised versions of instance properties for use as match properties in the subsequent searches
          */
 
-        this.literalisedInstanceProperties0 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), entityDef, this.instProps0);
+        this.literalisedInstanceProperties0 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), relationshipDef, this.instProps0);
         if (this.multiSetTest) {
-            this.literalisedInstanceProperties1 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), entityDef, this.instProps1);
-            this.literalisedInstanceProperties2 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), entityDef, this.instProps2);
+            this.literalisedInstanceProperties1 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), relationshipDef, this.instProps1);
+            this.literalisedInstanceProperties2 = this.literaliseMatchProperties(workPad.getLocalServerUserId(), relationshipDef, this.instProps2);
         }
-
-
 
 
         /*
-         * Create two entities for each set. Always create set 0
+         * Create two relationships for each set. Always create set 0
          */
 
-        this.entitySet_0 = new ArrayList<>();
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
-        entitySet_0.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps0, null, null));
-
+        this.relationshipSet_0 = new ArrayList<>();
+        this.populateRelationshipSet(metadataCollection, this.relationshipSet_0, this.instProps0);
         if (this.multiSetTest) {
-
-            this.entitySet_1 = new ArrayList<>();
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
-            entitySet_1.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps1, null, null));
-
-            this.entitySet_2 = new ArrayList<>();
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
-            entitySet_2.add(metadataCollection.addEntity(workPad.getLocalServerUserId(), entityDef.getGUID(), instProps2, null, null));
+            this.relationshipSet_1 = new ArrayList<>();
+            this.populateRelationshipSet(metadataCollection, this.relationshipSet_1, this.instProps1);
+            this.relationshipSet_2 = new ArrayList<>();
+            this.populateRelationshipSet(metadataCollection, this.relationshipSet_2, this.instProps2);
         }
 
-        repositoryConformanceWorkPad.addEntityInstanceSets(entityDef.getName(),this.entitySet_0,this.entitySet_1,this.entitySet_2);
+    }
+
+    private void populateRelationshipSet(OMRSMetadataCollection metadataCollection,
+                                         List<Relationship> relationshipSet,
+                                         InstanceProperties instanceProps) throws Exception
+    {
+
+        /*
+         * Local variables for entity creation - entities need to be cleaned up when relationships are deleted.
+         */
+        EntityDef    end1Type;
+        EntityDetail end1;
+        EntityDef    end2Type;
+        EntityDetail end2;
+
+
+        end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+
+        end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+        relationshipSet.add(metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null));
+
+        end1Type = entityDefs.get(relationshipDef.getEndDef1().getEntityType().getName());
+        end1 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end1Type);
+
+        end2Type = entityDefs.get(relationshipDef.getEndDef2().getEntityType().getName());
+        end2 = this.addEntityToRepository(workPad.getLocalServerUserId(), metadataCollection, end2Type);
+
+        relationshipSet.add(metadataCollection.addRelationship(workPad.getLocalServerUserId(), relationshipDef.getGUID(), instanceProps, end1.getGUID(), end2.getGUID(), null));
 
 
     }
@@ -354,70 +387,80 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
     private void cleanInstances(OMRSMetadataCollection metadataCollection) throws Exception
     {
         /*
-         * Clean up all entities created by this testcase
+         * Clean up all relationships (and their associated entities) created by this testcase
          */
 
-        repositoryConformanceWorkPad.removeEntityInstanceSets(entityDef.getName());
-
-
-        for (EntityDetail entity : entitySet_0) {
-
-            try {
-                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            } catch (FunctionNotSupportedException exception) {
-                // NO OP - can proceed to purge
-            }
-
-            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                    entity.getType().getTypeDefGUID(),
-                    entity.getType().getTypeDefName(),
-                    entity.getGUID());
-        }
-
+        this.cleanRelationshipSet(metadataCollection, relationshipSet_0);
         if (this.multiSetTest) {
-
-
-            for (EntityDetail entity : entitySet_1) {
-
-                try {
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-                } catch (FunctionNotSupportedException exception) {
-                    // NO OP - can proceed to purge
-                }
-
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            }
-
-            for (EntityDetail entity : entitySet_2) {
-
-                try {
-                    metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
-                            entity.getType().getTypeDefGUID(),
-                            entity.getType().getTypeDefName(),
-                            entity.getGUID());
-                } catch (FunctionNotSupportedException exception) {
-                    // NO OP - can proceed to purge
-                }
-
-                metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
-                        entity.getType().getTypeDefGUID(),
-                        entity.getType().getTypeDefName(),
-                        entity.getGUID());
-            }
-
+            this.cleanRelationshipSet(metadataCollection, relationshipSet_1);
+            this.cleanRelationshipSet(metadataCollection, relationshipSet_2);
         }
 
     }
 
+
+    private void cleanRelationshipSet(OMRSMetadataCollection metadataCollection, List<Relationship> relationshipSet) throws Exception
+    {
+        /*
+         * Local variables for end2
+         */
+        EntityProxy end1;
+        EntityProxy end2;
+
+
+        for (Relationship relationship : relationshipSet) {
+
+            end1 = relationship.getEntityOneProxy();
+            end2 = relationship.getEntityTwoProxy();
+
+
+            try {
+
+                /*
+                 * Delete the relationship and then both end entities.
+                 * Deleting either entity first would delete the relationship, but
+                 * this sequence is a little more orderly.
+                 */
+
+                metadataCollection.deleteRelationship(workPad.getLocalServerUserId(),
+                        relationship.getType().getTypeDefGUID(),
+                        relationship.getType().getTypeDefName(),
+                        relationship.getGUID());
+
+
+                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                        end1.getType().getTypeDefGUID(),
+                        end1.getType().getTypeDefName(),
+                        end1.getGUID());
+
+                metadataCollection.deleteEntity(workPad.getLocalServerUserId(),
+                        end2.getType().getTypeDefGUID(),
+                        end2.getType().getTypeDefName(),
+                        end2.getGUID());
+
+
+            } catch (FunctionNotSupportedException exception) {
+                // NO OP - can proceed to purge
+            }
+
+            metadataCollection.purgeRelationship(workPad.getLocalServerUserId(),
+                    relationship.getType().getTypeDefGUID(),
+                    relationship.getType().getTypeDefName(),
+                    relationship.getGUID());
+
+            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                    end1.getType().getTypeDefGUID(),
+                    end1.getType().getTypeDefName(),
+                    end1.getGUID());
+
+            metadataCollection.purgeEntity(workPad.getLocalServerUserId(),
+                    end2.getType().getTypeDefGUID(),
+                    end2.getType().getTypeDefName(),
+                    end2.getGUID());
+
+
+        }
+    }
 
     private void performFinds(OMRSMetadataCollection metadataCollection) throws Exception
     {
@@ -430,36 +473,33 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
     private void performFindsMultiSet(OMRSMetadataCollection metadataCollection) throws Exception
     {
+
+
         /*
          * Do not perform existence assertions and content validations - these are tested in lifecycle tests.
          */
 
         InstanceProperties matchProperties = null;
-        MatchCriteria matchCriteria        = null;
-        int fromElement                    = 0;
-        List<EntityDetail> result          = null;
+        MatchCriteria matchCriteria = null;
+        int fromElement = 0;
+        List<Relationship> result = null;
 
         /* ------------------------------------------------------------------------------------- */
 
         /*
-         *  Test 1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only entities in set 0
+         *  Test 1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only relationships in set 0
+         *  Since this is a nonregex test we need to use a literalised string for each string value
          */
 
         matchProperties = literalisedInstanceProperties0;
         matchCriteria = MatchCriteria.ALL;
         fromElement = 0;
 
-        /*
-         * Since this is a non-regex test we need to ask the repo helper to provide a literalised string for each of our string values
-         */
-
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -479,21 +519,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_0 relationships
          */
 
-        List<EntityDetail> expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_0);
-        List<String> subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_0)),
                 assertion2,
                 testTypeName + assertionMsg2,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -505,16 +534,20 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         boolean contamination = false;
 
+
+        List<Relationship> expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_0);
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), matchProperties, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -533,11 +566,13 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
+
+
         /* ------------------------------------------------------------------------------------- */
 
         /*
          *
-         *  Test 2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only entities in set 0
+         *  Test 2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only relationships in set 0
          *
          */
 
@@ -546,14 +581,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -573,41 +605,35 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_0 relationships
          */
 
-        expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_0);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_0)),
                 assertion5,
                 testTypeName + assertionMsg5,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
+
         /*
          * Verify that any extra instances in the result are valid
          */
 
         contamination = false;
 
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_0);
+
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), matchProperties, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -626,7 +652,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         /*
          *
-         * Test 3.  Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only entities in sets 1 & 2
+         * Test 3.  Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only relationships in sets 1 & 2
          */
 
         matchProperties = literalisedInstanceProperties0;
@@ -634,13 +660,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -660,26 +684,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_1 and set_2 relationships
          */
 
-        expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_1);
-        expectedResult.addAll(entitySet_2);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 1);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 2);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_1) && result.containsAll(relationshipSet_2)),
                 assertion8,
                 testTypeName + assertionMsg8,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -691,16 +699,20 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         contamination = false;
 
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_1);
+        expectedResult.addAll(relationshipSet_2);
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps0, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -717,7 +729,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         /* ------------------------------------------------------------------------------------- */
         /*
-         *  Test 4. Use instanceProperties for set 1 & matchCriteria ALL  - this should return all and only entities in set 1
+         *  Test 4. Use instanceProperties for set 1 & matchCriteria ALL  - this should return all relationships in set 1
          *  If there is only one string property in the instance properties then it will also match the relationships in set 2
          */
 
@@ -726,13 +738,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -751,35 +761,14 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
-
         /*
-         * Verify that the result of the above search includes all set_1 entities (and set_2 if only one property exists, since they will overlap on that property) of the current type and its subtypes
+         * Verify that the result of the above search includes all set_1 relationships (and set_2 if only one property exists, since they will overlap on that property)
          */
 
         expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_1);
+        expectedResult.addAll(relationshipSet_1);
         if (this.attrList.size() == 1)
-            expectedResult.addAll(entitySet_2);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 1);
-                if (subTypeInstances != null) {
-                    expectedResult.addAll(subTypeInstances);
-                    if (this.attrList.size() == 1) {
-                        subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 2);
-                        if (subTypeInstances != null)
-                            expectedResult.addAll(subTypeInstances);
-                    }
-                }
-            }
-        }
-
-
-        /*
-         * Verify that the result of the above search includes all the expected entities
-         */
+            expectedResult.addAll(relationshipSet_2);
 
         assertCondition((result.containsAll(expectedResult)),
                 assertion11,
@@ -798,18 +787,19 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps1, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps1, matchCriteria);
                     if (!match)
                         contamination = true;
 
                 }
             }
         }
+
 
 
         assertCondition((contamination == false),
@@ -822,7 +812,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         /* ------------------------------------------------------------------------------------- */
 
         /*
-         *  Test 5. Use instanceProperties for set 1 & matchCriteria ANY  - this should return all and only entities in sets 1 & 2
+         *  Test 5. Use instanceProperties for set 1 & matchCriteria ANY  - this should return all and only relationships in sets 1 & 2
          */
 
         matchProperties = literalisedInstanceProperties1;
@@ -830,13 +820,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -856,31 +844,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_1 and set_2 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_1 and sdet_2 relationships
          */
 
-        expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_1);
-        expectedResult.addAll(entitySet_2);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 1);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 2);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-
-        /*
-         * Verify that the result of the above search includes all the expected entities
-         */
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_1) && result.containsAll(relationshipSet_2)),
                 assertion14,
                 testTypeName + assertionMsg14,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -892,22 +859,29 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         contamination = false;
 
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_1);
+        expectedResult.addAll(relationshipSet_2);
+
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps1, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps1, matchCriteria);
                     if (!match)
                         contamination = true;
 
                 }
             }
         }
+
+
 
         assertCondition((contamination == false),
                 assertion15,
@@ -919,9 +893,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         /* ------------------------------------------------------------------------------------- */
 
         /*
-         *  Test 6. Use instanceProperties for set 1 & matchCriteria NONE  - this should return all and only entities in set 0
+         *  Test 6. Use instanceProperties for set 1 & matchCriteria NONE  - this should return all and only relationships in set 0
          */
-
 
 
         matchProperties = literalisedInstanceProperties1;
@@ -929,12 +902,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -953,27 +925,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_0 relationships
          */
 
-        expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_0);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-
-        /*
-         * Verify that the result of the above search includes all the expected entities
-         */
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_0)),
                 assertion17,
                 testTypeName + assertionMsg17,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -985,23 +940,25 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         contamination = false;
 
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_0);
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps1, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps1, matchCriteria);
                     if (!match)
                         contamination = true;
 
                 }
             }
         }
-
 
         assertCondition((contamination == false),
                 assertion18,
@@ -1015,8 +972,8 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         /*
          *  Test 7. Type Filtering.
-         *  Use instanceProperties for set 0 & matchCriteria ALL  and do not specify a type GUID. This should return at least the entities for this type (and subtypes) in set 0
-         *  Count how many result entities are of the current entity type or its subtypes and then repeat the test with the current type GUID.
+         *  Use instanceProperties for set 0 & matchCriteria ALL  and do not specify a type GUID. This should return at least the relationships for this type (and subtypes) in set 0
+         *  Count how many result relationships are of the current relationship type or its subtypes and then repeat the test with the current type GUID.
          *  Ensure the counts match.
          *
          *  This test does not verify that the content of the result matches what would be expected - that is tested in other tests above. This test is concerned with type filtering.
@@ -1029,12 +986,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         /*
          * Perform the search without type filtering
          */
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
                 null,
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -1042,24 +998,18 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 0);
 
 
-        int entityCount = 0;
+        int relationshipCount = 0;
 
         if (result != null) {
             /*
-             * Count the entities that are of current type or subtypes...
+             * Count the relationships that are of current type...
              */
-            String entityTypeName = entityDef.getName();
-            List<String> countableTypeNames = new ArrayList<>();
-            List<String> countableSubTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityTypeName);
-            if (countableSubTypeNames != null) {
-                countableTypeNames.addAll(countableSubTypeNames);
-            }
-            countableTypeNames.add(entityTypeName);
+            String relationshipTypeName = relationshipDef.getName();
 
-            for (EntityDetail entityDetail : result) {
-                String typeName = entityDetail.getType().getTypeDefName();
-                if (countableTypeNames.contains(typeName)) {
-                    entityCount++;
+            for (Relationship relationship : result) {
+                String typeName = relationship.getType().getTypeDefName();
+                if (typeName.equals(relationshipTypeName)) {
+                    relationshipCount++;
                 }
             }
         }
@@ -1067,12 +1017,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         /*
          * Repeat the search being specific about type
          */
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -1089,7 +1038,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
-        assertCondition((result.size() == entityCount),
+        assertCondition((result.size() == relationshipCount),
                 assertion20,
                 testTypeName + assertionMsg20,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -1098,22 +1047,15 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
-
-
         /*
          * Completion of searches - indicate success of testcase.
          */
-        super.setSuccessMessage("Entities can be searched by property and property value");
+        super.setSuccessMessage("Relationships can be searched by property and property value");
     }
+
 
     private void performFindsSingleSet(OMRSMetadataCollection metadataCollection) throws Exception
     {
-        /*
-         * This is a single set test. This is because there are no string properties in the TypeDefAttributes
-         * for the TypeDef, so a simplified test is run. A single set of instances (called set 0) is created
-         * as a pair of instances that have identical InstanceProperties.
-         * No disjoint or overlap sets created.
-         */
 
 
         /*
@@ -1121,30 +1063,26 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
          */
 
         InstanceProperties matchProperties = null;
-        MatchCriteria matchCriteria        = null;
-        int fromElement                    = 0;
-        List<EntityDetail> result          = null;
+        MatchCriteria matchCriteria = null;
+        int fromElement = 0;
+        List<Relationship> result = null;
 
         /* ------------------------------------------------------------------------------------- */
 
         /*
-         *  Test 1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only entities in set 0
+         *  Test 1. Use instanceProperties for set 0 & matchCriteria ALL   - this should return all and only relationships in set 0
+         *  Since this is a nonregex test we need to use a literalised string for each string value
          */
 
-        /*
-         * Since this is a non-regex test use the literalised string for any string values
-         */
         matchProperties = literalisedInstanceProperties0;
         matchCriteria = MatchCriteria.ALL;
         fromElement = 0;
 
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -1164,27 +1102,10 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_0 relationships
          */
 
-        List<EntityDetail>expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_0);
-        List<String>subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-
-        /*
-         * Verify that the result of the above search includes all the expected entities
-         */
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_0)),
                 assertion22,
                 testTypeName + assertionMsg22,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
@@ -1196,16 +1117,20 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         boolean contamination = false;
 
+        List<Relationship> expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_0);
+
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps0, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -1223,11 +1148,14 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
+
+
+
         /* ------------------------------------------------------------------------------------- */
 
         /*
          *
-         *  Test 2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only entities in set 0
+         *  Test 2. Use instanceProperties for set 0 & matchCriteria ANY   - this should return all and only relationships in set 0
          *
          */
 
@@ -1236,14 +1164,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -1263,32 +1188,14 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
         /*
-         * Verify that the result of the above search includes all set_0 entities of the current type and its subtypes
+         * Verify that the result of the above search includes all set_0 relationships
          */
 
-        expectedResult = new ArrayList<>();
-        expectedResult.addAll(entitySet_0);
-        subTypeNames = repositoryConformanceWorkPad.getEntitySubTypes(entityDef.getName());
-        if (subTypeNames != null) {
-            for (String subTypeName : subTypeNames) {
-                List<EntityDetail> subTypeInstances;
-                subTypeInstances = repositoryConformanceWorkPad.getEntityInstanceSet(subTypeName, 0);
-                if (subTypeInstances != null)
-                    expectedResult.addAll(subTypeInstances);
-            }
-        }
-
-
-        /*
-         * Verify that the result of the above search includes all the expected entities
-         */
-
-        assertCondition((result.containsAll(expectedResult)),
+        assertCondition((result.containsAll(relationshipSet_0)),
                 assertion25,
                 testTypeName + assertionMsg25,
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getProfileId(),
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
-
 
         /*
          * Verify that any extra instances in the result are valid
@@ -1296,16 +1203,20 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
         contamination = false;
 
+        expectedResult = new ArrayList<>();
+        expectedResult.addAll(relationshipSet_0);
+
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps0, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -1322,13 +1233,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
-
-
         /* ------------------------------------------------------------------------------------- */
 
         /*
          *
-         * Test 3.  Use instanceProperties for set 0 & matchCriteria NONE  - this should return no entities
+         * Test 3.  Use instanceProperties for set 0 & matchCriteria NONE  - this should return all and only relationships in sets 1 & 2
          */
 
         matchProperties = literalisedInstanceProperties0;
@@ -1336,13 +1245,11 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         fromElement = 0;
 
 
-
-        result = metadataCollection.findEntitiesByProperty(workPad.getLocalServerUserId(),
-                entityDef.getGUID(),
+        result = metadataCollection.findRelationshipsByProperty(workPad.getLocalServerUserId(),
+                relationshipDef.getGUID(),
                 matchProperties,
                 matchCriteria,
                 fromElement,
-                null,
                 null,
                 null,
                 null,
@@ -1352,27 +1259,24 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
         /*
-         * Because this is a single set test and we are using matchCritera NONE - expect no results, but tolerate additional results that fit the criteria
-         */
-
-        expectedResult = new ArrayList<>(); // deliberately empty
-
-        /*
          * Verify that any extra instances in the result are valid
          */
 
         contamination = false;
 
+        expectedResult = new ArrayList<>(); // deliberately empty list
+
+
         if (result != null && (result.size() > expectedResult.size())) {
             /*
              * There are additional results.
              */
-            for (EntityDetail ent : result) {
-                if (!(expectedResult.contains(ent))) {
+            for (Relationship rel : result) {
+                if (!(expectedResult.contains(rel))) {
                     /*
                      * This instance is not a member of the expected result set, so check that it is a viable result
                      */
-                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(ent.getProperties(), this.instProps0, matchCriteria);
+                    boolean match = this.doInstancePropertiesSatisfyMatchCriteria(rel.getProperties(), this.instProps0, matchCriteria);
                     if (!match)
                         contamination = true;
 
@@ -1387,12 +1291,12 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
                 RepositoryConformanceProfileRequirement.CURRENT_PROPERTY_SEARCH.getRequirementId());
 
 
+
         /*
          * Completion of searches - indicate success of testcase.
          */
-        super.setSuccessMessage("Entities can be searched by property and property value");
+        super.setSuccessMessage("Relationships can be searched by property and property value");
     }
-
 
 
 
@@ -1400,7 +1304,7 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
     /**
      * Determine if properties are as expected.
      *
-     * @param firstInstanceProps is the target which must always be a non-null InstanceProperties
+     * @param firstInstanceProps  is the target which must always be a non-null InstanceProperties
      * @param secondInstanceProps is the actual to be compared against first param - can be null, or empty....
      * @return match boolean
      */
@@ -1409,56 +1313,46 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         boolean matchProperties = false;
         boolean noProperties = false;
 
-        if ( (secondInstanceProps == null) ||
+        if ((secondInstanceProps == null) ||
                 (secondInstanceProps.getInstanceProperties() == null) ||
-                (secondInstanceProps.getInstanceProperties().isEmpty()))
-        {
+                (secondInstanceProps.getInstanceProperties().isEmpty())) {
             noProperties = true;
         }
 
-        if (noProperties)
-        {
+        if (noProperties) {
             if ((firstInstanceProps.getInstanceProperties() == null) ||
-                    (firstInstanceProps.getInstanceProperties().isEmpty()))
-            {
+                    (firstInstanceProps.getInstanceProperties().isEmpty())) {
                 matchProperties = true;
             }
-        }
-        else
-        {
+        } else {
             // non-empty, perform matching
 
             Map<String, InstancePropertyValue> secondPropertiesMap = secondInstanceProps.getInstanceProperties();
-            Map<String, InstancePropertyValue> firstPropertiesMap  = firstInstanceProps.getInstanceProperties();
+            Map<String, InstancePropertyValue> firstPropertiesMap = firstInstanceProps.getInstanceProperties();
 
             boolean matchSizes = (secondPropertiesMap.size() == firstPropertiesMap.size());
 
-            if (matchSizes)
-            {
+            if (matchSizes) {
                 Set<String> secondPropertiesKeySet = secondPropertiesMap.keySet();
-                Set<String> firstPropertiesKeySet  = firstPropertiesMap.keySet();
+                Set<String> firstPropertiesKeySet = firstPropertiesMap.keySet();
 
                 boolean matchKeys = secondPropertiesKeySet.containsAll(firstPropertiesKeySet) &&
                         firstPropertiesKeySet.containsAll(secondPropertiesKeySet);
 
-                if (matchKeys)
-                {
+                if (matchKeys) {
                     // Assume the values match and prove it if they don't...
                     boolean matchValues = true;
 
                     Iterator<String> secondPropertiesKeyIterator = secondPropertiesKeySet.iterator();
-                    while (secondPropertiesKeyIterator.hasNext())
-                    {
+                    while (secondPropertiesKeyIterator.hasNext()) {
                         String key = secondPropertiesKeyIterator.next();
-                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key))))
-                        {
+                        if (!(secondPropertiesMap.get(key).equals(firstPropertiesMap.get(key)))) {
                             matchValues = false;
                         }
                     }
 
                     // If all property values matched....
-                    if (matchValues)
-                    {
+                    if (matchValues) {
                         matchProperties = true;
                     }
                 }
@@ -1468,345 +1362,6 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
         return matchProperties;
     }
 
-
-
-    /**
-     * Determine if properties are mismatched - i.e. if there are any clashing properties.
-     *
-     * If either or both InstanceProperties object is null or empty there is no clash
-     * If both a re non-null and non-empty then any properties with the same key must have matching values.
-     *
-     * @param firstInstanceProps is the target which must always be a non-null InstanceProperties
-     * @param secondInstanceProps is the actual to be compared against first param - can be null, or empty....
-     * @return match boolean
-     */
-    private boolean doPropertiesClash(InstanceProperties firstInstanceProps, InstanceProperties secondInstanceProps)
-    {
-        boolean clash = false;
-
-
-        if ( (firstInstanceProps == null) ||
-             (firstInstanceProps.getInstanceProperties() == null) ||
-             (firstInstanceProps.getInstanceProperties().isEmpty()))
-        {
-            return false;
-        }
-
-        if ( (secondInstanceProps == null) ||
-             (secondInstanceProps.getInstanceProperties() == null) ||
-             (secondInstanceProps.getInstanceProperties().isEmpty()))
-        {
-            return false;
-        }
-
-        /*
-         * Both InstanceProperties objects are non-null and have properties...perform matching
-         */
-
-
-        Map<String, InstancePropertyValue> firstPropertiesMap  = firstInstanceProps.getInstanceProperties();
-
-        Map<String, InstancePropertyValue> secondPropertiesMap = secondInstanceProps.getInstanceProperties();
-
-        Set<String> firstPropertiesKeySet  = firstPropertiesMap.keySet();
-        Iterator<String> firstPropertiesKeyIterator = firstPropertiesKeySet.iterator();
-
-        while (firstPropertiesKeyIterator.hasNext()) {
-            /*
-             * See whether secondInstancePropertirs has a value under this key
-             */
-
-            String key = firstPropertiesKeyIterator.next();
-            InstancePropertyValue value1 = firstPropertiesMap.get(key);
-            InstancePropertyValue value2 = secondPropertiesMap.get(key);
-
-            if (value2 != null && !(value1.equals(value2))) {
-                return true;
-            }
-        }
-
-        return clash;
-
-    }
-
-
-    /**
-     * Return type def attributes for the properties defined in the TypeDef and all of its supertypes
-     *
-     * @param userId calling user
-     * @param typeDef  the definition of the type
-     * @return properties for an instance of this type
-     * @throws Exception problem manipulating types
-     */
-    protected List<TypeDefAttribute>  getAllPropertiesForTypedef(String userId, TypeDef typeDef) throws Exception
-    {
-
-
-        // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
-        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
-
-
-        return allTypeDefAttributes;
-
-    }
-
-
-    /*
-     * This method will populate an instance properties object - it does not populate core properties.
-     * attrList is a list of all the TypeDefAttributes for the TypeDef to be instantiated.
-     * modifier is an instance modifier - some properties will be customised per instance, others not.
-     */
-    protected InstanceProperties populateInstanceProperties(List<TypeDefAttribute> attrList , String setName)
-    {
-
-        /*
-         * Get the trivial case out of the way
-         */
-        if (attrList == null) {
-            return null;
-        }
-
-        InstanceProperties properties = null;
-
-        Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
-
-
-        for (TypeDefAttribute typeDefAttribute : attrList)
-        {
-            String                   attributeName = typeDefAttribute.getAttributeName();
-            AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
-            AttributeTypeDefCategory category      = attributeType.getCategory();
-
-            String modifier = setName;
-
-            if (this.multiSetTest) {
-                if (attributeName.equals(this.firstStringAttributeName)) {
-                    // This is the first String property - so for any sets other than set "0" it should match set "1"
-                    if (!setName.equals("0")) {
-                        modifier = "1";
-                    }
-                }
-            }
-
-            switch(category)
-            {
-                case PRIMITIVE:
-                    PrimitiveDef primitiveDef = (PrimitiveDef)attributeType;
-                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, modifier));
-                    break;
-            }
-        }
-
-        if (! propertyMap.isEmpty())
-        {
-            properties = new InstanceProperties();
-            properties.setInstanceProperties(propertyMap);
-        }
-
-
-        return properties;
-
-    }
-
-
-    /**
-     * Create a primitive property value for the requested property. This is called both during create population and
-     * during generation of match properties for searches. It can also be used for result validation.
-     *
-     * @param propertyName name of the property
-     * @param propertyType type of the property
-     * @return PrimitivePropertyValue object
-     */
-    private PrimitivePropertyValue getPrimitivePropertyValue(String        propertyName,
-                                                             PrimitiveDef  propertyType,
-                                                             String        modifier)
-    {
-        String  strModifier = modifier;
-        Integer intModifier = Integer.parseInt(modifier);
-
-        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
-
-        propertyValue.setPrimitiveDefCategory(propertyType.getPrimitiveDefCategory());
-
-        switch (propertyType.getPrimitiveDefCategory())
-        {
-            case OM_PRIMITIVE_TYPE_STRING:
-                propertyValue.setPrimitiveValue(propertyName + "." + strModifier);
-                break;
-            case OM_PRIMITIVE_TYPE_DATE:
-                propertyValue.setPrimitiveValue(100L+new Long(strModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_INT:
-                propertyValue.setPrimitiveValue(42+intModifier);
-                break;
-            case OM_PRIMITIVE_TYPE_BOOLEAN:
-                propertyValue.setPrimitiveValue(modifier.equals("0")?false:true);
-                break;
-            case OM_PRIMITIVE_TYPE_SHORT:
-                propertyValue.setPrimitiveValue(new Short(strModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_BYTE:
-                propertyValue.setPrimitiveValue(new Byte(strModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_CHAR:
-                propertyValue.setPrimitiveValue(strModifier.charAt(0));
-                break;
-            case OM_PRIMITIVE_TYPE_LONG:
-                propertyValue.setPrimitiveValue(new Long(2000*intModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_FLOAT:
-                propertyValue.setPrimitiveValue(new Float(3.14159*intModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_DOUBLE:
-                propertyValue.setPrimitiveValue(new Double(1000000*intModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
-                propertyValue.setPrimitiveValue(new Double(1000000*intModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_BIGINTEGER:
-                propertyValue.setPrimitiveValue(new Double(1000000*intModifier));
-                break;
-            case OM_PRIMITIVE_TYPE_UNKNOWN:
-                break;
-        }
-
-        return propertyValue;
-    }
-
-
-    public InstanceProperties addStringPropertyToInstance(InstanceProperties properties,
-                                                          String             propertyName,
-                                                          String             propertyValue)
-    {
-        InstanceProperties  resultingProperties;
-
-        if (propertyValue != null)
-        {
-
-            if (properties == null)
-            {
-
-                resultingProperties = new InstanceProperties();
-            }
-            else
-            {
-                resultingProperties = properties;
-            }
-
-
-            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-
-            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            primitivePropertyValue.setPrimitiveValue(propertyValue);
-            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
-            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
-
-            resultingProperties.setProperty(propertyName, primitivePropertyValue);
-
-            return resultingProperties;
-        }
-        else
-        {
-            return properties;
-        }
-    }
-
-
-    /*
-     *  Method to find all the string values and literalise them for exact match.
-     *  The InstanceProperties passed in should already have been populated with the desired test values.
-     */
-    public InstanceProperties literaliseMatchProperties(String userId, TypeDef typeDef, InstanceProperties matchProperties)
-    {
-
-        if (matchProperties == null)
-            return null;
-
-
-
-        Map<String, InstancePropertyValue> properties = matchProperties.getInstanceProperties();
-
-
-        /*
-         * Get the trivial case out of the way - whatecver we were passed - pass it back
-         */
-        if (properties == null)
-            return matchProperties;
-
-
-        try {
-
-
-            /*
-             * Clone the match properties to a new IP object, iterate over the matchProperties and for any that are primitive string type call the repo helper and set the literalised value in the cloned properties object
-             */
-            InstanceProperties literalisedInstanceProperties = new InstanceProperties(matchProperties);
-
-            OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
-
-            Iterator<String> propertyNames = matchProperties.getPropertyNames();
-
-            if (propertyNames != null) {
-                while (propertyNames.hasNext()) {
-                    String propertyName = propertyNames.next();
-                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
-
-                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
-                    if (ipCat == InstancePropertyCategory.PRIMITIVE) {
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
-                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
-                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
-                            PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
-                            // Literalise the string
-                            String currentValue = (String) ppv.getPrimitiveValue();
-                            String litValue = repositoryHelper.getExactMatchRegex(currentValue);
-                            newPpv.setPrimitiveValue(litValue);
-                            literalisedInstanceProperties.setProperty(propertyName, newPpv);
-                        }
-
-                    }
-                }
-
-            }
-            return literalisedInstanceProperties;
-
-        }
-        catch (Exception e) {
-            return null;  // This should force an InvalidParameterException from the MDC under test.
-        }
-
-    }
-
-
-    /*
-     * Method to check whether the typeDef has at least one attribute of type String, and if so return the attribute name.
-     * If there is no String attribute in the type return null.
-     */
-
-    private String typeDefHasAtLeastOneStringProperty(List<TypeDefAttribute> attrList)
-    {
-
-
-        for (TypeDefAttribute typeDefAttribute : attrList)
-        {
-            String                   attributeName = typeDefAttribute.getAttributeName();
-            AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
-            AttributeTypeDefCategory category      = attributeType.getCategory();
-
-            switch(category)
-            {
-                case PRIMITIVE:
-                    PrimitiveDef primitiveDef = (PrimitiveDef)attributeType;
-                    PrimitiveDefCategory pdCat = primitiveDef.getPrimitiveDefCategory();
-                    if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
-                        return attributeName;
-                    break;
-            }
-        }
-
-        return null;
-
-    }
 
     /*
      * Method used to inspect whether an instance satisfies the natch criteria used in a search
@@ -1907,5 +1462,328 @@ public class TestSupportedEntityPropertySearch extends RepositoryConformanceTest
 
 
 
+    /**
+     * Determine if properties are mismatched - i.e. if there are any clashing properties.
+     *
+     * If either or both InstanceProperties object is null or empty there is no clash
+     * If both a re non-null and non-empty then any properties with the same key must have matching values.
+     *
+     * @param firstInstanceProps is the target which must always be a non-null InstanceProperties
+     * @param secondInstanceProps is the actual to be compared against first param - can be null, or empty....
+     * @return match boolean
+     */
+    private boolean doPropertiesClash(InstanceProperties firstInstanceProps, InstanceProperties secondInstanceProps)
+    {
+        boolean clash = false;
+
+
+        if ( (firstInstanceProps == null) ||
+                (firstInstanceProps.getInstanceProperties() == null) ||
+                (firstInstanceProps.getInstanceProperties().isEmpty()))
+        {
+            return false;
+        }
+
+        if ( (secondInstanceProps == null) ||
+                (secondInstanceProps.getInstanceProperties() == null) ||
+                (secondInstanceProps.getInstanceProperties().isEmpty()))
+        {
+            return false;
+        }
+
+        /*
+         * Both InstanceProperties objects are non-null and have properties...perform matching
+         */
+
+
+        Map<String, InstancePropertyValue> firstPropertiesMap  = firstInstanceProps.getInstanceProperties();
+
+        Map<String, InstancePropertyValue> secondPropertiesMap = secondInstanceProps.getInstanceProperties();
+
+        Set<String> firstPropertiesKeySet  = firstPropertiesMap.keySet();
+        Iterator<String> firstPropertiesKeyIterator = firstPropertiesKeySet.iterator();
+
+        while (firstPropertiesKeyIterator.hasNext()) {
+            /*
+             * See whether secondInstancePropertirs has a value under this key
+             */
+
+            String key = firstPropertiesKeyIterator.next();
+            InstancePropertyValue value1 = firstPropertiesMap.get(key);
+            InstancePropertyValue value2 = secondPropertiesMap.get(key);
+
+            if (value2 != null && !(value1.equals(value2))) {
+                return true;
+            }
+        }
+
+        return clash;
+
+    }
+
+    /**
+     * Return type def attributes for the properties defined in the TypeDef and all of its supertypes
+     *
+     * @param userId  calling user
+     * @param typeDef the definition of the type
+     * @return properties for an instance of this type
+     * @throws Exception problem manipulating types
+     */
+    protected List<TypeDefAttribute> getAllPropertiesForTypedef(String userId, TypeDef typeDef) throws Exception
+    {
+
+
+        // Recursively gather all the TypeDefAttributes for the supertype hierarchy...
+        List<TypeDefAttribute> allTypeDefAttributes = getPropertiesForTypeDef(userId, typeDef);
+
+
+        return allTypeDefAttributes;
+
+    }
+
+
+    /*
+     * This method will populate an instance properties object - it does not populate core properties.
+     * attrList is a list of all the TypeDefAttributes for the TypeDef to be instantiated.
+     * modifier is an instance modifier - some properties will be customised per instance, others not.
+     */
+    protected InstanceProperties populateInstanceProperties(List<TypeDefAttribute> attrList, String setName)
+    {
+
+        /*
+         * Get the trivial case out of the way
+         */
+        if (attrList == null) {
+            return null;
+        }
+
+        InstanceProperties properties = null;
+
+        Map<String, InstancePropertyValue> propertyMap = new HashMap<>();
+
+
+
+        for (TypeDefAttribute typeDefAttribute : attrList) {
+
+            String                   attributeName = typeDefAttribute.getAttributeName();
+            AttributeTypeDef         attributeType = typeDefAttribute.getAttributeType();
+            AttributeTypeDefCategory category      = attributeType.getCategory();
+
+            String modifier = setName;
+
+            if (this.multiSetTest) {
+                if (attributeName.equals(this.firstStringAttributeName)) {
+                    // This is the first String property - so for any sets other than set "0" it should match set "1"
+                    if (!setName.equals("0")) {
+                        modifier = "1";
+                    }
+                }
+            }
+
+            switch (category) {
+                case PRIMITIVE:
+                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                    propertyMap.put(attributeName, this.getPrimitivePropertyValue(attributeName, primitiveDef, modifier));
+                    break;
+            }
+        }
+
+        if (!propertyMap.isEmpty()) {
+            properties = new InstanceProperties();
+            properties.setInstanceProperties(propertyMap);
+        }
+
+
+        return properties;
+
+    }
+
+
+    /**
+     * Create a primitive property value for the requested property. This is called both during create population and
+     * during generation of match properties for searches. It can also be used for result validation.
+     *
+     * @param propertyName name of the property
+     * @param propertyType type of the property
+     * @return PrimitivePropertyValue object
+     */
+    private PrimitivePropertyValue getPrimitivePropertyValue(String propertyName,
+                                                             PrimitiveDef propertyType,
+                                                             String modifier)
+    {
+        String strModifier = modifier;
+        Integer intModifier = Integer.parseInt(modifier);
+
+        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
+
+        propertyValue.setPrimitiveDefCategory(propertyType.getPrimitiveDefCategory());
+
+        switch (propertyType.getPrimitiveDefCategory()) {
+            case OM_PRIMITIVE_TYPE_STRING:
+                propertyValue.setPrimitiveValue(propertyName + "." + strModifier);
+                break;
+            case OM_PRIMITIVE_TYPE_DATE:
+                propertyValue.setPrimitiveValue(100L + new Long(strModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_INT:
+                propertyValue.setPrimitiveValue(42 + intModifier);
+                break;
+            case OM_PRIMITIVE_TYPE_BOOLEAN:
+                propertyValue.setPrimitiveValue(modifier.equals("0")?false:true);
+                break;
+            case OM_PRIMITIVE_TYPE_SHORT:
+                propertyValue.setPrimitiveValue(new Short(strModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_BYTE:
+                propertyValue.setPrimitiveValue(new Byte(strModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_CHAR:
+                propertyValue.setPrimitiveValue(strModifier.charAt(0));
+                break;
+            case OM_PRIMITIVE_TYPE_LONG:
+                propertyValue.setPrimitiveValue(new Long(2000 * intModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_FLOAT:
+                propertyValue.setPrimitiveValue(new Float(3.14159 * intModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_DOUBLE:
+                propertyValue.setPrimitiveValue(new Double(1000000 * intModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                propertyValue.setPrimitiveValue(new Double(1000000 * intModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                propertyValue.setPrimitiveValue(new Double(1000000 * intModifier));
+                break;
+            case OM_PRIMITIVE_TYPE_UNKNOWN:
+                break;
+        }
+
+        return propertyValue;
+    }
+
+
+    public InstanceProperties addStringPropertyToInstance(InstanceProperties properties,
+                                                          String propertyName,
+                                                          String propertyValue)
+    {
+        InstanceProperties resultingProperties;
+
+        if (propertyValue != null) {
+
+            if (properties == null) {
+
+                resultingProperties = new InstanceProperties();
+            } else {
+                resultingProperties = properties;
+            }
+
+
+            PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+            primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            primitivePropertyValue.setPrimitiveValue(propertyValue);
+            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+
+            resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+            return resultingProperties;
+        } else {
+            return properties;
+        }
+    }
+
+
+    /*
+     *  Method to find all the string values and literalise them for exact match.
+     *  The InstanceProperties passed in should already have been populated with the desired test values.
+     */
+    public InstanceProperties literaliseMatchProperties(String userId, TypeDef typeDef, InstanceProperties matchProperties)
+    {
+
+        if (matchProperties == null)
+            return null;
+
+
+        Map<String, InstancePropertyValue> properties = matchProperties.getInstanceProperties();
+
+
+        /*
+         * Get the trivial case out of the way - whatecver we were passed - pass it back
+         */
+        if (properties == null)
+            return matchProperties;
+
+
+        try {
+
+
+            /*
+             * Clone the match properties to a new IP object, iterate over the matchProperties and for any that are primitive string type call the repo helper and set the literalised value in the cloned properties object
+             */
+            InstanceProperties literalisedInstanceProperties = new InstanceProperties(matchProperties);
+
+            OMRSRepositoryHelper repositoryHelper = cohortRepositoryConnector.getRepositoryHelper();
+
+            Iterator<String> propertyNames = matchProperties.getPropertyNames();
+
+            if (propertyNames != null) {
+                while (propertyNames.hasNext()) {
+                    String propertyName = propertyNames.next();
+                    InstancePropertyValue instancePropertyValue = matchProperties.getPropertyValue(propertyName);
+
+                    InstancePropertyCategory ipCat = instancePropertyValue.getInstancePropertyCategory();
+                    if (ipCat == InstancePropertyCategory.PRIMITIVE) {
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) instancePropertyValue;
+                        PrimitiveDefCategory pdCat = ppv.getPrimitiveDefCategory();
+                        if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
+                            PrimitivePropertyValue newPpv = new PrimitivePropertyValue(ppv);
+                            // Literalise the string
+                            String currentValue = (String) ppv.getPrimitiveValue();
+                            String litValue = repositoryHelper.getExactMatchRegex(currentValue);
+                            newPpv.setPrimitiveValue(litValue);
+                            literalisedInstanceProperties.setProperty(propertyName, newPpv);
+                        }
+
+                    }
+                }
+
+            }
+            return literalisedInstanceProperties;
+
+        } catch (Exception e) {
+            return null;  // This should force an InvalidParameterException from the MDC under test.
+        }
+
+    }
+
+    /*
+     * Method to check whether the typeDef has at least one attribute of type String, and if so return the attribute name.
+     * If there is no String attribute in the type return null.
+     */
+
+    private String typeDefHasAtLeastOneStringProperty(List<TypeDefAttribute> attrList)
+    {
+
+
+        for (TypeDefAttribute typeDefAttribute : attrList) {
+            String attributeName = typeDefAttribute.getAttributeName();
+            AttributeTypeDef attributeType = typeDefAttribute.getAttributeType();
+            AttributeTypeDefCategory category = attributeType.getCategory();
+
+            switch (category) {
+                case PRIMITIVE:
+                    PrimitiveDef primitiveDef = (PrimitiveDef) attributeType;
+                    PrimitiveDefCategory pdCat = primitiveDef.getPrimitiveDefCategory();
+                    if (pdCat == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING)
+                        return attributeName;
+                    break;
+            }
+        }
+
+        return null;
+
+    }
 
 }

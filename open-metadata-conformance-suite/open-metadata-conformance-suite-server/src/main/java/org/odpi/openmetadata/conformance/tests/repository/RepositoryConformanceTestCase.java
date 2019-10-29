@@ -37,6 +37,8 @@ public abstract class RepositoryConformanceTestCase extends OpenMetadataTestCase
     int       unSuccessfulExecutionCount = 0;
 
 
+
+
     /**
      * Typical constructor used when the name of the test case id is fixed
      *

@@ -49,6 +49,7 @@ import static org.odpi.openmetadata.adapters.repositoryservices.graphrepository.
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDefCategory.PRIMITIVE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE;
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,6 +60,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * GraphOMRSMetadataStore provides the graph store for the GraphRepositoryConnector
@@ -1587,94 +1589,310 @@ class GraphOMRSMetadataStore {
 
 
 
+
+        //*
+        // * There is one namespace covering both type-defined properties (the ones defined by a TypeDefAttribute in the TypeDef) and
+        // * the 'core properties' - fields like 'guid', 'createdBy' which are common to all instances regardless of type.
+        // *
+        // * MatchProperties are supplied using the short property name for each property, but the short names need to be qualified
+        // * to convert them into the unique property keys used in the graph.
+        // *
+        // * Type-specific properties are stored in the graph using their 'qualified property names' - which means the short name is
+        // * prefixed by the name of the type in which the property is defined.
+        // *
+        // * Core properties are prefixed by a prefix that indicates the type of graph element in which they appear. This ensures that
+        // * property keys are unique across vertices and edges (ad hence across all the global indexes) which makes startup and
+        // * index creation faster. They are not qualified by Type in case it is necessary to support cross-type graph queries, e.g.
+        // * find all the entities (of any type) that were createdBy 'admin'.
+        // *
+        // * Returning to the point about 'one namespace', the caller can provide a mix of type-specific and core properties, all
+        // * expressed using their short names. Any property (short) names that match type-specific properties are used in that
+        // * context, and any other property (short) names are assumed to be core properties. If a caller includes a property by
+        // * short name that is neither a type-defined nor core property then the search will fail - which is OK because the
+        // * match properties contain a condition that cannot be satisfied.
+        // *
+        // * In this find method it is necessary to map the provided short names to the qualified names in order to hit the indexes.
+        // *
+        // * For the type of entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
+        // *
+        //
+        //TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
+        //Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
+        //
+        // // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
+        //if (matchProperties != null) {
+        //    List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+        //    Iterator<String> propNames = matchProperties.getPropertyNames();
+        //    while (propNames.hasNext()) {
+        //        // Assume that mapping is String for all properties (core or type-specific) - some core properties may use Full-Text; see below...
+        //        GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+        //        String propName = propNames.next();
+        //        String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+        //
+        //
+        //        if (qualifiedPropertyName == null) {
+        //            // Assume this is a core property - if it is not then it's OK - the graph will reject.
+        //            // Because we are searching for entities prefix using the vertex prefix.
+        //            qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + propName;
+        //            mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
+        //        } else {  // issue_1521
+        //            qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
+        //        }
+        //        InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
+        //        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+        //        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+        //            // Primitives will have been stored in the graph as such
+        //            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+        //            PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
+        //            Object primValue = ppv.getPrimitiveValue();
+        //            log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
+        //            DefaultGraphTraversal t = new DefaultGraphTraversal();
+        //            switch (pCat) {
+        //                case OM_PRIMITIVE_TYPE_STRING:
+        //                    // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+        //                    String searchString = convertSearchStringToJanusRegex((String) primValue);
+        //                    log.debug("{} primitive match property search string ", methodName, searchString);
+        //
+        //                    // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+        //                    if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
+        //                        t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+        //                    } else {
+        //                        if (!fullMatch) {
+        //                            // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+        //                            String ANYCHARS = ".*";
+        //                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
+        //                        } else {
+        //                            // Must be a full match...
+        //                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));
+        //                        }
+        //                    }
+        //                    break;
+        //                default:
+        //                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, primValue);
+        //                    break;
+        //            }
+        //            log.debug("{} primitive match property has property criterion {}", methodName, t);
+        //            propCriteria.add(t);
+        //        } else {
+        //            log.debug("{} non-primitive match property {} ignored", propName);
+        //        }
+        //    }
+        //}
+
         /*
-         * There is one namespace covering both type-defined properties (the ones defined by a TypeDefAttribute in the TypeDef) and
-         * the 'core properties' - fields like 'guid', 'createdBy' which are common to all instances regardless of type.
+         * TODO - core property inclusion in a match properties object is not supported (currently)
          *
-         * MatchProperties are supplied using the short property name for each property, but the short names need to be qualified
-         * to convert them into the unique property keys used in the graph.
+         * There are two origins of properties stored on an instance vertex in the graph -
+         *   1. core properties from the audit header
+         *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
          *
-         * Type-specific properties are stored in the graph using their 'qualified property names' - which means the short name is
-         * prefixed by the name of the type in which the property is defined.
+         * The core property names are known (they are listed in the keys of GraphOMRSCOnstants.corePropertyTypes). Core properties are stored in the
+         * graph (as vertex and edge properties) under their prefixed name - where the prefix depends on the type and purpose of the graph
+         * element (e.g. vertex-entity, edge-relationship or vertex-classification). These are shortened to 've', 'er' and 'vc' as defined in the constants.
+         * For example, for an entity the core 'createdBy' property from InstanceAuditHeader is stored under the key vecreatedBy.
          *
-         * Core properties are prefixed by a prefix that indicates the type of graph element in which they appear. This ensures that
-         * property keys are unique across vertices and edges (ad hence across all the global indexes) which makes startup and
-         * index creation faster. They are not qualified by Type in case it is necessary to support cross-type graph queries, e.g.
-         * find all the entities (of any type) that were createdBy 'admin'.
+         * The type-defined attribute names are known from the typedef. The properties are stored in the graph as (as vertex and edge properties) under their
+         * prefixed and qualified name. For example, for a Referenceable (or subtype) entity the type-defined attriute 'qualifiedName' property is stored under
+         * the key 'veReferenceablexqualfiiedName'.
          *
-         * Returning to the point about 'one namespace', the caller can provide a mix of type-specific and core properties, all
-         * expressed using their short names. Any property (short) names that match type-specific properties are used in that
-         * context, and any other property (short) names are assumed to be core properties. If a caller includes a property by
-         * short name that is neither a type-defined nor core property then the search will fail - which is OK because the
-         * match properties contain a condition that cannot be satisfied.
+         * There is only one namespace of properties - so a type0defined attribute should never clash with a core property. If there is a name clash between a
+         * core property and a type-defined attribute it is an error in the type system (and should be fixed by an issue). This method cannot police such name
+         * clashes, and tolerates them by giving precedence to the core property with the specified name.
          *
-         * In this find method it is necessary to map the provided short names to the qualified names in order to hit the indexes.
+         * Match properties are specified using short (unqualified) names. Properties are stored in the graph with qualified property names - so we need to map
+         * to those in order to hit the indexes and vertex/edge properties. The short names of type-defined attributes do not need to be unique - i.e. different
+         * types that both define a type-defined attribute with the same (short) name. This is why the graph and indexes use the qualifiedPropertyNames.
+         * The calling code supports wildcard searches (across many types) so the type identified by typeDefName may have different type defined attributes
+         * to the attributes in matchProperties. Even if they match by name there is no guarantee that they are equivalent. They must be checked for both
+         * property name and type. In the case that a matchProperties contains a short-named property intended for a type other than the one being searched -
+         * this method checks the types match before issuing the graph traversal. This protects against type violations in the traversal. If the types do
+         * not match the method reacts depending on how matchCriteria is set. If mc is ALL then no traversal is performed; if mc is ANY then a traversal is
+         * performed WITHOUT the mismatched property; if mc is NONE a traversal is performed WITHOUT the mismatched property.
          *
-         * For the type of entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
+         *
+         * For the type of the entity or relationship, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
          */
+
+        /*
+         * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
+         */
+
+
+         // TODO - not supported yet
+         // Set<String> corePropertyNames = corePropertyTypes.keySet();
+
 
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
         Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
+        Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
+
 
         // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
+
         if (matchProperties != null) {
+
             List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+
             Iterator<String> propNames = matchProperties.getPropertyNames();
+
             while (propNames.hasNext()) {
-                // Assume that mapping is String for all properties (core or type-specific) - some core properties may use Full-Text; see below...
-                GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+
                 String propName = propNames.next();
-                String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
 
 
-                if (qualifiedPropertyName == null) {
-                    // Assume this is a core property - if it is not then it's OK - the graph will reject.
-                    // Because we are searching for entities prefix using the vertex prefix.
-                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + propName;
-                    mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
-                }
-                else {  // issue_1521
-                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
-                }
-                InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
-                InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-                    // Primitives will have been stored in the graph as such
-                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-                    PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
-                    Object primValue = ppv.getPrimitiveValue();
-                    log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    switch (pCat) {
-                        case OM_PRIMITIVE_TYPE_STRING:
-                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-                            String searchString = convertSearchStringToJanusRegex((String) primValue);
-                            log.debug("{} primitive match property search string ", methodName, searchString);
+                String propNameToSearch = null;
 
-                            // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-                            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                // Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+                GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+                /*
+                 * Check if this is a core property (from InstanceAuditHeader)
+                 */
+
+                //if (corePropertyNames.contains(propName)) {
+                //    /*
+                //     * Treat the match property as a reference to a core property
+                //     */
+                //
+                //
+                //    // TODO - There is a problem with this clause - it is not clear yet how a caller would pass the value of the property - MPs are InstanceProperties and as such they
+                //    // might not cover the Java classes we define for some core properties in the InstanecAuditHeader. Need to talk to Mandy about whether this is practical.
+                //    // For now avoid passing any property in a MP that has a name matching a core property. Difficult if you are a PropertyFacet tester!! :-)
+                //
+                //    propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + propName;
+                //    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                //}
+                //else
+
+                if (typeDefinedPropertyNames.contains(propName)) {
+
+                    /*
+                     * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
+                     */
+
+                    List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
+
+                    for (TypeDefAttribute propertyDef : propertiesDef) {
+                        String definedPropertyName = propertyDef.getAttributeName();
+                        if (definedPropertyName.equals(propName)) {
+
+                            /*
+                             * The match property name matches the name of a type-defined attribute
+                             */
+
+
+                            /*
+                             * Check types match - i.e. that the match property instance property has the same type as the type-defined attribute
+                             */
+                            PrimitiveDefCategory mpCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                            InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
+                            InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
+                            if (mpvCat == InstancePropertyCategory.PRIMITIVE) {
+                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
+                                mpCat = ppv.getPrimitiveDefCategory();
                             } else {
-                                if (!fullMatch) {
-                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
-                                    String ANYCHARS = ".*";
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                }
-                                else {
-                                    // Must be a full match...
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString ));
-                                }
+                                log.debug("{} non-primitive match property {} ignored", propName);
                             }
-                            break;
-                        default:
-                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, primValue);
-                            break;
+
+                            PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                            AttributeTypeDef atd = propertyDef.getAttributeType();
+                            AttributeTypeDefCategory atdCat = atd.getCategory();
+                            if (atdCat == PRIMITIVE) {
+                                PrimitiveDef pdef = (PrimitiveDef) atd;
+                                pdCat = pdef.getPrimitiveDefCategory();
+                            }
+
+                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat) {
+                                /*
+                                 * Types match
+                                 */
+                                /*
+                                 * Sort out the qualification and prefixing of the property name ready for graph search
+                                 */
+                                String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+                                propNameToSearch = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
+                                mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+                                break;  // TODO consider moving this break to below if cat match  no point looking for more props of same name - see relationship code
+                            }
+                            /*
+                             * Types do not match - continue to search property def for match - if none then drop through to catch all below
+                             */
+                        }
                     }
-                    log.debug("{} primitive match property has property criterion {}", methodName, t);
-                    propCriteria.add(t);
+                    /*
+                     * if (!propertyFound) - The match property is not a supported, known type-defined property or does not have correct type - drop into the catch all below.
+                     */
+
+
+                }
+
+                if (propNameToSearch == null) {
+
+                    /*
+                     * The match property is neither a core nor a type-defined property with matching name and type.
+                     * If matchCriteria is ALL we need to give up at this point.
+                     * If matchCriteria is ANY or NONE we can continue but just ignore this match property.
+                     */
+                    if (matchCriteria == MatchCriteria.ALL) {
+                        g.tx().rollback();
+                        return null;
+                    } else {
+                        /*
+                         * Skip this property but process the rest
+                         */
+                        continue;
+                    }
+
                 } else {
-                    log.debug("{} non-primitive match property {} ignored", propName);
+                    /*
+                     * Incorporate the property (propNameToSearch) into propCriteria for the traversal...
+                     */
+
+                    InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
+                    InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+                        // Primitives will have been stored in the graph as such
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+                        PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
+                        Object primValue = ppv.getPrimitiveValue();
+                        log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
+                        DefaultGraphTraversal t = new DefaultGraphTraversal();
+                        switch (pCat) {
+
+                            case OM_PRIMITIVE_TYPE_STRING:
+
+                                // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+
+                                String searchString = convertSearchStringToJanusRegex((String) primValue);
+                                log.debug("{} primitive match property search string ", methodName, searchString);
+
+                                // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
+                                    t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                } else {
+                                    if (!fullMatch) {
+                                        // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                        String ANYCHARS = ".*";
+                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                    } else {
+                                        // Must be a full match...
+                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(searchString));
+                                    }
+                                }
+                                break;
+
+                            default:
+                                t = (DefaultGraphTraversal) t.has(propNameToSearch, primValue);
+                                break;
+
+                        }
+                        log.debug("{} primitive match property has property criterion {}", methodName, t);
+                        propCriteria.add(t);
+                    } else {
+                        log.debug("{} non-primitive match property {} ignored", propName);
+                    }
                 }
             }
 
@@ -1708,6 +1926,7 @@ class GraphOMRSMetadataStore {
                             errorCode.getUserAction());
 
             }
+
         }
 
 
@@ -1859,67 +2078,223 @@ class GraphOMRSMetadataStore {
             gt = gt.has(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, typeDefName);
         }
 
-        // MatchProperties are expressed using the short property name for each property.
-        // Properties are stored in the graph with qualified property names - so we need to map to those in order to hit the indexes.
-        // For the type of the entity, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
+        /*
+         * TODO - core property inclusion in a match properties object is not supported (currently)
+         *
+         * There are two origins of properties stored on an instance vertex in the graph -
+         *   1. core properties from the audit header
+         *   2. type-defined attributes from the typedef (including inheritance in the case of entities, but not relationships or classifications)
+         *
+         * The core property names are known (they are listed in the keys of GraphOMRSCOnstants.corePropertyTypes). Core properties are stored in the
+         * graph (as vertex and edge properties) under their prefixed name - where the prefix depends on the type and purpose of the graph
+         * element (e.g. vertex-entity, edge-relationship or vertex-classification). These are shortened to 've', 'er' and 'vc' as defined in the constants.
+         * For example, for an entity the core 'createdBy' property from InstanceAuditHeader is stored under the key vecreatedBy.
+         *
+         * The type-defined attribute names are known from the typedef. The properties are stored in the graph as (as vertex and edge properties) under their
+         * prefixed and qualified name. For example, for a Referenceable (or subtype) entity the type-defined attriute 'qualifiedName' property is stored under
+         * the key 'veReferenceablexqualfiiedName'.
+         *
+         * There is only one namespace of properties - so a type0defined attribute should never clash with a core property. If there is a name clash between a
+         * core property and a type-defined attribute it is an error in the type system (and should be fixed by an issue). This method cannot police such name
+         * clashes, and tolerates them by giving precedence to the core property with the specified name.
+         *
+         * Match properties are specified using short (unqualified) names. Properties are stored in the graph with qualified property names - so we need to map
+         * to those in order to hit the indexes and vertex/edge properties. The short names of type-defined attributes do not need to be unique - i.e. different
+         * types that both define a type-defined attribute with the same (short) name. This is why the graph and indexes use the qualifiedPropertyNames.
+         * The calling code supports wildcard searches (across many types) so the type identified by typeDefName may have different type defined attributes
+         * to the attributes in matchProperties. Even if they match by name there is no guarantee that they are equivalent. They must be checked for both
+         * property name and type. In the case that a matchProperties contains a short-named property intended for a type other than the one being searched -
+         * this method checks the types match before issuing the graph traversal. This protects against type violations in the traversal. If the types do
+         * not match the method reacts depending on how matchCriteria is set. If mc is ALL then no traversal is performed; if mc is ANY then a traversal is
+         * performed WITHOUT the mismatched property; if mc is NONE a traversal is performed WITHOUT the mismatched property.
+         *
+         *
+         * For the type of the entity or relationship, walk its type hierarchy and construct a map of short prop name -> qualified prop name.
+         */
+
+        /*
+         * Check the match properties' names against two sets - first is the core properties, second is the type-defined attributes (including inherited attributes)
+         */
+
+
+        // TODO - not supported yet
+        // Set<String> corePropertyNames = corePropertyTypes.keySet();
+
+
         TypeDef typeDef = repositoryHelper.getTypeDefByName(repositoryName, typeDefName);
         Map<String, String> qualifiedPropertyNames = GraphOMRSMapperUtils.getQualifiedPropertyNamesForTypeDef(typeDef, repositoryName, repositoryHelper);
 
+        Set<String> typeDefinedPropertyNames = qualifiedPropertyNames.keySet();
+
+
         // This relies on the graph to enforce property validity - it does not pre-check that match properties are valid for requested type.
+
+
         if (matchProperties != null) {
+
             List<DefaultGraphTraversal> propCriteria = new ArrayList<>();
+
             Iterator<String> propNames = matchProperties.getPropertyNames();
+
             while (propNames.hasNext()) {
-                // Assume that mapping is String for all properties (core or type-specific) - some core properties may use Full-Text; see below...
-                GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+
                 String propName = propNames.next();
-                String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
 
-                if (qualifiedPropertyName == null) {
-                    // Assume this is a core property - if it is not then it's OK - the graph will reject.
-                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
-                    mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
-                }
-                else {  // issue_1521
-                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + qualifiedPropertyName;
-                }
-                InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
-                InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-                    // Primitives will have been stored in the graph as such
-                    PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-                    PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
-                    Object primValue = ppv.getPrimitiveValue();
-                    log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
-                    DefaultGraphTraversal t = new DefaultGraphTraversal();
-                    switch (pCat) {
-                        case OM_PRIMITIVE_TYPE_STRING:
-                            // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
-                            String searchString = convertSearchStringToJanusRegex((String) primValue);
-                            log.debug("{} primitive match property search string ", methodName, searchString);
 
-                            // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
-                            if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
-                                t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                String propNameToSearch = null;
+
+                // Mapping is String for all properties (core or type-specific) except for the subset of core properties that use Full-Text
+                GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+                /*
+                 * Check if this is a core property (from InstanceAuditHeader)
+                 */
+
+                //if (corePropertyNames.contains(propName)) {
+                //    /*
+                //     * Treat the match property as a reference to a core property
+                //     */
+                //
+                //
+                //    // TODO - There is a problem with this clause - it is not clear yet how a caller would pass the value of the property - MPs are InstanceProperties and as such they
+                //    // might not cover the Java classes we define for some core properties in the InstanecAuditHeader. Need to talk to Mandy about whether this is practical.
+                //    // For now avoid passing any property in a MP that has a name matching a core property. Difficult if you are a PropertyFacet tester!! :-)
+                //
+                //    propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + propName;
+                //    mapping = corePropertyMixedIndexMappings.get(propNameToSearch);
+                //}
+                //else
+
+                if (typeDefinedPropertyNames.contains(propName)) {
+
+                    /*
+                     * Treat the match property as a reference to a type-defined property. Check that it's type matches the TDA.
+                     */
+
+                    List<TypeDefAttribute> propertiesDef = repositoryHelper.getAllPropertiesForTypeDef(repositoryName, typeDef, methodName);
+
+                    for (TypeDefAttribute propertyDef : propertiesDef) {
+                        String definedPropertyName = propertyDef.getAttributeName();
+                        if (definedPropertyName.equals(propName)) {
+
+                            /*
+                             * The match property name matches the name of a type-defined attribute
+                             */
+
+
+                            /*
+                             * Check types match - i.e. that the match property instance property has the same type as the type-defined attribute
+                             */
+                            PrimitiveDefCategory mpCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                            InstancePropertyValue mpv = matchProperties.getPropertyValue(propName);
+                            InstancePropertyCategory mpvCat = mpv.getInstancePropertyCategory();
+                            if (mpvCat == InstancePropertyCategory.PRIMITIVE) {
+                                PrimitivePropertyValue ppv = (PrimitivePropertyValue) mpv;
+                                mpCat = ppv.getPrimitiveDefCategory();
                             } else {
-                                if (!fullMatch) {
-                                    // A partial match is sufficient...i.e. a value containing the search value as a substring will match
-                                    String ANYCHARS = ".*";
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
-                                } else {
-                                    // Must be a full match...
-                                    t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, Text.textRegex(searchString));
-                                }
+                                log.debug("{} non-primitive match property {} ignored", propName);
                             }
+
+                            PrimitiveDefCategory pdCat = OM_PRIMITIVE_TYPE_UNKNOWN;
+                            AttributeTypeDef atd = propertyDef.getAttributeType();
+                            AttributeTypeDefCategory atdCat = atd.getCategory();
+                            if (atdCat == PRIMITIVE) {
+                                PrimitiveDef pdef = (PrimitiveDef) atd;
+                                pdCat = pdef.getPrimitiveDefCategory();
+                            }
+
+                            if (mpCat != OM_PRIMITIVE_TYPE_UNKNOWN && pdCat != OM_PRIMITIVE_TYPE_UNKNOWN && mpCat == pdCat) {
+                                /*
+                                 * Types match
+                                 */
+                                /*
+                                 * Sort out the qualification and prefixing of the property name ready for graph search
+                                 */
+                                String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+                                propNameToSearch = PROPERTY_KEY_PREFIX_RELATIONSHIP + qualifiedPropertyName;
+                                mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
+
+                            }
+                            /*
+                             * If types matched the code above will have set propNameToSearch. If the types did not match we should give up on this property - there should not be
+                             * another property defined with the same name. In either case break out of the property for loop and drop through to catch all below
+                             */
                             break;
-                        default:
-                            t = (DefaultGraphTraversal) t.has(qualifiedPropertyName, primValue);
-                            break;
+                        }
                     }
-                    log.debug("{} primitive match property has property criterion {}", methodName, t);
-                    propCriteria.add(t);
+                    /*
+                     * If (!propertyFound) the match property is not a supported, known type-defined property - drop into the catch all below.
+                     */
+
+
+                }
+
+                if (propNameToSearch == null) {
+
+                    /*
+                     * The match property is neither a core nor a type-defined property with matching name and type.
+                     * If matchCriteria is ALL we need to give up at this point.
+                     * If matchCriteria is ANY or NONE we can continue but just ignore this match property.
+                     */
+                    if (matchCriteria == MatchCriteria.ALL) {
+                        g.tx().rollback();
+                        return null;
+                    } else {
+                        /*
+                         * Skip this property but process the rest
+                         */
+                        continue;
+                    }
+
                 } else {
-                    log.debug("{} non-primitive match property {} ignored", propName);
+                    /*
+                     * Incorporate the property (propNameToSearch) into propCriteria for the traversal...
+                     */
+
+                    InstancePropertyValue ipv = matchProperties.getPropertyValue(propName);
+                    InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+                        // Primitives will have been stored in the graph as such
+                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+                        PrimitiveDefCategory pCat = ppv.getPrimitiveDefCategory();
+                        Object primValue = ppv.getPrimitiveValue();
+                        log.debug("{} primitive match property has key {} value {}", methodName, propName, primValue);
+                        DefaultGraphTraversal t = new DefaultGraphTraversal();
+                        switch (pCat) {
+
+                            case OM_PRIMITIVE_TYPE_STRING:
+
+                                // The graph connector has to map from Egeria's internal regex convention to a format that is supported by JanusGraph.
+
+                                String searchString = convertSearchStringToJanusRegex((String) primValue);
+                                log.debug("{} primitive match property search string ", methodName, searchString);
+
+                                // NB This is using a JG specific approach to text predicates - see the static import above. From TP 3.4.0 try to use the TP text predicates.
+                                if (mapping == GraphOMRSGraphFactory.MixedIndexMapping.Text) {
+                                    t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textContainsRegex(searchString)); // for a field indexed using Text mapping use textContains or textContainsRegex
+                                } else {
+                                    if (!fullMatch) {
+                                        // A partial match is sufficient...i.e. a value containing the search value as a substring will match
+                                        String ANYCHARS = ".*";
+                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(ANYCHARS + searchString + ANYCHARS));         // for a field indexed using String mapping use textRegex
+                                    } else {
+                                        // Must be a full match...
+                                        t = (DefaultGraphTraversal) t.has(propNameToSearch, Text.textRegex(searchString));
+                                    }
+                                }
+                                break;
+
+                            default:
+                                t = (DefaultGraphTraversal) t.has(propNameToSearch, primValue);
+                                break;
+
+                        }
+                        log.debug("{} primitive match property has property criterion {}", methodName, t);
+                        propCriteria.add(t);
+                    } else {
+                        log.debug("{} non-primitive match property {} ignored", propName);
+                    }
                 }
             }
 
@@ -1954,6 +2329,7 @@ class GraphOMRSMetadataStore {
 
             }
         }
+
 
         while (gt.hasNext()) {
             Edge edge = gt.next();
@@ -2311,12 +2687,16 @@ class GraphOMRSMetadataStore {
                 GraphOMRSGraphFactory.MixedIndexMapping mapping = GraphOMRSGraphFactory.MixedIndexMapping.String;
                 String propName = propNames.next();
                 String qualifiedPropertyName = qualifiedPropertyNames.get(propName);
+
                 if (qualifiedPropertyName == null) {
                     // Assume this is a core property - if it is not then it's OK - the graph will reject.
-                    // Because we are searching for entities prefix using the vertex prefix.
-                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_ENTITY + propName;
+                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_CLASSIFICATION + propName;
                     mapping = corePropertyMixedIndexMappings.get(qualifiedPropertyName);
                 }
+                else {
+                    qualifiedPropertyName = PROPERTY_KEY_PREFIX_CLASSIFICATION + qualifiedPropertyName;
+                }
+
                 InstancePropertyValue ipv = classificationProperties.getPropertyValue(propName);
                 InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
                 if (ipvCat == InstancePropertyCategory.PRIMITIVE) {

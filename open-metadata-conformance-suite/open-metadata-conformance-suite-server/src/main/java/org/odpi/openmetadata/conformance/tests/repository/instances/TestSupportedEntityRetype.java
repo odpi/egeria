@@ -118,7 +118,7 @@ public class TestSupportedEntityRetype extends RepositoryConformanceTestCase
 
 
         /*
-         * Verify that it is possible to retype the entity.  TETODO - need to implement this test.
+         * Verify that it is possible to retype the entity.  TODO - need to implement this test.
          *
          */
 
