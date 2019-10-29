@@ -95,6 +95,21 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void getEntityDetails_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getEntityDetails_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getEntityDetails_throwsUserNotAuthorizedException() {
+
+    }
+
+    @Test
     public void getRelationshipsByEntityGUID() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getRelationshipsByEntityGUID";
 
@@ -117,6 +132,22 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void getRelationshipsByEntityGUID_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getRelationshipsByEntityGUID_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getRelationshipsByEntityGUID_throwsUserNotAuthorizedException() {
+
+    }
+
+
+    @Test
     public void getEntityClassificationByName() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityClassificationByName";
 
@@ -129,6 +160,21 @@ public class AssetCatalogHandlerTest {
         assertEquals(CLASSIFICATION_NAME, result.get(0).getName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(FIRST_GUID, GUID_PARAMETER, methodName);
+    }
+
+    @Test
+    public void getEntityClassificationByName_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getEntityClassificationByName_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getEntityClassificationByName_throwsUserNotAuthorizedException() {
+
     }
 
     @Test
@@ -151,6 +197,26 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void getLinkingRelationshipsBetweenAssets_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getLinkingRelationshipsBetweenAssets_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getLinkingRelationshipsBetweenAssets_throwsUserNotAuthorizedException() {
+
+    }
+
+    @Test
+    public void getLinkingRelationshipsBetweenAssets_throwsRepoUserNotAuthorizedException() {
+
+    }
+
+    @Test
     public void getIntermediateAssets()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
             EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, AssetNotFoundException {
@@ -169,6 +235,26 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void getIntermediateAssets_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getIntermediateAssets_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getIntermediateAssets_throwsUserNotAuthorizedException() {
+
+    }
+
+    @Test
+    public void getIntermediateAssets_throwsRepoUserNotAuthorizedException() {
+
+    }
+
+    @Test
     public void getRelationships()
             throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getRelationships";
@@ -183,6 +269,21 @@ public class AssetCatalogHandlerTest {
         assertEquals(RELATIONSHIP_TYPE, result.get(0).getTypeDefName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(FIRST_GUID, GUID_PARAMETER, methodName);
+    }
+
+    @Test
+    public void getRelationships_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getRelationships_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getRelationships_throwsUserNotAuthorizedException() {
+
     }
 
     @Test
@@ -212,6 +313,26 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void getEntitiesFromNeighborhood_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void getEntitiesFromNeighborhood_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void getEntitiesFromNeighborhood_throwsUserNotAuthorizedException() {
+
+    }
+
+    @Test
+    public void getEntitiesFromNeighborhood_throwsRepoUserNotAuthorizedException() {
+
+    }
+
+    @Test
     public void getTypeDefGUID()
             throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
         String methodName = "getTypeDefGUID";
@@ -220,6 +341,11 @@ public class AssetCatalogHandlerTest {
         String typeDefGUID = assetCatalogHandler.getTypeDefGUID(USER, RELATIONSHIP_TYPE);
         assertEquals(RELATIONSHIP_TYPE_GUID, typeDefGUID);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+    }
+
+    @Test
+    public void getTypeDefGUID_throwsInvalidParameterException() {
+
     }
 
     @Test
@@ -248,6 +374,46 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
+    public void searchByType_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsRepoUserNotAuthorizedException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsFunctionNotSupportedException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsRepoInvalidParameterException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsRepositoryErrorException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsPropertyErrorException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsTypeErrorException() {
+
+    }
+
+    @Test
+    public void searchByType_throwsPagingErrorException() {
+
+    }
+
+    @Test
     public void buildContextByType() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "buildContextByType";
         mockEntityDetails(FIRST_GUID, "getEntityDetails");
@@ -259,6 +425,21 @@ public class AssetCatalogHandlerTest {
         assertEquals(term.getGuid(), FIRST_GUID);
         assertEquals(term.getTypeDef(), ASSET_TYPE);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
+    }
+
+    @Test
+    public void buildContextByType_throwsInvalidParameterException() {
+
+    }
+
+    @Test
+    public void buildContextByType_throwsPropertyServerException() {
+
+    }
+
+    @Test
+    public void buildContextByType_throwsUserNotAuthorizedException() {
+
     }
 
     private SearchParameters mockSearchParams() {

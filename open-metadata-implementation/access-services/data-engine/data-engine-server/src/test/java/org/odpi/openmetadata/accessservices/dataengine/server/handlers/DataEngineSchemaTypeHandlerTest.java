@@ -159,7 +159,7 @@ class DataEngineSchemaTypeHandlerTest {
                         EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-404-001 "));
-}
+    }
 
     @Test
     void addLineageMappingRelationship() throws UserNotAuthorizedException, PropertyServerException,

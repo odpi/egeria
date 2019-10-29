@@ -17,9 +17,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 
 public class RelationshipHandlerTest {
 
@@ -109,9 +115,9 @@ public class RelationshipHandlerTest {
 
         InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
                 relationshipHandler.getRelationshipBetweenEntities(null,
-                        FIRST_GUID,
-                        SECOND_GUID,
-                        RELATIONSHIP_TYPE));
+                        null,
+                        null,
+                        null));
 
 
     }
