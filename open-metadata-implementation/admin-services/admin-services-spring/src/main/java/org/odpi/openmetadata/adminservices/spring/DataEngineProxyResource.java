@@ -12,30 +12,39 @@ import org.springframework.web.bind.annotation.*;
  * server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/data-engine-proxy-service")
 public class DataEngineProxyResource {
 
     private OMAGServerDataEngineProxyService adminAPI = new OMAGServerDataEngineProxyService();
 
     /**
-     * @param userId             user that is issuing the request.
-     * @param serverName         local server name.
-     * @param dataEngineProxyConfig configuration properties for the data engine proxy
+     * Store the provided Data Engine Proxy configuration
+     *
+     * @param userId                user that is issuing the request
+     * @param serverName            local server name
+     * @param dataEngineProxyConfig configuration for the data engine proxy
      * @return void response or
-     * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
+     * OMAGNotAuthorizedException    the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/data-engine-proxy-service/configuration")
+    @RequestMapping(method = RequestMethod.POST, path = "/configuration")
     public VoidResponse setDataEngineProxyConfig(@PathVariable String userId,
                                                  @PathVariable String serverName,
                                                  @RequestBody DataEngineProxyConfig dataEngineProxyConfig) {
         return adminAPI.setDataEngineProxyConfig(userId, serverName, dataEngineProxyConfig);
     }
 
-    @RequestMapping(method = RequestMethod.POST, path = "/data-engine-proxy-service")
-    public VoidResponse enableDataEngineProxy(@PathVariable String userId,
-                                              @PathVariable String serverName) {
-        return adminAPI.enableDataEngineProxy(userId, serverName);
+    /**
+     * Remove this Data Engine Proxy from the server configuration.
+     *
+     * @param userId     user that is issuing the request
+     * @param serverName local server name
+     * @return void response
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "")
+    public VoidResponse deleteDataEngineProxy(@PathVariable String userId,
+                                       @PathVariable String serverName) {
+        return adminAPI.deleteDataEngineProxy(userId, serverName);
     }
 
 }

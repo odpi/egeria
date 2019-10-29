@@ -10,13 +10,8 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
 import org.springframework.http.MediaType;
-
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * * The OpenLineageResource provides the server-side interface of the Open Lineage Services governance server.
@@ -80,20 +75,6 @@ public class OpenLineageResource {
                               @PathVariable("serverName") String serverName,
                               @PathVariable("graph") String graph) {
         return restAPI.exportGraph(serverName, userId, graph);
-    }
-
-    /**
-     * Generate the MOCK graph, which can be used for performance testing, or demoing lineage with large amounts of
-     * data.
-     *
-     * @param userId     calling user.
-     * @param serverName name of the server instance to connect to.
-     * @return Voidresponse.
-     */
-    @GetMapping(path = "/generate-mock-graph")
-    public VoidResponse generateGraph(@PathVariable("userId") String userId,
-                                      @PathVariable("serverName") String serverName) {
-        return restAPI.generateGraph(serverName, userId);
     }
 
     @InitBinder

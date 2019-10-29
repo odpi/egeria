@@ -19,7 +19,10 @@ value from data whilst ensuring it is properly governed.
 
 ## Digging deeper
 
-See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md) for details on how the content of the project is organized.
+See the [Home Page](index.md) for more information about the project and [ODPi Egeria Site Organization Page](Content-Organization.md)
+for details on how the content of the project is organized.  In addition,
+the [release notes](release-notes) show the function that has been
+delivered in each release and our future plans.
 
 ## Egeria governance
 

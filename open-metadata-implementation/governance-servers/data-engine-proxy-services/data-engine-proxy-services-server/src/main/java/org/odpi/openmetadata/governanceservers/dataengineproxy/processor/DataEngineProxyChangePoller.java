@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Class to handle periodically polling a Data Engine for changes, for those data engines that do not
@@ -31,6 +32,25 @@ public class DataEngineProxyChangePoller implements Runnable {
     private DataEngineConnectorBase connector;
     private String engineGuid;
 
+    private final AtomicBoolean running = new AtomicBoolean(false);
+
+    public void start() {
+        Thread worker = new Thread(this);
+        worker.start();
+    }
+
+    public void stop() {
+        running.set(false);
+    }
+
+    /**
+     * Default constructor
+     *
+     * @param connector             Data Engine Connector through which to connect to the data engine to poll
+     * @param dataEngineProxyConfig configuration of the Data Engine (Proxy)
+     * @param dataEngineOMASClient  Data Engine OMAS client through which to push any changes into Egeria
+     * @param auditLog              audit log through which to record activities
+     */
     public DataEngineProxyChangePoller(DataEngineConnectorBase connector,
                                        DataEngineProxyConfig dataEngineProxyConfig,
                                        DataEngineImpl dataEngineOMASClient,
@@ -50,7 +70,8 @@ public class DataEngineProxyChangePoller implements Runnable {
             try {
                 connector.start();
                 DataEngineSoftwareServerCapability dataEngineDetails = connector.getDataEngineDetails();
-                engineGuid = dataEngineOMASClient.createSoftwareServerCapability(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
+                dataEngineOMASClient.createExternalDataEngine(dataEngineDetails.getUserId(), dataEngineDetails.getSoftwareServerCapability());
+                dataEngineOMASClient.setExternalSourceName(dataEngineDetails.getSoftwareServerCapability().getQualifiedName());
             } catch (InvalidParameterException | PropertyServerException e) {
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
@@ -96,7 +117,7 @@ public class DataEngineProxyChangePoller implements Runnable {
             this.auditLog.logRecord("Initializing",
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(dataEngineProxyConfig.getDataEngineProxyProvider()),
+                    auditCode.getFormattedLogMessage(connector.getConnection().getConnectorType().getConnectorProviderClassName()),
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
@@ -123,34 +144,39 @@ public class DataEngineProxyChangePoller implements Runnable {
 
         final String methodName = "ProcessPollThread::run";
 
-        while (true) {
+        running.set(true);
+        while (running.get()) {
             try {
                 Date changesLastSynced = connector.getChangesLastSynced();
                 Date changesCutoff = new Date();
+                if (dataEngineOMASClient.getExternalSourceName()==null)
+                {
+                    dataEngineOMASClient.setExternalSourceName(connector.getDataEngineDetails().getSoftwareServerCapability().getQualifiedName());
+                }
                 if (log.isInfoEnabled()) { log.info("Polling for changes since: {}", changesLastSynced); }
                 List<DataEngineSchemaType> changedSchemaTypes = connector.getChangedSchemaTypes(changesLastSynced, changesCutoff);
                 if (changedSchemaTypes != null) {
                     for (DataEngineSchemaType changedSchemaType : changedSchemaTypes) {
-                        dataEngineOMASClient.createSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
+                        dataEngineOMASClient.createOrUpdateSchemaType(changedSchemaType.getUserId(), changedSchemaType.getSchemaType());
                     }
                 }
                 List<DataEnginePortImplementation> changedPortImplementations = connector.getChangedPortImplementations(changesLastSynced, changesCutoff);
                 if (changedPortImplementations != null) {
                     for (DataEnginePortImplementation changedPortImplementation : changedPortImplementations) {
-                        dataEngineOMASClient.createPortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
+                        dataEngineOMASClient.createOrUpdatePortImplementation(changedPortImplementation.getUserId(), changedPortImplementation.getPortImplementation());
                     }
                 }
                 List<DataEnginePortAlias> changedPortAliases = connector.getChangedPortAliases(changesLastSynced, changesCutoff);
                 if (changedPortAliases != null) {
                     for (DataEnginePortAlias changedPortAlias : changedPortAliases) {
-                        dataEngineOMASClient.createPortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
+                        dataEngineOMASClient.createOrUpdatePortAlias(changedPortAlias.getUserId(), changedPortAlias.getPortAlias());
                     }
                 }
                 if (log.isInfoEnabled()) { log.info(" ... getting changed processes."); }
                 List<DataEngineProcess> changedProcesses = connector.getChangedProcesses(changesLastSynced, changesCutoff);
                 if (changedProcesses != null) {
                     for (DataEngineProcess changedProcess : changedProcesses) {
-                        dataEngineOMASClient.createProcess(changedProcess.getUserId(), changedProcess.getProcess());
+                        dataEngineOMASClient.createOrUpdateProcess(changedProcess.getUserId(), changedProcess.getProcess());
                     }
                     if (log.isInfoEnabled()) { log.info(" ... completing process changes."); }
                 }
@@ -162,10 +188,7 @@ public class DataEngineProxyChangePoller implements Runnable {
                     }
                 }
                 connector.setChangesLastSynced(changesCutoff);
-                Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000);
-            } catch (InterruptedException e) {
-                log.error("Thread was interrupted.", e);
-                break;
+                Thread.sleep(dataEngineProxyConfig.getPollIntervalInSeconds() * 1000L);
             } catch (InvalidParameterException | PropertyServerException e) {
                 log.error("Exception caught!", e);
                 DataEngineConnectorErrorCode errorCode = DataEngineConnectorErrorCode.OMAS_CONNECTION_ERROR;
@@ -192,8 +215,6 @@ public class DataEngineProxyChangePoller implements Runnable {
                         errorCode.getUserAction(),
                         e
                 );
-            } catch (OCFCheckedExceptionBase e) {
-                log.error("There was a problem updating the last sync time -- will revert to previous sync time at next synchronization.", e);
             } catch (Exception e) {
                 log.error("Fatal error occurred during processing.", e);
             }

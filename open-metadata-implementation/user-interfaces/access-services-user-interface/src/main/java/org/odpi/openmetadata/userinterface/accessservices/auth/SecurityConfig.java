@@ -4,8 +4,11 @@ package org.odpi.openmetadata.userinterface.accessservices.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,17 +18,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.ldap.userdetails.InetOrgPersonContextMapper;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
 
 @EnableWebSecurity
 @Configuration
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Autowired
-    TokenAuthService tokenAuthService;
+    private AuthService authService;
 
     @Value("${ldap.user.search.base}")
     private String userSearchBase;
@@ -67,11 +72,13 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/css/**").permitAll()
                 .antMatchers("/locales/**").permitAll()
                 .antMatchers("/properties/**").permitAll()
+                .antMatchers("/open-metadata/ui-admin-services/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(new TokenAuthFilter(tokenAuthService), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), tokenAuthService),
-                        UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthFilter(authService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new LoginFilter("/auth/login", authenticationManager(), authService),
+                        UsernamePasswordAuthenticationFilter.class)
+                ;
     }
 
     @Bean

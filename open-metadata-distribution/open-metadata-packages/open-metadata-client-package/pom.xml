@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Client Package</name>
@@ -77,7 +77,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-model-client</artifactId>
+            <artifactId>design-model-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>

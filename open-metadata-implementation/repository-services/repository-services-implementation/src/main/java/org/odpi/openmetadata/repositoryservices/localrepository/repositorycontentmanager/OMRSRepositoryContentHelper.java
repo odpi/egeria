@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
-
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -728,7 +727,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param metadataCollectionName display name for the metadata collection (can be null).
      */
     public void registerMetadataCollection(String    metadataCollectionId,
-                                                        String    metadataCollectionName)
+                                           String    metadataCollectionName)
     {
         final String methodName = "registerMetadataCollection";
 
@@ -766,11 +765,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out entity needs classifications and properties
      * @throws TypeErrorException the type name is not recognized.
      */
-    public EntityDetail getSkeletonEntity(String sourceName,
-                                          String metadataCollectionId,
+    public EntityDetail getSkeletonEntity(String                 sourceName,
+                                          String                 metadataCollectionId,
                                           InstanceProvenanceType provenanceType,
-                                          String userName,
-                                          String typeName) throws TypeErrorException
+                                          String                 userName,
+                                          String                 typeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonEntity";
 
@@ -883,11 +882,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out relationship needs properties
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
-    public Relationship getSkeletonRelationship(String sourceName,
-                                                String metadataCollectionId,
+    public Relationship getSkeletonRelationship(String                 sourceName,
+                                                String                 metadataCollectionId,
                                                 InstanceProvenanceType provenanceType,
-                                                String userName,
-                                                String typeName) throws TypeErrorException
+                                                String                 userName,
+                                                String                 typeName) throws TypeErrorException
     {
         final String methodName = "getSkeletonRelationship";
 
@@ -923,7 +922,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return instance type
      * @throws TypeErrorException the type name is not recognized as a relationship type.
      */
-    public InstanceType getNewInstanceType(String sourceName,
+    public InstanceType getNewInstanceType(String         sourceName,
                                            TypeDefSummary typeDefSummary) throws TypeErrorException
     {
         final String methodName = "getNewInstanceType";
@@ -950,13 +949,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return an entity that is filled out
      * @throws TypeErrorException the type name is not recognized as an entity type
      */
-    public EntityDetail getNewEntity(String sourceName,
-                                     String metadataCollectionId,
+    public EntityDetail getNewEntity(String                 sourceName,
+                                     String                 metadataCollectionId,
                                      InstanceProvenanceType provenanceType,
-                                     String userName,
-                                     String typeName,
-                                     InstanceProperties properties,
-                                     List<Classification> classifications) throws TypeErrorException
+                                     String                 userName,
+                                     String                 typeName,
+                                     InstanceProperties     properties,
+                                     List<Classification>   classifications) throws TypeErrorException
     {
         EntityDetail entity = this.getSkeletonEntity(sourceName,
                                                      metadataCollectionId,
@@ -983,12 +982,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return a relationship that is filled out
      * @throws TypeErrorException the type name is not recognized as a relationship type
      */
-    public Relationship getNewRelationship(String sourceName,
-                                           String metadataCollectionId,
+    public Relationship getNewRelationship(String                 sourceName,
+                                           String                 metadataCollectionId,
                                            InstanceProvenanceType provenanceType,
-                                           String userName,
-                                           String typeName,
-                                           InstanceProperties properties) throws TypeErrorException
+                                           String                 userName,
+                                           String                 typeName,
+                                           InstanceProperties     properties) throws TypeErrorException
     {
         Relationship relationship = this.getSkeletonRelationship(sourceName,
                                                                  metadataCollectionId,
@@ -1014,13 +1013,13 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return partially filled out classification needs properties and possibly origin information
      * @throws TypeErrorException the type name is not recognized as a classification type.
      */
-    public Classification getNewClassification(String sourceName,
-                                               String userName,
-                                               String typeName,
-                                               String entityTypeName,
+    public Classification getNewClassification(String               sourceName,
+                                               String               userName,
+                                               String               typeName,
+                                               String               entityTypeName,
                                                ClassificationOrigin classificationOrigin,
-                                               String classificationOriginGUID,
-                                               InstanceProperties properties) throws TypeErrorException
+                                               String               classificationOriginGUID,
+                                               InstanceProperties   properties) throws TypeErrorException
     {
         Classification classification = this.getSkeletonClassification(sourceName,
                                                                        userName,
@@ -1044,10 +1043,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param methodName        calling method
      * @return updated entity
      */
-    public EntityDetail addClassificationToEntity(String sourceName,
-                                                  EntityDetail entity,
+    public EntityDetail addClassificationToEntity(String         sourceName,
+                                                  EntityDetail   entity,
                                                   Classification newClassification,
-                                                  String methodName)
+                                                  String         methodName)
     {
         EntityDetail updatedEntity = new EntityDetail(entity);
 
@@ -1114,10 +1113,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return located classification
      * @throws ClassificationErrorException the classification is not attached to the entity
      */
-    public Classification getClassificationFromEntity(String sourceName,
+    public Classification getClassificationFromEntity(String       sourceName,
                                                       EntityDetail entity,
-                                                      String classificationName,
-                                                      String methodName) throws ClassificationErrorException
+                                                      String       classificationName,
+                                                      String       methodName) throws ClassificationErrorException
     {
         final String thisMethodName = "getClassificationFromEntity";
 
@@ -1173,11 +1172,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param methodName        calling method
      * @return updated entity
      */
-    public EntityDetail updateClassificationInEntity(String sourceName,
-                                                     String userName,
-                                                     EntityDetail entity,
+    public EntityDetail updateClassificationInEntity(String         sourceName,
+                                                     String         userName,
+                                                     EntityDetail   entity,
                                                      Classification newClassification,
-                                                     String methodName)
+                                                     String         methodName)
     {
         if (newClassification != null)
         {
@@ -1217,10 +1216,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @return updated entity
      * @throws ClassificationErrorException the entity was not classified with this classification
      */
-    public EntityDetail deleteClassificationFromEntity(String sourceName,
+    public EntityDetail deleteClassificationFromEntity(String       sourceName,
                                                        EntityDetail entity,
-                                                       String oldClassificationName,
-                                                       String methodName) throws ClassificationErrorException
+                                                       String       oldClassificationName,
+                                                       String       methodName) throws ClassificationErrorException
     {
         EntityDetail updatedEntity = new EntityDetail(entity);
 
@@ -2229,7 +2228,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return (Date)primitivePropertyValue.getPrimitiveValue();
+                                Long timestamp = (Long)primitivePropertyValue.getPrimitiveValue();
+                                return new Date(timestamp);
+
                             }
                         }
                     }
@@ -2568,6 +2569,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                                                         Date               propertyValue,
                                                         String             methodName)
     {
+
+
         InstanceProperties  resultingProperties;
 
         log.debug("Adding property " + propertyName + " for " + methodName);
@@ -2586,8 +2589,12 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
 
+        /*
+         * Date objects are stored in PrimitivePropertyValue as Java Long.
+         */
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        Long longValue = propertyValue.getTime();
+        primitivePropertyValue.setPrimitiveValue(longValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2966,7 +2973,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
                     primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
-                    primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    /*
+                     * Internally, dates are stored as Java Long.
+                     */
+                    Long timestamp = ((Date) mapPropertyValue).getTime();
+                    primitivePropertyValue.setPrimitiveValue(timestamp);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
@@ -3209,6 +3220,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         return null;
     }
+
+
     /**
      * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
      * entity instances.
@@ -3243,14 +3256,29 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             return null;
         }
 
-        int fullResultsSize =fullResults.size();
-
-        List<EntityDetail>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        if (pageSize == 0)
         {
-            return sortedResults;
+            return fullResults;
+        }
+
+        int fullResultsSize = fullResults.size();
+
+        Collections.sort(fullResults,
+                         new java.util.Comparator<EntityDetail>()
+                         {
+                             @Override
+                             public int compare(final EntityDetail object1, final EntityDetail object2)
+                             {
+                                 return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
+                                                                                      object2.getProperties(),
+                                                                                      sequencingProperty,
+                                                                                      sequencingOrder);
+                             }
+                         });
+
+        if ((fromElement == 0) && (pageSize > fullResults.size()))
+        {
+            return fullResults;
         }
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
@@ -3291,25 +3319,200 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             return null;
         }
-        int fullResultsSize =fullResults.size();
+
+        if (pageSize == 0)
+        {
+            return fullResults;
+        }
+
+        int fullResultsSize = fullResults.size();
 
         if (fromElement > fullResultsSize)
         {
             return null;
         }
 
+        Collections.sort(fullResults,
+                         new java.util.Comparator<Relationship>()
+                        {
+                            @Override
+                            public int compare(final Relationship object1, final Relationship object2)
+                            {
+                                return OMRSRepositoryContentHelper.compareProperties(object1.getProperties(),
+                                                                                     object2.getProperties(),
+                                                                                     sequencingProperty,
+                                                                                     sequencingOrder);
+                            }
+                        });
 
-        List<Relationship>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        if ((fromElement == 0) && (pageSize > fullResults.size()))
         {
-            return sortedResults;
+            return fullResults;
         }
 
         int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+
         return new ArrayList<>(fullResults.subList(fromElement, toIndex));
     }
+
+
+    /**
+     * Compare the properties of two instances and determine the sort order based on the nominated property value and
+     * sort order.
+     *
+     * @param instance1Properties properties from first instance
+     * @param instance2Properties properties from second instance
+     * @param propertyName name of property to compare
+     * @param sequencingOrder ascending or descending order
+     * @return sort result
+     */
+    private static int  compareProperties(InstanceProperties     instance1Properties,
+                                          InstanceProperties     instance2Properties,
+                                          String                 propertyName,
+                                          SequencingOrder        sequencingOrder)
+    {
+
+        // todo need to add support for properties in the instance header eg createdBy
+         /*
+          * Ideally we would not include all this type inspection in the comparison
+          * function - but we do not know the types until we are comparing the
+          * pair of instances. There is no guarantee the list is homogeneous or that
+          * the objects to be compared are of the same type.
+          */
+
+         int    sortResult;
+         String o1PropertyTypeName = null;
+         String o2PropertyTypeName = null;
+         Object o1PropertyValue    = null;
+         Object o2PropertyValue    = null;
+
+         /*
+          * If instance1 has the named property, retrieve its value. Same for instance2.
+          * If neither object has the property return 0
+          * If one object has the property sort that higher: +1 if instance1, -1 if instance2
+          * If both have a value for the property, of different types, return 0.
+          * If both have a value for the property, of the same type, compare them...
+          * This is only performed for primitives, anything else is treated as ignored
+          */
+         if (instance1Properties != null)
+         {
+             InstancePropertyValue o1PropValue = instance1Properties.getPropertyValue(propertyName);
+             if (o1PropValue != null)
+             {
+                 InstancePropertyCategory o1PropCat = o1PropValue.getInstancePropertyCategory();
+                 if (o1PropCat == InstancePropertyCategory.PRIMITIVE)
+                 {
+                     o1PropertyTypeName = o1PropValue.getTypeName();
+                     o1PropertyValue = ((PrimitivePropertyValue) o1PropValue).getPrimitiveValue();
+                 }
+             }
+         }
+
+         if (instance2Properties != null)
+         {
+             InstancePropertyValue o2PropValue = instance2Properties.getPropertyValue(propertyName);
+             if (o2PropValue != null)
+             {
+                 InstancePropertyCategory o2PropCat = o2PropValue.getInstancePropertyCategory();
+                 if (o2PropCat == InstancePropertyCategory.PRIMITIVE)
+                 {
+                     o2PropertyTypeName = o2PropValue.getTypeName();
+                     o2PropertyValue = ((PrimitivePropertyValue) o2PropValue).getPrimitiveValue();
+                 }
+             }
+         }
+
+         if (o1PropertyTypeName == null && o2PropertyTypeName == null)
+         {
+             sortResult = 0;
+         }
+         else if (o1PropertyTypeName != null && o2PropertyTypeName == null)
+         {
+             sortResult = 1;
+         }
+         else if (o1PropertyTypeName == null) // implicit: o2PropertyTypeName != null
+         {
+             sortResult = -1;
+         }
+         else if (!o1PropertyTypeName.equals(o2PropertyTypeName))
+         {
+             sortResult = 0;
+         }
+         else
+         {
+             // Both objects have values, of the same type for the named property - compare...
+             sortResult = typeSpecificCompare(o1PropertyTypeName, o1PropertyValue, o2PropertyValue);
+
+         }
+         if (sequencingOrder == SequencingOrder.PROPERTY_DESCENDING)
+         {
+             sortResult = sortResult * (-1);
+         }
+
+         return sortResult;
+
+    }
+
+
+    /**
+     * Compare two objects based on their type.
+     * It must have been previously established that both objects are of the type
+     * indicated by the supplied typeName
+     *
+     * @param typeName name of type
+     * @param v1 value from instance 1
+     * @param v2 value from instance 2
+     * @return sort order
+     */
+    private static int typeSpecificCompare(String typeName, Object v1, Object v2)
+    {
+        int sortOrder;
+        switch (typeName)
+        {
+            case "boolean":
+                sortOrder = ((Boolean) v1).compareTo((Boolean) v2);
+                break;
+            case "byte":
+                sortOrder = ((Byte) v1).compareTo((Byte) v2);
+                break;
+            case "char":
+                sortOrder = ((Character) v1).compareTo((Character) v2);
+                break;
+            case "short":
+                sortOrder = ((Short) v1).compareTo((Short) v2);
+                break;
+            case "integer":
+                sortOrder = ((Integer) v1).compareTo((Integer) v2);
+                break;
+            case "long":
+                sortOrder = ((Long) v1).compareTo((Long) v2);
+                break;
+            case "float":
+                sortOrder = ((Float) v1).compareTo((Float) v2);
+                break;
+            case "double":
+                sortOrder = ((Double) v1).compareTo((Double) v2);
+                break;
+            case "biginteger":
+                sortOrder = ((BigInteger) v1).compareTo((BigInteger) v2);
+                break;
+            case "bigdecimal":
+                sortOrder = ((BigDecimal) v1).compareTo((BigDecimal) v2);
+                break;
+            case "string":
+                sortOrder = ((String) v1).compareTo((String) v2);
+                break;
+            case "date":
+                sortOrder = ((Date) v1).compareTo((Date) v2);
+                break;
+            default:
+                log.debug("Property type not catered for in compare function");
+                sortOrder = 0;
+        }
+
+        return sortOrder;
+    }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -3320,15 +3523,16 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression
      * @return string that is interpreted literally rather than as a regular expression
      * @see #isExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getExactMatchRegex(String s)
+    public String getExactMatchRegex(String searchString)
     {
-        return s == null ? null : Pattern.quote(s);
+        return searchString == null ? null : Pattern.quote(searchString);
     }
+
 
     /**
      * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
@@ -3342,18 +3546,19 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isExactMatchRegex(String s)
+    public boolean isExactMatchRegex(String searchString)
     {
-        return s == null
-                || (s.startsWith("\\Q")
-                    && s.endsWith("\\E")
-                    && s.indexOf("\\E") == s.length() - 2);
+        return searchString == null
+                || (searchString.startsWith("\\Q")
+                    && searchString.endsWith("\\E")
+                    && searchString.indexOf("\\E") == searchString.length() - 2);
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -3364,15 +3569,16 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
      * @return string that is interpreted literally, wrapped for a "contains" semantic
      * @see #isContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getContainsRegex(String s)
+    public String getContainsRegex(String searchString)
     {
-        return s == null ? null : ".*" + getExactMatchRegex(s) + ".*";
+        return searchString == null ? null : ".*" + getExactMatchRegex(searchString) + ".*";
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
@@ -3384,37 +3590,39 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "contains"
+     * @param searchString - the string to check whether it should be interpreted as a simple "contains"
      * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
      * @see #getContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isContainsRegex(String s)
+    public boolean isContainsRegex(String searchString)
     {
-        return s != null
-                && s.startsWith(".*")
-                && s.endsWith(".*")
-                && isExactMatchRegex(s.substring(2, s.length() - 2));
+        return searchString != null
+                && searchString.startsWith(".*")
+                && searchString.endsWith(".*")
+                && isExactMatchRegex(searchString.substring(2, searchString.length() - 2));
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with a "startswith" semantic. The passed string will NOT be treated as a regular expression;
+     * to search for the string with a "starts with" semantic. The passed string will NOT be treated as a regular expression;
      * if you intend to use both a "startswith" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
      *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
      * @return string that is interpreted literally, wrapped for a "startswith" semantic
      * @see #isStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getStartsWithRegex(String s)
+    public String getStartsWithRegex(String searchString)
     {
-        return s == null ? null : getExactMatchRegex(s) + ".*";
+        return searchString == null ? null : getExactMatchRegex(searchString) + ".*";
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
@@ -3426,58 +3634,61 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "startswith"
-     * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
+     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
+     * @return true if the provided string should be interpreted as a simple "starts with", false if it should be interpreted as a full regex
      * @see #getStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isStartsWithRegex(String s)
+    public boolean isStartsWithRegex(String searchString)
     {
-        return s != null
-                && s.endsWith(".*")
-                && isExactMatchRegex(s.substring(0, s.length() - 2));
+        return searchString != null
+                && searchString.endsWith(".*")
+                && isExactMatchRegex(searchString.substring(0, searchString.length() - 2));
     }
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
-     * to search for the string with an "endswith" semantic. The passed string will NOT be treated as a regular expression;
-     * if you intend to use both a "endswith" semantic and a regular expression within the string, simply construct your
+     * to search for the string with an "ends with" semantic. The passed string will NOT be treated as a regular expression;
+     * if you intend to use both a "ends with" semantic and a regular expression within the string, simply construct your
      * own regular expression directly (not with this helper method).
      *
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
-     * @return string that is interpreted literally, wrapped for an "endswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @return string that is interpreted literally, wrapped for an "ends with" semantic
      * @see #isEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public String getEndsWithRegex(String s)
+    public String getEndsWithRegex(String searchString)
     {
-        return s == null ? null : ".*" + getExactMatchRegex(s);
+        return searchString == null ? null : ".*" + getExactMatchRegex(searchString);
     }
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
      * other regular expression (false).
      *
      * Note that this method relies on the use of the getEndsWithRegex helper method having been used to
-     * qualify a string when it should be treated primarily as a literal with only very basic "endswith" wrapping.
+     * qualify a string when it should be treated primarily as a literal with only very basic "ends with" wrapping.
      *
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "endswith"
-     * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
+     * @param searchString - the string to check whether it should be interpreted as a simple "ends with"
+     * @return true if the provided string should be interpreted as a simple "ends with", false if it should be interpreted as a full regex
      * @see #getEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    public boolean isEndsWithRegex(String s)
+    public boolean isEndsWithRegex(String searchString)
     {
-        return s != null
-                && s.startsWith(".*")
-                && isExactMatchRegex(s.substring(2));
+        return searchString != null
+                && searchString.startsWith(".*")
+                && isExactMatchRegex(searchString.substring(2));
     }
+
 
     /**
      * Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).
@@ -3487,36 +3698,37 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.
      *
-     * @param s - the (potentially) wrapped and escaped string to un-escape and un-wrap
+     * @param searchString - the (potentially) wrapped and escaped string to un-escape and un-wrap
      * @return the un-escaped, un-wrapped literal string
      * @see #getExactMatchRegex(String)
      * @see #getContainsRegex(String)
      * @see #getStartsWithRegex(String)
      * @see #getEndsWithRegex(String)
      */
-    public String getUnqualifiedLiteralString(String s)
+    public String getUnqualifiedLiteralString(String searchString)
     {
-        if (s == null)
+        if (searchString == null)
         {
             return null;
         }
-        if (isExactMatchRegex(s))
+        if (isExactMatchRegex(searchString))
         {
-            return s.substring(2, s.length() - 2);
+            return searchString.substring(2, searchString.length() - 2);
         }
-        if (isStartsWithRegex(s))
+        if (isStartsWithRegex(searchString))
         {
-            return s.substring(2, s.length() - 4);
+            return searchString.substring(2, searchString.length() - 4);
         }
-        if (isEndsWithRegex(s))
+        if (isEndsWithRegex(searchString))
         {
-            return s.substring(4, s.length() - 2);
+            return searchString.substring(4, searchString.length() - 2);
         }
-        if (isContainsRegex(s)) {
-            return s.substring(4, s.length() - 4);
+        if (isContainsRegex(searchString)) {
+            return searchString.substring(4, searchString.length() - 4);
         }
-        return s;
+        return searchString;
     }
+
 
     /**
      * When issuing find requests with paging, it can be that we have all the data, but need to only return
@@ -3527,15 +3739,19 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * @param totalSize the total size of the data.
      * @return the to index.
      */
-    private int getToIndex(int fromIndex, int pageSize, int totalSize) {
+    private int getToIndex(int fromIndex, int pageSize, int totalSize)
+    {
         int toIndex = 0;
+
         if (totalSize < fromIndex + pageSize)
         {
             toIndex = totalSize;
-        } else
+        }
+        else
         {
             toIndex = fromIndex + pageSize;
         }
+
         return toIndex;
     }
 

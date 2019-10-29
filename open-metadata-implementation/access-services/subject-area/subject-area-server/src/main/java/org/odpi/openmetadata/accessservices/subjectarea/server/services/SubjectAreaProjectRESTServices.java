@@ -6,22 +6,16 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.GlossaryProject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ProjectScopeRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.ProjectMapper;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.ProjectScopeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -212,7 +206,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
             if (searchCriteria == null) {
                 response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper,methodName,userId,"Project",asOfTime, offset, pageSize);
             } else {
-                response = oMRSAPIHelper.findEntitiesByPropertyValue(oMRSAPIHelper, methodName, userId, "Project", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+                response = oMRSAPIHelper.findEntitiesByPropertyValue(methodName, userId, "Project", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             }
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {

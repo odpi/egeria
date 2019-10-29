@@ -1,0 +1,263 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.adapters.adminservices.configurationstore.encryptedfile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.crypto.tink.*;
+import com.google.crypto.tink.aead.AeadConfig;
+import com.google.crypto.tink.aead.AeadKeyTemplates;
+import com.google.crypto.tink.proto.KeyTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStoreConnectorBase;
+import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.util.Base64;
+
+public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConfigStoreConnectorBase {
+
+    private static final String KEYSTORE_FOLDER_PREFIX = "keystore";
+    private static final String KEY_FILE_EXTENSION = ".key";
+    private static final int RANDOM_NAME_LENGTH = 32;
+
+    private static final String defaultFilename = "omag.server.config";
+    private static final KeyTemplate keyTemplate = AeadKeyTemplates.CHACHA20_POLY1305;
+
+    private String configStoreName  = null;
+    private String keysetStoreName = null;
+
+    private static final Logger log = LoggerFactory.getLogger(EncryptedFileBasedServerConfigStoreConnector.class);
+
+    private static SecureRandom rng = null;
+
+    /**
+     * Default constructor
+     */
+    public EncryptedFileBasedServerConfigStoreConnector() { }
+
+
+    @Override
+    public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
+
+        super.initialize(connectorInstanceId, connectionProperties);
+        EndpointProperties endpoint = connectionProperties.getEndpoint();
+        if (endpoint != null) {
+            configStoreName = endpoint.getAddress();
+        }
+        if (configStoreName == null) {
+            configStoreName = defaultFilename;
+        }
+        try {
+            AeadConfig.register();
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Unable to initialize encryption library configuration.", e);
+        }
+
+    }
+
+
+    /**
+     * Save the server configuration.
+     *
+     * @param omagServerConfig - configuration properties to save
+     */
+    public void saveServerConfig(OMAGServerConfig omagServerConfig) {
+
+        File configStoreFile = new File(configStoreName);
+        File keystore = getKeystore();
+
+        try {
+
+            if (omagServerConfig == null) {
+                removeServerConfig();
+            } else {
+
+                log.debug("Generating new encryption key for secure storage.");
+                KeysetHandle keysetHandle = KeysetHandle.generateNew(keyTemplate);
+                CleartextKeysetHandle.write(keysetHandle, JsonKeysetWriter.withFile(
+                        keystore));
+
+                log.debug("Writing encrypted server config store properties: " + omagServerConfig);
+                ObjectMapper objectMapper = new ObjectMapper();
+                String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
+                Aead aead = keysetHandle.getPrimitive(Aead.class);
+                byte[] ciphertext = aead.encrypt(configStoreFileContents.getBytes(Charset.forName("UTF-8")), null);
+                FileUtils.writeByteArrayToFile(configStoreFile, ciphertext, false);
+
+            }
+
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Unable to generate new encryption key.", e);
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to write new encryption key or config file.", e);
+        }
+
+    }
+
+
+    /**
+     * Retrieve the configuration saved from a previous run of the server.
+     *
+     * @return server configuration
+     */
+    public OMAGServerConfig  retrieveServerConfig() {
+
+        File configStoreFile = new File(configStoreName);
+        File keystore = getKeystore();
+        OMAGServerConfig newConfigProperties = null;
+
+        try {
+
+            log.debug("Retrieving encryption key");
+            KeysetHandle keysetHandle = CleartextKeysetHandle.read(JsonKeysetReader.withFile(keystore));
+            Aead aead = keysetHandle.getPrimitive(Aead.class);
+
+            log.debug("Retrieving server configuration properties");
+            byte[] ciphertext = FileUtils.readFileToByteArray(configStoreFile);
+            byte[] decrypted = aead.decrypt(ciphertext, null);
+            String configStoreFileContents = new String(decrypted, Charset.forName("UTF-8"));
+            ObjectMapper objectMapper = new ObjectMapper();
+            newConfigProperties = objectMapper.readValue(configStoreFileContents, OMAGServerConfig.class);
+
+        } catch (GeneralSecurityException e) {
+            throw new IllegalStateException("Unable to read encryption key.", e);
+        } catch (IOException e) {
+            log.debug("New server config store", e);
+        }
+
+        return newConfigProperties;
+
+    }
+
+    /**
+     * Remove the server configuration.
+     */
+    public void removeServerConfig() {
+        File keystore = getKeystore();
+        if (keystore.delete()) {
+            log.debug("Successfully deleted keystore.");
+        } else {
+            log.warn("Unable to delete keystore.");
+        }
+        File configStoreFile = new File(configStoreName);
+        if (configStoreFile.delete()) {
+            log.debug("Successfully deleted config file: {}", configStoreFile.getName());
+        } else {
+            log.warn("Unable to delete server config file: {}", configStoreFile.getName());
+        }
+    }
+
+    /**
+     * Close the config file
+     */
+    public void disconnect() {
+        log.debug("Closing Config Store.");
+    }
+
+    private File getKeystore() {
+
+        // Start by trying to identify any pre-existing keystore directory
+        File pwd = new File(".");
+        File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
+        File secureFile;
+
+        if (keystoreDirs.length == 0) {
+
+            // If no directory was found with the prefix, we need to create one
+            String secureDirectory = KEYSTORE_FOLDER_PREFIX + "_" + getRandomString();
+            File secureDir = new File(secureDirectory);
+            // ... and we need to create a key file within it
+            keysetStoreName = getRandomString() + KEY_FILE_EXTENSION;
+            String secureLocation = secureDirectory + File.separator + keysetStoreName;
+            secureFile = new File(secureLocation);
+            try {
+                // We should secure the file and its containing directory to only be accessible by the OS-level owner
+                FileUtils.touch(secureFile);
+                if (secureFile.setReadable(false, false)) {
+                    log.debug("Keystore file marked as un-readable.");
+                } else {
+                    log.warn("Unable to mark keystore file as un-readable.");
+                }
+                if (secureFile.setReadable(true)) {
+                    log.debug("Keystore file marked as readable only by owner.");
+                } else {
+                    log.warn("Unable to mark keystore file as readable only by owner.");
+                }
+                if (secureDir.setExecutable(false, false)) {
+                    log.debug("Secure directory marked as non-executable.");
+                } else {
+                    log.warn("Unable to mark secure directory as non-executable.");
+                }
+                if (secureDir.setExecutable(true)) {
+                    log.debug("Secure directory marked as executable only by owner.");
+                } else {
+                    log.warn("Unable to mark secure directory as executable only by owner.");
+                }
+                if (secureDir.setReadable(false, false)) {
+                    log.debug("Secure directory marked as non-readable.");
+                } else {
+                    log.warn("Unable to mark secure directory as non-readable.");
+                }
+                if (secureDir.setReadable(true)) {
+                    log.debug("Secure directory marked as readable only by owner.");
+                } else {
+                    log.warn("Unable to mark secure directory as readable only by owner.");
+                }
+            } catch (IOException e) {
+                throw new IllegalStateException("Unable to create secure location for storing encryption key.", e);
+            }
+
+        } else if (keystoreDirs.length == 1) {
+
+            if (!keystoreDirs[0].isDirectory()) {
+                throw new IllegalStateException("Expecting the file '" + keystoreDirs[0].getAbsolutePath() + "' to be a directory.");
+            }
+
+            // If we found a single directory, then we need to search for a key file within it
+            File secureDir = keystoreDirs[0];
+            File[] keyFiles = secureDir.listFiles((dir, name) -> name.endsWith(KEY_FILE_EXTENSION));
+
+            if (keyFiles.length == 0) {
+                // If for some reason we have a directory but no keys, remove the directory and start over
+                if (secureDir.delete()) {
+                    log.debug("Removed empty secure directory.");
+                } else {
+                    log.warn("Unable to remove empty secure directory.");
+                }
+                return getKeystore();
+            } else if (keyFiles.length == 1) {
+                // If we have precisely one key file, use it
+                secureFile = keyFiles[0];
+            } else {
+                log.error("Multiple key files found -- unable to determine which to use for decryption: {}", keyFiles);
+                throw new IllegalStateException("Multiple key files found -- unable to determine which to use for decryption.");
+            }
+
+        } else {
+            log.error("Multiple keystore directories found -- unable to determine which to use for decryption: {}", keystoreDirs);
+            throw new IllegalStateException("Multiple keystore directories found -- unable to determine which to use for decryption.");
+        }
+
+        return secureFile;
+
+    }
+
+    private String getRandomString() {
+        if (rng == null) {
+            rng = new SecureRandom();
+        }
+        byte[] bytes = new byte[RANDOM_NAME_LENGTH];
+        rng.nextBytes(bytes);
+        byte[] encodedBytes = Base64.getUrlEncoder().withoutPadding().encode(bytes);
+        return new String(encodedBytes, 0, RANDOM_NAME_LENGTH);
+    }
+
+}

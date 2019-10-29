@@ -2,10 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstanceHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -47,11 +47,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getProcessHandler();
-        }
-
-        return null;
+        return instance.getProcessHandler();
     }
 
     /**
@@ -66,19 +62,15 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public SoftwareServerRegistrationHandler getRegistrationHandler(String userId, String serverName,
-                                                                    String serviceOperationName) throws
+    public DataEngineRegistrationHandler getRegistrationHandler(String userId, String serverName,
+                                                                String serviceOperationName) throws
                                                                                                  InvalidParameterException,
                                                                                                  UserNotAuthorizedException,
                                                                                                  PropertyServerException {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getSoftwareServerRegistrationHandler();
-        }
-
-        return null;
+        return instance.getDataEngineRegistrationHandler();
     }
 
     /**
@@ -102,11 +94,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getDataEngineSchemaTypeHandler();
-        }
-
-        return null;
+        return instance.getDataEngineSchemaTypeHandler();
     }
 
     /**
@@ -129,11 +117,7 @@ public class DataEngineInstanceHandler extends OCFOMASServiceInstanceHandler {
         DataEngineServicesInstance instance = (DataEngineServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getPortHandler();
-        }
-
-        return null;
+        return instance.getPortHandler();
     }
 }
 

@@ -56,7 +56,7 @@ The java package name root to use for all of the Java implementation of the OMAS
 
 The REST URL naming convention for OMAS URLs is:
  
-> *serverURL*`/servers/{serverName}/open-metadata/access-services/*omas-name*/users/{userId}/...`
+> *serverRootURL*`/servers/{serverName}/open-metadata/access-services/*omas-name*/users/{userId}/...`
 
 where:
 

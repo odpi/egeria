@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.2-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,6 +25,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>configuration-file-store-connector</module>
+        <module>configuration-encrypted-file-store-connector</module>
     </modules>
 
     <dependencies>
@@ -33,8 +34,13 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
         </dependency>
- 
-	<dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ui-admin-services-api</artifactId>
+        </dependency>
+
+	    <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>

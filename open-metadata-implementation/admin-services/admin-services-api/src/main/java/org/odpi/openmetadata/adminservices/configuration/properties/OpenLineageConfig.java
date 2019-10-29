@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -28,6 +29,12 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private String inTopicName;
     private Connection inTopicConnection;
 
+    private String     openLineageProvider;
+    private String     openLineageProviderMain;
+    private Connection openLineageBufferGraphConnection;
+    private Connection openLineageMainGraphConnection;
+    private Map<String, Object> bufferGraphConfig;
+    private Map<String, Object> mainGraphConfig;
 
     /**
      * Default constructor
@@ -52,6 +59,12 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             lineageServerURL = template.lineageServerURL;
             inTopicName = template.inTopicName;
             inTopicConnection = template.inTopicConnection;
+            openLineageProvider = template.openLineageProvider;
+            openLineageProviderMain = template.openLineageProviderMain;
+            openLineageBufferGraphConnection = template.openLineageBufferGraphConnection;
+            openLineageMainGraphConnection = template.openLineageMainGraphConnection;
+            bufferGraphConfig = template.bufferGraphConfig;
+            mainGraphConfig = template.mainGraphConfig;
         }
     }
 
@@ -167,7 +180,115 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
         this.inTopicConnection = inTopicConnection;
     }
 
+    /**
+     * Return the ConnectorProvider class name for Open Lineage
+     *
+     * @return String Class name
+     */
+    public String getOpenLineageProvider() {
+        return openLineageProvider;
+    }
 
+    /**
+     * Set up the Open Lineage Connector Provider class
+     *
+     * @param openLineageProvider String Connector Provider class name
+     */
+    public void setOpenLineageProvider(String openLineageProvider) {
+        this.openLineageProvider = openLineageProvider;
+    }
+
+    /**
+     * Return the ConnectorProvider class name for Open Lineage
+     *
+     * @return String Class name
+     */
+    public String getOpenLineageProviderMain() {
+        return openLineageProviderMain;
+    }
+
+    /**
+     * Set up the Open Lineage Connector Provider class
+     *
+     * @param openLineageProviderMain String Connector Provider class name
+     */
+    public void setOpenLineageProviderMain(String openLineageProviderMain) {
+        this.openLineageProviderMain = openLineageProviderMain;
+    }
+
+    /**
+     * Return the Connection for BufferGraph that will be used for Open Lineage
+     *
+     * @return Connection for bufferGraph
+     */
+    public Connection getOpenLineageBufferGraphConnection() {
+        return openLineageBufferGraphConnection;
+    }
+
+    /**
+     * Set up the Open Lineage bufferGraph Connection
+     *
+     * @param openLineageBufferGraphConnection Connection for bufferGraph
+     */
+    public void setOpenLineageBufferGraphConnection(Connection openLineageBufferGraphConnection) {
+        this.openLineageBufferGraphConnection = openLineageBufferGraphConnection;
+    }
+
+    /**
+     * Return the Connection for mainGraph that will be used for Open Lineage
+     *
+     * @return Connection for mainGraph
+     */
+    public Connection getOpenLineageMainGraphConnection() {
+        return openLineageMainGraphConnection;
+    }
+
+    /**
+     * Set up the Open Lineage mainGraph Connection
+     *
+     * @param openLineageMainGraphConnection Connection for mainGraph
+     */
+    public void setOpenLineageMainGraphConnection(Connection openLineageMainGraphConnection) {
+        this.openLineageMainGraphConnection = openLineageMainGraphConnection;
+    }
+
+
+
+    /**
+     * Return the configuration properties for BufferGraph that will be used for Open Lineage
+     *
+     * @return Map of Objects for BufferGraph
+     */
+    public Map<String, Object> getBufferGraphConfig() {
+        return bufferGraphConfig;
+    }
+
+    /**
+     * Set up the Open Lineage configuration for bufferGraph
+     *
+     * @param bufferGraphConfig Map for configuration of bufferGraph
+     */
+    public void setBufferGraphConfig(Map<String, Object> bufferGraphConfig) {
+        this.bufferGraphConfig = bufferGraphConfig;
+    }
+
+    /**
+     * Return the configuration properties for MainGraph that will be used for Open Lineage
+     *
+     * @return Map of Objects for MainGraph
+     */
+    public Map<String, Object> getMainGraphConfig() {
+        return mainGraphConfig;
+    }
+
+    /**
+     * Set up the Open Lineage configuration for mainGraph
+     *
+     * @param mainGraphConfig Map for configuration of mainGraph
+     */
+    public void setMainGraphConfig(Map<String, Object> mainGraphConfig) {
+        this.mainGraphConfig = mainGraphConfig;
+    }
 
     @Override
     public String toString() {
@@ -178,41 +299,39 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 ", lineageServerURL='" + lineageServerURL + '\'' +
                 ", inTopicName='" + inTopicName + '\'' +
                 ", inTopicConnection=" + inTopicConnection +
+                ", openLineageProvider='" + openLineageProvider + '\'' +
+                ", openLineageBufferGraphConnection=" + openLineageBufferGraphConnection +
+                ", openLineageMainGraphConnection=" + openLineageMainGraphConnection +
+                ", bufferGraphConfig=" + bufferGraphConfig +
+                ", mainGraphConfig=" + mainGraphConfig +
                 '}';
     }
 
-    /**
-     * Validate that an object is equal depending on their stored values.
-     *
-     * @param objectToCompare object
-     * @return boolean result
-     */
     @Override
-    public boolean equals(Object objectToCompare) {
-        if (this == objectToCompare) {
-            return true;
-        }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) {
-            return false;
-        }
-        OpenLineageConfig that = (OpenLineageConfig) objectToCompare;
-        return getOpenLineageId() == that.getOpenLineageId() &&
-                Objects.equals(getOpenLineageName(), that.getOpenLineageName()) &&
-                Objects.equals(getOpenLineageDescription(), that.getOpenLineageDescription()) &&
-                Objects.equals(getLineageServerURL(), that.getLineageServerURL()) &&
-                Objects.equals(getInTopicConnection(), that.getInTopicConnection()) &&
-                Objects.equals(getInTopicName(), that.getInTopicName());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OpenLineageConfig that = (OpenLineageConfig) o;
+        return openLineageId == that.openLineageId &&
+                Objects.equals(openLineageName, that.openLineageName) &&
+                Objects.equals(openLineageDescription, that.openLineageDescription) &&
+                Objects.equals(lineageServerURL, that.lineageServerURL) &&
+                Objects.equals(inTopicName, that.inTopicName) &&
+                Objects.equals(inTopicConnection, that.inTopicConnection) &&
+                Objects.equals(openLineageProvider, that.openLineageProvider) &&
+                Objects.equals(openLineageBufferGraphConnection, that.openLineageBufferGraphConnection) &&
+                Objects.equals(openLineageMainGraphConnection, that.openLineageMainGraphConnection) &&
+                Objects.equals(bufferGraphConfig, that.bufferGraphConfig) &&
+                Objects.equals(mainGraphConfig, that.mainGraphConfig);
     }
 
-    /**
-     * Return a hash code based on the values of this object.
-     *
-     * @return in hash code
-     */
     @Override
     public int hashCode() {
-        return Objects.hash(getOpenLineageId(), getOpenLineageName(),
-                getOpenLineageDescription(),  getLineageServerURL(), getInTopicConnection(),
-                getInTopicName());
+        return Objects.hash(openLineageId, openLineageName,
+                            openLineageDescription, lineageServerURL,
+                            inTopicName, inTopicConnection,
+                            openLineageProvider, openLineageBufferGraphConnection,
+                            openLineageMainGraphConnection, bufferGraphConfig,
+                            mainGraphConfig);
     }
 }

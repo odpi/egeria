@@ -314,12 +314,19 @@ public enum OMRSAuditCode
 
     RE_REGISTERED_WITH_COHORT("OMRS-AUDIT-0061",
                               OMRSAuditLogRecordSeverity.INFO,
-                              "Refreshing registration information from open metadata repository cohort {0}",
+                              "Refreshing local registration information with open metadata repository cohort {0} using metadata collection id {1}",
+                              "The local server has sent a re-registration request to the other members of the cohort as " +
+                                      "part of its routine to re-connect with the open metadata repository cohort.",
+                              "No action is required.  This is part of the normal operation of the server."),
+
+    REFRESH_REGISTRATION_REQUEST_WITH_COHORT("OMRS-AUDIT-0062",
+                              OMRSAuditLogRecordSeverity.INFO,
+                              "Requesting registration information from other members of the open metadata repository cohort {0}",
                               "The local server has sent a registration refresh request to the other members of the cohort as " +
                                       "part of its routine to re-connect with the open metadata repository cohort.",
                               "No action is required.  This is part of the normal operation of the server."),
 
-    UNREGISTERING_FROM_COHORT("OMRS-AUDIT-0062",
+    UNREGISTERING_FROM_COHORT("OMRS-AUDIT-0063",
                               OMRSAuditLogRecordSeverity.INFO,
                               "Unregistering with open metadata repository cohort {0} using metadata collection id {1}",
                               "The local server has sent a unregistration event to the other members of the cohort as " +
@@ -462,10 +469,10 @@ public enum OMRSAuditCode
 
     MISSING_MEMBER_REGISTRATION("OMRS-AUDIT-0118",
                       OMRSAuditLogRecordSeverity.ERROR,
-                      "Unable to process the remote registration for {0} from cohort registry store {1} " +
-                                        "because registration information is not stored",
-                      "The local server can not process a member registration event from the cohort registry store " +
-                                        "because the registration information is not stored. " +
+                      "Unable to process the {0} request for cohort {1} from cohort member {2} " +
+                                        "because there is no cohort registry store",
+                      "The local server can not process a member registration event " +
+                                        "because the registration information cal not be stored in the cohort registry store. " +
                                         "This may simply be a timing issue. " +
                                         "However, it may be the result of an earlier issue with the " +
                                         "local cohort registry store.",

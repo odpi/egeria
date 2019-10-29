@@ -1102,6 +1102,7 @@ public interface OMRSRepositoryHelper
                                                    int                pageSize) throws PagingErrorException,
                                                                                        PropertyErrorException;
 
+
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
      * without being interpreted as a regular expression (i.e. the returned string will be interpreted as a literal --
@@ -1111,12 +1112,13 @@ public interface OMRSRepositoryHelper
      * Note that usage of the string by methods that cannot handle regular expressions should first un-escape the string
      * using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression
      * @return string that is interpreted literally rather than as a regular expression
      * @see #isExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getExactMatchRegex(String s);
+    String getExactMatchRegex(String searchString);
+
 
     /**
      * Indicates whether the provided string should be treated as an exact match (true) or any other regular expression
@@ -1130,12 +1132,13 @@ public interface OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted literally or as as a regular expression
+     * @param searchString - the string to check whether it should be interpreted literally or as as a regular expression
      * @return true if the provided string should be interpreted literally, false if it should be interpreted as a regex
      * @see #getExactMatchRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    boolean isExactMatchRegex(String s);
+    boolean isExactMatchRegex(String searchString);
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -1146,12 +1149,13 @@ public interface OMRSRepositoryHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "contains" semantic
      * @return string that is interpreted literally, wrapped for a "contains" semantic
      * @see #isContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getContainsRegex(String s);
+    String getContainsRegex(String searchString);
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "contains" regular expression (true) or any
@@ -1163,12 +1167,13 @@ public interface OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "contains"
+     * @param searchString - the string to check whether it should be interpreted as a simple "contains"
      * @return true if the provided string should be interpreted as a simple "contains", false if it should be interpreted as a full regex
      * @see #getContainsRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    boolean isContainsRegex(String s);
+    boolean isContainsRegex(String searchString);
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -1179,12 +1184,13 @@ public interface OMRSRepositoryHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain a "startswith" semantic
      * @return string that is interpreted literally, wrapped for a "startswith" semantic
      * @see #isStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getStartsWithRegex(String s);
+    String getStartsWithRegex(String searchString);
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "startswith" regular expression (true) or any
@@ -1196,12 +1202,13 @@ public interface OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "startswith"
+     * @param searchString - the string to check whether it should be interpreted as a simple "startswith"
      * @return true if the provided string should be interpreted as a simple "startswith", false if it should be interpreted as a full regex
      * @see #getStartsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    boolean isStartsWithRegex(String s);
+    boolean isStartsWithRegex(String searchString);
+
 
     /**
      * Retrieve an escaped version of the provided string that can be passed to methods that expect regular expressions,
@@ -1212,12 +1219,13 @@ public interface OMRSRepositoryHelper
      * Note that usage of the returned string by methods that cannot handle regular expressions should first un-escape
      * the returned string using the getUnqualifiedLiteralString helper method.
      *
-     * @param s - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
+     * @param searchString - the string to escape to avoid being interpreted as a regular expression, but also wrap to obtain an "endswith" semantic
      * @return string that is interpreted literally, wrapped for an "endswith" semantic
      * @see #isEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    String getEndsWithRegex(String s);
+    String getEndsWithRegex(String searchString);
+
 
     /**
      * Indicates whether the provided string should be treated as a simple "endswith" regular expression (true) or any
@@ -1229,12 +1237,13 @@ public interface OMRSRepositoryHelper
      * Primarily a helper method for methods that do not directly handle regular expressions (for those it
      * should be possible to just directly use the string as-is and it will be correctly interpreted).
      *
-     * @param s - the string to check whether it should be interpreted as a simple "endswith"
+     * @param searchString - the string to check whether it should be interpreted as a simple "endswith"
      * @return true if the provided string should be interpreted as a simple "endswith", false if it should be interpreted as a full regex
      * @see #getEndsWithRegex(String)
      * @see #getUnqualifiedLiteralString(String)
      */
-    boolean isEndsWithRegex(String s);
+    boolean isEndsWithRegex(String searchString);
+
 
     /**
      * Retrieve an unescaped version of the provided string that can be treated as a literal (not a regular expression).
@@ -1244,13 +1253,12 @@ public interface OMRSRepositoryHelper
      *
      * For example, this will translate the input of '.*\Qmy-search-string\E.*' into a return value of 'my-search-string'.
      *
-     * @param s - the (potentially) wrapped and escaped string to un-escape and un-wrap
+     * @param searchString - the (potentially) wrapped and escaped string to un-escape and un-wrap
      * @return the un-escaped, un-wrapped literal string
      * @see #getExactMatchRegex(String)
      * @see #getContainsRegex(String)
      * @see #getStartsWithRegex(String)
      * @see #getEndsWithRegex(String)
      */
-    String getUnqualifiedLiteralString(String s);
-
+    String getUnqualifiedLiteralString(String searchString);
 }
