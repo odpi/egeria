@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.dataengine.server.admin;
 
 import org.odpi.openmetadata.accessservices.dataengine.ffdc.DataEngineErrorCode;
+import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineRegistrationHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.DataEngineSchemaTypeHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.PortHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.handlers.ProcessHandler;
-import org.odpi.openmetadata.accessservices.dataengine.server.handlers.SoftwareServerRegistrationHandler;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
@@ -23,7 +23,7 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private static final AccessServiceDescription description = AccessServiceDescription.DATA_ENGINE_OMAS;
 
     private ProcessHandler processHandler;
-    private SoftwareServerRegistrationHandler softwareServerRegistrationHandler;
+    private DataEngineRegistrationHandler dataEngineRegistrationHandler;
     private DataEngineSchemaTypeHandler dataEngineSchemaTypeHandler;
     private PortHandler portHandler;
 
@@ -40,14 +40,14 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null) {
-            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper);
-            softwareServerRegistrationHandler = new SoftwareServerRegistrationHandler(serviceName, serverName,
+            dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName,
                     invalidParameterHandler, repositoryHandler, repositoryHelper);
+            processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
+                    repositoryHelper,dataEngineRegistrationHandler);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler);
+                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler,dataEngineRegistrationHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper);
+                    repositoryHelper,dataEngineRegistrationHandler);
 
         } else {
             final String methodName = "new ServiceInstance";
@@ -74,8 +74,8 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
      *
      * @return handler object
      */
-    SoftwareServerRegistrationHandler getSoftwareServerRegistrationHandler() {
-        return softwareServerRegistrationHandler;
+    DataEngineRegistrationHandler getDataEngineRegistrationHandler() {
+        return dataEngineRegistrationHandler;
     }
 
     /**

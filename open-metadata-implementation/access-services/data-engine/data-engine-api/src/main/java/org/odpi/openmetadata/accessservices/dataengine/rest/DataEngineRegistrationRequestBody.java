@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.accessservices.dataengine.model.SoftwareServerCapability;
 
 import java.util.Objects;
@@ -17,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SoftwareServerCapabilityRequestBody extends DataEngineOMASAPIRequestBody {
+public class DataEngineRegistrationRequestBody extends DataEngineOMASAPIRequestBody {
     @JsonProperty("dataEngine")
     private SoftwareServerCapability softwareServerCapability;
 
@@ -31,7 +30,7 @@ public class SoftwareServerCapabilityRequestBody extends DataEngineOMASAPIReques
 
     @Override
     public String toString() {
-        return "SoftwareServerCapabilityRequestBody{" +
+        return "DataEngineRegistrationRequestBody{" +
                 "softwareServerCapability=" + softwareServerCapability +
                 '}';
     }
@@ -40,7 +39,7 @@ public class SoftwareServerCapabilityRequestBody extends DataEngineOMASAPIReques
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SoftwareServerCapabilityRequestBody that = (SoftwareServerCapabilityRequestBody) o;
+        DataEngineRegistrationRequestBody that = (DataEngineRegistrationRequestBody) o;
         return Objects.equals(softwareServerCapability, that.softwareServerCapability);
     }
 
