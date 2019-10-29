@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -43,7 +43,6 @@ public class AssetConverter {
 
         if (entityDetail.getType() != null) {
             assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
-            assetDescription.setTypeDefDescription(entityDetail.getType().getTypeDefDescription());
         }
 
         assetDescription.setUrl(entityDetail.getInstanceURL());
@@ -86,14 +85,13 @@ public class AssetConverter {
 
         if (rel.getType() != null) {
             relationship.setTypeDefName(rel.getType().getTypeDefName());
-            relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
         }
 
         if (rel.getEntityOneProxy() != null) {
-            relationship.setFromEntity(getAsset(rel.getEntityOneProxy()));
+            relationship.setFromEntity(getElement(rel.getEntityOneProxy()));
         }
         if (rel.getEntityTwoProxy() != null) {
-            relationship.setToEntity(getAsset(rel.getEntityTwoProxy()));
+            relationship.setToEntity(getElement(rel.getEntityTwoProxy()));
         }
 
         return relationship;
@@ -139,9 +137,9 @@ public class AssetConverter {
         return classifications;
     }
 
-    private Asset getAsset(EntityProxy entityProxy) {
+    private Element getElement(EntityProxy entityProxy) {
         String method = "getAsset";
-        Asset asset = new Asset();
+        Element asset = new Element();
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
@@ -155,7 +153,6 @@ public class AssetConverter {
         asset.setStatus(entityProxy.getStatus().getName());
         asset.setVersion(entityProxy.getVersion());
         asset.setTypeDefName(entityProxy.getType().getTypeDefName());
-        asset.setTypeDefDescription(entityProxy.getType().getTypeDefDescription());
 
         return asset;
     }
