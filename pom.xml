@@ -180,7 +180,7 @@
         <owasp.version>5.2.2</owasp.version>
         <spotbugs-maven.version>3.1.12.2</spotbugs-maven.version>
         <spotbugs.version>4.0.0-beta4</spotbugs.version>
-        <maven-download.version>1.4.1</maven-download.version>
+        <maven-download.version>1.4.2</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
         <spotify-docker-plugin.version>1.4.10</spotify-docker-plugin.version>
         <maven-enforcer-plugin.version>3.0.0-M2</maven-enforcer-plugin.version>
@@ -2478,7 +2478,7 @@
                                 <plugin>
                                     <groupId>com.h3xstream.findsecbugs</groupId>
                                     <artifactId>findsecbugs-plugin</artifactId>
-                                    <version>1.10.0</version> <!-- Auto-update to the latest stable -->
+                                    <version>1.10.1</version> <!-- Auto-update to the latest stable -->
                                 </plugin>
                             </plugins>
                         </configuration>
