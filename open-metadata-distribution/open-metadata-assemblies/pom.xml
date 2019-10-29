@@ -26,9 +26,6 @@
 
     <build>
         <plugins>
-            <!-- This runs the assembly code to build our distribution archives 
-                 Run in an earlier phase than normal (prepare package) so it
-                 gets done before the build of the jar - which will contain the .gz -->
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <executions>
@@ -57,28 +54,6 @@
                     <skip>false</skip>
                 </configuration>
             </plugin>
-            <!-- override the default files included in source archive
-                 we do not want the .gz files we build to appear -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                        <configuration>
-                            <excludes>
-                                <exclude>*.gz</exclude>
-                            </excludes>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- run the jar archiving to build our distribution module 
-                 for maven repo -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -89,17 +64,21 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                        <configuration>
-                            <!-- this isn't a real jar - we want an archive from other output files -->
-                            <classesDirectory>target</classesDirectory>
-                            <forceCreation>true</forceCreation>
-                            <includes>
-                                <include>*.gz</include>
-                            </includes>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                 <filtering>false</filtering>
+                 <directory>target</directory>
+                 <includes>
+                     <include>*.gz</include>
+                 </includes>
+            </resource>
+        </resources>
     </build>
 </project>
