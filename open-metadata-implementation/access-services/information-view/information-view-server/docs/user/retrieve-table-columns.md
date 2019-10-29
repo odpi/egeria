@@ -6,12 +6,15 @@
 Retrieve columns of a table using pagination
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/tables/{{guid}}/columns?pageSize=10&startFrom=0
+```
 
-TableColumnsResponse response with list of columns of table from startFrom to startFrom + pageSize
-VoidResponse with error message in case of error
+`TableColumnsResponse` response with list of columns of table from startFrom to startFrom + pageSize
+`VoidResponse` with error message in case of error.
 
+Sample:
+
+```json
 {
     "class": "TableColumnsResponse",
     "relatedHTTPCode": 200,
@@ -84,8 +87,8 @@ VoidResponse with error message in case of error
         }
     ]
 }
-
 ```
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

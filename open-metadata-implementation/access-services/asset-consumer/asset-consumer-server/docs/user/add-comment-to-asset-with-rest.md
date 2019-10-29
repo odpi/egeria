@@ -6,15 +6,15 @@
 Creates a comment and attaches it to an asset.
 
 ```
-
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/comments
+```
 
+```java
 CommentRequestBody  requestBody = new CommentRequestBody();
 requestBody.setCommentType(commentType);
 requestBody.setCommentText(commentText);
 
 GUIDResponse restResult
-
 ```
 
 ----

@@ -7,12 +7,15 @@
 Retrieve list of tables belonging to a database using pagination
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/databases/{{database-guid}}/tables?pageSize=10&startFrom=0
+```
 
-TableListResponse response with list of tables from database or
-VoidResponse with error message in case of error
+`TableListResponse` response with list of tables from database or
+`VoidResponse` with error message in case of error.
 
+Sample:
+
+```json
 {
     "class": "TableListResponse",
     "relatedHTTPCode": 200,
@@ -26,8 +29,9 @@ VoidResponse with error message in case of error
         }
     ]
 }
-
 ```
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

@@ -36,7 +36,7 @@ class AssetCatalogServicesInstance extends OCFOMASServiceInstance {
 
         if (repositoryHandler != null) {
 
-            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+            assetCatalogHandler = new AssetCatalogHandler(serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, errorHandler);
             relationshipHandler = new RelationshipHandler(invalidParameterHandler, repositoryHandler, repositoryHelper);
 
         } else {
