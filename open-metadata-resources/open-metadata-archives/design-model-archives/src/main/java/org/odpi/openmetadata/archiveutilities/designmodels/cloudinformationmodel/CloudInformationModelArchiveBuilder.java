@@ -83,7 +83,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
             /*
              * Convert the metadata extracted by the parser into content for the open metadata archive.
              */
-            String  glossaryId = super.addGlossary("Glossary-" + model.getModelName(),
+            String  glossaryId = super.addGlossary("Glossary-" + model.getModelTechnicalName(),
                                                    model.getModelName(),
                                                    model.getModelDescription(),
                                                    model.getModelLanguage(),
@@ -94,22 +94,32 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
             /*
              * Create a top level category to hold all of the glossary terms for the model
              */
-            String CIMModelCategoryId = super.addCategory(glossaryId,
-                                                          "ModelVocabulary-" + model.getModelName(),
+            String cimModelCategoryId = super.addCategory(glossaryId,
+                                                          "ModelVocabulary-" + model.getModelTechnicalName(),
                                                           "Model Vocabulary: " + model.getModelName(),
-                                                          "Definitions of concepts and properties from the" + model.getModelName() + ".",
+                                                          model.getModelDescription(),
                                                           null);
+
+            super.addMoreInformationLink(glossaryId, cimModelCategoryId);
+
+            String modelTermId = super.addTerm(glossaryId,
+                                               null,
+                                               "GlossaryDescription-" + model.getModelTechnicalName(),
+                                               model.getModelName(),
+                                               model.getModelDescription());
+
+            super.addMoreInformationLink(modelTermId, cimModelCategoryId);
 
             /*
              * Create a top level category to hold the property groups
              */
             String propertyGroupsCategoryId = super.addCategory(glossaryId,
-                                                               "PropertyGroups-" + model.getModelName(),
-                                                               "Property Groups",
+                                                               "PropertyGroups-" + model.getModelTechnicalName(),
+                                                               "Property Groups for the " + model.getModelName(),
                                                                "Collections of properties found in the CIM Model.",
                                                                null);
 
-            super.addCategoryToCategory(CIMModelCategoryId, propertyGroupsCategoryId);
+            super.addCategoryToCategory(cimModelCategoryId, propertyGroupsCategoryId);
 
 
             Map<String, PropertyGroup> propertyGroupMap = model.getPropertyGroupMap();
@@ -124,7 +134,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                      */
                     String propertyGroupCategoryId = super.addCategory(glossaryId,
                                                                        propertyGroup.getId(),
-                                                                       propertyGroup.getName(),
+                                                                       propertyGroup.getDisplayName(),
                                                                        propertyGroup.getDescription(),
                                                                        null);
 
@@ -145,7 +155,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                                 String propertyTermId = super.addTerm(glossaryId,
                                                                       categoryList,
                                                                       propertyGroup.getId() + "-" + propertyDescription.getId(),
-                                                                      propertyDescription.getName(),
+                                                                      propertyDescription.getDisplayName(),
                                                                       propertyDescription.getDescription());
                             }
                         }
@@ -158,12 +168,13 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
              * Create a top level category to hold the subject areas
              */
             String subjectAreasCategoryId = super.addCategory(glossaryId,
-                                                              "SubjectAreas-" + model.getModelName(),
-                                                              "Subject Areas",
+                                                              "ModelSubjectAreas-" + model.getModelTechnicalName(),
+                                                              "Subject Areas for the " + model.getModelName() + " model",
                                                               "Collections of related concepts (entities and relationships) found in the CIM Model that describe an area of interest.",
                                                               null);
 
-            super.addCategoryToCategory(CIMModelCategoryId, subjectAreasCategoryId);
+            super.addCategoryToCategory(cimModelCategoryId, subjectAreasCategoryId);
+
 
             Map<String, SubjectArea> subjectAreaMap = model.getSubjectAreaMap();
 
@@ -173,11 +184,19 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                 {
                     String subjectAreaCategoryId = super.addCategory(glossaryId,
                                                                      subjectArea.getId(),
-                                                                     subjectArea.getName(),
+                                                                     subjectArea.getDisplayName(),
                                                                      subjectArea.getDescription(),
-                                                                     subjectArea.getName());
+                                                                     subjectArea.getDisplayName());
 
                     super.addCategoryToCategory(subjectAreasCategoryId, subjectAreaCategoryId);
+
+                    String subjectAreaTermId = super.addTerm(glossaryId,
+                                                             null,
+                                                             "ModelSubjectArea-" + model.getModelTechnicalName() + "-" + subjectArea.getId(),
+                                                             subjectArea.getDisplayName(),
+                                                             subjectArea.getDescription());
+
+                    super.addMoreInformationLink(subjectAreaTermId, subjectAreaCategoryId);
 
                     Map<String, ConceptGroup> conceptGroupMap = subjectArea.getConceptGroups();
 
@@ -189,11 +208,19 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                             {
                                 String conceptGroupCategoryId = super.addCategory(glossaryId,
                                                                                   conceptGroup.getId(),
-                                                                                  conceptGroup.getName(),
+                                                                                  conceptGroup.getDisplayName(),
                                                                                   conceptGroup.getDescription(),
-                                                                                  conceptGroup.getName());
+                                                                                  conceptGroup.getDisplayName());
 
                                 super.addCategoryToCategory(subjectAreaCategoryId, conceptGroupCategoryId);
+
+                                String conceptGroupTermId = super.addTerm(glossaryId,
+                                                                          null,
+                                                                          "ModelConceptGroup-" + model.getModelTechnicalName() + "-" + subjectArea.getId() + "-" + conceptGroup.getId(),
+                                                                          conceptGroup.getDisplayName(),
+                                                                          conceptGroup.getDescription());
+
+                                super.addMoreInformationLink(conceptGroupTermId, conceptGroupCategoryId);
 
                                 List<String>  categoryList = new ArrayList<>();
 
@@ -210,7 +237,7 @@ class CloudInformationModelArchiveBuilder extends DesignModelArchiveBuilder
                                             String conceptTermId = super.addTerm(glossaryId,
                                                                                  categoryList,
                                                                                  concept.getId(),
-                                                                                 concept.getName(),
+                                                                                 concept.getDisplayName(),
                                                                                  concept.getDescription());
                                         }
                                     }

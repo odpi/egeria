@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Release 1.11 (Planned July 2020)
+# Release 1.11 (Planned August 2020)
 
 Release 1.11 adds support for:
    * Project management of IT change

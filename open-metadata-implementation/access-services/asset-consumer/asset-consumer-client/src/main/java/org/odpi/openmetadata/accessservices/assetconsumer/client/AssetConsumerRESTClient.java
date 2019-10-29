@@ -71,15 +71,17 @@ class AssetConsumerRESTClient extends OCFRESTClient
      *
      * @param methodName  name of the method being called.
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param searchString request body describing the value to search for
      * @param params      a list of parameters that are slotted into the url template.
      *
      * @return GlossaryTermListResponse
      * @throws PropertyServerException something went wrong with the REST call stack.
      */
-    GlossaryTermListResponse callGlossaryTermListGetRESTCall(String    methodName,
-                                                             String    urlTemplate,
-                                                             Object... params) throws PropertyServerException
+    GlossaryTermListResponse callGlossaryTermListPostRESTCall(String    methodName,
+                                                              String    urlTemplate,
+                                                              String    searchString,
+                                                              Object... params) throws PropertyServerException
     {
-        return this.callGetRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, params);
+        return this.callPostRESTCall(methodName, GlossaryTermListResponse.class, urlTemplate, searchString, params);
     }
 }
