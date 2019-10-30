@@ -1054,9 +1054,9 @@ public class AssetCatalogHandler {
     }
 
     private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
-        String method = "setAssetElementAttributes";
         assetElement.setGuid(asset.getGUID());
         assetElement.setTypeDefGUID(asset.getType().getTypeDefGUID());
+        assetElement.setTypeDefName(asset.getType().getTypeDefName());
         assetElement.setProperties(repositoryHelper.getInstancePropertiesAsMap(asset.getProperties()));
     }
 
@@ -1065,11 +1065,10 @@ public class AssetCatalogHandler {
     }
 
     private Term buildTerm(EntityDetail entity) {
-        String method = "buildTerm";
-
         Term term = new Term();
         term.setGuid(entity.getGUID());
         term.setTypeDefGUID(entity.getType().getTypeDefGUID());
+        term.setTypeDefName(entity.getType().getTypeDefName());
         term.setProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
 
         return term;
