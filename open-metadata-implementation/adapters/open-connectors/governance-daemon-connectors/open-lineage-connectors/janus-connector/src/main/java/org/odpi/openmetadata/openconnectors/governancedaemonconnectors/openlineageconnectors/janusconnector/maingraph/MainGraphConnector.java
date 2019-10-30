@@ -215,13 +215,13 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         switch (nodeType) {
             case NODE_LABEL_COLUMN:
                 LineageColumnVertex columnVertex = new LineageColumnVertex(nodeID, nodeType, guid);
-                columnVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
-                columnVertex.setGlossaryTerm(originalVertex.property(PROPERTY_NAME_GLOSSARY_TERM).value().toString());
+                columnVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
+                columnVertex.setGlossaryTerm(originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString());
                 return columnVertex;
             case NODE_LABEL_TABLE:
                 LineageTableVertex tableVertex = new LineageTableVertex(nodeID, nodeType, guid);
-                tableVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
-                tableVertex.setGlossaryTerm(originalVertex.property(PROPERTY_NAME_GLOSSARY_TERM).value().toString());
+                tableVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
+                tableVertex.setGlossaryTerm(originalVertex.property(PROPERTY_KEY_GLOSSARY_TERM).value().toString());
                 return tableVertex;
             case NODE_LABEL_PROCESS:
                 LineageProcessVertex processVertex = new LineageProcessVertex(nodeID, nodeType, guid);
@@ -231,11 +231,11 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                 return subProcessVertex;
             case NODE_LABEL_GLOSSARYTERM:
                 LineageGlossaryTermVertex glossaryTermVertex = new LineageGlossaryTermVertex(nodeID, nodeType, guid);
-                glossaryTermVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                glossaryTermVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
                 return glossaryTermVertex;
             case NODE_LABEL_CONDENSED:
                 LineageCondensedVertex condensedVertex = new LineageCondensedVertex(nodeID, nodeType, guid);
-                condensedVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                condensedVertex.setDisplayName(originalVertex.property(PROPERTY_KEY_DISPLAY_NAME).value().toString());
                 return condensedVertex;
         }
         return null;
