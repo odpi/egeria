@@ -24,6 +24,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.GraphVertexMapper;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model.*;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -65,16 +67,15 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      *
      * @throws ConnectorCheckedException there is a problem within the connector.
      */
-    public void start() throws ConnectorCheckedException
-    {
+    public void start() throws ConnectorCheckedException {
         super.start();
     }
 
 
-    private void initializeGraphDB(){
+    private void initializeGraphDB() {
 
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
-        switch (graphDB){
+        switch (graphDB) {
             case "berkeleydb":
                 try {
                     this.mainGraph = BerkeleyJanusFactory.openMainGraph();
@@ -103,10 +104,10 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
     /**
      * Returns a lineage subgraph.
      *
-     * @param graphName    main, buffer, mock, history.
-     * @param scope source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
-     * @param view        The view queried by the user: hostview, tableview, columnview.
-     * @param guid         The guid of the node of which the lineage is queried from.
+     * @param graphName main, buffer, mock, history.
+     * @param scope     source-and-destination, end-to-end, ultimate-source, ultimate-destination, glossary.
+     * @param view      The view queried by the user: hostview, tableview, columnview.
+     * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     public String lineage(String graphName, Scope scope, View view, String guid) {
@@ -140,7 +141,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -175,7 +176,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * leading from the queried node to any leaf nodes. The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -187,12 +188,57 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                 g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).
                         union(
                                 until(inE(edgeLabel).count().is(0)).
-                                        repeat((Traversal)inE(edgeLabel).subgraph("subGraph").outV()),
+                                        repeat((Traversal) inE(edgeLabel).subgraph("subGraph").outV()),
                                 until(outE(edgeLabel).count().is(0)).
-                                        repeat((Traversal)outE(edgeLabel).subgraph("subGraph").inV())
+                                        repeat((Traversal) outE(edgeLabel).subgraph("subGraph").inV())
                         ).cap("subGraph").next();
 
+        Iterator<Vertex> originalVertices = endToEndGraph.vertices();
+        List<LineageVertex> newVertices = new ArrayList<>();
+
+        while (originalVertices.hasNext()) {
+            LineageVertex newVertex = abstractVertex((endToEndGraph.vertices().next()));
+            if(newVertex != null)
+            newVertices.add(newVertex);
+        }
+        for(LineageVertex vertex : newVertices){
+            System.out.println(vertex);
+        }
         return janusGraphToGraphson(endToEndGraph);
+    }
+
+    private LineageVertex abstractVertex(Vertex originalVertex) {
+        String nodeID = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString(); //Todo should be nodeID instead of guid
+        String nodeType = originalVertex.label();
+        String guid = originalVertex.property(PROPERTY_KEY_ENTITY_GUID).value().toString();
+
+        switch (nodeType) {
+            case NODE_LABEL_COLUMN:
+                LineageColumnVertex columnVertex = new LineageColumnVertex(nodeID, nodeType, guid);
+                columnVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                columnVertex.setGlossaryTerm(originalVertex.property(PROPERTY_NAME_GLOSSARY_TERM).value().toString());
+                return columnVertex;
+            case NODE_LABEL_TABLE:
+                LineageTableVertex tableVertex = new LineageTableVertex(nodeID, nodeType, guid);
+                tableVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                tableVertex.setGlossaryTerm(originalVertex.property(PROPERTY_NAME_GLOSSARY_TERM).value().toString());
+                return tableVertex;
+            case NODE_LABEL_PROCESS:
+                LineageProcessVertex processVertex = new LineageProcessVertex(nodeID, nodeType, guid);
+                return processVertex;
+            case NODE_LABEL_SUB_PROCESS:
+                LineageSubProcessVertex subProcessVertex = new LineageSubProcessVertex(nodeID, nodeType, guid);
+                return subProcessVertex;
+            case NODE_LABEL_GLOSSARYTERM:
+                LineageGlossaryTermVertex glossaryTermVertex = new LineageGlossaryTermVertex(nodeID, nodeType, guid);
+                glossaryTermVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                return glossaryTermVertex;
+            case NODE_LABEL_CONDENSED:
+                LineageCondensedVertex condensedVertex = new LineageCondensedVertex(nodeID, nodeType, guid);
+                condensedVertex.setDisplayName(originalVertex.property(PROPERTY_NAME_DISPLAY_NAME).value().toString());
+                return condensedVertex;
+        }
+        return null;
     }
 
     /**
@@ -200,7 +246,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or a table.
      * @return a subgraph in the GraphSON format.
      */
@@ -230,7 +276,7 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * The queried node can be a column or table.
      *
      * @param graph MAIN, BUFFER, MOCK, HISTORY.
-     * @param view The view queried by the user: tableview, columnview.
+     * @param view  The view queried by the user: tableview, columnview.
      * @param guid  The guid of the node of which the lineage is queried of. This can be a column or table node.
      * @return a subgraph in the GraphSON format.
      */
@@ -261,12 +307,11 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
      * ultimate sources, should the condensation node be created.
      *
-     *
-     * @param g The GraphTraversal of the graph in which the condensation node will be added.
-     * @param sourcesList The list of ultimate sources for the queried node.
+     * @param g                     The GraphTraversal of the graph in which the condensation node will be added.
+     * @param sourcesList           The list of ultimate sources for the queried node.
      * @param originalQueriedVertex The vertex originally queried by the user.
-     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
-     *                      original graph.
+     * @param queriedVertex         A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                              original graph.
      */
     private void addSourceCondensationNode(GraphTraversalSource g, List<Vertex> sourcesList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!sourcesList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {
@@ -288,12 +333,11 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
      * whether the originally queried node is being returned by the Gremlin query. Only if the queried node has any
      * ultimate destination, should the condensation node be created.
      *
-     *
-     * @param g The GraphTraversal of the graph in which the condensation node will be added.
-     * @param destinationsList The list of ultimate sources for the queried node.
+     * @param g                     The GraphTraversal of the graph in which the condensation node will be added.
+     * @param destinationsList      The list of ultimate sources for the queried node.
      * @param originalQueriedVertex The vertex originally queried by the user.
-     * @param queriedVertex A copy of originalQueriedVertex that is present in the response graph instead of the
-     *                      original graph.
+     * @param queriedVertex         A copy of originalQueriedVertex that is present in the response graph instead of the
+     *                              original graph.
      */
     private void addDestinationCondensationNode(GraphTraversalSource g, List<Vertex> destinationsList, Vertex originalQueriedVertex, Vertex queriedVertex) {
         if (!destinationsList.get(0).property(PROPERTY_KEY_ENTITY_GUID).equals(originalQueriedVertex.property(PROPERTY_KEY_ENTITY_GUID))) {

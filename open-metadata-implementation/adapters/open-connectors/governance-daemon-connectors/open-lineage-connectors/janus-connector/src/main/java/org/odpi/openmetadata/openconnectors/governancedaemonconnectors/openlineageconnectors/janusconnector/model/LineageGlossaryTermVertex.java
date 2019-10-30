@@ -12,23 +12,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LineageColumnVertex extends LineageVertex{
+public class LineageGlossaryTermVertex extends LineageVertex{
 
-
-    private String glossaryTerm;
     private String displayName;
 
 
-    public LineageColumnVertex(String nodeID, String nodeType, String guid){
+    public LineageGlossaryTermVertex(String nodeID, String nodeType, String guid){
         super(nodeID, nodeType, guid);
-    }
-
-    public String getGlossaryTerm() {
-        return glossaryTerm;
-    }
-
-    public void setGlossaryTerm(String glossaryTerm) {
-        this.glossaryTerm = glossaryTerm;
     }
 
     public String getDisplayName() {
