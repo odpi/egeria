@@ -6,9 +6,10 @@
 Create a data view as a view on top of other relational database sources.
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/dataview
+```
 
+```json
 {
    "author": "owner-test",
    "class": "DataViewRequestBody",
@@ -67,10 +68,11 @@ POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/infor
    "networkAddress": null
    }
 }
-
-GUIDResponse restResult
-
 ```
+
+`GUIDResponse` restResult
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

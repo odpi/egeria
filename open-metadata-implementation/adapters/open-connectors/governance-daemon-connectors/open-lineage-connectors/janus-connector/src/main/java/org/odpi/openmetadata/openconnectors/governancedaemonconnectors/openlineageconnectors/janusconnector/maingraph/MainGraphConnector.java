@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.maingraph;
 
 import org.apache.tinkerpop.gremlin.process.traversal.Traversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
@@ -13,14 +13,17 @@ import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.janusgraph.core.JanusGraph;
 import org.janusgraph.graphdb.tinkerpop.io.graphson.JanusGraphSONModuleV2d0;
-import org.odpi.openmetadata.accessservices.assetlineage.model.event.ProcessLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
+import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.OpenLineageConnectorBase;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyJanusFactory;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.buffergraph.GraphVertexMapper;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,15 +35,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import static org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.__.*;
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.cassandra.CassandraJanusBufferFactory.openBufferGraph;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 
-public class JanusConnector extends OpenLineageConnectorBase {
+public class MainGraphConnector extends OpenLineageConnectorBase implements MainGraphStore {
 
-    private static final Logger log = LoggerFactory.getLogger(JanusConnector.class);
-    private JanusGraph mainGraph;
+    private static final Logger log = LoggerFactory.getLogger(MainGraphConnector.class);
     private JanusGraph bufferGraph;
+    private GraphVertexMapper graphVertexMapper = new GraphVertexMapper();
+    private JanusGraph mainGraph;
     private JanusGraph historyGraph;
+
     private JanusGraph mockGraph;
 
     /**
@@ -53,9 +57,19 @@ public class JanusConnector extends OpenLineageConnectorBase {
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
 
         super.initialize(connectorInstanceId, connectionProperties);
-        this.connectionProperties = connectionProperties;
         initializeGraphDB();
     }
+
+    /**
+     * Indicates that the connector is completely configured and can begin processing.
+     *
+     * @throws ConnectorCheckedException there is a problem within the connector.
+     */
+    public void start() throws ConnectorCheckedException
+    {
+        super.start();
+    }
+
 
     private void initializeGraphDB(){
 
@@ -72,13 +86,18 @@ public class JanusConnector extends OpenLineageConnectorBase {
                 }
                 break;
             case "cassandra":
+                FactoryForTesting factoryForTesting = new FactoryForTesting();
+                this.mainGraph = factoryForTesting.openBufferGraph(connectionProperties);
+                break;
+
             default:
-                this.bufferGraph = openBufferGraph(connectionProperties);
+                break;
         }
     }
 
     @Override
-    public void addEntity(ProcessLineageEvent processLineageEvent) {
+    public void addEntity(LineageEvent lineageEvent) {
+
     }
 
     /**
@@ -414,4 +433,10 @@ public class JanusConnector extends OpenLineageConnectorBase {
         }
         return graph;
     }
+
+    public Object getMainGraph() {
+        return mainGraph;
+    }
+
+
 }

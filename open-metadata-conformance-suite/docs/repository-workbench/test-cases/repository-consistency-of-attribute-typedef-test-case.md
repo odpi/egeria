@@ -27,8 +27,8 @@ None.
 Below is an example of a failed test case.  The failure occurred early in the
 test cycle and so the test halted before there where any specific assertions
 recorded.
-```json
 
+```json
          {
             "class": "OpenMetadataTestCaseResult",
             "testCaseId": "repository-consistency-of-attribute-typedef-string-12",
@@ -53,7 +53,6 @@ recorded.
 This next example shows the test case running successfully:
 
 ```json
-
          {
             "class": "OpenMetadataTestCaseResult",
             "testCaseId": "repository-consistency-of-attribute-typedef-string-12",

@@ -43,6 +43,8 @@ stages:
                   --batch-mode
                   -e
                   -Dmerge
+                  -Dnode.downloadRoot=https://odpi.jfrog.io/odpi/nodejs-dist/
+                  -Dnpm.downloadRoot=https://odpi.jfrog.io/odpi/npm-dist/
                   -s $(Agent.HomeDirectory)/.m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -P artifactory

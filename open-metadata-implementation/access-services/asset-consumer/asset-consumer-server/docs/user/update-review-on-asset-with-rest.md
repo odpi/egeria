@@ -6,13 +6,14 @@
 
 ```
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/reviews/{{reviewGUID}}/update
+```
 
-        ReviewRequestBody requestBody = new ReviewRequestBody();
-        requestBody.setStarRating(starRating);
-        requestBody.setReview(review);
+```java
+ReviewRequestBody requestBody = new ReviewRequestBody();
+requestBody.setStarRating(starRating);
+requestBody.setReview(review);
 
-        VoidResponse 
-
+VoidResponse
 ```
 
 ----

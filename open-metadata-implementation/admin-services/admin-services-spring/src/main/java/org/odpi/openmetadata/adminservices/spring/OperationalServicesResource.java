@@ -136,7 +136,7 @@ public class OperationalServicesResource
 
     public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
                                                    @PathVariable String serverName,
-                                                   @RequestParam String fileName)
+                                                   @RequestBody  String fileName)
     {
         return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
     }

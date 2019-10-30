@@ -11,7 +11,7 @@ public class GlossaryTermMapper
     public static final String GLOSSARY_TERM_TYPE_NAME                   = "GlossaryTerm";
     /* Referenceable */
 
-    public static final String DISPLAY_NAME_PROPERTY_NAME                = "name";                    /* from GlossaryTerm entity */
+    public static final String DISPLAY_NAME_PROPERTY_NAME                = "displayName";             /* from GlossaryTerm entity */
     public static final String SUMMARY_PROPERTY_NAME                     = "summary";                 /* from GlossaryTerm entity */
     public static final String DESCRIPTION_PROPERTY_NAME                 = "description";             /* from GlossaryTerm entity */
     public static final String EXAMPLES_PROPERTY_NAME                    = "examples";                /* from GlossaryTerm entity */

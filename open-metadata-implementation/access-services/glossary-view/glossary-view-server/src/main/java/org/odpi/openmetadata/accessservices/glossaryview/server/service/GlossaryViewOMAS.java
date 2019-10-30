@@ -112,6 +112,49 @@ public class GlossaryViewOMAS extends OMRSClient {
         return response;
     }
 
+
+    /**
+     * Extract related entities to the given one and convert them to this omas's type - only taking form one end
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param entityGUID target entity
+     * @param entityTypeName target entity relationship type
+     * @param anchorAtEnd1 which end should the target entity be at
+     * @param relationshipTypeName relationship type name
+     * @param from from
+     * @param size size
+     *
+     * @return related entities
+     */
+    protected GlossaryViewEntityDetailResponse getSubEntitiesResponse(String userId, String serverName, String entityGUID,
+                                                                      String entityTypeName,
+                                                                      boolean anchorAtEnd1,
+                                                                      String relationshipTypeName,
+                                                                      Integer from, Integer size, String methodName){
+        GlossaryViewEntityDetailResponse response = new GlossaryViewEntityDetailResponse();
+
+        try {
+            String relationshipTypeGUID = getTypeDefGUID(relationshipTypeName, userId, serverName);
+            List<EntityDetail> entities = getSubEntities(userId, serverName, entityGUID, entityTypeName,
+                                                         anchorAtEnd1, relationshipTypeGUID, relationshipTypeName, from, size, methodName);
+            if(entities == null){
+                return response;
+            }
+
+            response.addEntityDetails(entities.stream()
+                                              .filter(entity -> !entity.getGUID().equals(entityGUID))
+                                              .filter(effectiveTimePredicate)
+                                              .map(entityDetailConverter)
+                                              .collect(Collectors.toList()));
+        }catch (GlossaryViewOmasException ew){
+            prepare(response, ew.getReportedHTTPCode(), ew.getReportingClassName(), ew.getReportingActionDescription(),
+                    ew.getReportedUserAction(), ew.getErrorMessage(), ew.getReportedSystemAction(), ew.getRelatedProperties());
+        }
+
+        return response;
+    }
+
     /**
      * Extract all entities of specified type and convert them to this omas's type
      *

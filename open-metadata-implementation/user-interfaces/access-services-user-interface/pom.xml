@@ -27,7 +27,9 @@
 
     <properties>
         <node.version>v10.12.0</node.version>
+        <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
         <npm.version>6.4.1</npm.version>
+        <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
         <frontend.plugin.version>1.6</frontend.plugin.version>
         <resources.plugin.version>3.1.0</resources.plugin.version>
         <exec.plugin.version>1.6.0</exec.plugin.version>
@@ -309,6 +311,8 @@
                                     <nodeVersion>${node.version}</nodeVersion>
                                     <npmVersion>${npm.version}</npmVersion>
                                     <workingDirectory>tools</workingDirectory>
+                                    <nodeDownloadRoot>${node.downloadRoot}</nodeDownloadRoot>
+                                    <npmDownloadRoot>${npm.downloadRoot}</npmDownloadRoot>
                                 </configuration>
                             </execution>
                             <execution>

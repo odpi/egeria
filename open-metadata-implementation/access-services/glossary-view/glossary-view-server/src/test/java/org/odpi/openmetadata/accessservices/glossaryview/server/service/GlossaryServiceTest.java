@@ -38,7 +38,7 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
 
     @Test
     public void getAllGlossaries() throws Exception{
-        when(repositoryHandler.getEntitiesByName(eq(USER_ID), any(InstanceProperties.class), eq(GLOSSARY_TYPE_GUID),
+        when(repositoryHandler.getEntitiesByType(eq(USER_ID), eq(GLOSSARY_TYPE_GUID),
                 anyInt(), anyInt(), eq("getAllGlossaries"))).thenReturn(glossaries);
 
         GlossaryViewEntityDetailResponse response = underTest.getAllGlossaries(USER_ID, SERVER_NAME, 0, 10);
@@ -108,23 +108,6 @@ public class GlossaryServiceTest extends GlossaryViewOmasBaseTest{
                 eq(GLOSSARY_TYPE_NAME), eq("getGlossary"))).thenThrow(exception);
 
         GlossaryViewEntityDetailResponse response = underTest.getGlossary(USER_ID, SERVER_NAME, glossaries.get(0).getGUID());
-
-        assertEquals(exception.getReportedHTTPCode(), response.getRelatedHTTPCode());
-        assertEquals(exception.getReportingClassName(), response.getExceptionClassName());
-        assertEquals(exception.getReportingActionDescription(), response.getActionDescription());
-        assertEquals(exception.getErrorMessage(), response.getExceptionErrorMessage());
-        assertEquals(exception.getReportedSystemAction(), response.getExceptionSystemAction());
-        assertEquals(exception.getReportedUserAction(), response.getExceptionUserAction());
-    }
-
-    @Test
-    public void throwOmrsExceptionOnGetEntitiesByName() throws Exception{
-        PropertyServerException exception = new PropertyServerException(501, "className-getEntitiesByName", "actionDescription-getEntitiesByName",
-                "errorMessage-getEntitiesByName", "systemAction-getEntitiesByName", "userAction-getEntitiesByName");
-        when(repositoryHandler.getEntitiesByName(eq(USER_ID), any(InstanceProperties.class), eq(GLOSSARY_TYPE_GUID),
-                anyInt(), anyInt(), eq("getAllGlossaries"))).thenThrow(exception);
-
-        GlossaryViewEntityDetailResponse response = underTest.getAllGlossaries(USER_ID, SERVER_NAME, 0, 10);
 
         assertEquals(exception.getReportedHTTPCode(), response.getRelatedHTTPCode());
         assertEquals(exception.getReportingClassName(), response.getExceptionClassName());

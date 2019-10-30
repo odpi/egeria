@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.*;
+import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +64,7 @@ public class ProcessHandler {
      * @param processGuid guid of the asset that has been created
      * @return Map of the relationships between the Entities that are relevant to a Process
      */
-    public Map<String, Set<Edge>> getProcessContext(String userId, String processGuid) {
+    public Map<String, Set<GraphContext>> getProcessContext(String userId, String processGuid) {
 
         graph = new AssetContext();
 
@@ -92,7 +94,7 @@ public class ProcessHandler {
         }
     }
 
-    private Map<String,Set<Edge>> checkIfAllRelationshipsExist(String userId,EntityDetail entityDetail) throws InvalidParameterException,
+    private Map<String,Set<GraphContext>> checkIfAllRelationshipsExist(String userId, EntityDetail entityDetail) throws InvalidParameterException,
                                                                                                                PropertyServerException,
                                                                                                                UserNotAuthorizedException {
 
