@@ -33,7 +33,6 @@ The connector can be used to interact with a specific [Asset](../../../../docs/c
        
    
    }
-
 ```
 
 

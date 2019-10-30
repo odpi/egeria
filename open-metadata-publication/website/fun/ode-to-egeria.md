@@ -4,7 +4,6 @@
 # Ode to Egeria by David Radley
 
 ```text
-
 Ode to Egeria ODPi.
 Usually found where data may lie.
 Big data, small data, fast data, slow,
@@ -28,7 +27,6 @@ Awakening shapes on data, lest it dose.
 Foundations we think for a world if we dare,
 ethical practices, open and fair,
 data for good and not for despair.
-
 ```
 
 

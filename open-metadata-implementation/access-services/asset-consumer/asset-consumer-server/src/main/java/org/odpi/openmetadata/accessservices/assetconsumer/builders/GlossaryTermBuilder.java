@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.builders;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.mappers.GlossaryTermMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.ReferenceableBuilder;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -188,6 +189,46 @@ public class GlossaryTermBuilder extends ReferenceableBuilder
                                                                       properties,
                                                                       GlossaryTermMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                       literalName,
+                                                                      methodName);
+        }
+
+        return properties;
+    }
+
+    /**
+     * Return the supplied bean properties that represent a name in an InstanceProperties object.
+     *
+     * @param methodName name of the calling method
+     * @return InstanceProperties object
+     */
+    public InstanceProperties getSearchInstanceProperties(String  methodName)
+    {
+        InstanceProperties properties = null;
+
+        if (qualifiedName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      null,
+                                                                      ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                      qualifiedName,
+                                                                      methodName);
+        }
+
+        if (displayName != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      GlossaryTermMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                      displayName,
+                                                                      methodName);
+        }
+
+        if (description != null)
+        {
+            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
+                                                                      properties,
+                                                                      GlossaryTermMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                      description,
                                                                       methodName);
         }
 

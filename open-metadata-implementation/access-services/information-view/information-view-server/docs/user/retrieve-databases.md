@@ -6,15 +6,15 @@
 Retrieve list of databases using pagination
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/databases?pageSize=10&startFrom=0
+```
 
-
-DatabaseListResponse response containing list of databases or
-VoidResponse with error message
+`DatabaseListResponse` response containing list of databases or
+`VoidResponse` with error message.
 
 Sample:
 
+```json
 {
     "class": "DatabaseListResponse",
     "relatedHTTPCode": 200,
@@ -93,8 +93,8 @@ Sample:
         }
     ]
 }
-
 ```
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

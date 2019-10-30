@@ -2,42 +2,41 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.archiveutilities.designmodels.cloudinformationmodel.properties;
 
-import java.util.List;
 
 public class Link extends Property
 {
-    private List<String> domainConceptIds = null;
-    private List<String> rangeConceptIds  = null;
+    private String domainConceptId = null;
+    private String rangeConceptId;
 
 
     public Link(PropertyDescription propertyDescription)
     {
         super(propertyDescription);
 
-
+        rangeConceptId = propertyDescription.getDataTypeId();
     }
 
 
-    public List<String> getDomainConceptIds()
+    public String getDomainConceptId()
     {
-        return domainConceptIds;
+        return domainConceptId;
     }
 
 
-    public void setDomainElementId(String domainElementId)
+    public void setDomainConceptId(String domainConceptId)
     {
-        this.domainConceptIds.add(domainElementId);
+        this.domainConceptId = domainConceptId;
     }
 
 
-    public List<String> getRangeConceptIds()
+    public String getRangeConceptId()
     {
-        return rangeConceptIds;
+        return rangeConceptId;
     }
 
 
-    public void setRangeElementId(String rangeElementId)
+    public void setRangeConceptId(String rangeConceptId)
     {
-        this.rangeConceptIds.add(rangeElementId);
+        this.rangeConceptId = rangeConceptId;
     }
 }

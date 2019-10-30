@@ -32,26 +32,28 @@ an alternative environment for running the tutorials has been implemented using 
 
 From one directory level above the location of this README, run the following:
 
-```shell script
+```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 helm dep update lab
 helm install lab lab
 ```
+
 Example transcript:
+
 ```text
-➜  export PATH=~/bin:$PATH
-➜  pwd
+$ export PATH=~/bin:$PATH
+$ pwd
 /home/jonesn/tmp/egeria/open-metadata-resources/open-metadata-deployment/charts
-➜  helm version
+$ helm version
 version.BuildInfo{Version:"v3.0.0-beta.3", GitCommit:"5cb923eecbe80d1ad76399aee234717c11931d9a", GitTreeState:"clean", GoVersion:"go1.12.9"}
-➜  helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
 "bitnami" has been added to your repositories
-➜  helm repo update
+$ helm repo update
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "bitnami" chart repository
 Update Complete. ⎈ Happy Helming!⎈
-➜  helm dep update lab
+$ helm dep update lab
 Hang tight while we grab the latest from your chart repositories...
 ...Successfully got an update from the "bitnami" chart repository
 Update Complete. ⎈Happy Helming!⎈
@@ -59,22 +61,28 @@ Saving 1 charts
 Downloading kafka from repo https://charts.bitnami.com/bitnami
 Deleting outdated chart
 ```
+
 Now we can actually do the deployment with
-```shell script
+
+```bash
 helm install lab lab
 ```
+
 which will look like:
+
 ```text
-➜  helm install lab lab                                                                                  <<<
+$ helm install lab lab                                                                                  <<<
 NAME: lab
 LAST DEPLOYED: 2019-09-14 15:12:35.663861002 +0000 UTC m=+0.131192396
 NAMESPACE: egeria
 STATUS: deployed
 ```
+
 Note that it can take a few seconds for the various components to all spin-up. You can monitor
 the readiness by running `kubectl get all` -- when ready, you should see output like the following:
+
 ```text
-➜ kubectl get all
+$ kubectl get all
 NAME                                READY   STATUS    RESTARTS   AGE
 pod/lab-core-7cf97db498-jp5ql       1/1     Running   0          68s
 pod/lab-datalake-78984678f4-lw77s   1/1     Running   0          68s
@@ -113,6 +121,7 @@ NAME                             READY   AGE
 statefulset.apps/lab-kafka       1/1     68s
 statefulset.apps/lab-zookeeper   1/1     68s
 ```
+
 (Note that all of the `pod/...` listed at the top have `Running` as their `STATUS` and `1/1` under `READY`.)
 
 At this point you should be able to access your notebook by going to the port listed to the right of
@@ -124,7 +133,9 @@ with:
 ```text
 http://localhost:30888
 ```
+
 If you are using a cloud service, you will need to know what external ip address or name is exposed. This may be called 'Ingress Domain' or similar, but will typically not be seen in the output above. For example:
+
 ```
 http://mycluster.mydomain.mycloud.com:30888
 ```
@@ -139,11 +150,13 @@ reset the Jupyter notebooks to their original clean state, etc.
 
 To delete the deployment, simply run this for Helm3:
 
-```shell script
+```bash
 $ helm delete lab
 ```
+
 Or if using Helm2:
-```shell script
+
+```bash
 helm delete lab --purge
 ```
 
@@ -154,6 +167,7 @@ Where `lab` is the name you used in your original deployment. (You can see what 
 The chart is configured to use a fixed set of ports and expose them using a 'NodePort' service as described above.
 
 You may find you clash with other services setup in your cluster. If so you can override the ports by creating a file such as `lab.yaml` with the following contents:
+
 ```
 service:
   type: NodePort
@@ -164,6 +178,7 @@ service:
     dev: 30082
     ui: 30443
 ```
+
 and then change the port numbers accordingly.
 You can then deploy using
 `helm install lab lab -f lab.yaml` which will override standard defaults with your choices

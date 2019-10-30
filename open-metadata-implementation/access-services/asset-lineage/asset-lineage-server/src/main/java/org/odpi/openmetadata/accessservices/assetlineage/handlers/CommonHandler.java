@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.Edge;
-import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -129,12 +129,12 @@ public class CommonHandler {
             return repositoryHandler.getEntityByGUID(userId,
                                                      relationship.getEntityTwoProxy().getGUID(),
                                                      GUID_PARAMETER,
-                                      "Any entity type", methodName);
+                                      relationship.getEntityTwoProxy().getType().getTypeDefName(), methodName);
         } else {
             return repositoryHandler.getEntityByGUID(userId,
                                                      relationship.getEntityOneProxy().getGUID(),
                                                      GUID_PARAMETER,
-                                      "Any entity type", methodName);
+                                      relationship.getEntityOneProxy().getType().getTypeDefName(), methodName);
         }
     }
 
@@ -162,7 +162,7 @@ public class CommonHandler {
         graph.addVertex(startVertex);
         graph.addVertex(endVertex);
 
-        Edge edge = new Edge(relationship.getType().getTypeDefName(), startVertex, endVertex);
+        GraphContext edge = new GraphContext(relationship.getType().getTypeDefName(),relationship.getGUID(),startVertex, endVertex);
         graph.addEdge(edge);
 
         return endEntity;

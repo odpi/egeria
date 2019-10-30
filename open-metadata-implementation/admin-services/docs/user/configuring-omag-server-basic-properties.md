@@ -43,9 +43,7 @@ in the metadata and governance landscape.
 In the example below, the server type is set to "Repository proxy for IBM IGC"
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="CDO Office Metadata Repository"
-
 ```
 
 ## Set organization name
@@ -55,9 +53,7 @@ team supported by the server.
 Here the organization name is set to "Clinical Trials".
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
-
 ```
 
 

@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = SoftwareServerCapabilityRequestBody.class, name = "dataEngine"),
+                @JsonSubTypes.Type(value = DataEngineRegistrationRequestBody.class, name = "dataEngine"),
                 @JsonSubTypes.Type(value = PortImplementationRequestBody.class, name = "port"),
                 @JsonSubTypes.Type(value = PortAliasRequestBody.class, name = "portAlias"),
                 @JsonSubTypes.Type(value = ProcessesRequestBody.class, name = "processes"),
@@ -28,10 +28,23 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
+
+    /* unique name for the external source */
+    private String externalSourceName;
+
     /**
      * Default constructor
      */
     DataEngineOMASAPIRequestBody() {
+    }
+
+
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
     }
 
     /**
@@ -41,7 +54,9 @@ public abstract class DataEngineOMASAPIRequestBody implements java.io.Serializab
      */
     @Override
     public String toString() {
-        return "DataEngineOMASAPIRequestBody{}";
+        return "DataEngineOMASAPIRequestBody{" +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                '}';
     }
 }
 

@@ -37,6 +37,7 @@ public class DesignModelArchiveBuilder
     private static final String TERM_ANCHOR_TYPE_NAME                 = "TermAnchor";
     private static final String TERM_CATEGORIZATION_TYPE_NAME         = "TermCategorization";
     private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME         = "TermAnchor";
+    private static final String MORE_INFORMATION_TYPE_NAME            = "MoreInformation";
 
     private static final String QUALIFIED_NAME_PROPERTY = "qualifiedName";
     private static final String DISPLAY_NAME_PROPERTY   = "displayName";
@@ -335,6 +336,26 @@ public class DesignModelArchiveBuilder
                                                                      end2));
     }
 
+
+    /**
+     * Create a navigation link from one referenceable to another to show they provide more information.
+     *
+     * @param describedElementId unique identifier for the element that is referencing the other.
+     * @param describerElementId unique identifier for the element being pointed to.
+     */
+    protected void addMoreInformationLink(String  describedElementId,
+                                          String  describerElementId)
+    {
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describedElementId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(describerElementId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(MORE_INFORMATION_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(describedElementId + "_to_" + describerElementId),
+                                                                     null,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
 
 
     protected void linkTermToReferenceable(String  termId,

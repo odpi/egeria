@@ -10,7 +10,6 @@ change.  When this happens the OMAG Server Platform is not able to load the
 configuration document and a message similar to this is returned:
 
 ```json
-
 {
     "class": "VoidResponse",
     "relatedHTTPCode": 400,
@@ -19,7 +18,6 @@ configuration document and a message similar to this is returned:
     "exceptionSystemAction": "The system is unable to configure the local server because it can not read the configuration document.",
     "exceptionUserAction": "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services/docs/user/migrating-configuration-documents.html"
 }
-
 ```
 
 The guidance for each version change is below ...
