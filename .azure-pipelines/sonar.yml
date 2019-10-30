@@ -37,6 +37,8 @@ stages:
               options: >-
                   --batch-mode
                   --quiet
+                  -Dnode.downloadRoot=https://odpi.jfrog.io/odpi/nodejs-dist/
+                  -Dnpm.downloadRoot=https://odpi.jfrog.io/odpi/npm-dist/
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
           - task: Maven@3
             displayName: 'Perform SonarScan'

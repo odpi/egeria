@@ -105,3 +105,7 @@ Figure 7 shows the main components of OMRS within each subsystem.
 Follow the links for more details of 
 these **[subsystems](subsystem-descriptions/README.md)**
 and **[components](component-descriptions/README.md)**.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

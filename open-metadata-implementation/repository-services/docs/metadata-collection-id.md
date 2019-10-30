@@ -22,7 +22,6 @@ It also appears in an audit log message written at start up.
 OMRS-AUDIT-0001 The Open Metadata Repository Services (OMRS) is initializing
         :                                 :                              :
 OMRS-AUDIT-0003 The local repository is initializing with metadata collection id 1b96495f-82d3-4224-9fdd-31bcb84c224c
- 
 ```
 
 If the server is connected to a cohort, the local **[cohort registry](component-descriptions/cohort-registry.md)**

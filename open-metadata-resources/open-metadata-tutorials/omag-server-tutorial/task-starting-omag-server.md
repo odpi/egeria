@@ -8,27 +8,24 @@ it is started in the
 [OMAG Server Platform](../../../open-metadata-publication/website/omag-server)
 using the following command (this is request **11.** in Postman).
 
-```text
-
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
-
 ```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/instance
+```
+
 The response from the command lists the subsystems that have been activated in the OMAG server:
 
 ```json
-
 {
     "class": "VoidResponse",
     "relatedHTTPCode": 200,
     "successMessage": "Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 is running the following services: [Repository Services, Data Engine OMAS, Subject Area OMAS, Governance Engine OMAS, Governance Program OMAS, Information View OMAS, Asset Consumer OMAS, Connected Asset OMAS, Asset Catalog OMAS]"
 }
-
 ```
+
 The window where your OMAG server platform is running will show the start up
 messages, something like this:
 
 ```text
-
 /Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/bin/java -Dserver.port=8080 ...
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
    / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
@@ -523,10 +520,7 @@ Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMAS-ASSET-CATALOG-0003 The Asset Catalog 
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0019 The OMRS Topic Connector EnterpriseTopicConnector.Server.cocoMDS1 has registered with an event bus connector connected to topic cocoMDS1.open-metadata.repository-services.enterprise.cocoMDS1.OMRSTopic
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0020 The OMRS Topic Connector EnterpriseTopicConnector.Server.cocoMDS1 is ready to send and receive events
 Tue Feb 05 16:14:27 GMT 2019 cocoMDS1 OMRS-AUDIT-0015 The listener thread for an OMRS Topic Connector for topic cocoMDS1.open-metadata.repository-services.enterprise.cocoMDS1.OMRSTopic has started
-
-
 ```
-
 
 ## Further reading
 

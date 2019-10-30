@@ -10,8 +10,8 @@ import java.util.Set;
 public class AssetContext {
 
     private Set<LineageEntity> vertices;
-    private Set<Edge> edges;
-    private Map<String, Set<Edge>> neighbors;
+    private Set<GraphContext> edges;
+    private Map<String, Set<GraphContext>> neighbors;
 
     public AssetContext() {
         vertices = new HashSet<>();
@@ -24,7 +24,7 @@ public class AssetContext {
     }
 
 
-    public boolean addEdge(Edge edge) {
+    public boolean addEdge(GraphContext edge) {
        if (!edges.add(edge)) return false;
 
         String guid = edge.getFromVertex().getGuid();
@@ -37,7 +37,7 @@ public class AssetContext {
     }
 
 
-    public Map<String, Set<Edge>> getNeighbors() {
+    public Map<String, Set<GraphContext>> getNeighbors() {
         return neighbors;
     }
 }
