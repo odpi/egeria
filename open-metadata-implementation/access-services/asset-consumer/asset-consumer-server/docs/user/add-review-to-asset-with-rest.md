@@ -6,15 +6,15 @@
 Adds a star rating and optional review text to the asset.
 
 ```
-
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/reviews
+```
 
-        ReviewRequestBody requestBody = new ReviewRequestBody();
-        requestBody.setStarRating(starRating);
-        requestBody.setReview(review);
+```java
+ReviewRequestBody requestBody = new ReviewRequestBody();
+requestBody.setStarRating(starRating);
+requestBody.setReview(review);
 
-        GUIDResponse restResult;
-        
+GUIDResponse restResult;        
 ```
 
 ----

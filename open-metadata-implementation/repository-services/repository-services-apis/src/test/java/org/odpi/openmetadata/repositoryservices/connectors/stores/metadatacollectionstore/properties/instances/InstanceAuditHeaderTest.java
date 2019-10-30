@@ -6,9 +6,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -32,11 +30,13 @@ public class InstanceAuditHeaderTest
     private long                   version                = 30L;
     private InstanceStatus         currentStatus          = InstanceStatus.UNKNOWN;
     private InstanceStatus         statusOnDelete         = InstanceStatus.UNKNOWN;
+    private Map<String, Object>    mappingProperties      = new HashMap<>();
 
 
     public InstanceAuditHeaderTest()
     {
         maintainedBy.add("TestMaintainer");
+        mappingProperties.put("TestProperty", "TestValue");
     }
 
 
@@ -63,6 +63,7 @@ public class InstanceAuditHeaderTest
         testObject.setVersion(version);
         testObject.setStatus(currentStatus);
         testObject.setStatusOnDelete(statusOnDelete);
+        testObject.setMappingProperties(mappingProperties);
 
         return testObject;
     }
@@ -89,6 +90,7 @@ public class InstanceAuditHeaderTest
         assertTrue(testObject.getVersion() == version);
         assertTrue(testObject.getStatus().equals(currentStatus));
         assertTrue(testObject.getStatusOnDelete().equals(statusOnDelete));
+        assertTrue(testObject.getMappingProperties().equals(mappingProperties));
     }
 
 
@@ -113,9 +115,13 @@ public class InstanceAuditHeaderTest
         assertTrue(testObject.getVersion() == 0L);
         assertTrue(testObject.getStatus() == null);
         assertTrue(testObject.getStatusOnDelete() == null);
+        assertTrue(testObject.getMappingProperties() == null);
 
         testObject.setMaintainedBy(new ArrayList<>());
         assertTrue(testObject.getMaintainedBy() == null);
+
+        testObject.setMappingProperties(new HashMap<>());
+        assertTrue(testObject.getMappingProperties() == null);
 
         InstanceAuditHeader anotherTestObject = getTestObject();
 

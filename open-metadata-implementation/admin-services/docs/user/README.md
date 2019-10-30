@@ -23,17 +23,13 @@ This is passed on the URL of every admin services API request along with the use
 id of the administrator.  By default, the configuration is stored in a file called:
 
 ```
-
 omag.server.{serverName}.config
-
 ```
 
 The administration services that set up this file all begin with a URL like this:
 
 ```
-
 .../open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/...
-
 ```
 
 The **serverName** specified on these calls determines which configuration
@@ -93,18 +89,14 @@ In the descriptions of the configuration commands the following values are used 
 It is possible to query the configuration document for a specific OMAG server using the following command.
 
 ```
-
 GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
-
 ```
 
 It is also possible to query the origin of the server supporting the open metadata services.
 For the Egeria OMAG Server Platform, the response is "ODPI Egeria OMAG Server Platform (version 1.2-SNAPSHOT)".
 
 ```
-
 GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/servers/cocoMDS1/server-platform-origin
-
 ```
 
 ## Examples of configuration calls

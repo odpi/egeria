@@ -9,20 +9,19 @@ Data Engine OMAS and IBM Data Stage.
 The [processes request body](../samples/initial-load/data-engine/payloads/create-processes.json) describes 
 the open metadata entities corresponding to the Data Stage ETL job.
 
->Noe: Data Engine OMAS must have access to the IGC entities. 
+>Note: Data Engine OMAS must have access to the IGC entities. 
 Check [egeria-connector-ibm-information-server](https://github.com/odpi/egeria-connector-ibm-information-server#ibm-infosphere-information-server-connectors)
 for more details.
 
 Request to use is: 
-```
 
+```
 POST {{omas-url}}/servers/{{server-id-omas}}/open-metadata/access-services/data-engine/users/{{user-id}}/processes
-
-
-ProcessListResponse - response containing the guids of the created processes 
-and the guids of the failed processes with error message and status
-
 ```
+
+`ProcessListResponse` - response containing the guids of the created processes 
+and the guids of the failed processes with error message and status.
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

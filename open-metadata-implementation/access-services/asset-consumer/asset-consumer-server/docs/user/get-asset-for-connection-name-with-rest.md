@@ -7,9 +7,10 @@ Returns the unique identifier for the asset connected to the connection identifi
 
 ```
 GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/by-connection-name/{{connectionName}}
+```
 
-       
-        GUIDResponse 
+```java
+GUIDResponse 
 ```
 
 ----

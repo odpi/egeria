@@ -36,9 +36,9 @@ operations to validate that all possible searches work correctly.
       "discoveredProperties" : {
         "Number of type definitions mapped to external standard identifiers" : 0
       }
-}      
-    
+}
 ```
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

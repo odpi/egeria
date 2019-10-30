@@ -51,7 +51,6 @@ drives it through each phase of its lifecycle validating that the relationship v
         "TermISATypeOFRelationship soft delete support" : "Enabled"
       }
 }
-
 ```
 
 
