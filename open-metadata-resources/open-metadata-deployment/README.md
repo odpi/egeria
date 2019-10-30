@@ -184,3 +184,7 @@ are deploying.
 
 See [more information on k8s operations](docs/k8s-ops.md) for further details on interacting with the deployed
 components and what they include.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

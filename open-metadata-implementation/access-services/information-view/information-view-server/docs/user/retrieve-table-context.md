@@ -6,9 +6,14 @@
 Retrieve table context: host, database name, schema name, table name, list of columns along with business terms assigned 
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/tables/{{table-guid}}
+```
 
+`VoidResponse` response with error status in case of error.
+
+Sample:
+
+```json
 {
     "class": "TableContextResponse",
     "relatedHTTPCode": 200,
@@ -144,11 +149,8 @@ POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/infor
         }
     ]
 }
-
-
-VoidResponse response with error status in case of error
-
 ```
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

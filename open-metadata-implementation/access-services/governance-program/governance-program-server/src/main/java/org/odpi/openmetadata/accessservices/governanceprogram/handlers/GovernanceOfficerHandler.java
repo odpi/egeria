@@ -775,11 +775,11 @@ public class GovernanceOfficerHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
 
-        List<EntityDetail> governanceOfficerEntities = repositoryHandler.getEntityByType(userId,
-                                                                                         governanceOfficerTypeGUID,
-                                                                                         0,
-                                                                                         invalidParameterHandler.getMaxPagingSize(),
-                                                                                         methodName);
+        List<EntityDetail> governanceOfficerEntities = repositoryHandler.getEntitiesByType(userId,
+                                                                                           governanceOfficerTypeGUID,
+                                                                                           0,
+                                                                                           invalidParameterHandler.getMaxPagingSize(),
+                                                                                           methodName);
 
         if (governanceOfficerEntities != null)
         {

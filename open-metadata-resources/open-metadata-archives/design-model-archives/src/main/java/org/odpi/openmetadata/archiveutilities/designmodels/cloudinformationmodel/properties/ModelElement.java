@@ -9,11 +9,12 @@ import java.util.Objects;
  */
 public class ModelElement
 {
-    private String  guid = null;
-    private String  id = null;
-    private String  name = null;
-    private String  description = null;
-    private String  version = null;
+    private String guid          = null;
+    private String id            = null;
+    private String displayName   = null;
+    private String technicalName = null;
+    private String description   = null;
+    private String version       = null;
 
 
     public ModelElement()
@@ -45,15 +46,27 @@ public class ModelElement
     }
 
 
-    public String getName()
+    public String getDisplayName()
     {
-        return name;
+        return displayName;
     }
 
 
-    public void setName(String name)
+    public void setDisplayName(String displayName)
     {
-        this.name = name;
+        this.displayName = displayName;
+    }
+
+
+    public String getTechnicalName()
+    {
+        return technicalName;
+    }
+
+
+    public void setTechnicalName(String technicalName)
+    {
+        this.technicalName = technicalName;
     }
 
 
@@ -87,7 +100,7 @@ public class ModelElement
         return "ModelElement{" +
                        "guid='" + guid + '\'' +
                        ", id='" + id + '\'' +
-                       ", name='" + name + '\'' +
+                       ", technicalName='" + displayName + '\'' +
                        ", description='" + description + '\'' +
                        ", version='" + version + '\'' +
                        '}';
@@ -108,7 +121,7 @@ public class ModelElement
         ModelElement that = (ModelElement) objectToCompare;
         return Objects.equals(guid, that.guid) &&
                        Objects.equals(getId(), that.getId()) &&
-                       Objects.equals(getName(), that.getName()) &&
+                       Objects.equals(getDisplayName(), that.getDisplayName()) &&
                        Objects.equals(getDescription(), that.getDescription()) &&
                        Objects.equals(getVersion(), that.getVersion());
     }
@@ -117,6 +130,6 @@ public class ModelElement
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, getId(), getName(), getDescription(), getVersion());
+        return Objects.hash(guid, getId(), getDisplayName(), getDescription(), getVersion());
     }
 }

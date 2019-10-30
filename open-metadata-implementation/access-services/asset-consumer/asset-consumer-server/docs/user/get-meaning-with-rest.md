@@ -8,9 +8,10 @@ Return the full definition (meaning) of the term matching the supplied guid.
 
 ```
 GET {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{termGUID}}
+```
 
-        MeaningResponse
-
+```java
+MeaningResponse
 ```
 
 ----

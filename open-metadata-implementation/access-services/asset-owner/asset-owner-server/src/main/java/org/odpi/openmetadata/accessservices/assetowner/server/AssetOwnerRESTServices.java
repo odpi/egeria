@@ -820,6 +820,7 @@ public class AssetOwnerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
+            response.setStartingFromElement(startFrom);
         }
         catch (InvalidParameterException error)
         {
@@ -878,6 +879,7 @@ public class AssetOwnerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setAssets(handler.findAssets(userId, searchString, startFrom, pageSize, methodName));
+            response.setStartingFromElement(startFrom);
         }
         catch (InvalidParameterException error)
         {
