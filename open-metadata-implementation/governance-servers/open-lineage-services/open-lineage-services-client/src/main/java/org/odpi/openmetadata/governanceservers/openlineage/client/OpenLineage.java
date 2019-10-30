@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.client;
 import org.odpi.openmetadata.governanceservers.openlineage.model.GraphName;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,10 +43,10 @@ public class OpenLineage  {
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public String lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
+    public LineageResponse lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
         String methodName = "lineage";
         String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/lineage/sources/{2}/scopes/{3}/views/{4}/entities/{5}";
-        return getRestCall(url, String.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
+        return getRestCall(url, LineageResponse.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
 
     }
 
