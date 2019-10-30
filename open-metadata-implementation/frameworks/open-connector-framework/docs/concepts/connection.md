@@ -27,13 +27,14 @@ Connections are typically managed in a metadata repository but they can also be 
 The OCF offers two implementations of the Connection.
 
 ```
-  org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection
+org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection
 ```
+
 Connection is a bean implementation of the connection used in REST API requests and events.  It allows properties for be
 set up and retrieved.
 
 ```
-  org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties
+org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties
 ```
 
 ConnectionProperties is a read-only wrapper for the Connection properties that is used in client interfaces that do not allow the 

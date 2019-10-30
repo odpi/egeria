@@ -20,9 +20,7 @@ local repositories.
 This command is a placeholder for an Egeria graph repository.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/local-graph-repository
-
 ```
 
 #### Enable the in-memory repository
@@ -32,31 +30,8 @@ No metadata is kept if the open metadata services are deactivated,
 or the server is shutdown.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
-
 ```
-
-#### Enable the IBM Information Governance Catalog repository proxy
-
-The OMAG Server can act as a [repository proxy](../concepts/repository-proxy.md)
-to an IBM Information Governance Catalog ("IGC") environment.
-This is done by POSTing the IGC environment details:
-
-- `igcBaseURL` specifies the https host and port on which to access the IGC REST API
-- `igcAuthorization` provides a basic-encoded username and password
-
-```
-
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/ibm-igc/details
-{
-    "igcBaseURL": "https://infosvr.vagrant.ibm.com:9446",
-    "igcAuthorization": "aXNhZG1pbjppc2FkbWlu",
-}
-
-```
-
-The specific version of IBM Information Governance Catalog the environment is running will be detected as part of the initialization process.
 
 #### Enable OMAG Server as a repository proxy
 
@@ -66,7 +41,6 @@ for the repository proxy as the local repository.
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/proxy-details?connectorProvider={javaClassName}
-
 ```
 
 #### Add the local repository's event mapper
@@ -82,9 +56,7 @@ from the repository and converts them into calls to the OMRS.
 The OMRS then distributes this new metadata.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider={javaClassName}&eventSource={resourceName}
-
 ```
 
 For example, to enable the IBM Information Governance Catalog event mapper,
@@ -93,9 +65,7 @@ domain (services) tier of the environment, and `59092` is the port on which
 its Kafka bus can be accessed):
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
-
 ```
 
 #### Remove the local repository
@@ -106,9 +76,7 @@ added, it will have a new local metadata collection id and will
 not be able to automatically re-register with its cohort(s).
 
 ```
-
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository
-
 ```
 
 ### Cohort registration
@@ -123,9 +91,7 @@ They use a peer-to-peer protocol coordinated through an event bus topic
 The following command registers the server with cohort called `cocoCohort`.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
-
 ```
 
 #### Disconnect from a cohort
@@ -133,9 +99,7 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/
 This command unregisters a server from a cohort called `cocoCohort`.
 
 ```
-
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/cohorts/cocoCohort
-
 ```
 
 ----
