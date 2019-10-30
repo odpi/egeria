@@ -55,10 +55,12 @@ The structure of the report is described by elements of type ReportElement. Repo
     One of the unique identifiers - guid or qualifiedName - is required to uniquely identify the business term
 
 ```
-
 POST {{url-omas}}/servers/{{server-id-omas}}/open-metadata/access-services/information-view/users/{{user-id}}/report
+```
 
-Sample 1
+Sample 1:
+
+```json
 {
   "class": "ReportRequestBody",
   "registrationGuid": "registration-guid",
@@ -129,11 +131,11 @@ Sample 1
         ]
     }
 }
-
 ```
-```
-Sample 2
 
+Sample 2:
+
+```json
 {
 	"class": "ReportRequestBody",
 	"sources": [{
@@ -195,11 +197,11 @@ Sample 2
 		}
 	]
 }
-
 ```
 
-```
-Sample 3
+Sample 3:
+
+```json
 {
   "class": "ReportRequestBody",
   "sources": [
@@ -255,10 +257,11 @@ Sample 3
     }
   ]
 }
-
-VoidResponse restResult
-
 ```
+
+`VoidResponse` restResult
+
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

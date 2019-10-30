@@ -7,9 +7,11 @@ The Graph Repository provides a local repository that uses a graph store as its 
 
 ## Configuration
 To configure an OMAG server to use the Graph Repository, set the repository-mode to 'local-graph-repository'. For example:
+
 ```
-HTTP POST <serverURLRoot>/open-metadata/admin-services/users/<userName>/servers/<serverName>/local-repository/mode/local-graph-repository
+POST <serverURLRoot>/open-metadata/admin-services/users/<userName>/servers/<serverName>/local-repository/mode/local-graph-repository
 ```
+
 Replace the <serverURLRoot>, <userName> and <serverName> with the values appropriate for the server you are configuring.
 
 ## Using the Graph Repository

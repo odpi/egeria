@@ -24,13 +24,11 @@ For example, this is the snippet of XML in the pom.xml file that adds the
 to the OMAG server platform.
 
 ```xml
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-spring</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
+<dependency>
+    <groupId>org.odpi.egeria</groupId>
+    <artifactId>connected-asset-spring</artifactId>
+    <version>${open-metadata.version}</version>
+</dependency>
 ```
 
 When the OMAG server platform is first started, the REST APIs

@@ -144,14 +144,6 @@ This release will be available to include in products and other technology throu
 
 In between official releases, the latest build is also available to developers, through the Egeria site.
 
-## Egeria project releases
-
-The Egeria team aim to create an official release of the open metadata and governance capability twice a year.
-This release will be available to include in products and other technology through
-[Maven's Central Repository](https://search.maven.org), or through a download from the ODPi site.
-
-In between official releases, the latest build is also available to developers, through the Egeria site.
-
 ### Release Process Overview
 
 Releases are published to [Bintray](https://bintray.com/odpi) where they
