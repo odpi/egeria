@@ -88,7 +88,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
                 <template class="header">
                     <vaadin-grid-sorter path="properties.qualifiedName">Options</vaadin-grid-sorter>
                 </template>
-                <template><a href="#/asset-lineage/[[item.guid]]">Lineage</a></template>
+                <template><a href="#/asset-lineage/ultimateSource/[[item.guid]]">Lineage</a></template>
             </vaadin-grid-column>
   
         </vaadin-grid>
@@ -128,7 +128,7 @@ class AssetSearchView extends mixinBehaviors([AppLocalizeBehavior], PolymerEleme
             bubbles: true,
             composed: true,
             detail: {page: "asset-lineage",
-
+                     subview: "ultimateSource"
                     }}));
     }
 

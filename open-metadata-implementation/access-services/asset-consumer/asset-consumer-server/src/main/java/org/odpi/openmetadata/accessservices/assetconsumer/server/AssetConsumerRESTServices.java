@@ -898,11 +898,11 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Return the full definition (meaning) of the terms matching the supplied name.
+     * Return the full definition (meaning) of the terms exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param term name of term.  This may include wild card characters.
+     * @param term name of term.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -917,7 +917,7 @@ public class AssetConsumerRESTServices
                                                      int     startFrom,
                                                      int     pageSize)
     {
-        final String        methodName = "getMeaningByName";
+        final String  methodName = "getMeaningByName";
 
         log.debug("Calling method: " + methodName);
 
@@ -930,6 +930,65 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setMeanings(glossaryHandler.getMeaningByName(userId, term, startFrom, pageSize));
+            response.setStartingFromElement(startFrom);
+        }
+        catch (InvalidParameterException  error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the full definition (meaning) of the terms matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param term name of term.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return list of glossary terms or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public GlossaryTermListResponse findMeanings(String  serverName,
+                                                 String  userId,
+                                                 String  term,
+                                                 int     startFrom,
+                                                 int     pageSize)
+    {
+        final String methodName = "findMeanings";
+
+        log.debug("Calling method: " + methodName);
+
+        GlossaryTermListResponse response = new GlossaryTermListResponse();
+        OMRSAuditLog             auditLog = null;
+
+        try
+        {
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setMeanings(glossaryHandler.findMeanings(userId, term, startFrom, pageSize));
+            response.setStartingFromElement(startFrom);
         }
         catch (InvalidParameterException  error)
         {
@@ -1285,11 +1344,11 @@ public class AssetConsumerRESTServices
 
 
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param tagName name of tag.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -1317,6 +1376,64 @@ public class AssetConsumerRESTServices
 
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setTags(handler.getTagsByName(userId, tagName, startFrom, pageSize, methodName));
+            response.setStartingFromElement(startFrom);
+        }
+        catch (InvalidParameterException  error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return the list of tags matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    public TagsResponse findTags(String serverName,
+                                 String userId,
+                                 String tagName,
+                                 int    startFrom,
+                                 int    pageSize)
+    {
+        final String   methodName = "findTags";
+
+        log.debug("Calling method: " + methodName);
+
+        TagsResponse response = new TagsResponse();
+        OMRSAuditLog auditLog = null;
+
+        try
+        {
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setTags(handler.findTags(userId, tagName, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
         catch (InvalidParameterException  error)

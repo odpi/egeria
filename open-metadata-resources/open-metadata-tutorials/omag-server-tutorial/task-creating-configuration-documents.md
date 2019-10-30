@@ -55,28 +55,24 @@ as well as refer to the pre-canned calls in the postman collection.
 Before there is a configuration document, requesting the server configuration
 creates and returns a default document.  The command is:
 
-```text
-
-GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
-
 ```
+GET {serverURLRoot}/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/configuration
+```
+
 where:
-* {serverURLRoot} is the host name and port number of the OMAG server platform (eg http://localhost:8080).
-* {adminUserId} is the user id of the administrator making the calls.
-* {serverName} is the name of the OMAG server that is being configured.
+* `{serverURLRoot}` is the host name and port number of the OMAG server platform (eg http://localhost:8080).
+* `{adminUserId}` is the user id of the administrator making the calls.
+* `{serverName}` is the name of the OMAG server that is being configured.
 
 Try the following command (this is request **2.** in Postman): 
 
 ```
-
 GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/configuration
-
 ```
 
 The response is in JSON format and contains the following information:
 
 ```json
-
 {
     "class":"OMAGServerConfigResponse",
     "relatedHTTPCode":200,
@@ -91,7 +87,6 @@ The response is in JSON format and contains the following information:
        "maxPageSize":1000
     }
 }
-
 ```
 
 The **localServerId** property is a unique identifier given to the server and is used
@@ -104,16 +99,13 @@ are set to their default values and can be changed.
 
 For example, try the following command (this is request **3.** in Postman):
 
-```text
-
+```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Standalone Metadata Repository"
-
 ```
 
 Then query the configuration again (this is request **4.** in Postman):
 
 ```json
-
 {
     "class": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -130,7 +122,6 @@ Then query the configuration again (this is request **4.** in Postman):
         ]
     }
 }
-
 ```
 
 Notice that the localServerType has changed and an audit trail has also appeared.  This allows you to keep track of
@@ -139,17 +130,14 @@ the changes being made to the configuration document.
 The next command configures in type of metadata repository (this is request **5.** in Postman).  In this example, we are using a simple in-memory repository
 which is useful for testing.
 
-```text
-
+```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
-
 ```
 
 This has added the configuration for the local repository using default values.
 If you query the configuration again (this is request **6.** in Postman) you see:
 
 ```json
-
 {
     "class": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -303,7 +291,6 @@ If you query the configuration again (this is request **6.** in Postman) you see
         ]
     }
 }
-
 ```
 
 Finally in this exercise, use the following command to enable the
@@ -315,16 +302,13 @@ As such they need information about an event bus.
 The command below (this is request **7.** in Postman) sets up configuration properties about the event bus.  These properties are
 embedded in the configuration for each access service.
 
-```text
-
+```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus?topicURLRoot=egeriaTopics
-
 ```
 
 When the configuration is next queried (this is request **8.** in Postman), the event bus details are stored in the configuration document.
 
 ```json
-
 {
     "class": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -483,21 +467,17 @@ When the configuration is next queried (this is request **8.** in Postman), the 
         ]
     }
 }
-
 ```
 
 The last command creates the configuration for the access services (this is request **9.** in Postman):
 
-```text
-
+```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
-
 ```
 
 which results in the final configuration (this is request **10.** in Postman).
 
 ```json
-
 {
     "class": "OMAGServerConfigResponse",
     "relatedHTTPCode": 200,
@@ -1705,7 +1685,6 @@ which results in the final configuration (this is request **10.** in Postman).
         ]
     }
 }
-
 ```
 
 You have probably noticed how quickly the configuration document grew into a complex structure.

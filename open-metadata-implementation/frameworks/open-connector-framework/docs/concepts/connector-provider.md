@@ -9,7 +9,7 @@ called from the [Connector Broker](connector-broker.md), although it may be call
 Each Connector Provider implements the following interface:
 
 ```
-   org.odpi.openmetadata.frameworks.connectors.ConnectorProvider
+org.odpi.openmetadata.frameworks.connectors.ConnectorProvider
 ```
 
 It has two types of methods:
@@ -24,7 +24,7 @@ needed to create and configure the instance of the connector.
 There is a base class that provides much of the implementation for a connector provider.
 
 ```
-   org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase
+org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase
 ```
 
 With this base implementation, a specific Connector Provider implementation need only implement a constructor to
@@ -34,7 +34,6 @@ For example, here is the implementation of the Connector Provider for the
 [structured file connector](../../../../adapters/open-connectors/data-store-connectors/structured-file-connector/README.md).
 
 ```java
-
 package org.odpi.openmetadata.adapters.connectors.csvfile;
 
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;

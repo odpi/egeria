@@ -225,3 +225,7 @@ unique names like any other `Pod`. To review the logs of a job, simply use the s
 ```bash
 $ kubectl delete job <jobName>
 ```
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

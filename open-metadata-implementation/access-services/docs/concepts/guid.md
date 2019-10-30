@@ -13,7 +13,7 @@ In Egeria, new GUIDs are created
 using the `UUID.randomUUID().toString()` method and they look something like this:
 
 ```
-  "87b06ffe-9db2-4ef5-ba6e-8127480cf30d"
+87b06ffe-9db2-4ef5-ba6e-8127480cf30d
 ```
 
 They are often used on API calls to request a specific instance of metadata.
