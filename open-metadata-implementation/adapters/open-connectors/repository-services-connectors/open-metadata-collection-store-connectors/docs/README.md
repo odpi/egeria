@@ -42,16 +42,16 @@ Start by defining a new Maven project in your IDE of choice, and at the root-lev
 following:
 
 ```xml
-    <properties>
-        <open-metadata.version>1.2-SNAPSHOT</open-metadata.version>
-    </properties>
-    <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-metadata-adapter-package</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-    </dependencies>
+<properties>
+    <open-metadata.version>1.2-SNAPSHOT</open-metadata.version>
+</properties>
+<dependencies>
+    <dependency>
+        <groupId>org.odpi.egeria</groupId>
+        <artifactId>open-metadata-adapter-package</artifactId>
+        <version>${open-metadata.version}</version>
+    </dependency>
+</dependencies>
 ```
 
 Naturally change the version to whichever version of Egeria you'd like to build against; the `open-metadata-adapter-package`
