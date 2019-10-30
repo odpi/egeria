@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 )
 @JsonSubTypes({
         @JsonSubTypes.Type(value = ColumnVertex.class, name = "ColumnVertex"),
-        @JsonSubTypes.Type(value = TableVertex.class, name = "ableVertex"),
+        @JsonSubTypes.Type(value = TableVertex.class, name = "TableVertex"),
         @JsonSubTypes.Type(value = CondensedVertex.class, name = "CondensedVertex"),
         @JsonSubTypes.Type(value = ProcessVertex.class, name = "ProcessVertex"),
         @JsonSubTypes.Type(value = SubProcessVertex.class, name = "SubProcessVertex")

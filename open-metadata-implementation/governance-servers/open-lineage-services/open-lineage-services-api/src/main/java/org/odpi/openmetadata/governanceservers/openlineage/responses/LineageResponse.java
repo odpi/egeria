@@ -20,14 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class"
 )
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = ColumnVertex.class, name = "LineageColumnVertex"),
-        @JsonSubTypes.Type(value = TableVertex.class, name = "LineageTableVertex"),
-        @JsonSubTypes.Type(value = CondensedVertex.class, name = "LineageCondensedVertex"),
-        @JsonSubTypes.Type(value = ProcessVertex.class, name = "LineageProcessVertex"),
-        @JsonSubTypes.Type(value = SubProcessVertex.class, name = "LineageSubProcessVertex")
-}
-)
 public class LineageResponse extends OpenLineageAPIResponse{
 
     private List<LineageVertex> lineageVertices;
