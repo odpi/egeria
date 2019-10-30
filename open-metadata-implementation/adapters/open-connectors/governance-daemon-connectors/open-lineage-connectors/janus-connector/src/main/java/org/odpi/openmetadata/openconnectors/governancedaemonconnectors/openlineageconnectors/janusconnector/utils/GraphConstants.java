@@ -11,6 +11,7 @@ public class GraphConstants {
     public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
     public static final String PROPERTY_KEY_PREFIX_RELATIONSHIP = "ed";
 
+    public static final String PROPERTY_NAME_NODE_ID = "nodeID";
     public static final String PROPERTY_NAME_GUID = "guid";
     public static final String PROPERTY_NAME_QUALIFIED_NAME = "qualifiedName";
     public static final String PROPERTY_NAME_NAME = "name";
@@ -34,13 +35,13 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_GLOSSARY = "glossary";
 
 
-    public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
     public static final String NODE_LABEL_TABLE = "table";
     public static final String NODE_LABEL_COLUMN = "column";
     public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";
     public static final String NODE_LABEL_CONDENSED = "condensedNode";
-
     public static final String NODE_LABEL_PROCESS = "process";
+    public static final String NODE_LABEL_SUB_PROCESS = "subProcess";
+
     public static final String EDGE_LABEL_COLUMN_AND_PROCESS = "processColumn";
     public static final String EDGE_LABEL_TABLE_AND_PROCESS = "processTable";
     public static final String EDGE_LABEL_SEMANTIC = "semanticAssignment";
@@ -50,6 +51,7 @@ public class GraphConstants {
     public static final String EDGE_LABEL_INCLUDED_IN = "includedIn";
 
 
+    public static final String PROPERTY_KEY_ENTITY_NODE_ID = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NODE_ID;
     public static final String PROPERTY_KEY_ENTITY_GUID = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_GUID;
     public static final String PROPERTY_KEY_NAME_QUALIFIED_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_QUALIFIED_NAME;
     public static final String PROPERTY_KEY_ENTITY_NAME = PROPERTY_KEY_PREFIX_ElEMENT + PROPERTY_NAME_NAME;
