@@ -91,9 +91,77 @@ public class GlossaryHandler implements AssetConsumerGlossaryInterface
                                                                           serviceName,
                                                                           serverName);
 
-        List<EntityDetail> glossaryTerms = repositoryHandler.getEntityByName(userId,
-                                                                             glossaryTermBuilder.getNameInstanceProperties(methodName),
+        List<EntityDetail> glossaryTerms = repositoryHandler.getEntitiesByName(userId,
+                                                                               glossaryTermBuilder.getSearchInstanceProperties(methodName),
+                                                                               GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                               startFrom,
+                                                                               pageSize,
+                                                                               methodName);
+
+        if (glossaryTerms != null)
+        {
+            for (EntityDetail entity : glossaryTerms)
+            {
+                if (entity != null)
+                {
+                    GlossaryTermConverter  converter = new GlossaryTermConverter(entity,
+                                                                                 repositoryHelper,
+                                                                                 serviceName);
+                    results.add(converter.getBean());
+                }
+            }
+        }
+
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
+    }
+
+
+    /**
+     * Returns the glossary term object corresponding to the supplied term name.
+     *
+     * @param userId  String - userId of user making request.
+     * @param name  this may be the qualifiedName or displayName of the term.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return List of glossary terms retrieved from property server
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<GlossaryTerm> findMeanings(String    userId,
+                                           String    name,
+                                           int       startFrom,
+                                           int       pageSize) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final  String   methodName = "findMeanings";
+        final  String   nameParameter = "name";
+
+        List<GlossaryTerm>  results = new ArrayList<>();
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
+
+        GlossaryTermBuilder glossaryTermBuilder = new GlossaryTermBuilder(name,
+                                                                          name,
+                                                                          repositoryHelper,
+                                                                          serviceName,
+                                                                          serverName);
+
+        List<EntityDetail> glossaryTerms = repositoryHandler.getEntitiesByName(userId,
+                                                                             glossaryTermBuilder.getSearchInstanceProperties(methodName),
                                                                              GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                             startFrom,
+                                                                             pageSize,
                                                                              methodName);
 
         if (glossaryTerms != null)

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,11 +60,11 @@ public class ContextHandler {
     }
 
 
-    public AssetContext getAssetContext(String serverName, String userId, String guid) {
+    public AssetContext getAssetContext(String serverName, String userId, String guid,String type) {
 
         graph = new AssetContext();
         try {
-            Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid);
+            Optional<EntityDetail> entityDetail = getEntityDetails(userId, guid, type);
             if (!entityDetail.isPresent()) {
                 log.error("Something is wrong in the OMRS Connector when a specific operation is performed in the metadata collection." +
                         " Entity not found with guid {}",guid );
@@ -94,11 +94,11 @@ public class ContextHandler {
     }
 
 
-    private Optional<EntityDetail> getEntityDetails(String userId, String guid) throws InvalidParameterException,
+    private Optional<EntityDetail> getEntityDetails(String userId, String guid,String type) throws InvalidParameterException,
                                                                                        PropertyServerException,
                                                                                        UserNotAuthorizedException {
         String methodName = "getEntityDetails";
-        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER, "Any entity type", methodName));
+        return Optional.ofNullable(repositoryHandler.getEntityByGUID(userId, guid, GUID_PARAMETER,type, methodName));
     }
 
     private void buildAssetContext(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException,

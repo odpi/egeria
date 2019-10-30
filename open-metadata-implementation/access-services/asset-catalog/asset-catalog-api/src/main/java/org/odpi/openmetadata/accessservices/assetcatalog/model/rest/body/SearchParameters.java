@@ -4,9 +4,9 @@ package org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.SequenceOrderType;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 
+import javax.validation.constraints.PositiveOrZero;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,52 +22,59 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class SearchParameters implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
-    private Integer limit = 0;
-    private Integer offset = 0;
-    private String orderProperty;
-    private SequenceOrderType orderType;
-    private Status status;
-    private Boolean excludeDeleted = Boolean.TRUE;
-    private Integer level = 0;
-    private List<String> types;
-    private String propertyName;
-    private String propertyValue;
+
+    @PositiveOrZero
+    private Integer pageSize = 0;
+
+    @PositiveOrZero
+    private Integer from = 0;
+
+    @PositiveOrZero
+    private Integer level = 1;
+
+    private String sequencingProperty;
+    private SequencingOrder sequencingOrder;
+
+    private List<String> limitResultsByClassification;
+
+    private List<String> entityTypeGUIDs;
+    private List<String> relationshipTypeGUIDs;
+
 
     /**
-     * Return the maximum page size supported by this server.
+     * Return the maximum page pageSize supported by this server.
      *
      * @return max number of elements that can be returned on a request.
      */
-    public Integer getLimit() {
-        return limit;
+    public Integer getPageSize() {
+        return pageSize;
     }
 
     /**
-     * Set up the limit the result set to only include the specified number of entries
+     * Set up the pageSize the result set to only include the specified number of entries
      *
-     * @param limit max number of elements that can be returned on a request.
+     * @param pageSize max number of elements that can be returned on a request.
      */
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
     }
 
     /**
-     * Return the  start offset of the result set
+     * Return the  start from of the result set
      *
-     * @return the start offset of result
+     * @return the start from of result
      */
-    public Integer getOffset() {
-        return offset;
+    public Integer getFrom() {
+        return from;
     }
 
     /**
-     * Set up the start offset of the result set for pagination
+     * Set up the start from of the result set for pagination
      *
-     * @param offset start offset of the result set
+     * @param from start from of the result set
      */
-    public void setOffset(Integer offset) {
-        this.offset = offset;
+    public void setFrom(Integer from) {
+        this.from = from;
     }
 
     /**
@@ -75,17 +82,17 @@ public class SearchParameters implements Serializable {
      *
      * @return the name of the property that is to be used to sequence the results
      */
-    public String getOrderProperty() {
-        return orderProperty;
+    public String getSequencingProperty() {
+        return sequencingProperty;
     }
 
     /**
      * Set up the name of the property that is to be used to sequence the results
      *
-     * @param orderProperty the name of the property that is to be used to sequence the results
+     * @param sequencingProperty the name of the property that is to be used to sequence the results
      */
-    public void setOrderProperty(String orderProperty) {
-        this.orderProperty = orderProperty;
+    public void setSequencingProperty(String sequencingProperty) {
+        this.sequencingProperty = sequencingProperty;
     }
 
     /**
@@ -93,124 +100,88 @@ public class SearchParameters implements Serializable {
      *
      * @return the enum defining how the results should be ordered
      */
-    public SequenceOrderType getOrderType() {
-        return orderType;
+    public SequencingOrder getSequencingOrder() {
+        return sequencingOrder;
     }
 
     /**
      * Set up the enum defining how the results should be ordered
      *
-     * @param orderType the enum defining how the results should be ordered
+     * @param sequencingOrder the enum defining how the results should be ordered
      */
-    public void setOrderType(SequenceOrderType orderType) {
-        this.orderType = orderType;
+    public void setSequencingOrder(SequencingOrder sequencingOrder) {
+        this.sequencingOrder = sequencingOrder;
     }
 
     /**
-     * @return Status to restrict the result
+     * @return List of classifications that must be present on all returned entities.
      */
-    public Status getStatus() {
-        return status;
+    public List<String> getLimitResultsByClassification() {
+        return limitResultsByClassification;
     }
 
     /**
-     * By default, all the assets/relationships are returned.
-     * However, it is possible to specify a single status (eg ACTIVE) to restrict the results to.
+     * Set up the list of classifications that must be present on all returned entities.
      *
-     * @param status to restrict the result
+     * @param limitResultsByClassification list of classifications that must be present on all returned entities.
      */
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setLimitResultsByClassification(List<String> limitResultsByClassification) {
+        this.limitResultsByClassification = limitResultsByClassification;
     }
 
     /**
-     * Return the boolean that exclude deleted assets from result
+     * Return the list of entity types to search for. Null means any types.
      *
-     * @return excludeDeleted to restrict the result
+     * @return the list of entity types to search for
      */
-    public Boolean getExcludeDeleted() {
-        return excludeDeleted;
+    public List<String> getEntityTypeGUIDs() {
+        return entityTypeGUIDs;
     }
 
     /**
-     * Set up if deleted assets are excluded from the result.
-     * By default, deleted assets are not included in the result.
+     * Set up the list of entity types to search for. Null means any types.
      *
-     * @param excludeDeleted deleted assets are excluded (or not) in the result.
+     * @param entityTypeGUIDs the list of entity types to search for
      */
-    public void setExcludeDeleted(Boolean excludeDeleted) {
-        this.excludeDeleted = excludeDeleted;
+    public void setEntityTypeGUIDs(List<String> entityTypeGUIDs) {
+        this.entityTypeGUIDs = entityTypeGUIDs;
     }
 
     /**
-     * Return the number of the relationships out from the starting asset that the query will traverse to gather results.
+     * Return the list of relationship types to include in the query results.
+     * Null means include all relationships found, irrespective of their type.
      *
-     * @return the number of the relationships that will be travers to get the result
+     * @return relationshipTypeGUIDs List of relationship types to include in the query results
+     */
+    public List<String> getRelationshipTypeGUIDs() {
+        return relationshipTypeGUIDs;
+    }
+
+    /**
+     * Set up the list of relationship types to include in the query results.
+     * Null means include all relationships found, irrespective of their type.
+     *
+     * @param relationshipTypeGUIDs List of relationship types to include in the query results
+     */
+    public void setRelationshipTypeGUIDs(List<String> relationshipTypeGUIDs) {
+        this.relationshipTypeGUIDs = relationshipTypeGUIDs;
+    }
+
+    /**
+     * Return the number of the relationships out from the starting entity that the query will traverse to gather results.
+     *
+     * @return number of the relationship
      */
     public Integer getLevel() {
         return level;
     }
 
     /**
-     * Set up the number of the relationships out from the starting asset that the query will traverse to gather results.
+     * Set up the number of the relationships out from the starting entity that the query will traverse to gather results.
      *
-     * @param level the number of the relationships that will be travers to get the result
+     * @param level the number of the relationships out from the starting entity
      */
     public void setLevel(Integer level) {
         this.level = level;
-    }
-
-    /**
-     * Return the list of types to search for. Null means any types.
-     *
-     * @return the list of types to search for
-     */
-    public List<String> getTypes() {
-        return types;
-    }
-
-    /**
-     * Set up the list of types to search for. Null means any types.
-     *
-     * @param types the list of types to search for
-     */
-    public void setTypes(List<String> types) {
-        this.types = types;
-    }
-
-    /**
-     * Return the property name searched
-     *
-     * @return the property name searched
-     */
-    public String getPropertyName() {
-        return propertyName;
-    }
-
-    /**
-     * Set up the property name searched.
-     *
-     * @param propertyName the property name searched
-     */
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    /**
-     * Return the property value searched
-     *
-     * @return the property value searched
-     */
-    public String getPropertyValue() {
-        return propertyValue;
-    }
-
-    /**
-     * Set up the property value searched
-     *
-     * @param propertyValue the property value searched
-     */
-    public void setPropertyValue(String propertyValue) {
-        this.propertyValue = propertyValue;
     }
 }

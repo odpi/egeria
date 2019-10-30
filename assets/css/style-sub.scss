@@ -42,17 +42,17 @@ li {
     box-sizing: border-box;
 }
 
-code {
-  white-space: pre-wrap !important;
-  word-break: break-all !important;
-}
-
 .highlight {
   background-color:#eeeeee;
 }
 
 pre {
-  margin-bottom:1%;
+  white-space: pre !important;
+  padding: 16px;
+  overflow: auto;
+  border-radius: 3px;
+  line-height: 1.45;
+  margin-bottom: 2%;
 }
 
 
@@ -82,7 +82,7 @@ ul {
   text-align:center;
   width:100%;
   padding-top:5%;
-  line-height:1.3em;
+  line-height:1.5em;
   display:block;
   font-size:18px;
 }
@@ -106,10 +106,10 @@ button {
   padding-top:5%;
   color: #28adba;
   font-weight:bold;
-  font-size:0.7em;
-  width:80%;
-  margin-left:15%;
-  line-height:1.5em;
+  font-size:0.9em;
+  width:100%;
+  margin-left:1%;
+  line-height:1.6em;
   margin-top:15%;
 }
 
@@ -239,6 +239,7 @@ a {
   border:0px solid white !important;
   -webkit-box-shadow: 0 0 0px white !important;
   box-shadow: 0px !important;
+  width:100%;
   padding-top:2%;
   padding-bottom:2%;
 }
