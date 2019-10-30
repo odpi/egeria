@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model;
+package org.odpi.openmetadata.governanceservers.openlineage.model.vertices;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,13 +12,21 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LineageGlossaryTermVertex extends LineageVertex{
+public class ColumnVertex extends LineageVertex{
 
+    private String glossaryTerm;
     private String displayName;
 
-
-    public LineageGlossaryTermVertex(String nodeID, String nodeType, String guid){
+    public ColumnVertex(String nodeID, String nodeType, String guid){
         super(nodeID, nodeType, guid);
+    }
+
+    public String getGlossaryTerm() {
+        return glossaryTerm;
+    }
+
+    public void setGlossaryTerm(String glossaryTerm) {
+        this.glossaryTerm = glossaryTerm;
     }
 
     public String getDisplayName() {

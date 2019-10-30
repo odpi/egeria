@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.LineageEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 
 public interface MainGraphStore extends OpenLineageGraphStore{
 
@@ -24,8 +25,7 @@ public interface MainGraphStore extends OpenLineageGraphStore{
      * @param guid      The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    String lineage(String graphName, Scope scope, View view, String guid);
-
+    LineageResponse lineage(String graphName, Scope scope, View view, String guid);
 
     /**
      * Write an entire graph to disc in the Egeria root folder, in the .GraphMl format.

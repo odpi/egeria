@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.model;
+package org.odpi.openmetadata.governanceservers.openlineage.model.vertices;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,31 +12,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class LineageVertex {
+public class TableVertex extends LineageVertex{
 
-    protected String nodeID;
-    protected String nodeType;
-    protected String guid;
 
-    public LineageVertex(String nodeID, String nodeType, String guid){
-        this.nodeID = nodeID;
-        this.nodeType = nodeType;
-        this.guid = guid;
+    private String glossaryTerm;
+    private String displayName;
+
+
+    public TableVertex(String nodeID, String nodeType, String guid){
+        super(nodeID, nodeType, guid);
     }
 
-    public String getNodeType() {
-        return nodeType;
+    public String getGlossaryTerm() {
+        return glossaryTerm;
     }
 
-    public void setNodeType(String nodeType) {
-        this.nodeType = nodeType;
+    public void setGlossaryTerm(String glossaryTerm) {
+        this.glossaryTerm = glossaryTerm;
     }
 
-    public String getGuid() {
-        return guid;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
+
+
 }
