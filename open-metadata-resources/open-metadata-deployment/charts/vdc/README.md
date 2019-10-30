@@ -34,6 +34,7 @@ Ranger (including usersync, sync with egeria), Gaian, LDAP are currently not con
 helm repo add bitnami https://charts.bitnami.com/bitnami
 helm repo update
 ```
+
 **Installing a chart**
 
 ```
@@ -41,6 +42,7 @@ cd open-metadata-resources/open-metadata-deployment/charts
 helm dependency update vdc
 helm install vdc --name vdc
 ```
+
 Note: If name is not specified an auto-generated name like 'slippery-lizard' will be used.
 
 *** Load Balancing & Ingress ***

@@ -51,7 +51,6 @@ the original complied lists.
         "Supported EnumDefs" : [ "CrowdSourcingRole", "CriticalityLevel", "TermRelationshipStatus", "DataClassAssignmentStatus", "Endianness", "ContactMethodType", "GovernanceClassificationStatus", "BusinessCapabilityType", "StarRating", "OperationalStatus", "OrderBy", "TermAssignmentStatus", "RetentionBasis", "ServerAssetUse", "ConfidentialityLevel", "MediaUsage", "ActivityType", "CommunityMembershipType", "ConfidenceLevel", "KeyPattern", "CommentType", "MediaType", "GovernanceDomain", "ToDoStatus" ]
       }
 }
-
 ```
 
 ----

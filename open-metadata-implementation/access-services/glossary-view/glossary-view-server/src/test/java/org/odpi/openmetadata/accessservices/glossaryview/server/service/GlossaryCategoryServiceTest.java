@@ -53,10 +53,11 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBaseTest{
         assertEquals(true, isEffective.test(response.getResult().get(2)));
     }
 
+    /*
     @Test
     public void getSubcategories() throws Exception{
-        when(repositoryHandler.getEntitiesForRelationshipType(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
-                eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_GUID), eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME), anyInt(), anyInt(),
+        when(repositoryHandler.getEntitiesForRelationshipEnd(eq(USER_ID), eq(categories.get(0).getGUID()), eq(CATEGORY_TYPE_NAME),
+                true, eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_GUID), eq(CATEGORY_HIERARCHY_LINK_RELATIONSHIP_NAME), anyInt(), anyInt(),
                 eq("getSubcategories"))).thenReturn(Arrays.asList(categories.get(1), categories.get(2)));
 
         GlossaryViewEntityDetailResponse response = underTest.getSubcategories(USER_ID, SERVER_NAME,
@@ -70,6 +71,7 @@ public class GlossaryCategoryServiceTest extends GlossaryViewOmasBaseTest{
         assertEquals(true, isEffective.test(response.getResult().get(0)));
         assertEquals(true, isEffective.test(response.getResult().get(1)));
     }
+    */
 
     @Test
     public void getExternalGlossaries() throws Exception{

@@ -48,6 +48,7 @@ class CloudInformationModelParser
     private static final String DATA_TYPE_RANGE             = "DataType";
 
     private static final String modelName = "Cloud Information Model (CIM)";
+    private static final String modelTechnicalName = "CloudInformationModel";
     private static final String modelDescription = "The Cloud Information Model (CIM) is an open source glossary and data model that spans the following subject areas:\n" +
                                                            "\n" +
                                                            "•\tParty – people, their roles and organizations.\n" +
@@ -111,7 +112,7 @@ class CloudInformationModelParser
             {
                 if (concept != null)
                 {
-                    if ((concept.getDescription() == null) || (concept.getName() == null))
+                    if ((concept.getDescription() == null) || (concept.getDisplayName() == null))
                     {
                         errorReport.add("Missing bead: " + concept.getId());
                     }
@@ -144,7 +145,7 @@ class CloudInformationModelParser
 
         if (bead == null)
         {
-            bead = new Concept();
+            bead = new Concept(conceptId);
             bead.setId(conceptId);
 
             conceptBeadMap.put(conceptId, bead);
@@ -214,7 +215,7 @@ class CloudInformationModelParser
             propertyDescription = new PropertyDescription();
 
             propertyDescription.setId(propertyId);
-            propertyDescription.setName(propertyId);
+            propertyDescription.setDisplayName(propertyId);
 
             propertyDescriptionMap.put(propertyId, propertyDescription);
         }
@@ -266,12 +267,16 @@ class CloudInformationModelParser
 
             LinkedHashMap<String, Object> conceptsJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(new FileInputStream(conceptsJsonLDFile));
 
-            if (modelLocation.equals(conceptsJsonLD.get(AT_CONTEXT_TAG).toString()))
+            if (modelLocation.equals(getStringValue(conceptsJsonLD.get(AT_CONTEXT_TAG))))
             {
+                String  versionName = getStringValue(conceptsJsonLD.get(VERSION_TAG));
+
                 PropertyGroup propertyGroup = new PropertyGroup();
 
-                propertyGroup.setId(conceptsJsonLD.get(AT_ID_TAG).toString());
-                propertyGroup.setName(conceptsJsonLD.get(NAME_TAG).toString());
+                propertyGroup.setId(getStringValue(conceptsJsonLD.get(AT_ID_TAG)));
+                propertyGroup.setDisplayName(getStringValue(conceptsJsonLD.get(NAME_TAG)));
+                propertyGroup.setVersion(versionName);
+                propertyGroup.setTechnicalName(this.getTechnicalName(propertyGroup.getId(), "PropertyGroup"));
 
                 propertyGroupMap.put(propertyGroupName, propertyGroup);
 
@@ -283,13 +288,15 @@ class CloudInformationModelParser
                     {
                         if (propertyDefinition != null)
                         {
-                            String               propertyId = propertyDefinition.get(AT_ID_TAG).toString();
+                            String               propertyId = getStringValue(propertyDefinition.get(AT_ID_TAG));
                             PropertyDescription  propertyDescription   = this.getPropertyDescription(propertyId,
-                                                                                                     propertyDefinition.get(RANGE_TAG).toString());
+                                                                                                     getStringValue(propertyDefinition.get(RANGE_TAG)));
 
                             propertyDescription.setId(propertyId);
-                            propertyDescription.setName(propertyDefinition.get(NAME_TAG).toString());
-                            propertyDescription.setDescription(propertyDefinition.get(DESCRIPTION_TAG).toString());
+                            propertyDescription.setTechnicalName(propertyId);
+                            propertyDescription.setDisplayName(getStringValue(propertyDefinition.get(NAME_TAG)));
+                            propertyDescription.setDescription(getStringValue(propertyDefinition.get(DESCRIPTION_TAG)));
+                            propertyDescription.setVersion(versionName);
 
                             if (propertyDescription.isPrimitive())
                             {
@@ -306,6 +313,42 @@ class CloudInformationModelParser
                     }
                 }
             }
+        }
+    }
+
+
+    String getTechnicalName(String  sourceString,
+                            String  objectType)
+    {
+        if (sourceString != null)
+        {
+            String splitString[] = sourceString.split(objectType, 2);
+
+            System.out.println("==> Object: " + sourceString + " has a technicalName of " + splitString[0]);
+
+            return splitString[0];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Return the string version of the property if not null.
+     *
+     * @param modelElement value extracted from model.
+     * @return string value or null
+     */
+    private String   getStringValue(Object    modelElement)
+    {
+        if (modelElement == null)
+        {
+            return null;
+        }
+        else
+        {
+            return modelElement.toString();
         }
     }
 
@@ -366,13 +409,14 @@ class CloudInformationModelParser
                         {
                             LinkedHashMap<String, Object> aboutJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(new FileInputStream(subjectAreaFile));
 
-                            subjectArea.setId(aboutJsonLD.get(AT_ID_TAG).toString());
-                            subjectArea.setName(aboutJsonLD.get(NAME_TAG).toString());
-                            subjectArea.setDescription(aboutJsonLD.get(DESCRIPTION_TAG).toString());
+                            subjectArea.setId(getStringValue(aboutJsonLD.get(AT_ID_TAG)));
+                            subjectArea.setTechnicalName(this.getTechnicalName(subjectArea.getId(), "SubjectArea"));
+                            subjectArea.setDisplayName(getStringValue(aboutJsonLD.get(NAME_TAG)));
+                            subjectArea.setDescription(getStringValue(aboutJsonLD.get(DESCRIPTION_TAG)));
 
                             subjectAreaMap.put(subjectAreaName, subjectArea);
                         }
-                        else
+                        else if (! subjectAreaFile.getName().endsWith(".png"))
                         {
                             System.out.println("WARNING skipping file named: " + subjectAreaFile.getName());
                             errorReport.add("WARNING skipping file named: " + subjectAreaFile.getName());
@@ -404,14 +448,18 @@ class CloudInformationModelParser
 
             LinkedHashMap<String, Object> conceptsJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(new FileInputStream(conceptsJsonLDFile));
 
-            if ((ENTITY_GROUP_TYPE.equals(conceptsJsonLD.get(AT_TYPE_TAG).toString())) &&
-                (modelLocation.equals(conceptsJsonLD.get(AT_CONTEXT_TAG).toString())))
+            if ((ENTITY_GROUP_TYPE.equals(getStringValue(conceptsJsonLD.get(AT_TYPE_TAG)))) &&
+                (modelLocation.equals(getStringValue(conceptsJsonLD.get(AT_CONTEXT_TAG)))))
             {
+                String  versionName = getStringValue(conceptsJsonLD.get(VERSION_TAG));
+
                 ConceptGroup conceptGroup = new ConceptGroup();
 
-                conceptGroup.setId(conceptsJsonLD.get(AT_ID_TAG).toString());
-                conceptGroup.setName(conceptsJsonLD.get(NAME_TAG).toString());
-                conceptGroup.setDescription(conceptsJsonLD.get(DESCRIPTION_TAG).toString());
+                conceptGroup.setId(getStringValue(conceptsJsonLD.get(AT_ID_TAG)));
+                conceptGroup.setTechnicalName(this.getTechnicalName(conceptGroup.getId(), "EntityGroup"));
+                conceptGroup.setDisplayName(getStringValue(conceptsJsonLD.get(NAME_TAG)));
+                conceptGroup.setDescription(getStringValue(conceptsJsonLD.get(DESCRIPTION_TAG)));
+                conceptGroup.setVersion(versionName);
 
                 subjectArea.addConceptGroup(conceptGroup.getId(), conceptGroup);
 
@@ -423,30 +471,50 @@ class CloudInformationModelParser
                     {
                         if (conceptProperties != null)
                         {
-                            String  conceptId = conceptProperties.get(AT_ID_TAG).toString();
-                            Concept concept   = this.getConcept(conceptId);
-
-                            concept.setId(conceptId);
-                            concept.setName(conceptProperties.get(NAME_TAG).toString());
-                            concept.setDescription(conceptProperties.get(DESCRIPTION_TAG).toString());
-                            concept.setReferenceDataSet(conceptProperties.get(AT_TYPE_TAG).toString().contains(MANAGED_PROPERTY_TYPE));
-
-                            Object superClassName = conceptProperties.get(SUB_CLASS_TAG);
-                            if (superClassName != null)
+                            String  conceptId = getStringValue(conceptProperties.get(AT_ID_TAG));
+                            if (conceptId != null)
                             {
-                                Concept superClass = this.getConcept(superClassName.toString());
+                                Concept concept = this.getConcept(conceptId);
 
-                                superClass.addSubClass(conceptId, conceptId);
+                                concept.setId(conceptId);
+                                concept.setTechnicalName(conceptId);
+                                concept.setDisplayName(getStringValue(conceptProperties.get(NAME_TAG)));
+                                concept.setDescription(getStringValue(conceptProperties.get(DESCRIPTION_TAG)));
+                                concept.setVersion(versionName);
 
-                                System.out.println("   ==> Concept Bead name: " + conceptId + " is ref data " + concept.isReferenceDataSet() + " and has superclass " + superClassName);
+                                Object conceptPropertiesType = conceptProperties.get(AT_TYPE_TAG);
+
+                                if (conceptPropertiesType == null)
+                                {
+                                    concept.setReferenceDataSet(false);
+                                }
+                                else
+                                {
+                                    concept.setReferenceDataSet(getStringValue(conceptProperties.get(AT_TYPE_TAG)).contains(MANAGED_PROPERTY_TYPE));
+                                }
+
+                                Object superClassName = conceptProperties.get(SUB_CLASS_TAG);
+                                if (superClassName != null)
+                                {
+                                    Concept superClass = this.getConcept(superClassName.toString());
+
+                                    superClass.addSubClass(conceptId, conceptId);
+                                    concept.setSuperClassId(superClass.getId());
+
+                                    System.out.println("   ==> Concept Bead name: " + conceptId + " is ref data " + concept.isReferenceDataSet() + " and has superclass " + superClassName);
+                                }
+                                else
+                                {
+                                    System.out.println("   ==> Concept Bead name: " + conceptId + " is ref data " + concept.isReferenceDataSet());
+                                }
+
+                                conceptGroup.addConcept(conceptId, concept);
                             }
                             else
                             {
-                                System.out.println("   ==> Concept Bead name: " + conceptId + " is ref data " + concept.isReferenceDataSet());
+                                System.out.println("ERROR: no id for concept properties: " + conceptProperties.toString());
+                                errorReport.add("ERROR: no id for concept properties: " + conceptProperties.toString());
                             }
-
-                            conceptGroup.addConcept(conceptId, concept);
-                            conceptBeadMap.put(conceptId, concept);
                         }
                     }
                 }
@@ -459,27 +527,47 @@ class CloudInformationModelParser
                     {
                         if (propertyProperties != null)
                         {
-                            String              propertyId          = propertyProperties.get(AT_ID_TAG).toString();
+                            String              propertyId          = getStringValue(propertyProperties.get(AT_ID_TAG));
                             PropertyDescription propertyDescription = this.getPropertyDescription(propertyId);
 
-                            List<String>  domainNames = new ArrayList<>((List<String>)propertyProperties.get(DOMAIN_TAG));
+                            Object        domainNamesObject = propertyProperties.get(DOMAIN_TAG);
+                            List<String>  domainNames = new ArrayList<>((List<String>)domainNamesObject);
 
                             if (! domainNames.isEmpty())
                             {
                                 for (String domainName : domainNames)
                                 {
-                                    Concept concept = getConcept(domainName);
-
-                                    if (propertyDescription.isPrimitive())
+                                    if (domainName != null)
                                     {
-                                        concept.setAttribute(propertyId, new Attribute(propertyDescription));
-                                        System.out.println("       ==> Property name: " + propertyId + " is attribute");
-                                    }
-                                    else
-                                    {
-                                        concept.setDomainOfLink(propertyId, new Link(propertyDescription));
-                                        System.out.println("       ==> Property name: " + propertyId + " is link");
+                                        Concept concept = getConcept(domainName);
 
+                                        if (propertyDescription.isPrimitive())
+                                        {
+                                            concept.setAttribute(propertyId, new Attribute(propertyDescription));
+                                            System.out.println("       ==> Property name: " + propertyId + " is attribute");
+                                        }
+                                        else
+                                        {
+                                            Link link = new Link(propertyDescription);
+
+                                            link.setDomainConceptId(concept.getId());
+                                            concept.setDomainOfLink(propertyId, link);
+
+                                            System.out.println("       ==> Property name: " + propertyId + " is link from " + link.getDomainConceptId() + " to " + link.getRangeConceptId());
+
+                                            if (propertyDescription.getDataTypeId() != null)
+                                            {
+                                                Concept rangeConcept = this.getConcept(
+                                                        propertyDescription.getDataTypeId());
+
+                                                rangeConcept.setRangeOfLink(link.getRangeConceptId(), link);
+                                            }
+                                            else
+                                            {
+                                                System.out.println("ERROR: no range for property name: " + propertyId);
+                                                errorReport.add("ERROR: no range for property name: " + propertyId);
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -491,15 +579,14 @@ class CloudInformationModelParser
                         }
                     }
                 }
-
             }
 
             File schemaJsonLDFile = new File(entityGroupDirectoryName + SCHEMA_FILE_NAME);
             LinkedHashMap<String, Object> schemaJsonLD = (LinkedHashMap<String, Object>) JsonUtils.fromInputStream(new FileInputStream(schemaJsonLDFile));
 
-            if ((modelLocation.equals(schemaJsonLD.get(AT_CONTEXT_TAG).toString())) &&
-                        (ENTITY_GROUP_TYPE.equals(schemaJsonLD.get(AT_TYPE_TAG).toString())) &&
-                        (entityGroupName.equals(schemaJsonLD.get(AT_ID_TAG).toString())))
+            if ((modelLocation.equals(getStringValue(schemaJsonLD.get(AT_CONTEXT_TAG)))) &&
+                        (ENTITY_GROUP_TYPE.equals(getStringValue(schemaJsonLD.get(AT_TYPE_TAG)))) &&
+                        (entityGroupName.equals(getStringValue(schemaJsonLD.get(AT_ID_TAG)))))
             {
                 List<Map<String, Object>>  schemas = (List<Map<String, Object>>)schemaJsonLD.get(SCHEMAS_TAG);
 
@@ -507,40 +594,85 @@ class CloudInformationModelParser
                 {
                     for (Map<String, Object> conceptSchema : schemas)
                     {
-                        String    conceptId = conceptSchema.get(AT_ID_TAG).toString();
-                        Concept   concept   = this.getConcept(conceptId);
-                        List<Map<String, Object>>  inheritedProperties = (List<Map<String, Object>>)conceptSchema.get(AND_TAG);
-
-                        if (inheritedProperties == null)
+                        String    conceptId = getStringValue(conceptSchema.get(AT_ID_TAG));
+                        if (conceptId != null)
                         {
-                            this.getPropertySchemas(concept,
-                                                    null,
-                                                    (List<Map<String, Object>>)conceptSchema.get(PROPERTIES_TAG));
+                            Concept concept = this.getConcept(conceptId);
+                            List<Map<String, Object>> inheritedProperties =
+                                    (List<Map<String, Object>>) conceptSchema.get(AND_TAG);
+
+                            if (inheritedProperties == null)
+                            {
+                                this.getPropertySchemas(concept,
+                                                        null,
+                                                        (List<Map<String, Object>>) conceptSchema.get(PROPERTIES_TAG));
+                            }
+                            else
+                            {
+                                List<Map<String, Object>> properties   = null;
+                                String                    superClassId = null;
+
+                                for (Map<String, Object> optionValues : inheritedProperties)
+                                {
+                                    if (optionValues.get(PROPERTIES_TAG) != null)
+                                    {
+                                        properties = (List<Map<String, Object>>) optionValues.get(PROPERTIES_TAG);
+                                    }
+                                    else if (optionValues.get(AT_ID_TAG) != null)
+                                    {
+                                        superClassId = getStringValue(optionValues.get(AT_ID_TAG));
+                                    }
+                                    else
+                                    {
+                                        System.out.println("ERROR: no recognised options for concept: " + conceptId);
+                                        errorReport.add("ERROR: no recognised options for concept: " + conceptId);
+                                    }
+                                }
+
+                                this.getPropertySchemas(concept, superClassId, properties);
+                            }
                         }
                         else
                         {
-                            List<Map<String, Object>> properties = null;
-                            String                    superClassId = null;
-
-                            for (Map<String, Object> optionValues : inheritedProperties)
-                            {
-                                if (optionValues.get(PROPERTIES_TAG) != null)
-                                {
-                                    properties = (List<Map<String, Object>>)optionValues.get(PROPERTIES_TAG);
-                                }
-                                else if (optionValues.get(AT_ID_TAG) != null)
-                                {
-                                    superClassId = optionValues.get(AT_ID_TAG).toString();
-                                }
-                                else
-                                {
-                                    System.out.println("ERROR: no recognised options for concept: " + conceptId);
-                                    errorReport.add("ERROR: no recognised options for concept: " + conceptId);
-                                }
-                            }
-
-                            this.getPropertySchemas(concept, superClassId, properties);
+                            System.out.println("ERROR: no id for concept" + conceptSchema.toString());
+                            errorReport.add("ERROR: no id for concept" + conceptSchema.toString());
                         }
+                    }
+                }
+            }
+
+            /*
+             * Review concepts and determine which are relationships.  A relationship is the domain of 2 links
+             * and the range of none.
+             */
+            for (Concept concept: conceptBeadMap.values())
+            {
+                if (concept != null)
+                {
+                    if (concept.getRangeOfLinks() == null)
+                    {
+                        List<Link>  domainOfLinks = concept.getDomainOfLinks();
+
+                        if (domainOfLinks != null)
+                        {
+                            if (domainOfLinks.size() == 2)
+                            {
+                                concept.setRelationship(true);
+                                System.out.println("Concept: " + concept.getId() + " is a relationship linking two concepts: " + domainOfLinks.get(0).getId() + " and " + domainOfLinks.get(1).getId());
+                            }
+                            else
+                            {
+                                System.out.println("Concept: " + concept.getId() + " is a master-detail record");
+                            }
+                        }
+                        else
+                        {
+                            System.out.println("Concept: " + concept.getId() + " is isolated - it is not linked to anything" );
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Concept: " + concept.getId() + " is linked to by other concepts" );
                     }
                 }
             }
@@ -591,13 +723,13 @@ class CloudInformationModelParser
         {
             if (propertyProperties != null)
             {
-                String              propertyId = propertyProperties.get(PATH_TAG).toString();
+                String              propertyId = getStringValue(propertyProperties.get(PATH_TAG));
                 PropertyDescription propertyDescription = this.getPropertyDescription(propertyId);
                 Property            property;
-                String              node = propertyProperties.get(NODE_TAG).toString();
-                String              dataType = propertyProperties.get(DATA_TYPE_TAG).toString();
-                String              minCount = propertyProperties.get(MIN_COUNT_TAG).toString();
-                String              maxCount = propertyProperties.get(MAX_COUNT_TAG).toString();
+                String              node = getStringValue(propertyProperties.get(NODE_TAG));
+                String              dataType = getStringValue(propertyProperties.get(DATA_TYPE_TAG));
+                String              minCount = getStringValue(propertyProperties.get(MIN_COUNT_TAG));
+                String              maxCount = getStringValue(propertyProperties.get(MAX_COUNT_TAG));
 
                 if (superClassPropertyNames.contains(propertyId))
                 {
@@ -631,7 +763,7 @@ class CloudInformationModelParser
                             attribute = concept.getAttribute(propertyId);
                         }
 
-                        attribute.setDataType(propertyProperties.get(DATA_TYPE_TAG).toString());
+                        attribute.setDataType(getStringValue(propertyProperties.get(DATA_TYPE_TAG)));
 
                         if (attribute.getDataType() == null)
                         {
@@ -717,6 +849,7 @@ class CloudInformationModelParser
         Model model = new Model();
 
         model.setModelName(modelName);
+        model.setModelTechnicalName(modelTechnicalName);
         model.setModelDescription(modelDescription);
         model.setModelLocation(modelLocation);
         model.setModelScope(modelScope);

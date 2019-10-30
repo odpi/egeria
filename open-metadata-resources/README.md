@@ -1,4 +1,4 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Open Metadata Resources
@@ -20,6 +20,7 @@ different types of plugin components.
 * **[open-metadata-tutorials](open-metadata-tutorials)** - provides instructions on using Egeria.
 
 * **[open-metadata-labs](open-metadata-labs)** - provides interactive hands on examples of using Egeria.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
