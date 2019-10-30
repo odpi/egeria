@@ -9,18 +9,21 @@ class BreadCrumb extends PolymerElement{
   static get template() {
     return html`
         <style>
-   
-        
+    .breadcrumbs {
+            background-color: #eeeeee;
+    }    
+    
     .crumb,
     .crumb-separator {
             padding: 4px;
             cursor: default;
-        }
+            color: var(--app-secondary-color);
+    }
     .crumb {
             border: 1px solid transparent;
             border-radius: 4px;
             text-decoration: underline;
-            background-color: #eeeeee;
+            
             color: var(--app-secondary-color);
        
         }
@@ -39,7 +42,7 @@ class BreadCrumb extends PolymerElement{
         }
     .crumb-separator:last-child {
             display: none;
-        }
+        }   
     </style>
         <div class="breadcrumbs"  on-keypress="{{_onKeypress}}">
             <dom-repeat items="{{crumbs}}">
