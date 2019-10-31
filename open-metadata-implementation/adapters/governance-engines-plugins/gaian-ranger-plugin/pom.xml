@@ -16,20 +16,6 @@
         <artifactId>governance-engines-plugins</artifactId>
     </parent>
 
-    <properties>
-        <spring.web.version>5.1.3.RELEASE</spring.web.version>
-        <derby.version>10.8.3.1</derby.version>
-        <ranger-plugins.version>1.2.0</ranger-plugins.version>
-        <commons-configuration.version>2.4</commons-configuration.version>
-        <gaian.version>2.1.8</gaian.version>
-        <commons-lang.version>3.8.1</commons-lang.version>
-        <commons-logging.version>1.2</commons-logging.version>
-        <jackson-mapper.version>1.9.13</jackson-mapper.version>
-        <hadoop.version>2.9.2</hadoop.version>
-        <jersey-bundle.version>1.19.4</jersey-bundle.version>
-        <log4j-v.version>2.11.1</log4j-v.version>
-    </properties>
-
     <repositories>
         <repository>
             <id>0.rgp-local</id>

@@ -17,13 +17,11 @@ where the Asset Consumer OMAS is running and its [server name](../../../../../do
 
 Here is a code example with the user id and password specified:
 
-```
-
+```java
 AssetConsumer   client = new AssetConsumer("cocoMDS1",
                                            "http://localhost:8081",
                                            "cocoUI",
                                            "cocoUIPassword");
-
 ```
 
 This client is set up to call the `cocoMDS1` server running on the `http://localhost:8081`

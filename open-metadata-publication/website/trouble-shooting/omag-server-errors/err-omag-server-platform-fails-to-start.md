@@ -6,7 +6,6 @@
 If you see a series of error messages like this :
 
 ```text
-
 2019-01-31 20:56:25.800 ERROR 66931 --- [           main] org.apache.catalina.util.LifecycleBase   : Failed to start component [Connector[HTTP/1.1-8080]]
 
 org.apache.catalina.LifecycleException: Protocol handler start failed
@@ -41,8 +40,8 @@ Caused by: java.net.BindException: Address already in use
 
 
 Process finished with exit code 1
-
 ```
+
 This means another server is already using the same network address.
 
 Issue the `server-platform-origin` REST call to determine if this is just another instance of your OMAG Server Platform
@@ -50,19 +49,21 @@ already running.  The example below is for an OMAG Server Platform using the def
 address of `http://localhost:8080`.  
 
 ```bash
-
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform-origin
 ODPi Egeria OMAG Server Platform (version 1.2-SNAPSHOT)
-$
-
 ```
+
 If you get the `ODPi Egeria OMAG Server Platform (version `versionNumber`)` response then your OMAG server platform is already running.
 If you get a response like this:
 
 ```json
-
-{"timestamp":"2019-02-01T15:13:56.749+0000","status":404,"error":"Not Found","message":"No message available","path":"/open-metadata/platform-services/users/test/server-platform-origin"}
-
+{
+  "timestamp": "2019-02-01T15:13:56.749+0000",
+  "status": 404,
+  "error": "Not Found",
+  "message": "No message available",
+  "path": "/open-metadata/platform-services/users/test/server-platform-origin"
+}
 ```
 
 Then a different type of server is running at the network address and you may need to consider

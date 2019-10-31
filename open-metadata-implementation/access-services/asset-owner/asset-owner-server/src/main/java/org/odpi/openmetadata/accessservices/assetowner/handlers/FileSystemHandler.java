@@ -54,6 +54,7 @@ public class FileSystemHandler
      *
      * @param serviceName  name of this service
      * @param serverName name of the local server
+     * @param supportedZones list of supported zones
      * @param assetHandler handler for assets
      * @param schemaTypeHandler handler for schema elements
      * @param invalidParameterHandler handler for managing parameter errors

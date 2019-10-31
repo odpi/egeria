@@ -12,9 +12,7 @@ To enable the access services (and the enterprise
 repository services that support them) use the following command.
 
 ```
-
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
-
 ```
 
 #### Disable the access services
@@ -26,10 +24,7 @@ are not being used.
 
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/access-services
-
 ```
-
-
 
 
 ----

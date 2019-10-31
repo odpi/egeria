@@ -14,10 +14,9 @@ There is a single operation on this service called `server-platform-origin`.
 The format of the operation is:
 
 ```text
-
- {serverPlatformURLroot}/open-metadata/platform-services/users/{userId}/server-platform-origin
-
+{serverPlatformURLroot}/open-metadata/platform-services/users/{userId}/server-platform-origin
 ```
+
 where `{serverPlatformURLroot}` is typically the host name and port number for the server platform's
 network endpoint and `{userId}` is the userId of an authorized administrator.
 
@@ -27,14 +26,9 @@ For example, this is the response from the ODPi Egeria implementation of the OMA
 which has an endpoint of `http://localhost:8080`.  Gary Geeke (`garygeeke`) is the administrator.
 
 ```bash
-
 $ curl -X GET http://localhost:8080/open-metadata/platform-services/users/garygeeke/server-platform-origin
 ODPi Egeria OMAG Server Platform (version 1.2-SNAPSHOT)
-$
-
 ```
-
-
 
 
 

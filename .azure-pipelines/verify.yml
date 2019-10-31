@@ -25,6 +25,7 @@ stages:
           - task: Maven@3
             inputs:
               mavenPomFile: 'pom.xml'
+              mavenOptions: '-XX:TieredStopAtLevel=1'
               javaHomeOption: 'JDKVersion'
               jdkVersionOption: $(JAVA_VERSION)
               jdkArchitectureOption: 'x64'
@@ -34,6 +35,8 @@ stages:
                   -e
                   -DskipFVT
                   -Dstream=$(System.PullRequest.TargetBranch)
+                  -Dnode.downloadRoot=https://odpi.jfrog.io/odpi/nodejs-dist/
+                  -Dnpm.downloadRoot=https://odpi.jfrog.io/odpi/npm-dist/
                   -DaltDeploymentRepository=staging::default::file:$(Agent.BuildDirectory)/local-repo
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -Dmaven.source.skip=true

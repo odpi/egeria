@@ -7,9 +7,10 @@ Creates a new public informal tag and returns the unique identifier for it.
 
 ```
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/tags/public
+```
 
-        return GUIDResponse
-
+```java
+return GUIDResponse
 ```
 
 

@@ -59,7 +59,7 @@ public class ConfigRepositoryServicesResource
     @RequestMapping(method = RequestMethod.POST, path = "/open-metadata-archives/file")
     public VoidResponse addStartUpOpenMetadataArchiveFile(@PathVariable String userId,
                                                           @PathVariable String serverName,
-                                                          @RequestParam String fileName)
+                                                          @RequestBody  String fileName)
     {
         return adminAPI.addStartUpOpenMetadataArchiveFile(userId, serverName, fileName);
     }
@@ -133,7 +133,7 @@ public class ConfigRepositoryServicesResource
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/repository-proxy/connection")
     public VoidResponse setRepositoryProxyConnection(@PathVariable String     userId,
                                                      @PathVariable String     serverName,
-                                                     @RequestBody Connection connection)
+                                                     @RequestBody  Connection connection)
     {
         return adminAPI.setRepositoryProxyConnection(userId, serverName, connection);
     }
@@ -377,7 +377,7 @@ public class ConfigRepositoryServicesResource
     public VoidResponse setCohortConfig(@PathVariable String       userId,
                                         @PathVariable String       serverName,
                                         @PathVariable String       cohortName,
-                                        @RequestBody CohortConfig cohortConfig)
+                                        @RequestBody  CohortConfig cohortConfig)
     {
         return adminAPI.setCohortConfig(userId, serverName, cohortName, cohortConfig);
     }

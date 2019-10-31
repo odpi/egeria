@@ -329,9 +329,34 @@ public class AssetConsumerResource
 
     public ConnectionResponse getConnectionByName(@PathVariable String   serverName,
                                                   @PathVariable String   userId,
-                                                  @PathVariable String   name)
+                                                  @RequestBody  String   name)
     {
         return restAPI.getConnectionByName(serverName, userId, name);
+    }
+
+
+    /**
+     * Return the full definition (meaning) of the terms exactly matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param name name of term.
+     * @param startFrom  index of the list ot start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of meaning objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/meanings/by-name")
+
+    public GlossaryTermListResponse getMeaningByName(@PathVariable String   serverName,
+                                                     @PathVariable String   userId,
+                                                     @RequestParam int      startFrom,
+                                                     @RequestParam int      pageSize,
+                                                     @RequestBody  String   name)
+    {
+        return restAPI.getMeaningByName(serverName, userId, name, startFrom, pageSize);
     }
 
 
@@ -348,15 +373,15 @@ public class AssetConsumerResource
      * PropertyServerException - there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/meanings/by-name/{name}")
+    @RequestMapping(method = RequestMethod.POST, path = "/meanings/by-search-string")
 
-    public GlossaryTermListResponse getMeaningByName(@PathVariable String  serverName,
-                                                     @PathVariable String  userId,
-                                                     @PathVariable String  name,
-                                                     @RequestParam int     startFrom,
-                                                     @RequestParam int     pageSize)
+    public GlossaryTermListResponse findMeanings(@PathVariable String   serverName,
+                                                 @PathVariable String   userId,
+                                                 @RequestParam int      startFrom,
+                                                 @RequestParam int      pageSize,
+                                                 @RequestBody  String   name)
     {
-        return restAPI.getMeaningByName(serverName, userId, name, startFrom, pageSize);
+        return restAPI.findMeanings(serverName, userId, name, startFrom, pageSize);
     }
 
 
@@ -405,11 +430,11 @@ public class AssetConsumerResource
 
 
     /**
-     * Return the tags matching the supplied name.
+     * Return the tags exactly matching the supplied name.
      *
      * @param serverName name of the server instances for this request.
      * @param userId the name of the calling user.
-     * @param tagName name of tag.  This may include wild card characters.
+     * @param tagName name of tag.
      * @param startFrom  index of the list ot start from (0 for start).
      * @param pageSize   maximum number of elements to return.
      * @return list of tag objects or
@@ -426,6 +451,31 @@ public class AssetConsumerResource
                                       @RequestBody  String  tagName)
     {
         return restAPI.getTagsByName(serverName, userId, tagName, startFrom, pageSize);
+    }
+
+
+    /**
+     * Return the tags matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request.
+     * @param userId the name of the calling user.
+     * @param tagName name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start).
+     * @param pageSize   maximum number of elements to return.
+     * @return list of tag objects or
+     * InvalidParameterException - one of the parameters is invalid or
+     * PropertyServerException - there is a problem retrieving information from the property server(s) or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/tags/by-search-string")
+
+    public TagsResponse findTags(@PathVariable String  serverName,
+                                 @PathVariable String  userId,
+                                 @RequestParam int     startFrom,
+                                 @RequestParam int     pageSize,
+                                 @RequestBody  String  tagName)
+    {
+        return restAPI.findTags(serverName, userId, tagName, startFrom, pageSize);
     }
 
 

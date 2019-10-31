@@ -10,6 +10,7 @@ Infrastructure, Process, Referenceable, Server and Host.
 * **[0010 Base Model](0010-Base-Model.md)**
 * **[0015 Linked Media Types](0015-Linked-Media-Types.md)**
 * **[0017 External Identifiers](0017-External-Identifiers.md)**
+* **[0019 More Information](0019-More-Information.md)**
 * **[0020 Property Facets](0020-Property-Facets.md)**
 * **[0025 Locations](0025-Locations.md)**
 * **[0030 Hosts and Platforms](0030-Hosts-and-Platforms.md)**
