@@ -9,35 +9,39 @@ package org.odpi.openmetadata.repositoryservices.events.future;
  * not been scheduled yet. 
  *
  */
-public class DelegatableFuture implements OMRSFuture {
-
+public class DelegatableFuture implements OMRSFuture
+{
     private volatile OMRSFuture delegate;
 
     /**
      * Sets the future to delegate to.  This can only
      * be called once.
      * 
-     * @param delegate
+     * @param delegate future
      */
-    public void setDelegate(OMRSFuture delegate) {
-
+    public void setDelegate(OMRSFuture delegate)
+    {
         // synchronize setting the delegate to close timing windows that
         // would allow waiting for the delegate to be set indefinitely. See
         // safelyWaitForDelegateToBeSet()
-        if (this.delegate != null) {
+        if (this.delegate != null)
+        {
             throw new RuntimeException("Delegate is already set");
         }
 
         this.delegate = delegate;
     }
 
+    /**
+     * Return whether complete
+     */
     @Override
-    public boolean isDone() {
-
-        if (delegate != null) {
+    public boolean isDone()
+    {
+        if (delegate != null)
+        {
             return delegate.isDone();
         }
         return false;
     }
-
 }
