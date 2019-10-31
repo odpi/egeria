@@ -53,6 +53,10 @@ public class ReferenceableMapper
     public static final String REFERENCEABLE_TO_RATING_TYPE_NAME                 = "AttachedRating";
     /* End1 = Referenceable; End 2 = Rating */
 
+    public static final String REFERENCEABLE_TO_MORE_INTO_TYPE_GUID              = "1cbf059e-2c11-4e0c-8aae-1da42c1ee73f";
+    public static final String REFERENCEABLE_TO_MORE_INFO_TYPE_NAME              = "MoreInformation";
+    /* End1 = Referenceable; End 2 = Rating */
+
     public static final String REFERENCEABLE_TO_RELATED_MEDIA_TYPE_GUID          = "1353400f-b0ab-4ab9-ab09-3045dd8a7140";
     public static final String REFERENCEABLE_TO_RELATED_MEDIA_TYPE_NAME          = "MediaReference";
     /* End1 = Referenceable; End 2 = RelatedMedia */

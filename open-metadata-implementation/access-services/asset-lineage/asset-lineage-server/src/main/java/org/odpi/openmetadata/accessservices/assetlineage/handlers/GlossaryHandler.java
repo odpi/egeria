@@ -4,21 +4,23 @@
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
-import org.odpi.openmetadata.accessservices.assetlineage.Edge;
+import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.GLOSSARY_TERM;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.SEMANTIC_ASSIGNMENT;
 
 public class GlossaryHandler {
 
@@ -64,14 +66,14 @@ public class GlossaryHandler {
      * @param userID    String - userId of user making request.
      * @return Glossary Term retrieved from the repository, null if not semantic assignment to the asset
      */
-    public Map<String, Set<Edge>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
+    public Map<String, Set<GraphContext>> getGlossaryTerm(String assetGuid, String userID, EntityDetail entityDetail, AssetContext assetContext) {
 
         try {
             graph = assetContext;
             boolean glossary = getGlossary(userID, assetGuid, entityDetail.getType().getTypeDefName());
 
             if (!glossary) {
-                log.error("No Semantic assignment for the asset with guid {} found", assetGuid);
+                log.info("No Semantic assignment for the asset with guid {} found", assetGuid);
                 return Collections.emptyMap();
             }
 

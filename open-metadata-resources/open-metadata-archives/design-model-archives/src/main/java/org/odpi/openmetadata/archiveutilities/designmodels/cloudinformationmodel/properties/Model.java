@@ -11,6 +11,7 @@ import java.util.Map;
 public class Model
 {
     private String                           modelName              = null;
+    private String                           modelTechnicalName     = null;
     private String                           modelDescription       = null;
     private String                           modelLocation          = null;
     private String                           modelScope             = null;
@@ -31,6 +32,18 @@ public class Model
     public void setModelName(String modelName)
     {
         this.modelName = modelName;
+    }
+
+
+    public String getModelTechnicalName()
+    {
+        return modelTechnicalName;
+    }
+
+
+    public void setModelTechnicalName(String modelTechnicalName)
+    {
+        this.modelTechnicalName = modelTechnicalName;
     }
 
 

@@ -108,10 +108,10 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of tags exactly matching the supplied name.
      *
      * @param userId the name of the calling user.
-     * @param tag name of tag.  This may include wild card characters.
+     * @param tag name of tag.
      * @param startFrom  index of the list ot start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
@@ -126,6 +126,26 @@ public interface AssetConsumerTaggingInterface
                                     int    pageSize) throws InvalidParameterException,
                                                             PropertyServerException,
                                                             UserNotAuthorizedException;
+
+    /**
+     * Return the list of tags matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<InformalTag> findTags(String userId,
+                               String tag,
+                               int    startFrom,
+                               int    pageSize) throws InvalidParameterException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException;
 
     /**
      * Adds a tag (either private of public) to an asset.

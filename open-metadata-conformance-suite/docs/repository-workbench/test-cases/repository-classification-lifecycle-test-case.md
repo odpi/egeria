@@ -39,7 +39,6 @@ drive the classification through each phase of its lifecycle validating that the
 
 
 ```json
-
 {
       "class" : "OpenMetadataTestCaseResult",
       "testCaseId" : "repository-classification-lifecycle",
@@ -50,7 +49,6 @@ drive the classification through each phase of its lifecycle validating that the
       "unsuccessfulAssertions" : [ ],
       "discoveredProperties" : { }
 }
-
 ```
 
 
