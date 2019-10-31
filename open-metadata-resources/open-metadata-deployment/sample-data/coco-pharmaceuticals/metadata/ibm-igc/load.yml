@@ -219,18 +219,18 @@
         using_action: publish
         with_options:
           only_with_conditions:
-            - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+            - { property: "parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           with_comment: "Auto-publication by samples import process"
     validate:
       that:
         - number_of: category
           meeting_any_conditions:
             - { property: "parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 4
+          is: 5
         - number_of: term
           meeting_all_conditions:
-            - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 49
+            - { property: "parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 42
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
@@ -259,8 +259,8 @@
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
-            - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 55
+            - { property: "assigned_to_terms.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 54
         - number_of: data_file_field
           meeting_all_conditions:
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
@@ -270,8 +270,8 @@
           meeting_all_conditions:
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm_information_server_engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
-            - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 55
+            - { property: "assigned_to_terms.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 54
 
 - name: get dstage1 lineage details
   uri:
