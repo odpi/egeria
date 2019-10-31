@@ -182,9 +182,11 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      *
      * @return a list of received events or null
      */
-    protected List<IncomingEvent> checkForIncomingEvents() {
+    protected List<IncomingEvent> checkForIncomingEvents()
+    {
         List<IncomingEvent> result = new ArrayList<>();
-        for(String event : checkForEvents()) {
+        for (String event : checkForEvents())
+        {
             result.add(new IncomingEvent(event, String.valueOf(event.hashCode())));
         }
         return result;
@@ -195,10 +197,11 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
      * been overridden.
      * 
      * @deprecated Use checkForIncomingEvents() instead.
-     * @return
+     * @return list of events
      */
     @Deprecated
-    protected List<String> checkForEvents() {
+    protected List<String> checkForEvents()
+    {
         return Collections.emptyList();
     }
 
