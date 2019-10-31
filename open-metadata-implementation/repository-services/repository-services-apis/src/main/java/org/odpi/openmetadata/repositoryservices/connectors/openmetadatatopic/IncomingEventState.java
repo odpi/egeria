@@ -5,7 +5,8 @@ package org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic;
 /**
  * The state of an event that was received from a connector
  */
-public enum IncomingEventState {
+public enum IncomingEventState
+{
     /**
      * The event has been created but has not yet been distributed
      * to all topic listeners.

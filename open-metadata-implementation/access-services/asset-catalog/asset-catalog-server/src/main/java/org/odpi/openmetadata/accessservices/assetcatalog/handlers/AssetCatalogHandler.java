@@ -1054,12 +1054,10 @@ public class AssetCatalogHandler {
     }
 
     private void setAssetElementAttributes(AssetElement assetElement, EntityDetail asset) {
-        String method = "setAssetElementAttributes";
         assetElement.setGuid(asset.getGUID());
-        assetElement.setTypeDef(asset.getType().getTypeDefName());
         assetElement.setTypeDefGUID(asset.getType().getTypeDefGUID());
+        assetElement.setTypeDefName(asset.getType().getTypeDefName());
         assetElement.setProperties(repositoryHelper.getInstancePropertiesAsMap(asset.getProperties()));
-        assetElement.setQualifiedName(repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, asset.getProperties(), method));
     }
 
     private Element buildElement(EntityDetail entityDetail) {
@@ -1067,13 +1065,10 @@ public class AssetCatalogHandler {
     }
 
     private Term buildTerm(EntityDetail entity) {
-        String method = "buildTerm";
-
         Term term = new Term();
         term.setGuid(entity.getGUID());
-        term.setTypeDef(entity.getType().getTypeDefName());
         term.setTypeDefGUID(entity.getType().getTypeDefGUID());
-        term.setQualifiedName(repositoryHelper.getStringProperty(ASSET_CATALOG_OMAS, QUALIFIED_NAME, entity.getProperties(), method));
+        term.setTypeDefName(entity.getType().getTypeDefName());
         term.setProperties(repositoryHelper.getInstancePropertiesAsMap(entity.getProperties()));
 
         return term;
