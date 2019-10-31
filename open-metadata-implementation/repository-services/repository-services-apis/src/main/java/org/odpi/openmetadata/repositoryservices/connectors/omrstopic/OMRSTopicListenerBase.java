@@ -44,6 +44,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * Name of the service that this is listening on behalf of.
      *
      * @param serviceName name of service
+     * @param auditLog logging destination
      */
     public OMRSTopicListenerBase(String       serviceName,
                                  OMRSAuditLog auditLog)
@@ -96,6 +97,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param instance                       details of the instance from the event
      * @param actionDescription              description of overall processing
+     * @return typeName
      */
     protected String getInstanceTypeName(String            sourceName,
                                          String            originatorMetadataCollectionId,
@@ -1214,6 +1216,7 @@ public class OMRSTopicListenerBase implements OMRSTopicListener
      *                                   different level to the local repository.
      * @param targetTypeDefSummary details of the TypeDef being patched
      * @param otherTypeDef details of the TypeDef in the local repository.
+     * @param errorMessage descriptive message
      */
     public void processTypeDefPatchMismatchEvent(String         sourceName,
                                                  String         originatorMetadataCollectionId,
