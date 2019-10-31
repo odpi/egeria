@@ -62,6 +62,11 @@
         </dependency>
 
         <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>metadata-security-apis</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
