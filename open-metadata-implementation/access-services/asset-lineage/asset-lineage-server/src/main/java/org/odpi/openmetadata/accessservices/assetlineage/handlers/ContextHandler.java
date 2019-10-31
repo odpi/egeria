@@ -113,7 +113,7 @@ public class ContextHandler {
 
         //TODO check for Table entities
         if (isComplexSchemaType.isPresent()) {
-//            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
+            setAssetDetails(userId,entityDetail);
         }
 
         if(hasSchemaType(typeDefName)) {

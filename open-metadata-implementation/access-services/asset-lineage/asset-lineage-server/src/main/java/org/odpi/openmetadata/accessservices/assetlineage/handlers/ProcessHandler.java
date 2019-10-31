@@ -165,7 +165,8 @@ public class ProcessHandler {
             }
 
             Optional<Map.Entry<String, Set<GraphContext>>> foundExistingRelationship = graph.getNeighbors().entrySet().parallelStream().filter(entry ->
-                    entry.getValue().parallelStream().filter(internalEntry -> internalEntry.getRelationshipGuid().equals(relationship.getGUID())).findAny().isPresent()
+                    entry.getValue().parallelStream().anyMatch(internalEntry ->internalEntry.getRelationshipGuid().equals(relationship.getGUID()))
+//                            .filter(internalEntry -> internalEntry.getRelationshipGuid().equals(relationship.getGUID())).findAny().isPresent()
             ).findAny();
 
             if (foundExistingRelationship.isPresent()){
