@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.berkeleydb.BerkeleyBufferJanusFactory.openBufferGraph;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.Constants.TABULAR_COLUMN;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
@@ -71,12 +72,12 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
         String graphDB = connectionProperties.getConfigurationProperties().get("graphDB").toString();
         switch (graphDB){
             case "berkeleydb":
+                this.bufferGraph = openBufferGraph();
                 break;
             case "cassandra":
                 BufferGraphFactory bufferGraphFactory = new BufferGraphFactory();
                 this.bufferGraph = bufferGraphFactory.openBufferGraph(connectionProperties);
                 break;
-
                 default:
                     break;
         }
@@ -192,11 +193,13 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
         Iterator<Edge> edgeIt = g.E().has(PROPERTY_KEY_RELATIONSHIP_GUID, relationshipGuid);
         if (edgeIt.hasNext()) {
             g.tx().rollback();
-            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+//            throwException(JanusConnectorErrorCode.RELATIONSHIP_ALREADY_EXISTS,relationshipGuid,methodName);
+            log.debug("{} found existing edge {}", methodName, edgeIt);
+
             return;
         }
         //TODO add try catch
-        fromVertex.addEdge(relationshipType, toVertex);
+        fromVertex.addEdge(relationshipType, toVertex).property("edguid",relationshipGuid);
         g.tx().commit();
     }
     private void addPropertiesToVertex(GraphTraversalSource g,Vertex vertex, LineageEntity lineageEntity){

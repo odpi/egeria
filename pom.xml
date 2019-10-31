@@ -1908,11 +1908,11 @@
                 <scope>compile</scope>
             </dependency>
 
-            <dependency>
-              <groupId>com.sleepycat</groupId>
-              <artifactId>je</artifactId>
-              <version>18.3.12</version>
-            </dependency>
+<!--            <dependency>-->
+<!--              <groupId>com.sleepycat</groupId>-->
+<!--              <artifactId>je</artifactId>-->
+<!--              <version>18.3.12</version>-->
+<!--            </dependency>-->
 
             <dependency>
                 <groupId>com.google.crypto.tink</groupId>

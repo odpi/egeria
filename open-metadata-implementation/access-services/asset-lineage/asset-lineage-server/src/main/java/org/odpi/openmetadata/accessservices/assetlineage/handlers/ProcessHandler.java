@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.GraphContext;
+import org.odpi.openmetadata.accessservices.assetlineage.LineageEntity;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.ENTITY_NOT_FOUND;
 import static org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode.RELATIONSHIP_NOT_FOUND;
@@ -161,6 +163,15 @@ public class ProcessHandler {
             if(relationship.getType().getTypeDefName().equals(ATTRIBUTE_FOR_SCHEMA) && startEntityType.equals(SCHEMA_ATTRIBUTE)){
                 continue;
             }
+
+            Optional<Map.Entry<String, Set<GraphContext>>> foundExistingRelationship = graph.getNeighbors().entrySet().parallelStream().filter(entry ->
+                    entry.getValue().parallelStream().filter(internalEntry -> internalEntry.getRelationshipGuid().equals(relationship.getGUID())).findAny().isPresent()
+            ).findAny();
+
+            if (foundExistingRelationship.isPresent()){
+                continue;
+            }
+
             EntityDetail endEntity = commonHandler.writeEntitiesAndRelationships(userId,startEntity,relationship,graph);
             if(endEntity == null) return Collections.emptyList();
             entityDetails.add(endEntity);
@@ -199,9 +210,11 @@ public class ProcessHandler {
                                                                                                        UserNotAuthorizedException {
         List<EntityDetail> result = new ArrayList<>();
         for (EntityDetail entityDetail : entityDetails) {
-            result = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
+            List<EntityDetail>  lineageMapppings = getRelationshipsBetweenEntities(userId, entityDetail.getGUID(),
                                            processRelationshipsTypes.get(entityDetail.getType().getTypeDefName()),
                                            entityDetail.getType().getTypeDefName());
+            Optional<EntityDetail> first = lineageMapppings.stream().findFirst();
+            result.add(first.orElse(null));
         }
         return result;
     }

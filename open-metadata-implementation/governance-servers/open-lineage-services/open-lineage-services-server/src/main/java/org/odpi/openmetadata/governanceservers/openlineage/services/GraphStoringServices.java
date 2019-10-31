@@ -17,7 +17,7 @@ public class GraphStoringServices {
 
     public GraphStoringServices(BufferGraphStore graphStore) {
         this.bufferGraphStore = graphStore;
-        this.jobConfiguration = new JobConfiguration(graphStore);
+//        this.jobConfiguration = new JobConfiguration(graphStore);
 
     }
 

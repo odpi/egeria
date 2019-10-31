@@ -116,10 +116,10 @@ public class OpenLineageOperationalServices {
             try {
                 ConnectorBroker connectorBroker = new ConnectorBroker();
                 if (type.equals("buffer")){
-                    return (BufferGraphStore) connectorBroker.getConnector(connection);
+                    return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
                 }
                 else if (type.equals("main")){
-                    return (MainGraphStore) connectorBroker.getConnector(connection);
+                    return (OpenLineageGraphStore) connectorBroker.getConnector(connection);
                 }
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);

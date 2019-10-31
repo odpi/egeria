@@ -72,7 +72,7 @@ public class OMAGServerAdminForOpenLineage
 
             openLineageConfig.setOpenLineageMainGraphConnection(
                     connectorConfigurationFactory.getOpenLineageServerConfiguration(serverName,
-                            openLineageConfig.getOpenLineageProvider(),
+                            openLineageConfig.getOpenLineageProviderMain(),
                             serverConfig.getLocalServerURL(),
                             openLineageConfig.getMainGraphConfig())
             );
