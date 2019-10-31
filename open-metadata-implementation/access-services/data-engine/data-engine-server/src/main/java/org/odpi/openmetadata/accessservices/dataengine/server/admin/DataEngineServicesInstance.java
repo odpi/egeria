@@ -28,9 +28,14 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
     private PortHandler portHandler;
 
     /**
-     * Set up the local repository connector that will service the REST Calls.
+     * Set up the local repository connector that will service the REST Calls
      *
-     * @param repositoryConnector link to the repository responsible for servicing the REST calls.
+     * @param repositoryConnector link to the repository responsible for servicing the REST calls
+     * @param supportedZones      list of zones that DataEngine is allowed to serve Assets from
+     * @param defaultZones        list of zones that DataEngine sets up in new Asset instances
+     * @param auditLog            logging destination
+     * @param localServerUserId   userId used for server initiated actions
+     * @param maxPageSize         max number of results to return on single request
      *
      * @throws NewInstanceException a problem occurred during initialization
      */

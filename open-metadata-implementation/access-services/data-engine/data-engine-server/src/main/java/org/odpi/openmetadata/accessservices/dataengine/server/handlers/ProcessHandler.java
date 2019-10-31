@@ -49,7 +49,6 @@ public class ProcessHandler {
     private List<String> supportedZones;
     private List<String> defaultZones;
 
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -59,7 +58,10 @@ public class ProcessHandler {
      * @param repositoryHandler             manages calls to the repository services
      * @param repositoryHelper              provides utilities for manipulating the repository services objects
      * @param dataEngineRegistrationHandler provides calls for retrieving external data engine guid
-     */
+     * @param assetHandler                  provides utilities for manipulating the repository services assets
+     * @param defaultZones                  setting of the default zones for the handler
+     * @param supportedZones                setting of the supported zones for the handler
+     **/
     public ProcessHandler(String serviceName, String serverName, InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler repositoryHandler, OMRSRepositoryHelper repositoryHelper,
                           DataEngineRegistrationHandler dataEngineRegistrationHandler, AssetHandler assetHandler,
