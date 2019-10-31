@@ -19,16 +19,13 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,11 +78,11 @@ class ProcessHandlerTest {
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_TYPE_NAME, ProcessPropertiesMapper.PROCESS_TYPE_GUID);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         when(repositoryHandler.createExternalEntity(USER, ProcessPropertiesMapper.PROCESS_TYPE_GUID,
-                ProcessPropertiesMapper.PROCESS_TYPE_NAME,EXTERNAL_SOURCE_DE_GUID,EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
+                ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null, InstanceStatus.DRAFT, methodName)).thenReturn(GUID);
 
         String result = processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
@@ -111,8 +108,8 @@ class ProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
                 null, InstanceStatus.DRAFT, methodName)).thenThrow(mockedException);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(USER, QUALIFIED_NAME, NAME, DESCRIPTION, LATEST_CHANGE,
@@ -209,14 +206,14 @@ class ProcessHandlerTest {
 
         mockTypeDef(ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(repositoryHandler, times(1)).createExternalRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                 PROCESS_GUID, GUID, null, methodName);
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, GUID, null, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);
@@ -238,11 +235,11 @@ class ProcessHandlerTest {
 
         UserNotAuthorizedException mockedException = mockException(UserNotAuthorizedException.class, methodName);
         doThrow(mockedException).when(repositoryHandler).createExternalRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, GUID, null, methodName);
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, GUID, null, methodName);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME));
@@ -262,14 +259,14 @@ class ProcessHandlerTest {
                 ProcessPropertiesMapper.PROCESS_TYPE_NAME, GUID, ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID,
                 ProcessPropertiesMapper.PROCESS_PORT_TYPE_NAME, methodName)).thenReturn(relationship);
 
-        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER, EXTERNAL_SOURCE_DE_QUALIFIED_NAME))
-                .thenReturn(EXTERNAL_SOURCE_DE_GUID);
+        when(dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(USER,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME)).thenReturn(EXTERNAL_SOURCE_DE_GUID);
 
         processHandler.addProcessPortRelationship(USER, PROCESS_GUID, GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME);
 
         verify(repositoryHandler, times(0)).createExternalRelationship(USER,
-                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID, EXTERNAL_SOURCE_DE_QUALIFIED_NAME,
-                PROCESS_GUID, GUID, null, methodName);
+                ProcessPropertiesMapper.PROCESS_PORT_TYPE_GUID, EXTERNAL_SOURCE_DE_GUID,
+                EXTERNAL_SOURCE_DE_QUALIFIED_NAME, PROCESS_GUID, GUID, null, methodName);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validateGUID(GUID,
                 PortPropertiesMapper.GUID_PROPERTY_NAME, methodName);

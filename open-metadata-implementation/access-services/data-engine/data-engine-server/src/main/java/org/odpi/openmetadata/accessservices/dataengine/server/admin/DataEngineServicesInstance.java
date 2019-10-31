@@ -35,19 +35,26 @@ class DataEngineServicesInstance extends OCFOMASServiceInstance {
      * @throws NewInstanceException a problem occurred during initialization
      */
     DataEngineServicesInstance(OMRSRepositoryConnector repositoryConnector, List<String> supportedZones,
-                               OMRSAuditLog auditLog) throws NewInstanceException {
-        super(description.getAccessServiceName(), repositoryConnector, auditLog);
-        super.supportedZones = supportedZones;
+                               List<String> defaultZones, OMRSAuditLog auditLog, String localServerUserId,
+                               int maxPageSize) throws NewInstanceException {
+
+        super(description.getAccessServiceName(), repositoryConnector, supportedZones, defaultZones, auditLog,
+                localServerUserId, maxPageSize);
 
         if (repositoryHandler != null) {
             dataEngineRegistrationHandler = new DataEngineRegistrationHandler(serviceName, serverName,
                     invalidParameterHandler, repositoryHandler, repositoryHelper);
             processHandler = new ProcessHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper,dataEngineRegistrationHandler);
+                    repositoryHelper, dataEngineRegistrationHandler, assetHandler, defaultZones, supportedZones);
             dataEngineSchemaTypeHandler = new DataEngineSchemaTypeHandler(serviceName, serverName,
-                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler,dataEngineRegistrationHandler);
+                    invalidParameterHandler, repositoryHandler, repositoryHelper, schemaTypeHandler,
+                    dataEngineRegistrationHandler);
             portHandler = new PortHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler,
-                    repositoryHelper,dataEngineRegistrationHandler);
+                    repositoryHelper, dataEngineRegistrationHandler);
+
+            if (securityVerifier != null) {
+                processHandler.setSecurityVerifier(securityVerifier);
+            }
 
         } else {
             final String methodName = "new ServiceInstance";
