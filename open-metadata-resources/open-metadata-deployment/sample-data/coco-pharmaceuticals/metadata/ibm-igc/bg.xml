@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-<glossary xmlns="http://www.ibm.com/is/bg/importexport"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.ibm.com/is/bg/importexport BGSchema.xsd"
-    version="1.6" exportTime="1572526656439" ignoreAssignedAssets="true"
-    ignoreLabeledAssets="true" ignoreAssetCollections="true" ignoreStewards="true">
+<glossary xmlns="http://www.ibm.com/is/bg/importexport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/is/bg/importexport BGSchema.xsd" version="1.6" exportTime="1572536675714" ignoreAssignedAssets="false" ignoreLabeledAssets="true" ignoreAssetCollections="true" ignoreStewards="true">
     <categories>
         <category
             rid="6662c0f2.ee6a64fe.001ms78ha.8bqri4n.ll01uj.l1kjtumcsjmlnb3a38emn"
@@ -152,6 +148,10 @@
             status="STANDARD" type="NONE">
             <parentCategory
                 rid="6662c0f2.ee6a64fe.001ms78ha.8bqri4n.ll01uj.l1kjtumcsjmlnb3a38emn" identity="Classifications"/>
+            <assignedAssets>
+                <categoryRef
+                    rid="6662c0f2.ee6a64fe.o1h6evefs.3cd0db2.onm1g1.3auq0edm3j6k2gumuks96" identity="Coco Pharmaceuticals::Organization"/>
+            </assignedAssets>
         </term>
         <term
             rid="6662c0f2.e1b1ec6c.och6gsksh.nl604g6.931p5e.a8vd5nphaem8iblvrpfg0"
@@ -192,11 +192,11 @@
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263shn0.gh72fkj.n54p96.2u60dcfo2vdvid0hjl8tc" identity="Coco Pharmaceuticals::Clinical Trial Identifier"/>
                 <termRef
-                    rid="6662c0f2.e1b1ec6c.00263pfv9.8dicae6.ms2vnv.944jep7aa2u7e0epjv35l" identity="Coco Pharmaceuticals::Department Code"/>
-                <termRef
                     rid="6662c0f2.e1b1ec6c.00263shbr.s7vv65o.i276k6.59c1t94abdt4nqi11fk8q" identity="Coco Pharmaceuticals::Manager Identifier"/>
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263phiu.ns4tojl.pbf2qr.91blj7n4rsg7ddf37590i" identity="Coco Pharmaceuticals::Employee Identifier"/>
+                <termRef
+                    rid="6662c0f2.e1b1ec6c.00263pfv9.8dicae6.ms2vnv.944jep7aa2u7e0epjv35l" identity="Coco Pharmaceuticals::Department Code"/>
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263pgul.jam2g2s.qlr9u8.b9ei1dc60fgnhvs533pvs" identity="Coco Pharmaceuticals::Job Category"/>
                 <termRef
@@ -222,13 +222,13 @@
                 rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Classifications::Confidentiality"/>
             <assignedAssets>
                 <termRef
-                    rid="6662c0f2.e1b1ec6c.00263ph2k.b6kb0d8.k164b7.5g8ghnulmmemam4b7btsj" identity="Coco Pharmaceuticals::Employee Contract Type"/>
-                <termRef
                     rid="6662c0f2.e1b1ec6c.000ma7vav.iq3ffqq.q7f55j.4f9lr6n61uumoi3r8c70h" identity="Coco Pharmaceuticals::Contact Type"/>
                 <termRef
-                    rid="6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes" identity="Coco Pharmaceuticals::Job Level"/>
+                    rid="6662c0f2.e1b1ec6c.00263ph2k.b6kb0d8.k164b7.5g8ghnulmmemam4b7btsj" identity="Coco Pharmaceuticals::Employee Contract Type"/>
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263pfrb.66t5p8c.jk5353.69k7s3u2do49odaavci58" identity="Coco Pharmaceuticals::Employee Status"/>
+                <termRef
+                    rid="6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes" identity="Coco Pharmaceuticals::Job Level"/>
                 <termRef
                     rid="6662c0f2.e1b1ec6c.54865omh1.pco9ecb.c3g5f1.pfvf6bdv95dnc67jq2jli" identity="Coco Pharmaceuticals::First Name"/>
                 <termRef
@@ -252,9 +252,9 @@
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263shk7.8vmg2e5.dt0tqp.fedhui18kd6cif3ro2ugd" identity="Coco Pharmaceuticals::Patient Full Name"/>
                 <termRef
-                    rid="6662c0f2.e1b1ec6c.00263sguj.t9k1se0.m0kq4g.c7pqbsgdlmfvgkc3lc836" identity="Coco Pharmaceuticals::Email Type"/>
-                <termRef
                     rid="6662c0f2.e1b1ec6c.00263shml.beko45i.c0evnb.dtnbci8731alks6c2j53k" identity="Coco Pharmaceuticals::Address Line 5"/>
+                <termRef
+                    rid="6662c0f2.e1b1ec6c.00263sguj.t9k1se0.m0kq4g.c7pqbsgdlmfvgkc3lc836" identity="Coco Pharmaceuticals::Email Type"/>
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263shmd.6u8o50l.dhhet6.5a7eo9o6q9j8vikjs6ds4" identity="Coco Pharmaceuticals::Address Line 4"/>
                 <termRef
@@ -264,9 +264,9 @@
                 <termRef
                     rid="6662c0f2.e1b1ec6c.00263sh0s.jh26jeo.qf1k24.ip1nbj5vhcv53hif03093" identity="Coco Pharmaceuticals::Phone Number"/>
                 <termRef
-                    rid="6662c0f2.e1b1ec6c.00263ph5o.i82opc9.gm56ti.ndm2ci8sukvfg736konv2" identity="Coco Pharmaceuticals::Street Number"/>
-                <termRef
                     rid="6662c0f2.e1b1ec6c.00263shm4.ftiu77d.1a2qti.5s7cdcl4eavm5smikm9q0" identity="Coco Pharmaceuticals::Address Line 3"/>
+                <termRef
+                    rid="6662c0f2.e1b1ec6c.00263ph5o.i82opc9.gm56ti.ndm2ci8sukvfg736konv2" identity="Coco Pharmaceuticals::Street Number"/>
             </assignedAssets>
         </term>
         <term
@@ -641,4 +641,13 @@
                 rid="6662c0f2.ee6a64fe.o1h6evehs.j0f25pn.ihsrb3.m7984f1jgfencf15nopk0" identity="Coco Pharmaceuticals::Person::Employee"/>
         </term>
     </terms>
+    <policies>
+        <policy rid="6662c0f2.8ed29152.000mfk7vq.c6tfu0k.obn9v3.r5502q8hp91rqpo00itnu" name="Data Access Policies"/>
+        <policy rid="6662c0f2.8ed29152.000mfk806.3p93nta.95ttq9.gc3t9m9vfgg55hhm19vsp" name="Confidential information should be masked when user does not have specific access to its Subject Area">
+            <parentPolicy rid="6662c0f2.8ed29152.000mfk7vq.c6tfu0k.obn9v3.r5502q8hp91rqpo00itnu" identity="Data Access Policies"/>
+        </policy>
+        <policy rid="6662c0f2.8ed29152.000mfk80c.tjnmn4i.v3l476.7bp3dfunvotq1pjfmtb65" name="Users require specific access to the Subject Area to see its confidential data">
+            <parentPolicy rid="6662c0f2.8ed29152.000mfk7vq.c6tfu0k.obn9v3.r5502q8hp91rqpo00itnu" identity="Data Access Policies"/>
+        </policy>
+    </policies>
 </glossary>
