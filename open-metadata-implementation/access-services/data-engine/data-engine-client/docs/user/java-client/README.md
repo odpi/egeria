@@ -16,8 +16,7 @@ where the Data Engine OMAS is running and its [server name](../../../../../docs/
 
 Here is a code example with the user id and password specified:
 
-```
-
+```java
 DatEngine   client = new DataEngineImpl   ("cocoMDS1",
                                            "http://localhost:8081",
                                            "cocoUI",

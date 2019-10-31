@@ -21,7 +21,7 @@ public class Property extends ModelElement
 
         super.setGUID(UUID.randomUUID().toString());
         super.setId(propertyDescription.getId());
-        super.setName(propertyDescription.getName());
+        super.setDisplayName(propertyDescription.getDisplayName());
         super.setDescription(propertyDescription.getDescription());
     }
 

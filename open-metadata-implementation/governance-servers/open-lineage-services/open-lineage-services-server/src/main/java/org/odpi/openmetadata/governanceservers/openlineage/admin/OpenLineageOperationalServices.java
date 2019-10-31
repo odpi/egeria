@@ -72,8 +72,8 @@ public class OpenLineageOperationalServices {
 
         this.auditLog = auditLog;
 
-        if(openLineageConfig == null) {
-            getError(auditLog,OpenLineageAuditCode.NO_CONFIG_DOC,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
+        if (openLineageConfig == null) {
+            getError(auditLog, OpenLineageAuditCode.NO_CONFIG_DOC, ACTION_DESCRIPTION, ACTION_DESCRIPTION);
         }
 
         this.openLineageConfig = openLineageConfig;
@@ -84,6 +84,7 @@ public class OpenLineageOperationalServices {
 
         BufferGraphStore bufferGraphConnector = (BufferGraphStore) getGraphConnector(bufferGraphConnection,"buffer");
         MainGraphStore mainGraphConnector = (MainGraphStore) getGraphConnector(mainGraphConnection,"main");
+
         Object mainGraph = mainGraphConnector.getMainGraph();
         bufferGraphConnector.setMainGraph(mainGraph);
 
@@ -123,12 +124,11 @@ public class OpenLineageOperationalServices {
                 }
             } catch (ConnectionCheckedException | ConnectorCheckedException e) {
                 log.error("Unable to initialize connector.", e);
-                getError(auditLog,OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR,ACTION_DESCRIPTION,ACTION_DESCRIPTION);
+                getError(auditLog, OpenLineageAuditCode.ERROR_INITIALIZING_CONNECTOR, ACTION_DESCRIPTION, ACTION_DESCRIPTION);
             }
         }
         return null;
     }
-
 
 
     private void startEventBus(GraphStoringServices graphStoringServices) throws OMAGConfigurationErrorException {

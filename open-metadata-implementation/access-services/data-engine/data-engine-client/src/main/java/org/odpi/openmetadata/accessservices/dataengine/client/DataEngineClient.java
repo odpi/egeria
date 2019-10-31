@@ -141,11 +141,11 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createSoftwareServerCapability(String userId, String qualifiedName, String name, String description,
-                                          String type, String version, String patchLevel, String source) throws
-                                                                                                         InvalidParameterException,
-                                                                                                         UserNotAuthorizedException,
-                                                                                                         PropertyServerException;
+    String createExternalDataEngine(String userId, String qualifiedName, String name, String description,
+                                    String type, String version, String patchLevel, String source) throws
+                                                                                                                 InvalidParameterException,
+                                                                                                                 UserNotAuthorizedException,
+                                                                                                                 PropertyServerException;
 
     /**
      * Create or update the software server capability entity
@@ -159,10 +159,10 @@ public interface DataEngineClient {
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    String createSoftwareServerCapability(String userId, SoftwareServerCapability softwareServerCapability) throws
-                                                                                                            InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException;
+    String createExternalDataEngine(String userId, SoftwareServerCapability softwareServerCapability) throws
+                                                                                                      InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException;
 
     /**
      * Create or update the schema type entity, with the corresponding schema attributes and relationships

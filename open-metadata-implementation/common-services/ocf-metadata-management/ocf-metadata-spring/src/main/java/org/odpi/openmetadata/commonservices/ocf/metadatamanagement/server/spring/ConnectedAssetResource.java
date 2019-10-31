@@ -563,6 +563,35 @@ public class ConnectedAssetResource
 
 
     /**
+     * Returns the list of related Referenceables that provide more information for this asset, schema, ...
+     *
+     * @param serverName   String   name of server instance to call.
+     * @param serviceURLName  String   name of the service that created the connector that issued this request.
+     * @param userId       String   userId of user making request.
+     * @param elementGUID    String   unique id for the element.
+     * @param elementStart int      starting position for fist returned element.
+     * @param maxElements  int      maximum number of elements to return on the call.
+     *
+     * @return a list of related assets or
+     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
+     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
+     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
+     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/referenceables/{elementGUID}/more-information")
+
+    public MoreInformationResponse getMoreInformation(@PathVariable String  serverName,
+                                                      @PathVariable String  serviceURLName,
+                                                      @PathVariable String  userId,
+                                                      @PathVariable String  elementGUID,
+                                                      @RequestParam int     elementStart,
+                                                      @RequestParam int     maxElements)
+    {
+        return restAPI.getMoreInformation(serverName, serviceURLName, userId, elementGUID, elementStart, maxElements);
+    }
+
+
+    /**
      * Returns the list of related media references for the asset.
      *
      * @param serverName   String   name of server instance to call.

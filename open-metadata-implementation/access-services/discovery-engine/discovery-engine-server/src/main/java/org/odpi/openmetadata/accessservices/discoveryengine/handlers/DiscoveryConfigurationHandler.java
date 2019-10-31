@@ -283,11 +283,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntityByType(userId,
-                                                                                 DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
-                                                                                 startingFrom,
-                                                                                 maximumResults,
-                                                                                 methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
+                                                                                   DiscoveryEnginePropertiesMapper.DISCOVERY_ENGINE_TYPE_GUID,
+                                                                                   startingFrom,
+                                                                                   maximumResults,
+                                                                                   methodName);
 
         /*
          * Convert entities to beans
@@ -663,11 +663,11 @@ public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
-        List<EntityDetail> retrievedEntities = repositoryHandler.getEntityByType(userId,
-                                                                                 DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
-                                                                                 startingFrom,
-                                                                                 maximumResults,
-                                                                                 methodName);
+        List<EntityDetail> retrievedEntities = repositoryHandler.getEntitiesByType(userId,
+                                                                                   DiscoveryServicePropertiesMapper.DISCOVERY_SERVICE_TYPE_GUID,
+                                                                                   startingFrom,
+                                                                                   maximumResults,
+                                                                                   methodName);
 
         /*
          * Convert entities to beans

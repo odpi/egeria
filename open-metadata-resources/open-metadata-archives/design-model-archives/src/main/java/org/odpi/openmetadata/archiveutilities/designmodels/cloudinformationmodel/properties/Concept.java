@@ -21,6 +21,12 @@ public class Concept extends ModelElement
     private Map<String, Attribute> attributes       = new HashMap<>();
 
 
+    public Concept(String id)
+    {
+        super.setId(id);
+    }
+
+
     public boolean isReferenceDataSet()
     {
         return referenceDataSet;
@@ -63,6 +69,19 @@ public class Concept extends ModelElement
             return new ArrayList<>(subClasses.values());
         }
     }
+
+
+    public String getSuperClassId()
+    {
+        return superClassId;
+    }
+
+
+    public void setSuperClassId(String superClassId)
+    {
+        this.superClassId = superClassId;
+    }
+
 
     public void setDomainOfLink(String   linkId,
                                 Link     link)

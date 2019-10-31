@@ -10,11 +10,11 @@ using the `org.odpi.egeria` group.
 ## Select repository
 
 If you are developing against the current code you may want to use the current repository.  Selecting the repository from [Artifact Repository](https://odpi.jfrog.io/odpi/egeria-snapshot).  For documentation 
-here, we chose the ```snapshot``` repository. 
+here, we chose the `snapshot` repository. 
 
 ## Add repository to your gradle
 
-In our ```build.gradle``` file we would the following: 
+In our `build.gradle` file we would the following: 
 
 ```groovy
 repositories {
@@ -26,13 +26,13 @@ repositories {
 
 ## Add artifacts as needed
 
-We import for ```compile``` the artifacts needed to build our code.
+We import for `compile` the artifacts needed to build our code.
 
 ```sh
 compile "org.odpi.egeria:repository-services-apis:+"
 ```
 
-This allows us to get the latest ```repository-services-apis``` artifact from the ```snapshot``` repository. 
+This allows us to get the latest `repository-services-apis` artifact from the `snapshot` repository. 
 
 ## Build and check your gradle. 
 

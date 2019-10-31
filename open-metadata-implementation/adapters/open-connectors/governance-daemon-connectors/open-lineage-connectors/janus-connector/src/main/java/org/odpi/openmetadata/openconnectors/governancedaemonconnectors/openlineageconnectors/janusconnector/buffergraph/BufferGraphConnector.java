@@ -40,7 +40,6 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
 
     private JanusGraph mainGraph;
 
-    private MainGraphStore mainGraphConnector;
 
     /**
      * Initialize the connector.
@@ -50,10 +49,7 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
      */
     @Override
     public void initialize(String connectorInstanceId, ConnectionProperties connectionProperties) {
-
         super.initialize(connectorInstanceId, connectionProperties);
-        this.connectorInstanceId = connectorInstanceId;
-        this.connectionProperties = connectionProperties;
         initializeGraphDB();
     }
 

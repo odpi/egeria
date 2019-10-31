@@ -42,7 +42,7 @@ public class DataEngineProxyResource {
      * @return void response
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "")
-    VoidResponse deleteDataEngineProxy(@PathVariable String userId,
+    public VoidResponse deleteDataEngineProxy(@PathVariable String userId,
                                        @PathVariable String serverName) {
         return adminAPI.deleteDataEngineProxy(userId, serverName);
     }

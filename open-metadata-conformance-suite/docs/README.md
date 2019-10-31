@@ -62,7 +62,6 @@ Number of tests skipped: 0
 Technology under test is not yet conformant
 
 Process finished with exit code 1
-$
 ```
 
 This output is an example of a successful run:
@@ -83,7 +82,6 @@ Number of tests skipped: 0
 Congratulations, technology under test is conformant
 
 Process finished with exit code 0
-$
 ```
 
 ----
