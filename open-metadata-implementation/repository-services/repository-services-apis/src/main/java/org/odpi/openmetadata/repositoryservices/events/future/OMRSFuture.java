@@ -7,11 +7,12 @@ package org.odpi.openmetadata.repositoryservices.events.future;
  * directly accessing Futures created by other 
  * consumers.
  */
-public interface OMRSFuture {
-
+public interface OMRSFuture
+{
     /**
      * Checks whether processing for the future has completed.
-     * @return
+     *
+     * @return boolean
      */
     boolean isDone();
 

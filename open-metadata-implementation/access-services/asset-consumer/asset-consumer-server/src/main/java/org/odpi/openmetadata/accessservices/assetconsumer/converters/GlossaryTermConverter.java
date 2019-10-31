@@ -88,7 +88,7 @@ public class GlossaryTermConverter extends ReferenceableConverter
                                                                           GlossaryTermMapper.DISPLAY_NAME_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
-                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                bean.setSummary(repositoryHelper.removeStringProperty(serviceName,
                                                                           GlossaryTermMapper.SUMMARY_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
@@ -96,11 +96,11 @@ public class GlossaryTermConverter extends ReferenceableConverter
                                                                           GlossaryTermMapper.DESCRIPTION_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
-                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                bean.setAbbreviation(repositoryHelper.removeStringProperty(serviceName,
                                                                           GlossaryTermMapper.ABBREVIATION_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));
-                bean.setDescription(repositoryHelper.removeStringProperty(serviceName,
+                bean.setUsage(repositoryHelper.removeStringProperty(serviceName,
                                                                           GlossaryTermMapper.USAGE_PROPERTY_NAME,
                                                                           instanceProperties,
                                                                           methodName));

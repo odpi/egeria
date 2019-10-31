@@ -6,13 +6,13 @@
 Attaches a tag to an asset.
 
 ```
-
 POST {{serverURLRoot}}/servers/{{serverName}}/open-metadata/access-services/asset-consumer/users/{{userId}}/assets/{{assetGUID}}/tags/{{tagGUID}}
+```
 
-        NullRequestBody  requestBody;
+```java
+NullRequestBody  requestBody;
 
-        VoidResponse restResult;
-
+VoidResponse restResult;
 ```
 
 

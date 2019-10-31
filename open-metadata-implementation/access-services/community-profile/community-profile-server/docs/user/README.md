@@ -6,7 +6,7 @@
 The community profile OMAS REST services use a URL that begins
 
 ```
-  <serverRootURL>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}
+<serverRootURL>/servers/{serverName}/open-metadata/access-services/community-profile/users/{userId}
 ```
 
 where:

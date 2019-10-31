@@ -11,15 +11,13 @@ full range of its API calls both with the server activated and with it not prese
 It uses an OMAG Server configured with the in-memory repository.
 To run the test, start the server and call the test suite as follows:
 
-```
-
+```bash
 $ AssetConsumerOMASFVTSuite serverURLRoot
-
 ```
 
 Where:
 
-* serverURLRoot is the hostname and port name for the OMAG Server.  For example: `http://localhost:8080`
+* `serverURLRoot` is the hostname and port name for the OMAG Server.  For example: `http://localhost:8080`
 
 
 
