@@ -121,7 +121,6 @@ public class ProcessHandler {
 
         Process process = createProcessAsset(qualifiedName, processName, description, latestChange, zoneMembership,
                 displayName, formula, owner, ownerType);
-
         /*
          * Initialize the asset's zone membership
          */

@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
