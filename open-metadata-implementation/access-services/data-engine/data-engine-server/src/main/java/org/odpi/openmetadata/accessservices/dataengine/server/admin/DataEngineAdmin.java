@@ -37,19 +37,24 @@ public class DataEngineAdmin extends AccessServiceAdmin {
         final String actionDescription = "initialize";
 
         DataEngineAuditCode auditCode;
+
+        auditCode = DataEngineAuditCode.SERVICE_INITIALIZING;
+        auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
+                auditCode.getUserAction());
         try {
-            auditCode = DataEngineAuditCode.SERVICE_INITIALIZING;
-            auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(), null, auditCode.getSystemAction(),
-                    auditCode.getUserAction());
 
             this.auditLog = auditLog;
 
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(),
                     auditLog);
+            List<String> defaultZones = this.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                    accessServiceConfig.getAccessServiceName(),
+                    auditLog);
 
-            instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, auditLog);
+            instance = new DataEngineServicesInstance(repositoryConnector, supportedZones, defaultZones, auditLog,
+                    serverUserName, repositoryConnector.getMaxPageSize());
             serverName = instance.getServerName();
 
             auditCode = DataEngineAuditCode.SERVICE_INITIALIZED;
