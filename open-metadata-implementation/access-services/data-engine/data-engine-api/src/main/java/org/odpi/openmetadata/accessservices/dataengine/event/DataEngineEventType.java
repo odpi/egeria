@@ -22,7 +22,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum DataEngineEventType implements Serializable
 {
-    UNKNOWN_DATA_ENGINE_EVENT         (0,  "Unknown Event",  "An event that is not recognized by the local server.");
+    UNKNOWN_DATA_ENGINE_EVENT               (0,  "Unknown Data Engine Job Event",  "An event that is not recognized by the local server."),
+    DATA_ENGINE_REGISTRATION_EVENT          (1,  "DataEngineRegistrationEvent",      "An event that a data engine job has been created."),
+    LINEAGE_MAPPINGS_EVENT                  (2,  "LineageMappingsEvent",  "An event that  an existing data engine job has been updated ."),
+    PORT_ALIAS_EVENT                        (3,  "PortAliasEvent",      "An event that a data engine job has been created."),
+    PORT_IMPLEMENTATION_EVENT               (4,  "PortImplementationEvent",  "An event that  an existing data engine job has been updated ."),
+    PORT_LIST_EVENT                         (5,  "PortListEvent",      "An event that a data engine job has been created."),
+    PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that  an existing data engine job has been updated ."),
+    PROCESS_LIST_EVENT                      (7,  "ProcessListEvent",  "An event that  an existing data engine job has been updated .");
 
     private static final long     serialVersionUID = 1L;
 

@@ -38,7 +38,11 @@ public enum DataEngineErrorCode {
     NO_SCHEMA_ATTRIBUTE(404, "OMAS-DATA-ENGINE-404-002 ",
             "No schema attribute found for qualifiedName {0}",
             "The system is unable to retrieve a schema attribute for the specified qualifiedName.",
-            "Correct the code in the caller to provide the qualified name.");
+            "Correct the code in the caller to provide the qualified name."),
+    PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
+            "The data engine event {0} could not be consumed. Error: {1}",
+            "The system is unable to process the request.",
+            "Verify the topic configuration or the event schema.");
 
     private int HTTPErrorCode;
     private String errorMessageId;

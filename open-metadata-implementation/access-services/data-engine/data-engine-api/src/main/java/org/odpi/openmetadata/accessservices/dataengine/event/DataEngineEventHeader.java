@@ -29,14 +29,17 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public abstract class DataEngineEventHeader {
 
     private long eventVersionId = 1L;
+
+    /* different data engine event types */
     private DataEngineEventType eventType = null;
 
-    public DataEngineEventHeader() {
-    }
+    /* unique name for the external source */
+    private String externalSourceName;
 
-    public DataEngineEventHeader(long eventVersionId, DataEngineEventType eventType) {
-        this.eventVersionId = eventVersionId;
-        this.eventType = eventType;
+    /* producer user id */
+    private String userId ;
+
+    public DataEngineEventHeader() {
     }
 
     public long getEventVersionId() {
@@ -55,11 +58,29 @@ public abstract class DataEngineEventHeader {
         this.eventType = eventType;
     }
 
+    public String getExternalSourceName() {
+        return externalSourceName;
+    }
+
+    public void setExternalSourceName(String externalSourceName) {
+        this.externalSourceName = externalSourceName;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "DataEngineEventType{" +
+        return "DataEngineEventHeader{" +
                 "eventVersionId=" + eventVersionId +
                 ", eventType=" + eventType +
+                ", externalSourceName='" + externalSourceName + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }
