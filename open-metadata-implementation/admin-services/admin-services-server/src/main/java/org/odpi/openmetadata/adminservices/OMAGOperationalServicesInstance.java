@@ -24,7 +24,7 @@ import java.util.List;
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
  */
 
-class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
+public class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
     private OMAGServerConfig                    operationalConfiguration            = null;
     private OMRSOperationalServices             operationalRepositoryServices       = null;
