@@ -85,7 +85,7 @@ public class RelationshipHandlerTest {
 
     @Test
     public void getRelationshipBetweenEntities_throwsUserNotAuthorizedException()
-            throws PropertyServerException, UserNotAuthorizedException{
+            throws PropertyServerException, UserNotAuthorizedException {
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
@@ -99,7 +99,7 @@ public class RelationshipHandlerTest {
                 RELATIONSHIP_TYPE,
                 methodName);
 
-        UserNotAuthorizedException thrown = assertThrows(UserNotAuthorizedException.class, () ->
+        assertThrows(UserNotAuthorizedException.class, () ->
                 relationshipHandler.getRelationshipBetweenEntities(USER,
                         FIRST_GUID,
                         SECOND_GUID,
@@ -108,23 +108,26 @@ public class RelationshipHandlerTest {
     }
 
     @Test
-    public void getRelationshipBetweenEntities_throwsInvalidParameterException() {
+    public void getRelationshipBetweenEntities_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException {
 
+        String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
+        InvalidParameterException mockedException =  new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", "", "");
 
-        InvalidParameterException thrown = assertThrows(InvalidParameterException.class, () ->
-                relationshipHandler.getRelationshipBetweenEntities(null,
-                        null,
-                        null,
-                        null));
+        doThrow(mockedException).when(invalidParameterHandler).validateGUID(FIRST_GUID, "entity1GUID", methodName);
 
-
+        assertThrows(InvalidParameterException.class, () ->
+                relationshipHandler.getRelationshipBetweenEntities(USER,
+                        FIRST_GUID,
+                        SECOND_GUID,
+                        RELATIONSHIP_TYPE));
+        
     }
 
     @Test
     public void getRelationshipBetweenEntities_throwsPropertyServerException()
-            throws UserNotAuthorizedException, PropertyServerException{
+            throws UserNotAuthorizedException, PropertyServerException {
         String methodName = "getRelationshipBetweenEntities";
         mockTypeDef(RELATIONSHIP_TYPE, RELATIONSHIP_TYPE_GUID);
 
@@ -139,7 +142,7 @@ public class RelationshipHandlerTest {
                 RELATIONSHIP_TYPE,
                 methodName);
 
-        PropertyServerException thrown = assertThrows(PropertyServerException.class, () ->
+        assertThrows(PropertyServerException.class, () ->
                 relationshipHandler.getRelationshipBetweenEntities(USER,
                         FIRST_GUID,
                         SECOND_GUID,
