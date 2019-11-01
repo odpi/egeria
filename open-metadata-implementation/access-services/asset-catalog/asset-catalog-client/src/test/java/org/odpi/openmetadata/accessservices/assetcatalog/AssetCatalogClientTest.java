@@ -6,9 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
@@ -29,7 +29,8 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class AssetCatalogClientTest {
+public class
+AssetCatalogClientTest {
 
     private static final String SERVER_URL = "http://localhost:8081";
     private static final String SERVER_NAME = "TestServer";
@@ -212,7 +213,6 @@ public class AssetCatalogClientTest {
         AssetResponse assetResponse = assetCatalog.searchByType(USER_ID, SEARCH_CRITERIA, searchParameters);
 
         Assert.assertEquals(ASSET_ID, assetResponse.getAssets().get(0).getGuid());
-        Assert.assertEquals(ASSET_TYPE, assetResponse.getAssets().get(0).getTypeDef());
     }
 
     @Test
@@ -232,7 +232,6 @@ public class AssetCatalogClientTest {
                 ASSET_TYPE);
 
         Assert.assertEquals(ASSET_ID, assetResponse.getAssets().get(0).getGuid());
-        Assert.assertEquals(ASSET_TYPE, assetResponse.getAssets().get(0).getTypeDef());
     }
 
     @Test
@@ -269,7 +268,7 @@ public class AssetCatalogClientTest {
     private Term mockTerm() {
         Term term = new Term();
         term.setGuid(ASSET_ID);
-        term.setTypeDef(ASSET_TYPE);
+        term.setTypeDefName(ASSET_TYPE);
         return term;
     }
 
@@ -339,8 +338,8 @@ public class AssetCatalogClientTest {
         return relationship;
     }
 
-    private Asset mockAsset(String defaultAssetId, String typeName) {
-        Asset asset = new Asset();
+    private Element mockAsset(String defaultAssetId, String typeName) {
+        Element asset = new Element();
 
         asset.setGuid(defaultAssetId);
         asset.setCreatedBy("admin");

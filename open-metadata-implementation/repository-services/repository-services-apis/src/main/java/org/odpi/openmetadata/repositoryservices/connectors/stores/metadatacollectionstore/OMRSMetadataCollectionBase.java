@@ -365,6 +365,8 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @throws InvalidParameterException a property is null or invalid
      * @throws InvalidTypeDefException the type is invalid
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws TypeDefConflictException incompatible TypeDefs
+     * @throws TypeDefKnownException duplicate TypeDefs
      */
     protected void newTypeDefParameterValidation(String  userId,
                                                  TypeDef typeDef,
@@ -389,6 +391,8 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param methodName calling method
      * @throws InvalidParameterException a property is null or invalid
      * @throws InvalidTypeDefException the type is invalid
+     * @throws TypeDefConflictException incompatible TypeDefs
+     * @throws TypeDefKnownException duplicate TypeDefs
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
      */
     protected void newAttributeTypeDefParameterValidation(String           userId,
@@ -881,15 +885,16 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
     /**
      * Match the supplied external standard identifiers against the active types for this repository.
      *
+     * @param allTypes list of types to filter
      * @param standard name of the standard, null means any.
      * @param organization name of the organization, null means any.
      * @param identifier identifier of the element in the standard, null means any.
      * @return list of typeDefs
      */
     public  List<TypeDef> filterTypesByExternalID(List<TypeDef> allTypes,
-                                                  String standard,
-                                                  String organization,
-                                                  String identifier)
+                                                  String        standard,
+                                                  String        organization,
+                                                  String        identifier)
     {
         if (allTypes != null)
         {
@@ -3513,6 +3518,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param initialProperties initial list of properties for the new entity; null means no properties.
      * @param initialClassifications initial list of classifications for the new entity null means no classifications.
      * @param initialStatus initial status typically DRAFT, PREPARED or ACTIVE.
+     * @param methodName calling method
      * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
      * not have any relationships at this stage.
      * @throws InvalidParameterException one of the parameters is invalid or null.
@@ -3783,6 +3789,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param entityGUID String unique identifier (guid) for the entity.
      * @param classificationName String name for the classification.
      * @param classificationProperties list of properties to set in the classification.
+     * @param methodName calling method
      * @return typeDef for the classification
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -5894,6 +5901,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * Return an exception to indicate that the method is unsupported but this is ok because it is optional.
      *
      * @param methodName calling method
+     * @param asOfTime time warp value
      * @throws FunctionNotSupportedException optional function not supported
      * @throws RepositoryErrorException mandatory function not supported
      */

@@ -11,9 +11,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.assetcatalog.AssetCatalog;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
@@ -42,7 +42,6 @@ class AssetCatalogOMASServiceTest {
     private final String schemaId = "abababa1.e1b1ec6c.54865omh1.pco9ecb.c3g5f1.pfvf6bdv95dnc67jq2jli";
     private final String typeDef = "Asset";
     private final String relationshipTypeDef = "AssetSchemaType";
-    private final String typeDefDescription = "A semantic description of something, such as a concept, object, asset, technology, role or group.";
     private final String user = "demo";
 
     @Mock
@@ -53,7 +52,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Details")
-    public void testGetAssetDetails() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetAssetDetails() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetDetails(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<AssetDescription> resultList = assetCatalogOMASService.getAssetDetails(user, assetId, typeDef);
@@ -62,7 +61,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Universe")
-    public void testGetAssetUniverse() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetAssetUniverse() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         AssetDescriptionResponse expectedResponse = mockAssetDescriptionResponse();
         when(assetCatalog.getAssetUniverse(anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<AssetDescription> resultList = assetCatalogOMASService.getAssetUniverse(user, assetId, typeDef);
@@ -71,7 +70,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Relationships by type")
-    public void testGetAssetRelationships() throws PropertyServerException, InvalidParameterException {
+    void testGetAssetRelationships() throws PropertyServerException, InvalidParameterException {
         RelationshipsResponse expectedResponse = mockRelationshipResponse();
         when(assetCatalog.getAssetRelationships(anyString(), anyString(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(expectedResponse);
         List<Relationship> resultList = assetCatalogOMASService.getAssetRelationships(user, assetId, typeDef, relationshipTypeDef, 0, 1);
@@ -80,7 +79,7 @@ class AssetCatalogOMASServiceTest {
 
     @Test
     @DisplayName("Asset Classification")
-    public void testGetClassificationForAsset() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
+    void testGetClassificationForAsset() throws PropertyServerException, org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException {
         ClassificationsResponse expectedResponse = mockClassificationsResponse();
         when(assetCatalog.getClassificationsForAsset(anyString(), anyString(), anyString(), anyString())).thenReturn(expectedResponse);
         List<Classification> resultList = assetCatalogOMASService.getClassificationsForAsset(user, assetId, typeDef, CONFIDENTIALITY);
@@ -93,7 +92,6 @@ class AssetCatalogOMASServiceTest {
         AssetDescription expectedDescription = new AssetDescription();
         expectedDescription.setGuid(assetId);
         expectedDescription.setTypeDefName(typeDef);
-        expectedDescription.setTypeDefDescription(typeDefDescription);
         Map<String, Object> propertiesMap = new HashMap<>();
         propertiesMap.put("summary", "Short description of term First Name");
         propertiesMap.put("displayName", "First Name");
@@ -109,12 +107,12 @@ class AssetCatalogOMASServiceTest {
         List<Relationship> expectedRelationshipList = new ArrayList<>();
         Relationship expectedRelationship = new Relationship();
 
-        Asset fromEntity = new Asset();
+        Element fromEntity = new Element();
         fromEntity.setGuid(assetId);
         fromEntity.setTypeDefName(typeDef);
         expectedRelationship.setFromEntity(fromEntity);
 
-        Asset toEntity = new Asset();
+        Element toEntity = new Element();
         expectedRelationship.setToEntity(toEntity);
         toEntity.setGuid(schemaId);
         toEntity.setTypeDefName("ComplexSchemaType");
@@ -138,7 +136,6 @@ class AssetCatalogOMASServiceTest {
         assertFalse(resultList.isEmpty());
         AssetDescription assetDescription = resultList.get(0);
         assertEquals(assetDescription.getGuid(), assetId);
-        assertEquals(assetDescription.getTypeDefDescription(), typeDefDescription);
         assertFalse(assetDescription.getProperties().isEmpty());
     }
 
