@@ -131,7 +131,7 @@
         <mockito.version>3.1.0</mockito.version>
         <testng.version>7.0.0</testng.version>
         <log4j.version>1.2.17</log4j.version>
-        <slf4j.version>1.7.28</slf4j.version>
+        <slf4j.version>1.7.29</slf4j.version>
         <logback.version>1.2.3</logback.version>
         <jackson.version>2.10.0</jackson.version>
         <jackson.databind.version>2.10.0</jackson.databind.version>
@@ -1877,21 +1877,6 @@
                 <scope>compile</scope>
                 <version>${spring.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <scope>test</scope>
-                <version>${testng.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <scope>compile</scope>
-                <version>${spring-web.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>com.datastax.cassandra</groupId>
