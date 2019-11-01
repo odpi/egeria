@@ -18,7 +18,8 @@ import org.odpi.openmetadata.metadatasecurity.server.OpenMetadataServerSecurityV
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 import org.odpi.openmetadata.userinterface.adminservices.ffdc.UIAdminErrorCode;
 import org.odpi.openmetadata.userinterface.adminservices.rest.ConnectionResponse;
-import org.odpi.openmetadata.userinterface.adminservices.configStore.UIServerConfigStore;
+
+import org.odpi.openmetadata.userinterface.adminservices.store.UIServerConfigStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
