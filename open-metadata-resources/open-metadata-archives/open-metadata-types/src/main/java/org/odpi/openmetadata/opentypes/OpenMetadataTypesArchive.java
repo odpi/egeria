@@ -21239,7 +21239,7 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "DesignModel";
-        final String                     end1AttributeName            = "anchorModel";
+        final String                     end1AttributeName            = "owningModel";
         final String                     end1AttributeDescription     = "Owning model.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
