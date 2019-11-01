@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * AssetHandler manages Asset objects and optionally connections in the property server.  It runs server-side in
- * OMAS and retrieves Assets and Connections through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves Assets and Connections through the OMRSRepositoryConnector.
  */
 public class AssetHandler
 {
@@ -54,8 +54,6 @@ public class AssetHandler
     protected List<String>            supportedZones;
     protected List<String>            defaultZones;
 
-    protected int                     maxPageSize;
-
 
     /**
      * Construct the asset handler with information needed to work with Asset objects.
@@ -81,7 +79,6 @@ public class AssetHandler
      * @param schemaTypeHandler  handler for schemaType objects
      * @param supportedZones list of zones that DiscoveryEngine is allowed to serve Assets from.
      * @param defaultZones list of zones that DiscoveryEngine should set in all new Assets.
-     * @param maxPageSize maximum page size
      */
     public AssetHandler(String                    serviceName,
                         String                    serverName,
@@ -103,8 +100,7 @@ public class AssetHandler
                         RelatedMediaHandler       relatedMediaHandler,
                         SchemaTypeHandler         schemaTypeHandler,
                         List<String>              supportedZones,
-                        List<String>              defaultZones,
-                        int                       maxPageSize)
+                        List<String>              defaultZones)
     {
         this.serviceName               = serviceName;
         this.repositoryHelper          = repositoryHelper;
@@ -127,7 +123,6 @@ public class AssetHandler
         this.schemaTypeHandler         = schemaTypeHandler;
         this.supportedZones            = supportedZones;
         this.defaultZones              = defaultZones;
-        this.maxPageSize               = maxPageSize;
     }
 
 
@@ -1250,7 +1245,7 @@ public class AssetHandler
 
             securityVerifier.validateUserForAssetDelete(userId, asset);
 
-            // todo needs to deleted much more than connection
+            // todo needs to delete much more than connection
             // todo discovery engine needs to delete discovery reports (listen for relationships)
 
             /*
@@ -1301,7 +1296,6 @@ public class AssetHandler
     }
 
 
-
     /**
      * Remove the requested Connection if it is no longer connected to any other asset definition.
      *
@@ -1339,6 +1333,7 @@ public class AssetHandler
 
 
     /**
+     * Determine if an asset is visible.
      *
      * @param userId calling user
      * @param supportedZones supported zones
@@ -1349,19 +1344,23 @@ public class AssetHandler
      * @return asset
      * @throws InvalidParameterException asset is not in the zone
      * @throws UserNotAuthorizedException user is not authorized to access the asset.
+     * @throws PropertyServerException problem managing the supported zones.
      */
-    private  Asset  validatedVisibleAsset(String        userId,
-                                          List<String>  supportedZones,
-                                          String        guidParameterName,
-                                          Asset         retrievedAsset,
-                                          String        serviceName,
-                                          String        methodName) throws InvalidParameterException,
-                                                                           UserNotAuthorizedException
+    protected  Asset  validatedVisibleAsset(String        userId,
+                                            List<String>  supportedZones,
+                                            String        guidParameterName,
+                                            Asset         retrievedAsset,
+                                            String        serviceName,
+                                            String        methodName) throws InvalidParameterException,
+                                                                             UserNotAuthorizedException,
+                                                                             PropertyServerException
     {
         invalidParameterHandler.validateAssetInSupportedZone(retrievedAsset.getGUID(),
                                                              guidParameterName,
                                                              retrievedAsset.getZoneMembership(),
-                                                             supportedZones,
+                                                             securityVerifier.setSupportedZonesForUser(supportedZones,
+                                                                                                       serviceName,
+                                                                                                       userId),
                                                              serviceName,
                                                              methodName);
 
@@ -1671,6 +1670,10 @@ public class AssetHandler
      * @param pageSize maximum number of results
      * @param methodName calling method
      * @return list of unique identifiers (guids) for the matching assets
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<String>  assetScan(String   userId,
                                    String   subTypeGUID,
@@ -1737,6 +1740,10 @@ public class AssetHandler
      * @param pageSize maximum number of results
      * @param methodName calling method
      * @return list of unique identifiers (guids) for the matching assets
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public List<String>  assetZoneScan(String   userId,
                                        String   zoneName,
@@ -1852,6 +1859,7 @@ public class AssetHandler
      * @param searchString string to search for in text
      * @param startFrom starting element (used in paging through large result sets)
      * @param pageSize maximum number of results to return
+     * @param methodName calling method
      *
      * @return list of assets that match the search string.
      *
@@ -2177,6 +2185,7 @@ public class AssetHandler
      * Removes a comment added to the asset by this user.
      *
      * @param userId       userId of user making request.
+     * @param assetGUID   unique identifier for the asset.
      * @param commentGUID  unique identifier for the comment object.
      * @param methodName    calling method
      *
