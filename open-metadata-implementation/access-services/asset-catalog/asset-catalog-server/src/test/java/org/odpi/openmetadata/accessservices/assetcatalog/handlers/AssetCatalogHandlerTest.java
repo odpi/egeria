@@ -29,12 +29,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,10 +106,14 @@ public class AssetCatalogHandlerTest {
     public void getEntityDetails_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
         String methodName = "getEntityDetails";
 
-        mockEntityDetails(FIRST_GUID, methodName);
+        EntityDetail entityDetail = mock(EntityDetail.class);
+
+        when(entityDetail.getGUID()).thenReturn(FIRST_GUID);
+        when(entityDetail.getType()).thenReturn(mockType(ASSET_TYPE, ASSET_TYPE_GUID));
+        when(entityDetail.getClassifications()).thenReturn(mockClassifications());
 
         doThrow(new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
-                .when(repositoryHandler.getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName));
+                .when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName);
 
         assertThrows(PropertyServerException.class, () -> assetCatalogHandler.getEntityDetails(USER, FIRST_GUID, ASSET_TYPE));
 
@@ -242,18 +241,10 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void getEntityClassificationByName_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException {
+    public void getEntityClassificationByName_throwsPropertyServerException() throws InvalidParameterException, PropertyServerException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
         String methodName = "getEntityClassificationByName";
 
-//        mockEntityDetails(FIRST_GUID, "getEntityClassifications");
-
-        EntityDetail entityDetail = mock(EntityDetail.class);
-
-        when(entityDetail.getGUID()).thenReturn(FIRST_GUID);
-        when(entityDetail.getType()).thenReturn(mockType(ASSET_TYPE, ASSET_TYPE_GUID));
-        when(entityDetail.getClassifications()).thenReturn(mockClassifications());
-
-
+        mockEntityDetails(FIRST_GUID, "getEntityClassifications");
 
         doThrow(new PropertyServerException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
                 this.getClass().getName(), "", "", "", "")).when(repositoryHandler).getEntityByGUID(USER,
@@ -389,8 +380,9 @@ public class AssetCatalogHandlerTest {
     public void getIntermediateAssets_throwsPropertyServerException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException {
         OMRSMetadataCollection metadataCollection = mockMetadataCollection();
 
-        doThrow(new FunctionNotSupportedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
-                this.getClass().getName(), "", "", "", "")).when(metadataCollection).getLinkingEntities(USER, FIRST_GUID, SECOND_GUID, Collections.singletonList(InstanceStatus.ACTIVE), null);
+        when(metadataCollection.getLinkingEntities(USER, FIRST_GUID, SECOND_GUID, Collections.singletonList(InstanceStatus.ACTIVE), null))
+                .thenThrow(new FunctionNotSupportedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", ""));
 
         assertThrows(PropertyServerException.class,
                 () -> assetCatalogHandler.getIntermediateAssets(USER, FIRST_GUID, SECOND_GUID));
@@ -638,43 +630,190 @@ public class AssetCatalogHandlerTest {
     }
 
     @Test
-    public void searchByType_throwsInvalidParameterException() {
+    public void searchByType_throwsInvalidParameterException() throws org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        String methodName = "searchByType";
+        SearchParameters searchParams = mockSearchParams();
+
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+        when(metadataCollection.findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE)).thenReturn(mockEntities());
+
+        doThrow(new org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "", ""))
+                .when(invalidParameterHandler).validateUserId(USER, methodName);
+
+        assertThrows(org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
 
     }
 
     @Test
-    public void searchByType_throwsRepoUserNotAuthorizedException() {
+    public void searchByType_throwsRepoUserNotAuthorizedException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsFunctionNotSupportedException() {
+    public void searchByType_throwsFunctionNotSupportedException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new FunctionNotSupportedException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(FunctionNotSupportedException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsRepoInvalidParameterException() {
+    public void searchByType_throwsRepoInvalidParameterException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsRepositoryErrorException() {
+    public void searchByType_throwsRepositoryErrorException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new RepositoryErrorException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(RepositoryErrorException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsPropertyErrorException() {
+    public void searchByType_throwsPropertyErrorException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new PropertyErrorException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(PropertyErrorException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsTypeErrorException() {
+    public void searchByType_throwsTypeErrorException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new TypeErrorException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(TypeErrorException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
-    public void searchByType_throwsPagingErrorException() {
+    public void searchByType_throwsPagingErrorException() throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+        SearchParameters searchParams = mockSearchParams();
 
+        OMRSMetadataCollection metadataCollection = mockMetadataCollection();
+
+        doThrow(new PagingErrorException(
+                AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(), this.getClass().getName(), "", "", "", ""))
+                .when(metadataCollection).findEntitiesByPropertyValue(USER,
+                ASSET_TYPE_GUID,
+                SEARCH_CRITERIA,
+                FROM,
+                Collections.singletonList(InstanceStatus.ACTIVE),
+                null,
+                null,
+                null,
+                SequencingOrder.ANY,
+                PAGE_SIZE);
+
+        assertThrows(PagingErrorException.class,
+                () -> assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams));
     }
 
     @Test
@@ -727,8 +866,10 @@ public class AssetCatalogHandlerTest {
         mockMetadataCollection();
         mockTypeDef(ASSET_TYPE, ASSET_TYPE_GUID);
 
-        doThrow(new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
-                this.getClass().getName(), "", "", "", "", "")).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName);
+        UserNotAuthorizedException mockedException = new UserNotAuthorizedException(AssetCatalogErrorCode.SERVICE_NOT_INITIALIZED.getHttpErrorCode(),
+                this.getClass().getName(), "", "", "", "", "");
+
+        doThrow(mockedException).when(repositoryHandler).getEntityByGUID(USER, FIRST_GUID, GUID_PARAMETER, ASSET_TYPE, methodName);
 
         assertThrows(PropertyServerException.class,
                 () -> assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE));
