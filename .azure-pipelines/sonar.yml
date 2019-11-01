@@ -8,6 +8,7 @@ trigger:
 pr: none
 
 variables:
+  - group: Artifactory
   - group: SonarCloud
 
 stages:
@@ -37,8 +38,7 @@ stages:
               options: >-
                   --batch-mode
                   --quiet
-                  -Dnode.downloadRoot=https://odpi.jfrog.io/odpi/nodejs-dist/
-                  -Dnpm.downloadRoot=https://odpi.jfrog.io/odpi/npm-dist/
+                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
           - task: Maven@3
             displayName: 'Perform SonarScan'
@@ -51,6 +51,7 @@ stages:
               options: >-
                   --batch-mode
                   --quiet
+                  -s .m2/settings.xml
                   -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
                   -DfindBugs
                   -Dsonar
