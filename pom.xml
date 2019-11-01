@@ -420,13 +420,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>tinkergraph-gremlin</artifactId>
-                <scope>compile</scope>
-                <version>${gremlin.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-analyzers-common</artifactId>
                 <scope>compile</scope>
