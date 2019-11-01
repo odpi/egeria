@@ -198,7 +198,7 @@
         <!-- Configuration of sonar code scanning-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
         <!--suppress UnresolvedMavenProperty -->
-        <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.jacoco.xmlReportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.xml</sonar.jacoco.xmlReportPaths>
         <!-- Sonar configuration - exclusions to all processing, coverage only exclusions, and duplicate exclusions -->
         <!-- fvt skipped as it causes resource limits to be exceeded. generated code contaminates stats so removed  -->
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -417,13 +417,6 @@
                 <artifactId>quartz</artifactId>
                 <scope>compile</scope>
                 <version>${quartz.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.apache.tinkerpop</groupId>
-                <artifactId>tinkergraph-gremlin</artifactId>
-                <scope>compile</scope>
-                <version>${gremlin.version}</version>
             </dependency>
 
             <dependency>
@@ -1879,21 +1872,6 @@
             </dependency>
 
             <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <scope>test</scope>
-                <version>${testng.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <scope>compile</scope>
-                <version>${spring-web.version}</version>
-            </dependency>
-
-
-            <dependency>
                 <groupId>com.datastax.cassandra</groupId>
                 <artifactId>cassandra-driver-core</artifactId>
                 <version>${cassandra.version}</version>
@@ -2296,10 +2274,6 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <configuration>
-                    <destFile>${sonar.jacoco.reportPaths}</destFile>
-                    <append>true</append>
-                </configuration>
                 <executions>
                     <execution>
                         <id>agent</id>
@@ -2307,6 +2281,12 @@
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                     </execution>
                 </executions>
             </plugin>
 

@@ -7,8 +7,10 @@ import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumC
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ViewEnumConverter;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageRestServices;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class OpenLineageResource {
 
     private final OpenLineageRestServices restAPI = new OpenLineageRestServices();
+
 
     /**
      * Returns the graph that the user will initially see when querying lineage. In the future, this method will be
@@ -36,7 +39,7 @@ public class OpenLineageResource {
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
     @GetMapping(path = "/lineage/sources/{graph}/scopes/{scope}/views/{view}/entities/{guid}", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public String lineage(
+    public LineageResponse lineage(
             @PathVariable("serverName") String serverName,
             @PathVariable("userId") String userId,
             @PathVariable("graph") String graph,
