@@ -22559,7 +22559,7 @@ public class OpenMetadataTypesArchive
          */
         final String guid            = "a5991bB2-660D-A3a1-2955-fAcDA2d5F4Ff";
         final String name            = "LineageMapping";
-        final String description     = "A link between two schema types.";
+        final String description     = "A link between two schema attributes.";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -22576,9 +22576,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 1.
          */
-        final String                     end1EntityType               = "SchemaType";
+        final String                     end1EntityType               = "SchemaAttribute";
         final String                     end1AttributeName            = "sourceElement";
-        final String                     end1AttributeDescription     = "Source Schema.";
+        final String                     end1AttributeDescription     = "Source Attribute.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -22593,9 +22593,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "SchemaType";
+        final String                     end2EntityType               = "SchemaAttribute";
         final String                     end2AttributeName            = "targetElement";
-        final String                     end2AttributeDescription     = "Target Schema.";
+        final String                     end2AttributeDescription     = "Target Attribute.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
