@@ -1275,6 +1275,80 @@ public class OMRSArchiveHelper
 
 
     /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @return instance properties object.
+     */
+    public InstanceProperties addIntPropertyToInstance(InstanceProperties properties,
+                                                       String             propertyName,
+                                                       int                propertyValue)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (properties == null)
+        {
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param propertyValue value of property
+     * @return instance properties object.
+     */
+    public InstanceProperties addBooleanPropertyToInstance(InstanceProperties properties,
+                                                           String             propertyName,
+                                                           boolean            propertyValue)
+    {
+        InstanceProperties  resultingProperties;
+
+        if (properties == null)
+        {
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
      * Return a specific entity detail instance.
      *
      * @param typeName type name of the entity

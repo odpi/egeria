@@ -344,7 +344,7 @@ public class AssetHandler
 
     /**
      * Save any associated Connection.
-     * 
+     *
      * @param userId calling user
      * @param assetGUID unique identifier of the asset
      * @param assetSummary short description of the asset
@@ -414,7 +414,6 @@ public class AssetHandler
             if (connection != null)
             {
                 String connectionGUID = connectionHandler.saveConnection(userId, connection);
-                ;
 
                 if (connectionGUID != null)
                 {
@@ -801,7 +800,7 @@ public class AssetHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException problem accessing the property server
      */
-    private String updateAsset(String                  userId,
+    public  String updateAsset(String                  userId,
                                Asset                   originalAsset,
                                AssetAuditHeader        originalAssetAuditHeader,
                                Asset                   updatedAsset,
@@ -858,24 +857,25 @@ public class AssetHandler
                                                      methodName);
                 }
             }
-            else if (updatedAsset.getZoneMembership() == null)
-            {
-                repositoryHandler.declassifyEntity(userId,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                   methodName);
+            else {
+                if (updatedAsset.getZoneMembership() == null)
+                {
+                    repositoryHandler.declassifyEntity(userId,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                       methodName);
+                }
+                if (!(originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
+                {
+                    repositoryHandler.reclassifyEntity(userId,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
+                                                       assetBuilder.getZoneMembershipProperties(methodName),
+                                                       methodName);
+                }
             }
-            if (! (originalAsset.getZoneMembership().equals(updatedAsset.getZoneMembership())))
-            {
-                repositoryHandler.reclassifyEntity(userId,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_ZONES_CLASSIFICATION_NAME,
-                                                   assetBuilder.getZoneMembershipProperties(methodName),
-                                                   methodName);
-            }
-
 
             if (originalAsset.getOwner() == null)
             {
@@ -885,29 +885,30 @@ public class AssetHandler
                                                      originalAsset.getGUID(),
                                                      AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
                                                      AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                     assetBuilder.getZoneMembershipProperties(methodName),
+                                                     assetBuilder.getOwnerProperties(methodName),
                                                      methodName);
                 }
             }
-            else if (updatedAsset.getOwner() == null)
-            {
-                repositoryHandler.declassifyEntity(userId,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                   methodName);
-            }
-            if (! (originalAsset.getOwner().equals(updatedAsset.getZoneMembership())))
-            {
-                repositoryHandler.reclassifyEntity(userId,
-                                                   originalAsset.getGUID(),
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
-                                                   AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
-                                                   assetBuilder.getZoneMembershipProperties(methodName),
-                                                   methodName);
-            }
+            else {
+                if (updatedAsset.getOwner() == null)
+                {
+                    repositoryHandler.declassifyEntity(userId,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                       methodName);
+                }
 
-
+                if (!(originalAsset.getOwner().equals(updatedAsset.getOwner())))
+                {
+                    repositoryHandler.reclassifyEntity(userId,
+                                                       originalAsset.getGUID(),
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_GUID,
+                                                       AssetMapper.ASSET_OWNERSHIP_CLASSIFICATION_NAME,
+                                                       assetBuilder.getOwnerProperties(methodName),
+                                                       methodName);
+                }
+            }
 
             this.saveAssociatedConnection(userId,
                                           originalAsset,
