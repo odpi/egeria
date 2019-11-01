@@ -99,6 +99,8 @@ with body:
       ]
 }
 
+in addition to configuration, you can start and stop the UI services. In the future, this is functionality will be
+utilized at runtime.
 
 
 ## Further reading
