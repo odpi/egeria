@@ -143,7 +143,6 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
         this.noteHandler               = new NoteHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.noteLogHandler            = new NoteLogHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
-        this.referenceableHandler      = new ReferenceableHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
 

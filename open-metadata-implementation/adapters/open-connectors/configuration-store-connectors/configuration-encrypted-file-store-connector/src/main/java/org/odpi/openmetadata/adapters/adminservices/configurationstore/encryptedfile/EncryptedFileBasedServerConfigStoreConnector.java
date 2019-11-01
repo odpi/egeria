@@ -77,7 +77,9 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         try {
 
             if (omagServerConfig == null) {
-                removeServerConfig();
+                log.debug("Deleting server config store properties: " + omagServerConfig);
+                configStoreFile.delete();
+                keystore.delete();
             } else {
 
                 log.debug("Generating new encryption key for secure storage.");
@@ -141,18 +143,10 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
      * Remove the server configuration.
      */
     public void removeServerConfig() {
-        File keystore = getKeystore();
-        if (keystore.delete()) {
-            log.debug("Successfully deleted keystore.");
-        } else {
-            log.warn("Unable to delete keystore.");
-        }
+        File keystore = new File(keysetStoreName);
+        keystore.delete();
         File configStoreFile = new File(configStoreName);
-        if (configStoreFile.delete()) {
-            log.debug("Successfully deleted config file: {}", configStoreFile.getName());
-        } else {
-            log.warn("Unable to delete server config file: {}", configStoreFile.getName());
-        }
+        configStoreFile.delete();
     }
 
     /**
@@ -167,7 +161,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
         // Start by trying to identify any pre-existing keystore directory
         File pwd = new File(".");
         File[] keystoreDirs = pwd.listFiles((dir, name) -> name.startsWith(KEYSTORE_FOLDER_PREFIX));
-        File secureFile;
+        File secureFile = null;
 
         if (keystoreDirs.length == 0) {
 
@@ -181,36 +175,12 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
             try {
                 // We should secure the file and its containing directory to only be accessible by the OS-level owner
                 FileUtils.touch(secureFile);
-                if (secureFile.setReadable(false, false)) {
-                    log.debug("Keystore file marked as un-readable.");
-                } else {
-                    log.warn("Unable to mark keystore file as un-readable.");
-                }
-                if (secureFile.setReadable(true)) {
-                    log.debug("Keystore file marked as readable only by owner.");
-                } else {
-                    log.warn("Unable to mark keystore file as readable only by owner.");
-                }
-                if (secureDir.setExecutable(false, false)) {
-                    log.debug("Secure directory marked as non-executable.");
-                } else {
-                    log.warn("Unable to mark secure directory as non-executable.");
-                }
-                if (secureDir.setExecutable(true)) {
-                    log.debug("Secure directory marked as executable only by owner.");
-                } else {
-                    log.warn("Unable to mark secure directory as executable only by owner.");
-                }
-                if (secureDir.setReadable(false, false)) {
-                    log.debug("Secure directory marked as non-readable.");
-                } else {
-                    log.warn("Unable to mark secure directory as non-readable.");
-                }
-                if (secureDir.setReadable(true)) {
-                    log.debug("Secure directory marked as readable only by owner.");
-                } else {
-                    log.warn("Unable to mark secure directory as readable only by owner.");
-                }
+                secureFile.setReadable(false, false);
+                secureFile.setReadable(true);
+                secureDir.setExecutable(false, false);
+                secureDir.setExecutable(true);
+                secureDir.setReadable(false, false);
+                secureDir.setReadable(true);
             } catch (IOException e) {
                 throw new IllegalStateException("Unable to create secure location for storing encryption key.", e);
             }
@@ -227,11 +197,7 @@ public class EncryptedFileBasedServerConfigStoreConnector extends OMAGServerConf
 
             if (keyFiles.length == 0) {
                 // If for some reason we have a directory but no keys, remove the directory and start over
-                if (secureDir.delete()) {
-                    log.debug("Removed empty secure directory.");
-                } else {
-                    log.warn("Unable to remove empty secure directory.");
-                }
+                secureDir.delete();
                 return getKeystore();
             } else if (keyFiles.length == 1) {
                 // If we have precisely one key file, use it
