@@ -49,11 +49,11 @@ public class LineageVertex {
         return displayName;
     }
 
-    public Map getAttributes() {
+    public Map<String, String> getAttributes() {
         return attributes;
     }
 
-    public void setAttributes(Map attributes) {
+    public void setAttributes(Map<String, String> attributes) {
         this.attributes = attributes;
     }
 }

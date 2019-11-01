@@ -35,19 +35,6 @@ public class OpenLineageController {
 
     /**
      *
-     * @param graphName name of the graph source to use
-     * @return map of nodes and edges describing the graph
-     */
-    @RequestMapping(method = RequestMethod.GET, value = "/export")
-    public Map<String, Object> exportGraph(@RequestParam GraphName graphName){
-        Map<String, Object> exportedGraph;
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        exportedGraph = openLineageService.exportGraph(userId);
-        return exportedGraph;
-    }
-
-    /**
-     *
      * @param guid unique identifier of the asset
      * @param view level of granularity, eg down to column or table level
      * @return map of nodes and edges describing the ultimate sources of the asset
@@ -57,7 +44,6 @@ public class OpenLineageController {
         Map<String, Object> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getUltimateSource(userId, view, guid);
-
         return exportedGraph;
     }
 
@@ -73,7 +59,6 @@ public class OpenLineageController {
         Map<String, Object> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getEndToEndLineage(userId, view, guid);
-
         return exportedGraph;
     }
 
@@ -86,9 +71,8 @@ public class OpenLineageController {
     @RequestMapping(method = RequestMethod.GET, value = "/entities/{guid}/ultimate-destination")
     public Map<String, Object> ultimateDestination(@PathVariable("guid") String guid, @RequestParam View view){
         Map<String, Object> exportedGraph;
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
-
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        exportedGraph = openLineageService.getUltimateDestination(userId, view, guid);
         return exportedGraph;
     }
 
@@ -104,10 +88,8 @@ public class OpenLineageController {
         Map<String, Object> exportedGraph;
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         exportedGraph = openLineageService.getGlossaryLineage(userId, view, guid);
-
         return exportedGraph;
     }
-
 
     /**
      *
