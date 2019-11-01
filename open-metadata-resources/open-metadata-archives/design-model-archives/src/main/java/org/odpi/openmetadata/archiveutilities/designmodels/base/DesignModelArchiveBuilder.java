@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.archiveutilities.designmodels.base;
 
 import org.odpi.openmetadata.archiveutilities.designmodels.base.ffdc.DesignModelArchiveErrorCode;
+import org.odpi.openmetadata.archiveutilities.designmodels.base.properties.ConceptModelDecoration;
 import org.odpi.openmetadata.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveBuilder;
 import org.odpi.openmetadata.repositoryservices.archiveutilities.OMRSArchiveGUIDMap;
@@ -25,43 +26,65 @@ public class DesignModelArchiveBuilder
 {
     private static final String  guidMapFileNamePostFix    = "GUIDMap.json";
 
-    private static final String GLOSSARY_TYPE_NAME                    = "Glossary";
-    private static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME      = "ExternalGlossaryLink";
-    private static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME = "ExternallySourcedGlossary";
-    private static final String CANONICAL_VOCABULARY_TYPE_NAME        = "CanonicalVocabulary";
-    private static final String GLOSSARY_CATEGORY_TYPE_NAME           = "GlossaryCategory";
-    private static final String SUBJECT_AREA_TYPE_NAME                = "SubjectArea";
-    private static final String CATEGORY_ANCHOR_TYPE_NAME             = "CategoryAnchor";
-    private static final String CATEGORY_HIERARCHY_LINK_TYPE_NAME     = "CategoryHierarchyLink";
-    private static final String GLOSSARY_TERM_TYPE_NAME               = "GlossaryTerm";
-    private static final String TERM_ANCHOR_TYPE_NAME                 = "TermAnchor";
-    private static final String TERM_CATEGORIZATION_TYPE_NAME         = "TermCategorization";
-    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME         = "TermAnchor";
-    private static final String MORE_INFORMATION_TYPE_NAME            = "MoreInformation";
+    private static final String GLOSSARY_TYPE_NAME                       = "Glossary";
+    private static final String EXTERNAL_GLOSSARY_LINK_TYPE_NAME         = "ExternalGlossaryLink";
+    private static final String EXTERNALLY_SOURCED_GLOSSARY_TYPE_NAME    = "ExternallySourcedGlossary";
+    private static final String CANONICAL_VOCABULARY_TYPE_NAME           = "CanonicalVocabulary";
+    private static final String GLOSSARY_CATEGORY_TYPE_NAME              = "GlossaryCategory";
+    private static final String SUBJECT_AREA_TYPE_NAME                   = "SubjectArea";
+    private static final String CATEGORY_ANCHOR_TYPE_NAME                = "CategoryAnchor";
+    private static final String CATEGORY_HIERARCHY_LINK_TYPE_NAME        = "CategoryHierarchyLink";
+    private static final String GLOSSARY_TERM_TYPE_NAME                  = "GlossaryTerm";
+    private static final String TERM_ANCHOR_TYPE_NAME                    = "TermAnchor";
+    private static final String TERM_CATEGORIZATION_TYPE_NAME            = "TermCategorization";
+    private static final String SEMANTIC_ASSIGNMENT_TYPE_NAME            = "TermAnchor";
+    private static final String MORE_INFORMATION_TYPE_NAME               = "MoreInformation";
+    private static final String DESIGN_MODEL_TYPE_NAME                   = "DesignModel";
+    private static final String DESIGN_MODEL_GROUP_TYPE_NAME             = "DesignModelGroup";
+    private static final String DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME = "DesignModelElementOwnership";
+    private static final String DESIGN_MODEL_GROUP_OWNERSHIP_TYPE_NAME   = "DesignModelGroupOwnership";
+    private static final String DESIGN_MODEL_GROUP_HIERARCHY_TYPE_NAME   = "DesignModelGroupHierarchy";
+    private static final String DESIGN_MODEL_GROUP_MEMBERSHIP_TYPE_NAME  = "DesignModelGroupMembership";
+    private static final String CONCEPT_BEAD_TYPE_NAME                   = "ConceptBead";
+    private static final String CONCEPT_BEAD_LINK_TYPE_NAME              = "ConceptBeadLink";
+    private static final String CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME         = "ConceptBeadAttribute";
+    private static final String CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME    = "ConceptBeadAttributeLink";
+    private static final String CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME      = "ConceptBeadRelationshipEnd";
 
-    private static final String QUALIFIED_NAME_PROPERTY = "qualifiedName";
-    private static final String DISPLAY_NAME_PROPERTY   = "displayName";
-    private static final String DESCRIPTION_PROPERTY    = "description";
-    private static final String LANGUAGE_PROPERTY       = "language";
-    private static final String USAGE_PROPERTY          = "usage";
-    private static final String SCOPE_PROPERTY          = "scope";
-    private static final String URL_PROPERTY            = "url";
-    private static final String ORGANIZATION_PROPERTY   = "organization";
-    private static final String VERSION_PROPERTY        = "version";
-    private static final String NAME_PROPERTY           = "name";
-    private static final String STATUS_PROPERTY         = "status";
-    private static final String CONFIDENCE_PROPERTY     = "confidence";
+    private static final String QUALIFIED_NAME_PROPERTY  = "qualifiedName";
+    private static final String DISPLAY_NAME_PROPERTY    = "displayName";
+    private static final String TECHNICAL_NAME_PROPERTY  = "technicalName";
+    private static final String DESCRIPTION_PROPERTY     = "description";
+    private static final String LANGUAGE_PROPERTY        = "language";
+    private static final String USAGE_PROPERTY           = "usage";
+    private static final String SCOPE_PROPERTY           = "scope";
+    private static final String URL_PROPERTY             = "url";
+    private static final String ORGANIZATION_PROPERTY    = "organization";
+    private static final String VERSION_PROPERTY         = "version";
+    private static final String VERSION_NUMBER_PROPERTY  = "versionNumber";
+    private static final String NAME_PROPERTY            = "name";
+    private static final String STATUS_PROPERTY          = "status";
+    private static final String CONFIDENCE_PROPERTY      = "confidence";
+    private static final String AUTHOR_PROPERTY          = "author";
+    private static final String ATTRIBUTE_NAME_PROPERTY  = "attribute";
+    private static final String DECORATION_PROPERTY      = "decoration";
+    private static final String POSITION_PROPERTY        = "position";
+    private static final String MIN_CARDINALITY_PROPERTY = "minCardinality";
+    private static final String MAX_CARDINALITY_PROPERTY = "maxCardinality";
+    private static final String UNIQUE_VALUES_PROPERTY   = "uniqueValues";
+    private static final String ORDERED_VALUES_PROPERTY  = "orderedValues";
+    private static final String NAVIGABLE_PROPERTY       = "navigable";
 
 
 
     private OMRSArchiveBuilder archiveBuilder;
     private OMRSArchiveHelper  archiveHelper;
     private OMRSArchiveGUIDMap idToGUIDMap;
-    private String             guidMapFileName;
 
     private String             archiveRootName;
     private String             originatorName;
     private String             versionName;
+
 
     /**
      * Typical constructor passes parameters used to build the open metadata archive's property header.
@@ -358,6 +381,12 @@ public class DesignModelArchiveBuilder
     }
 
 
+    /**
+     * Create a semantic assignment between a term and a Referenceable - for example a model element.
+     *
+     * @param termId identifier of term
+     * @param referenceableId identifier of referenceable
+     */
     protected void linkTermToReferenceable(String  termId,
                                            String  referenceableId)
     {
@@ -373,9 +402,342 @@ public class DesignModelArchiveBuilder
     }
 
 
-    protected String addConceptModel()
+    /**
+     * Create an element that represents a design model.
+     *
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of model
+     */
+    protected String addDesignModel(String   qualifiedName,
+                                    String   displayName,
+                                    String   technicalName,
+                                    String   description,
+                                    String   versionNumber,
+                                    String   author)
     {
-        return null;
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
+        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
+        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+
+        EntityDetail  modelEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_TYPE_NAME,
+                                                                  idToGUIDMap.getGUID(qualifiedName),
+                                                                  properties,
+                                                                  InstanceStatus.ACTIVE,
+                                                                  null);
+
+        archiveBuilder.addEntity(modelEntity);
+
+        return modelEntity.getGUID();
+    }
+
+
+    /**
+     * Create an element for a model group and link it to a model and any parent model group.
+     *
+     * @param modelId unique identifier of model (or null)
+     * @param parentGroupId unique identifier of parent (or null)
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of model group
+     */
+    protected String addDesignModelGroup(String   modelId,
+                                         String   parentGroupId,
+                                         String   qualifiedName,
+                                         String   displayName,
+                                         String   technicalName,
+                                         String   description,
+                                         String   versionNumber,
+                                         String   author)
+    {
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
+        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
+        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+
+        EntityDetail  modelGroupEntity = archiveHelper.getEntityDetail(DESIGN_MODEL_GROUP_TYPE_NAME,
+                                                                       idToGUIDMap.getGUID(qualifiedName),
+                                                                       properties,
+                                                                       InstanceStatus.ACTIVE,
+                                                                       null);
+
+        archiveBuilder.addEntity(modelGroupEntity);
+
+        if (modelId != null)
+        {
+            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelId));
+            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelGroupEntity.getGUID()));
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME,
+                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelGroupEntity.getGUID()),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_OWNERSHIP_TYPE_NAME,
+                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelGroupEntity.getGUID()),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        if (parentGroupId != null)
+        {
+            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(parentGroupId));
+            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelGroupEntity.getGUID()));
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_HIERARCHY_TYPE_NAME,
+                                                                         idToGUIDMap.getGUID(parentGroupId + "_to_" + modelGroupEntity.getGUID()),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        return modelGroupEntity.getGUID();
+    }
+
+
+    /**
+     * Create an element of a concept model.
+     *
+     * @param modelId unique identifier of model (or null)
+     * @param groupIds list of model groups to add this element to
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of element
+     */
+    protected String addConceptModelElement(String         typeName,
+                                            String         modelId,
+                                            List<String>   groupIds,
+                                            String         qualifiedName,
+                                            String         displayName,
+                                            String         technicalName,
+                                            String         description,
+                                            String         versionNumber,
+                                            String         author)
+    {
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, QUALIFIED_NAME_PROPERTY, qualifiedName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DISPLAY_NAME_PROPERTY, displayName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, TECHNICAL_NAME_PROPERTY, technicalName);
+        properties = archiveHelper.addStringPropertyToInstance(properties, DESCRIPTION_PROPERTY, description);
+        properties = archiveHelper.addStringPropertyToInstance(properties, VERSION_NUMBER_PROPERTY, versionNumber);
+        properties = archiveHelper.addStringPropertyToInstance(properties, AUTHOR_PROPERTY, author);
+
+        EntityDetail  modelElementEntity = archiveHelper.getEntityDetail(typeName,
+                                                                         idToGUIDMap.getGUID(qualifiedName),
+                                                                         properties,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         null);
+
+        archiveBuilder.addEntity(modelElementEntity);
+
+        if (modelId != null)
+        {
+            EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelId));
+            EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelElementEntity.getGUID()));
+
+            archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_ELEMENT_OWNERSHIP_TYPE_NAME,
+                                                                         idToGUIDMap.getGUID(modelId + "_to_" + modelElementEntity.getGUID()),
+                                                                         null,
+                                                                         InstanceStatus.ACTIVE,
+                                                                         end1,
+                                                                         end2));
+        }
+
+        if (groupIds != null)
+        {
+            for (String  groupId : groupIds)
+            {
+                EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(groupId));
+                EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(modelElementEntity.getGUID()));
+
+                archiveBuilder.addRelationship(archiveHelper.getRelationship(DESIGN_MODEL_GROUP_MEMBERSHIP_TYPE_NAME,
+                                                                             idToGUIDMap.getGUID(groupId + "_to_" + modelElementEntity.getGUID()),
+                                                                             null,
+                                                                             InstanceStatus.ACTIVE,
+                                                                             end1,
+                                                                             end2));
+            }
+        }
+
+        return modelElementEntity.getGUID();
+    }
+
+
+    /**
+     * Create an element that describes a concept bead.
+     *
+     * @param modelId unique identifier of model (or null)
+     * @param groupIds list of model groups to add this element to
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of element
+     */
+    protected String addConceptBead(String         modelId,
+                                    List<String>   groupIds,
+                                    String         qualifiedName,
+                                    String         displayName,
+                                    String         technicalName,
+                                    String         description,
+                                    String         versionNumber,
+                                    String         author)
+    {
+        return this.addConceptModelElement(CONCEPT_BEAD_TYPE_NAME,
+                                           modelId,
+                                           groupIds,
+                                           qualifiedName,
+                                           displayName,
+                                           technicalName,
+                                           description,
+                                           versionNumber,
+                                           author);
+    }
+
+
+    /**
+     * Create a concept bead link.
+     *
+     * @param modelId unique identifier of model (or null)
+     * @param groupIds list of model groups to add this element to
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of element
+     */
+    protected String addConceptBeadLink(String         modelId,
+                                        List<String>   groupIds,
+                                        String         qualifiedName,
+                                        String         displayName,
+                                        String         technicalName,
+                                        String         description,
+                                        String         versionNumber,
+                                        String         author)
+    {
+        return this.addConceptModelElement(CONCEPT_BEAD_LINK_TYPE_NAME,
+                                           modelId,
+                                           groupIds,
+                                           qualifiedName,
+                                           displayName,
+                                           technicalName,
+                                           description,
+                                           versionNumber,
+                                           author);
+    }
+
+
+    /**
+     * Create a concept attribute.
+     *
+     * @param groupIds list of model groups to add this element to
+     * @param qualifiedName unique name for the model
+     * @param displayName display name
+     * @param technicalName non-spaced name
+     * @param description description
+     * @param versionNumber version description
+     * @param author author
+     * @return guid of element
+     */
+    protected String addConceptBeadAttribute(String         modelId,
+                                             List<String>   groupIds,
+                                             String         qualifiedName,
+                                             String         displayName,
+                                             String         technicalName,
+                                             String         description,
+                                             String         versionNumber,
+                                             String         author)
+    {
+        return this.addConceptModelElement(CONCEPT_BEAD_ATTRIBUTE_TYPE_NAME,
+                                           modelId,
+                                           groupIds,
+                                           qualifiedName,
+                                           displayName,
+                                           technicalName,
+                                           description,
+                                           versionNumber,
+                                           author);
+    }
+
+
+    protected void addAttributeToBead(String     beadId,
+                                      String     attributeId,
+                                      int        position,
+                                      int        minCardinality,
+                                      int        maxCardinality,
+                                      boolean    uniqueValues,
+                                      boolean    orderedValues)
+    {
+        InstanceProperties properties = archiveHelper.addIntPropertyToInstance(null, POSITION_PROPERTY, position);
+        properties = archiveHelper.addIntPropertyToInstance(properties, MIN_CARDINALITY_PROPERTY, minCardinality);
+        properties = archiveHelper.addIntPropertyToInstance(properties, MAX_CARDINALITY_PROPERTY, maxCardinality);
+        properties = archiveHelper.addBooleanPropertyToInstance(properties, UNIQUE_VALUES_PROPERTY, uniqueValues);
+        properties = archiveHelper.addBooleanPropertyToInstance(properties, ORDERED_VALUES_PROPERTY, orderedValues);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(attributeId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONCEPT_BEAD_ATTRIBUTE_LINK_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(beadId + "_to_" + attributeId),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
+    }
+
+
+    protected void addLinkToBead(String                 beadId,
+                                 String                 linkId,
+                                 String                 attributeName,
+                                 ConceptModelDecoration decoration,
+                                 int                    position,
+                                 int                    minCardinality,
+                                 int                    maxCardinality,
+                                 boolean                uniqueValues,
+                                 boolean                orderedValues)
+    {
+        InstanceProperties properties = archiveHelper.addStringPropertyToInstance(null, ATTRIBUTE_NAME_PROPERTY, attributeName);
+        // properties = archiveHelper.addEnumPropertyToInstance(properties, DECORATION_PROPERTY, position);
+        properties = archiveHelper.addIntPropertyToInstance(properties, POSITION_PROPERTY, position);
+        properties = archiveHelper.addIntPropertyToInstance(properties, MIN_CARDINALITY_PROPERTY, minCardinality);
+        properties = archiveHelper.addIntPropertyToInstance(properties, MAX_CARDINALITY_PROPERTY, maxCardinality);
+        properties = archiveHelper.addBooleanPropertyToInstance(properties, UNIQUE_VALUES_PROPERTY, uniqueValues);
+        properties = archiveHelper.addBooleanPropertyToInstance(properties, ORDERED_VALUES_PROPERTY, orderedValues);
+
+        EntityProxy end1 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(beadId));
+        EntityProxy end2 = archiveHelper.getEntityProxy(archiveBuilder.getEntity(linkId));
+
+        archiveBuilder.addRelationship(archiveHelper.getRelationship(CONCEPT_BEAD_RELATIONSHIP_TYPE_NAME,
+                                                                     idToGUIDMap.getGUID(beadId + "_to_" + linkId),
+                                                                     properties,
+                                                                     InstanceStatus.ACTIVE,
+                                                                     end1,
+                                                                     end2));
     }
 
 
