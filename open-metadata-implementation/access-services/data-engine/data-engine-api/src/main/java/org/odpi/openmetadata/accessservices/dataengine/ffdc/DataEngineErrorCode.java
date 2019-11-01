@@ -34,12 +34,7 @@ public enum DataEngineErrorCode {
     INVALID_PORT_TYPE(400, "OMAS-DATA-ENGINE-400-005 ",
             "The port type passed for the {0} is invalid, or different from {1}",
             "The system is unable to create a new PortDelegation relation the request without equal types between the ports.",
-            "Correct the code in the caller to provide the correct port type."),
-    NO_SCHEMA_ATTRIBUTE(404, "OMAS-DATA-ENGINE-404-002 ",
-            "No schema attribute found for qualifiedName {0}",
-            "The system is unable to retrieve a schema attribute for the specified qualifiedName.",
-            "Correct the code in the caller to provide the qualified name.");
-
+            "Correct the code in the caller to provide the correct port type.");
     private int HTTPErrorCode;
     private String errorMessageId;
     private String errorMessage;
