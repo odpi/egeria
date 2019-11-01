@@ -142,22 +142,22 @@ public class DataEngineSchemaTypeHandler {
         invalidParameterHandler.validateName(targetSchemaAttributeQualifiedName,
                 PortPropertiesMapper.QUALIFIED_NAME_PROPERTY_NAME, methodName);
 
-        String sourceSchemaTypeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
-        String targetSchemaTypeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
+        String sourceSchemaAttributeGUID = findSchemaAttribute(userId, sourceSchemaAttributeQualifiedName);
+        String targetSchemaAttributeGUID = findSchemaAttribute(userId, targetSchemaAttributeQualifiedName);
 
         TypeDef relationshipTypeDef = repositoryHelper.getTypeDefByName(userId,
                 SchemaTypePropertiesMapper.LINEAGE_MAPPINGS_TYPE_NAME);
 
-        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaTypeGUID,
-                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME, targetSchemaTypeGUID, relationshipTypeDef.getGUID(),
-                relationshipTypeDef.getName(), methodName);
+        Relationship relationship = repositoryHandler.getRelationshipBetweenEntities(userId, sourceSchemaAttributeGUID,
+                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME, targetSchemaAttributeGUID,
+                relationshipTypeDef.getGUID(), relationshipTypeDef.getName(), methodName);
 
         String externalSourceGUID = dataEngineRegistrationHandler.getExternalDataEngineByQualifiedName(userId,
                 externalSourceName);
 
         if (relationship == null) {
             repositoryHandler.createExternalRelationship(userId, relationshipTypeDef.getGUID(), externalSourceGUID,
-                    externalSourceName, sourceSchemaTypeGUID, targetSchemaTypeGUID, null, methodName);
+                    externalSourceName, sourceSchemaAttributeGUID, targetSchemaAttributeGUID, null, methodName);
         }
     }
 
