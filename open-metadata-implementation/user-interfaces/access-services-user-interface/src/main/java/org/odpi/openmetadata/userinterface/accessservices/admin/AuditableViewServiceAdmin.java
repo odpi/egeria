@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.admin;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.userinterface.accessservices.auditlog.ViewServiceAuditCode;
 import org.odpi.openmetadata.userinterfaces.adminservices.ViewServiceAdmin;
 

@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.userinterfaces.adminservices;
 
 import org.odpi.openmetadata.adminservices.OMAGOperationalServicesInstance;
-import org.odpi.openmetadata.adminservices.OMAGServerOperationalInstanceHandler;
-import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
-
 import java.util.ArrayList;
 import java.util.List;
 

@@ -5,9 +5,6 @@ package org.odpi.openmetadata.userinterface.accessservices.admin.serviceinstance
 import org.odpi.openmetadata.commonservices.multitenant.OMVSServiceInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.registration.ViewServiceDescription;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * AssetSearchViewServicesInstance caches references to objects it needs for a specific server.
@@ -16,10 +13,6 @@ import org.slf4j.LoggerFactory;
 
 public class AssetSearchViewServicesInstance extends OMVSServiceInstance
 {
-    private static final Logger log = LoggerFactory.getLogger(AssetSearchViewServicesInstance.class);
-
-    private static final String className = AssetSearchViewServicesInstance.class.getName();
-
     /**
      * Set up the objects for the asset search view service
      * @param serverName name of the server

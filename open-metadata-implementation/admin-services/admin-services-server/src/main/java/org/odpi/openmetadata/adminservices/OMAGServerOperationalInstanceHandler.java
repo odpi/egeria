@@ -19,7 +19,8 @@ public class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInsta
      *
      * @param serviceName unique identifier for this service with a human meaningful value
      */
-    public OMAGServerOperationalInstanceHandler(String       serviceName)
+
+    public OMAGServerOperationalInstanceHandler(String serviceName)
     {
         super(serviceName);
     }
@@ -36,11 +37,12 @@ public class OMAGServerOperationalInstanceHandler extends OMAGServerServiceInsta
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    public OMAGOperationalServicesInstance getServerServiceInstance(String  userId,
-                                                                       String  serverName,
-                                                                       String  serviceOperationName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+    public OMAGOperationalServicesInstance getServerServiceInstance(String userId,
+                                                                    String serverName,
+                                                                    String serviceOperationName)
+            throws InvalidParameterException,
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         return (OMAGOperationalServicesInstance)super.getServerServiceInstance(userId, serverName, serviceOperationName);
     }

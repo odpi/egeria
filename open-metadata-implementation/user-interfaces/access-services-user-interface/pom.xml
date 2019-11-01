@@ -27,16 +27,14 @@
 
     <properties>
         <node.version>v10.12.0</node.version>
+        <node.downloadRoot>https://nodejs.org/dist/</node.downloadRoot>
         <npm.version>6.4.1</npm.version>
+        <npm.downloadRoot>https://registry.npmjs.org/npm/-/</npm.downloadRoot>
         <frontend.plugin.version>1.6</frontend.plugin.version>
         <resources.plugin.version>3.1.0</resources.plugin.version>
         <exec.plugin.version>1.6.0</exec.plugin.version>
         <jjwt.version>0.6.0</jjwt.version>
         <h2.version>1.4.196</h2.version>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <junit.jupiter.version>5.2.0</junit.jupiter.version>
-        <junit.surefire.version>1.2.0</junit.surefire.version>
-        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
@@ -273,11 +271,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>odf-metadata-api</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>admin-services-api</artifactId>
         </dependency>
 
@@ -289,16 +282,6 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-server</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>ui-admin-services-api</artifactId>
         </dependency>
 
     </dependencies>
