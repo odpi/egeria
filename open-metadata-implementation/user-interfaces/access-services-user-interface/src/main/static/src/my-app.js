@@ -45,7 +45,7 @@ setRootPath(MyAppGlobals.rootPath);
 class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get template() {
         return html`
-       <style include="shared-styles">
+      <style include="shared-styles">
         :host {
            display: block;
         };
@@ -126,8 +126,12 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
       <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path query-params="{{queryParams}}"></app-location>
 
-      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
-      <app-route route="{{subroute}}" pattern="[[rootPath]]:guid" data="{{subrouteData}}"></app-route>
+      <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subview}}"></app-route>
+      
+      <app-route route="{{subview}}" pattern="[[rootPath]]:subview" data="{{subviewData}}" tail="{{subroute2}}"></app-route>
+      
+      <app-route route="{{subroute2}}" pattern="[[rootPath]]:guid" data="{{subrouteData2}}"></app-route>
+       
        
        <toast-feedback duration="0"></toast-feedback> 
        
@@ -143,7 +147,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-selector selected="[[page]]" attr-for-selected="name"
                         class="drawer-list" swlectedClass="drawer-list-selected" role="navigation">
                     <div name="asset-search" language="[[language]]"><a href="[[rootPath]]#/asset-search">Asset Search</a></div>
-                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage">Asset Lineage</a></div>
+                    <div name="asset-lineage"><a href="[[rootPath]]#/asset-lineage/ultimateSource">Asset Lineage</a></div>
                     <div name="subject-area"><a href="[[rootPath]]#/subject-area">Subject Area</a></div>
                     <div name="type-explorer"><a href="[[rootPath]]#/type-explorer">Type Explorer</a></div>
                   </iron-selector>
@@ -180,7 +184,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view language="[[language]]" name="asset-search"></asset-search-view>
                     <subject-area-component language="[[language]]" name="subject-area"></subject-area-component>
-                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData.guid]]"></asset-lineage-view>
+                    <asset-lineage-view language="[[language]]" name="asset-lineage" guid="[[subrouteData2.guid]]" subview="{{subviewData.subview}}"></asset-lineage-view>
                     <type-explorer-view language="[[language]]" name="type-explorer"></type-explorer-view>
                     <my-view404 name="view404"></my-view404>
                   </iron-pages>
@@ -195,7 +199,6 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     static get properties() {
         return {
             language: { value: 'en' },
-
             page: {
                 type: String,
                 reflectToAttribute: true,
@@ -211,7 +214,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
                 observer: '_tokenChanged'
             },
             routeData: Object,
-            subroute: Object,
+            subview: {
+                type: String,
+                reflectToAttribute: true
+            },
+            subroute2: Object,
             pages: {
                 type: Array,
                 value: ['asset-search', 'subject-area', 'asset-lineage', 'type-explorer']
@@ -268,8 +275,11 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
 
         crumbs.push(allCrumbs.get('home'));
         crumbs.push(allCrumbs.get(page));
-        if(this.subrouteData.guid != null && this.subrouteData.guid != undefined ){
-            crumbs.push({label: this.subrouteData.guid, href:  "/" + this.subrouteData.guid });
+        if(this.subviewData.subview != null && this.subviewData.subview != undefined ){
+            crumbs.push({label: this.subviewData.subview, href:  "/" + this.subviewData.subview });
+        }
+        if(this.subrouteData2.guid != null && this.subrouteData2.guid != undefined ){
+            crumbs.push({label: this.subrouteData2.guid, href:  "/" + this.subrouteData2.guid });
         }
         this.crumbs = crumbs;
 
@@ -310,7 +320,7 @@ class MyApp extends mixinBehaviors([AppLocalizeBehavior], PolymerElement) {
     }
 
     _hasToken(){
-        return typeof this.token  !== "undefined" && this.token != null;
+        return typeof this.token !== "undefined" && this.token != null;
     }
 
     _tokenChanged(newValue, oldValue) {
