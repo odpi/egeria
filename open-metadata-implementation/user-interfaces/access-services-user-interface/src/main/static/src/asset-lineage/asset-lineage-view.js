@@ -29,7 +29,7 @@ class AssetLineageView extends PolymerElement {
     </style>
       
     <token-ajax id="tokenAjax" last-response="{{graphData}}"></token-ajax>
-    <vaadin-tabs id ="useCases" selected="0" >
+    <vaadin-tabs id ="useCases" selected="[[_getUseCase(this.subview)]]"  >
       <vaadin-tab value="ultimateSource">Ultimate Source</vaadin-tab>
       <vaadin-tab value="endToEnd">End to End Lineage</vaadin-tab>
       <vaadin-tab value="ultimateDestination">Ultimate Destination</vaadin-tab>
@@ -44,7 +44,7 @@ class AssetLineageView extends PolymerElement {
           <template>
             <vaadin-list-box>
               <vaadin-item value="column-view" selected="true">Column View</vaadin-item>
-              <vaadin-item value="table-view">Table view</vaadin-item>
+              <vaadin-item value="table-view">Table View</vaadin-item>
             </vaadin-list-box>
             </template>
         </vaadin-select>
@@ -201,17 +201,14 @@ class AssetLineageView extends PolymerElement {
     }
 
     _useCaseChanged() {
-        //this.usecase = this.$.useCases.items[this.$.useCases.selected].value;
-        //this.usecase=this.$.useCases.items[this.$.useCases.selected].value)
-        if(this.$.useCases.selected != this.usecases.indexOf(this.usecase)){
-            this.$.useCases.select(this.usecases.indexOf(this.usecase));
-        }
-      this.subview  =  this.usecase;
-      this._reload(this.usecase, this.$.viewsMenu.value);
+         window.location.href=window.location.href.replace(this.subview, this.usecase);
+         this.subview  =  this.usecase;
+         window.dispatchEvent(new CustomEvent('location-changed'));
+         this._reload(this.usecase, this.$.viewsMenu.value);
     }
 
-    _useCaseSelectionChanged(){
-        // this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
+    _getUseCase(usecase){
+      return this.usecases.indexOf(usecase);
     }
 }
 
