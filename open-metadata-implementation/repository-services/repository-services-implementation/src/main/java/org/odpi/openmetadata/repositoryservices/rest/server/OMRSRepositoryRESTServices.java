@@ -103,7 +103,8 @@ public class OMRSRepositoryRESTServices
      * @param localRepositoryConnector link to the local repository responsible for servicing the REST calls.
      *                                 If localRepositoryConnector is null when a REST calls is received, the request
      *                                 is rejected.
-     * @param metadataHighwayManager URL of the local server
+     * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
+     * @param metadataHighwayManager manager of the cohort managers
      * @param localServerURL URL of the local server
      * @param auditLog auditLog destination
      * @param maxPageSize max number of results to return on single request.

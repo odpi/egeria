@@ -99,7 +99,7 @@ public interface AssetCatalogInterface {
     RelationshipsResponse getLinkingRelationships(String userId, String startAssetGUID, String endAssetGUID) throws org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException, PropertyServerException;
 
     /**
-     * Returns the sub-graph that represents the returned linked relationships.
+     * Returns the sub-graph that represents the list of assets that in neighborhood of the given asset
      *
      * @param userId           the unique identifier for the user
      * @param assetGUID        the starting asset identifier of the query

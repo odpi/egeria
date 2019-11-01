@@ -241,7 +241,7 @@ public class AssetCatalogHandlerTest {
 
         List<Term> terms = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
         assertEquals(terms.get(0).getGuid(), FIRST_GUID);
-        assertEquals(terms.get(0).getTypeDef(), ASSET_TYPE);
+        assertEquals(terms.get(0).getTypeDefName(), ASSET_TYPE);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(), searchParams.getPageSize(), methodName);
         verify(invalidParameterHandler, times(1)).validateObject(searchParams, "searchParameter", methodName);
@@ -257,7 +257,7 @@ public class AssetCatalogHandlerTest {
         Term term = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
 
         assertEquals(term.getGuid(), FIRST_GUID);
-        assertEquals(term.getTypeDef(), ASSET_TYPE);
+        assertEquals(term.getTypeDefName(), ASSET_TYPE);
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
     }
 

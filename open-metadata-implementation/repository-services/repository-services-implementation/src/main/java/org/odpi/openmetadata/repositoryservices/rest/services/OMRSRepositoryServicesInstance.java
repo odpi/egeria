@@ -6,7 +6,6 @@ import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanc
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.metadatahighway.OMRSMetadataHighwayManager;
 
 
@@ -29,6 +28,7 @@ public class OMRSRepositoryServicesInstance extends OMAGServerServiceInstance
      * @param localServerName name of this server
      * @param localRepositoryConnector link to the repository responsible for servicing the REST calls to the local repository.
      * @param enterpriseRepositoryConnector link to the repository responsible for servicing the REST calls to the enterprise.
+     * @param metadataHighwayManager manager of the cohort managers
      * @param localServerURL URL of the local server
      * @param serviceName name of this service
      * @param auditLog logging destination
