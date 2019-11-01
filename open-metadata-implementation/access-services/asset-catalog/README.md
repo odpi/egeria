@@ -10,13 +10,13 @@ The Asset Catalog OMAS provides services to search for data assets including:
 * APIs
 * data sets
 
-The search will locate assets
+The search locates assets
 based on the content of the Asset metadata itself and the metadata that links
-to it.  This includes:
+to it. This includes:
 
 * glossary terms
 * schema elements
-* classifications
+* assets
 
 The Asset Catalog REST API supports:
 

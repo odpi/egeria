@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,17 +24,8 @@ public class AssetDescription extends Element implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Map<String, Object> properties;
     private List<Classification> classifications;
     private List<Relationship> relationships;
-
-    public Map<String, Object> getProperties() {
-        return properties;
-    }
-
-    public void setProperties(Map<String, Object> properties) {
-        this.properties = properties;
-    }
 
     public List<Classification> getClassifications() {
         return classifications;
@@ -52,4 +43,18 @@ public class AssetDescription extends Element implements Serializable {
         this.relationships = relationships;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AssetDescription that = (AssetDescription) o;
+        return Objects.equals(classifications, that.classifications) &&
+                Objects.equals(relationships, that.relationships);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), classifications, relationships);
+    }
 }

@@ -83,6 +83,9 @@ public final class Constants {
     public static final String TYPE = "dataType";
     public static final String QUALIFIED_NAME = "qualifiedName";
     public static final String NAME = "name";
+
+    public static final String THE_NORMAL_OPERATION_OF_THE_SERVICE = "No action is required.  This is part of the normal operation of the service.";
+
     private Constants() {
     }
 }
