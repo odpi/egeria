@@ -50,59 +50,12 @@ public class OpenLineageViewAdmin extends AuditableViewServiceAdmin
                 openLineageServerURL);
         this.serverName = instance.getServerName();
     }
+    
     @Override
     protected ViewServiceConfig validateAndExpandViewServicesConfigurationProperties(ViewServiceConfig viewServiceConfigurationProperties) throws OMAGConfigurationErrorException {
-        String methodName ="validateAndExpandViewServicesConfigurationProperties";
-        ViewServiceConfig updatedViewServiceConfig = new ViewServiceConfig();
-        // to have got here the supplied class and the admin class must be correct.
-
-        // check with anything else has been supplied, if so - check it is correct, if not update with the correct value from the view service description,
-
-        // check service name
-        if (viewServiceConfigurationProperties.getViewServiceName() != null && !(viewServiceConfigurationProperties.getViewServiceName().equals(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName()))) {
-            logBadConfigProperties(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName(),
-                    "viewServiceName",
-                    viewServiceConfigurationProperties.getViewServiceName(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceName(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName());
-
-        // check description
-        if (viewServiceConfigurationProperties.getViewServiceDescription() != null && !(viewServiceConfigurationProperties.getViewServiceDescription().equals(ViewServiceDescription.OPEN_LINEAGE.getViewServiceDescription()))) {
-            logBadConfigProperties(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName(),
-                    "viewServiceDescription",
-                    viewServiceConfigurationProperties.getViewServiceDescription(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceDescription(ViewServiceDescription.OPEN_LINEAGE.getViewServiceDescription());
-
-        // check id
-        if (viewServiceConfigurationProperties.getViewServiceId() != ViewServiceDescription.OPEN_LINEAGE.getViewServiceCode()) {
-            logBadConfigProperties(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName(),
-                    "viewServiceId",
-                    viewServiceConfigurationProperties.getViewServiceId() + "",
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceId(ViewServiceDescription.OPEN_LINEAGE.getViewServiceCode());
-
-        // check wiki
-        if (viewServiceConfigurationProperties.getViewServiceWiki() != null && !(viewServiceConfigurationProperties.getViewServiceWiki().equals(ViewServiceDescription.OPEN_LINEAGE.getViewServiceWiki()))) {
-            logBadConfigProperties(ViewServiceDescription.OPEN_LINEAGE.getViewServiceName(),
-                    "viewServiceWiki",
-                    viewServiceConfigurationProperties.getViewServiceWiki(),
-                    auditLog,
-                    methodName);
-        }
-
-        // make sure the admin class is still specified.
-        updatedViewServiceConfig.setViewServiceAdminClass(viewServiceConfigurationProperties.getViewServiceAdminClass());
-        viewServiceConfigurationProperties.setViewServiceWiki(ViewServiceDescription.OPEN_LINEAGE.getViewServiceWiki());
+        ViewServiceConfig updatedViewServiceConfig = validateAndExpandViewServicesConfigurationProperties(viewServiceConfigurationProperties, ViewServiceDescription.OPEN_LINEAGE);
         return updatedViewServiceConfig;
     }
-
 
     /**
      * Shutdown the view service.

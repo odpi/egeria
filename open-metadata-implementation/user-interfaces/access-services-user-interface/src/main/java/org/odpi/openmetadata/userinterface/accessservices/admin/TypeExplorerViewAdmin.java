@@ -39,57 +39,9 @@ public class TypeExplorerViewAdmin extends AuditableViewServiceAdmin
     }
     @Override
     protected ViewServiceConfig validateAndExpandViewServicesConfigurationProperties(ViewServiceConfig viewServiceConfigurationProperties) throws OMAGConfigurationErrorException {
-        String methodName ="validateAndExpandViewServicesConfigurationProperties";
-        ViewServiceConfig updatedViewServiceConfig = new ViewServiceConfig();
-        // to have got here the supplied class and the admin class must be correct.
-
-        // check with anything else has been supplied, if so - check it is correct, if not update with the correct value from the view service description,
-
-        // check service name
-        if (viewServiceConfigurationProperties.getViewServiceName() != null && !(viewServiceConfigurationProperties.getViewServiceName().equals(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName()))) {
-            logBadConfigProperties(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName(),
-                    "viewServiceName",
-                    viewServiceConfigurationProperties.getViewServiceName(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceName(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName());
-
-        // check description
-        if (viewServiceConfigurationProperties.getViewServiceDescription() != null && !(viewServiceConfigurationProperties.getViewServiceDescription().equals(ViewServiceDescription.TYPE_EXPLORER.getViewServiceDescription()))) {
-            logBadConfigProperties(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName(),
-                    "viewServiceDescription",
-                    viewServiceConfigurationProperties.getViewServiceDescription(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceDescription(ViewServiceDescription.TYPE_EXPLORER.getViewServiceDescription());
-
-        // check id
-        if (viewServiceConfigurationProperties.getViewServiceId() != ViewServiceDescription.TYPE_EXPLORER.getViewServiceCode()) {
-            logBadConfigProperties(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName(),
-                    "viewServiceId",
-                    viewServiceConfigurationProperties.getViewServiceId() + "",
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceId(ViewServiceDescription.TYPE_EXPLORER.getViewServiceCode());
-
-        // check wiki
-        if (viewServiceConfigurationProperties.getViewServiceWiki() != null && !(viewServiceConfigurationProperties.getViewServiceWiki().equals(ViewServiceDescription.TYPE_EXPLORER.getViewServiceWiki()))) {
-            logBadConfigProperties(ViewServiceDescription.TYPE_EXPLORER.getViewServiceName(),
-                    "viewServiceWiki",
-                    viewServiceConfigurationProperties.getViewServiceWiki(),
-                    auditLog,
-                    methodName);
-        }
-
-        // make sure the admin class is still specified.
-        updatedViewServiceConfig.setViewServiceAdminClass(viewServiceConfigurationProperties.getViewServiceAdminClass());
-        viewServiceConfigurationProperties.setViewServiceWiki(ViewServiceDescription.TYPE_EXPLORER.getViewServiceWiki());
+        ViewServiceConfig updatedViewServiceConfig = validateAndExpandViewServicesConfigurationProperties(viewServiceConfigurationProperties, ViewServiceDescription.TYPE_EXPLORER);
         return updatedViewServiceConfig;
     }
-
     /**
      * Shutdown the view service.
      */

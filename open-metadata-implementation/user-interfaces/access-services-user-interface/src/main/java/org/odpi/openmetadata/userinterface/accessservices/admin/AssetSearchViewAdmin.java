@@ -40,58 +40,9 @@ public class AssetSearchViewAdmin extends AuditableViewServiceAdmin
     }
     @Override
     protected ViewServiceConfig validateAndExpandViewServicesConfigurationProperties(ViewServiceConfig viewServiceConfigurationProperties) throws OMAGConfigurationErrorException {
-        String methodName ="validateAndExpandViewServicesConfigurationProperties";
-        ViewServiceConfig updatedViewServiceConfig = new ViewServiceConfig();
-        // to have got here the supplied class and the admin class must be correct.
-
-        // check with anything else has been supplied, if so - check it is correct, if not update with the correct value from the view service description,
-
-        // check service name
-        if (viewServiceConfigurationProperties.getViewServiceName() != null && !(viewServiceConfigurationProperties.getViewServiceName().equals(ViewServiceDescription.ASSET_SEARCH.getViewServiceName()))) {
-            logBadConfigProperties(ViewServiceDescription.ASSET_SEARCH.getViewServiceName(),
-                    "viewServiceName",
-                    viewServiceConfigurationProperties.getViewServiceName(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceName(ViewServiceDescription.ASSET_SEARCH.getViewServiceName());
-
-        // check description
-        if (viewServiceConfigurationProperties.getViewServiceDescription() != null && !(viewServiceConfigurationProperties.getViewServiceDescription().equals(ViewServiceDescription.ASSET_SEARCH.getViewServiceDescription()))) {
-            logBadConfigProperties(ViewServiceDescription.ASSET_SEARCH.getViewServiceName(),
-                    "viewServiceDescription",
-                    viewServiceConfigurationProperties.getViewServiceDescription(),
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceDescription(ViewServiceDescription.ASSET_SEARCH.getViewServiceDescription());
-
-        // check id
-        if (viewServiceConfigurationProperties.getViewServiceId() != ViewServiceDescription.ASSET_SEARCH.getViewServiceCode()) {
-            logBadConfigProperties(ViewServiceDescription.ASSET_SEARCH.getViewServiceName(),
-                    "viewServiceId",
-                    viewServiceConfigurationProperties.getViewServiceId() + "",
-                    auditLog,
-                    methodName);
-        }
-        updatedViewServiceConfig.setViewServiceId(ViewServiceDescription.ASSET_SEARCH.getViewServiceCode());
-
-        // check wiki
-        if (viewServiceConfigurationProperties.getViewServiceWiki() != null && !(viewServiceConfigurationProperties.getViewServiceWiki().equals(ViewServiceDescription.ASSET_SEARCH.getViewServiceWiki()))) {
-            logBadConfigProperties(ViewServiceDescription.ASSET_SEARCH.getViewServiceName(),
-                    "viewServiceWiki",
-                    viewServiceConfigurationProperties.getViewServiceWiki(),
-                    auditLog,
-                    methodName);
-        }
-
-        // make sure the admin class is still specified.
-        updatedViewServiceConfig.setViewServiceAdminClass(viewServiceConfigurationProperties.getViewServiceAdminClass());
-
-        viewServiceConfigurationProperties.setViewServiceWiki(ViewServiceDescription.ASSET_SEARCH.getViewServiceWiki());
+        ViewServiceConfig updatedViewServiceConfig = validateAndExpandViewServicesConfigurationProperties(viewServiceConfigurationProperties, ViewServiceDescription.ASSET_SEARCH);
         return updatedViewServiceConfig;
     }
-
     /**
      * Shutdown the view service.
      */
