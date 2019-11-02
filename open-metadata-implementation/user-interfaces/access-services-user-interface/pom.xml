@@ -267,6 +267,11 @@
         </dependency>
 
         <dependency>
+            <groupId>com.mikesamuel</groupId>
+            <artifactId>json-sanitizer</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>ffdc-services</artifactId>
         </dependency>
