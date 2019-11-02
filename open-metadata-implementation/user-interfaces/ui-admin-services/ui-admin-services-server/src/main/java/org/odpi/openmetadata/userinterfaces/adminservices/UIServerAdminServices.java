@@ -435,8 +435,8 @@ public class UIServerAdminServices
      * OMAGInvalidParameterException invalid serverName or UIServerConfig parameter.
      */
     public VoidResponse setUIServerConfig(String           userId,
-                                            String         serverName,
-                                            UIServerConfig uiServerConfig)
+                                          String         serverName,
+                                          UIServerConfig uiServerConfig)
     {
         final String methodName = "setUIServerConfig";
 
@@ -447,6 +447,7 @@ public class UIServerAdminServices
         try
         {
             errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateConfigServerName(serverName,uiServerConfig.getLocalServerName(),methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
             if (uiServerConfig == null)

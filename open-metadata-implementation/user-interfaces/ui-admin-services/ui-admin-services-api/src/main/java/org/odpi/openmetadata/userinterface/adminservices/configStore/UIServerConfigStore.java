@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.adminservices.store;
+package org.odpi.openmetadata.userinterface.adminservices.configStore;
 
 
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
 
 /**
- * UIServerConfigStore provides the interface to the configuration for a UI Server.  This is accessed
+ * UserStore provides the interface to the configuration for a UI Server.  This is accessed
  * through a connector.
  */
 public interface UIServerConfigStore

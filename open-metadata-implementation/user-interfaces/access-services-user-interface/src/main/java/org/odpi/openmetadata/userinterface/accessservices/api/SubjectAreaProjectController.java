@@ -14,7 +14,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.userinterface.accessservices.domain.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 

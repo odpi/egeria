@@ -29,7 +29,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.google.json.JsonSanitizer.sanitize;
 /**
  * This class responsibility is to interact with Open Lineage Services(OLS), process the returned response and return it in a format understood by view
  */
@@ -153,7 +152,6 @@ public class OpenLineageService {
 
         Response responseObj;
         try {
-            response  = sanitize(response);
             responseObj = mapper.readValue(response, Response.class);
         } catch (IOException e) {
             throw new MalformedInputException("Unable to process response", e);
