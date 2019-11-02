@@ -312,7 +312,7 @@
     status_code: 200
     headers:
       Content-Type: "application/json"
-    when: __cocopharma_dstage1_lineage.json['items'][0].include_for_lineage == "setToFalse"
+  when: __cocopharma_dstage1_lineage.json['items'][0].include_for_lineage == "setToFalse"
 
 - import_role: name=IBM.infosvr-import-export
   vars:
