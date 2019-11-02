@@ -11,7 +11,7 @@ import java.util.Arrays;
 /**
  * The OMAGServerInstanceErrorCode is used to define first failure data capture (FFDC) for errors that occur when
  * working with OMAG Server instances within the OMAG Server Platform
- * It is used in conjunction with all multi-admin exceptions, both Checked and Runtime (unchecked).
+ * It is used in conjunction with all multi-tenant exceptions, both Checked and Runtime (unchecked).
  *
  * The 5 fields in the enum are:
  * <ul>
