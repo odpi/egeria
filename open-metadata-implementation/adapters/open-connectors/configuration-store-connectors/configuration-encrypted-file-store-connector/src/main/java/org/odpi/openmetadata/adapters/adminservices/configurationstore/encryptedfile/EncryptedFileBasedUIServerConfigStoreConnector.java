@@ -10,9 +10,8 @@ import com.google.crypto.tink.proto.KeyTemplate;
 import org.apache.commons.io.FileUtils;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
-import org.odpi.openmetadata.userinterface.adminservices.configStore.UIServerConfigStoreConnectorBase;
 import org.odpi.openmetadata.userinterface.adminservices.configuration.properties.UIServerConfig;
-
+import org.odpi.openmetadata.userinterface.adminservices.store.UIServerConfigStoreConnectorBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

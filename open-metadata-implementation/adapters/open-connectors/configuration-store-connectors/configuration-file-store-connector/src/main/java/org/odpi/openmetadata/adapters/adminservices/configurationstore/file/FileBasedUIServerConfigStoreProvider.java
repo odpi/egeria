@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.adapters.adminservices.configurationstore.file;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
-import org.odpi.openmetadata.userinterface.adminservices.configStore.UIServerConfigStoreProviderBase;
+import org.odpi.openmetadata.userinterface.adminservices.store.UIServerConfigStoreProviderBase;
 
 /**
  * FileBasedServerConfigStoreProvider is the OCF connector provider for the file based server configuration store.

@@ -6,6 +6,11 @@ import '../shared-styles.js';
 import '../common/vis-graph.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-button.js';
 import '@vaadin/vaadin-radio-button/vaadin-radio-group.js';
+import '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import '@vaadin/vaadin-select/vaadin-select.js';
+import '@vaadin/vaadin-dropdown-menu/vaadin-dropdown-menu.js';
+import '@vaadin/vaadin-item/vaadin-item.js';
+import '@vaadin/vaadin-list-box/vaadin-list-box.js';
 
 class AssetLineageView extends PolymerElement {
   static get template() {
@@ -53,8 +58,8 @@ class AssetLineageView extends PolymerElement {
 
     ready() {
         super.ready();
-        this.$.radioUsecases.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
-        this.$.radioViews.addEventListener('value-changed', () => this._usecaseChanged(this.$.radioUsecases.value, this.$.radioViews.value) );
+        this.$.useCases.addEventListener('selected-changed', () => this.usecase=this.$.useCases.items[this.$.useCases.selected].value);
+        this.$.viewsMenu.addEventListener('value-changed', () => this._reload(this.$.useCases.items[this.$.useCases.selected].value, this.$.viewsMenu.value));
     }
 
     static get properties() {
@@ -62,6 +67,17 @@ class AssetLineageView extends PolymerElement {
             guid: {
                 type: String,
                 observer: '_guidChanged'
+            },
+            usecaseIndex:{
+                type: String
+            },
+            usecase: {
+                type: String,
+                observer: '_useCaseChanged'
+            },
+            usecases:{
+                type: Array,
+                value:['ultimateSource','endToEnd', 'ultimateDestination','glossaryLineage','sourceAndDestination' ]
             },
             graphData: {
                 type: Object,
@@ -136,7 +152,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/ultimate-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/ultimate-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -145,7 +161,7 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/glossary-lineage?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/glossary-lineage?view=' + view;
           this.$.tokenAjax._go();
       }
 
@@ -154,12 +170,13 @@ class AssetLineageView extends PolymerElement {
               view  = "column-view";
           }
           this.$.visgraph.options.groups = this.groups;
-          this.$.tokenAjax.url = '/api/lineage/entities/' + guid+ '/source-and-destination?view=' + view;
+          this.$.tokenAjax.url = '/api/lineage/entities/' + guid + '/source-and-destination?view=' + view;
           this.$.tokenAjax._go();
       }
 
-    _usecaseChanged(value, view) {
-        switch (value) {
+    _reload(usecase, view) {
+
+        switch (usecase) {
             case 'ultimateSource':
                 this._ultimateSource(this.guid, view);
                 break;
