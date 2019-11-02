@@ -69,8 +69,8 @@ public class RepositoryHandler
                                              String                  entityTypeName,
                                              String                  methodName,
                                              String                  guidParameterName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         try
         {
@@ -79,10 +79,10 @@ public class RepositoryHandler
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
         {
             errorHandler.handleUnknownEntity(error,
-                                             guid,
-                                             entityTypeName,
-                                             methodName,
-                                             guidParameterName);
+                    guid,
+                    entityTypeName,
+                    methodName,
+                    guidParameterName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -114,17 +114,17 @@ public class RepositoryHandler
                                         String                  entityTypeName,
                                         String                  methodName,
                                         String                  guidParameterName) throws UserNotAuthorizedException,
-                                                                                          PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntitySummary entity = metadataCollection.getEntitySummary(userId, guid);
 
             errorHandler.validateInstanceType(userId,
-                                             entity,
-                                             guidParameterName,
-                                             entityTypeName,
-                                             methodName);
+                    entity,
+                    guidParameterName,
+                    entityTypeName,
+                    methodName);
 
             return entity;
         }
@@ -163,15 +163,15 @@ public class RepositoryHandler
                                 String                  entityTypeName,
                                 InstanceProperties      properties,
                                 String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+            PropertyServerException
     {
         return this.createEntity(userId,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 properties,
-                                 null,
-                                 InstanceStatus.ACTIVE,
-                                 methodName);
+                entityTypeGUID,
+                entityTypeName,
+                properties,
+                null,
+                InstanceStatus.ACTIVE,
+                methodName);
     }
 
 
@@ -194,15 +194,15 @@ public class RepositoryHandler
                                 InstanceProperties      properties,
                                 List<Classification>    initialClassifications,
                                 String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+            PropertyServerException
     {
         return this.createEntity(userId,
-                                 entityTypeGUID,
-                                 entityTypeName,
-                                 properties,
-                                 initialClassifications,
-                                 InstanceStatus.ACTIVE,
-                                 methodName);
+                entityTypeGUID,
+                entityTypeName,
+                properties,
+                initialClassifications,
+                InstanceStatus.ACTIVE,
+                methodName);
     }
 
 
@@ -226,15 +226,15 @@ public class RepositoryHandler
                                 InstanceProperties      properties,
                                 InstanceStatus          instanceStatus,
                                 String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+            PropertyServerException
     {
-       return this.createEntity(userId,
-                                entityTypeGUID,
-                                entityTypeName,
-                                properties,
-                                null,
-                                instanceStatus,
-                                methodName);
+        return this.createEntity(userId,
+                entityTypeGUID,
+                entityTypeName,
+                properties,
+                null,
+                instanceStatus,
+                methodName);
     }
 
 
@@ -260,15 +260,15 @@ public class RepositoryHandler
                                 List<Classification>    initialClassifications,
                                 InstanceStatus          instanceStatus,
                                 String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.addEntity(userId,
-                                                                  entityTypeGUID,
-                                                                  properties,
-                                                                  initialClassifications,
-                                                                  instanceStatus);
+                    entityTypeGUID,
+                    properties,
+                    initialClassifications,
+                    instanceStatus);
 
             if (newEntity != null)
             {
@@ -276,9 +276,9 @@ public class RepositoryHandler
             }
 
             errorHandler.handleNoEntity(entityTypeGUID,
-                                        entityTypeName,
-                                        properties,
-                                        methodName);
+                    entityTypeName,
+                    properties,
+                    methodName);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -317,14 +317,14 @@ public class RepositoryHandler
             PropertyServerException
     {
         return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         null,
-                                         InstanceStatus.ACTIVE,
-                                         methodName);
+                entityTypeGUID,
+                entityTypeName,
+                externalSourceGUID,
+                externalSourceName,
+                properties,
+                null,
+                InstanceStatus.ACTIVE,
+                methodName);
     }
 
 
@@ -354,14 +354,14 @@ public class RepositoryHandler
             PropertyServerException
     {
         return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         initialClassifications,
-                                         InstanceStatus.ACTIVE,
-                                         methodName);
+                entityTypeGUID,
+                entityTypeName,
+                externalSourceGUID,
+                externalSourceName,
+                properties,
+                initialClassifications,
+                InstanceStatus.ACTIVE,
+                methodName);
     }
 
 
@@ -392,14 +392,14 @@ public class RepositoryHandler
             PropertyServerException
     {
         return this.createExternalEntity(userId,
-                                         entityTypeGUID,
-                                         entityTypeName,
-                                         externalSourceGUID,
-                                         externalSourceName,
-                                         properties,
-                                         null,
-                                         instanceStatus,
-                                         methodName);
+                entityTypeGUID,
+                entityTypeName,
+                externalSourceGUID,
+                externalSourceName,
+                properties,
+                null,
+                instanceStatus,
+                methodName);
     }
 
     /**
@@ -433,12 +433,12 @@ public class RepositoryHandler
         try
         {
             EntityDetail newEntity = metadataCollection.addExternalEntity(userId,
-                                                        entityTypeGUID,
-                                                        externalSourceGUID,
-                                                        externalSourceName,
-                                                        properties,
-                                                        initialClassifications,
-                                                        instanceStatus);
+                    entityTypeGUID,
+                    externalSourceGUID,
+                    externalSourceName,
+                    properties,
+                    initialClassifications,
+                    instanceStatus);
 
             if (newEntity != null)
             {
@@ -492,31 +492,31 @@ public class RepositoryHandler
                                                   String                  attachedEntityTypeName,
                                                   InstanceProperties      attachedEntityProperties,
                                                   String                  methodName) throws InvalidParameterException,
-                                                                                             UserNotAuthorizedException,
-                                                                                             PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         final String guidParameterName = "anchorEntityGUID";
 
         this.validateEntityGUID(userId,
-                                anchorEntityGUID,
-                                anchorEntityTypeName,
-                                methodName,
-                                guidParameterName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                methodName,
+                guidParameterName);
 
         String  attachedEntityGUID = this.createEntity(userId,
-                                                       attachedEntityTypeGUID,
-                                                       attachedEntityTypeName,
-                                                       attachedEntityProperties,
-                                                       methodName);
+                attachedEntityTypeGUID,
+                attachedEntityTypeName,
+                attachedEntityProperties,
+                methodName);
 
         if (attachedEntityGUID != null)
         {
             this.createRelationship(userId,
-                                    anchorRelationshipTypeGUID,
-                                    anchorEntityGUID,
-                                    attachedEntityGUID,
-                                    anchorRelationshipProperties,
-                                    methodName);
+                    anchorRelationshipTypeGUID,
+                    anchorEntityGUID,
+                    attachedEntityGUID,
+                    anchorRelationshipProperties,
+                    methodName);
         }
 
         return attachedEntityGUID;
@@ -542,20 +542,20 @@ public class RepositoryHandler
                                 String                  entityTypeName,
                                 InstanceProperties      properties,
                                 String                  methodName) throws UserNotAuthorizedException,
-                                                                           PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityProperties(userId,
-                                                                               entityGUID,
-                                                                               properties);
+                    entityGUID,
+                    properties);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntity(entityTypeGUID,
-                                            entityTypeName,
-                                            properties,
-                                            methodName);
+                        entityTypeName,
+                        properties,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -588,20 +588,20 @@ public class RepositoryHandler
                                       String                  entityTypeName,
                                       InstanceStatus          instanceStatus,
                                       String                  methodName) throws UserNotAuthorizedException,
-                                                                                 PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityStatus(userId,
-                                                                           entityGUID,
-                                                                           instanceStatus);
+                    entityGUID,
+                    instanceStatus);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntity(entityTypeGUID,
-                                            entityTypeName,
-                                            null,
-                                            methodName);
+                        entityTypeName,
+                        null,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -634,22 +634,22 @@ public class RepositoryHandler
                                   String                  classificationTypeName,
                                   InstanceProperties      properties,
                                   String                  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.classifyEntity(userId,
-                                                                       entityGUID,
-                                                                       classificationTypeName,
-                                                                       properties);
+                    entityGUID,
+                    classificationTypeName,
+                    properties);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             properties,
-                                                             methodName);
+                        classificationTypeGUID,
+                        classificationTypeName,
+                        properties,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -682,22 +682,22 @@ public class RepositoryHandler
                                     String                  classificationTypeName,
                                     InstanceProperties      properties,
                                     String                  methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.updateEntityClassification(userId,
-                                                                                   entityGUID,
-                                                                                   classificationTypeName,
-                                                                                   properties);
+                    entityGUID,
+                    classificationTypeName,
+                    properties);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             properties,
-                                                             methodName);
+                        classificationTypeGUID,
+                        classificationTypeName,
+                        properties,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -728,21 +728,21 @@ public class RepositoryHandler
                                     String                  classificationTypeGUID,
                                     String                  classificationTypeName,
                                     String                  methodName) throws UserNotAuthorizedException,
-                                                                               PropertyServerException
+            PropertyServerException
     {
         try
         {
             EntityDetail newEntity = metadataCollection.declassifyEntity(userId,
-                                                                         entityGUID,
-                                                                         classificationTypeName);
+                    entityGUID,
+                    classificationTypeName);
 
             if (newEntity == null)
             {
                 errorHandler.handleNoEntityForClassification(entityGUID,
-                                                             classificationTypeGUID,
-                                                             classificationTypeName,
-                                                             null,
-                                                             methodName);
+                        classificationTypeGUID,
+                        classificationTypeName,
+                        null,
+                        methodName);
             }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
@@ -778,26 +778,26 @@ public class RepositoryHandler
                              String           validatingPropertyName,
                              String           validatingProperty,
                              String           methodName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         final String guidParameterName = "obsoleteEntityGUID";
 
         try
         {
             EntityDetail obsoleteEntity = this.getEntityByGUID(userId,
-                                                               obsoleteEntityGUID,
-                                                               guidParameterName,
-                                                               entityTypeName,
-                                                               methodName);
+                    obsoleteEntityGUID,
+                    guidParameterName,
+                    entityTypeName,
+                    methodName);
 
             if (obsoleteEntity != null)
             {
                 errorHandler.validateProperties(obsoleteEntityGUID,
-                                                validatingPropertyName,
-                                                validatingProperty,
-                                                obsoleteEntity.getProperties(),
-                                                methodName);
+                        validatingPropertyName,
+                        validatingProperty,
+                        obsoleteEntity.getProperties(),
+                        methodName);
 
                 metadataCollection.deleteEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
             }
@@ -834,23 +834,23 @@ public class RepositoryHandler
                               String           entityTypeGUID,
                               String           entityTypeName,
                               String           methodName) throws UserNotAuthorizedException,
-                                                                  PropertyServerException
+            PropertyServerException
     {
         try
         {
             metadataCollection.purgeEntity(userId, entityTypeGUID, entityTypeName, obsoleteEntityGUID);
             RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.ENTITY_PURGED;
             auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(obsoleteEntityGUID,
-                                                                entityTypeName,
-                                                                entityTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(obsoleteEntityGUID,
+                            entityTypeName,
+                            entityTypeGUID,
+                            methodName,
+                            metadataCollection.getMetadataCollectionId(userId)),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -888,29 +888,29 @@ public class RepositoryHandler
                                                  String                  attachedEntityTypeGUID,
                                                  String                  attachedEntityTypeName,
                                                  String                  methodName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         Relationship relationship = getUniqueRelationshipByType(userId,
-                                                                anchorEntityGUID,
-                                                                anchorEntityTypeName,
-                                                                anchorRelationshipTypeGUID,
-                                                                anchorRelationshipTypeName,
-                                                                methodName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                anchorRelationshipTypeGUID,
+                anchorRelationshipTypeName,
+                methodName);
 
         EntityDetail entity = getEntityForRelationshipType(userId,
-                                                           anchorEntityGUID,
-                                                           anchorEntityTypeName,
-                                                           anchorRelationshipTypeGUID,
-                                                           anchorRelationshipTypeName,
-                                                           methodName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                anchorRelationshipTypeGUID,
+                anchorRelationshipTypeName,
+                methodName);
         if (relationship != null)
         {
             this.removeRelationship(userId,
-                                    anchorRelationshipTypeGUID,
-                                    anchorRelationshipTypeName,
-                                    relationship.getGUID(),
-                                    methodName);
+                    anchorRelationshipTypeGUID,
+                    anchorRelationshipTypeName,
+                    relationship.getGUID(),
+                    methodName);
         }
 
         if (entity != null)
@@ -920,19 +920,19 @@ public class RepositoryHandler
             try
             {
                 metadataCollection.deleteEntity(userId,
-                                                attachedEntityTypeGUID,
-                                                attachedEntityTypeName,
-                                                attachedEntityGUID);
+                        attachedEntityTypeGUID,
+                        attachedEntityTypeName,
+                        attachedEntityGUID);
             }
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
             {
                 final String guidParameterName = "attachedEntityGUID";
 
                 errorHandler.handleUnknownEntity(error,
-                                                 anchorEntityGUID,
-                                                 attachedEntityTypeName,
-                                                 methodName,
-                                                 guidParameterName);
+                        anchorEntityGUID,
+                        attachedEntityTypeName,
+                        methodName,
+                        guidParameterName);
             }
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
             {
@@ -941,10 +941,10 @@ public class RepositoryHandler
             catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException error)
             {
                 this.purgeEntity(userId,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityTypeGUID,
-                                 attachedEntityGUID,
-                                 methodName);
+                        attachedEntityTypeGUID,
+                        attachedEntityTypeGUID,
+                        attachedEntityGUID,
+                        methodName);
             }
             catch (Throwable error)
             {
@@ -974,20 +974,20 @@ public class RepositoryHandler
                                       String                  entityTypeGUID,
                                       String                  entityTypeName,
                                       String                  methodName) throws InvalidParameterException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            entityGUID,
-                                                                                            null,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            5);
+                    entityGUID,
+                    null,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    5);
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
@@ -1032,21 +1032,21 @@ public class RepositoryHandler
                                                  int                    startingFrom,
                                                  int                    pageSize,
                                                  String                 methodName) throws UserNotAuthorizedException,
-                                                                                           PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<EntityDetail> results = metadataCollection.findEntitiesByProperty(userId,
-                                                                                   entityTypeGUID,
-                                                                                   null,
-                                                                                   null,
-                                                                                   startingFrom,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   null,
-                                                                                   pageSize);
+                    entityTypeGUID,
+                    null,
+                    null,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
 
             if (results == null)
             {
@@ -1105,21 +1105,21 @@ public class RepositoryHandler
                                                              int                    startingFrom,
                                                              int                    pageSize,
                                                              String                 methodName) throws UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+            PropertyServerException
     {
         List<EntityDetail> results = new ArrayList<>();
 
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            startingFrom,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            pageSize);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
 
             if (relationships != null)
             {
@@ -1139,7 +1139,7 @@ public class RepositoryHandler
                 if (log.isDebugEnabled())
                 {
                     log.debug("No relationships of type " + relationshipTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                            " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
             }
         }
@@ -1188,21 +1188,21 @@ public class RepositoryHandler
                                                             int                    startingFrom,
                                                             int                    pageSize,
                                                             String                 methodName) throws UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+            PropertyServerException
     {
         List<EntityDetail> results = new ArrayList<>();
 
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            startingFrom,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            pageSize);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
 
             if (relationships != null)
             {
@@ -1228,7 +1228,7 @@ public class RepositoryHandler
                 if (log.isDebugEnabled())
                 {
                     log.debug("No relationships of type " + relationshipTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                            " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
             }
         }
@@ -1276,20 +1276,20 @@ public class RepositoryHandler
                                                   String  attachedEntityTypeGUID,// todo error message
                                                   String  attachedEntityTypeName,// todo error message
                                                   String  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+            PropertyServerException
     {
         try
         {
             // todo this method needs to loop to ensure the maximum number of elements can be returned
 
             List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
-                                                                              anchorEntityGUID,
-                                                                              anchorEntityTypeName,
-                                                                              relationshipTypeGUID,
-                                                                              relationshipTypeName,
-                                                                              0,
-                                                                              maxPageSize,
-                                                                              methodName);
+                    anchorEntityGUID,
+                    anchorEntityTypeName,
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    0,
+                    maxPageSize,
+                    methodName);
 
             if (entities != null)
             {
@@ -1298,8 +1298,8 @@ public class RepositoryHandler
                     if (entity != null)
                     {
                         if ((userId.equals(entity.getCreatedBy()) ||
-                                     (userId.equals(entity.getUpdatedBy())) ||
-                                     ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                                (userId.equals(entity.getUpdatedBy())) ||
+                                ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                         {
                             return entity;
                         }
@@ -1311,7 +1311,7 @@ public class RepositoryHandler
                 if (log.isDebugEnabled())
                 {
                     log.debug("No entities of type " + attachedEntityTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                            " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
             }
         }
@@ -1352,7 +1352,7 @@ public class RepositoryHandler
                                                           int     startingFrom,
                                                           int     pageSize,
                                                           String  methodName) throws UserNotAuthorizedException,
-                                                                                                     PropertyServerException
+            PropertyServerException
     {
         List<EntityDetail> results = new ArrayList<>();
 
@@ -1361,13 +1361,13 @@ public class RepositoryHandler
         try
         {
             List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
-                                                                              anchorEntityGUID,
-                                                                              anchorEntityTypeName,
-                                                                              relationshipTypeGUID,
-                                                                              relationshipTypeName,
-                                                                              startingFrom,
-                                                                              pageSize,
-                                                                              methodName);
+                    anchorEntityGUID,
+                    anchorEntityTypeName,
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    startingFrom,
+                    pageSize,
+                    methodName);
 
             if (entities != null)
             {
@@ -1376,8 +1376,8 @@ public class RepositoryHandler
                     if (entity != null)
                     {
                         if ((userId.equals(entity.getCreatedBy()) ||
-                            (userId.equals(entity.getUpdatedBy())) ||
-                            ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                                (userId.equals(entity.getUpdatedBy())) ||
+                                ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
                         {
                             results.add(entity);
                         }
@@ -1389,7 +1389,7 @@ public class RepositoryHandler
                 if (log.isDebugEnabled())
                 {
                     log.debug("No entities of type " + attachedEntityTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                            " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
             }
         }
@@ -1434,16 +1434,16 @@ public class RepositoryHandler
                                                       int                    startingFrom,
                                                       int                    pageSize,
                                                       String                 methodName) throws UserNotAuthorizedException,
-                                                                                                PropertyServerException
+            PropertyServerException
     {
         List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                       anchorEntityGUID,
-                                                                       anchorEntityTypeName,
-                                                                       relationshipTypeGUID,
-                                                                       relationshipTypeName,
-                                                                       startingFrom,
-                                                                       pageSize,
-                                                                       methodName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                startingFrom,
+                pageSize,
+                methodName);
 
         if (relationships != null)
         {
@@ -1520,7 +1520,7 @@ public class RepositoryHandler
     public EntityDetail getEntityForRelationship(String                 userId,
                                                  EntityProxy            requiredEnd,
                                                  String                 methodName) throws UserNotAuthorizedException,
-                                                                                           PropertyServerException
+            PropertyServerException
     {
         try
         {
@@ -1562,19 +1562,19 @@ public class RepositoryHandler
                                                      String                 relationshipTypeGUID,
                                                      String                 relationshipTypeName,
                                                      String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            100);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    100);
 
             if (relationships != null)
             {
@@ -1593,10 +1593,10 @@ public class RepositoryHandler
                 else if (relationships.size() > 1)
                 {
                     errorHandler.handleAmbiguousRelationships(anchorEntityGUID,
-                                                              anchorEntityTypeName,
-                                                              relationshipTypeName,
-                                                              relationships,
-                                                              methodName);
+                            anchorEntityTypeName,
+                            relationshipTypeName,
+                            relationships,
+                            methodName);
                 }
             }
         }
@@ -1634,8 +1634,8 @@ public class RepositoryHandler
                                           String                 guidParameterName,
                                           String                 entityTypeName,
                                           String                 methodName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         try
         {
@@ -1686,8 +1686,8 @@ public class RepositoryHandler
                                    String                 guidParameterName,
                                    String                 entityTypeName,
                                    String                 methodName) throws InvalidParameterException,
-                                                                             UserNotAuthorizedException,
-                                                                             PropertyServerException
+            UserNotAuthorizedException,
+            PropertyServerException
     {
         try
         {
@@ -1733,21 +1733,21 @@ public class RepositoryHandler
                                                InstanceProperties     nameProperties,
                                                String                 entityTypeGUID,
                                                String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+            PropertyServerException
     {
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
-                                                             entityTypeGUID,
-                                                             nameProperties,
-                                                             MatchCriteria.ANY,
-                                                             0,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             2);
+                    entityTypeGUID,
+                    nameProperties,
+                    MatchCriteria.ANY,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    2);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1782,21 +1782,21 @@ public class RepositoryHandler
                                                  int                    startingFrom,
                                                  int                    pageSize,
                                                  String                 methodName) throws UserNotAuthorizedException,
-                                                                                           PropertyServerException
+            PropertyServerException
     {
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
-                                                             entityTypeGUID,
-                                                             nameProperties,
-                                                             MatchCriteria.ANY,
-                                                             startingFrom,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             pageSize);
+                    entityTypeGUID,
+                    nameProperties,
+                    MatchCriteria.ANY,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1833,21 +1833,21 @@ public class RepositoryHandler
                                                String                 entityTypeGUID,
                                                String                 entityTypeName,
                                                String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<EntityDetail> returnedEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                            entityTypeGUID,
-                                                                                            nameProperties,
-                                                                                            MatchCriteria.ANY,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            2);
+                    entityTypeGUID,
+                    nameProperties,
+                    MatchCriteria.ANY,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    2);
 
             if ((returnedEntities == null) || returnedEntities.isEmpty())
             {
@@ -1893,21 +1893,21 @@ public class RepositoryHandler
                                                 int                    startingFrom,
                                                 int                    pageSize,
                                                 String                 methodName) throws UserNotAuthorizedException,
-                                                                                          PropertyServerException
+            PropertyServerException
     {
         try
         {
             return metadataCollection.findEntitiesByProperty(userId,
-                                                             entityTypeGUID,
-                                                             null,
-                                                             null,
-                                                             startingFrom,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             null,
-                                                             pageSize);
+                    entityTypeGUID,
+                    null,
+                    null,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
@@ -1944,16 +1944,16 @@ public class RepositoryHandler
                                                      String                 relationshipTypeGUID,
                                                      String                 relationshipTypeName,
                                                      String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException
+            PropertyServerException
     {
         return this.getRelationshipsByType(userId,
-                                           anchorEntityGUID,
-                                           anchorEntityTypeName,
-                                           relationshipTypeGUID,
-                                           relationshipTypeName,
-                                           0,
-                                           100,
-                                           methodName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                0,
+                100,
+                methodName);
     }
 
 
@@ -1983,26 +1983,26 @@ public class RepositoryHandler
                                                      int                    startingFrom,
                                                      int                    pageSize,
                                                      String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            startingFrom,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            pageSize);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    pageSize);
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
                 if (log.isDebugEnabled())
                 {
                     log.debug("No relationships of type " + relationshipTypeName +
-                              " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                            " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
                 }
             }
 
@@ -2044,26 +2044,26 @@ public class RepositoryHandler
                                                              String                 relationshipTypeGUID,
                                                              String                 relationshipTypeName,
                                                              String                 methodName) throws UserNotAuthorizedException,
-                                                                                                       PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            0,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            100);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    0,
+                    null,
+                    null,
+                    null,
+                    null,
+                    100);
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
                 errorHandler.handleNoRelationship(anchorEntityGUID,
-                                                  anchorEntityTypeName,
-                                                  relationshipTypeName,
-                                                  methodName);
+                        anchorEntityTypeName,
+                        relationshipTypeName,
+                        methodName);
             }
 
             return relationships;
@@ -2107,14 +2107,14 @@ public class RepositoryHandler
                                                 String                 relationshipTypeGUID,
                                                 String                 relationshipTypeName,
                                                 String                 methodName) throws PropertyServerException,
-                                                                                          UserNotAuthorizedException
+            UserNotAuthorizedException
     {
         List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                       anchorEntityGUID,
-                                                                       anchorEntityTypeName,
-                                                                       relationshipTypeGUID,
-                                                                       relationshipTypeName,
-                                                                       methodName);
+                anchorEntityGUID,
+                anchorEntityTypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         int count = 0;
 
@@ -2156,14 +2156,14 @@ public class RepositoryHandler
                                                        String                 relationshipTypeGUID,
                                                        String                 relationshipTypeName,
                                                        String                 methodName) throws UserNotAuthorizedException,
-                                                                                                 PropertyServerException
+            PropertyServerException
     {
         List<Relationship>  entity1Relationships = this.getRelationshipsByType(userId,
-                                                                               entity1GUID,
-                                                                               entity1TypeName,
-                                                                               relationshipTypeGUID,
-                                                                               relationshipTypeName,
-                                                                               methodName);
+                entity1GUID,
+                entity1TypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         if (entity1Relationships != null)
         {
@@ -2213,26 +2213,26 @@ public class RepositoryHandler
                                                           int                    startingFrom,
                                                           int                    maximumResults,
                                                           String                 methodName) throws UserNotAuthorizedException,
-                                                                                               PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
-                                                                                            anchorEntityGUID,
-                                                                                            relationshipTypeGUID,
-                                                                                            startingFrom,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            null,
-                                                                                            maximumResults);
+                    anchorEntityGUID,
+                    relationshipTypeGUID,
+                    startingFrom,
+                    null,
+                    null,
+                    null,
+                    null,
+                    maximumResults);
 
             if ((relationships == null) || (relationships.isEmpty()))
             {
                 errorHandler.handleNoRelationship(anchorEntityGUID,
-                                                  anchorEntityTypeName,
-                                                  relationshipTypeName,
-                                                  methodName);
+                        anchorEntityTypeName,
+                        relationshipTypeName,
+                        methodName);
             }
 
             return relationships;
@@ -2277,16 +2277,16 @@ public class RepositoryHandler
                                                     String                 relationshipTypeGUID,
                                                     String                 relationshipTypeName,
                                                     String                 methodName) throws UserNotAuthorizedException,
-                                                                                              PropertyServerException
+            PropertyServerException
     {
         try
         {
             List<Relationship> relationships = this.getRelationshipsByType(userId,
-                                                                           anchorEntityGUID,
-                                                                           anchorEntityTypeName,
-                                                                           relationshipTypeGUID,
-                                                                           relationshipTypeName,
-                                                                           methodName);
+                    anchorEntityGUID,
+                    anchorEntityTypeName,
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    methodName);
 
             if (relationships != null)
             {
@@ -2297,10 +2297,10 @@ public class RepositoryHandler
                 else if (relationships.size() > 1)
                 {
                     errorHandler.handleAmbiguousRelationships(anchorEntityGUID,
-                                                              anchorEntityTypeName,
-                                                              relationshipTypeName,
-                                                              relationships,
-                                                              methodName);
+                            anchorEntityTypeName,
+                            relationshipTypeName,
+                            relationships,
+                            methodName);
                 }
             }
         }
@@ -2336,16 +2336,16 @@ public class RepositoryHandler
                                    String                  end2GUID,
                                    InstanceProperties      relationshipProperties,
                                    String                  methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
+            PropertyServerException
     {
         try
         {
             metadataCollection.addRelationship(userId,
-                                               relationshipTypeGUID,
-                                               relationshipProperties,
-                                               end1GUID,
-                                               end2GUID,
-                                               InstanceStatus.ACTIVE);
+                    relationshipTypeGUID,
+                    relationshipProperties,
+                    end1GUID,
+                    end2GUID,
+                    InstanceStatus.ACTIVE);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2385,13 +2385,13 @@ public class RepositoryHandler
         try
         {
             metadataCollection.addExternalRelationship(userId,
-                                                       relationshipTypeGUID,
-                                                       externalSourceGUID,
-                                                       externalSourceName,
-                                                       relationshipProperties,
-                                                       end1GUID,
-                                                       end2GUID,
-                                                       InstanceStatus.ACTIVE);
+                    relationshipTypeGUID,
+                    externalSourceGUID,
+                    externalSourceName,
+                    relationshipProperties,
+                    end1GUID,
+                    end2GUID,
+                    InstanceStatus.ACTIVE);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2420,14 +2420,14 @@ public class RepositoryHandler
                                    String                  relationshipTypeName,
                                    String                  relationshipGUID,
                                    String                  methodName) throws UserNotAuthorizedException,
-                                                                              PropertyServerException
+            PropertyServerException
     {
         try
         {
             metadataCollection.deleteRelationship(userId,
-                                                  relationshipTypeGUID,
-                                                  relationshipTypeName,
-                                                  relationshipGUID);
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    relationshipGUID);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2461,27 +2461,27 @@ public class RepositoryHandler
                                   String                  relationshipTypeName,
                                   String                  relationshipGUID,
                                   String                  methodName) throws UserNotAuthorizedException,
-                                                                             PropertyServerException
+            PropertyServerException
     {
         try
         {
             metadataCollection.purgeRelationship(userId,
-                                                 relationshipTypeGUID,
-                                                 relationshipTypeName,
-                                                 relationshipGUID);
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    relationshipGUID);
 
             RepositoryHandlerAuditCode auditCode = RepositoryHandlerAuditCode.RELATIONSHIP_PURGED;
             auditLog.logRecord(methodName,
-                               auditCode.getLogMessageId(),
-                               auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(relationshipGUID,
-                                                                relationshipTypeName,
-                                                                relationshipTypeGUID,
-                                                                methodName,
-                                                                metadataCollection.getMetadataCollectionId(userId)),
-                               null,
-                               auditCode.getSystemAction(),
-                               auditCode.getUserAction());
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(relationshipGUID,
+                            relationshipTypeName,
+                            relationshipTypeGUID,
+                            methodName,
+                            metadataCollection.getMetadataCollectionId(userId)),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2515,23 +2515,23 @@ public class RepositoryHandler
                                                   String                  entity1TypeName,
                                                   String                  entity2GUID,
                                                   String                  methodName) throws UserNotAuthorizedException,
-                                                                                             PropertyServerException
+            PropertyServerException
     {
         Relationship  relationship = this.getRelationshipBetweenEntities(userId,
-                                                                         entity1GUID,
-                                                                         entity1TypeName,
-                                                                         entity2GUID,
-                                                                         relationshipTypeGUID,
-                                                                         relationshipTypeName,
-                                                                         methodName);
+                entity1GUID,
+                entity1TypeName,
+                entity2GUID,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         if (relationship != null)
         {
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    relationship.getGUID(),
-                                    methodName);
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    relationship.getGUID(),
+                    methodName);
         }
     }
 
@@ -2551,13 +2551,13 @@ public class RepositoryHandler
                                              String                 relationshipGUID,
                                              InstanceProperties     relationshipProperties,
                                              String                 methodName) throws UserNotAuthorizedException,
-                                                                                       PropertyServerException
+            PropertyServerException
     {
         try
         {
             metadataCollection.updateRelationshipProperties(userId,
-                                               relationshipGUID,
-                                               relationshipProperties);
+                    relationshipGUID,
+                    relationshipProperties);
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -2595,46 +2595,46 @@ public class RepositoryHandler
                                                String                 relationshipTypeGUID,
                                                String                 relationshipTypeName,
                                                String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+            PropertyServerException
     {
         Relationship  existingRelationshipForEntity1 = this.getUniqueRelationshipByType(userId,
-                                                                                        end1GUID,
-                                                                                        end1TypeName,
-                                                                                        relationshipTypeGUID,
-                                                                                        relationshipTypeName,
-                                                                                        methodName);
+                end1GUID,
+                end1TypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         existingRelationshipForEntity1 = this.removeIncompatibleRelationship(userId,
-                                                                             existingRelationshipForEntity1,
-                                                                             end1GUID,
-                                                                             end2GUID,
-                                                                             relationshipTypeGUID,
-                                                                             relationshipTypeName,
-                                                                             methodName);
+                existingRelationshipForEntity1,
+                end1GUID,
+                end2GUID,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         Relationship  existingRelationshipForEntity2 = this.getUniqueRelationshipByType(userId,
-                                                                                        end2GUID,
-                                                                                        end2TypeName,
-                                                                                        relationshipTypeGUID,
-                                                                                        relationshipTypeName,
-                                                                                        methodName);
+                end2GUID,
+                end2TypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         existingRelationshipForEntity2 = this.removeIncompatibleRelationship(userId,
-                                                                             existingRelationshipForEntity2,
-                                                                             end1GUID,
-                                                                             end2GUID,
-                                                                             relationshipTypeGUID,
-                                                                             relationshipTypeName,
-                                                                             methodName);
+                existingRelationshipForEntity2,
+                end1GUID,
+                end2GUID,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         if ((existingRelationshipForEntity1 == null) && (existingRelationshipForEntity2 == null))
         {
             this.createRelationship(userId,
-                                    relationshipTypeGUID,
-                                    end1GUID,
-                                    end2GUID,
-                                    null,
-                                    methodName);
+                    relationshipTypeGUID,
+                    end1GUID,
+                    end2GUID,
+                    null,
+                    methodName);
         }
     }
 
@@ -2659,22 +2659,22 @@ public class RepositoryHandler
                                                String                 relationshipTypeGUID,
                                                String                 relationshipTypeName,
                                                String                 methodName) throws UserNotAuthorizedException,
-                                                                                         PropertyServerException
+            PropertyServerException
     {
         Relationship obsoleteRelationship = this.getUniqueRelationshipByType(userId,
-                                                                             entityGUID,
-                                                                             entityTypeName,
-                                                                             relationshipTypeGUID,
-                                                                             relationshipTypeName,
-                                                                             methodName);
+                entityGUID,
+                entityTypeName,
+                relationshipTypeGUID,
+                relationshipTypeName,
+                methodName);
 
         if (obsoleteRelationship != null)
         {
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    obsoleteRelationship.getGUID(),
-                                    methodName);
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    obsoleteRelationship.getGUID(),
+                    methodName);
         }
     }
 
@@ -2702,7 +2702,7 @@ public class RepositoryHandler
                                                         String                 relationshipTypeGUID,
                                                         String                 relationshipTypeName,
                                                         String                 methodName) throws UserNotAuthorizedException,
-                                                                                                  PropertyServerException
+            PropertyServerException
     {
         if (relationship == null)
         {
@@ -2722,10 +2722,10 @@ public class RepositoryHandler
              * The current relationship is between different entities.  It needs to be deleted.
              */
             this.removeRelationship(userId,
-                                    relationshipTypeGUID,
-                                    relationshipTypeName,
-                                    relationship.getGUID(),
-                                    methodName);
+                    relationshipTypeGUID,
+                    relationshipTypeName,
+                    relationship.getGUID(),
+                    methodName);
 
             return null;
         }
