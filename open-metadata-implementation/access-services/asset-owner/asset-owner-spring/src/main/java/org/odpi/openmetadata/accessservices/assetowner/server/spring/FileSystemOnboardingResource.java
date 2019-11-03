@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetowner.server.spring;
 
 
-import org.odpi.openmetadata.accessservices.assetowner.properties.FileSystem;
-import org.odpi.openmetadata.accessservices.assetowner.properties.Folder;
 import org.odpi.openmetadata.accessservices.assetowner.rest.*;
 import org.odpi.openmetadata.accessservices.assetowner.server.FileSystemRESTServices;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
@@ -278,6 +276,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID new parent folder
      * @param fileGUID unique identifier of the file to move
+     * @param requestBody null request body to satisfy REST protocol
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
@@ -304,6 +303,7 @@ public class FileSystemOnboardingResource
      * @param userId calling user
      * @param folderGUID new parent folder
      * @param dataFolderGUID unique identifier of the data folder to move
+     * @param requestBody null request body to satisfy REST protocol
      *
      * @return void or
      * InvalidParameterException one of the parameters is null or invalid or
