@@ -101,7 +101,6 @@
 
     <modules>
 
-        <module>developer-resources</module>
         <module>open-metadata-implementation</module>
         <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>
@@ -1877,21 +1876,6 @@
                 <scope>compile</scope>
                 <version>${spring.version}</version>
             </dependency>
-
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <scope>test</scope>
-                <version>${testng.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-tx</artifactId>
-                <scope>compile</scope>
-                <version>${spring-web.version}</version>
-            </dependency>
-
 
             <dependency>
                 <groupId>com.datastax.cassandra</groupId>
