@@ -121,9 +121,10 @@ public class ReferenceableConverter extends ElementHeaderConverter
 
 
     /**
-     * Extract the classifications from the entity.
+     * Extract the properties for the requested classification from the entity.
      *
-     * @return list of bean classifications
+     * @param classificationName name of classification
+     * @return list of properties for the named classification
      */
     protected InstanceProperties getClassificationProperties(String  classificationName)
     {

@@ -17,17 +17,10 @@ import java.util.List;
 
 /**
  * LocationHandler manages Location objects.  It runs server-side in
- * OMAS and retrieves Location entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves Location entities through the OMRSRepositoryConnector.
  */
-public class LocationHandler
+public class LocationHandler extends AttachmentHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -36,18 +29,16 @@ public class LocationHandler
      * @param invalidParameterHandler handler for managing parameter errors
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
+     * @param lastAttachmentHandler handler for recording last attachment
      */
     public LocationHandler(String                  serviceName,
                            String                  serverName,
                            InvalidParameterHandler invalidParameterHandler,
                            RepositoryHandler       repositoryHandler,
-                           OMRSRepositoryHelper    repositoryHelper)
+                           OMRSRepositoryHelper    repositoryHelper,
+                           LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -68,17 +59,12 @@ public class LocationHandler
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        return repositoryHandler.countAttachedRelationshipsByType(userId,
-                                                                  anchorGUID,
-                                                                  ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                  LocationMapper.ASSET_LOCATION_TYPE_GUID,
-                                                                  LocationMapper.ASSET_LOCATION_TYPE_NAME,
-                                                                  methodName);
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      LocationMapper.ASSET_LOCATION_TYPE_GUID,
+                                      LocationMapper.ASSET_LOCATION_TYPE_NAME,
+                                      methodName);
     }
 
 

@@ -557,7 +557,7 @@ public class InvalidParameterHandler
      * @param serverName name of this server
      * @param methodName  name of the called method.
      *
-     * @throws InvalidParameterException the userId is null
+     * @throws InvalidParameterException the method is not supported
      */
     public void throwMethodNotSupported(String userId,
                                         String serviceName,
@@ -583,8 +583,8 @@ public class InvalidParameterHandler
 
 
     /**
-     * Throw an exception to indicate that the call to a method is not supported.
-     * This is a temporary situation.
+     * Throw an exception to indicate that the requested element is not recognized.
+     * This is probably due to the types of metadata repositories that this server is connected to.
      *
      * @param userId      user name to validate
      * @param guid  unique identifier of element
@@ -593,7 +593,7 @@ public class InvalidParameterHandler
      * @param serverName name of this server
      * @param methodName  name of the called method.
      *
-     * @throws InvalidParameterException the userId is null
+     * @throws InvalidParameterException the element is not known
      */
     public void throwUnknownElement(String userId,
                                     String guid,
@@ -604,13 +604,47 @@ public class InvalidParameterHandler
     {
         final String parameterName = "guid";
 
-        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.METHOD_NOT_IMPLEMENTED;
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.UNKNOWN_ELEMENT;
         String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
                                                                                                               type,
                                                                                                               userId,
                                                                                                               methodName,
                                                                                                               serviceName,
                                                                                                               serverName);
+
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            parameterName);
+    }
+
+
+    /**
+     * Throw an exception to indicate that the call to a method is not supported.
+     * This is a temporary situation.
+     *
+     * @param guid  unique identifier of element
+     * @param type  type of element
+     * @param serviceName name of called service
+     * @param methodName  name of the called method.
+     *
+     * @throws InvalidParameterException the guid is in use
+     */
+    public void throwCannotDeleteElementInUse(String guid,
+                                              String type,
+                                              String serviceName,
+                                              String methodName) throws InvalidParameterException
+    {
+        final String parameterName = "guid";
+
+        OMAGCommonErrorCode errorCode    = OMAGCommonErrorCode.CANNOT_DELETE_ELEMENT_IN_USE;
+        String              errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                              serviceName,
+                                                                                                              type,
+                                                                                                              guid);
 
         throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),

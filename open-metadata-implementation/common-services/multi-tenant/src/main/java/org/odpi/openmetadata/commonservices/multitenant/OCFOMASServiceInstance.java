@@ -128,24 +128,24 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                                                 repositoryHandler,
                                                                                 repositoryHelper);
 
-        this.certificationHandler      = new CertificationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.commentHandler            = new CommentHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
-        this.connectionHandler         = new ConnectionHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+        this.certificationHandler      = new CertificationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.commentHandler            = new CommentHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.connectionHandler         = new ConnectionHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.connectorTypeHandler      = new ConnectorTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
         this.endpointHandler           = new EndpointHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.externalIdentifierHandler = new ExternalIdentifierHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
-        this.locationHandler           = new LocationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.meaningHandler            = new MeaningHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.noteHandler               = new NoteHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.noteLogHandler            = new NoteLogHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler, maxPageSize);
+        this.externalIdentifierHandler = new ExternalIdentifierHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.externalReferenceHandler  = new ExternalReferenceHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.informalTagHandler        = new InformalTagHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.licenseHandler            = new LicenseHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.likeHandler               = new LikeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.locationHandler           = new LocationHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.meaningHandler            = new MeaningHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.noteHandler               = new NoteHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.noteLogHandler            = new NoteLogHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.ratingHandler             = new RatingHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
         this.referenceableHandler      = new ReferenceableHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
-        this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper);
+        this.relatedMediaHandler       = new RelatedMediaHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
+        this.schemaTypeHandler         = new SchemaTypeHandler(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
 
         this.assetHandler              = new AssetHandler(serviceName,
                                                           serverName,
@@ -167,8 +167,7 @@ public class OCFOMASServiceInstance extends OMASServiceInstance
                                                           relatedMediaHandler,
                                                           schemaTypeHandler,
                                                           supportedZones,
-                                                          defaultZones,
-                                                          maxPageSize);
+                                                          defaultZones);
 
 
         if (securityVerifier != null)
