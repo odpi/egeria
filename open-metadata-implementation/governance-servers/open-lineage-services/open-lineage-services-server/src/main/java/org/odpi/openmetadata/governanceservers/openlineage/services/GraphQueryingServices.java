@@ -5,6 +5,8 @@ package org.odpi.openmetadata.governanceservers.openlineage.services;
 import org.odpi.openmetadata.governanceservers.openlineage.MainGraphStore;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Scope;
 import org.odpi.openmetadata.governanceservers.openlineage.model.View;
+import org.odpi.openmetadata.governanceservers.openlineage.model.LineageVerticesAndEdges;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.LineageResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +28,7 @@ public class GraphQueryingServices {
      * @param guid         The guid of the node of which the lineage is queried from.
      * @return A subgraph containing all relevant paths, in graphSON format.
      */
-    public String lineage(String graphName, Scope scope, View view, String guid) {
+    public LineageResponse lineage(String graphName, Scope scope, View view, String guid) {
         return mainGraphStore.lineage(graphName, scope, view, guid);
     }
 

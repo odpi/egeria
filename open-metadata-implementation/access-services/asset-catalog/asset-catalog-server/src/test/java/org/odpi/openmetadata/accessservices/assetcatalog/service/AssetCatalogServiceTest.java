@@ -10,9 +10,9 @@ import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.assetcatalog.admin.AssetCatalogInstanceHandler;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservices.assetcatalog.handlers.AssetCatalogHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
@@ -319,13 +319,13 @@ public class AssetCatalogServiceTest {
         Relationship relationshipsResponse = new Relationship();
         relationshipsResponse.setTypeDefName(RELATIONSHIP_TYPE);
         relationshipsResponse.setGuid(RELATIONSHIP_TYPE_GUID);
-        relationshipsResponse.setFromEntity(mockAsset(FIRST_GUID));
-        relationshipsResponse.setToEntity(mockAsset(SECOND_GUID));
+        relationshipsResponse.setFromEntity(mockElement(FIRST_GUID));
+        relationshipsResponse.setToEntity(mockElement(SECOND_GUID));
         return relationshipsResponse;
     }
 
-    private Asset mockAsset(String guid) {
-        Asset asset = new Asset();
+    private Element mockElement(String guid) {
+        Element asset = new Element();
         asset.setGuid(guid);
         return asset;
     }
