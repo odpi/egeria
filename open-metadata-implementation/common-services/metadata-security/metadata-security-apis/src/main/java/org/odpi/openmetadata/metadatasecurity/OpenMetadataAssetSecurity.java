@@ -18,6 +18,24 @@ import java.util.List;
 public interface OpenMetadataAssetSecurity
 {
     /**
+     * Determine the appropriate setting for the supported zones depending on the user and the
+     * default supported zones set up for the service.  This is called whenever an asset is accessed.
+     *
+     * @param supportedZones default setting of the supported zones for the service
+     * @param serviceName name of the called service
+     * @param user name of the user
+     *
+     * @return list of supported zones for the user
+     * @throws InvalidParameterException one of the parameter values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    List<String> setSupportedZonesForUser(List<String>  supportedZones,
+                                          String        serviceName,
+                                          String        user) throws InvalidParameterException,
+                                                                     PropertyServerException;
+
+
+    /**
      * Determine the appropriate setting for the asset zones depending on the content of the asset and the
      * default zones.  This is called whenever a new asset is created.
      *

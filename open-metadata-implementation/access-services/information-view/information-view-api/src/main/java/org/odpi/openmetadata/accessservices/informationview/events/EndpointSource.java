@@ -48,16 +48,18 @@ public class EndpointSource extends Source {
     }
 
     /**
+     * Return the name of the connector provider.
      *
-     * @return
+     * @return sting name
      */
     public String getConnectorProviderName() {
         return connectorProviderName;
     }
 
     /**
+     * Set up the name of the connector provider.
      *
-     * @param connectorProviderName
+     * @param connectorProviderName string name
      */
     public void setConnectorProviderName(String connectorProviderName) {
         this.connectorProviderName = connectorProviderName;

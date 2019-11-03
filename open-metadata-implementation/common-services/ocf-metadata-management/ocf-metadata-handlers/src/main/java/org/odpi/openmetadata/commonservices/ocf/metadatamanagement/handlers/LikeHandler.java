@@ -24,7 +24,7 @@ import java.util.List;
  * LikeHandler provides access and maintenance for Like objects and their attachment
  * to Referenceables.
  */
-public class LikeHandler
+public class LikeHandler extends FeedbackHandlerBase
 {
     private String                  serviceName;
     private String                  serverName;
@@ -32,7 +32,6 @@ public class LikeHandler
     private RepositoryHandler       repositoryHandler;
     private InvalidParameterHandler invalidParameterHandler;
     private LastAttachmentHandler   lastAttachmentHandler;
-    private int                     maxPageSize;
 
 
     /**
@@ -44,47 +43,15 @@ public class LikeHandler
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param lastAttachmentHandler handler for recording last attachment
-     * @param maxPageSize maximum page size
      */
     public LikeHandler(String                  serviceName,
                        String                  serverName,
                        InvalidParameterHandler invalidParameterHandler,
                        RepositoryHandler       repositoryHandler,
                        OMRSRepositoryHelper    repositoryHelper,
-                       LastAttachmentHandler   lastAttachmentHandler,
-                       int                     maxPageSize)
+                       LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
-        this.lastAttachmentHandler = lastAttachmentHandler;
-        this.maxPageSize = maxPageSize;
-    }
-
-
-    /**
-     * Work out whether the requesting user is able to see the attached feedback.
-     *
-     * @param userId calling user
-     * @param relationship relationship to the feedback content
-     * @param methodName calling method
-     * @return boolean - true if allowed
-     */
-    private boolean  visibleToUser(String        userId,
-                                   Relationship relationship,
-                                   String        methodName)
-    {
-        if (userId.equals(relationship.getCreatedBy()))
-        {
-            return true;
-        }
-
-        return repositoryHelper.getBooleanProperty(serviceName,
-                                                   LikeMapper.IS_PUBLIC_PROPERTY_NAME,
-                                                   relationship.getProperties(),
-                                                   methodName);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -105,35 +72,12 @@ public class LikeHandler
                                                PropertyServerException,
                                                UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                                    anchorGUID,
-                                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                    LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                                                                    LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                                                                    methodName);
-
-        int count = 0;
-
-        if (relationships != null)
-        {
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    if (this.visibleToUser(userId, relationship, methodName))
-                    {
-                        count ++;
-                    }
-                }
-            }
-        }
-
-        return count;
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                      LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                      methodName);
     }
 
 
@@ -158,25 +102,25 @@ public class LikeHandler
                                                             PropertyServerException,
                                                             UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
+        List<Relationship>  relationships = this.getAttachmentLinks(userId,
+                                                                    anchorGUID,
+                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
+                                                                    LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
+                                                                    startingFrom,
+                                                                    pageSize,
+                                                                    methodName);
 
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
-
-        List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
-                                                                                          anchorGUID,
-                                                                                          ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                          LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_GUID,
-                                                                                          LikeMapper.REFERENCEABLE_TO_LIKE_TYPE_NAME,
-                                                                                          startingFrom,
-                                                                                          pageSize,
-                                                                                          methodName);
-        if (relationships != null)
+        if ((relationships == null) || (relationships.isEmpty()))
         {
-            List<Like>  results = new ArrayList<>();
+            return null;
+        }
 
-            for (Relationship relationship : relationships)
+        List<Like>  results = new ArrayList<>();
+
+        for (Relationship relationship : relationships)
+        {
+            if (relationship != null)
             {
                 Like bean = this.getLike(userId, relationship, methodName);
 
@@ -185,26 +129,25 @@ public class LikeHandler
                     results.add(bean);
                 }
             }
-
-            if (results.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return results;
-            }
         }
 
-        return null;
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 
 
     /**
-     * Retrieve the requested rating object.
+     * Retrieve the requested like object - assumption is that the relationship
+     * is visible to the end user.
      *
      * @param userId       calling user
-     * @param relationship relationship between referenceable and rating
+     * @param relationship relationship between referenceable and like
      * @param methodName   calling method
      * @return new bean
      * @throws InvalidParameterException  the parameters are invalid
@@ -217,29 +160,27 @@ public class LikeHandler
                                                          PropertyServerException,
                                                          UserNotAuthorizedException
     {
+        final String guidParameterName = "referenceableRelationship.end2.guid";
 
         if (relationship != null)
         {
-            if (this.visibleToUser(userId, relationship, methodName))
+            EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+            if (entityProxy != null)
             {
-                EntityProxy entityProxy = relationship.getEntityTwoProxy();
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        entityProxy.getGUID(),
+                                                                        guidParameterName,
+                                                                        LikeMapper.LIKE_TYPE_NAME,
+                                                                        methodName);
 
-                if (entityProxy != null)
-                {
-                    final String  entityParameterName = "entityProxyTwo.getGUID";
-                    EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                            entityProxy.getGUID(),
-                                                                            entityParameterName,
-                                                                            LikeMapper.LIKE_TYPE_NAME,
-                                                                            methodName);
-
-                    LikeConverter converter = new LikeConverter(entity,
-                                                                relationship,
-                                                                repositoryHelper,
-                                                                serviceName);
-                    return converter.getBean();
-                }
+                LikeConverter converter = new LikeConverter(entity,
+                                                            relationship,
+                                                            repositoryHelper,
+                                                            serviceName);
+                return converter.getBean();
             }
+
         }
 
         return null;
@@ -252,6 +193,7 @@ public class LikeHandler
      * @param userId      userId of user making request.
      * @param anchorGUID   unique identifier for the anchor entity (Referenceable).
      * @param isPublic   indicates whether the feedback should be shared or only be visible to the originating user
+     * @param methodName calling method
      *
      * @return unique identifier of the new Like entity
      * @throws InvalidParameterException  the endpoint bean properties are invalid
@@ -296,7 +238,7 @@ public class LikeHandler
      * @throws UserNotAuthorizedException user not authorized to issue this request
      * @throws PropertyServerException    problem accessing the property server
      */
-    private   void removeLike(String userId,
+    private  void removeLike(String userId,
                              String anchorGUID) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
@@ -322,6 +264,7 @@ public class LikeHandler
      *
      * @param userId      userId of user making request.
      * @param anchorGUID   unique identifier for the asset where the like is to be attached.
+     * @param anchorType   type of anchor entity.
      * @param isPublic    indicates whether the feedback should be shared or only be visible to the originating user
      * @param methodName  calling method
      *
@@ -360,6 +303,7 @@ public class LikeHandler
      *
      * @param userId   userId of user making request.
      * @param anchorGUID unique identifier for the asset where the like is attached.
+     * @param anchorType   type of anchor entity.
      * @param methodName calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
