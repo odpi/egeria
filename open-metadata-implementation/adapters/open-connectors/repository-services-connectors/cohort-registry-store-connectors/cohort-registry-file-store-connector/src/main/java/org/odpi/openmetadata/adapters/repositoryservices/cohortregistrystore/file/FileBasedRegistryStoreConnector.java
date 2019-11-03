@@ -692,7 +692,7 @@ public class FileBasedRegistryStoreConnector extends OMRSCohortRegistryStoreConn
 
                 String registryStoreFileContents = objectMapper.writeValueAsString(newRegistryStoreProperties);
 
-                FileUtils.writeStringToFile(registryStoreFile, registryStoreFileContents, false);
+                FileUtils.writeStringToFile(registryStoreFile, registryStoreFileContents, (String)null,false);
             }
         }
         catch (IOException   ioException)

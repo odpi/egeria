@@ -75,7 +75,9 @@ public interface AssetConsumerTaggingInterface
 
 
     /**
-     * Removes a tag from the repository.  All of the relationships to assets are lost.
+     * Removes a tag from the repository.
+     * A private tag can be deleted by its creator and all of the references are lost;
+     * a public tag can be deleted by anyone, but only if it is not attached to any referenceable.
      *
      * @param userId    userId of user making request.
      * @param tagGUID   unique id for the tag.
@@ -112,7 +114,7 @@ public interface AssetConsumerTaggingInterface
      *
      * @param userId the name of the calling user.
      * @param tag name of tag.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list
@@ -127,12 +129,34 @@ public interface AssetConsumerTaggingInterface
                                                             PropertyServerException,
                                                             UserNotAuthorizedException;
 
+
     /**
-     * Return the list of tags matching the supplied name.
+     * Return the list of the calling user's private tags exactly matching the supplied name.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<InformalTag> getMyTagsByName(String userId,
+                                      String tag,
+                                      int    startFrom,
+                                      int    pageSize) throws InvalidParameterException,
+                                                              PropertyServerException,
+                                                              UserNotAuthorizedException;
+
+
+    /**
+     * Return the list of tags containing the supplied string in either the name or description.
      *
      * @param userId the name of the calling user.
      * @param tag name of tag.  This may include wild card characters.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return tag list
@@ -146,6 +170,26 @@ public interface AssetConsumerTaggingInterface
                                int    pageSize) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException;
+
+    /**
+     * Return the list of the calling user's private tags containing the supplied string in either the name or description.
+     *
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list to start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<InformalTag> findMyTags(String userId,
+                                 String tag,
+                                 int    startFrom,
+                                 int    pageSize) throws InvalidParameterException,
+                                                         PropertyServerException,
+                                                         UserNotAuthorizedException;
 
     /**
      * Adds a tag (either private of public) to an asset.

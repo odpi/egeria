@@ -138,6 +138,11 @@ public enum OMAGCommonErrorCode
               "The system is unable to process the request without a search string.",
               "Correct the code in the caller to provide the search string."),
 
+    CANNOT_DELETE_ELEMENT_IN_USE(400, "OMAG-COMMON-400-023 ",
+                       "Method {0} of service {1} is unable to delete {2} identified by {3} because it is still in use.",
+                       "The system is unable to process the request.",
+                       "Ensure the element is no longer in use before retrying the operation."),
+
     INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAG-COMMON-404-001 ",
                                  "The {0} method has retrieved an instance for unique identifier (guid) {1} which is of type {2} rather than type {3)",
                                  "The request fails.",

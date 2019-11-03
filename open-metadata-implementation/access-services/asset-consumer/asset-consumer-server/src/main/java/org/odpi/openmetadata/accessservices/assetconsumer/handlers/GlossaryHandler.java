@@ -62,7 +62,7 @@ public class GlossaryHandler implements AssetConsumerGlossaryInterface
      *
      * @param userId  String - userId of user making request.
      * @param name  this may be the qualifiedName or displayName of the term.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return List of glossary terms retrieved from property server
@@ -128,7 +128,7 @@ public class GlossaryHandler implements AssetConsumerGlossaryInterface
      *
      * @param userId  String - userId of user making request.
      * @param name  this may be the qualifiedName or displayName of the term.
-     * @param startFrom  index of the list ot start from (0 for start)
+     * @param startFrom  index of the list to start from (0 for start)
      * @param pageSize   maximum number of elements to return.
      *
      * @return List of glossary terms retrieved from property server

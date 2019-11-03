@@ -62,7 +62,7 @@ class CloudInformationModelParser
                                                            "\n" +
                                                            "The motivation behind the cloud information model is to support organizations who are transforming their digital services to run on a variety of cloud platforms and with their own data centres.  " +
                                                            "Often, they are dealing with systems built on many different generations of technology, with data distributed amongst them.  " +
-                                                           "The CIM provides a common language to describe the different types of data." +
+                                                           "The CIM provides a common language to describe the different types of data.\n" +
                                                            "\n" +
                                                            "The CIM has been created to simplify the growing complexity companies experience when integrating data across different systems" +
                                                            "in order to deliver highly intelligent and personalized customer engagements. " +

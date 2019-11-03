@@ -72,7 +72,7 @@ public class Like extends ElementHeader
 
 
     /**
-     * Return if this like is private ot the creating user.
+     * Return if this like is private to the creating user.
      *
      * @return boolean
      */

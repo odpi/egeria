@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.builders;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Element;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * AssetConverter is a helper class that maps the OMRS objects to Asset Catalog model.
+ */
 public class AssetConverter {
 
     private OMRSRepositoryHelper repositoryHelper;
@@ -41,13 +44,12 @@ public class AssetConverter {
         assetDescription.setUpdateTime(entityDetail.getUpdateTime());
         assetDescription.setVersion(entityDetail.getVersion());
 
-        if (entityDetail.getType() != null) {
+        if (entityDetail.getType() != null && entityDetail.getType().getTypeDefName() != null) {
             assetDescription.setTypeDefName(entityDetail.getType().getTypeDefName());
-            assetDescription.setTypeDefDescription(entityDetail.getType().getTypeDefDescription());
         }
 
         assetDescription.setUrl(entityDetail.getInstanceURL());
-        if (entityDetail.getStatus() != null) {
+        if (entityDetail.getStatus() != null && entityDetail.getStatus().getName() != null) {
             assetDescription.setStatus(entityDetail.getStatus().getName());
         }
 
@@ -80,20 +82,19 @@ public class AssetConverter {
         relationship.setUpdateTime(rel.getUpdateTime());
 
         relationship.setVersion(rel.getVersion());
-        if (rel.getStatus() != null) {
+        if (rel.getStatus() != null && rel.getStatus().getName() != null) {
             relationship.setStatus(rel.getStatus().getName());
         }
 
-        if (rel.getType() != null) {
+        if (rel.getType() != null && rel.getType().getTypeDefName() != null) {
             relationship.setTypeDefName(rel.getType().getTypeDefName());
-            relationship.setTypeDefDescription(rel.getType().getTypeDefDescription());
         }
 
         if (rel.getEntityOneProxy() != null) {
-            relationship.setFromEntity(getAsset(rel.getEntityOneProxy()));
+            relationship.setFromEntity(getElement(rel.getEntityOneProxy()));
         }
         if (rel.getEntityTwoProxy() != null) {
-            relationship.setToEntity(getAsset(rel.getEntityTwoProxy()));
+            relationship.setToEntity(getElement(rel.getEntityTwoProxy()));
         }
 
         return relationship;
@@ -139,9 +140,9 @@ public class AssetConverter {
         return classifications;
     }
 
-    private Asset getAsset(EntityProxy entityProxy) {
+    private Element getElement(EntityProxy entityProxy) {
         String method = "getAsset";
-        Asset asset = new Asset();
+        Element asset = new Element();
 
         asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
@@ -155,7 +156,6 @@ public class AssetConverter {
         asset.setStatus(entityProxy.getStatus().getName());
         asset.setVersion(entityProxy.getVersion());
         asset.setTypeDefName(entityProxy.getType().getTypeDefName());
-        asset.setTypeDefDescription(entityProxy.getType().getTypeDefDescription());
 
         return asset;
     }
