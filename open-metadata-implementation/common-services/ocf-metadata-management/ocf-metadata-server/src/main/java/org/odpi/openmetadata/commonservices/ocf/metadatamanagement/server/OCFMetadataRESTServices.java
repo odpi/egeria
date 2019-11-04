@@ -5,6 +5,7 @@ package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server;
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.AssetMapper;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -776,7 +777,12 @@ public class OCFMetadataRESTServices
             InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
             auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
-            response.setList(handler.getAttachedTags(userId, assetGUID, elementStart, maxElements, methodName));
+            response.setList(handler.getAttachedTags(userId,
+                                                     assetGUID,
+                                                     AssetMapper.ASSET_TYPE_NAME,
+                                                     elementStart,
+                                                     maxElements,
+                                                     methodName));
         }
         catch (InvalidParameterException error)
         {

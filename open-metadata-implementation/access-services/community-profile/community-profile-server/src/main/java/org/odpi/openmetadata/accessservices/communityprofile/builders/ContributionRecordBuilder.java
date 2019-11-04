@@ -48,6 +48,7 @@ public class ContributionRecordBuilder extends ReferenceableBuilder
      * @param additionalProperties  additional properties about the individual.
      *
      * @return InstanceProperties object
+     * @throws InvalidParameterException bad property
      */
     public  InstanceProperties getContributionRecordProperties(int                 karmaPoints,
                                                                Map<String, Object> extendedProperties,

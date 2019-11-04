@@ -33,6 +33,7 @@ public class InformalTag extends ElementHeader
     /*
      * Attributes of a InformalTag
      */
+    protected boolean isPublic     = false;
     protected boolean isPrivateTag = false;
     protected String  name         = null;
     protected String  description  = null;
@@ -68,8 +69,30 @@ public class InformalTag extends ElementHeader
 
 
     /**
+     * Return if the link to the tag is private to the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether the link to the tag is private to the creating user or not.
+     *
+     * @param aPublic boolean
+     */
+    public void setPublic(boolean aPublic)
+    {
+        isPublic = aPublic;
+    }
+
+
+    /**
      * Return boolean flag to say whether the tag is private or not.  A private tag is only seen by the
-     * person who set it up.  Public tags are visible to everyone who can see the asset description.
+     * person who set it up.  Public tags are visible to everyone.
      *
      * @return boolean is private flag
      */
@@ -80,7 +103,7 @@ public class InformalTag extends ElementHeader
 
     /**
      * Set up boolean flag to say whether the tag is private or not.  A private tag is only seen by the
-     * person who set it up.  Public tags are visible to everyone who can see the asset description.
+     * person who set it up.  Public tags are visible to everyone.
      *
      * @param privateTag indicator of a private tag
      */
