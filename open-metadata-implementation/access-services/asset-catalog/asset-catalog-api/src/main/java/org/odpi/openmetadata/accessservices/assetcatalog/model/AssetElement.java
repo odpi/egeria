@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -33,5 +34,20 @@ public class AssetElement extends Element {
 
     public void setConnections(List<Connection> connections) {
         this.connections = connections;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AssetElement that = (AssetElement) o;
+        return Objects.equals(context, that.context) &&
+                Objects.equals(connections, that.connections);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), context, connections);
     }
 }

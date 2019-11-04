@@ -43,11 +43,7 @@ public class AssetCatalogInstanceHandler extends OCFOMASServiceInstanceHandler {
         AssetCatalogServicesInstance instance = (AssetCatalogServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getAssetCatalogHandler();
-        }
-
-        return null;
+        return instance.getAssetCatalogHandler();
     }
 
     /**
@@ -69,11 +65,7 @@ public class AssetCatalogInstanceHandler extends OCFOMASServiceInstanceHandler {
         AssetCatalogServicesInstance instance = (AssetCatalogServicesInstance) super.getServerServiceInstance(userId,
                 serverName, serviceOperationName);
 
-        if (instance != null) {
-            return instance.getRelationshipHandler();
-        }
-
-        return null;
+        return instance.getRelationshipHandler();
     }
 }
 
