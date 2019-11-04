@@ -235,7 +235,8 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV()).dedup().toList();
+                repeat(inE(edgeLabel).outV().simplePath()).
+                dedup().toList();
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
@@ -266,7 +267,8 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
         String edgeLabel = getEdgeLabel(view);
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV()).dedup().toList();
+                repeat(outE(edgeLabel).inV().simplePath()).
+                dedup().toList();
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
 
@@ -298,11 +300,13 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
 
         List<Vertex> sourcesList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(inE(edgeLabel).count().is(0)).
-                repeat(inE(edgeLabel).outV()).dedup().toList();
+                repeat(inE(edgeLabel).outV().simplePath()).
+                dedup().toList();
 
         List<Vertex> destinationsList = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).
                 until(outE(edgeLabel).count().is(0)).
-                repeat(outE(edgeLabel).inV()).dedup().toList();
+                repeat(outE(edgeLabel).inV().simplePath()).
+                dedup().toList();
 
         Vertex originalQueriedVertex = g.V().has(GraphConstants.PROPERTY_KEY_ENTITY_GUID, guid).next();
         LineageVertex queriedVertex = abstractVertex(originalQueriedVertex);
