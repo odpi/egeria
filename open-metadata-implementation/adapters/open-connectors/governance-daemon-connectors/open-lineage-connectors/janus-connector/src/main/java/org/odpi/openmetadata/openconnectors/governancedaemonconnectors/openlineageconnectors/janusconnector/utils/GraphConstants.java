@@ -23,7 +23,7 @@ public class GraphConstants {
     public static final String PROPERTY_NAME_LABEL                            = "label";
     public static final String PROPERTY_NAME_PROXY                            = "proxy";
     public static final String PROPERTY_NAME_GLOSSARY_TERM                    = "glossaryTerm";
-    public static final String PROPERTY_NAME_DISPLAY_NAME = "displayName";
+    public static final String PROPERTY_NAME_DISPLAY_NAME                     = "displayName";
 
 
     public static final String PROPERTY_KEY_PREFIX_ElEMENT = "ve";
@@ -50,19 +50,6 @@ public class GraphConstants {
     public static final String NODE_LABEL_COLUMN = "column";
     public static final String NODE_LABEL_GLOSSARYTERM = "glossaryTerm";
     public static final String NODE_LABEL_CONDENSED = "condensedNode";
-//
-//    public static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
-//        put(PROPERTY_NAME_GUID,                           "java.lang.String");
-//        put(PROPERTY_NAME_NAME,                           "java.lang.String");
-//        put(PROPERTY_NAME_VERSION,                        "java.lang.Long");
-//        put(PROPERTY_NAME_CREATED_BY,                     "java.lang.String");
-//        put(PROPERTY_NAME_CREATE_TIME,                    "java.lang.Date");
-//        put(PROPERTY_NAME_UPDATED_BY,                     "java.lang.String");
-//        put(PROPERTY_NAME_UPDATE_TIME,                    "java.lang.Date");
-//        put(PROPERTY_NAME_LABEL,                          "java.lang.String");
-//        put(PROPERTY_NAME_PROXY,                          "java.lang.Boolean");
-//
-//    }};
 
     public static final Map<String,String> corePropertyTypes = new HashMap<String,String>() {{
         put(PROPERTY_NAME_GUID,                           "java.lang.String");

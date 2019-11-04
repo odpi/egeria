@@ -155,5 +155,7 @@ public class BufferGraphFactory extends IndexingFactory {
         createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph,Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph,Vertex.class);
         createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph, Edge.class);
+//        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_RELATIONSHIP_GUID,false,graph, Edge.class);
+
     }
 }

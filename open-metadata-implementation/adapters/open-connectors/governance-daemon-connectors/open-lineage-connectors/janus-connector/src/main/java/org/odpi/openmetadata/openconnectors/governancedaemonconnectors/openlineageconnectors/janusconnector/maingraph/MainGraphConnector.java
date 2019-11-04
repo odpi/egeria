@@ -86,8 +86,8 @@ public class MainGraphConnector extends OpenLineageConnectorBase implements Main
                 }
                 break;
             case "cassandra":
-                FactoryForTesting factoryForTesting = new FactoryForTesting();
-                this.mainGraph = factoryForTesting.openBufferGraph(connectionProperties);
+                MainGraphFactory mainGraphFactory = new MainGraphFactory();
+                this.mainGraph = mainGraphFactory.openBufferGraph(connectionProperties);
                 break;
 
             default:

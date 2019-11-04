@@ -111,20 +111,21 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
         List<String> guidList = vertices.stream().map(v -> (String) v.property(PROPERTY_KEY_ENTITY_GUID).value()).collect(Collectors.toList());
 
         for (String guid : guidList) {
-            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("displayName","initial_load");
-            if(!initial.hasNext()) {
+//            Iterator<Vertex> initial =  g.V().has(PROPERTY_KEY_ENTITY_GUID,guid).has("vepropdisplayName","initial_load");
+//            if(!initial.hasNext()) {
+            if(guid.equals("3c4ad6ea-18c7-4fad-94fb-8ab692b2824e")){
 
-
-                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "portType", "INPUT_PORT")
-                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").in("LineageMapping").in("SchemaAttributeType")
+                List<Vertex> inputPath = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).out("ProcessPort").out("PortDelegation").has("PortImplementation", "vepropportType", "INPUT_PORT")
+                        .out("PortSchema").out("AttributeForSchema").out("SchemaAttributeType").out("LineageMapping").in("SchemaAttributeType")
+                        .or(__.has("vename","TabularColumn"),__.has("vename","RelationalColumn"))
                         .toList();
 
                 Vertex process = g.V().has(PROPERTY_KEY_ENTITY_GUID, guid).next();
                 for (Vertex vertex : inputPath) {
                     String vertexGuid = vertex.value(PROPERTY_KEY_ENTITY_GUID);
-                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").out("LineageMapping");
-
-                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(), g);
+                    Iterator<Vertex> r = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").in("LineageMapping");
+                    Vertex startingVertex = g.V().has(PROPERTY_KEY_ENTITY_GUID, vertexGuid).out("SchemaAttributeType").next();
+                    Iterator<Vertex> columnOut = findPathForOutputAsset(r.next(),g,startingVertex);
                     if (columnOut != null && columnOut.hasNext()) {
                         String columnOutGuid = columnOut.next().values(PROPERTY_KEY_ENTITY_GUID).next().toString();
                         String columnInGuid = vertex.values(PROPERTY_KEY_ENTITY_GUID).next().toString();
@@ -211,7 +212,7 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
         }
     }
 
-    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g)  {
+    private Iterator<Vertex> findPathForOutputAsset(Vertex v, GraphTraversalSource g,Vertex startingVertex)  {
 
         try{
             Iterator<Vertex> end = g.V(v.id()).both("SchemaAttributeType").or(__.has(PROPERTY_KEY_ENTITY_NAME, RELATIONAL_COLUMN),
@@ -219,8 +220,17 @@ public class BufferGraphConnector extends OpenLineageConnectorBase implements Bu
 
             if (!end.hasNext()) {
 
-                Iterator<Vertex> next = g.V(v.id()).out("LineageMapping");
-                return findPathForOutputAsset(next.next(), g);
+                List<Vertex> next = g.V(v.id()).both("LineageMapping").toList();
+                Vertex nextVertex = null;
+                for(Vertex vert: next){
+                    if(vert.equals(startingVertex)){
+                        continue;
+                    }
+                    nextVertex = vert;
+                }
+              
+
+                return findPathForOutputAsset(nextVertex, g,v);
             }
             return end;}
         catch (Exception e){

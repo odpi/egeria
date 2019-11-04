@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.*;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.openlineageconnectors.janusconnector.utils.GraphConstants.PROPERTY_KEY_RELATIONSHIP_LABEL;
 
-public class FactoryForTesting extends IndexingFactory {
+public class MainGraphFactory extends IndexingFactory {
 
 
     private static final Logger log = LoggerFactory.getLogger(BufferGraphFactory.class);
@@ -102,13 +102,10 @@ public class FactoryForTesting extends IndexingFactory {
             Set<String> vertexLabels = new HashSet<>();
             Set<String> relationshipsLabels = new HashSet<>();
 
-            if (graphType.equals("bufferGraph")){
+            if(graphType.equals("mainGraph")){
                 vertexLabels = schemaBasedOnGraphType(VertexLabelsBufferGraph.class);
                 relationshipsLabels = schemaBasedOnGraphType(EdgeLabelsBufferGraph.class);
-            }
 
-            if(graphType.equals("mainGraph")){
-                //add schema for maingrapgh
             }
 
             management = checkAndAddLabelVertexOrEdge(vertexLabels, management);
@@ -149,10 +146,10 @@ public class FactoryForTesting extends IndexingFactory {
 
     }
 
-//    private void createIndexes(JanusGraph graph){
-//
-//        createCompositeIndexForProperty(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph, Vertex.class);
-//        createCompositeIndexForProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph,Vertex.class);
-//        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph, Edge.class);
-//    }
+    private void createIndexes(JanusGraph graph){
+
+        checkAndAddLabelVertexOrEdge(PROPERTY_NAME_GUID,PROPERTY_KEY_ENTITY_GUID,true,graph, Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_NAME,PROPERTY_KEY_ENTITY_NAME,false,graph,Vertex.class);
+        createCompositeIndexForProperty(PROPERTY_NAME_LABEL,PROPERTY_KEY_RELATIONSHIP_LABEL,false,graph, Edge.class);
+    }
 }

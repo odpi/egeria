@@ -292,6 +292,11 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>janus-connector</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -330,6 +335,8 @@
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-web:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-security:*</ignoredUnusedDeclaredDependency>
                                 <ignoredUnusedDeclaredDependency>org.springframework.boot:spring-boot-starter-data-jpa:*</ignoredUnusedDeclaredDependency>
+                                <ignoredUnusedDeclaredDependency>org.odpi.egeria:janus-connector:*</ignoredUnusedDeclaredDependency>
+
                             </ignoredUnusedDeclaredDependencies>
                         </configuration>
                     </execution>
