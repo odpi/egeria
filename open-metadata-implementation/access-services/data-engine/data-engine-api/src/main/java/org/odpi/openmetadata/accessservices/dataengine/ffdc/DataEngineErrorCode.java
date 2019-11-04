@@ -40,9 +40,14 @@ public enum DataEngineErrorCode {
             "The system is unable to retrieve a schema attribute for the specified qualifiedName.",
             "Correct the code in the caller to provide the qualified name."),
     PROCESS_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-003",
-            "The data engine event {0} could not be consumed. Error: {1}",
-            "The system is unable to process the request.",
+            "The data engine event {0} could not be processed. Error: {1}",
+            "The system is unable to process the event.",
+            "Verify the topic configuration or the event schema."),
+    PARSE_EVENT_EXCEPTION(400, "OMAS-DATA-ENGINE-400-004",
+            "The data engine event {0} could not be parsed. Error: {1}",
+            "The system is unable to process the event.",
             "Verify the topic configuration or the event schema.");
+
 
     private int HTTPErrorCode;
     private String errorMessageId;

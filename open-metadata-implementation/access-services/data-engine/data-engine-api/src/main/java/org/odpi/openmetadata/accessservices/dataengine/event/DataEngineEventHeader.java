@@ -22,7 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = LineageMappingsEvent.class, name = "LineageMappingsEvent"),
         @JsonSubTypes.Type(value = PortAliasEvent.class, name = "PortAliasEvent"),
         @JsonSubTypes.Type(value = PortImplementationEvent.class, name = "PortImplementationEvent"),
-        @JsonSubTypes.Type(value = PortListEvent.class, name = "PortListEvent"),
+        @JsonSubTypes.Type(value = ProcessToPortListEvent.class, name = "ProcessToPortListEvent"),
         @JsonSubTypes.Type(value = ProcessesEvent.class, name = "ProcessesEvent"),
         @JsonSubTypes.Type(value = ProcessListEvent.class, name = "ProcessListEvent")
 })

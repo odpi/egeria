@@ -15,9 +15,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class PortListEvent extends DataEngineEventHeader{
+public class ProcessToPortListEvent extends DataEngineEventHeader{
+
+    private String processGUID;
 
     private List<String> ports;
+
+    public String getProcessGUID() {
+        return processGUID;
+    }
+
+    public void setProcessGUID(String processGUID) {
+        this.processGUID = processGUID;
+    }
 
     public List<String> getPorts() {
         return ports;
@@ -31,19 +41,21 @@ public class PortListEvent extends DataEngineEventHeader{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PortListEvent that = (PortListEvent) o;
-        return Objects.equals(ports, that.ports);
+        ProcessToPortListEvent that = (ProcessToPortListEvent) o;
+        return Objects.equals(processGUID, that.processGUID) &&
+                Objects.equals(ports, that.ports);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ports);
+        return Objects.hash(processGUID, ports);
     }
 
     @Override
     public String toString() {
-        return "PortListEvent{" +
-                "ports=" + ports +
+        return "ProcessToPortListEvent{" +
+                "processGUID='" + processGUID + '\'' +
+                ", ports=" + ports +
                 "} " + super.toString();
     }
 }

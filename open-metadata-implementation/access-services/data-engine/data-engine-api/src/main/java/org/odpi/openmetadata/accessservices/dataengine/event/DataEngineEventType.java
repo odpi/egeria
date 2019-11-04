@@ -27,7 +27,7 @@ public enum DataEngineEventType implements Serializable
     LINEAGE_MAPPINGS_EVENT                  (2,  "LineageMappingsEvent",  "An event that  an existing data engine job has been updated ."),
     PORT_ALIAS_EVENT                        (3,  "PortAliasEvent",      "An event that a data engine job has been created."),
     PORT_IMPLEMENTATION_EVENT               (4,  "PortImplementationEvent",  "An event that  an existing data engine job has been updated ."),
-    PORT_LIST_EVENT                         (5,  "PortListEvent",      "An event that a data engine job has been created."),
+    PROCESS_TO_PORT_LIST_EVENT              (5,  "ProcessToPortListEvent",      "An event that a data engine job has been created."),
     PROCESSES_EVENT                         (6,  "ProcessesEvent",  "An event that  an existing data engine job has been updated ."),
     PROCESS_LIST_EVENT                      (7,  "ProcessListEvent",  "An event that  an existing data engine job has been updated .");
 
