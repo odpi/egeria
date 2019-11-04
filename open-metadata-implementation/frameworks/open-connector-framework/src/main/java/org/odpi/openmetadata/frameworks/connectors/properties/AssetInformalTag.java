@@ -102,6 +102,17 @@ public class AssetInformalTag extends AssetElementHeader
 
 
     /**
+     * Return if the link to the tag is private to the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return informalTagBean.isPublic();
+    }
+
+
+    /**
      * Return boolean flag to say whether the tag is private or not.  A private tag is only seen by the
      * person who set it up.  Public tags are visible to everyone who can see the asset description.
      *

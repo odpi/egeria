@@ -26,15 +26,9 @@ import java.util.List;
  * RatingHandler manages the Rating entity.  The Rating entity describes the star rating and review text
  * type of feedback
  */
-public class RatingHandler
+public class RatingHandler extends FeedbackHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-    private LastAttachmentHandler   lastAttachmentHandler;
-    private int                     maxPageSize;
+
 
 
     /**
@@ -46,47 +40,15 @@ public class RatingHandler
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param lastAttachmentHandler handler for recording last attachment
-     * @param maxPageSize maximum page size
      */
     public RatingHandler(String                  serviceName,
                          String                  serverName,
                          InvalidParameterHandler invalidParameterHandler,
                          RepositoryHandler       repositoryHandler,
                          OMRSRepositoryHelper    repositoryHelper,
-                         LastAttachmentHandler   lastAttachmentHandler,
-                         int                     maxPageSize)
+                         LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
-        this.lastAttachmentHandler = lastAttachmentHandler;
-        this.maxPageSize = maxPageSize;
-    }
-
-
-    /**
-     * Work out whether the requesting user is able to see the attached feedback.
-     *
-     * @param userId calling user
-     * @param relationship relationship to the feedback content
-     * @param methodName calling method
-     * @return boolean - true if allowed
-     */
-    private boolean  visibleToUser(String        userId,
-                                   Relationship  relationship,
-                                   String        methodName)
-    {
-        if (userId.equals(relationship.getCreatedBy()))
-        {
-            return true;
-        }
-
-        return repositoryHelper.getBooleanProperty(serviceName,
-                                                   RatingMapper.IS_PUBLIC_PROPERTY_NAME,
-                                                   relationship.getProperties(),
-                                                   methodName);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -107,35 +69,12 @@ public class RatingHandler
                                                  PropertyServerException,
                                                  UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                                    anchorGUID,
-                                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
-                                                                                    methodName);
-
-        int count = 0;
-
-        if (relationships != null)
-        {
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    if (this.visibleToUser(userId, relationship, methodName))
-                    {
-                        count ++;
-                    }
-                }
-            }
-        }
-
-        return count;
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                      RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                      methodName);
     }
 
 
@@ -167,46 +106,48 @@ public class RatingHandler
         invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
         invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
-        List<Relationship>  relationships = repositoryHandler.getPagedRelationshipsByType(userId,
-                                                                                          anchorGUID,
-                                                                                          ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                          RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
-                                                                                          RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
-                                                                                          startingFrom,
-                                                                                          pageSize,
-                                                                                          methodName);
-        if (relationships != null)
+        List<Relationship>  relationships = this.getAttachmentLinks(userId,
+                                                                    anchorGUID,
+                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_GUID,
+                                                                    RatingMapper.REFERENCEABLE_TO_RATING_TYPE_NAME,
+                                                                    startingFrom,
+                                                                    pageSize,
+                                                                    methodName);
+
+        if ((relationships == null) || (relationships.isEmpty()))
         {
-            List<Rating>  results = new ArrayList<>();
+            return null;
+        }
 
-            for (Relationship relationship : relationships)
+        List<Rating>  results = new ArrayList<>();
+
+        for (Relationship relationship : relationships)
+        {
+            if (relationship != null)
             {
-                if (relationship != null)
+                Rating bean = this.getRating(userId, relationship, methodName);
+                if (bean != null)
                 {
-                    Rating bean = this.getRating(userId, relationship, methodName);
-                    if (bean != null)
-                    {
-                        results.add(bean);
-                    }
+                    results.add(bean);
                 }
-            }
-
-            if (results.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                return results;
             }
         }
 
-        return null;
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 
 
     /**
-     * Retrieve the requested rating object.
+     * Retrieve the requested rating object - assumption is that the relationship
+     * is visible to the end user.
      *
      * @param userId       calling user
      * @param relationship relationship between referenceable and rating
@@ -222,31 +163,28 @@ public class RatingHandler
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
-        final String guidParameterName = "referenceableRatingRelationship.end2.guid";
-
+        final String guidParameterName = "referenceableRelationship.end2.guid";
 
         if (relationship != null)
         {
-            if (this.visibleToUser(userId, relationship, methodName))
+            EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+            if (entityProxy != null)
             {
-                EntityProxy entityProxy = relationship.getEntityTwoProxy();
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        entityProxy.getGUID(),
+                                                                        guidParameterName,
+                                                                        RatingMapper.RATING_TYPE_NAME,
+                                                                        methodName);
 
-                if (entityProxy != null)
-                {
-                    EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                            entityProxy.getGUID(),
-                                                                            guidParameterName,
-                                                                            RatingMapper.RATING_TYPE_NAME,
-                                                                            methodName);
+                RatingConverter converter = new RatingConverter(entity,
+                                                                relationship,
+                                                                repositoryHelper,
+                                                                serviceName);
 
-                    RatingConverter converter = new RatingConverter(entity,
-                                                                    relationship,
-                                                                    repositoryHelper,
-                                                                    serviceName);
-
-                    return converter.getBean();
-                }
+                return converter.getBean();
             }
+
         }
 
         return null;
@@ -336,9 +274,6 @@ public class RatingHandler
                                                            methodName);
     }
 
-
-
-
     /**
      * Adds a star rating and optional review text to the asset.  If the user has already attached
      * a rating then the original one is over-ridden.
@@ -392,6 +327,7 @@ public class RatingHandler
      *
      * @param userId      userId of user making request.
      * @param anchorGUID   unique identifier for the asset where the rating is attached.
+     * @param anchorType   type of anchor entity.
      * @param methodName  calling method
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.

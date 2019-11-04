@@ -101,7 +101,6 @@
 
     <modules>
 
-        <module>developer-resources</module>
         <module>open-metadata-implementation</module>
         <module>open-metadata-conformance-suite</module>
         <module>open-metadata-distribution</module>

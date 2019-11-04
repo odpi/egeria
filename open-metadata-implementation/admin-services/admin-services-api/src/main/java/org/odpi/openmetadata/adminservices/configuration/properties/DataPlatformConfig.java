@@ -6,9 +6,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 
 /**
- * The Data platform config class provides the properties for the data-platform-services..
+ * The Data platform config class provides the configuration properties for the data-platform-services.
  */
-public class DataPlatformConfig extends AdminServicesConfigHeader {
+public class DataPlatformConfig extends AdminServicesConfigHeader
+{
 
     private String      dataPlatformServerURL;
     private String      dataPlatformServerName;
@@ -23,15 +24,29 @@ public class DataPlatformConfig extends AdminServicesConfigHeader {
     /**
      * Default Constructor
      */
-    public DataPlatformConfig() {
+    public DataPlatformConfig()
+    {
     }
 
     /**
-     * Copy/clone constructor
+     * Constructor to set up properties in one go
      *
-     * @param template object to copy
+     * @param template header
+     * @param dataPlatformServerURL url
+     * @param dataPlatformServerName server name
+     * @param dataPlatformGUID unique identifier of the data platform
+     * @param dataPlatformConnection connection to data platform
+     * @param dataPlatformServerOutTopicName Data Platform Services out topic name
+     * @param dataPlatformServerOutTopic Data Platform Services out topic connection
      */
-    public DataPlatformConfig(AdminServicesConfigHeader template, String dataPlatformServerURL, String dataPlatformServerName, String dataPlatformGUID, Connection dataPlatformConnection, String dataPlatformServerOutTopicName, Connection dataPlatformServerOutTopic) {
+    public DataPlatformConfig(AdminServicesConfigHeader template,
+                              String                    dataPlatformServerURL,
+                              String                    dataPlatformServerName,
+                              String                    dataPlatformGUID,
+                              Connection                dataPlatformConnection,
+                              String                    dataPlatformServerOutTopicName,
+                              Connection                dataPlatformServerOutTopic)
+    {
         super(template);
         this.dataPlatformServerURL = dataPlatformServerURL;
         this.dataPlatformServerName = dataPlatformServerName;
@@ -89,6 +104,11 @@ public class DataPlatformConfig extends AdminServicesConfigHeader {
         this.dataPlatformServerOutTopic = dataPlatformServerOutTopic;
     }
 
+    /**
+     * Convert all properties to a string.
+     *
+     * @return string description of object
+     */
     @Override
     public String toString() {
         return "DataPlatformConfig{" +

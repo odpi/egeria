@@ -82,7 +82,7 @@ public class FileBasedUIServerConfigStoreConnector extends UIServerConfigStoreCo
 
                 String configStoreFileContents = objectMapper.writeValueAsString(omagServerConfig);
 
-                FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, false);
+                FileUtils.writeStringToFile(configStoreFile, configStoreFileContents, (String)null,false);
             }
         }
         catch (IOException   ioException)
