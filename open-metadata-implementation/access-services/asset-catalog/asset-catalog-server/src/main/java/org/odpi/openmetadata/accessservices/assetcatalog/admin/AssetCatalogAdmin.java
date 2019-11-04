@@ -54,11 +54,12 @@ public class AssetCatalogAdmin extends AccessServiceAdmin {
 
             this.auditLog = auditLog;
 
-            List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions(),
+            List<String> supportedZones = this.extractSupportedZones(
+                    accessServiceConfigurationProperties.getAccessServiceOptions(),
                     accessServiceConfigurationProperties.getAccessServiceName(),
                     auditLog);
 
-            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog);
+            instance = new AssetCatalogServicesInstance(repositoryConnector, supportedZones, auditLog, serverName);
             this.serverName = instance.getServerName();
 
             auditCode = AssetCatalogAuditCode.SERVICE_INITIALIZED;

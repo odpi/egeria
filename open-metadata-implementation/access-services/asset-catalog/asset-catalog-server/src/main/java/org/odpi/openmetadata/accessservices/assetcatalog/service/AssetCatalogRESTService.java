@@ -35,14 +35,19 @@ import java.util.List;
 public class AssetCatalogRESTService {
 
     private static final Logger log = LoggerFactory.getLogger(AssetCatalogRESTService.class);
+    private static final String CALLING_METHOD = "Calling method: {}";
+    private static final String FROM_METHOD_WITH_RESPONSE = "Returning from method: {} with response: {}";
 
     private final AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
     private final RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
-    public AssetDescriptionResponse getAssetDetailsByGUID(String serverName, String userId, String assetGUID, String assetTypeName) {
+    public AssetDescriptionResponse getAssetDetailsByGUID(String serverName,
+                                                          String userId,
+                                                          String assetGUID,
+                                                          String assetTypeName) {
         String methodName = "getAssetDetailsByGUID";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
         AssetDescriptionResponse response = new AssetDescriptionResponse();
 
         try {
@@ -57,15 +62,18 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public AssetDescriptionResponse getAssetUniverseByGUID(String serverName, String userId, String assetGUID, String assetTypeName) {
+    public AssetDescriptionResponse getAssetUniverseByGUID(String serverName,
+                                                           String userId,
+                                                           String assetGUID,
+                                                           String assetTypeName) {
         String methodName = "getAssetUniverseByGUID";
 
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
@@ -82,19 +90,24 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public ClassificationsResponse getClassificationByAssetGUID(String serverName, String userId, String assetGUID, String assetTypeName, String classificationName) {
+    public ClassificationsResponse getClassificationByAssetGUID(String serverName,
+                                                                String userId,
+                                                                String assetGUID,
+                                                                String assetTypeName,
+                                                                String classificationName) {
         String methodName = "getClassificationByAssetGUID";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         ClassificationsResponse response = new ClassificationsResponse();
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId, assetGUID, assetTypeName, classificationName));
+            response.setClassifications(assetCatalogHandler.getEntityClassificationByName(userId,
+                    assetGUID, assetTypeName, classificationName));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
             restExceptionHandler.captureInvalidParameterException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -103,20 +116,24 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public RelationshipsResponse getLinkingRelationships(String serverName, String userId, String startAssetId, String endAssetId) {
+    public RelationshipsResponse getLinkingRelationships(String serverName,
+                                                         String userId,
+                                                         String startAssetId,
+                                                         String endAssetId) {
         String methodName = "getLinkingRelationships";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         RelationshipsResponse response = new RelationshipsResponse();
         try {
 
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
-            response.setRelationships(assetCatalogHandler.getLinkingRelationshipsBetweenAssets(serverName, userId, startAssetId, endAssetId));
+            response.setRelationships(assetCatalogHandler.getLinkingRelationshipsBetweenAssets(serverName,
+                    userId, startAssetId, endAssetId));
         } catch (AssetCatalogException e) {
             exceptionHandler.captureAssetCatalogExeption(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
@@ -127,14 +144,20 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public RelationshipsResponse getAssetRelationships(String serverName, String userId, String assetGUID, String assetTypeName, String relationshipTypeName, Integer startFrom, Integer limit) {
+    public RelationshipsResponse getAssetRelationships(String serverName,
+                                                       String userId,
+                                                       String assetGUID,
+                                                       String assetTypeName,
+                                                       String relationshipTypeName,
+                                                       Integer startFrom,
+                                                       Integer limit) {
         String methodName = "getAssetRelationships";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         RelationshipsResponse response = new RelationshipsResponse();
         try {
@@ -143,7 +166,8 @@ public class AssetCatalogRESTService {
             if (relationshipTypeName != null) {
                 relationshipTypeGUID = assetCatalogHandler.getTypeDefGUID(userId, relationshipTypeName);
             }
-            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID, assetTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
+            response.setRelationships(assetCatalogHandler.getRelationships(userId, assetGUID,
+                    assetTypeName, relationshipTypeGUID, relationshipTypeName, startFrom, limit));
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException e) {
@@ -152,14 +176,17 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public AssetDescriptionResponse getLinkingAssets(String serverName, String userId, String startAssetId, String endAssetId) {
+    public AssetDescriptionResponse getLinkingAssets(String serverName,
+                                                     String userId,
+                                                     String startAssetId,
+                                                     String endAssetId) {
         String methodName = "getLinkingAssets";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
@@ -175,14 +202,17 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public AssetDescriptionResponse getAssetsFromNeighborhood(String serverName, String userId, String entityGUID, SearchParameters searchParameters) {
+    public AssetDescriptionResponse getAssetsFromNeighborhood(String serverName,
+                                                              String userId,
+                                                              String entityGUID,
+                                                              SearchParameters searchParameters) {
         String methodName = "getAssetsFromNeighborhood";
-        log.debug("Calling method: {}", methodName);
+        log.debug(CALLING_METHOD, methodName);
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
@@ -200,19 +230,28 @@ public class AssetCatalogRESTService {
             restExceptionHandler.capturePropertyServerException(response, e);
         }
 
-        log.debug("Returning from method: {} with response: {}", methodName, response);
+        log.debug(FROM_METHOD_WITH_RESPONSE, methodName, response);
 
         return response;
     }
 
-    public AssetResponse searchByType(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
+    public AssetResponse searchByType(String serverName,
+                                      String userId,
+                                      String searchCriteria,
+                                      SearchParameters searchParameters) {
         String methodName = "searchByType";
         AssetResponse response = new AssetResponse();
 
         try {
             AssetCatalogHandler assetCatalogHandler = instanceHandler.getAssetCatalogHandler(userId, serverName, methodName);
             response.setAssets(assetCatalogHandler.searchByType(userId, searchCriteria, searchParameters));
-        } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException e) {
+        } catch (UserNotAuthorizedException
+                | PagingErrorException
+                | TypeErrorException
+                | PropertyErrorException
+                | RepositoryErrorException
+                | InvalidParameterException
+                | FunctionNotSupportedException e) {
             exceptionHandler.captureOMRSCheckedExceptionBase(response, e);
         } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException e) {
             restExceptionHandler.captureUserNotAuthorizedException(response, e);

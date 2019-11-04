@@ -240,8 +240,8 @@ public class AssetCatalogHandlerTest {
                 PAGE_SIZE)).thenReturn(mockEntities());
 
         List<Term> terms = assetCatalogHandler.searchByType(USER, SEARCH_CRITERIA, searchParams);
-        assertEquals(terms.get(0).getGuid(), FIRST_GUID);
-        assertEquals(terms.get(0).getTypeDef(), ASSET_TYPE);
+        assertEquals(FIRST_GUID, terms.get(0).getGuid());
+        assertEquals(ASSET_TYPE, terms.get(0).getTypeDefName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
         verify(invalidParameterHandler, times(1)).validatePaging(searchParams.getFrom(), searchParams.getPageSize(), methodName);
         verify(invalidParameterHandler, times(1)).validateObject(searchParams, "searchParameter", methodName);
@@ -256,8 +256,8 @@ public class AssetCatalogHandlerTest {
 
         Term term = assetCatalogHandler.buildContextByType(USER, FIRST_GUID, ASSET_TYPE);
 
-        assertEquals(term.getGuid(), FIRST_GUID);
-        assertEquals(term.getTypeDef(), ASSET_TYPE);
+        assertEquals(FIRST_GUID, term.getGuid());
+        assertEquals(ASSET_TYPE, term.getTypeDefName());
         verify(invalidParameterHandler, times(1)).validateUserId(USER, methodName);
     }
 
@@ -349,7 +349,7 @@ public class AssetCatalogHandlerTest {
     }
 
     private InstanceType mockType(String typeName, String guid) {
-        InstanceType entityTypeDef =new InstanceType();
+        InstanceType entityTypeDef = new InstanceType();
         entityTypeDef.setTypeDefGUID(guid);
         entityTypeDef.setTypeDefName(typeName);
         return entityTypeDef;

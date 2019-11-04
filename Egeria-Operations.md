@@ -181,39 +181,39 @@ branch creation:
    1. Select commit id from *Version* dropdown.
    1. Click *Create*
 
-  Pulling from the staging repository can be done through Maven with the
-  following settings:
+   Pulling from the staging repository can be done through Maven with the
+   following settings:
 
-  ```
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <name>egeria-staging</name>
-      <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
-    </repository>
-  </repositories>
-  <pluginRepositories>
-    <pluginRepository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>central</id>
-      <name>egeria-staging</name>
-      <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
-    </pluginRepository>
-  </pluginRepositories>
-  ```
+   ```
+   <repositories>
+     <repository>
+       <snapshots>
+         <enabled>false</enabled>
+       </snapshots>
+       <id>central</id>
+       <name>egeria-staging</name>
+       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+     </repository>
+   </repositories>
+   <pluginRepositories>
+     <pluginRepository>
+       <snapshots>
+         <enabled>false</enabled>
+       </snapshots>
+       <id>central</id>
+       <name>egeria-staging</name>
+       <url>https://odpi.jfrog.io/odpi/egeria-staging</url>
+     </pluginRepository>
+   </pluginRepositories>
+   ```
 
 1. After the community verifies the staged artifacts meet the release
    criteria, the *Promote to Release* step will be approved (and the
    *Abandon Release* step canceled)
    If the artifacts do not meet the criteria, the *Promote to Release*
    step should be denied, and *Abandon Release* should be
-   approved. The release process should then be started again at part
-   2. from a different commit once changes have been merged.
+   approved. The release process should then be started again at step #2
+   from a different commit once changes have been merged.
 1. After the release promotion is approved, the artifacts will be
    distributed to [Bintray](https://bintray.com/odpi) which will sign
    them and sync them to [Maven Central](https://oss.sonatype.org).

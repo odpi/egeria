@@ -9,10 +9,11 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Cl
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRESTService;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +41,7 @@ public class AssetCatalogEntityResource {
      * @param assetType  the type of the asset
      * @return the asset with its header and the list of associated classifications and specific properties
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-details/{assetGUID}",
+    @GetMapping(path = "/asset-details/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetDetail(@PathVariable("serverName") String serverName,
                                                    @PathVariable("userId") String userId,
@@ -59,8 +59,7 @@ public class AssetCatalogEntityResource {
      * @param assetType  the asset type
      * @return the asset with its header and the list of associated classifications and relationship
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-universe/{assetGUID}",
+    @GetMapping(path = "/asset-universe/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetUniverse(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
@@ -81,8 +80,7 @@ public class AssetCatalogEntityResource {
      * @param pageSize         limit the number of the assets returned
      * @return list of relationships for the given asset
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-relationships/{assetGUID}",
+    @GetMapping(path = "/asset-relationships/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getAssetRelationships(@PathVariable("serverName") String serverName,
                                                        @PathVariable("userId") String userId,
@@ -104,8 +102,7 @@ public class AssetCatalogEntityResource {
      * @param classificationName the name of the classification
      * @return ClassificationsResponse the classification for the asset
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-classifications/{assetGUID}",
+    @GetMapping(path = "/asset-classifications/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ClassificationsResponse getClassificationsForAsset(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
@@ -124,8 +121,7 @@ public class AssetCatalogEntityResource {
      * @param endAssetGUID   the ending asset identifier of the query
      * @return a list of assets between the given assets
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/linking-assets/from/{assetGUID}/to/{endAssetGUID}",
+    @GetMapping(path = "/linking-assets/from/{assetGUID}/to/{endAssetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getLinkingAssets(@PathVariable("serverName") String serverName,
                                                      @PathVariable("userId") String userId,
@@ -143,8 +139,7 @@ public class AssetCatalogEntityResource {
      * @param endAssetGUID   the ending asset identifier of the query
      * @return a list of relationships that connects the assets
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/linking-assets-relationships/from/{assetGUID}/to/{endAssetGUID}",
+    @GetMapping(path = "/linking-assets-relationships/from/{assetGUID}/to/{endAssetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public RelationshipsResponse getLinkingRelationships(@PathVariable("serverName") String serverName,
                                                          @PathVariable("userId") String userId,
@@ -162,8 +157,7 @@ public class AssetCatalogEntityResource {
      * @param searchParameters constrains to make the assets's search results more precise
      * @return a list of assets that in neighborhood of the given asset
      */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/assets-from-neighborhood/{assetGUID}",
+    @PostMapping(path = "/assets-from-neighborhood/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetDescriptionResponse getAssetsFromNeighborhood(@PathVariable("serverName") String serverName,
                                                               @PathVariable("userId") String userId,
@@ -181,8 +175,7 @@ public class AssetCatalogEntityResource {
      * @param searchParameters constrains to make the assets's search results more precise
      * @return list of properties used to narrow the search
      */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/search/{searchCriteria}",
+    @PostMapping(path = "/search/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchByType(@PathVariable("serverName") String serverName,
                                       @PathVariable("userId") String userId,
@@ -202,8 +195,7 @@ public class AssetCatalogEntityResource {
      * @param assetType  the type of the asset
      * @return list of properties used to narrow the search
      */
-    @RequestMapping(method = RequestMethod.GET,
-            path = "/asset-context/{assetGUID}",
+    @GetMapping(path = "/asset-context/{assetGUID}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                          @PathVariable("userId") String userId,
