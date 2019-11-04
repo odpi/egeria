@@ -9,7 +9,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -182,6 +181,7 @@ public class RepositoryHandler
      * @param entityTypeGUID type of entity to create
      * @param entityTypeName name of the entity's type
      * @param properties properties for the entity
+     * @param initialClassifications list of classifications to attach to the entity
      * @param methodName name of calling method
      *
      * @return unique identifier of new entity
@@ -337,6 +337,7 @@ public class RepositoryHandler
      * @param externalSourceGUID unique identifier (guid) for the external source.
      * @param externalSourceName unique name for the external source.
      * @param properties properties for the entity
+     * @param initialClassifications list of classifications to attach to the entity
      * @param methodName name of calling method
      *
      * @return unique identifier of new entity
@@ -1253,7 +1254,7 @@ public class RepositoryHandler
 
 
     /**
-     * Return the list of entities at the other end of the requested relationship type thhat were creaed or edited by
+     * Return the list of entities at the other end of the requested relationship type that were created or edited by
      * the requesting user.
      *
      * @param userId  user making the request
@@ -1280,38 +1281,37 @@ public class RepositoryHandler
     {
         try
         {
-            // todo this method needs to loop to ensure the maximum number of elements can be returned
+            boolean      moreResultsAvailable = true;
+            int          startNextQueryFrom = 0;
 
-            List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
-                                                                              anchorEntityGUID,
-                                                                              anchorEntityTypeName,
-                                                                              relationshipTypeGUID,
-                                                                              relationshipTypeName,
-                                                                              0,
-                                                                              maxPageSize,
-                                                                              methodName);
-
-            if (entities != null)
+            while (moreResultsAvailable)
             {
-                for (EntityDetail entity : entities)
+                List<EntityDetail> retrievedEntities = this.getEntitiesForRelationshipType(userId, anchorEntityGUID, anchorEntityTypeName, relationshipTypeGUID, relationshipTypeName, startNextQueryFrom, maxPageSize, methodName);
+
+                if (retrievedEntities != null)
                 {
-                    if (entity != null)
+                    moreResultsAvailable = (retrievedEntities.size() == maxPageSize);
+                    startNextQueryFrom   = startNextQueryFrom + maxPageSize;
+
+                    for (EntityDetail entity : retrievedEntities)
                     {
-                        if ((userId.equals(entity.getCreatedBy()) ||
-                                     (userId.equals(entity.getUpdatedBy())) ||
-                                     ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                        if (entity != null)
                         {
-                            return entity;
+                            if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                            {
+                                return entity;
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                if (log.isDebugEnabled())
+                else
                 {
-                    log.debug("No entities of type " + attachedEntityTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                    moreResultsAvailable = false;
+
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("No entities of type " + attachedEntityTypeName + " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                    }
                 }
             }
         }
@@ -1356,40 +1356,39 @@ public class RepositoryHandler
     {
         List<EntityDetail> results = new ArrayList<>();
 
-        // todo this method needs to loop to ensure the maximum number of elements can be returned
-
         try
         {
-            List<EntityDetail> entities = this.getEntitiesForRelationshipType(userId,
-                                                                              anchorEntityGUID,
-                                                                              anchorEntityTypeName,
-                                                                              relationshipTypeGUID,
-                                                                              relationshipTypeName,
-                                                                              startingFrom,
-                                                                              pageSize,
-                                                                              methodName);
+            boolean      moreResultsAvailable = true;
+            int          startNextQueryFrom = startingFrom;
 
-            if (entities != null)
+            while (moreResultsAvailable && (results.size() < pageSize))
             {
-                for (EntityDetail entity : entities)
+                List<EntityDetail> retrievedEntities = this.getEntitiesForRelationshipType(userId, anchorEntityGUID, anchorEntityTypeName, relationshipTypeGUID, relationshipTypeName, startNextQueryFrom, pageSize, methodName);
+
+                if (retrievedEntities != null)
                 {
-                    if (entity != null)
+                    moreResultsAvailable = (retrievedEntities.size() == pageSize);
+                    startNextQueryFrom = startNextQueryFrom + pageSize;
+
+                    for (EntityDetail entity : retrievedEntities)
                     {
-                        if ((userId.equals(entity.getCreatedBy()) ||
-                            (userId.equals(entity.getUpdatedBy())) ||
-                            ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                        if (entity != null)
                         {
-                            results.add(entity);
+                            if ((userId.equals(entity.getCreatedBy()) || (userId.equals(entity.getUpdatedBy())) || ((entity.getMaintainedBy() != null) && (entity.getMaintainedBy().contains(userId)))))
+                            {
+                                results.add(entity);
+                            }
                         }
                     }
                 }
-            }
-            else
-            {
-                if (log.isDebugEnabled())
+                else
                 {
-                    log.debug("No entities of type " + attachedEntityTypeName +
-                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                    moreResultsAvailable = false;
+
+                    if (log.isDebugEnabled())
+                    {
+                        log.debug("No entities of type " + attachedEntityTypeName + " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                    }
                 }
             }
         }
@@ -1398,7 +1397,6 @@ public class RepositoryHandler
             errorHandler.handleRepositoryError(error, methodName);
         }
 
-        // todo this method needs to loop to ensure the maximum number of elements can be returned
         if (results.isEmpty())
         {
             return null;
@@ -1790,6 +1788,56 @@ public class RepositoryHandler
                                                              entityTypeGUID,
                                                              nameProperties,
                                                              MatchCriteria.ANY,
+                                                             startingFrom,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             null,
+                                                             pageSize);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the entities that match all supplied properties.
+     *
+     * @param userId calling userId
+     * @param properties list of name properties to search on.
+     * @param entityTypeGUID unique identifier of the entity's type
+     * @param startingFrom initial position in the stored list.
+     * @param pageSize maximum number of definitions to return on this call.
+     * @param methodName calling method
+     *
+     * @return list of returned entities
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the entity.
+     */
+    public List<EntityDetail>  getEntitiesByAllProperties(String                 userId,
+                                                          InstanceProperties     properties,
+                                                          String                 entityTypeGUID,
+                                                          int                    startingFrom,
+                                                          int                    pageSize,
+                                                          String                 methodName) throws UserNotAuthorizedException,
+                                                                                                    PropertyServerException
+    {
+        try
+        {
+            return metadataCollection.findEntitiesByProperty(userId,
+                                                             entityTypeGUID,
+                                                             properties,
+                                                             MatchCriteria.ALL,
                                                              startingFrom,
                                                              null,
                                                              null,
