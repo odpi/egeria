@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.accessservices.api;
+package org.odpi.openmetadata.userinterface.accessservices.api.lineage;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.converters.ScopeEnumConverter;

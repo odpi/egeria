@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.userinterface.accessservices.api;
 
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.WebRequest;
 
@@ -15,14 +14,16 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
     /**
      *
      * @param webRequest initial request
-     * @param errorMessage message to display to client
-     * @param httpStatus status to return to client
+     * @param errorCode
      * @return error attributes to return to client
      */
-    public Map<String, Object> getErrorAttributes(WebRequest webRequest, String errorMessage, HttpStatus httpStatus) {
+    public Map<String, Object> getErrorAttributes(WebRequest webRequest, UserInterfaceErrorCodes errorCode) {
         Map<String, Object> errorAttributes = super.getErrorAttributes(webRequest, false);
-        errorAttributes.put("message", errorMessage);
-        errorAttributes.put("status", httpStatus);
+        errorAttributes.put("message", errorCode.getErrorMessage());
+        errorAttributes.put("status", errorCode.getHttpErrorCode());
+        errorAttributes.put("userAction", errorCode.getUserAction());
+        errorAttributes.put("systemAction", errorCode.getSystemAction());
+        errorAttributes.put("errorId", errorCode.getErrorMessageId());
         return errorAttributes;
     }
 }
