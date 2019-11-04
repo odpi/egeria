@@ -12,6 +12,9 @@ import org.odpi.openmetadata.userinterface.adminservices.configuration.registrat
  */
 public abstract class OCFOMVSServiceInstanceHandler extends OMVSServiceInstanceHandler
 {
+
+    private static final String OMVS = " OMVS";
+
     /**
      * Constructor
      *
@@ -40,19 +43,19 @@ public abstract class OCFOMVSServiceInstanceHandler extends OMVSServiceInstanceH
 
         if (assetSearchURLName.equals(callingServiceURLName))
         {
-            callingServiceName = ViewServiceDescription.ASSET_SEARCH.getViewServiceName() + " OMVS";
+            callingServiceName = ViewServiceDescription.ASSET_SEARCH.getViewServiceName() + OMVS;
         }
         else if (subjectAreaURLName.equals(callingServiceURLName))
         {
-            callingServiceName = ViewServiceDescription.SUBJECT_AREA.getViewServiceName() + " OMVS";
+            callingServiceName = ViewServiceDescription.SUBJECT_AREA.getViewServiceName() + OMVS;
         }
         else if (openLineageURLName.equals(callingServiceURLName))
         {
-            callingServiceName = ViewServiceDescription.TYPE_EXPLORER.getViewServiceName() + " OMVS";
+            callingServiceName = ViewServiceDescription.TYPE_EXPLORER.getViewServiceName() + OMVS;
         }
         else if (typeExplorerURLName.equals(callingServiceURLName))
         {
-            callingServiceName = ViewServiceDescription.TYPE_EXPLORER.getViewServiceName() + " OMVS";
+            callingServiceName = ViewServiceDescription.TYPE_EXPLORER.getViewServiceName() + OMVS;
         }
         else
         {

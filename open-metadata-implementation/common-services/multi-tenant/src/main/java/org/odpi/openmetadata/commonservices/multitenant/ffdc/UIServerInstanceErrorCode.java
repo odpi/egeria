@@ -139,12 +139,14 @@ public enum UIServerInstanceErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== OMAGServerInstanceErrorCode.getMessage(%s)", Arrays.toString(params)));
-
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("<== OMAGServerInstanceErrorCode.getMessage(%s)", Arrays.toString(params)));
+        }
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
-
-        log.debug(String.format("==> OMAGServerInstanceErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        if (log.isDebugEnabled()) {
+            log.debug(String.format("==> OMAGServerInstanceErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        }
 
         return result;
     }
