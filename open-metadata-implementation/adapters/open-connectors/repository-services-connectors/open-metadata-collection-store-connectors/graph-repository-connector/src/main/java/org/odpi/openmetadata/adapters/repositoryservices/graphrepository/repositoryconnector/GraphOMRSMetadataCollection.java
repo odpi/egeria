@@ -17,7 +17,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.ClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
@@ -56,6 +55,7 @@ public class GraphOMRSMetadataCollection extends OMRSDynamicTypeMetadataCollecti
      * @param repositoryHelper     - class used to build type definitions and instances.
      * @param repositoryValidator  - class used to validate type definitions and instances.
      * @param metadataCollectionId - unique Identifier of the metadata collection Id.
+     * @param auditLog             - logging destination
      */
     public GraphOMRSMetadataCollection(GraphOMRSRepositoryConnector parentConnector,
                                        String                       repositoryName,

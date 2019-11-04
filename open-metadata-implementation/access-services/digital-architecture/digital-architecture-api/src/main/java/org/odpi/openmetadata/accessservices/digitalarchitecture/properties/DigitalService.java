@@ -53,6 +53,8 @@ public class DigitalService extends DigitalArchitectureElementHeader
 
     /**
      * Copy/clone constructor
+     *
+     * @param template object to copy
      */
     public DigitalService(DigitalService template)
     {
