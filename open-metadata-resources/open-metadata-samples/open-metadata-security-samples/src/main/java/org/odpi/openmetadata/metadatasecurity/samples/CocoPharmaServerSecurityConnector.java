@@ -39,8 +39,11 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     private List<String>              serverInvestigators = new ArrayList<>();
     private List<String>              metadataArchitects  = new ArrayList<>();
     private List<String>              npaAccounts         = new ArrayList<>();
+    private List<String>              externalUsers       = new ArrayList<>();
 
     private List<String>              defaultZoneMembership = new ArrayList<>();
+    private List<String>              zonesForExternals     = new ArrayList<>();
+
 
     private Map<String, List<String>> zoneAccess   = new HashMap<>();
     private Map<String, String>       ownerZones   = new HashMap<>();
@@ -51,6 +54,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
     private final String personalFilesZoneName   = "personal-files";
     private final String quarantineZoneName      = "quarantine";
     private final String dataLakeZoneName        = "data-lake";
+    private final String externalAccessZoneName  = "external-access";
 
 
     /**
@@ -196,6 +200,12 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         metadataArchitects.add(erinOverviewUserId);
         metadataArchitects.add(peterProfileUserId);
 
+        externalUsers.add(grantAbleUserId);
+        externalUsers.add(julieStitchedUserId);
+        externalUsers.add(angelaCummingUserId);
+
+        zonesForExternals.add(externalAccessZoneName);
+
         npaAccounts.add(archiverUserId);
         npaAccounts.add(etlEngineUserId);
         npaAccounts.add(cocoMDS1UserId);
@@ -220,6 +230,7 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         zoneAccess.put(personalFilesZoneName, allEmployees);
         zoneAccess.put(quarantineZoneName, assetOnboarding);
         zoneAccess.put(dataLakeZoneName, allEmployees);
+        zoneAccess.put(externalAccessZoneName, externalUsers);
 
         zoneSetUp.add(callieQuartileUserId);
         zoneSetUp.add(tessaTubeUserId);
@@ -701,6 +712,30 @@ public class CocoPharmaServerSecurityConnector extends OpenMetadataServerSecurit
         }
     }
 
+    /**
+     * Determine the appropriate setting for the supported zones depending on the user and the
+     * default supported zones set up for the service.  This is called whenever an asset is accessed.
+     *
+     * @param supportedZones default setting of the supported zones for the service
+     * @param serviceName name of the called service
+     * @param user name of the user
+     *
+     * @return list of supported zones for the user
+     * @throws InvalidParameterException one of the parameter values is invalid
+     * @throws PropertyServerException there is a problem calculating the zones
+     */
+    public List<String> setSupportedZonesForUser(List<String>  supportedZones,
+                                                 String        serviceName,
+                                                 String        user) throws InvalidParameterException,
+                                                                            PropertyServerException
+    {
+        if (externalUsers.contains(user))
+        {
+            return zonesForExternals;
+        }
+
+        return supportedZones;
+    }
 
 
     /**

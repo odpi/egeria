@@ -219,6 +219,7 @@ public class ConnectedAssetResource
      * @param serverName   String   name of server instance to call.
      * @param serviceURLName  String   name of the service that created the connector that issued this request.
      * @param userId       String   userId of user making request.
+     * @param assetGUID    String   unique identifier for the linked asset.
      * @param commentGUID  String   unique id for the root comment.
      * @param elementStart int      starting position for fist returned element.
      * @param maxElements  int      maximum number of elements to return on the call.
