@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.userinterface.accessservices.api;
+package org.odpi.openmetadata.userinterface.accessservices.api.subjectarea;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
@@ -11,11 +11,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.proje
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
-import org.odpi.openmetadata.userinterface.accessservices.domain.User;
+import org.odpi.openmetadata.userinterface.accessservices.api.SecureController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
