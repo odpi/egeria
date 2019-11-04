@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -20,7 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    protected Map<String, Object> securedProperties = null;
+    private Map<String, Object> securedProperties = null;
     private String guid;
     private String displayName;
     private String description;
@@ -72,5 +73,22 @@ public class Connection implements Serializable {
 
     public void setSecuredProperties(Map<String, Object> securedProperties) {
         this.securedProperties = securedProperties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Connection that = (Connection) o;
+        return Objects.equals(securedProperties, that.securedProperties) &&
+                Objects.equals(guid, that.guid) &&
+                Objects.equals(displayName, that.displayName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(qualifiedName, that.qualifiedName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(securedProperties, guid, displayName, description, qualifiedName);
     }
 }
