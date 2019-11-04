@@ -10,12 +10,12 @@ import org.odpi.openmetadata.userinterfaces.adminservices.UIServerOperationalSer
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OperationalServicesResource provides the REST API for controlling the start up, management and
+ * UIOperationalServicesResource provides the REST API for controlling the start up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController
 @RequestMapping("/open-metadata/ui-admin-services/users/{userId}/servers/{serverName}")
-public class OperationalServicesResource
+public class UIOperationalServicesResource
 {
     private UIServerOperationalServices operationalServices = new UIServerOperationalServices();
 
