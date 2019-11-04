@@ -115,7 +115,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     /**
      * Return the name of the server where Governance Engine OMAS is running
      *
-     * @return
+     * @return string name
      */
     public String getAccessServiceServerName() {
         return accessServiceServerName;
@@ -124,7 +124,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     /**
      * Set up the name of the server where Governance Engine OMAS is running
      *
-     * @param accessServiceServerName
+     * @param accessServiceServerName string name
      */
     public void setAccessServiceServerName(String accessServiceServerName) {
         this.accessServiceServerName = accessServiceServerName;
@@ -200,7 +200,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     /**
      * Set up the Access Resource Service Named used in the Governance Services Connector to synchronize the access resource policies.
      *
-     * @param securitySyncAccessResourceServiceName
+     * @param securitySyncAccessResourceServiceName string name
      */
     public void setSecuritySyncAccessResourceServiceName(String securitySyncAccessResourceServiceName) {
         this.securitySyncAccessResourceServiceName = securitySyncAccessResourceServiceName;
@@ -245,7 +245,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     /**
      * Return the OCF Connection for the In Topic used to pass requests to this Security Sync.
      * For example, the output topic of Governance Engine OMAS can be provided
-     * (e.g. "open-metadata.access-services.GovernanceEngine.outTopic")
+     * (e.g. "omas.accessservices.governanceengine.outTopic")
      *
      * @return Connection for In Topic
      */

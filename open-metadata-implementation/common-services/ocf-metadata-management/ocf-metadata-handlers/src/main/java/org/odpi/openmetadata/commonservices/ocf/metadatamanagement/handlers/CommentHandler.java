@@ -24,19 +24,10 @@ import java.util.List;
 
 /**
  * CommentHandler manages Comment objects.  It runs server-side in
- * OMAS and retrieves Comment entities through the OMRSRepositoryConnector.
+ * the OMAG Server Platform and retrieves Comment entities through the OMRSRepositoryConnector.
  */
-public class CommentHandler
+public class CommentHandler extends FeedbackHandlerBase
 {
-    private String                  serviceName;
-    private String                  serverName;
-    private OMRSRepositoryHelper    repositoryHelper;
-    private RepositoryHandler       repositoryHandler;
-    private InvalidParameterHandler invalidParameterHandler;
-    private LastAttachmentHandler   lastAttachmentHandler;
-    private int                     maxPageSize;
-
-
     /**
      * Construct the handler information needed to interact with the repository services
      *
@@ -46,47 +37,15 @@ public class CommentHandler
      * @param repositoryHandler     manages calls to the repository services
      * @param repositoryHelper provides utilities for manipulating the repository services objects
      * @param lastAttachmentHandler handler for recording last attachment
-     * @param maxPageSize maximum page size
      */
     public CommentHandler(String                  serviceName,
                           String                  serverName,
                           InvalidParameterHandler invalidParameterHandler,
                           RepositoryHandler       repositoryHandler,
                           OMRSRepositoryHelper    repositoryHelper,
-                          LastAttachmentHandler   lastAttachmentHandler,
-                          int                     maxPageSize)
+                          LastAttachmentHandler   lastAttachmentHandler)
     {
-        this.serviceName = serviceName;
-        this.serverName = serverName;
-        this.invalidParameterHandler = invalidParameterHandler;
-        this.repositoryHandler = repositoryHandler;
-        this.repositoryHelper = repositoryHelper;
-        this.lastAttachmentHandler = lastAttachmentHandler;
-        this.maxPageSize = maxPageSize;
-    }
-
-
-    /**
-     * Work out whether the requesting user is able to see the attached feedback.
-     *
-     * @param userId calling user
-     * @param relationship relationship to the feedback content
-     * @param methodName calling method
-     * @return boolean - true if allowed
-     */
-    private boolean  visibleToUser(String        userId,
-                                   Relationship  relationship,
-                                   String        methodName)
-    {
-        if (userId.equals(relationship.getCreatedBy()))
-        {
-            return true;
-        }
-
-        return repositoryHelper.getBooleanProperty(serviceName,
-                                                   CommentMapper.IS_PUBLIC_PROPERTY_NAME,
-                                                   relationship.getProperties(),
-                                                   methodName);
+        super(serviceName, serverName, invalidParameterHandler, repositoryHandler, repositoryHelper, lastAttachmentHandler);
     }
 
 
@@ -107,35 +66,12 @@ public class CommentHandler
                                                           PropertyServerException,
                                                           UserNotAuthorizedException
     {
-        final String guidParameterName      = "anchorGUID";
-
-        invalidParameterHandler.validateUserId(userId, methodName);
-        invalidParameterHandler.validateGUID(anchorGUID, guidParameterName, methodName);
-
-        List<Relationship> relationships = repositoryHandler.getRelationshipsByType(userId,
-                                                                                    anchorGUID,
-                                                                                    ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
-                                                                                    CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                                    CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                                                                    methodName);
-
-        int count = 0;
-
-        if (relationships != null)
-        {
-            for (Relationship relationship : relationships)
-            {
-                if (relationship != null)
-                {
-                    if (this.visibleToUser(userId, relationship, methodName))
-                    {
-                        count ++;
-                    }
-                }
-            }
-        }
-
-        return count;
+        return super.countAttachments(userId,
+                                      anchorGUID,
+                                      ReferenceableMapper.REFERENCEABLE_TYPE_NAME,
+                                      CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                      CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                      methodName);
     }
 
 
@@ -144,7 +80,7 @@ public class CommentHandler
      *
      * @param userId     calling user
      * @param anchorGUID identifier for the entity that the feedback is attached to
-     * @param anchorGUIDTypeName name of the type of the anchor entity
+     * @param anchorTypeName name of the type of the anchor entity
      * @param startingFrom where to start from in the list
      * @param pageSize maximum number of results that can be returned
      * @param methodName calling method
@@ -157,7 +93,7 @@ public class CommentHandler
      */
     public List<Comment>  getComments(String   userId,
                                       String   anchorGUID,
-                                      String   anchorGUIDTypeName,
+                                      String   anchorTypeName,
                                       int      startingFrom,
                                       int      pageSize,
                                       String   methodName) throws InvalidParameterException,
@@ -168,29 +104,29 @@ public class CommentHandler
 
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(anchorGUID, guidParameter, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, pageSize, methodName);
 
-        List<Relationship>  attachedComments = repositoryHandler.getPagedRelationshipsByType(userId,
-                                                                                            anchorGUID,
-                                                                                            anchorGUIDTypeName,
-                                                                                            CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
-                                                                                            CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
-                                                                                            startingFrom,
-                                                                                            pageSize,
-                                                                                            methodName);
+        List<Relationship>  relationships = super.getAttachmentLinks(userId,
+                                                                     anchorGUID,
+                                                                     anchorTypeName,
+                                                                     CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_GUID,
+                                                                     CommentMapper.REFERENCEABLE_TO_COMMENT_TYPE_NAME,
+                                                                     startingFrom,
+                                                                     pageSize,
+                                                                     methodName);
 
-        if ((attachedComments == null) || (attachedComments.isEmpty()))
+        if ((relationships == null) || (relationships.isEmpty()))
         {
             return null;
         }
 
         List<Comment>  results = new ArrayList<>();
 
-        for (Relationship  relationship : attachedComments)
+        for (Relationship  relationship : relationships)
         {
             if (relationship != null)
             {
                 Comment bean = this.getComment(userId, relationship, methodName);
-
                 if (bean != null)
                 {
                     results.add(bean);
@@ -210,10 +146,11 @@ public class CommentHandler
 
 
     /**
-     * Retrieve the requested rating object.
+     * Retrieve the requested comment object - assumption is that the relationship
+     * is visible to the end user.
      *
      * @param userId       calling user
-     * @param relationship relationship between referenceable and rating
+     * @param relationship visible relationship between referenceable and comment
      * @param methodName   calling method
      * @return new bean
      * @throws InvalidParameterException  the parameters are invalid
@@ -226,31 +163,28 @@ public class CommentHandler
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String guidParameterName = "referenceableRatingRelationship.end2.guid";
-
+        final String guidParameterName = "referenceableRelationship.end2.guid";
 
         if (relationship != null)
         {
-            if (this.visibleToUser(userId, relationship, methodName))
+            EntityProxy entityProxy = relationship.getEntityTwoProxy();
+
+            if (entityProxy != null)
             {
-                EntityProxy entityProxy = relationship.getEntityTwoProxy();
+                EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                        entityProxy.getGUID(),
+                                                                        guidParameterName,
+                                                                        CommentMapper.COMMENT_TYPE_NAME,
+                                                                        methodName);
 
-                if (entityProxy != null)
-                {
-                    EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
-                                                                            entityProxy.getGUID(),
-                                                                            guidParameterName,
-                                                                            CommentMapper.COMMENT_TYPE_NAME,
-                                                                            methodName);
+                CommentConverter converter = new CommentConverter(entity,
+                                                                  relationship,
+                                                                  repositoryHelper,
+                                                                  serviceName);
 
-                    CommentConverter converter = new CommentConverter(entity,
-                                                                      relationship,
-                                                                      repositoryHelper,
-                                                                      serviceName);
-
-                    return converter.getBean();
-                }
+                return converter.getBean();
             }
+
         }
 
         return null;
@@ -342,13 +276,13 @@ public class CommentHandler
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String addCommentToReferenceable(String      userId,
-                                            String      anchorGUID,
-                                            String      anchorType,
-                                            CommentType commentType,
-                                            String      commentText,
-                                            boolean     isPublic,
-                                            String      methodName) throws InvalidParameterException,
+    public String addCommentToAnchor(String      userId,
+                                     String      anchorGUID,
+                                     String      anchorType,
+                                     CommentType commentType,
+                                     String      commentText,
+                                     boolean     isPublic,
+                                     String      methodName) throws InvalidParameterException,
                                                                            PropertyServerException,
                                                                            UserNotAuthorizedException
     {
@@ -394,14 +328,14 @@ public class CommentHandler
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public String addCommentReplyToReferenceable(String      userId,
-                                                 String      anchorGUID,
-                                                 String      anchorType,
-                                                 String      attachmentGUID,
-                                                 CommentType commentType,
-                                                 String      commentText,
-                                                 boolean     isPublic,
-                                                 String      methodName) throws InvalidParameterException,
+    public String addCommentReplyToAnchor(String      userId,
+                                          String      anchorGUID,
+                                          String      anchorType,
+                                          String      attachmentGUID,
+                                          CommentType commentType,
+                                          String      commentText,
+                                          boolean     isPublic,
+                                          String      methodName) throws InvalidParameterException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
@@ -455,10 +389,10 @@ public class CommentHandler
                                                                PropertyServerException,
                                                                UserNotAuthorizedException
     {
-        final String typeParameter = "commentType";
-        final String textParameter = "commentText";
-        final String guidParameter = "commentGUID";
-        final String commentDescription = "Updated comment from ";
+        final String typeParameter             = "commentType";
+        final String textParameter             = "commentText";
+        final String guidParameter             = "commentGUID";
+        final String lastAttachmentDescription = "Updated comment from ";
 
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -488,7 +422,7 @@ public class CommentHandler
                                                    commentGUID,
                                                    CommentMapper.COMMENT_TYPE_NAME,
                                                    userId,
-                                                   commentDescription + userId,
+                                                   lastAttachmentDescription + userId,
                                                    methodName);
     }
 
@@ -497,6 +431,8 @@ public class CommentHandler
      * Removes a comment added to the asset by this user.
      *
      * @param userId       userId of user making request.
+     * @param anchorGUID   unique identifier of anchor
+     * @param anchorType   type of anchor
      * @param commentGUID  unique identifier for the comment object.
      * @param methodName    calling method
      *
@@ -504,11 +440,11 @@ public class CommentHandler
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public void removeCommentFromReferenceable(String     userId,
-                                               String     anchorGUID,
-                                               String     anchorType,
-                                               String     commentGUID,
-                                               String     methodName) throws InvalidParameterException,
+    public void removeCommentFromAnchor(String     userId,
+                                        String     anchorGUID,
+                                        String     anchorType,
+                                        String     commentGUID,
+                                        String     methodName) throws InvalidParameterException,
                                                                              PropertyServerException,
                                                                              UserNotAuthorizedException
     {

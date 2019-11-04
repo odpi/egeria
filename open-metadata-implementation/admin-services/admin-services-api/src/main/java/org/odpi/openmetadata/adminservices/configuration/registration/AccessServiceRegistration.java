@@ -28,6 +28,7 @@ public class AccessServiceRegistration implements Serializable
      *
      * @param accessServiceCode ordinal for this access service
      * @param accessServiceName symbolic name for this access service
+     * @param accessServiceURLMarker name of the part of the URL that is the name of the access service
      * @param accessServiceDescription short description for this access service
      * @param accessServiceWiki wiki page for the access service for this access service
      * @param accessServiceOperationalStatus default initial operational status for the access service
