@@ -23691,12 +23691,15 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "dataFieldType";
         final String attribute2Description     = "Type name for the data field.";
         final String attribute2DescriptionGUID = null;
-        final String attribute3Name            = "additionalProperties";
-        final String attribute3Description     = "Additional properties discovered during the analysis.";
+        final String attribute3Name            = "defaultValue";
+        final String attribute3Description     = "Default value that is added to the field if no value is specified.";
         final String attribute3DescriptionGUID = null;
-        final String attribute4Name            = "anchorGUID";
-        final String attribute4Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
+        final String attribute4Name            = "additionalProperties";
+        final String attribute4Description     = "Additional properties discovered during the analysis.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "anchorGUID";
+        final String attribute5Description     = "Optional identifier of the asset that this data field is indirectly connected to.";
+        final String attribute5DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -23706,13 +23709,17 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
-                                                                    attribute3Description,
-                                                                    attribute3DescriptionGUID);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                                                           attribute3Description,
+                                                           attribute3DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
-                                                           attribute4Description,
-                                                           attribute4DescriptionGUID);
+        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
