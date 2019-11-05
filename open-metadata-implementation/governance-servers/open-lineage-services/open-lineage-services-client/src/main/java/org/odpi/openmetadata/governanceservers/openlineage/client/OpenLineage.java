@@ -44,14 +44,12 @@ public class OpenLineage  {
      * @return A subgraph containing all relevant paths, in graphSON format.
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-  //  public LineageVerticesAndEdges lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
-    public String lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
+    public LineageVerticesAndEdges lineage(String userId, GraphName graphName, Scope scope, View view, String guid) throws InvalidParameterException {
         String methodName = "lineage";
         String url = "/servers/{0}/open-metadata/open-lineage/users/{1}/lineage/sources/{2}/scopes/{3}/views/{4}/entities/{5}";
-        return getRestCall(url, String.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
-//        LineageResponse lineageResponse = getRestCall(url, LineageResponse.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
-//        LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
-//        return lineageVerticesAndEdges;
+        LineageResponse lineageResponse = getRestCall(url, LineageResponse.class, serverName, userId, graphName.getText(), scope.getValue(), view.getValue(), guid);
+        LineageVerticesAndEdges lineageVerticesAndEdges = lineageResponse.getLineageVerticesAndEdges();
+        return lineageVerticesAndEdges;
     }
 
     /**
